@@ -14,12 +14,12 @@ export const InvitationRenderer: React.FC = () => {
   const [searchParams] = useSearchParams();
   const guestName = searchParams.get('to') || 'Tamu Undangan';
 
-  // Opening sequence states after clicking "Buka Undangan":
-  // 'cover'        -> Initial front cover with couple photo & [Buka Undangan] button
-  // 'arch-video'   -> Entrance animation: starts with vintage arch illustration from photo, then animates into landscape
-  // 'couple-photo' -> Smoothly reveals the current couple photo & welcome
-  // 'opened'       -> Invitation fully opened and interactive
-  const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'couple-photo' | 'opened'>('cover');
+  // Opening sequence states:
+  // 'cover'      -> Initial front cover with couple photo & [Buka Undangan] button
+  // 'arch-video' -> Entrance video animation (starts with arch illustration, then zooms into landscape)
+  // 'opened'     -> Invitation fully opened and interactive
+  const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'opened'>('cover');
+  const [isVideoExiting, setIsVideoExiting] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -54,6 +54,15 @@ export const InvitationRenderer: React.FC = () => {
   const bride = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name) || 'Maudy';
   const coverImage = gallery?.[0]?.image_url || invitation.theme?.preview_image || '/cover-lunar-bg.jpg';
 
+  // Finish animation and go directly into the opened invitation
+  const handleFinishAnimation = () => {
+    setIsVideoExiting(true);
+    setTimeout(() => {
+      setOpeningStage('opened');
+      setIsVideoExiting(false);
+    }, 700);
+  };
+
   // Handle clicking "Buka Undangan": starts audio and triggers entrance animation sequence
   const handleOpen = () => {
     if (music?.music_url && audioRef.current) {
@@ -62,35 +71,18 @@ export const InvitationRenderer: React.FC = () => {
 
     setOpeningStage('arch-video');
 
-    // Video plays arch entrance and zooms through (~4.8s)
+    // Video plays arch entrance and zooms through, then transitions directly into the invitation (~5.2s)
     setTimeout(() => {
       setOpeningStage((prev) => {
-        if (prev === 'arch-video') return 'couple-photo';
+        if (prev === 'arch-video') {
+          handleFinishAnimation();
+        }
         return prev;
       });
-    }, 4800);
-
-    // Couple photo displays, then transitions into full invitation (~2.4s later)
-    setTimeout(() => {
-      setOpeningStage((prev) => {
-        if (prev === 'couple-photo') return 'opened';
-        return prev;
-      });
-    }, 7200);
+    }, 5200);
   };
 
-  const handleSkipToCouple = () => {
-    if (openingStage === 'arch-video') {
-      setOpeningStage('couple-photo');
-      setTimeout(() => {
-        setOpeningStage('opened');
-      }, 2000);
-    } else if (openingStage === 'couple-photo') {
-      setOpeningStage('opened');
-    }
-  };
-
-  const isInvitationVisible = openingStage === 'opened' || openingStage === 'couple-photo';
+  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
 
   return (
     <div className="relative min-h-screen">
@@ -103,7 +95,7 @@ export const InvitationRenderer: React.FC = () => {
 
       {/* Main Invitation Content */}
       <div className={`transition-opacity duration-1000 ${isInvitationVisible ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
-        {isInvitationVisible && (
+        {(openingStage === 'opened' || openingStage === 'arch-video') && (
           invitation.theme?.slug === 'animated-luxury' ? (
             <LuxuryAnimatedTheme 
               invitation={invitation}
@@ -148,7 +140,7 @@ export const InvitationRenderer: React.FC = () => {
         )}
       </div>
 
-      {/* 1. Initial Front Cover Modal (Shows before clicking "Buka Undangan") */}
+      {/* 1. Initial Front Cover Modal (Shows only once before clicking "Buka Undangan") */}
       {openingStage === 'cover' && (
         <div className="fixed inset-0 z-50 transition-transform duration-700 ease-in-out">
           {/* Fullscreen Photo Background (Couple Photo) */}
@@ -204,11 +196,13 @@ export const InvitationRenderer: React.FC = () => {
         </div>
       )}
 
-      {/* 2. Entrance Animation: Vintage Arch Video (Plays right AFTER clicking "Buka Undangan") */}
+      {/* 2. Entrance Animation: Vintage Arch Video (Plays right AFTER clicking "Buka Undangan", then reveals invitation) */}
       {openingStage === 'arch-video' && (
         <div 
-          onClick={handleSkipToCouple}
-          className="fixed inset-0 z-50 bg-[#f6f2e9] flex items-center justify-center cursor-pointer transition-opacity duration-1000 ease-out"
+          onClick={handleFinishAnimation}
+          className={`fixed inset-0 z-50 bg-[#f6f2e9] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out ${
+            isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+          }`}
         >
           {/* Fullscreen Video starting with Arch Illustration and animating through */}
           <video
@@ -219,54 +213,20 @@ export const InvitationRenderer: React.FC = () => {
             playsInline
             muted
             className="w-full h-full object-cover object-center"
-            onEnded={handleSkipToCouple}
+            onEnded={handleFinishAnimation}
           />
 
           {/* Subtle Skip button */}
           <button
             onClick={(e) => {
               e.stopPropagation();
-              handleSkipToCouple();
+              handleFinishAnimation();
             }}
             className="absolute top-5 right-5 z-30 bg-black/40 hover:bg-black/60 text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm transition-all duration-200 uppercase tracking-wider font-medium"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             Lewati ✕
           </button>
-        </div>
-      )}
-
-      {/* 3. Revealed Couple Photo Transition (Appears after arch animation) */}
-      {openingStage === 'couple-photo' && (
-        <div 
-          onClick={() => setOpeningStage('opened')}
-          className="fixed inset-0 z-50 bg-neutral-950 flex flex-col items-center justify-center text-center cursor-pointer transition-opacity duration-1000 ease-out"
-        >
-          {/* Fullscreen Couple Photo with smooth zoom entrance */}
-          <img 
-            src={coverImage} 
-            alt="Wedding Couple" 
-            className="absolute inset-0 w-full h-full object-cover object-center animate-[reveal-up_1.2s_ease-out_forwards] scale-100"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/60"></div>
-
-          {/* Welcome Overlay */}
-          <div className="relative z-10 p-6 select-none animate-reveal-up">
-            <p className="text-xs sm:text-sm uppercase tracking-[0.3em] text-white/90 font-medium mb-3" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-              Selamat Datang di Pernikahan
-            </p>
-            <h1 
-              className="text-4xl sm:text-6xl md:text-7xl text-white font-normal tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.7)] uppercase mb-4"
-              style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}
-            >
-              <span>{groom}</span>
-              <span className="text-3xl sm:text-5xl font-serif font-light italic opacity-90 mx-3">&amp;</span>
-              <span>{bride}</span>
-            </h1>
-            <p className="text-xs tracking-[0.25em] text-white/75 uppercase animate-pulse mt-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-              ✦ Sentuh untuk melihat isi undangan ✦
-            </p>
-          </div>
         </div>
       )}
     </div>
