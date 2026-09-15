@@ -22,7 +22,7 @@ export const themeService = {
       .order('created_at', { ascending: false });
     
     if (error) throw error;
-    return data as Theme[];
+    return (data as unknown) as Theme[];
   },
 
   async getActiveThemes() {
@@ -33,7 +33,7 @@ export const themeService = {
       .order('created_at', { ascending: false });
     
     if (error) throw error;
-    return data as Theme[];
+    return (data as unknown) as Theme[];
   },
 
   async getTheme(id: string) {
@@ -44,7 +44,7 @@ export const themeService = {
       .single();
     
     if (error) throw error;
-    return data as Theme;
+    return (data as unknown) as Theme;
   },
 
   async getThemeBySlug(slug: string) {
@@ -56,7 +56,7 @@ export const themeService = {
       .single();
     
     if (error) throw error;
-    return data as Theme;
+    return (data as unknown) as Theme;
   },
 
   async createTheme(theme: Partial<Theme>) {
@@ -67,7 +67,7 @@ export const themeService = {
       .single();
       
     if (error) throw error;
-    return data as Theme;
+    return (data as unknown) as Theme;
   },
 
   async updateTheme(id: string, theme: Partial<Theme>) {
@@ -79,7 +79,7 @@ export const themeService = {
       .single();
       
     if (error) throw error;
-    return data as Theme;
+    return (data as unknown) as Theme;
   },
 
   async deleteTheme(id: string) {

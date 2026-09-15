@@ -31,7 +31,7 @@ export const invitationService = {
       .single();
     
     if (error) throw error;
-    return data as Invitation;
+    return (data as unknown) as Invitation;
   },
 
   async getInvitationBySlug(slug: string) {
@@ -54,7 +54,7 @@ export const invitationService = {
       .single();
       
     if (error) throw error;
-    return data as Invitation;
+    return (data as unknown) as Invitation;
   },
 
   async updateInvitation(id: string, invitation: Partial<Invitation>) {
@@ -66,7 +66,7 @@ export const invitationService = {
       .single();
       
     if (error) throw error;
-    return data as Invitation;
+    return (data as unknown) as Invitation;
   },
 
   async deleteInvitation(id: string) {

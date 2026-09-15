@@ -1,5 +1,4 @@
 import { supabase } from '../lib/supabase';
-import type { Database } from '../types/database';
 
 export interface Client {
   id: string;
@@ -20,7 +19,7 @@ export const clientService = {
       .order('created_at', { ascending: false });
     
     if (error) throw error;
-    return data as Client[];
+    return (data as unknown) as Client[];
   },
 
   async getClient(id: string) {
@@ -31,7 +30,7 @@ export const clientService = {
       .single();
     
     if (error) throw error;
-    return data as Client;
+    return (data as unknown) as Client;
   },
 
   async createClient(client: Partial<Client>) {
@@ -42,7 +41,7 @@ export const clientService = {
       .single();
       
     if (error) throw error;
-    return data as Client;
+    return (data as unknown) as Client;
   },
 
   async updateClient(id: string, client: Partial<Client>) {
@@ -54,7 +53,7 @@ export const clientService = {
       .single();
       
     if (error) throw error;
-    return data as Client;
+    return (data as unknown) as Client;
   },
 
   async deleteClient(id: string) {

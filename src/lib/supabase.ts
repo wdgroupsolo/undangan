@@ -10,7 +10,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 // Fallback to dummy values if empty so the app doesn't crash on load
 // Note: Database calls will fail until real keys are provided
-export const supabase = createClient<Database>(
+export const supabase = createClient<any>(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder-key'
 );
