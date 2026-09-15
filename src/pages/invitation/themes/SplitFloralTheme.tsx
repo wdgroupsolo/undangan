@@ -532,12 +532,12 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   return (
     <div className="flex flex-col md:flex-row min-h-screen font-sans text-gray-800 overflow-x-hidden bg-[#f4f0e6]">
       
-      {/* LEFT SIDE - FIXED ON DESKTOP (Approx 60% width) */}
-      <div className="w-full md:w-[60%] md:fixed md:top-0 md:left-0 h-screen relative overflow-hidden">
+      {/* LEFT SIDE - FIXED ON DESKTOP ONLY (Approx 60% width) */}
+      <div className="hidden md:block md:w-[60%] md:fixed md:top-0 md:left-0 h-screen relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
-            src={invitation.theme?.preview_image || gallery?.[0]?.image_url || 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80'} 
+            src={invitation.theme?.preview_image || gallery?.[0]?.image_url || '/cover-lunar-bg.jpg'} 
             alt="Cover" 
             className="w-full h-full object-cover"
           />
