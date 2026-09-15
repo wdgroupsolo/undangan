@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Heart, Disc, Gift, Copy, Check, X, Edit3 } from 'lucide-react';
+import { Disc, Gift, Copy, Check, X } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 
 // Gallery Slideshow Component with Continuous Auto-Slide & Touch/Mouse Swipe
@@ -1963,20 +1963,6 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
             </a>
           </div>
         </footer>
-
-        {/* Floating Quick Edit Button for Admin / Dev */}
-        <div className="fixed bottom-6 left-6 z-40">
-          <a
-            href={`/admin/invitations/${invitation?.id || 'e3ba5aaf-8258-4565-ac04-12931ed70685'}`}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 bg-[#524538]/90 hover:bg-[#3a2f24] text-[#f4ede2] px-3.5 py-2 rounded-full shadow-lg backdrop-blur-sm border border-white/20 text-xs font-semibold tracking-wide transition-all duration-300 hover:scale-105 active:scale-95 select-none"
-            title="Buka Form Edit Isi Undangan"
-          >
-            <Edit3 className="w-3.5 h-3.5 text-[#e5d5c0]" />
-            <span>Edit Form Tema</span>
-          </a>
-        </div>
       </div>
     </div>
   );
