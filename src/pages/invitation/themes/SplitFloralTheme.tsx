@@ -541,42 +541,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
             alt="Cover" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/30"></div>
-        </div>
-
-        {/* Content Overlay */}
-        <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-16 text-white z-10">
-          <p className="text-xs uppercase tracking-[0.3em] font-semibold mb-4 text-gray-200">Undangan Pernikahan</p>
-          
-          {/* Couple Names - Highly stylized serif to match reference */}
-          <h1 className="text-5xl md:text-[5rem] mb-2 drop-shadow-lg tracking-tight" style={{ fontFamily: '"Cinzel Decorative", serif' }}>
-            <span className="uppercase" style={{ fontVariantLigatures: 'common-ligatures' }}>
-              {groomNickname}
-            </span> 
-            <span className="text-4xl md:text-5xl mx-3 font-sans font-light">&amp;</span> 
-            <span className="uppercase" style={{ fontVariantLigatures: 'common-ligatures' }}>
-              {brideNickname}
-            </span>
-          </h1>
-          
-          <p className="font-serif italic text-2xl mb-8 opacity-90" style={{ fontFamily: 'Georgia, serif' }}>Selamat Datang</p>
-          
-          <p className="text-sm md:text-base leading-relaxed text-gray-200 max-w-md mb-12 opacity-90 font-light">
-            Every Love Story Is Beautiful, But Ours Is The Best One. I Loved Her Since The First Time I Saw Her. My Mother Told Me To Pick The Very Best One, And I Did. True Love Stories Never Have Endings.
-          </p>
-
-          <div>
-            <p className="text-sm mb-1 text-gray-300 font-semibold">Kepada Yth.</p>
-            <p className="text-sm mb-4 text-gray-300 font-semibold">Bapak/Ibu/Saudara/i:</p>
-            <p className="text-2xl font-serif font-bold drop-shadow-md">{guestName}</p>
-          </div>
-        </div>
-        
-        {/* Record/Disc Icon */}
-        <div className="absolute bottom-8 left-8">
-          <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur flex items-center justify-center animate-spin border border-white/20" style={{ animationDuration: '4s' }}>
-            <Disc className="text-white w-4 h-4" />
-          </div>
+          <div className="absolute inset-0 bg-black/15"></div>
         </div>
       </div>
 
@@ -640,29 +605,40 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
             
             <div className="flex flex-col items-center justify-center space-y-1 relative z-20">
               <h1 
-                className="text-5xl sm:text-6xl md:text-[4.6rem] text-[#3d2e1f] font-normal tracking-wide uppercase leading-tight" 
+                className="text-4xl sm:text-5xl md:text-[4.4rem] text-[#3d2e1f] font-normal tracking-wide uppercase leading-tight" 
                 style={{ fontFamily: '"Cinzel Decorative", serif' }}
               >
                 {groomNickname.toUpperCase()}
               </h1>
               
-              <div className="text-3xl md:text-4xl font-serif text-[#4a3a2a] my-2 italic font-light" style={{ fontFamily: 'Georgia, serif' }}>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#4a3a2a] my-1 sm:my-2 italic font-light" style={{ fontFamily: 'Georgia, serif' }}>
                 &amp;
               </div>
               
               <h1 
-                className="text-5xl sm:text-6xl md:text-[4.6rem] text-[#3d2e1f] font-normal tracking-wide uppercase leading-tight" 
+                className="text-4xl sm:text-5xl md:text-[4.4rem] text-[#3d2e1f] font-normal tracking-wide uppercase leading-tight" 
                 style={{ fontFamily: '"Cinzel Decorative", serif' }}
               >
                 {brideNickname.toUpperCase()}
               </h1>
 
-              <p className="mt-4 text-xs md:text-sm tracking-[0.25em] text-[#4a3a2a] font-serif font-semibold">
+              <p className="mt-6 text-xs sm:text-[13px] tracking-[0.25em] text-[#4a3a2a] font-serif uppercase font-medium">
+                SELAMAT DATANG
+              </p>
+
+              <p className="mt-2 text-xs sm:text-sm tracking-[0.25em] text-[#4a3a2a] font-serif font-semibold">
                 {events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '. ') : '01. 09. 2028'}
               </p>
             </div>
           </div>
         </section>
+
+        {/* Spinning Vinyl Record Icon (visible on both mobile and desktop) */}
+        <div className="fixed bottom-6 left-6 z-40">
+          <div className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center animate-spin border border-white/30 shadow-lg" style={{ animationDuration: '4s' }}>
+            <Disc className="text-white w-4 h-4" />
+          </div>
+        </div>
 
         {/* Welcome / Guest Section */}
         <section className="py-20 px-6 relative z-10 bg-[#695a4a]">
