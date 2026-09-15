@@ -33,6 +33,8 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
     closing_greeting: "Merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila Bapak/Ibu/Saudara/i, berkenan hadir dan memberikan do'a restu kepada kedua mempelai.",
     closing_couple_name: '',
     countdown_date: '',
+    powered_by: 'WD Group',
+    powered_by_url: 'https://instagram.com/wdgroup',
   });
 
   const [newInviter, setNewInviter] = useState('');
@@ -59,6 +61,8 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
         closing_greeting: s.closing_greeting !== undefined ? s.closing_greeting : prev.closing_greeting,
         closing_couple_name: s.closing_couple_name !== undefined ? s.closing_couple_name : prev.closing_couple_name,
         countdown_date: s.countdown_date !== undefined ? s.countdown_date : prev.countdown_date,
+        powered_by: s.powered_by !== undefined ? s.powered_by : prev.powered_by,
+        powered_by_url: s.powered_by_url !== undefined ? s.powered_by_url : prev.powered_by_url,
       }));
     }
   }, [invitation]);
@@ -155,7 +159,7 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
               type="text"
               value={formData.quote_source}
               onChange={(e) => setFormData({ ...formData, quote_source: e.target.value })}
-              placeholder="Contoh: QS. Ar-Rum: 21 atau #JessiMaudy"
+              placeholder="Contoh: QS. Ar-Rum: 21 atau #BagasSiti"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#625445]/20 focus:border-[#625445]"
             />
           </div>
@@ -390,9 +394,32 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
               type="text"
               value={formData.closing_couple_name}
               onChange={(e) => setFormData({ ...formData, closing_couple_name: e.target.value })}
-              placeholder="Contoh: Jessi dan Maudy"
+              placeholder="Contoh: Bagas dan Siti"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
             />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Footer Brand / Powered By</label>
+              <input
+                type="text"
+                value={formData.powered_by}
+                onChange={(e) => setFormData({ ...formData, powered_by: e.target.value })}
+                placeholder="WD Group"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Link Instagram Brand</label>
+              <input
+                type="text"
+                value={formData.powered_by_url}
+                onChange={(e) => setFormData({ ...formData, powered_by_url: e.target.value })}
+                placeholder="https://instagram.com/wdgroup"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
+              />
+            </div>
           </div>
         </div>
       </div>

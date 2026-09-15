@@ -215,6 +215,24 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const searchParams = new URLSearchParams(window.location.search);
   const guestName = searchParams.get('to') || 'Nama Tamu';
 
+  // Helper to capitalize/format names properly (e.g. "bagas" -> "Bagas", "siti" -> "Siti")
+  const formatName = (str?: string) => {
+    if (!str) return '';
+    return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  };
+
+  const groomNickname = formatName(couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name) || 'Bagas';
+  const brideNickname = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name) || 'Siti';
+  const groomFullName = formatName(couple?.groom_full_name || couple?.groom_nickname || couple?.groom_name) || groomNickname;
+  const brideFullName = formatName(couple?.bride_full_name || couple?.bride_nickname || couple?.bride_name) || brideNickname;
+  const coupleNamesCombined = `${groomNickname} & ${brideNickname}`;
+  const groomFather = formatName(couple?.groom_father_name) || 'Bapak Mempelai Pria';
+  const groomMother = formatName(couple?.groom_mother_name) || 'Ibu Mempelai Pria';
+  const brideFather = formatName(couple?.bride_father_name) || 'Bapak Mempelai Wanita';
+  const brideMother = formatName(couple?.bride_mother_name) || 'Ibu Mempelai Wanita';
+  const brandName = invitation?.settings?.powered_by || 'WD Group';
+  const brandUrl = invitation?.settings?.powered_by_url || 'https://instagram.com/wdgroup';
+
   const [showGiftDetails, setShowGiftDetails] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
@@ -226,28 +244,71 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const [rsvpNote, setRsvpNote] = useState('');
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
 
+  const storageKey = `wedding_wishes_${invitation?.slug || invitation?.id || 'wdgroup'}`;
+
+  const defaultWishes = [
+    {
+      name: `${brandName} & Team`,
+      socialMedia: '@wdgroup',
+      message: 'Congratulations on your special day! Wishing you everlasting happiness 😊',
+      date: 'Baru saja',
+    },
+    {
+      name: 'Dimas & Anisa',
+      socialMedia: '@dimas_anisa',
+      message: `Selamat menempuh hidup baru ${coupleNamesCombined}! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.`,
+      date: '1 jam yang lalu',
+    },
+  ];
+
   const [wishes, setWishes] = useState<Array<{ name: string; socialMedia?: string; message: string; date?: string }>>(() => {
-    const saved = localStorage.getItem('wedding_wishes_assa');
+    const saved = localStorage.getItem(storageKey) || localStorage.getItem('wedding_wishes_assa');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((item: any) => ({
+            ...item,
+            name: item.name ? item.name.replace(/Kedaigrafis/gi, 'WD Group') : item.name,
+            socialMedia: item.socialMedia ? item.socialMedia.replace(/kedaigrafis/gi, 'wdgroup') : item.socialMedia,
+            message: item.message ? item.message.replace(/Jessi (&|dan) Maudy/gi, coupleNamesCombined) : item.message,
+          }));
+        }
       } catch {}
     }
-    return [
-      {
-        name: 'Kedaigrafis & Team',
-        socialMedia: '@kedaigrafis',
-        message: 'Congratulations on your special day! Wishing you everlasting happiness 😊',
-        date: 'Baru saja',
-      },
-      {
-        name: 'Dimas & Anisa',
-        socialMedia: '@dimas_anisa',
-        message: 'Selamat menempuh hidup baru Jessi & Maudy! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.',
-        date: '1 jam yang lalu',
-      },
-    ];
+    return defaultWishes;
   });
+
+  // Automatically synchronize wishes if couple data or branding changes
+  useEffect(() => {
+    setWishes(prev => {
+      let changed = false;
+      const updated = prev.map(item => {
+        let name = item.name;
+        let social = item.socialMedia;
+        let message = item.message;
+        if (name && name.includes('Kedaigrafis')) {
+          name = name.replace(/Kedaigrafis/gi, brandName);
+          changed = true;
+        }
+        if (social && social.includes('kedaigrafis')) {
+          social = social.replace(/kedaigrafis/gi, 'wdgroup');
+          changed = true;
+        }
+        if (message && (/Jessi (&|dan) Maudy/i.test(message) || message.includes('Mempelai Pria & Mempelai Wanita'))) {
+          message = message.replace(/Jessi (&|dan) Maudy/gi, coupleNamesCombined).replace(/Mempelai Pria & Mempelai Wanita/gi, coupleNamesCombined);
+          changed = true;
+        }
+        return { ...item, name, socialMedia: social, message };
+      });
+      if (changed) {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(updated));
+        } catch {}
+      }
+      return updated;
+    });
+  }, [coupleNamesCombined, brandName, storageKey]);
 
   const [wishName, setWishName] = useState(guestName !== 'Nama Tamu' ? guestName : '');
   const [wishSocial, setWishSocial] = useState('');
@@ -300,7 +361,8 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
     const updated = [newWish, ...wishes];
     setWishes(updated);
     try {
-      localStorage.setItem(`wedding_wishes_${invitation?.slug || 'assa'}`, JSON.stringify(updated));
+      localStorage.setItem(storageKey, JSON.stringify(updated));
+      localStorage.removeItem('wedding_wishes_assa');
     } catch {}
 
     // Persist to Supabase comments
@@ -366,12 +428,12 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
     {
       provider: 'BCA',
       account_number: '1234567890',
-      account_name: couple?.groom_full_name || 'Jessi Choi'
+      account_name: groomFullName
     },
     {
       provider: 'MANDIRI',
       account_number: '0987654321',
-      account_name: couple?.bride_full_name || 'Maudy Ayunda'
+      account_name: brideFullName
     }
   ];
 
@@ -489,11 +551,11 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
           {/* Couple Names - Highly stylized serif to match reference */}
           <h1 className="text-5xl md:text-[5rem] mb-2 drop-shadow-lg tracking-tight" style={{ fontFamily: '"Cinzel Decorative", serif' }}>
             <span className="uppercase" style={{ fontVariantLigatures: 'common-ligatures' }}>
-              {couple?.groom_nickname || couple?.groom_full_name || 'Jessi'}
+              {groomNickname}
             </span> 
             <span className="text-4xl md:text-5xl mx-3 font-sans font-light">&amp;</span> 
             <span className="uppercase" style={{ fontVariantLigatures: 'common-ligatures' }}>
-              {couple?.bride_nickname || couple?.bride_full_name || 'Maudy'}
+              {brideNickname}
             </span>
           </h1>
           
@@ -581,7 +643,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                 className="text-5xl sm:text-6xl md:text-[4.6rem] text-[#3d2e1f] font-normal tracking-wide uppercase leading-tight" 
                 style={{ fontFamily: '"Cinzel Decorative", serif' }}
               >
-                {couple?.groom_nickname || couple?.groom_full_name || 'JESSI'}
+                {groomNickname.toUpperCase()}
               </h1>
               
               <div className="text-3xl md:text-4xl font-serif text-[#4a3a2a] my-2 italic font-light" style={{ fontFamily: 'Georgia, serif' }}>
@@ -592,7 +654,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                 className="text-5xl sm:text-6xl md:text-[4.6rem] text-[#3d2e1f] font-normal tracking-wide uppercase leading-tight" 
                 style={{ fontFamily: '"Cinzel Decorative", serif' }}
               >
-                {couple?.bride_nickname || couple?.bride_full_name || 'MAUDY'}
+                {brideNickname.toUpperCase()}
               </h1>
 
               <p className="mt-4 text-xs md:text-sm tracking-[0.25em] text-[#4a3a2a] font-serif font-semibold">
@@ -696,7 +758,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               <div className="w-[275px] sm:w-[285px] aspect-[4/5] bg-[#e6dfd3] rounded-t-[140px] rounded-b-none overflow-hidden mb-6 relative shadow-[0_12px_28px_rgba(74,56,40,0.16)] mx-auto z-10">
                 <img 
                   src={couple?.groom_photo || '/groom-default.png' || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'} 
-                  alt={couple?.groom_full_name || 'Jessi Choi'} 
+                  alt={groomFullName} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
                 />
               </div>
@@ -707,19 +769,19 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                   className="text-4xl sm:text-[2.6rem] mb-2 drop-shadow-sm font-normal tracking-wide" 
                   style={{ fontFamily: "'Brittany Signature', 'Great Vibes', cursive", color: '#4a3828', lineHeight: '1.2' }}
                 >
-                  {couple?.groom_nickname || couple?.groom_full_name || 'Jessi'}
+                  {groomNickname}
                 </p>
                 <h3 
                   className="text-2xl sm:text-[1.65rem] mb-3 font-light text-[#4a3828] tracking-[0.06em]"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  {couple?.groom_full_name || 'Jessi Choi'}
+                  {groomFullName}
                 </h3>
                 <p 
                   className="text-xs sm:text-[13px] text-[#6d5b4b] font-normal leading-relaxed mb-4 max-w-[260px] mx-auto text-center"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  Anak Pertama Dari Bapak {couple?.groom_father_name || 'Roni'} dan Ibu {couple?.groom_mother_name || 'Ridha'}
+                  Anak Dari Bapak {groomFather} dan Ibu {groomMother}
                 </p>
                 <p 
                   className="text-xs font-semibold text-[#524032] cursor-pointer hover:text-black tracking-wider transition-colors text-center"
@@ -755,7 +817,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               <div className="w-[275px] sm:w-[285px] aspect-[4/5] bg-[#e6dfd3] rounded-t-[140px] rounded-b-none overflow-hidden mb-6 relative shadow-[0_12px_28px_rgba(74,56,40,0.16)] mx-auto z-10">
                 <img 
                   src={couple?.bride_photo || '/bride-default.png' || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'} 
-                  alt={couple?.bride_full_name || 'Maudy Ayunda'} 
+                  alt={brideFullName} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
                 />
               </div>
@@ -766,19 +828,19 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                   className="text-4xl sm:text-[2.6rem] mb-2 drop-shadow-sm font-normal tracking-wide" 
                   style={{ fontFamily: "'Brittany Signature', 'Great Vibes', cursive", color: '#4a3828', lineHeight: '1.2' }}
                 >
-                  {couple?.bride_nickname || couple?.bride_full_name || 'Maudy'}
+                  {brideNickname}
                 </p>
                 <h3 
                   className="text-2xl sm:text-[1.65rem] mb-3 font-light text-[#4a3828] tracking-[0.06em]"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  {couple?.bride_full_name || 'Maudy Ayunda'}
+                  {brideFullName}
                 </h3>
                 <p 
                   className="text-xs sm:text-[13px] text-[#6d5b4b] font-normal leading-relaxed mb-4 max-w-[270px] mx-auto text-center"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  Anak Ketiga Dari Bapak {couple?.bride_father_name || 'Hendra'} dan Ibu {couple?.bride_mother_name || 'Yaselin'}
+                  Anak Dari Bapak {brideFather} dan Ibu {brideMother}
                 </p>
                 <p 
                   className="text-xs font-semibold text-[#524032] cursor-pointer hover:text-black tracking-wider transition-colors text-center"
@@ -1865,7 +1927,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               className="text-2xl sm:text-[1.75rem] font-bold text-[#3a2a1d] tracking-tight"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
-              {invitation?.settings?.closing_couple_name || `${couple?.groom_nickname || couple?.groom_full_name || 'Jessi'} dan ${couple?.bride_nickname || couple?.bride_full_name || 'Maudy'}`}
+              {invitation?.settings?.closing_couple_name || `${groomNickname} dan ${brideNickname}`}
             </h2>
           </div>
 
@@ -1875,15 +1937,15 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               className="text-xs sm:text-[12px] text-[#f4ede2]/90 font-normal tracking-wide"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
-              Powered by Kedaigrafis
+              Powered by {brandName}
             </p>
 
             <a
-              href="https://instagram.com/kedaigrafis"
+              href={brandUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block mt-2.5 text-white/80 hover:text-white transition-colors"
-              aria-label="Instagram Kedaigrafis"
+              aria-label={`Instagram ${brandName}`}
             >
               <svg 
                 className="w-5 h-5 mx-auto" 

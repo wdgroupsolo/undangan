@@ -38,7 +38,13 @@ export const InvitationRenderer: React.FC = () => {
     return <Navigate to="/404" replace />;
   }
 
-  const coupleName = couple ? `${couple.groom_nickname} & ${couple.bride_nickname}` : invitation.title || 'Pasangan Berbahagia';
+  const formatName = (str?: string) => {
+    if (!str) return '';
+    return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  };
+  const groom = formatName(couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name);
+  const bride = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name);
+  const coupleName = (groom && bride) ? `${groom} & ${bride}` : (invitation.title || 'Pasangan Berbahagia');
 
   const handleOpen = () => {
     setIsOpened(true);
