@@ -200,32 +200,44 @@ export const InvitationRenderer: React.FC = () => {
       {openingStage === 'arch-video' && (
         <div 
           onClick={handleFinishAnimation}
-          className={`fixed inset-0 z-50 bg-[#f6f2e9] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out ${
+          className={`fixed inset-0 z-50 bg-[#f4efdf] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out overflow-hidden select-none ${
             isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
           }`}
+          style={{
+            backgroundImage: 'radial-gradient(ellipse at center, #faf6ee 0%, #efe7db 100%)'
+          }}
         >
-          {/* Fullscreen Video starting with Arch Illustration and animating through */}
-          <video
-            ref={videoRef}
-            src="/video-cover.mp4"
-            poster="/arch-clean.png"
-            autoPlay
-            playsInline
-            muted
-            className="w-full h-full object-cover object-center"
-            onEnded={handleFinishAnimation}
-          />
+          {/* Ambient subtle paper noise pattern */}
+          <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#8c7b6c_1px,transparent_1px)] [background-size:20px_20px]" />
 
-          {/* Subtle Skip button */}
+          {/* Responsive Video Container: maintains 880:1920 aspect ratio without clipping on any device */}
+          <div className="relative w-full h-full max-h-[100dvh] flex items-center justify-center p-0 sm:p-2 md:p-4">
+            <video
+              ref={videoRef}
+              src="/video-cover.mp4"
+              poster="/arch-clean.png"
+              autoPlay
+              playsInline
+              muted
+              className="w-auto h-full max-h-[100dvh] max-w-full object-contain object-center transition-transform duration-700 md:rounded-2xl md:shadow-[0_20px_60px_rgba(60,40,20,0.22)]"
+              style={{
+                aspectRatio: '880 / 1920',
+              }}
+              onEnded={handleFinishAnimation}
+            />
+          </div>
+
+          {/* Skip Button: Touch-friendly & clear on mobile & desktop */}
           <button
             onClick={(e) => {
               e.stopPropagation();
               handleFinishAnimation();
             }}
-            className="absolute top-5 right-5 z-30 bg-black/40 hover:bg-black/60 text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm transition-all duration-200 uppercase tracking-wider font-medium"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 inline-flex items-center gap-1.5 bg-black/45 hover:bg-black/70 active:scale-95 text-white text-xs sm:text-sm px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full backdrop-blur-md border border-white/20 shadow-lg transition-all duration-200 uppercase tracking-wider font-medium cursor-pointer"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            Lewati ✕
+            <span>Lewati</span>
+            <span className="text-white/80">✕</span>
           </button>
         </div>
       )}
