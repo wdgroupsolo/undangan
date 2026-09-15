@@ -541,7 +541,43 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
             alt="Cover" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/15"></div>
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        {/* Content Overlay - Visible ONLY on desktop (hidden on mobile) */}
+        <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-12 lg:px-16 xl:px-20 text-white z-10 select-none bg-gradient-to-t from-black/75 via-black/35 to-black/50">
+          <p className="text-xs uppercase tracking-[0.3em] font-semibold mb-3 text-gray-200" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            Undangan Pernikahan
+          </p>
+          
+          <h1 className="text-5xl lg:text-[4.5rem] xl:text-[5.2rem] mb-3 drop-shadow-lg tracking-wide uppercase leading-tight" style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}>
+            <span style={{ fontVariantLigatures: 'common-ligatures' }}>{groomNickname}</span>
+            <span className="text-3xl lg:text-5xl mx-3 font-serif font-light italic opacity-90">&amp;</span>
+            <span style={{ fontVariantLigatures: 'common-ligatures' }}>{brideNickname}</span>
+          </h1>
+          
+          <p className="font-serif italic text-2xl lg:text-3xl mb-6 opacity-90" style={{ fontFamily: 'Georgia, serif' }}>
+            Selamat Datang
+          </p>
+          
+          <p className="text-xs lg:text-sm leading-relaxed text-gray-200 max-w-md mb-8 opacity-90 font-light" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            Every Love Story Is Beautiful, But Ours Is The Best One. I Loved Her Since The First Time I Saw Her. My Mother Told Me To Pick The Very Best One, And I Did. True Love Stories Never Have Endings.
+          </p>
+
+          <div className="space-y-1">
+            <p className="text-xs text-gray-300 font-medium" style={{ fontFamily: "'Montserrat', sans-serif" }}>Kepada Yth.</p>
+            <p className="text-xs text-gray-300 font-medium" style={{ fontFamily: "'Montserrat', sans-serif" }}>Bapak/Ibu/Saudara/i:</p>
+            <p className="text-xl lg:text-2xl font-bold drop-shadow-md text-white pt-0.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              {guestName}
+            </p>
+          </div>
+        </div>
+
+        {/* Vinyl Disc Icon on Left Desktop */}
+        <div className="absolute bottom-6 left-6 z-20">
+          <div className="w-10 h-10 rounded-full bg-black/45 backdrop-blur-sm flex items-center justify-center animate-spin border border-white/20 shadow-md" style={{ animationDuration: '4s' }}>
+            <Disc className="text-white w-4 h-4" />
+          </div>
         </div>
       </div>
 
