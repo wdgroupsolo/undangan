@@ -426,6 +426,18 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
 
   const defaultGifts = [
     {
+      type: 'bank',
+      provider: 'BCA',
+      account_number: '1234567890',
+      account_name: groomFullName
+    },
+    {
+      type: 'bank',
+      provider: 'MANDIRI',
+      account_number: '0987654321',
+      account_name: brideFullName
+    },
+    {
       type: 'qris',
       provider: 'QRIS',
       account_number: '/qr-code.png',

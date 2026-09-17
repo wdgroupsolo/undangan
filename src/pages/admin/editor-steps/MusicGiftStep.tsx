@@ -82,16 +82,16 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
       {/* Amplop Digital Section */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-bold text-gray-900">Amplop Digital (Gift &amp; QRIS)</h3>
+          <h3 className="text-lg font-bold text-gray-900">Amplop Digital (Transfer Bank &amp; QRIS)</h3>
           {!isAddingGift && (
             <button 
               onClick={() => {
-                setGiftForm({ id: '', type: 'qris', provider: 'QRIS', account_name: '', account_number: '/qr-code.png' });
+                setGiftForm({ id: '', type: 'bank', provider: 'BCA', account_name: '', account_number: '' });
                 setIsAddingGift(true);
               }} 
               className="flex items-center space-x-2 text-sm bg-primary-100 text-primary-700 px-3 py-1.5 rounded-lg hover:bg-primary-200"
             >
-              <Plus size={16} /> <span>Tambah QRIS / Rekening</span>
+              <Plus size={16} /> <span>Tambah Rekening / QRIS</span>
             </button>
           )}
         </div>
@@ -116,15 +116,16 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
                       setGiftForm({
                         ...giftForm,
                         type: newType,
-                        provider: giftForm.provider === 'QRIS' ? '' : giftForm.provider
+                        provider: giftForm.provider === 'QRIS' ? (newType === 'bank' ? 'BCA' : 'OVO') : giftForm.provider,
+                        account_number: giftForm.account_number === '/qr-code.png' ? '' : giftForm.account_number
                       });
                     }
                   }} 
                   className="w-full px-3 py-2 border rounded-lg bg-white"
                 >
+                  <option value="bank">Transfer Bank (BCA, Mandiri, BRI, BNI, dll)</option>
                   <option value="qris">QRIS (Scan Barcode / QR Code)</option>
-                  <option value="bank">Transfer Bank</option>
-                  <option value="ewallet">E-Wallet (OVO/Dana/GoPay/dll)</option>
+                  <option value="ewallet">E-Wallet (OVO / Dana / GoPay / ShopeePay)</option>
                 </select>
               </div>
               <div>
