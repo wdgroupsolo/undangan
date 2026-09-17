@@ -4,12 +4,14 @@ import { themeService } from '../../services/themeService';
 import type { Theme } from '../../services/themeService';
 import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { useToast } from '../../context/ToastContext';
 
 export const Themes: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const { data: themes, isLoading } = useQuery({
     queryKey: ['themes'],
@@ -18,7 +20,11 @@ export const Themes: React.FC = () => {
 
   const deleteMutation = useMutation({
     mutationFn: themeService.deleteTheme,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['themes'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['themes'] });
+      toast.success('Tema berhasil dihapus!');
+    },
+    onError: () => toast.error('Gagal menghapus tema.'),
   });
 
   const updateMutation = useMutation({
@@ -27,7 +33,9 @@ export const Themes: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['themes'] });
       setIsModalOpen(false);
       setEditingTheme(null);
-    }
+      toast.success('Tema berhasil diperbarui!');
+    },
+    onError: () => toast.error('Gagal memperbarui tema.'),
   });
 
   const filteredThemes = themes?.filter(t => 
@@ -160,7 +168,7 @@ export const Themes: React.FC = () => {
                   const thumbnail = formData.get('thumbnail') as string;
                   const preview_image = formData.get('preview_image') as string;
                   
-                  if (!name || !slug) return alert('Name and slug are required');
+                  if (!name || !slug) return toast.error('Nama dan slug tema wajib diisi!');
                   
                   const dataToSave = { 
                     name, slug, category, description, status, thumbnail, preview_image,
@@ -175,10 +183,11 @@ export const Themes: React.FC = () => {
                       .then(() => {
                         setIsModalOpen(false);
                         queryClient.invalidateQueries({ queryKey: ['themes'] });
+                        toast.success('Tema berhasil dibuat!');
                       })
                       .catch(err => {
                         console.error(err);
-                        alert('Failed to create theme. Make sure slug is unique.');
+                        toast.error('Gagal membuat tema. Pastikan slug unik!');
                       });
                   }
                 }}

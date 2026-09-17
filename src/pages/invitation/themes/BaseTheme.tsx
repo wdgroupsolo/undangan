@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, MapPin, Gift, CreditCard, Clock, Heart } from 'lucide-react';
+import { useToast } from '../../../context/ToastContext';
 
 interface BaseThemeProps {
   invitation: any;
@@ -12,6 +13,7 @@ interface BaseThemeProps {
 }
 
 export const BaseTheme: React.FC<BaseThemeProps> = ({ invitation, couple, events, stories, gallery, gifts }) => {
+  const toast = useToast();
   // Use theme colors if available, otherwise fallback to elegant defaults
   const colors = invitation.theme?.colors || {
     primary: '#4f46e5',
@@ -204,7 +206,7 @@ export const BaseTheme: React.FC<BaseThemeProps> = ({ invitation, couple, events
                   <button 
                     onClick={() => {
                       navigator.clipboard.writeText(gift.account_number);
-                      alert('Nomor rekening berhasil disalin!');
+                      toast.success('Nomor rekening berhasil disalin!');
                     }}
                     className="mt-6 px-6 py-2 border-2 border-gray-900 text-gray-900 rounded-full text-sm font-bold hover:bg-gray-900 hover:text-white transition-colors"
                   >

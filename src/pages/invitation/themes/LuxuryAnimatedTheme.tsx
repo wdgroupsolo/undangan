@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, MapPin, Gift, CreditCard, Clock, Heart, Sparkles } from 'lucide-react';
+import { useToast } from '../../../context/ToastContext';
 
 interface LuxuryAnimatedThemeProps {
   invitation: any;
@@ -12,6 +13,7 @@ interface LuxuryAnimatedThemeProps {
 }
 
 export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invitation, couple, events, stories, gallery, gifts }) => {
+  const toast = useToast();
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -247,7 +249,7 @@ export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invita
                   <button 
                     onClick={() => {
                       navigator.clipboard.writeText(gift.account_number);
-                      alert('Nomor rekening berhasil disalin!');
+                      toast.success('Nomor rekening berhasil disalin!');
                     }}
                     className="text-xs uppercase tracking-[0.2em] px-8 py-3 bg-yellow-600 text-black font-bold hover:bg-yellow-500 transition-colors"
                   >

@@ -4,12 +4,14 @@ import { clientService } from '../../services/clientService';
 import type { Client } from '../../services/clientService';
 import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { useToast } from '../../context/ToastContext';
 
 export const Clients: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const { data: clients, isLoading } = useQuery({
     queryKey: ['clients'],
@@ -18,7 +20,11 @@ export const Clients: React.FC = () => {
 
   const deleteMutation = useMutation({
     mutationFn: clientService.deleteClient,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['clients'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['clients'] });
+      toast.success('Klien berhasil dihapus!');
+    },
+    onError: () => toast.error('Gagal menghapus klien.'),
   });
 
   const updateMutation = useMutation({
@@ -27,7 +33,9 @@ export const Clients: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['clients'] });
       setIsModalOpen(false);
       setEditingClient(null);
-    }
+      toast.success('Klien berhasil diperbarui!');
+    },
+    onError: () => toast.error('Gagal memperbarui klien.'),
   });
 
   const filteredClients = clients?.filter(c => 
@@ -142,7 +150,7 @@ export const Clients: React.FC = () => {
                 const phone = formData.get('phone') as string;
                 const email = formData.get('email') as string;
                 
-                if (!name) return alert('Name is required');
+                if (!name) return toast.error('Nama klien wajib diisi!');
                 
                 if (editingClient) {
                   updateMutation.mutate({ id: editingClient.id, data: { name, phone, email } });
@@ -151,12 +159,13 @@ export const Clients: React.FC = () => {
                     .then((newClient) => {
                       setIsModalOpen(false);
                       queryClient.invalidateQueries({ queryKey: ['clients'] });
+                      toast.success('Klien berhasil ditambahkan!');
                       // Redirect to create invitation with this client only when creating new
                       window.location.href = `/admin/invitations/create?clientId=${newClient.id}`;
                     })
                     .catch(err => {
                       console.error(err);
-                      alert('Failed to create client');
+                      toast.error('Gagal membuat klien.');
                     });
                 }
               }}

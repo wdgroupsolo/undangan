@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editorService } from '../../../services/editorService';
+import { useToast } from '../../../context/ToastContext';
 import { Plus, Trash2, CreditCard, QrCode, Upload } from 'lucide-react';
 
 export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId }) => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   
   // -- Music State --
   const { data: music, isLoading: isLoadingMusic } = useQuery({
@@ -29,7 +31,11 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
     mutationFn: (data: any) => editorService.upsertMusic(invitationId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['music', invitationId] });
-      alert('Musik berhasil disimpan');
+      toast.success('Pengaturan musik berhasil disimpan');
+    },
+    onError: (err: any) => {
+      console.error('Save music error:', err);
+      toast.error('Gagal menyimpan musik: ' + (err?.message || 'Terjadi kesalahan'));
     }
   });
 
@@ -49,20 +55,23 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
       queryClient.invalidateQueries({ queryKey: ['gifts', invitationId] });
       setIsAddingGift(false);
       setGiftForm({ id: '', type: 'bank', provider: '', account_name: '', account_number: '' });
-      alert('Data amplop digital / rekening berhasil disimpan!');
+      toast.success('Data amplop digital / rekening berhasil disimpan!');
     },
     onError: (err: any) => {
       console.error('Save gift error:', err);
-      alert('Gagal menyimpan: ' + (err?.message || 'Terjadi kesalahan'));
+      toast.error('Gagal menyimpan: ' + (err?.message || 'Terjadi kesalahan'));
     }
   });
 
   const deleteGiftMutation = useMutation({
     mutationFn: (id: string) => editorService.deleteGift(id, invitationId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gifts', invitationId] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['gifts', invitationId] });
+      toast.success('Rekening berhasil dihapus');
+    },
     onError: (err: any) => {
       console.error('Delete gift error:', err);
-      alert('Gagal menghapus: ' + (err?.message || 'Terjadi kesalahan'));
+      toast.error('Gagal menghapus: ' + (err?.message || 'Terjadi kesalahan'));
     }
   });
 
@@ -213,10 +222,10 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
                 disabled={saveGiftMutation.isPending}
                 onClick={() => {
                   if (!giftForm.provider?.trim()) {
-                    return alert('Nama Bank / Provider wajib diisi');
+                    return toast.error('Nama Bank / Provider wajib diisi');
                   }
                   if (!giftForm.account_number?.trim()) {
-                    return alert('Nomor Rekening / Barcode wajib diisi');
+                    return toast.error('Nomor Rekening / Barcode wajib diisi');
                   }
                   saveGiftMutation.mutate(giftForm);
                 }} 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { invitationService } from '../../../services/invitationService';
 import { Plus, Trash2, Video, Palette, Share2, Users, ShieldAlert, QrCode, MessageSquare, Check, Sparkles } from 'lucide-react';
+import { useToast } from '../../../context/ToastContext';
 
 interface ThemeSettingsStepProps {
   invitationId: string;
@@ -9,6 +10,7 @@ interface ThemeSettingsStepProps {
 
 export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitationId }) => {
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const { data: invitation, isLoading } = useQuery({
     queryKey: ['invitation', invitationId],
@@ -78,10 +80,11 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invitation', invitationId] });
       setSaveSuccess(true);
+      toast.success('Pengaturan tema berhasil disimpan!');
       setTimeout(() => setSaveSuccess(false), 3000);
     },
     onError: (err) => {
-      alert('Gagal menyimpan pengaturan tema.');
+      toast.error('Gagal menyimpan pengaturan tema.');
       console.error(err);
     },
   });

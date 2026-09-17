@@ -4,6 +4,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { themeService } from '../../services/themeService';
 import { clientService } from '../../services/clientService';
 import { invitationService } from '../../services/invitationService';
+import { useToast } from '../../context/ToastContext';
 import { CoupleInfoStep } from './editor-steps/CoupleInfoStep';
 import { EventsStep } from './editor-steps/EventsStep';
 import { StoryStep } from './editor-steps/StoryStep';
@@ -23,6 +24,7 @@ const steps = [
 ];
 
 export const InvitationEditor: React.FC = () => {
+  const { toast } = useToast();
   const { id } = useParams<{ id: string }>();
   const isCreating = !id;
   const navigate = useNavigate();
@@ -68,14 +70,14 @@ export const InvitationEditor: React.FC = () => {
       setCurrentStep(1);
     },
     onError: (err) => {
-      alert('Failed to create invitation. Make sure slug is unique.');
+      toast.error('Gagal membuat undangan. Pastikan slug belum digunakan.');
       console.error(err);
     }
   });
 
   const handleCreateInvitation = () => {
-    if (!clientId) return alert('Client is required');
-    if (!title || !slug || !selectedThemeId) return alert('Please fill all required fields');
+    if (!clientId) return toast.error('Client wajib dipilih');
+    if (!title || !slug || !selectedThemeId) return toast.error('Harap lengkapi semua kolom yang wajib diisi');
     
     createMutation.mutate({
       client_id: clientId,
@@ -243,10 +245,10 @@ export const InvitationEditor: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      if (!title || !slug) return alert('Judul dan slug wajib diisi');
+                      if (!title || !slug) return toast.error('Judul dan slug wajib diisi');
                       invitationService.updateInvitation(id!, { title, slug, theme_id: selectedThemeId })
-                        .then(() => alert('Data undangan berhasil diperbarui!'))
-                        .catch(err => { console.error(err); alert('Gagal memperbarui undangan'); });
+                        .then(() => toast.success('Data undangan berhasil diperbarui!'))
+                        .catch(err => { console.error(err); toast.error('Gagal memperbarui undangan'); });
                     }}
                     className="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium text-sm transition-colors cursor-pointer"
                   >
@@ -276,12 +278,12 @@ export const InvitationEditor: React.FC = () => {
                   onClick={() => {
                     invitationService.updateInvitation(id!, { status: 'published' })
                       .then(() => {
-                        alert('Yeay! Undangan berhasil dipublish.');
-                        navigate('/admin/invitations');
+                        toast.success('Yeay! Undangan berhasil dipublish.');
+                        setTimeout(() => navigate('/admin/invitations'), 1500);
                       })
                       .catch(err => {
                         console.error(err);
-                        alert('Gagal mempublish undangan');
+                        toast.error('Gagal mempublish undangan');
                       });
                   }}
                   className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors font-bold shadow-lg hover:shadow-xl cursor-pointer"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editorService } from '../../../services/editorService';
+import { useToast } from '../../../context/ToastContext';
 import { Upload } from 'lucide-react';
 
 interface CoupleInfoStepProps {
@@ -9,6 +10,7 @@ interface CoupleInfoStepProps {
 
 export const CoupleInfoStep: React.FC<CoupleInfoStepProps> = ({ invitationId }) => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   
   const { data: couple, isLoading } = useQuery({
     queryKey: ['couple', invitationId],
@@ -52,10 +54,10 @@ export const CoupleInfoStep: React.FC<CoupleInfoStepProps> = ({ invitationId }) 
     mutationFn: (data: any) => editorService.upsertCouple(invitationId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['couple', invitationId] });
-      alert('Data mempelai berhasil disimpan!');
+      toast.success('Data mempelai berhasil disimpan!');
     },
-    onError: (err) => {
-      alert('Gagal menyimpan data.');
+    onError: (err: any) => {
+      toast.error('Gagal menyimpan data: ' + (err?.message || 'Terjadi kesalahan'));
       console.error(err);
     },
     onSettled: () => setIsSaving(false)
