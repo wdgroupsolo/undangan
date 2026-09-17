@@ -117,14 +117,22 @@ export const InvitationRenderer: React.FC = () => {
         </audio>
       )}
 
-      {/* Floating Music Control Button (Visible once invitation is opened) */}
-      {openingStage === 'opened' && (
+      {/* Vinyl Disc Music Control Button (Stop & Start Audio, Responsive on Mobile & Desktop) */}
+      {openingStage !== 'cover' && (
         <button
           onClick={toggleMusic}
-          aria-label={isPlaying ? 'Pause Music' : 'Play Music'}
-          className="fixed bottom-6 right-6 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-white border border-white/20 shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+          aria-label={isPlaying ? 'Hentikan Lagu' : 'Putar Lagu'}
+          title={isPlaying ? 'Hentikan Lagu' : 'Putar Lagu'}
+          className="fixed bottom-5 left-5 sm:bottom-6 sm:left-6 md:bottom-7 md:left-7 z-40 group cursor-pointer transition-transform duration-300 hover:scale-110 active:scale-95 focus:outline-none select-none"
         >
-          <Disc className={`w-5 h-5 sm:w-6 sm:h-6 text-white ${isPlaying ? 'animate-spin' : 'opacity-70'}`} style={{ animationDuration: '3s' }} />
+          <div 
+            className={`w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-black/55 hover:bg-black/75 backdrop-blur-md flex items-center justify-center border border-white/25 shadow-xl transition-all ${
+              isPlaying ? 'animate-spin' : ''
+            }`}
+            style={{ animationDuration: '4s' }}
+          >
+            <Disc className="text-white w-4 h-4 sm:w-5 sm:h-5" />
+          </div>
         </button>
       )}
 

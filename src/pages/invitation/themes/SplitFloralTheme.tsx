@@ -572,13 +572,6 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
             </p>
           </div>
         </div>
-
-        {/* Vinyl Disc Icon on Left Desktop */}
-        <div className="absolute bottom-6 left-6 z-20">
-          <div className="w-10 h-10 rounded-full bg-black/45 backdrop-blur-sm flex items-center justify-center animate-spin border border-white/20 shadow-md" style={{ animationDuration: '4s' }}>
-            <Disc className="text-white w-4 h-4" />
-          </div>
-        </div>
       </div>
 
       {/* RIGHT SIDE - SCROLLABLE VINTAGE THEME (Approx 40% width) */}
