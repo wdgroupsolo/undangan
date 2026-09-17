@@ -233,19 +233,6 @@ export const InvitationRenderer: React.FC = () => {
               onEnded={handleFinishAnimation}
             />
           </div>
-
-          {/* Skip Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleFinishAnimation();
-            }}
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 inline-flex items-center gap-1.5 bg-black/45 hover:bg-black/70 active:scale-95 text-white text-xs px-3.5 py-1.5 rounded-full backdrop-blur-md border border-white/20 shadow-lg transition-all duration-200 uppercase tracking-wider font-medium cursor-pointer"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
-          >
-            <span>Lewati</span>
-            <span className="text-white/80">✕</span>
-          </button>
         </div>
       )}
     </div>
