@@ -39,8 +39,24 @@ export const InvitationRenderer: React.FC = () => {
   const { data: gifts } = useQuery({ queryKey: ['gifts', invId], queryFn: () => editorService.getGifts(invId!), enabled: !!invId });
   const { data: music } = useQuery({ queryKey: ['music', invId], queryFn: () => editorService.getMusic(invId!), enabled: !!invId });
 
-  const defaultMusicUrl = '/Beautiful In White Saxophone Cover by Dori Wirawan (1).mp3';
-  const musicUrl = music?.music_url || defaultMusicUrl;
+  const defaultMusicUrl = '/beautiful-in-white.mp3';
+  const [currentAudioSrc, setCurrentAudioSrc] = useState<string>(defaultMusicUrl);
+
+  // Update audio source when music data loads or changes
+  useEffect(() => {
+    if (music?.music_url && music.music_url.trim() !== '') {
+      setCurrentAudioSrc(encodeURI(music.music_url.trim()));
+    } else {
+      setCurrentAudioSrc(defaultMusicUrl);
+    }
+  }, [music?.music_url]);
+
+  // Ensure audio element reloads buffer whenever source changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.load();
+    }
+  }, [currentAudioSrc]);
 
   const formatName = (str?: string) => {
     if (!str) return '';
@@ -56,13 +72,28 @@ export const InvitationRenderer: React.FC = () => {
     }
   }, [groom, bride, couple]);
 
-  const toggleMusic = () => {
+  const toggleMusic = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(e => console.error('Audio play failed:', e));
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsPlaying(true))
+          .catch((err) => {
+            console.warn('Audio toggle play blocked or failed:', err);
+            // Fallback to default music if custom url failed
+            if (currentAudioSrc !== defaultMusicUrl) {
+              setCurrentAudioSrc(defaultMusicUrl);
+              setTimeout(() => {
+                audioRef.current?.play().then(() => setIsPlaying(true)).catch(() => {});
+              }, 100);
+            }
+          });
+      }
     }
   };
 
@@ -88,9 +119,26 @@ export const InvitationRenderer: React.FC = () => {
   // Handle clicking "Buka Undangan": starts audio and triggers entrance animation sequence
   const handleOpen = () => {
     if (audioRef.current) {
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch(e => console.error('Audio play failed:', e));
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            console.warn('Initial audio playback prevented by browser:', err);
+            // Fallback: unlock audio on next user touch or click anywhere on document
+            const unlockAudio = () => {
+              if (audioRef.current) {
+                audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+              }
+              window.removeEventListener('click', unlockAudio);
+              window.removeEventListener('touchstart', unlockAudio);
+            };
+            window.addEventListener('click', unlockAudio, { once: true });
+            window.addEventListener('touchstart', unlockAudio, { once: true });
+          });
+      }
     }
 
     setOpeningStage('arch-video');
@@ -112,18 +160,21 @@ export const InvitationRenderer: React.FC = () => {
   return (
     <div className="relative min-h-screen">
       {/* Background Audio */}
-      {musicUrl && (
-        <audio 
-          ref={audioRef} 
-          loop 
-          preload="auto"
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-        >
-          <source src={musicUrl} type="audio/mpeg" />
-          <source src="/beautiful-in-white.mp3" type="audio/mpeg" />
-        </audio>
-      )}
+      <audio 
+        ref={audioRef} 
+        src={currentAudioSrc}
+        loop 
+        preload="auto"
+        playsInline
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onError={() => {
+          console.warn('Audio error with source:', currentAudioSrc);
+          if (currentAudioSrc !== defaultMusicUrl) {
+            setCurrentAudioSrc(defaultMusicUrl);
+          }
+        }}
+      />
 
       {/* Vinyl Disc Music Control Button (Stop & Start Audio, Responsive on Mobile & Desktop) */}
       {openingStage !== 'cover' && (

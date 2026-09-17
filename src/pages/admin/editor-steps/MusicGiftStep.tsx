@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editorService } from '../../../services/editorService';
 import { useToast } from '../../../context/ToastContext';
-import { Plus, Trash2, CreditCard, QrCode, Upload } from 'lucide-react';
+import { Plus, Trash2, CreditCard, QrCode, Upload, Music, Volume2, Info } from 'lucide-react';
 
 export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId }) => {
   const queryClient = useQueryClient();
@@ -81,19 +81,76 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
     <div className="space-y-8">
       {/* Background Music Section */}
       <div className="bg-white p-6 rounded-xl border border-gray-200">
-        <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Background Music</h3>
+        <div className="flex items-center justify-between mb-4 border-b pb-2">
+          <div className="flex items-center space-x-2">
+            <Music className="w-5 h-5 text-primary-600" />
+            <h3 className="text-lg font-bold text-gray-900">Background Music (Musik Latar)</h3>
+          </div>
+          <button 
+            type="button"
+            onClick={() => setMusicData({ music_name: 'Beautiful in White (Saxophone Cover)', music_url: '/beautiful-in-white.mp3', autoplay: true })}
+            className="text-xs text-primary-600 hover:text-primary-700 font-medium underline"
+          >
+            Gunakan Lagu Romantis Bawaan
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Judul Lagu / Artis</label>
-            <input value={musicData.music_name} onChange={e => setMusicData({...musicData, music_name: e.target.value})} className="w-full px-3 py-2 border rounded-lg" placeholder="e.g. A Thousand Years - Christina Perri" />
+            <input 
+              value={musicData.music_name} 
+              onChange={e => setMusicData({...musicData, music_name: e.target.value})} 
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
+              placeholder="e.g. Beautiful in White (Saxophone Cover)" 
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">URL Musik (.mp3)</label>
-            <input value={musicData.music_url} onChange={e => setMusicData({...musicData, music_url: e.target.value})} className="w-full px-3 py-2 border rounded-lg" placeholder="https://example.com/music.mp3" />
+            <input 
+              value={musicData.music_url} 
+              onChange={e => setMusicData({...musicData, music_url: e.target.value})} 
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
+              placeholder="/beautiful-in-white.mp3 atau link https://.../lagu.mp3" 
+            />
           </div>
         </div>
+
+        {/* Live Audio Preview */}
+        <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center space-x-2 text-sm text-gray-700 w-full sm:w-auto">
+            <Volume2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span className="font-medium text-xs sm:text-sm">Pratinjau Suara:</span>
+          </div>
+          <audio 
+            controls 
+            src={musicData.music_url?.trim() || '/beautiful-in-white.mp3'} 
+            className="h-9 w-full sm:w-80"
+            preload="none"
+          />
+        </div>
+
+        {/* Browser Policy Notice */}
+        <div className="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-200/70 text-xs text-amber-800 flex items-start space-x-2.5 leading-relaxed">
+          <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold mb-0.5">Catatan Pemutaran Musik di Browser &amp; HP:</p>
+            <ul className="list-disc list-inside space-y-0.5 text-amber-700">
+              <li>Kebijakan resmi browser modern (Chrome, Safari iOS, Edge) <strong>melarang musik otomatis berbunyi</strong> sebelum pengunjung mengetuk layar atau menekan tombol <em>"Buka Undangan"</em>.</li>
+              <li>Di iPhone, pastikan tombol samping ponsel tidak dalam mode <em>Silent / Mute</em> agar suara terdengar.</li>
+              <li>Jika URL dikosongkan, sistem secara otomatis memutar lagu romantis saxophone bawaan.</li>
+            </ul>
+          </div>
+        </div>
+
         <div className="mt-4 flex justify-end">
-          <button onClick={() => saveMusicMutation.mutate(musicData)} className="px-4 py-2 bg-primary-600 text-white rounded-lg">Simpan Musik</button>
+          <button 
+            type="button"
+            onClick={() => saveMusicMutation.mutate(musicData)} 
+            className="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow-sm transition-colors cursor-pointer"
+          >
+            Simpan Pengaturan Musik
+          </button>
         </div>
       </div>
 
