@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Disc, Gift, Copy, Check, X } from 'lucide-react';
+import { Gift, Copy, Check, X } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 
 // Gallery Slideshow Component with Continuous Auto-Slide & Touch/Mouse Swipe
@@ -661,13 +661,6 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
             </div>
           </div>
         </section>
-
-        {/* Spinning Vinyl Record Icon (visible on both mobile and desktop) */}
-        <div className="fixed bottom-6 left-6 z-40">
-          <div className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center animate-spin border border-white/30 shadow-lg" style={{ animationDuration: '4s' }}>
-            <Disc className="text-white w-4 h-4" />
-          </div>
-        </div>
 
         {/* Welcome / Guest Section */}
         <section className="py-20 px-6 relative z-10 bg-[#695a4a]">
