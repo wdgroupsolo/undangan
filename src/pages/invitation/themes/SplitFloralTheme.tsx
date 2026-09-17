@@ -446,7 +446,19 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
     }
   ];
 
-  const giftList = gifts && gifts.length > 0 ? gifts : defaultGifts;
+  // Fallback to local storage if gifts are saved in browser
+  const localGifts = typeof window !== 'undefined' ? (() => {
+    try {
+      const stored = localStorage.getItem(`gifts_${invitation?.id}`);
+      return stored ? JSON.parse(stored) : null;
+    } catch { return null; }
+  })() : null;
+
+  const giftList = (gifts && gifts.length > 0)
+    ? gifts
+    : (localGifts && localGifts.length > 0)
+      ? localGifts
+      : defaultGifts;
 
   const defaultStories = [
     {

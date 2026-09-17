@@ -49,12 +49,21 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
       queryClient.invalidateQueries({ queryKey: ['gifts', invitationId] });
       setIsAddingGift(false);
       setGiftForm({ id: '', type: 'bank', provider: '', account_name: '', account_number: '' });
+      alert('Data amplop digital / rekening berhasil disimpan!');
+    },
+    onError: (err: any) => {
+      console.error('Save gift error:', err);
+      alert('Gagal menyimpan: ' + (err?.message || 'Terjadi kesalahan'));
     }
   });
 
   const deleteGiftMutation = useMutation({
-    mutationFn: (id: string) => editorService.deleteGift(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gifts', invitationId] })
+    mutationFn: (id: string) => editorService.deleteGift(id, invitationId),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gifts', invitationId] }),
+    onError: (err: any) => {
+      console.error('Delete gift error:', err);
+      alert('Gagal menghapus: ' + (err?.message || 'Terjadi kesalahan'));
+    }
   });
 
   if (isLoadingMusic || isLoadingGifts) return <div>Memuat...</div>;
@@ -192,14 +201,35 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
               </div>
             </div>
             <div className="flex justify-end space-x-3 pt-4 border-t">
-              <button onClick={() => setIsAddingGift(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Batal</button>
-              <button onClick={() => saveGiftMutation.mutate(giftForm)} className="px-4 py-2 bg-primary-600 text-white rounded-lg">Simpan</button>
+              <button 
+                type="button"
+                onClick={() => setIsAddingGift(false)} 
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer"
+              >
+                Batal
+              </button>
+              <button 
+                type="button"
+                disabled={saveGiftMutation.isPending}
+                onClick={() => {
+                  if (!giftForm.provider?.trim()) {
+                    return alert('Nama Bank / Provider wajib diisi');
+                  }
+                  if (!giftForm.account_number?.trim()) {
+                    return alert('Nomor Rekening / Barcode wajib diisi');
+                  }
+                  saveGiftMutation.mutate(giftForm);
+                }} 
+                className="px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow-sm disabled:opacity-50 cursor-pointer"
+              >
+                {saveGiftMutation.isPending ? 'Menyimpan...' : 'Simpan'}
+              </button>
             </div>
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {gifts?.map(gift => {
+          {gifts?.map((gift: any) => {
             const isQris = gift.type === 'qris' || gift.provider?.toUpperCase() === 'QRIS';
             return (
               <div key={gift.id} className="bg-white p-5 rounded-xl border border-gray-200 flex justify-between items-center shadow-sm">

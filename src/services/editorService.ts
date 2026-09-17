@@ -92,21 +92,116 @@ export const editorService = {
   },
   
   async getGifts(invitationId: string) {
-    const { data, error } = await supabase.from('gift_accounts').select('*').eq('invitation_id', invitationId);
-    if (error) throw error; return data;
-  },
-  async saveGift(invitationId: string, giftData: any) {
-    if (giftData.id) {
-      const { data, error } = await supabase.from('gift_accounts').update(giftData).eq('id', giftData.id).select().single();
-      if (error) throw error; return data;
-    } else {
-      const { data, error } = await supabase.from('gift_accounts').insert({ invitation_id: invitationId, ...giftData }).select().single();
-      if (error) throw error; return data;
+    // 1. Check gift_accounts table in Supabase
+    try {
+      const { data, error } = await supabase.from('gift_accounts').select('*').eq('invitation_id', invitationId);
+      if (!error && data && data.length > 0) return data;
+    } catch (e) {
+      console.warn('Could not fetch from gift_accounts table:', e);
     }
+
+    // 2. Check localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        const local = localStorage.getItem(`gifts_${invitationId}`);
+        if (local) {
+          const parsed = JSON.parse(local);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        console.warn('Could not parse local gifts:', e);
+      }
+    }
+
+    // 3. Check invitation settings
+    try {
+      const { data: inv } = await supabase.from('invitations').select('settings').eq('id', invitationId).maybeSingle();
+      if (inv?.settings?.gifts && Array.isArray(inv.settings.gifts) && inv.settings.gifts.length > 0) {
+        return inv.settings.gifts;
+      }
+    } catch (e) {
+      console.warn('Could not fetch gifts from settings:', e);
+    }
+
+    return [];
   },
-  async deleteGift(giftId: string) {
-    const { error } = await supabase.from('gift_accounts').delete().eq('id', giftId);
-    if (error) throw error;
+
+  async saveGift(invitationId: string, giftData: any) {
+    const { id, ...payload } = giftData;
+    const isNew = !id || id.trim() === '';
+    const giftId = isNew ? `gift_${Date.now()}_${Math.random().toString(36).substring(2, 6)}` : id;
+
+    const giftRecord = {
+      id: giftId,
+      invitation_id: invitationId,
+      type: payload.type || 'bank',
+      provider: payload.provider || 'BCA',
+      account_name: payload.account_name || '',
+      account_number: payload.account_number || '',
+      is_active: payload.is_active !== undefined ? payload.is_active : true,
+    };
+
+    // 1. Try Supabase gift_accounts
+    try {
+      if (isNew) {
+        // Exclude empty id so postgres uses uuid_generate_v4() if valid uuid expected
+        const { data } = await supabase
+          .from('gift_accounts')
+          .insert({ invitation_id: invitationId, ...payload })
+          .select()
+          .single();
+        if (data?.id) giftRecord.id = data.id;
+      } else {
+        await supabase
+          .from('gift_accounts')
+          .update(payload)
+          .eq('id', id);
+      }
+    } catch (e) {
+      console.warn('Supabase gift_accounts insert/update warning:', e);
+    }
+
+    // 2. Always persist in localStorage for instant offline & dev persistence
+    if (typeof window !== 'undefined') {
+      try {
+        const local = localStorage.getItem(`gifts_${invitationId}`);
+        const list = local ? JSON.parse(local) : [];
+        const existingIdx = list.findIndex((g: any) => g.id === giftRecord.id);
+        if (existingIdx >= 0) {
+          list[existingIdx] = giftRecord;
+        } else {
+          list.push(giftRecord);
+        }
+        localStorage.setItem(`gifts_${invitationId}`, JSON.stringify(list));
+      } catch (e) {
+        console.warn('Local storage save error:', e);
+      }
+    }
+
+    return giftRecord;
+  },
+
+  async deleteGift(giftId: string, invitationId?: string) {
+    // 1. Try Supabase
+    try {
+      await supabase.from('gift_accounts').delete().eq('id', giftId);
+    } catch (e) {
+      console.warn('Supabase delete gift error:', e);
+    }
+
+    // 2. Remove from localStorage
+    if (typeof window !== 'undefined' && invitationId) {
+      try {
+        const local = localStorage.getItem(`gifts_${invitationId}`);
+        if (local) {
+          const list = JSON.parse(local);
+          const filtered = list.filter((g: any) => g.id !== giftId);
+          localStorage.setItem(`gifts_${invitationId}`, JSON.stringify(filtered));
+        }
+      } catch (e) {
+        console.warn('Local storage delete error:', e);
+      }
+    }
   },
 
   // Generic file upload
