@@ -426,14 +426,11 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
 
   const defaultGifts = [
     {
-      provider: 'BCA',
-      account_number: '1234567890',
-      account_name: groomFullName
-    },
-    {
-      provider: 'MANDIRI',
-      account_number: '0987654321',
-      account_name: brideFullName
+      type: 'qris',
+      provider: 'QRIS',
+      account_number: '/qr-code.png',
+      image_url: '/qr-code.png',
+      account_name: `${groomNickname} & ${brideNickname}`
     }
   ];
 
@@ -1058,44 +1055,128 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               {/* Expandable Gift Accounts */}
               {showGiftDetails && (
                 <div className="mt-6 pt-6 border-t border-[#e2d6c6] space-y-4 animate-in fade-in slide-in-from-top-3 duration-300">
-                  {giftList.map((gift: any, gIdx: number) => (
-                    <div key={gIdx} className="bg-[#ebdcc9]/60 rounded-2xl p-4 text-left border border-[#dfceba]">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#3e2e22]">
-                          {gift.provider || 'Bank Transfer'}
-                        </span>
-                        <span className="text-[10px] text-[#736354] uppercase tracking-wide">
-                          A.N {gift.account_name}
-                        </span>
+                  {giftList.map((gift: any, gIdx: number) => {
+                    const isQris = gift.type === 'qris' || gift.provider?.toUpperCase() === 'QRIS' || gift.account_number?.includes('qr') || gift.account_number?.includes('.png') || gift.account_number?.includes('.jpg');
+                    const qrImg = gift.image_url || (gift.account_number?.startsWith('/') || gift.account_number?.startsWith('http') || gift.account_number?.startsWith('data:') ? gift.account_number : '/qr-code.png');
+
+                    if (isQris) {
+                      return (
+                        <div key={gIdx} className="bg-[#fcfaf7] rounded-2xl p-5 text-center border border-[#dfceba] shadow-sm">
+                          {/* QRIS Header */}
+                          <div className="flex items-center justify-between border-b border-[#e8dfd2] pb-3 mb-4">
+                            <div className="flex items-center gap-2">
+                              <span className="bg-[#e11931] text-white font-black text-xs px-2.5 py-0.5 rounded tracking-wider">
+                                QRIS
+                              </span>
+                              <span className="text-[11px] font-bold text-[#3e2e22] tracking-wider uppercase">
+                                Pembayaran Digital
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-[#736354] uppercase tracking-wide font-medium">
+                              A.N {gift.account_name || `${groomNickname} & ${brideNickname}`}
+                            </span>
+                          </div>
+
+                          {/* QR Code Frame */}
+                          <div 
+                            className="bg-white p-3 rounded-2xl shadow-inner border border-[#e2d5c5] max-w-[210px] mx-auto mb-3 cursor-pointer group"
+                            onClick={() => setSelectedPhoto(qrImg)}
+                            title="Klik untuk memperbesar QRIS"
+                          >
+                            <img 
+                              src={qrImg} 
+                              alt="QRIS Code" 
+                              className="w-full h-auto object-contain mx-auto rounded-lg group-hover:scale-105 transition-transform duration-300" 
+                            />
+                            <p className="text-[10px] text-[#8c7b6d] mt-1.5 font-medium flex items-center justify-center gap-1">
+                              <span>🔍 Ketuk untuk perbesar</span>
+                            </p>
+                          </div>
+
+                          {/* Instructions */}
+                          <p className="text-[11px] text-[#6e5d50] leading-relaxed max-w-[260px] mx-auto mb-3" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                            Scan QRIS menggunakan BCA, Mandiri, BRI, BNI, GoPay, OVO, Dana, ShopeePay, atau aplikasi m-Banking lainnya.
+                          </p>
+
+                          {/* Action Buttons */}
+                          <div className="flex items-center justify-center gap-2">
+                            <a 
+                              href={qrImg} 
+                              download="QRIS-Amplop-Digital.png" 
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-4 py-2 bg-[#5c4e41] hover:bg-[#43372c] text-white rounded-xl shadow-sm transition-all active:scale-95 cursor-pointer"
+                            >
+                              <span>Unduh QRIS</span>
+                            </a>
+                            {gift.account_number && !gift.account_number.startsWith('/') && !gift.account_number.startsWith('http') && !gift.account_number.startsWith('data:') && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(gift.account_number);
+                                  setCopiedIndex(gIdx);
+                                  setTimeout(() => setCopiedIndex(null), 2000);
+                                }}
+                                className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-3.5 py-2 bg-[#ebdcc9] hover:bg-[#dfceba] text-[#3e2e22] rounded-xl transition-all cursor-pointer"
+                              >
+                                {copiedIndex === gIdx ? (
+                                  <>
+                                    <Check className="w-3.5 h-3.5 text-green-700" />
+                                    <span>Tersalin</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Copy className="w-3.5 h-3.5" />
+                                    <span>Salin NMID</span>
+                                  </>
+                                )}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    // Standard Bank Account / E-Wallet Card
+                    return (
+                      <div key={gIdx} className="bg-[#ebdcc9]/60 rounded-2xl p-4 text-left border border-[#dfceba]">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-xs font-bold uppercase tracking-wider text-[#3e2e22]">
+                            {gift.provider || 'Bank Transfer'}
+                          </span>
+                          <span className="text-[10px] text-[#736354] uppercase tracking-wide">
+                            A.N {gift.account_name}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between mt-2 bg-white/70 px-3 py-2 rounded-xl">
+                          <span className="font-mono text-sm tracking-wider font-semibold text-[#2c1d13]">
+                            {gift.account_number}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(gift.account_number);
+                              setCopiedIndex(gIdx);
+                              setTimeout(() => setCopiedIndex(null), 2000);
+                            }}
+                            className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-[#5c4e41] text-white rounded-lg hover:bg-[#43372c] transition-colors cursor-pointer"
+                          >
+                            {copiedIndex === gIdx ? (
+                              <>
+                                <Check className="w-3 h-3 text-green-300" />
+                                <span>Tersalin</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3 h-3" />
+                                <span>Salin</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex items-center justify-between mt-2 bg-white/70 px-3 py-2 rounded-xl">
-                        <span className="font-mono text-sm tracking-wider font-semibold text-[#2c1d13]">
-                          {gift.account_number}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            navigator.clipboard.writeText(gift.account_number);
-                            setCopiedIndex(gIdx);
-                            setTimeout(() => setCopiedIndex(null), 2000);
-                          }}
-                          className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-[#5c4e41] text-white rounded-lg hover:bg-[#43372c] transition-colors cursor-pointer"
-                        >
-                          {copiedIndex === gIdx ? (
-                            <>
-                              <Check className="w-3 h-3 text-green-300" />
-                              <span>Tersalin</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3 h-3" />
-                              <span>Salin</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
