@@ -20,6 +20,7 @@ export const InvitationRenderer: React.FC = () => {
   // 'opened'     -> Invitation fully opened and interactive
   const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'opened'>('cover');
   const [isVideoExiting, setIsVideoExiting] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -37,6 +38,19 @@ export const InvitationRenderer: React.FC = () => {
   const { data: gallery } = useQuery({ queryKey: ['gallery', invId], queryFn: () => editorService.getGallery(invId!), enabled: !!invId });
   const { data: gifts } = useQuery({ queryKey: ['gifts', invId], queryFn: () => editorService.getGifts(invId!), enabled: !!invId });
   const { data: music } = useQuery({ queryKey: ['music', invId], queryFn: () => editorService.getMusic(invId!), enabled: !!invId });
+
+  const defaultMusicUrl = '/Beautiful In White Saxophone Cover by Dori Wirawan (1).mp3';
+  const musicUrl = music?.music_url || defaultMusicUrl;
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(e => console.error('Audio play failed:', e));
+    }
+  };
 
   if (isLoadingInv || isLoadingCouple) {
     return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Memuat undangan...</div>;
@@ -65,8 +79,10 @@ export const InvitationRenderer: React.FC = () => {
 
   // Handle clicking "Buka Undangan": starts audio and triggers entrance animation sequence
   const handleOpen = () => {
-    if (music?.music_url && audioRef.current) {
-      audioRef.current.play().catch(e => console.error('Audio play failed:', e));
+    if (audioRef.current) {
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(e => console.error('Audio play failed:', e));
     }
 
     setOpeningStage('arch-video');
@@ -88,10 +104,28 @@ export const InvitationRenderer: React.FC = () => {
   return (
     <div className="relative min-h-screen">
       {/* Background Audio */}
-      {music?.music_url && (
-        <audio ref={audioRef} loop>
-          <source src={music.music_url} type="audio/mpeg" />
+      {musicUrl && (
+        <audio 
+          ref={audioRef} 
+          loop 
+          preload="auto"
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+        >
+          <source src={musicUrl} type="audio/mpeg" />
+          <source src="/beautiful-in-white.mp3" type="audio/mpeg" />
         </audio>
+      )}
+
+      {/* Floating Music Control Button (Visible once invitation is opened) */}
+      {openingStage === 'opened' && (
+        <button
+          onClick={toggleMusic}
+          aria-label={isPlaying ? 'Pause Music' : 'Play Music'}
+          className="fixed bottom-6 right-6 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-white border border-white/20 shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+        >
+          <Disc className={`w-5 h-5 sm:w-6 sm:h-6 text-white ${isPlaying ? 'animate-spin' : 'opacity-70'}`} style={{ animationDuration: '3s' }} />
+        </button>
       )}
 
       {/* Main Invitation Content */}
