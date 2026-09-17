@@ -213,7 +213,7 @@ interface SplitFloralThemeProps {
 
 export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, couple, events, stories, gallery, gifts }) => {
   const searchParams = new URLSearchParams(window.location.search);
-  const guestName = searchParams.get('to') || 'Nama Tamu';
+  const guestName = searchParams.get('to') || 'Tamu Undangan';
 
   // Helper to capitalize/format names properly (e.g. "bagas" -> "Bagas", "siti" -> "Siti")
   const formatName = (str?: string) => {
@@ -238,7 +238,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   const [showRsvpModal, setShowRsvpModal] = useState(false);
-  const [rsvpName, setRsvpName] = useState(guestName || '');
+  const [rsvpName, setRsvpName] = useState(guestName && guestName !== 'Tamu Undangan' ? guestName : '');
   const [rsvpStatus, setRsvpStatus] = useState<'hadir' | 'tidak_hadir' | 'ragu'>('hadir');
   const [rsvpGuests, setRsvpGuests] = useState('1');
   const [rsvpNote, setRsvpNote] = useState('');
@@ -310,7 +310,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
     });
   }, [coupleNamesCombined, brandName, storageKey]);
 
-  const [wishName, setWishName] = useState(guestName !== 'Nama Tamu' ? guestName : '');
+  const [wishName, setWishName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [wishSocial, setWishSocial] = useState('');
   const [wishMessage, setWishMessage] = useState('');
   const [wishSuccess, setWishSuccess] = useState(false);
@@ -1876,7 +1876,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                     {/* Nama */}
                     <div>
                       <label className="block text-[11px] font-bold uppercase tracking-wider text-[#4a3a2d] mb-1">
-                        Nama Tamu
+                        Tamu Undangan
                       </label>
                       <input 
                         type="text" 
