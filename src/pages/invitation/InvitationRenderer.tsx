@@ -82,7 +82,8 @@ export const InvitationRenderer: React.FC = () => {
     }, 5200);
   };
 
-  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
+  const isSplitTheme = invitation.theme?.slug === 'split-floral';
+  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && (isSplitTheme || isVideoExiting));
 
   return (
     <div className="relative min-h-screen">
@@ -140,106 +141,61 @@ export const InvitationRenderer: React.FC = () => {
         )}
       </div>
 
-      {/* 1. Initial Front Cover Modal */}
+      {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) */}
       {openingStage === 'cover' && (
-        <div className="fixed inset-0 z-50 flex flex-col md:flex-row transition-transform duration-700 ease-in-out">
-          {/* Desktop Left Side (60% width): Photo with Text Overlay (HIDDEN ON MOBILE) */}
-          <div className="hidden md:block md:w-[60%] h-full relative overflow-hidden bg-neutral-950">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-neutral-950">
+          {/* Fullscreen Photo with Cinematic Dark Vignette Overlay */}
+          <div className="absolute inset-0 z-0">
             <img 
               src={coverImage} 
               alt="Cover" 
               className="w-full h-full object-cover object-center scale-105"
             />
-            {/* Desktop Left Text Overlay */}
-            <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-12 lg:px-16 xl:px-20 text-white z-10 select-none bg-gradient-to-t from-black/75 via-black/35 to-black/50">
-              <p className="text-xs uppercase tracking-[0.3em] font-semibold mb-3 text-gray-200" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                Undangan Pernikahan
-              </p>
-              
-              <h1 className="text-5xl lg:text-[4.5rem] xl:text-[5.2rem] mb-3 drop-shadow-lg tracking-wide uppercase leading-tight" style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}>
-                <span style={{ fontVariantLigatures: 'common-ligatures' }}>{groom}</span>
-                <span className="text-3xl lg:text-5xl mx-3 font-serif font-light italic opacity-90">&amp;</span>
-                <span style={{ fontVariantLigatures: 'common-ligatures' }}>{bride}</span>
-              </h1>
-              
-              <p className="font-serif italic text-2xl lg:text-3xl mb-6 opacity-90" style={{ fontFamily: 'Georgia, serif' }}>
-                Selamat Datang
-              </p>
-              
-              <p className="text-xs lg:text-sm leading-relaxed text-gray-200 max-w-md mb-8 opacity-90 font-light" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                Every Love Story Is Beautiful, But Ours Is The Best One. I Loved Her Since The First Time I Saw Her. My Mother Told Me To Pick The Very Best One, And I Did. True Love Stories Never Have Endings.
-              </p>
-
-              <div className="space-y-1">
-                <p className="text-xs text-gray-300 font-medium" style={{ fontFamily: "'Montserrat', sans-serif" }}>Kepada Yth.</p>
-                <p className="text-xs text-gray-300 font-medium" style={{ fontFamily: "'Montserrat', sans-serif" }}>Bapak/Ibu/Saudara/i:</p>
-                <p className="text-xl lg:text-2xl font-bold drop-shadow-md text-white pt-0.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  {guestName}
-                </p>
-              </div>
-            </div>
-            {/* Spinning Vinyl Record Icon */}
-            <div className="absolute bottom-6 left-6 z-20">
-              <div className="w-10 h-10 rounded-full bg-black/45 backdrop-blur-sm flex items-center justify-center animate-spin border border-white/20 shadow-md" style={{ animationDuration: '4s' }}>
-                <Disc className="text-white w-4 h-4" />
-              </div>
-            </div>
+            {/* Cinematic Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/60" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.45)_100%)]" />
           </div>
 
-          {/* Right Panel on Desktop (40%) / Fullscreen on Mobile (100%): Card with Buka Undangan Button */}
-          <div 
-            className="w-full md:w-[40%] h-full relative flex flex-col items-center justify-center p-6 text-center select-none bg-[#f4efdf] overflow-hidden"
-            style={{
-              backgroundImage: `radial-gradient(circle at center, rgba(250,246,238,0.92) 0%, rgba(239,231,219,0.95) 100%), url('/bg-floral.jpg')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-            {/* Mobile Only: Fullscreen Couple Photo Background underneath (Left text is hidden) */}
-            <div className="md:hidden absolute inset-0 bg-neutral-950 -z-10">
-              <img 
-                src={coverImage} 
-                alt="Cover" 
-                className="w-full h-full object-cover object-center scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-black/60"></div>
-            </div>
-
-            {/* Title & Couple Names */}
+          {/* Centered Content: Clean, High Luxury Typography, No Duplicates */}
+          <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 sm:px-10 max-w-2xl mx-auto py-8 text-white">
+            {/* Subtitle */}
             <p 
-              className="text-xs sm:text-sm uppercase tracking-[0.25em] text-white md:text-[#4a3a2a] font-medium drop-shadow-md md:drop-shadow-none mb-2 sm:mb-3"
+              className="text-xs sm:text-sm uppercase tracking-[0.35em] text-gray-200 font-medium mb-3 sm:mb-4 drop-shadow-md"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               Undangan Pernikahan
             </p>
 
+            {/* Couple Names */}
             <h1 
-              className="text-4xl sm:text-5xl md:text-[3.6rem] text-white md:text-[#3d2e1f] font-normal tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] md:drop-shadow-none mb-6 sm:mb-8 flex items-center justify-center gap-2.5 sm:gap-3.5 uppercase"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.2rem] text-white font-normal tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 flex items-center justify-center gap-3 sm:gap-4 uppercase leading-none"
               style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}
             >
-              <span>{groom}</span>
-              <span className="text-3xl sm:text-4xl font-serif font-light italic opacity-90">&amp;</span>
-              <span>{bride}</span>
+              <span style={{ fontVariantLigatures: 'common-ligatures' }}>{groom}</span>
+              <span className="text-3xl sm:text-4xl md:text-5xl font-serif font-light italic opacity-90 mx-1">&amp;</span>
+              <span style={{ fontVariantLigatures: 'common-ligatures' }}>{bride}</span>
             </h1>
-            
-            <div className="text-center text-white md:text-[#4a3a2a] mb-6 sm:mb-8 space-y-0.5 sm:space-y-1 drop-shadow-md md:drop-shadow-none">
-              <p className="text-xs sm:text-sm font-normal text-white/90 md:text-[#5a4836] tracking-wide" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+
+            {/* Recipient Glass Card */}
+            <div className="backdrop-blur-md bg-black/30 border border-white/20 rounded-2xl px-6 sm:px-10 py-4 sm:py-5 max-w-sm w-full mx-auto mb-7 sm:mb-9 shadow-2xl space-y-1">
+              <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 Kepada Yth.
               </p>
-              <p className="text-xs sm:text-sm font-normal text-white/90 md:text-[#5a4836] tracking-wide" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 Bapak/Ibu/Saudara/i:
               </p>
-              <p className="text-base sm:text-xl font-bold text-white md:text-[#2c1e14] tracking-wide pt-1" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              <p className="text-lg sm:text-2xl font-bold text-white tracking-wide pt-0.5 drop-shadow-md" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 {guestName}
               </p>
             </div>
-            
+
+            {/* Buka Undangan Button */}
             <button 
               onClick={handleOpen}
-              className="inline-flex items-center gap-2.5 bg-white md:bg-[#3a291a] text-[#3a291a] md:text-white px-6 py-2.5 rounded-full font-semibold text-xs sm:text-sm shadow-[0_4px_20px_rgba(0,0,0,0.25)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+              className="group inline-flex items-center gap-2.5 sm:gap-3 bg-white hover:bg-[#f8f5ee] text-[#3a291a] px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-semibold text-xs sm:text-sm md:text-base shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.25)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
-              <Mail className="w-4 h-4" />
+              <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-[#3a291a] group-hover:scale-110 transition-transform duration-200" />
               <span>Buka Undangan</span>
             </button>
           </div>
@@ -252,7 +208,9 @@ export const InvitationRenderer: React.FC = () => {
       {openingStage === 'arch-video' && (
         <div 
           onClick={handleFinishAnimation}
-          className={`fixed top-0 right-0 h-full w-full md:w-[40%] md:left-[60%] z-50 bg-[#f4efdf] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out overflow-hidden select-none ${
+          className={`fixed top-0 right-0 h-full ${
+            isSplitTheme ? 'w-full md:w-[40%] md:left-[60%]' : 'w-full inset-0'
+          } z-50 bg-[#f4efdf] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out overflow-hidden select-none ${
             isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
           }`}
           style={{
