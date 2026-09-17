@@ -42,6 +42,20 @@ export const InvitationRenderer: React.FC = () => {
   const defaultMusicUrl = '/Beautiful In White Saxophone Cover by Dori Wirawan (1).mp3';
   const musicUrl = music?.music_url || defaultMusicUrl;
 
+  const formatName = (str?: string) => {
+    if (!str) return '';
+    return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  };
+  const groom = formatName(couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name) || 'Jessi';
+  const bride = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name) || 'Maudy';
+
+  // Dynamically set page title in browser tab (Called unconditionally before any early returns)
+  useEffect(() => {
+    if (couple) {
+      document.title = `The Wedding of ${groom} & ${bride}`;
+    }
+  }, [groom, bride, couple]);
+
   const toggleMusic = () => {
     if (!audioRef.current) return;
     if (isPlaying) {
@@ -60,18 +74,7 @@ export const InvitationRenderer: React.FC = () => {
     return <Navigate to="/404" replace />;
   }
 
-  const formatName = (str?: string) => {
-    if (!str) return '';
-    return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  };
-  const groom = formatName(couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name) || 'Jessi';
-  const bride = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name) || 'Maudy';
   const coverImage = gallery?.[0]?.image_url || invitation.theme?.preview_image || '/cover-lunar-bg.jpg';
-
-  // Dynamically set page title in browser tab
-  useEffect(() => {
-    document.title = `The Wedding of ${groom} & ${bride}`;
-  }, [groom, bride]);
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
