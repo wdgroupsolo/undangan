@@ -10,11 +10,11 @@ const GallerySlideshow: React.FC<{ gallery: any[] }> = ({ gallery }) => {
   const isDragging = React.useRef(false);
 
   const defaultImages = [
+    '/gallery-ceremony.jpg',
     '/gallery-slide-1.jpg',
     '/gallery-slide-2.jpg',
     '/gallery-slide-3.jpg',
-    '/bride-default.png',
-    '/groom-default.png',
+    '/gallery-grid-6.jpg',
   ];
 
   const images = gallery?.length > 0 
@@ -558,7 +558,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
-            src={invitation.theme?.preview_image || gallery?.[0]?.image_url || '/cover-lunar-bg.jpg'} 
+            src={gallery?.[0]?.image_url || (invitation.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg')} 
             alt="Cover" 
             className="w-full h-full object-cover"
           />
@@ -704,7 +704,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
             {/* Top Photo with taller aspect ratio matching reference */}
             <div className="w-full aspect-[4/3.5] sm:aspect-[4/3.3] relative overflow-hidden">
               <img 
-                src={gallery?.[0]?.image_url || 'https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'} 
+                src={gallery?.[0]?.image_url || '/gallery-grid-3.jpg'} 
                 alt="Couple" 
                 className="w-full h-full object-cover"
               />
@@ -776,7 +776,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               {/* Arch Groom Photo */}
               <div className="w-[275px] sm:w-[285px] aspect-[4/5] bg-[#e6dfd3] rounded-t-[140px] rounded-b-none overflow-hidden mb-6 relative shadow-[0_12px_28px_rgba(74,56,40,0.16)] mx-auto z-10">
                 <img 
-                  src={couple?.groom_photo || '/groom-default.png' || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'} 
+                  src={couple?.groom_photo || '/groom-default.png'} 
                   alt={groomFullName} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
                 />
@@ -835,7 +835,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               {/* Arch Bride Photo */}
               <div className="w-[275px] sm:w-[285px] aspect-[4/5] bg-[#e6dfd3] rounded-t-[140px] rounded-b-none overflow-hidden mb-6 relative shadow-[0_12px_28px_rgba(74,56,40,0.16)] mx-auto z-10">
                 <img 
-                  src={couple?.bride_photo || '/bride-default.png' || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'} 
+                  src={couple?.bride_photo || '/bride-default.png'} 
                   alt={brideFullName} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
                 />
@@ -1365,50 +1365,38 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               </div>
             </div>
 
-            {/* Photos 6 & 7: Modern Ceremony Outdoors & Maudy Solo Bouquet (2 cols) */}
+            {/* Photos 6 & 7: Romantic Close-up & Garden Dance (2 cols) */}
             <div className="grid grid-cols-2 gap-2 mb-2">
               <div 
-                className="w-full aspect-square overflow-hidden shadow-md cursor-pointer group"
+                className="w-full aspect-[4/4.5] overflow-hidden shadow-md cursor-pointer group"
                 onClick={() => setSelectedPhoto('/gallery-grid-3.jpg')}
               >
                 <img 
                   src="/gallery-grid-3.jpg" 
-                  alt="Outdoor Wedding Party" 
+                  alt="Couple Romance" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                 />
               </div>
               <div 
-                className="w-full aspect-square overflow-hidden shadow-md cursor-pointer group"
-                onClick={() => setSelectedPhoto('/gallery-grid-4.jpg')}
+                className="w-full aspect-[4/4.5] overflow-hidden shadow-md cursor-pointer group"
+                onClick={() => setSelectedPhoto('/gallery-grid-5.jpg')}
               >
                 <img 
-                  src="/gallery-grid-4.jpg" 
-                  alt="Bride Solo" 
+                  src="/gallery-grid-5.jpg" 
+                  alt="Romantic Garden Dance" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                 />
               </div>
             </div>
 
-            {/* Photo 8: Jessi Solo Tuxedo (Full Width) */}
-            <div 
-              className="w-full aspect-[2/1] overflow-hidden shadow-md mb-2 cursor-pointer group"
-              onClick={() => setSelectedPhoto('/gallery-grid-5.jpg')}
-            >
-              <img 
-                src="/gallery-grid-5.jpg" 
-                alt="Groom Solo" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-              />
-            </div>
-
-            {/* Photo 9: Couple on Wicker Couch (Full Width) */}
+            {/* Photo 8: Resort Garden Walk (Full Width) */}
             <div 
               className="w-full aspect-[2/1] overflow-hidden shadow-md cursor-pointer group"
               onClick={() => setSelectedPhoto('/gallery-grid-6.jpg')}
             >
               <img 
                 src="/gallery-grid-6.jpg" 
-                alt="Couple Romance" 
+                alt="Walking Together in Garden" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
               />
             </div>

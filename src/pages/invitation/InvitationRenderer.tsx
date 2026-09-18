@@ -8,6 +8,7 @@ import { BaseTheme } from './themes/BaseTheme';
 import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
 import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
+import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -62,8 +63,8 @@ export const InvitationRenderer: React.FC = () => {
     if (!str) return '';
     return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
-  const groom = formatName(couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name) || 'Jessi';
-  const bride = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name) || 'Maudy';
+  const groom = formatName(couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name) || (slug ? formatName(slug.split('-')[0]) : 'Bagas');
+  const bride = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name) || (slug ? formatName(slug.split('-')[1]) : 'Siti');
 
   // Dynamically set page title in browser tab (Called unconditionally before any early returns)
   useEffect(() => {
@@ -98,14 +99,14 @@ export const InvitationRenderer: React.FC = () => {
   };
 
   if (isLoadingInv || isLoadingCouple) {
-    return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Memuat undangan...</div>;
+    return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
   if (!invitation) {
     return <Navigate to="/404" replace />;
   }
 
-  const coverImage = gallery?.[0]?.image_url || invitation.theme?.preview_image || '/cover-lunar-bg.jpg';
+  const coverImage = gallery?.[0]?.image_url || (invitation.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg');
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
