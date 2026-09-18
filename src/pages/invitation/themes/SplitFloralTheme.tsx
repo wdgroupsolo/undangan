@@ -231,7 +231,10 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const brideFather = formatName(couple?.bride_father_name) || 'Bapak Mempelai Wanita';
   const brideMother = formatName(couple?.bride_mother_name) || 'Ibu Mempelai Wanita';
   const brandName = invitation?.settings?.powered_by || 'WD Group';
-  const brandUrl = invitation?.settings?.powered_by_url || 'https://instagram.com/wdgroup';
+  const brandUrl = 
+    !invitation?.settings?.powered_by_url || invitation.settings.powered_by_url === 'https://instagram.com/wdgroup'
+      ? 'https://www.instagram.com/wdgroupcompany'
+      : invitation.settings.powered_by_url;
 
   const [showGiftDetails, setShowGiftDetails] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -249,7 +252,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const defaultWishes = [
     {
       name: `${brandName} & Team`,
-      socialMedia: '@wdgroup',
+      socialMedia: '@wdgroupcompany',
       message: 'Congratulations on your special day! Wishing you everlasting happiness 😊',
       date: 'Baru saja',
     },
@@ -270,7 +273,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
           return parsed.map((item: any) => ({
             ...item,
             name: item.name ? item.name.replace(/Kedaigrafis/gi, 'WD Group') : item.name,
-            socialMedia: item.socialMedia ? item.socialMedia.replace(/kedaigrafis/gi, 'wdgroup') : item.socialMedia,
+            socialMedia: item.socialMedia ? item.socialMedia.replace(/kedaigrafis/gi, 'wdgroupcompany').replace(/@wdgroup\b/gi, '@wdgroupcompany') : item.socialMedia,
             message: item.message ? item.message.replace(/Jessi (&|dan) Maudy/gi, coupleNamesCombined) : item.message,
           }));
         }
@@ -291,8 +294,8 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
           name = name.replace(/Kedaigrafis/gi, brandName);
           changed = true;
         }
-        if (social && social.includes('kedaigrafis')) {
-          social = social.replace(/kedaigrafis/gi, 'wdgroup');
+        if (social && (social.includes('kedaigrafis') || social === '@wdgroup')) {
+          social = social.replace(/kedaigrafis/gi, 'wdgroupcompany').replace(/@wdgroup\b/gi, '@wdgroupcompany');
           changed = true;
         }
         if (message && (/Jessi (&|dan) Maudy/i.test(message) || message.includes('Mempelai Pria & Mempelai Wanita'))) {
@@ -2024,33 +2027,35 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
 
           {/* Bottom Dark Mocha Bar */}
           <div className="bg-[#524538] py-6 px-4 text-center text-white">
-            <p 
-              className="text-xs sm:text-[12px] text-[#f4ede2]/90 font-normal tracking-wide"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
-              Powered by {brandName}
-            </p>
-
             <a
               href={brandUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mt-2.5 text-white/80 hover:text-white transition-colors"
+              className="inline-flex flex-col items-center group cursor-pointer transition-opacity hover:opacity-90"
               aria-label={`Instagram ${brandName}`}
             >
-              <svg 
-                className="w-5 h-5 mx-auto" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
+              <p 
+                className="text-xs sm:text-[12px] text-[#f4ede2]/90 font-normal tracking-wide group-hover:text-white transition-colors"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-              </svg>
+                Powered by {brandName}
+              </p>
+
+              <div className="mt-2 text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                <svg 
+                  className="w-5 h-5 mx-auto" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </div>
             </a>
           </div>
         </footer>

@@ -270,9 +270,14 @@ export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invita
         <p className="mt-12 font-serif text-4xl text-yellow-500 drop-shadow-lg">
           {couple?.groom_nickname || 'R'} &amp; {couple?.bride_nickname || 'A'}
         </p>
-        <div className="mt-24 text-xs font-sans tracking-[0.3em] text-gray-700 uppercase">
+        <a
+          href="https://www.instagram.com/wdgroupcompany"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-24 inline-block text-xs font-sans tracking-[0.3em] text-gray-500 hover:text-yellow-500/80 transition-colors uppercase cursor-pointer"
+        >
           Powered by WD Group
-        </div>
+        </a>
       </footer>
     </div>
   );

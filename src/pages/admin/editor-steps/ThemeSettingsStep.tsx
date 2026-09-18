@@ -36,7 +36,7 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
     closing_couple_name: '',
     countdown_date: '',
     powered_by: 'WD Group',
-    powered_by_url: 'https://instagram.com/wdgroup',
+    powered_by_url: 'https://www.instagram.com/wdgroupcompany',
   });
 
   const [newInviter, setNewInviter] = useState('');
@@ -419,7 +419,7 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
                 type="text"
                 value={formData.powered_by_url}
                 onChange={(e) => setFormData({ ...formData, powered_by_url: e.target.value })}
-                placeholder="https://instagram.com/wdgroup"
+                placeholder="https://www.instagram.com/wdgroupcompany"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
               />
             </div>

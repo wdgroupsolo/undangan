@@ -193,7 +193,14 @@ export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ invita
         <h2 className="text-3xl font-serif text-[#6b5c46] mb-4">
           {couple?.groom_nickname || couple?.groom_full_name || 'Groom'} & {couple?.bride_nickname || couple?.bride_full_name || 'Bride'}
         </h2>
-        <p className="mt-16 text-xs uppercase tracking-[0.3em] text-[#a39178] opacity-70">Powered by WD Group</p>
+        <a
+          href="https://www.instagram.com/wdgroupcompany"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-16 inline-block text-xs uppercase tracking-[0.3em] text-[#a39178] hover:text-[#5c4f3d] opacity-70 hover:opacity-100 transition-all cursor-pointer"
+        >
+          Powered by WD Group
+        </a>
       </footer>
     </div>
   );

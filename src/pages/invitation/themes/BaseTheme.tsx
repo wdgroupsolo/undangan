@@ -225,7 +225,14 @@ export const BaseTheme: React.FC<BaseThemeProps> = ({ invitation, couple, events
         <p className="mt-8 font-serif text-2xl text-white">
           {couple?.groom_nickname || 'R'} &amp; {couple?.bride_nickname || 'A'}
         </p>
-        <p className="mt-12 text-xs opacity-50">Powered by WD Group Invitation</p>
+        <a
+          href="https://www.instagram.com/wdgroupcompany"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-12 inline-block text-xs opacity-50 hover:opacity-100 transition-opacity cursor-pointer text-gray-400 hover:text-white"
+        >
+          Powered by WD Group Invitation
+        </a>
       </footer>
     </div>
   );
