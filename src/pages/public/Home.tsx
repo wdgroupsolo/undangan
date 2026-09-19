@@ -739,7 +739,7 @@ export const Home: React.FC = () => {
                 <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>Template pilihan</span>
+                    <span>1 Pilihan tema (Split Floral)</span>
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
@@ -775,7 +775,7 @@ export const Home: React.FC = () => {
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>Aktif 30 hari</span>
+                    <span><strong>Aktif 7 hari (1 minggu)</strong></span>
                   </li>
                 </ul>
               </div>
