@@ -206,10 +206,10 @@ export const ThemeCatalog: React.FC = () => {
               );
             })}
 
-            {/* Coming Soon Card */}
-            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-8 flex flex-col justify-between items-center text-center">
-              <div className="space-y-4 my-auto">
-                <div className="w-14 h-14 rounded-2xl bg-stone-200 text-stone-600 flex items-center justify-center mx-auto shadow-inner">
+            {/* Coming Soon Card (Responsive: Horizontal on Tablet, Vertical on Desktop & Mobile) */}
+            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-6 sm:p-8 flex flex-col md:flex-row lg:flex-col justify-between items-center text-center md:text-left lg:text-center col-span-1 md:col-span-2 lg:col-span-1 gap-6">
+              <div className="space-y-4 my-auto flex flex-col md:flex-row lg:flex-col items-center gap-4 md:gap-5 lg:gap-0">
+                <div className="w-14 h-14 rounded-2xl bg-stone-200 text-stone-600 flex items-center justify-center shrink-0 shadow-inner">
                   <Clock size={24} />
                 </div>
                 <div>
@@ -217,7 +217,7 @@ export const ThemeCatalog: React.FC = () => {
                     Koleksi Berikutnya
                   </span>
                   <h3 className="text-lg font-bold text-stone-900 mt-2">Tema Baru Segera Hadir</h3>
-                  <p className="text-xs text-stone-500 mt-2 leading-relaxed">
+                  <p className="text-xs text-stone-500 mt-2 leading-relaxed max-w-sm">
                     Kami sedang merancang pilihan tema baru bernuansa Royal Gold, Minimalist Ivory, dan Islamic Grace.
                   </p>
                 </div>
@@ -227,7 +227,7 @@ export const ThemeCatalog: React.FC = () => {
                 href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20apakah%20saya%20bisa%20request%20custom%20tema%20undangan?"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 rounded-xl bg-white border border-stone-300 text-stone-700 text-xs font-bold hover:bg-stone-100 transition-colors"
+                className="w-full md:w-auto lg:w-full py-2.5 px-6 rounded-xl bg-white border border-stone-300 text-stone-700 text-xs font-bold hover:bg-stone-100 transition-colors text-center shrink-0"
               >
                 Konsultasi Custom Tema
               </a>

@@ -554,10 +554,10 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   );
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen font-sans text-gray-800 overflow-x-hidden bg-[#f4f0e6]">
+    <div className="flex flex-col lg:flex-row min-h-screen font-sans text-gray-800 overflow-x-hidden bg-[#f4f0e6]">
       
-      {/* LEFT SIDE - FIXED ON DESKTOP ONLY (Approx 60% width) */}
-      <div className="hidden md:block md:w-[60%] md:fixed md:top-0 md:left-0 h-screen relative overflow-hidden">
+      {/* LEFT SIDE - FIXED ON DESKTOP & LAPTOP ONLY (Approx 58% width) */}
+      <div className="hidden lg:block lg:w-[58%] lg:fixed lg:top-0 lg:left-0 h-screen relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
@@ -568,7 +568,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
 
-        {/* Content Overlay - Visible ONLY on desktop (hidden on mobile) */}
+        {/* Content Overlay - Visible ONLY on desktop (hidden on mobile & tablet) */}
         <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-12 lg:px-16 xl:px-20 text-white z-10 select-none bg-gradient-to-t from-black/75 via-black/35 to-black/50">
           <p className="text-xs uppercase tracking-[0.3em] font-semibold mb-3 text-gray-200" style={{ fontFamily: "'Montserrat', sans-serif" }}>
             Undangan Pernikahan
@@ -598,12 +598,12 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
         </div>
       </div>
 
-      {/* RIGHT SIDE - SCROLLABLE VINTAGE THEME (Approx 40% width) */}
-      <div className="w-full md:w-[40%] md:ml-[60%] min-h-screen relative z-0 bg-[#f4f0e6] shadow-2xl">
+      {/* RIGHT SIDE - SCROLLABLE VINTAGE THEME (Approx 42% width on desktop, full width on mobile & tablet) */}
+      <div className="w-full lg:w-[42%] lg:ml-[58%] min-h-screen relative z-0 bg-[#f4f0e6] shadow-2xl">
         
         {/* Global Background for Right Side - Fixed to viewport */}
         <div 
-          className="fixed top-0 right-0 w-full md:w-[40%] h-screen z-0 bg-[#f4efdf] pointer-events-none" 
+          className="fixed top-0 right-0 w-full lg:w-[42%] h-screen z-0 bg-[#f4efdf] pointer-events-none" 
           style={{
             backgroundImage: `url('/bg-floral.jpg')`,
             backgroundSize: 'cover',
@@ -613,7 +613,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
         />
 
         {/* Flying Birds Animation Layer - Focused in the upper sky & moon area */}
-        <div className="fixed top-0 right-0 w-full md:w-[40%] h-screen pointer-events-none z-30 overflow-hidden">
+        <div className="fixed top-0 right-0 w-full lg:w-[42%] h-screen pointer-events-none z-30 overflow-hidden">
           {/* Flock 1: 4 birds flying together across the moon */}
           <div className="absolute top-[17%] left-0 w-full animate-flock-1">
             <div className="relative">

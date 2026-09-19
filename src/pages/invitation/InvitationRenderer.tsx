@@ -270,11 +270,11 @@ export const InvitationRenderer: React.FC = () => {
 
             {/* Couple Names */}
             <h1 
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.2rem] text-white font-normal tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 flex items-center justify-center gap-3 sm:gap-4 uppercase leading-none"
+              className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.2rem] text-white font-normal tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-4 uppercase leading-none flex-wrap"
               style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}
             >
               <span style={{ fontVariantLigatures: 'common-ligatures' }}>{groom}</span>
-              <span className="text-3xl sm:text-4xl md:text-5xl font-serif font-light italic opacity-90 mx-1">&amp;</span>
+              <span className="text-2xl sm:text-4xl md:text-5xl font-serif font-light italic opacity-90 mx-1">&amp;</span>
               <span style={{ fontVariantLigatures: 'common-ligatures' }}>{bride}</span>
             </h1>
 
@@ -305,13 +305,13 @@ export const InvitationRenderer: React.FC = () => {
       )}
 
       {/* 2. Entrance Animation: Vintage Arch Video */}
-      {/* On Desktop: plays ONLY on the right 40% panel, while left 60% shows photo + text */}
-      {/* On Mobile: plays 100% FULLSCREEN without left text */}
+      {/* On Desktop: plays ONLY on the right 42% panel, while left 58% shows photo + text */}
+      {/* On Mobile & Tablet: plays 100% FULLSCREEN without left text */}
       {openingStage === 'arch-video' && (
         <div 
           onClick={handleFinishAnimation}
           className={`fixed top-0 right-0 h-full ${
-            isSplitTheme ? 'w-full md:w-[40%] md:left-[60%]' : 'w-full inset-0'
+            isSplitTheme ? 'w-full lg:w-[42%] lg:left-[58%]' : 'w-full inset-0'
           } z-50 bg-[#f4efdf] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out overflow-hidden select-none ${
             isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
           }`}

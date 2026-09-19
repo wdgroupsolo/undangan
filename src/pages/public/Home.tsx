@@ -633,11 +633,11 @@ export const Home: React.FC = () => {
             {displayThemes.map((theme) => (
               <div 
                 key={theme.id || theme.slug}
-                className="bg-white rounded-3xl overflow-hidden border-2 border-primary-200 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col group md:col-span-2 lg:col-span-2"
+                className="bg-white rounded-3xl overflow-hidden border-2 border-primary-200 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col group col-span-1 md:col-span-2 lg:col-span-2"
               >
                 <div className="grid grid-cols-1 md:grid-cols-12 h-full">
                   {/* Image Preview Container */}
-                  <div className="md:col-span-6 relative min-h-[320px] md:min-h-full overflow-hidden bg-stone-200">
+                  <div className="md:col-span-6 relative aspect-[16/10] sm:aspect-[16/9] md:aspect-auto min-h-[220px] sm:min-h-[280px] md:min-h-full overflow-hidden bg-stone-200">
                     <img 
                       src={theme.preview_image || '/bg-floral.jpg'} 
                       alt={theme.name} 
@@ -709,10 +709,10 @@ export const Home: React.FC = () => {
               </div>
             ))}
 
-            {/* Coming Soon Card */}
-            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-8 flex flex-col justify-between items-center text-center reveal-init delay-150 hover:border-primary-400 transition-colors">
-              <div className="space-y-4 my-auto">
-                <div className="w-14 h-14 rounded-2xl bg-stone-200 text-stone-600 flex items-center justify-center mx-auto shadow-inner">
+            {/* Coming Soon Card (Responsive: Horizontal on Tablet, Vertical on Desktop & Mobile) */}
+            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-6 sm:p-8 flex flex-col md:flex-row lg:flex-col justify-between items-center text-center md:text-left lg:text-center col-span-1 md:col-span-2 lg:col-span-1 gap-6 reveal-init delay-150 hover:border-primary-400 transition-colors">
+              <div className="space-y-4 my-auto flex flex-col md:flex-row lg:flex-col items-center gap-4 md:gap-5 lg:gap-0">
+                <div className="w-14 h-14 rounded-2xl bg-stone-200 text-stone-600 flex items-center justify-center shrink-0 shadow-inner">
                   <Clock size={24} />
                 </div>
                 <div>
@@ -720,7 +720,7 @@ export const Home: React.FC = () => {
                     Segera Hadir
                   </span>
                   <h3 className="text-lg font-bold text-stone-900 mt-2">Tema Baru Dalam Proses</h3>
-                  <p className="text-xs text-stone-500 mt-2 leading-relaxed">
+                  <p className="text-xs text-stone-500 mt-2 leading-relaxed max-w-sm">
                     Koleksi tema berikutnya sedang dalam tahap perancangan visual eksklusif oleh tim desainer WD Group.
                   </p>
                 </div>
@@ -730,7 +730,7 @@ export const Home: React.FC = () => {
                 href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20apakah%20bisa%20request%20custom%20tema?"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 rounded-xl bg-white border border-stone-300 text-stone-700 text-xs font-bold hover:bg-stone-100 transition-colors"
+                className="w-full md:w-auto lg:w-full py-2.5 px-6 rounded-xl bg-white border border-stone-300 text-stone-700 text-xs font-bold hover:bg-stone-100 transition-colors text-center shrink-0"
               >
                 Request Custom Desain
               </a>
@@ -813,7 +813,7 @@ export const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
             
             {/* 1. STARTER PLAN */}
             <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 reveal-init delay-100">
@@ -1003,7 +1003,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* 3. CUSTOM PLAN */}
-            <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 reveal-init delay-300">
+            <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 reveal-init delay-300 md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
               <div>
                 {/* Header */}
                 <div className="text-center pb-5 border-b border-stone-200/70">
@@ -1111,7 +1111,7 @@ export const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             
             {/* Testimonial 1 */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between reveal-init delay-100 cursor-default">
@@ -1156,7 +1156,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Testimonial 3 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between reveal-init delay-300 cursor-default">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between reveal-init delay-300 cursor-default md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
               <div className="space-y-4">
                 <div className="flex items-center space-x-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
