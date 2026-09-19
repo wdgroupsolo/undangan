@@ -864,7 +864,7 @@ export const Home: React.FC = () => {
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
-                    <span>Aktif 90 hari</span>
+                    <span><strong>Aktif 1 bulan</strong></span>
                   </li>
                 </ul>
               </div>
@@ -945,7 +945,7 @@ export const Home: React.FC = () => {
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>Aktif 1 tahun</span>
+                    <span><strong>Masa aktif menyesuaikan</strong></span>
                   </li>
                 </ul>
               </div>
