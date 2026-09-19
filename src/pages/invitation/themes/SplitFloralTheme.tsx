@@ -221,10 +221,20 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
     return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
 
-  const groomNickname = formatName(couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name) || 'Bagas';
-  const brideNickname = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name) || 'Siti';
-  const groomFullName = formatName(couple?.groom_full_name || couple?.groom_nickname || couple?.groom_name) || groomNickname;
-  const brideFullName = formatName(couple?.bride_full_name || couple?.bride_nickname || couple?.bride_name) || brideNickname;
+  const groomFullName = formatName(couple?.groom_full_name || couple?.groom_nickname || couple?.groom_name) || 'Steven';
+  const rawGroomNick = couple?.groom_nickname?.trim();
+  const rawGroomFull = couple?.groom_full_name?.trim();
+  const groomNickname = (rawGroomNick && (!rawGroomFull || (rawGroomNick.toLowerCase() !== 'bagas' || rawGroomFull.toLowerCase() === 'bagas')))
+    ? formatName(rawGroomNick)
+    : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : formatName(rawGroomNick) || 'Steven');
+
+  const brideFullName = formatName(couple?.bride_full_name || couple?.bride_nickname || couple?.bride_name) || 'Bunga';
+  const rawBrideNick = couple?.bride_nickname?.trim();
+  const rawBrideFull = couple?.bride_full_name?.trim();
+  const brideNickname = (rawBrideNick && (!rawBrideFull || (rawBrideNick.toLowerCase() !== 'siti' || rawBrideFull.toLowerCase() === 'siti')))
+    ? formatName(rawBrideNick)
+    : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : formatName(rawBrideNick) || 'Bunga');
+
   const coupleNamesCombined = `${groomNickname} & ${brideNickname}`;
   const groomFather = formatName(couple?.groom_father_name) || 'Bapak Mempelai Pria';
   const groomMother = formatName(couple?.groom_mother_name) || 'Ibu Mempelai Pria';

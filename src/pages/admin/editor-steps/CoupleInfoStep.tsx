@@ -35,14 +35,26 @@ export const CoupleInfoStep: React.FC<CoupleInfoStepProps> = ({ invitationId }) 
 
   useEffect(() => {
     if (couple) {
+      const rawGroomFull = (couple.groom_full_name || '').trim();
+      const rawGroomNick = (couple.groom_nickname || '').trim();
+      const syncGroomNick = (rawGroomNick && rawGroomNick.toLowerCase() !== 'bagas')
+        ? rawGroomNick
+        : (rawGroomFull ? rawGroomFull.split(/\s+/)[0] : rawGroomNick);
+
+      const rawBrideFull = (couple.bride_full_name || '').trim();
+      const rawBrideNick = (couple.bride_nickname || '').trim();
+      const syncBrideNick = (rawBrideNick && rawBrideNick.toLowerCase() !== 'siti')
+        ? rawBrideNick
+        : (rawBrideFull ? rawBrideFull.split(/\s+/)[0] : rawBrideNick);
+
       setFormData({
-        groom_full_name: couple.groom_full_name || '',
-        groom_nickname: couple.groom_nickname || '',
+        groom_full_name: rawGroomFull,
+        groom_nickname: syncGroomNick,
         groom_father_name: couple.groom_father_name || '',
         groom_mother_name: couple.groom_mother_name || '',
         groom_photo: couple.groom_photo || '',
-        bride_full_name: couple.bride_full_name || '',
-        bride_nickname: couple.bride_nickname || '',
+        bride_full_name: rawBrideFull,
+        bride_nickname: syncBrideNick,
         bride_father_name: couple.bride_father_name || '',
         bride_mother_name: couple.bride_mother_name || '',
         bride_photo: couple.bride_photo || '',
@@ -64,7 +76,23 @@ export const CoupleInfoStep: React.FC<CoupleInfoStepProps> = ({ invitationId }) 
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => {
+      const updated = { ...prev, [name]: value };
+      if (name === 'groom_full_name') {
+        const currentNick = (prev.groom_nickname || '').trim().toLowerCase();
+        if (!prev.groom_nickname || currentNick === 'bagas' || prev.groom_nickname === prev.groom_full_name) {
+          updated.groom_nickname = value.trim().split(/\s+/)[0] || '';
+        }
+      }
+      if (name === 'bride_full_name') {
+        const currentNick = (prev.bride_nickname || '').trim().toLowerCase();
+        if (!prev.bride_nickname || currentNick === 'siti' || prev.bride_nickname === prev.bride_full_name) {
+          updated.bride_nickname = value.trim().split(/\s+/)[0] || '';
+        }
+      }
+      return updated;
+    });
   };
 
   const handleSave = () => {

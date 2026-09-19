@@ -63,8 +63,17 @@ export const InvitationRenderer: React.FC = () => {
     if (!str) return '';
     return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
-  const groom = formatName(couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name) || (slug ? formatName(slug.split('-')[0]) : 'Bagas');
-  const bride = formatName(couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name) || (slug ? formatName(slug.split('-')[1]) : 'Siti');
+  const rawGroomNick = couple?.groom_nickname?.trim();
+  const rawGroomFull = couple?.groom_full_name?.trim();
+  const groom = (rawGroomNick && (!rawGroomFull || (rawGroomNick.toLowerCase() !== 'bagas' || rawGroomFull.toLowerCase() === 'bagas')))
+    ? formatName(rawGroomNick)
+    : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : formatName(rawGroomNick) || (slug ? formatName(slug.split('-')[0]) : 'Steven'));
+
+  const rawBrideNick = couple?.bride_nickname?.trim();
+  const rawBrideFull = couple?.bride_full_name?.trim();
+  const bride = (rawBrideNick && (!rawBrideFull || (rawBrideNick.toLowerCase() !== 'siti' || rawBrideFull.toLowerCase() === 'siti')))
+    ? formatName(rawBrideNick)
+    : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : formatName(rawBrideNick) || (slug ? formatName(slug.split('-')[1]) : 'Bunga'));
 
   // Dynamically set page title in browser tab (Called unconditionally before any early returns)
   useEffect(() => {
