@@ -63,17 +63,44 @@ export const InvitationRenderer: React.FC = () => {
     if (!str) return '';
     return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
-  const rawGroomNick = couple?.groom_nickname?.trim();
-  const rawGroomFull = couple?.groom_full_name?.trim();
+
+  // Instant local cache for zero-latency name display on first paint & loading screen
+  const cachedCouple = (() => {
+    try {
+      const saved = localStorage.getItem(`wd_couple_${slug}`);
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  })();
+
+  // Keep cache synchronized whenever couple query returns fresh data
+  useEffect(() => {
+    if (couple && (couple.groom_full_name || couple.groom_nickname)) {
+      try {
+        localStorage.setItem(`wd_couple_${slug}`, JSON.stringify({
+          groom_full_name: couple.groom_full_name,
+          groom_nickname: couple.groom_nickname,
+          bride_full_name: couple.bride_full_name,
+          bride_nickname: couple.bride_nickname,
+        }));
+      } catch {}
+    }
+  }, [couple, slug]);
+
+  const activeCouple = couple || cachedCouple;
+
+  const rawGroomNick = activeCouple?.groom_nickname?.trim();
+  const rawGroomFull = activeCouple?.groom_full_name?.trim();
   const groom = (rawGroomNick && (!rawGroomFull || (rawGroomNick.toLowerCase() !== 'bagas' || rawGroomFull.toLowerCase() === 'bagas')))
     ? formatName(rawGroomNick)
-    : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : formatName(rawGroomNick) || (slug ? formatName(slug.split('-')[0]) : 'Steven'));
+    : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : (rawGroomNick && rawGroomNick.toLowerCase() !== 'bagas' ? formatName(rawGroomNick) : 'Steven'));
 
-  const rawBrideNick = couple?.bride_nickname?.trim();
-  const rawBrideFull = couple?.bride_full_name?.trim();
+  const rawBrideNick = activeCouple?.bride_nickname?.trim();
+  const rawBrideFull = activeCouple?.bride_full_name?.trim();
   const bride = (rawBrideNick && (!rawBrideFull || (rawBrideNick.toLowerCase() !== 'siti' || rawBrideFull.toLowerCase() === 'siti')))
     ? formatName(rawBrideNick)
-    : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : formatName(rawBrideNick) || (slug ? formatName(slug.split('-')[1]) : 'Bunga'));
+    : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : (rawBrideNick && rawBrideNick.toLowerCase() !== 'siti' ? formatName(rawBrideNick) : 'Bunga'));
 
   // Dynamically set page title in browser tab (Called unconditionally before any early returns)
   useEffect(() => {

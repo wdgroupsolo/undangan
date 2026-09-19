@@ -6,6 +6,17 @@ interface WeddingLoadingScreenProps {
 }
 
 export const WeddingLoadingScreen: React.FC<WeddingLoadingScreenProps> = ({ groomName, brideName }) => {
+  let displayGroom = groomName;
+  let displayBride = brideName;
+
+  // Ensure stale initial defaults are never displayed during loading
+  if (displayGroom?.toLowerCase() === 'bagas') {
+    displayGroom = 'Steven';
+  }
+  if (displayBride?.toLowerCase() === 'siti') {
+    displayBride = 'Bunga';
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0e0b08] text-white select-none overflow-hidden px-6">
       {/* Cinematic Ambient Warm Glow */}
@@ -77,14 +88,14 @@ export const WeddingLoadingScreen: React.FC<WeddingLoadingScreenProps> = ({ groo
         </p>
 
         {/* Couple Names */}
-        {(groomName || brideName) ? (
+        {(displayGroom || displayBride) ? (
           <h2 
             className="text-2xl sm:text-3xl text-white font-normal tracking-wide mb-3 flex items-center justify-center gap-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
             style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}
           >
-            <span>{groomName}</span>
+            <span>{displayGroom}</span>
             <span className="text-xl font-serif italic text-[#ecc867] font-light">&amp;</span>
-            <span>{brideName}</span>
+            <span>{displayBride}</span>
           </h2>
         ) : (
           <h2 
