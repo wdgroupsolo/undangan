@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { themeService } from '../../services/themeService';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { themeService, REAL_SPLIT_FLORAL_THEME } from '../../services/themeService';
+import { supabase } from '../../lib/supabase';
 import { clientService } from '../../services/clientService';
 import { invitationService } from '../../services/invitationService';
 import { useToast } from '../../context/ToastContext';
@@ -24,6 +25,7 @@ const steps = [
 ];
 
 export const InvitationEditor: React.FC = () => {
+  const queryClient = useQueryClient();
   const { toast } = useToast();
   const { id } = useParams<{ id: string }>();
   const isCreating = !id;
@@ -53,9 +55,17 @@ export const InvitationEditor: React.FC = () => {
     if (currentInvitation) {
       setTitle(currentInvitation.title || '');
       setSlug(currentInvitation.slug || '');
+      const themeSlugInSettings = currentInvitation.settings?.theme_slug;
+      if (themeSlugInSettings && themes) {
+        const matched = themes.find(t => t.slug === themeSlugInSettings);
+        if (matched) {
+          setSelectedThemeId(matched.id);
+          return;
+        }
+      }
       setSelectedThemeId(currentInvitation.theme_id || '');
     }
-  }, [currentInvitation]);
+  }, [currentInvitation, themes]);
 
   const { data: client } = useQuery({
     queryKey: ['client', clientId],
@@ -66,25 +76,79 @@ export const InvitationEditor: React.FC = () => {
   const createMutation = useMutation({
     mutationFn: invitationService.createInvitation,
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['invitations'] });
       navigate(`/admin/invitations/${data.id}`);
       setCurrentStep(1);
     },
-    onError: (err) => {
-      toast.error('Gagal membuat undangan. Pastikan slug belum digunakan.');
+    onError: (err: any) => {
+      toast.error(err?.message || 'Gagal membuat undangan. Pastikan slug belum digunakan.');
       console.error(err);
     }
   });
 
-  const handleCreateInvitation = () => {
+  const handleCreateInvitation = async () => {
     if (!clientId) return toast.error('Client wajib dipilih');
     if (!title || !slug || !selectedThemeId) return toast.error('Harap lengkapi semua kolom yang wajib diisi');
     
+    const selectedTheme = themes?.find(t => t.id === selectedThemeId);
+    const selectedThemeSlug = selectedTheme?.slug || 'split-floral';
+
+    // Verify if selectedThemeId is in database or fallback to a known DB theme id
+    let validThemeId = selectedThemeId;
+
+    try {
+      const { data: dbTheme } = await supabase
+        .from('themes')
+        .select('id')
+        .eq('id', selectedThemeId)
+        .maybeSingle();
+
+      if (dbTheme) {
+        validThemeId = dbTheme.id;
+      } else {
+        // Try inserting into DB if possible
+        if (selectedTheme) {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: selectedTheme.id,
+              name: selectedTheme.name,
+              slug: selectedTheme.slug,
+              description: selectedTheme.description,
+              category: selectedTheme.category,
+              preview_image: selectedTheme.preview_image,
+              thumbnail: selectedTheme.thumbnail,
+              status: selectedTheme.status || 'active',
+              features: selectedTheme.features,
+              theme_config: selectedTheme.theme_config
+            })
+            .select('id')
+            .maybeSingle();
+
+          if (!insertErr && inserted) {
+            validThemeId = inserted.id;
+          } else {
+            // Fallback to real Split Floral UUID that exists in DB
+            validThemeId = REAL_SPLIT_FLORAL_THEME.id;
+          }
+        } else {
+          validThemeId = REAL_SPLIT_FLORAL_THEME.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Error resolving theme ID:', e);
+      validThemeId = REAL_SPLIT_FLORAL_THEME.id;
+    }
+
     createMutation.mutate({
       client_id: clientId,
-      theme_id: selectedThemeId,
+      theme_id: validThemeId,
       title,
       slug,
-      status: 'draft'
+      status: 'draft',
+      settings: {
+        theme_slug: selectedThemeSlug
+      }
     });
   };
 
@@ -177,7 +241,12 @@ export const InvitationEditor: React.FC = () => {
                           selectedThemeId === theme.id ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-primary-300'
                         }`}
                       >
-                        <div className="aspect-[3/4] bg-gray-200 rounded-lg mb-3">
+                        <div className="aspect-[3/4] bg-gray-200 rounded-lg mb-3 overflow-hidden">
+                          {theme.preview_image ? (
+                            <img src={theme.preview_image} alt={theme.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-[#f4ede2] flex items-center justify-center text-xs text-gray-400">Preview</div>
+                          )}
                         </div>
                         <h3 className="font-bold text-gray-900 text-sm">{theme.name}</h3>
                         <p className="text-xs text-gray-500 mt-1">{theme.category}</p>
@@ -244,11 +313,44 @@ export const InvitationEditor: React.FC = () => {
                 <div className="flex justify-end pt-4 border-t">
                   <button
                     type="button"
-                    onClick={() => {
+                    onClick={async () => {
                       if (!title || !slug) return toast.error('Judul dan slug wajib diisi');
-                      invitationService.updateInvitation(id!, { title, slug, theme_id: selectedThemeId })
-                        .then(() => toast.success('Data undangan berhasil diperbarui!'))
-                        .catch(err => { console.error(err); toast.error('Gagal memperbarui undangan'); });
+                      const selectedTheme = themes?.find(t => t.id === selectedThemeId);
+                      const selectedThemeSlug = selectedTheme?.slug || 'split-floral';
+
+                      let validThemeId = selectedThemeId;
+                      try {
+                        const { data: dbTheme } = await supabase
+                          .from('themes')
+                          .select('id')
+                          .eq('id', selectedThemeId)
+                          .maybeSingle();
+                        if (dbTheme) {
+                          validThemeId = dbTheme.id;
+                        } else {
+                          validThemeId = REAL_SPLIT_FLORAL_THEME.id;
+                        }
+                      } catch {
+                        validThemeId = REAL_SPLIT_FLORAL_THEME.id;
+                      }
+
+                      invitationService.updateInvitation(id!, { 
+                        title, 
+                        slug, 
+                        theme_id: validThemeId,
+                        settings: {
+                          ...(currentInvitation?.settings || {}),
+                          theme_slug: selectedThemeSlug
+                        }
+                      })
+                        .then(() => {
+                          queryClient.invalidateQueries({ queryKey: ['invitation', id] });
+                          toast.success('Data undangan berhasil diperbarui!');
+                        })
+                        .catch(err => { 
+                          console.error(err); 
+                          toast.error(err?.message || 'Gagal memperbarui undangan'); 
+                        });
                     }}
                     className="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium text-sm transition-colors cursor-pointer"
                   >

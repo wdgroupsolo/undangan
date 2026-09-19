@@ -71,7 +71,32 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
       if (!existingSlugs.has('secret-garden')) {
-        merged.push(REAL_SECRET_GARDEN_THEME);
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_SECRET_GARDEN_THEME.id,
+              name: REAL_SECRET_GARDEN_THEME.name,
+              slug: REAL_SECRET_GARDEN_THEME.slug,
+              description: REAL_SECRET_GARDEN_THEME.description,
+              category: REAL_SECRET_GARDEN_THEME.category,
+              preview_image: REAL_SECRET_GARDEN_THEME.preview_image,
+              thumbnail: REAL_SECRET_GARDEN_THEME.thumbnail,
+              status: 'active',
+              features: REAL_SECRET_GARDEN_THEME.features,
+              theme_config: REAL_SECRET_GARDEN_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_SECRET_GARDEN_THEME);
+          }
+        } catch {
+          merged.push(REAL_SECRET_GARDEN_THEME);
+        }
       }
       return (merged as unknown) as Theme[];
     } catch (err) {
@@ -95,7 +120,32 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
       if (!existingSlugs.has('secret-garden')) {
-        merged.push(REAL_SECRET_GARDEN_THEME);
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_SECRET_GARDEN_THEME.id,
+              name: REAL_SECRET_GARDEN_THEME.name,
+              slug: REAL_SECRET_GARDEN_THEME.slug,
+              description: REAL_SECRET_GARDEN_THEME.description,
+              category: REAL_SECRET_GARDEN_THEME.category,
+              preview_image: REAL_SECRET_GARDEN_THEME.preview_image,
+              thumbnail: REAL_SECRET_GARDEN_THEME.thumbnail,
+              status: 'active',
+              features: REAL_SECRET_GARDEN_THEME.features,
+              theme_config: REAL_SECRET_GARDEN_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_SECRET_GARDEN_THEME);
+          }
+        } catch {
+          merged.push(REAL_SECRET_GARDEN_THEME);
+        }
       }
       return (merged as unknown) as Theme[];
     } catch (err) {

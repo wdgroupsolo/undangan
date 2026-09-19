@@ -140,13 +140,13 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  const activeThemeSlug = requestedTheme || invitation?.theme?.slug || 'split-floral';
+  const activeThemeSlug = requestedTheme || (invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral';
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden;
 
   const coverImage = isSecretGarden
     ? '/themes/secret-garden/assets/preview.jpg'
-    : (gallery?.[0]?.image_url || (invitation.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
+    : (gallery?.[0]?.image_url || (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isSecretGarden
     ? '/themes/secret-garden/assets/video.mp4'
@@ -252,7 +252,7 @@ export const InvitationRenderer: React.FC = () => {
               gifts={gifts || []}
               music={music}
             />
-          ) : (invitation.theme?.slug === 'animated-luxury' || invitation.theme?.slug === 'elegant-gold' || invitation.theme?.slug === 'navy-luxury') ? (
+          ) : (activeThemeSlug === 'animated-luxury' || activeThemeSlug === 'elegant-gold' || activeThemeSlug === 'navy-luxury') ? (
             <LuxuryAnimatedTheme 
               invitation={invitation}
               couple={couple}
@@ -262,7 +262,7 @@ export const InvitationRenderer: React.FC = () => {
               gifts={gifts || []}
               music={music}
             />
-          ) : invitation.theme?.slug === 'split-floral' ? (
+          ) : activeThemeSlug === 'split-floral' ? (
             <SplitFloralTheme 
               invitation={invitation}
               couple={couple}
@@ -272,7 +272,7 @@ export const InvitationRenderer: React.FC = () => {
               gifts={gifts || []}
               music={music}
             />
-          ) : (invitation.theme?.slug === 'animated-floral' || invitation.theme?.slug === 'floral-romance' || invitation.theme?.slug === 'sakura-blossom') ? (
+          ) : (activeThemeSlug === 'animated-floral' || activeThemeSlug === 'floral-romance' || activeThemeSlug === 'sakura-blossom') ? (
             <AnimatedFloralTheme 
               invitation={invitation}
               couple={couple}
