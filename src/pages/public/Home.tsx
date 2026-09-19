@@ -695,164 +695,273 @@ export const Home: React.FC = () => {
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-white border border-primary-200 px-3.5 py-1.5 rounded-full">
               <Gift size={14} />
-              <span>Paket Hemat &amp; Transparan</span>
+              <span>Pilihan Paket &amp; Harga</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
               Investasi Terbaik untuk Momen Seumur Hidup
             </h2>
             <p className="text-base sm:text-lg text-stone-600">
-              Tanpa biaya tersembunyi. Aktif selamanya dan bebas kirim ke berapapun jumlah tamu undangan Anda.
+              Pilih paket yang paling sesuai dengan kebutuhan pernikahan impian Anda dan pasangan.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             
-            {/* Silver Plan */}
-            <div className="bg-white rounded-3xl p-8 border border-stone-200/90 shadow-sm flex flex-col justify-between">
+            {/* 1. STARTER PLAN */}
+            <div className="bg-[#faf7f2] rounded-3xl p-7 sm:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
               <div>
-                <div className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-2">Paket Silver</div>
-                <div className="flex items-baseline space-x-1 mb-4">
-                  <span className="text-4xl font-extrabold text-stone-900 font-cinzel">Rp 99.000</span>
-                  <span className="text-xs text-stone-400">/ sekali bayar</span>
+                {/* Header */}
+                <div className="text-center pb-5 border-b border-stone-200/70">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-wider font-cinzel">
+                    STARTER
+                  </h3>
+                  <p className="text-xs sm:text-sm font-medium text-stone-500 mt-1">
+                    Undangan Digital Hemat
+                  </p>
+
+                  {/* Price with strikethrough */}
+                  <div className="mt-4 flex flex-col items-center justify-center">
+                    <div className="flex items-center space-x-2">
+                      <span className="line-through text-stone-400 text-base sm:text-lg font-semibold">
+                        Rp 150.000
+                      </span>
+                      <span className="bg-rose-100 text-rose-700 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                        Hemat 33%
+                      </span>
+                    </div>
+                    <div className="text-3xl sm:text-4xl font-black text-stone-950 font-cinzel mt-0.5">
+                      Rp 100.000
+                    </div>
+                  </div>
                 </div>
-                <p className="text-xs text-stone-500 mb-6">Cocok untuk acara syukuran atau intimate wedding keluarga.</p>
-                <div className="h-px bg-stone-100 mb-6" />
-                <ul className="space-y-3 text-sm text-stone-600">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Masa Aktif 6 Bulan</span>
+
+                {/* Features List */}
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Template pilihan</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Hingga 500 Tamu Undangan</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Nama &amp; foto mempelai</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Kustom Nama Tamu WhatsApp</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Detail akad &amp; resepsi</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Navigasi Google Maps</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Countdown &amp; Maps</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Hitung Mundur &amp; Jadwal Acara</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Gallery, Love Story</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>RSVP, Ucapan &amp; Doa</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Amplop digital</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Custom data &amp; nama</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Revisi data 1x</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Aktif 30 hari</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="pt-8">
+              {/* Bottom Note & Button */}
+              <div className="space-y-4 pt-2">
+                <div className="bg-[#ede8df] rounded-xl p-3 text-center text-xs text-stone-700">
+                  Cocok untuk yang ingin undangan <strong>simpel &amp; hemat</strong>.
+                </div>
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Silver"
+                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Promo%20Rp%20100.000)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3 rounded-xl border border-stone-300 font-bold text-sm text-stone-700 hover:bg-stone-50 transition-colors"
+                  className="w-full block text-center py-3.5 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs sm:text-sm shadow transition-all"
                 >
-                  Pilih Paket Silver
+                  Pilih Paket Starter
                 </a>
               </div>
             </div>
 
-            {/* Gold Plan (Featured) */}
-            <div className="bg-primary-900 text-white rounded-3xl p-8 border-2 border-amber-300 shadow-2xl flex flex-col justify-between relative transform md:-translate-y-2">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-amber-200 text-stone-950 text-xs font-black px-4 py-1 rounded-full uppercase tracking-wider shadow">
-                Paling Favorit (Best Seller)
+            {/* 2. PREMIUM PLAN (Featured Best Seller) */}
+            <div className="bg-[#1b2a47] text-white rounded-3xl p-7 sm:p-8 border-2 border-amber-300 shadow-2xl flex flex-col justify-between relative transform md:-translate-y-3">
+              {/* Best Seller Top Ribbon */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-stone-950 text-[11px] font-black px-5 py-1 rounded-full uppercase tracking-wider shadow-md">
+                BEST SELLER
               </div>
 
               <div>
-                <div className="text-sm font-bold text-amber-200 uppercase tracking-wider mb-2">Paket Gold Premium</div>
-                <div className="flex items-baseline space-x-1 mb-4">
-                  <span className="text-4xl font-extrabold text-white font-cinzel">Rp 189.000</span>
-                  <span className="text-xs text-stone-300">/ sekali bayar</span>
+                {/* Header */}
+                <div className="text-center pb-5 border-b border-white/15 pt-2">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-wider font-cinzel">
+                    PREMIUM
+                  </h3>
+                  <p className="text-xs sm:text-sm font-medium text-amber-200 mt-1">
+                    Undangan Digital Lengkap
+                  </p>
+
+                  <div className="mt-4 flex flex-col items-center justify-center">
+                    <div className="text-3xl sm:text-4xl font-black text-white font-cinzel">
+                      Rp 250.000
+                    </div>
+                  </div>
                 </div>
-                <p className="text-xs text-stone-300 mb-6">Solusi terlengkap &amp; paling diminati dengan seluruh fitur unggulan.</p>
-                <div className="h-px bg-primary-800 mb-6" />
-                <ul className="space-y-3 text-sm text-stone-200">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-amber-400 flex-shrink-0" />
-                    <span><strong>Masa Aktif Selamanya</strong></span>
+
+                {/* Features List */}
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-200">
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span><strong>Semua fitur Starter</strong></span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-amber-400 flex-shrink-0" />
-                    <span><strong>Unlimited Tamu Undangan</strong></span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Template premium</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-amber-400 flex-shrink-0" />
-                    <span>Koleksi Musik Romantis Lengkap</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Custom warna &amp; font</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-amber-400 flex-shrink-0" />
-                    <span>RSVP &amp; Buku Tamu Real-time</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Layout lebih fleksibel</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-amber-400 flex-shrink-0" />
-                    <span>Amplop Digital &amp; QRIS Otomatis</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Gallery lebih banyak</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-amber-400 flex-shrink-0" />
-                    <span>Galeri Foto Cinematic (15 Foto)</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>RSVP + database</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-amber-400 flex-shrink-0" />
-                    <span>Timeline Cerita Cinta (Love Story)</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Animasi / transisi</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Custom musik</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Digital envelope</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Revisi 3x</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-amber-300 flex-shrink-0" />
+                    <span>Aktif 90 hari</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="pt-8">
+              {/* Bottom Note & Button */}
+              <div className="space-y-4 pt-2">
+                <div className="bg-[#121c30] rounded-xl p-3 text-center text-xs text-stone-200 border border-white/10">
+                  Pilihan <strong>terbaik</strong> untuk hasil yang <strong>lebih maksimal</strong>.
+                </div>
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Gold"
+                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Rp%20250.000)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 font-extrabold text-sm text-stone-950 shadow-lg transition-all"
+                  className="w-full block text-center py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 hover:from-amber-300 hover:to-amber-100 font-extrabold text-xs sm:text-sm text-stone-950 shadow-lg transition-all"
                 >
-                  Pesan Paket Gold Sekarang
+                  Pesan Paket Premium Sekarang
                 </a>
               </div>
             </div>
 
-            {/* Platinum Plan */}
-            <div className="bg-white rounded-3xl p-8 border border-stone-200/90 shadow-sm flex flex-col justify-between">
+            {/* 3. CUSTOM PLAN */}
+            <div className="bg-[#faf7f2] rounded-3xl p-7 sm:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
               <div>
-                <div className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-2">Paket Platinum VIP</div>
-                <div className="flex items-baseline space-x-1 mb-4">
-                  <span className="text-4xl font-extrabold text-stone-900 font-cinzel">Rp 299.000</span>
-                  <span className="text-xs text-stone-400">/ sekali bayar</span>
+                {/* Header */}
+                <div className="text-center pb-5 border-b border-stone-200/70">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-wider font-cinzel">
+                    CUSTOM
+                  </h3>
+                  <p className="text-xs sm:text-sm font-medium text-stone-500 mt-1">
+                    Fully Custom Wedding Website
+                  </p>
+
+                  <div className="mt-4 flex flex-col items-center justify-center">
+                    <div className="text-2xl sm:text-3xl font-black text-stone-950 font-cinzel leading-tight">
+                      Rp 400.000 – 550.000
+                    </div>
+                    <span className="text-[11px] font-semibold text-stone-500 mt-0.5">Mulai dari</span>
+                  </div>
                 </div>
-                <p className="text-xs text-stone-500 mb-6">Eksklusivitas maksimal dengan custom domain pribadi &amp; video.</p>
-                <div className="h-px bg-stone-100 mb-6" />
-                <ul className="space-y-3 text-sm text-stone-600">
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Semua Fitur Paket Gold</span>
+
+                {/* Features List */}
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span><strong>Semua fitur Premium</strong></span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span><strong>Custom Domain Pribadi (.com)</strong></span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>100% custom design</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Upload Video Prewedding HD</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Sesuai tema wedding</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Custom Font &amp; Desain Khusus</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Custom UI/UX &amp; layout</span>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <CheckCircle2 size={16} className="text-primary-600 flex-shrink-0" />
-                    <span>Bantuan Input Data oleh Tim Ahli</span>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Custom animation</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>QR Code &amp; Live Streaming</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>RSVP database</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Digital envelope</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Revisi hingga 5x</span>
+                  </li>
+                  <li className="flex items-center space-x-2.5">
+                    <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
+                    <span>Aktif 1 tahun</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="pt-8">
+              {/* Bottom Note & Button */}
+              <div className="space-y-4 pt-2">
+                <div className="bg-[#ede8df] rounded-xl p-3 text-center text-xs text-stone-700">
+                  Untuk kamu yang ingin <strong>desain eksklusif dan berbeda</strong>.
+                </div>
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Platinum"
+                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20Paket%20Custom"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3 rounded-xl border border-stone-300 font-bold text-sm text-stone-700 hover:bg-stone-50 transition-colors"
+                  className="w-full block text-center py-3.5 rounded-xl border border-stone-300 font-bold text-xs sm:text-sm text-stone-700 hover:bg-stone-50 transition-colors"
                 >
-                  Pilih Paket Platinum
+                  Pilih Paket Custom
                 </a>
               </div>
             </div>
