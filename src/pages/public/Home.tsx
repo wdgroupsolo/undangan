@@ -1199,10 +1199,22 @@ export const Home: React.FC = () => {
             <div>
               <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4">Layanan &amp; Dukungan</h4>
               <ul className="space-y-2 text-xs">
-                <li><span>WhatsApp: +62 812-3456-7890</span></li>
                 <li>
-                  <a href="mailto:groupcompanywd@gmail.com" className="hover:text-white transition-colors">
-                    Email: groupcompanywd@gmail.com
+                  <a 
+                    href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20mengenai%20pembuatan%20undangan%20pernikahan%20digital."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-amber-300 transition-colors flex items-center group"
+                  >
+                    <span>WhatsApp: <span className="underline decoration-stone-600 group-hover:decoration-amber-300">+62 812-3456-7890</span></span>
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="mailto:groupcompanywd@gmail.com?subject=Tanya%20Layanan%20Undangan%20Digital%20WD%20Group&body=Halo%20Tim%20WD%20Group,%0A%0ASaya%20ingin%20konsultasi%20mengenai%20layanan%20undangan%20pernikahan%20digital.%20Mohon%20informasi%20paket%20dan%20cara%20pemesanannya.%0A%0ATerima%20kasih."
+                    className="hover:text-amber-300 transition-colors flex items-center group"
+                  >
+                    <span>Email: <span className="underline decoration-stone-600 group-hover:decoration-amber-300">groupcompanywd@gmail.com</span></span>
                   </a>
                 </li>
                 <li><span>Jam Kerja: 08.00 - 22.00 WIB</span></li>
