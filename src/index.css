@@ -77,6 +77,15 @@
   .font-montserrat {
     font-family: 'Montserrat', sans-serif;
   }
+  .font-playfair {
+    font-family: 'Playfair Display', serif;
+  }
+  .font-jakarta {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .font-poppins {
+    font-family: 'Poppins', sans-serif;
+  }
 
   @keyframes float {
     0%, 100% { transform: translateY(0) scale(1); opacity: 0.2; }
@@ -236,4 +245,36 @@
     animation: bird-flap-subtle 0.75s ease-in-out infinite 0.45s;
     transform-origin: center bottom;
   }
+
+  @keyframes sound-bar-1 {
+    0%, 100% { height: 4px; }
+    50% { height: 18px; }
+  }
+  @keyframes sound-bar-2 {
+    0%, 100% { height: 14px; }
+    50% { height: 6px; }
+  }
+  @keyframes sound-bar-3 {
+    0%, 100% { height: 8px; }
+    50% { height: 22px; }
+  }
+  .animate-sound-1 { animation: sound-bar-1 0.8s ease-in-out infinite; }
+  .animate-sound-2 { animation: sound-bar-2 0.6s ease-in-out infinite; }
+  .animate-sound-3 { animation: sound-bar-3 0.9s ease-in-out infinite; }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .luxury-gradient {
+    background: linear-gradient(135deg, #2c1e1a 0%, #43302b 50%, #846358 100%);
+  }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+  }
 }
+

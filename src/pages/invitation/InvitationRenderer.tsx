@@ -199,7 +199,7 @@ export const InvitationRenderer: React.FC = () => {
       {/* Main Invitation Content */}
       <div className={`transition-opacity duration-1000 ${isInvitationVisible ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
         {(openingStage === 'opened' || openingStage === 'arch-video') && (
-          invitation.theme?.slug === 'animated-luxury' ? (
+          (invitation.theme?.slug === 'animated-luxury' || invitation.theme?.slug === 'elegant-gold' || invitation.theme?.slug === 'navy-luxury') ? (
             <LuxuryAnimatedTheme 
               invitation={invitation}
               couple={couple}
@@ -219,7 +219,7 @@ export const InvitationRenderer: React.FC = () => {
               gifts={gifts || []}
               music={music}
             />
-          ) : invitation.theme?.slug === 'animated-floral' ? (
+          ) : (invitation.theme?.slug === 'animated-floral' || invitation.theme?.slug === 'floral-romance' || invitation.theme?.slug === 'sakura-blossom') ? (
             <AnimatedFloralTheme 
               invitation={invitation}
               couple={couple}

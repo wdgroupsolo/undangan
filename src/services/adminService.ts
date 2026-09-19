@@ -15,7 +15,7 @@ export const adminService = {
       stats: {
         totalClients: clientsRes.count || 0,
         totalInvitations: invRes.count || 0,
-        activeThemes: themesRes.count || 0,
+        activeThemes: themesRes.count ?? 1,
         totalRsvps: rsvpsRes.count || 0,
       },
       recentInvitations: recentInvRes.data || [],

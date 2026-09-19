@@ -1,67 +1,359 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { themeService } from '../../services/themeService';
+import type { Theme } from '../../services/themeService';
+import { 
+  Sparkles, 
+  Search, 
+  Star, 
+  Eye, 
+  ArrowRight, 
+  X, 
+  Calendar, 
+  Disc,
+  Clock,
+  MessageCircle,
+  CheckCircle2
+} from 'lucide-react';
 
 export const ThemeCatalog: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [previewTheme, setPreviewTheme] = useState<Theme | null>(null);
+
   const { data: themes, isLoading } = useQuery({
     queryKey: ['themes', 'public'],
     queryFn: themeService.getActiveThemes,
   });
 
+  const filteredThemes = themes?.filter((theme) => {
+    return (
+      theme.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (theme.description && theme.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (theme.category && theme.category.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  });
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-primary-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-          <Link to="/" className="text-2xl font-bold text-primary-800 tracking-tighter">WD GROUP</Link>
-          <div className="flex space-x-4">
-            <Link to="/admin/login" className="text-primary-700 font-medium hover:text-primary-900 transition-colors">Admin Login</Link>
+    <div className="min-h-screen bg-[#faf8f5] text-stone-800 font-jakarta selection:bg-primary-500 selection:text-white">
+      
+      {/* Top Notification */}
+      <div className="bg-primary-900 text-primary-100 text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center space-x-2">
+        <Sparkles size={14} className="text-amber-300 animate-pulse" />
+        <span>Koleksi Tema Masterpiece: Split Floral Luxury siap digunakan untuk hari bahagia Anda</span>
+      </div>
+
+      {/* Header Navigation */}
+      <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-stone-200/70 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary-800 via-primary-700 to-primary-900 flex items-center justify-center text-white shadow-md shadow-primary-900/20 group-hover:scale-105 transition-transform">
+              <span className="font-cinzel text-xl font-bold tracking-widest text-amber-200">WD</span>
+            </div>
+            <div>
+              <div className="text-xl font-extrabold text-primary-900 tracking-tight font-cinzel">WD GROUP</div>
+              <div className="text-[10px] tracking-[0.25em] text-primary-600 font-semibold uppercase -mt-0.5">Katalog Tema Undangan</div>
+            </div>
+          </Link>
+
+          <div className="flex items-center space-x-4">
+            <Link 
+              to="/" 
+              className="text-sm font-semibold text-stone-600 hover:text-primary-800 transition-colors hidden sm:inline-block"
+            >
+              &larr; Kembali ke Beranda
+            </Link>
+            <Link 
+              to="/admin/login" 
+              className="text-xs font-semibold px-4 py-2 text-primary-800 bg-primary-50 hover:bg-primary-100 rounded-xl transition-all"
+            >
+              Admin Portal
+            </Link>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-4 text-center">Pilih Tema Undanganmu</h1>
-        <p className="text-lg text-gray-600 text-center mb-12">Kami menyediakan berbagai pilihan desain eksklusif untuk momen spesialmu.</p>
         
+        {/* Page Title & Search */}
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+          <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-primary-50 border border-primary-200 px-3.5 py-1.5 rounded-full">
+            <Sparkles size={14} className="text-amber-500" />
+            <span>Katalog Tema Eksklusif</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-stone-900 tracking-tight font-cinzel">
+            Tema Undangan Digital
+          </h1>
+          <p className="text-stone-600 text-sm sm:text-base">
+            Tema eksklusif Split Floral telah dioptimalkan secara mendalam dengan video cover entrance, musik saxophone, dan formulir RSVP real-time.
+          </p>
+
+          {/* Search Input */}
+          <div className="relative max-w-md mx-auto pt-2">
+            <Search className="absolute left-4 top-5 text-stone-400" size={18} />
+            <input 
+              type="text"
+              placeholder="Cari tema..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 bg-white border border-stone-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm transition-all"
+            />
+          </div>
+        </div>
+
+        {/* Loading Spinner */}
         {isLoading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          <div className="flex flex-col justify-center items-center py-24 space-y-4">
+            <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-800 rounded-full animate-spin" />
+            <p className="text-sm font-medium text-stone-500">Memuat koleksi tema...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {themes?.map((theme) => (
-              <div key={theme.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow border border-gray-100 group">
-                <div className="aspect-[3/4] bg-gray-200 relative overflow-hidden">
-                  {theme.preview_image ? (
-                    <img src={theme.preview_image} alt={theme.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
-                      <span>No Preview</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            
+            {/* Real Active Theme Card (Split Floral) */}
+            {filteredThemes?.map((theme) => {
+              const imageSrc = theme.preview_image || '/bg-floral.jpg';
+
+              return (
+                <div 
+                  key={theme.id || theme.slug} 
+                  className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border-2 border-primary-200 flex flex-col group md:col-span-2"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-12 h-full">
+                    
+                    {/* Theme Thumbnail Preview Container */}
+                    <div className="sm:col-span-6 aspect-[4/3] sm:aspect-auto bg-stone-100 relative overflow-hidden">
+                      <img 
+                        src={imageSrc} 
+                        alt={theme.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      
+                      {/* Top Badges */}
+                      <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10">
+                        <span className="bg-primary-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
+                          {theme.category || 'Floral & Classic'}
+                        </span>
+                        <span className="bg-amber-400 text-stone-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow w-fit">
+                          Tema Aktif
+                        </span>
+                      </div>
+
+                      <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center space-x-1 shadow text-xs font-bold text-stone-800 z-10">
+                        <Star size={12} className="text-amber-500 fill-amber-500" />
+                        <span>5.0</span>
+                      </div>
+
+                      {/* Hover Overlay Button */}
+                      <div className="absolute inset-0 bg-stone-950/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4 z-20">
+                        <button 
+                          onClick={() => setPreviewTheme(theme)}
+                          className="bg-white hover:bg-stone-50 text-stone-900 font-bold px-6 py-2.5 rounded-xl text-sm shadow-xl transform -translate-y-2 group-hover:translate-y-0 transition-transform flex items-center space-x-2 cursor-pointer"
+                        >
+                          <Eye size={16} />
+                          <span>Pratinjau Live Tema</span>
+                        </button>
+                      </div>
                     </div>
-                  )}
-                  <div className="absolute inset-0 bg-primary-900/0 group-hover:bg-primary-900/40 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <button className="bg-white text-primary-900 px-6 py-2 rounded-full font-bold shadow-lg transform -translate-y-4 group-hover:translate-y-0 transition-all">
-                      Preview Tema
-                    </button>
+
+                    {/* Theme Content Details */}
+                    <div className="sm:col-span-6 p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-4">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-2.5 py-1 rounded-md">
+                          Masterpiece Edition
+                        </span>
+                        <h3 className="text-2xl font-bold text-stone-900 mt-2">{theme.name}</h3>
+                        <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                          {theme.description || 'Tema split screen klasik dengan ornamen floral, entrance video arch, dan alunan saxophone romantis.'}
+                        </p>
+
+                        <div className="mt-4 pt-3 border-t border-stone-100 space-y-1.5 text-xs text-stone-600">
+                          <div className="flex items-center space-x-2">
+                            <CheckCircle2 size={13} className="text-emerald-600" />
+                            <span>Entrance Video Arch Cover</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <CheckCircle2 size={13} className="text-emerald-600" />
+                            <span>Audio Saxophone Romantis</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <CheckCircle2 size={13} className="text-emerald-600" />
+                            <span>Split Screen Desktop / Full Mobile</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-2 pt-4">
+                        <button 
+                          onClick={() => setPreviewTheme(theme)}
+                          className="flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-700 font-bold text-xs hover:bg-stone-50 transition-colors flex items-center justify-center space-x-1"
+                        >
+                          <Eye size={14} />
+                          <span>Preview Live</span>
+                        </button>
+                        <Link 
+                          to="/admin/invitations/create"
+                          className="flex-1 py-2.5 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs text-center transition-colors shadow-sm flex items-center justify-center space-x-1"
+                        >
+                          <span>Gunakan Tema</span>
+                          <ArrowRight size={14} />
+                        </Link>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
-                <div className="p-6">
-                  <span className="text-xs font-bold text-primary-600 uppercase tracking-wider">{theme.category}</span>
-                  <h3 className="text-xl font-bold text-gray-900 mt-1">{theme.name}</h3>
-                  <p className="text-gray-500 text-sm mt-2 line-clamp-2">{theme.description}</p>
+              );
+            })}
+
+            {/* Coming Soon Card */}
+            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-8 flex flex-col justify-between items-center text-center">
+              <div className="space-y-4 my-auto">
+                <div className="w-14 h-14 rounded-2xl bg-stone-200 text-stone-600 flex items-center justify-center mx-auto shadow-inner">
+                  <Clock size={24} />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+                    Koleksi Berikutnya
+                  </span>
+                  <h3 className="text-lg font-bold text-stone-900 mt-2">Tema Baru Segera Hadir</h3>
+                  <p className="text-xs text-stone-500 mt-2 leading-relaxed">
+                    Kami sedang merancang pilihan tema baru bernuansa Royal Gold, Minimalist Ivory, dan Islamic Grace.
+                  </p>
                 </div>
               </div>
-            ))}
-            
-            {themes?.length === 0 && (
-              <div className="col-span-full text-center py-12 text-gray-500 bg-white rounded-xl border border-dashed">
-                Belum ada tema yang tersedia saat ini.
-              </div>
-            )}
+
+              <a 
+                href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20apakah%20saya%20bisa%20request%20custom%20tema%20undangan?"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 rounded-xl bg-white border border-stone-300 text-stone-700 text-xs font-bold hover:bg-stone-100 transition-colors"
+              >
+                Konsultasi Custom Tema
+              </a>
+            </div>
+
           </div>
         )}
+
       </main>
+
+      {/* LIVE PREVIEW MODAL */}
+      {previewTheme && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-reveal-up">
+          <div className="bg-stone-900 text-white rounded-3xl max-w-xl w-full p-6 relative border border-stone-700 shadow-2xl flex flex-col max-h-[90vh]">
+            
+            {/* Modal Header */}
+            <div className="flex justify-between items-center pb-4 border-b border-stone-800">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300">
+                  {previewTheme.category || 'Theme'}
+                </span>
+                <h3 className="text-xl font-bold">{previewTheme.name}</h3>
+              </div>
+              <button 
+                onClick={() => setPreviewTheme(null)}
+                className="w-9 h-9 rounded-full bg-stone-800 hover:bg-stone-700 flex items-center justify-center transition-colors"
+                aria-label="Tutup Pratinjau"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Simulated Phone Screen in Modal */}
+            <div className="my-4 overflow-y-auto flex-1 flex justify-center py-2">
+              <div className="w-[280px] sm:w-[310px] rounded-[40px] bg-stone-950 p-3 border-4 border-stone-800 shadow-2xl relative">
+                
+                {/* Notch */}
+                <div className="w-24 h-3.5 bg-stone-900 rounded-full mx-auto mb-2 flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-stone-950" />
+                </div>
+
+                {/* Inner Screen */}
+                <div className="rounded-[28px] overflow-hidden bg-[#fbf9f6] text-stone-900 text-center relative border border-stone-300">
+                  
+                  {/* Music mini bar */}
+                  <div className="bg-primary-900 text-white px-3 py-2 flex items-center justify-between text-[11px]">
+                    <div className="flex items-center space-x-1.5">
+                      <Disc size={13} className="animate-spin text-amber-300" />
+                      <span className="font-semibold text-[10px] text-amber-200">Beautiful In White</span>
+                    </div>
+                    <span className="text-[9px] bg-amber-400 text-stone-900 px-1.5 py-0.5 rounded font-bold">Auto</span>
+                  </div>
+
+                  {/* Cover */}
+                  <div className="relative h-56">
+                    <img 
+                      src={previewTheme.preview_image || '/bg-floral.jpg'} 
+                      alt="Cover" 
+                      className="w-full h-full object-cover" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 text-white">
+                      <p className="text-[10px] uppercase tracking-widest text-amber-200">The Wedding Of</p>
+                      <h4 className="font-cinzel text-xl font-bold tracking-wide">Kevin &amp; Jessica</h4>
+                      <p className="text-[10px] text-stone-300 mt-0.5">Sabtu, 24 Oktober 2026</p>
+                    </div>
+                  </div>
+
+                  {/* Invitation details */}
+                  <div className="p-4 space-y-3 text-xs">
+                    <div className="p-2.5 rounded-xl bg-primary-50 border border-primary-100 text-primary-900">
+                      <p className="text-[10px] uppercase font-bold text-stone-400">Kepada Yth:</p>
+                      <p className="text-sm font-bold mt-0.5">Bapak / Ibu Tamu Undangan</p>
+                    </div>
+
+                    <p className="text-[11px] text-stone-600 italic">
+                      &ldquo;Merupakan suatu kehormatan bagi kami atas kehadiran Bapak/Ibu sekalian.&rdquo;
+                    </p>
+
+                    <div className="flex justify-center space-x-2 pt-1">
+                      <span className="px-2.5 py-1 bg-stone-100 rounded-lg text-[10px] font-semibold text-stone-700">
+                        📍 Lokasi Maps
+                      </span>
+                      <span className="px-2.5 py-1 bg-stone-100 rounded-lg text-[10px] font-semibold text-stone-700">
+                        🎁 Amplop Kado
+                      </span>
+                      <span className="px-2.5 py-1 bg-stone-100 rounded-lg text-[10px] font-semibold text-stone-700">
+                        💌 Buku Tamu
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div className="w-24 h-1 bg-stone-700 rounded-full mx-auto mt-2" />
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="pt-4 border-t border-stone-800 flex flex-col sm:flex-row gap-2">
+              <a 
+                href={`https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20tertarik%20dengan%20tema%20${encodeURIComponent(previewTheme.name)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs text-center transition-colors flex items-center justify-center space-x-2"
+              >
+                <MessageCircle size={16} />
+                <span>Pesan via WhatsApp</span>
+              </a>
+              <Link 
+                to="/admin/invitations/create"
+                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 text-stone-950 font-extrabold text-xs text-center transition-colors flex items-center justify-center space-x-2"
+              >
+                <span>Buat Undangan Sekarang</span>
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-stone-950 text-stone-400 py-10 border-t border-stone-800 text-xs text-center">
+        <p>&copy; {new Date().getFullYear()} WD Group. Seluruh Hak Cipta Dilindungi Undang-Undang.</p>
+      </footer>
+
     </div>
   );
 };

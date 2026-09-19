@@ -94,10 +94,10 @@ export const Themes: React.FC = () => {
                 filteredThemes?.map(theme => (
                   <tr key={theme.id} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="px-6 py-4 flex items-center space-x-4">
-                      {theme.thumbnail ? (
-                        <img src={theme.thumbnail} alt={theme.name} className="w-12 h-12 rounded object-cover border border-gray-200" />
+                      {(theme.thumbnail || theme.preview_image) ? (
+                        <img src={theme.thumbnail || theme.preview_image!} alt={theme.name} className="w-12 h-12 rounded-lg object-cover border border-gray-200 shadow-sm" />
                       ) : (
-                        <div className="w-12 h-12 rounded bg-gray-200 border border-gray-300 flex items-center justify-center text-gray-400 text-xs">No Img</div>
+                        <div className="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400 text-xs">No Img</div>
                       )}
                       <div>
                         <div className="font-medium text-gray-900">{theme.name}</div>
