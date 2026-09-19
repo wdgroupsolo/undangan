@@ -656,9 +656,9 @@ export const Home: React.FC = () => {
               <div className="w-16 h-16 rounded-2xl bg-primary-800 text-amber-200 font-cinzel text-2xl font-bold flex items-center justify-center mb-6 shadow-lg shadow-primary-900/20">
                 01
               </div>
-              <h3 className="text-xl font-bold text-stone-900 mb-3">Pilih Tema Split Floral</h3>
+              <h3 className="text-xl font-bold text-stone-900 mb-3">Pilih Tema Desain</h3>
               <p className="text-sm text-stone-600 leading-relaxed">
-                Gunakan konsep desain Split Floral elegan yang telah terbukti disukai ribuan tamu undangan pernikahan.
+                Pilih konsep desain elegan dari katalog pilihan kami yang sesuai dengan selera dan konsep pernikahan impian Anda.
               </p>
             </div>
 
@@ -739,7 +739,7 @@ export const Home: React.FC = () => {
                 <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>1 Pilihan tema (Split Floral)</span>
+                    <span>Template pilihan</span>
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
