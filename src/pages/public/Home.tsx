@@ -1200,7 +1200,11 @@ export const Home: React.FC = () => {
               <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4">Layanan &amp; Dukungan</h4>
               <ul className="space-y-2 text-xs">
                 <li><span>WhatsApp: +62 812-3456-7890</span></li>
-                <li><span>Email: support@wdgroup.id</span></li>
+                <li>
+                  <a href="mailto:groupcompanywd@gmail.com" className="hover:text-white transition-colors">
+                    Email: groupcompanywd@gmail.com
+                  </a>
+                </li>
                 <li><span>Jam Kerja: 08.00 - 22.00 WIB</span></li>
                 <li className="pt-2">
                   <Link to="/admin/login" className="text-amber-300 hover:underline font-semibold">
