@@ -75,7 +75,11 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
 
   const groomPhoto = couple?.groom_photo_url || '/groom-default.jpg';
   const bridePhoto = couple?.bride_photo_url || '/bride-default.jpg';
-  const heroPhoto = invitation?.cover_image_url || '/themes/secret-garden/assets/preview.jpg';
+  const heroPhoto = 
+    invitation?.cover_image_url || 
+    gallery?.[0]?.image_url || 
+    (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : null) || 
+    '/themes/secret-garden/assets/preview.jpg';
 
   // Assets path
   const ASSETS = '/themes/secret-garden/assets';
@@ -265,47 +269,66 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-[#E6DED8] text-[#2B2B2B] select-none font-sans overflow-x-hidden">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-[#E6DED8] text-[#2B2B2B] select-none font-sans overflow-x-hidden relative">
       
-      {/* Desktop Split-Screen Wrapper */}
-      <div className="flex flex-col lg:flex-row min-h-screen relative">
-
-        {/* LEFT PANEL (Desktop Only 58%): Sticky Grand Hero */}
-        <div className="hidden lg:block lg:w-[58%] h-screen sticky top-0 left-0 overflow-hidden bg-stone-900 select-none">
+      {/* LEFT PANEL - FIXED ON DESKTOP & LAPTOP (58% width, stays permanently fixed while scrolling) */}
+      <div className="hidden lg:block lg:w-[58%] lg:fixed lg:top-0 lg:left-0 h-screen relative overflow-hidden bg-stone-900 select-none z-10">
+        {/* Background Image */}
+        <div className="absolute inset-0">
           <img 
             src={heroPhoto} 
             alt="Hero Wedding" 
-            className="w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000 ease-out"
+            className="w-full h-full object-cover object-center"
           />
           {/* Subtle Vignette & Gradient Overlays */}
-          <div className="absolute inset-0 bg-black/45" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/50" />
+        </div>
 
-          {/* Left Hero Content */}
-          <div className="absolute inset-0 flex flex-col justify-end p-12 xl:p-16 z-10 text-white">
-            <p 
-              className="text-xs tracking-[0.3em] font-light text-white/90 uppercase mb-3 drop-shadow-md"
-              style={{ fontFamily: "'Poppins', sans-serif" }}
-            >
-              Undangan Pernikahan
-            </p>
-            <h1 
-              className="text-6xl xl:text-7xl font-normal leading-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-4"
-              style={{ fontFamily: "'Imperial Script', cursive", color: '#ffffff' }}
-            >
-              {groomNickname} &amp; {brideNickname}
-            </h1>
-            <p 
-              className="text-sm xl:text-base font-light tracking-widest text-stone-200 uppercase drop-shadow"
-              style={{ fontFamily: "'Lora', serif" }}
-            >
-              Sabtu, 24 Oktober 2026
+        {/* Left Hero Content - Visible ONLY on desktop, stays fixed with typography & recipient name */}
+        <div className="absolute inset-0 flex flex-col justify-end px-8 md:px-12 lg:px-14 xl:px-20 text-white z-20 select-none pb-14">
+          <p 
+            className="text-xs uppercase tracking-[0.3em] font-light mb-3 text-gray-200 drop-shadow-md" 
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Undangan Pernikahan
+          </p>
+          
+          <h1 
+            className="text-5xl lg:text-[4.5rem] xl:text-[5.2rem] mb-3 drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] tracking-wide font-normal leading-tight" 
+            style={{ fontFamily: "'Imperial Script', cursive", color: '#ffffff' }}
+          >
+            <span>{groomNickname}</span>
+            <span className="text-3xl lg:text-5xl mx-3 font-serif font-light italic opacity-90">&amp;</span>
+            <span>{brideNickname}</span>
+          </h1>
+          
+          <p 
+            className="font-serif italic text-2xl lg:text-3xl mb-4 opacity-90 drop-shadow" 
+            style={{ fontFamily: "'Imperial Script', cursive", color: '#E6DED8' }}
+          >
+            Selamat Datang
+          </p>
+          
+          <p 
+            className="text-xs lg:text-sm leading-relaxed text-gray-200 max-w-md mb-8 opacity-90 font-light drop-shadow" 
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.
+          </p>
+
+          <div className="space-y-1">
+            <p className="text-xs text-gray-300 font-medium" style={{ fontFamily: "'Poppins', sans-serif" }}>Kepada Yth.</p>
+            <p className="text-xs text-gray-300 font-medium" style={{ fontFamily: "'Poppins', sans-serif" }}>Bapak/Ibu/Saudara/i:</p>
+            <p className="text-xl lg:text-2xl font-bold drop-shadow-md text-white pt-0.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              {guestName}
             </p>
           </div>
         </div>
+      </div>
 
-        {/* RIGHT PANEL (Mobile: 100%, Desktop: 42%): Scrollable Content */}
-        <div className="w-full lg:w-[42%] bg-[#E6DED8] relative min-h-screen overflow-x-hidden">
+      {/* RIGHT PANEL (Mobile: 100%, Desktop: 42%): Scrollable Content with lg:ml-[58%] */}
+      <div className="w-full lg:w-[42%] lg:ml-[58%] bg-[#E6DED8] relative min-h-screen overflow-x-hidden z-0 shadow-2xl">
           
           {/* SECTION 1: Inner Cover / Title Header */}
           <section className="relative w-full py-16 sm:py-20 px-6 flex flex-col items-center justify-center text-center bg-[#E6DED8]">
@@ -1259,7 +1282,6 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
           </footer>
 
         </div>
-      </div>
 
       {/* Lightbox Modal */}
       {activePhoto && (
