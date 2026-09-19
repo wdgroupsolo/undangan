@@ -919,17 +919,16 @@ export const Home: React.FC = () => {
 
                   <div className="mt-4 flex flex-col items-center justify-center">
                     <div className="flex items-center space-x-2">
-                      <span className="line-through text-stone-400 text-sm sm:text-base font-semibold">
-                        Rp 350.000
-                      </span>
-                      <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
-                        Transparan
+                      <span className="bg-stone-200/80 text-stone-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                        Bebas Request
                       </span>
                     </div>
-                    <div className="text-xl min-[360px]:text-2xl sm:text-3xl font-black text-stone-950 font-cinzel mt-0.5 leading-tight whitespace-nowrap">
-                      Rp 250.000 – 350.000
+                    <div className="text-2xl sm:text-3xl font-black text-stone-950 font-cinzel mt-0.5">
+                      Custom Design
                     </div>
-                    <span className="text-[11px] font-semibold text-stone-500 mt-0.5">Estimasi jelas sesuai kebutuhan fitur</span>
+                    <span className="text-[11px] font-medium text-stone-500 mt-0.5">
+                      Menyesuaikan konsep &amp; kebutuhan Anda
+                    </span>
                   </div>
                 </div>
 
@@ -981,10 +980,10 @@ export const Home: React.FC = () => {
               {/* Bottom Note & Button */}
               <div className="space-y-4 pt-2">
                 <div className="bg-[#ede8df] rounded-xl p-3 text-center text-xs text-stone-700">
-                  Konsultasi gratis &amp; <strong>estimasi biaya transparan</strong> sesuai kebutuhan.
+                  Konsultasi gratis &amp; <strong>desain eksklusif</strong> sesuai konsep pernikahan Anda.
                 </div>
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20Paket%20Custom%20undangan%20digital"
+                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full block text-center py-3.5 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all"
