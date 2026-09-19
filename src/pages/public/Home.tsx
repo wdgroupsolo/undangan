@@ -1010,7 +1010,7 @@ export const Home: React.FC = () => {
                   ))}
                 </div>
                 <p className="text-stone-700 italic text-xs sm:text-sm leading-relaxed">
-                  &ldquo;Tamu undangan kami pada kagum sama undangannya! Musiknya romantis banget, terus fitur RSVP bikin kami gampang banget rekap katering. Pelayanan admin WD Group juga super ramah dan cepat tanggap.&rdquo;
+                  &ldquo;Sangat suka dengan desain dan detailnya baguss, dapat gratis undangan digital karena reservasi WO disini, pokoknya mantap sekali layanannya.&rdquo;
                 </p>
               </div>
               <div className="flex items-center space-x-3 pt-5 border-t border-stone-100 mt-5">
@@ -1031,7 +1031,7 @@ export const Home: React.FC = () => {
                   ))}
                 </div>
                 <p className="text-stone-700 italic text-xs sm:text-sm leading-relaxed">
-                  &ldquo;Awalnya bingung cari undangan yang elegan tapi ga ribet. Ketemu WD Group, 10 menit beres langsung bisa sebar link ke WhatsApp teman-teman kantor. Amplop digitalnya sangat ngebantu banget!&rdquo;
+                  &ldquo;Rekomendasi sekali pesan undangan digital disini, sesuai yang saya inginkan bahkan diluar ekspetasi saya.&rdquo;
                 </p>
               </div>
               <div className="flex items-center space-x-3 pt-5 border-t border-stone-100 mt-5">
@@ -1052,7 +1052,7 @@ export const Home: React.FC = () => {
                   ))}
                 </div>
                 <p className="text-stone-700 italic text-xs sm:text-sm leading-relaxed">
-                  &ldquo;Visual gerbang arch saat dibuka bener-bener mewah dan sakral. Doa restu dari keluarga besar mengalir deras di buku tamu. Terima kasih banyak WD Group telah menyempurnakan hari bahagia kami!&rdquo;
+                  &ldquo;Wajib order undangan digital disini, karena pelayanan yang cepattt, detail, harga terjangkau dan jelass sangatt sesuai ekspetasii.&rdquo;
                 </p>
               </div>
               <div className="flex items-center space-x-3 pt-5 border-t border-stone-100 mt-5">
