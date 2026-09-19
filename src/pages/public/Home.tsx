@@ -1169,9 +1169,6 @@ export const Home: React.FC = () => {
               <p className="text-xs text-stone-400 leading-relaxed">
                 Penyedia solusi undangan pernikahan digital mewah, modern, dan profesional untuk menciptakan momen sakral pernikahan impian.
               </p>
-              <div className="text-xs text-stone-500">
-                Surakarta, Jawa Tengah, Indonesia
-              </div>
             </div>
 
             {/* Quick Links */}
@@ -1215,6 +1212,16 @@ export const Home: React.FC = () => {
                     className="hover:text-amber-300 transition-colors flex items-center group"
                   >
                     <span>Email: <span className="underline decoration-stone-600 group-hover:decoration-amber-300">groupcompanywd@gmail.com</span></span>
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="https://maps.app.goo.gl/QQzuiA5vG9SgXRnG8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-amber-300 transition-colors flex items-center group"
+                  >
+                    <span>Lokasi: <span className="underline decoration-stone-600 group-hover:decoration-amber-300">Surakarta, Jawa Tengah, Indonesia</span></span>
                   </a>
                 </li>
                 <li><span>Jam Kerja: 08.00 - 22.00 WIB</span></li>
