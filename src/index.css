@@ -282,46 +282,61 @@
     background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
   }
 
-  /* Smooth Scroll Reveal System */
+  /* Smooth Scroll Reveal System with Safety Fallback */
+  @keyframes auto-reveal-fade {
+    to {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+  }
+
   .reveal-init {
     opacity: 0;
     transform: translateY(28px);
     transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: auto-reveal-fade 0.85s 1.2s forwards;
     will-change: opacity, transform;
   }
   .reveal-init.revealed {
     opacity: 1;
     transform: translateY(0);
+    animation: none;
   }
   .reveal-left {
     opacity: 0;
     transform: translateX(-35px);
     transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: auto-reveal-fade 0.85s 1.2s forwards;
     will-change: opacity, transform;
   }
   .reveal-left.revealed {
     opacity: 1;
     transform: translateX(0);
+    animation: none;
   }
   .reveal-right {
     opacity: 0;
     transform: translateX(35px);
     transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: auto-reveal-fade 0.85s 1.2s forwards;
     will-change: opacity, transform;
   }
   .reveal-right.revealed {
     opacity: 1;
     transform: translateX(0);
+    animation: none;
   }
   .reveal-scale {
     opacity: 0;
     transform: scale(0.93);
     transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: auto-reveal-fade 0.85s 1.2s forwards;
     will-change: opacity, transform;
   }
   .reveal-scale.revealed {
     opacity: 1;
     transform: scale(1);
+    animation: none;
   }
 
   /* Stagger delay utilities */
