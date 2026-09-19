@@ -183,17 +183,17 @@ export const ThemeCatalog: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-2 pt-4">
+                      <div className="flex flex-col sm:flex-row gap-2 pt-4">
                         <button 
                           onClick={() => setPreviewTheme(theme)}
-                          className="flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-700 font-bold text-xs hover:bg-stone-50 transition-colors flex items-center justify-center space-x-1"
+                          className="w-full sm:flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-700 font-bold text-xs hover:bg-stone-50 transition-colors flex items-center justify-center space-x-1"
                         >
                           <Eye size={14} />
                           <span>Preview Live</span>
                         </button>
                         <Link 
                           to="/admin/invitations/create"
-                          className="flex-1 py-2.5 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs text-center transition-colors shadow-sm flex items-center justify-center space-x-1"
+                          className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs text-center transition-colors shadow-xs flex items-center justify-center space-x-1"
                         >
                           <span>Gunakan Tema</span>
                           <ArrowRight size={14} />
@@ -240,29 +240,29 @@ export const ThemeCatalog: React.FC = () => {
 
       {/* LIVE PREVIEW MODAL */}
       {previewTheme && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-reveal-up">
-          <div className="bg-stone-900 text-white rounded-3xl max-w-xl w-full p-6 relative border border-stone-700 shadow-2xl flex flex-col max-h-[90vh]">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-reveal-up">
+          <div className="bg-stone-900 text-white rounded-3xl max-w-xl w-full p-4 sm:p-6 relative border border-stone-700 shadow-2xl flex flex-col max-h-[92vh] sm:max-h-[90vh]">
             
             {/* Modal Header */}
-            <div className="flex justify-between items-center pb-4 border-b border-stone-800">
+            <div className="flex justify-between items-center pb-3 sm:pb-4 border-b border-stone-800">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300">
                   {previewTheme.category || 'Theme'}
                 </span>
-                <h3 className="text-xl font-bold">{previewTheme.name}</h3>
+                <h3 className="text-lg sm:text-xl font-bold">{previewTheme.name}</h3>
               </div>
               <button 
                 onClick={() => setPreviewTheme(null)}
-                className="w-9 h-9 rounded-full bg-stone-800 hover:bg-stone-700 flex items-center justify-center transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-stone-800 hover:bg-stone-700 flex items-center justify-center transition-colors"
                 aria-label="Tutup Pratinjau"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
             {/* Simulated Phone Screen in Modal */}
-            <div className="my-4 overflow-y-auto flex-1 flex justify-center py-2">
-              <div className="w-[280px] sm:w-[310px] rounded-[40px] bg-stone-950 p-3 border-4 border-stone-800 shadow-2xl relative">
+            <div className="my-3 sm:my-4 overflow-y-auto flex-1 flex justify-center py-1 sm:py-2">
+              <div className="w-[260px] min-[375px]:w-[280px] sm:w-[310px] rounded-[36px] sm:rounded-[40px] bg-stone-950 p-2.5 sm:p-3 border-4 border-stone-800 shadow-2xl relative">
                 
                 {/* Notch */}
                 <div className="w-24 h-3.5 bg-stone-900 rounded-full mx-auto mb-2 flex items-center justify-center">

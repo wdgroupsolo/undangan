@@ -71,23 +71,23 @@ export const Home: React.FC = () => {
       </div>
 
       {/* Top Notification Bar */}
-      <div className="bg-primary-900 text-primary-100 text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center space-x-2 relative z-50">
-        <Sparkles size={14} className="text-amber-300 animate-pulse" />
+      <div className="bg-primary-900 text-primary-100 text-[11px] sm:text-xs py-2 px-3 sm:px-4 text-center font-medium tracking-wide flex flex-wrap items-center justify-center gap-1.5 relative z-50 leading-tight">
+        <Sparkles size={13} className="text-amber-300 animate-pulse shrink-0" />
         <span>Tema Eksklusif Split Floral kini telah hadir dengan video entrance arch &amp; musik saxophone!</span>
-        <a href="#themes" className="underline font-bold text-white ml-1 hover:text-amber-200">Lihat Tema &rarr;</a>
+        <a href="#themes" className="underline font-bold text-white hover:text-amber-200 ml-1">Lihat Tema &rarr;</a>
       </div>
 
       {/* Luxury Navigation Header */}
-      <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-stone-200/70 transition-all shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/70 transition-all shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary-800 via-primary-700 to-primary-900 flex items-center justify-center text-white shadow-md shadow-primary-900/20 group-hover:scale-105 transition-transform">
-              <span className="font-cinzel text-xl font-bold tracking-widest text-amber-200">WD</span>
+          <Link to="/" className="flex items-center space-x-2.5 sm:space-x-3 group">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-primary-800 via-primary-700 to-primary-900 flex items-center justify-center text-white shadow-md shadow-primary-900/20 group-hover:scale-105 transition-transform">
+              <span className="font-cinzel text-lg sm:text-xl font-bold tracking-widest text-amber-200">WD</span>
             </div>
             <div>
-              <div className="text-xl font-extrabold text-primary-900 tracking-tight font-cinzel">WD GROUP</div>
-              <div className="text-[10px] tracking-[0.25em] text-primary-600 font-semibold uppercase -mt-0.5">Wedding Invitation</div>
+              <div className="text-lg sm:text-xl font-extrabold text-primary-900 tracking-tight font-cinzel leading-none">WD GROUP</div>
+              <div className="text-[9px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] text-primary-600 font-semibold uppercase mt-0.5">Wedding Invitation</div>
             </div>
           </Link>
 
@@ -122,35 +122,35 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Mobile Menu Toggle Button */}
-          <div className="lg:hidden flex items-center space-x-2">
+          <div className="lg:hidden flex items-center space-x-1.5 sm:space-x-2">
             <Link 
               to="/admin/login" 
-              className="text-xs font-semibold px-3 py-1.5 bg-primary-50 text-primary-800 rounded-lg"
+              className="text-xs font-semibold px-2.5 py-1.5 bg-primary-50 text-primary-800 rounded-lg"
             >
               Login
             </Link>
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-stone-700 hover:bg-stone-100 rounded-lg transition-colors"
+              className="p-1.5 sm:p-2 text-stone-700 hover:bg-stone-100 rounded-lg transition-colors"
               aria-label="Toggle Menu"
             >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-stone-200 px-6 py-5 space-y-4 shadow-xl animate-reveal-up">
-            <a href="#hero" onClick={() => setMobileMenuOpen(false)} className="block text-base font-medium text-stone-700 hover:text-primary-700">Beranda</a>
-            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-base font-medium text-stone-700 hover:text-primary-700">Fitur Unggulan</a>
-            <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="block text-base font-medium text-stone-700 hover:text-primary-700">Tema Desain</a>
-            <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="block text-base font-medium text-stone-700 hover:text-primary-700">Cara Kerja</a>
-            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-base font-medium text-stone-700 hover:text-primary-700">Paket Harga</a>
-            <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block text-base font-medium text-stone-700 hover:text-primary-700">Testimoni</a>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-base font-medium text-stone-700 hover:text-primary-700">FAQ</a>
-            <div className="pt-4 border-t border-stone-100 flex flex-col space-y-2">
-              <Link to="/admin/login" className="w-full text-center py-2.5 text-sm font-semibold text-primary-800 bg-primary-50 rounded-xl">
+          <div className="lg:hidden bg-white border-b border-stone-200 px-5 py-4 space-y-3 shadow-xl animate-reveal-up max-h-[calc(100dvh-4rem)] overflow-y-auto">
+            <a href="#hero" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium text-stone-700 hover:text-primary-700">Beranda</a>
+            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium text-stone-700 hover:text-primary-700">Fitur Unggulan</a>
+            <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium text-stone-700 hover:text-primary-700">Tema Desain</a>
+            <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium text-stone-700 hover:text-primary-700">Cara Kerja</a>
+            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium text-stone-700 hover:text-primary-700">Paket Harga</a>
+            <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium text-stone-700 hover:text-primary-700">Testimoni</a>
+            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-sm font-medium text-stone-700 hover:text-primary-700">FAQ</a>
+            <div className="pt-3 border-t border-stone-100 flex flex-col space-y-2">
+              <Link to="/admin/login" className="w-full text-center py-2.5 text-xs font-semibold text-primary-800 bg-primary-50 rounded-xl">
                 Masuk Dashboard Admin
               </Link>
             </div>
@@ -159,39 +159,39 @@ export const Home: React.FC = () => {
       </header>
 
       {/* HERO SECTION */}
-      <section id="hero" className="relative pt-12 pb-24 lg:pt-20 lg:pb-32 overflow-hidden">
+      <section id="hero" className="relative pt-8 pb-16 sm:pt-12 sm:pb-24 lg:pt-20 lg:pb-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
             
             {/* Left Content Column */}
-            <div className="lg:col-span-7 text-center lg:text-left space-y-6">
+            <div className="lg:col-span-7 text-center lg:text-left space-y-5 sm:space-y-6">
               
               {/* Luxury Badge */}
-              <div className="inline-flex items-center space-x-2 bg-white/90 border border-primary-200/80 px-4 py-2 rounded-full shadow-sm">
+              <div className="inline-flex items-center space-x-2 bg-white/90 border border-primary-200/80 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-xs">
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-500 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-600"></span>
                 </span>
-                <span className="text-xs font-semibold text-primary-900 tracking-wide uppercase">
+                <span className="text-[11px] sm:text-xs font-semibold text-primary-900 tracking-wide uppercase">
                   Digital Wedding Invitation Platform • WD Group
                 </span>
               </div>
 
               {/* Main Headline */}
               <div className="space-y-3">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-stone-900 tracking-tight leading-[1.15]">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-stone-900 tracking-tight leading-[1.2]">
                   Abadikan Momen Indah dengan <span className="font-playfair italic font-normal text-primary-700 underline decoration-amber-300 decoration-wavy decoration-2">Undangan Digital</span> yang Elegan
                 </h1>
-                <p className="text-lg sm:text-xl text-stone-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                <p className="text-base sm:text-lg lg:text-xl text-stone-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
                   Ciptakan kesan pertama yang tak terlupakan bagi para tamu. Dilengkapi transisi video pintu gerbang megah, alunan saxophone romantis, RSVP otomatis, dan navigasi lokasi akurat.
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 w-full">
                 <a 
                   href="#themes"
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-primary-800 via-primary-700 to-primary-900 text-white font-bold text-base shadow-xl shadow-primary-900/20 hover:shadow-2xl hover:shadow-primary-900/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-3 group"
+                  className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-primary-800 via-primary-700 to-primary-900 text-white font-bold text-sm sm:text-base shadow-xl shadow-primary-900/20 hover:shadow-2xl hover:shadow-primary-900/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-3 group"
                 >
                   <Sparkles size={18} className="text-amber-300 group-hover:rotate-12 transition-transform" />
                   <span>Lihat Tema Split Floral</span>
@@ -200,7 +200,7 @@ export const Home: React.FC = () => {
 
                 <Link 
                   to="/themes"
-                  className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white text-stone-800 font-bold text-base border border-stone-300/80 hover:bg-stone-50 hover:border-stone-400 transition-all shadow-sm flex items-center justify-center space-x-2"
+                  className="w-full sm:w-auto px-6 sm:px-7 py-3.5 sm:py-4 rounded-2xl bg-white text-stone-800 font-bold text-sm sm:text-base border border-stone-300/80 hover:bg-stone-50 hover:border-stone-400 transition-all shadow-xs flex items-center justify-center space-x-2"
                 >
                   <Smartphone size={18} className="text-primary-700" />
                   <span>Katalog Tema</span>
@@ -208,8 +208,8 @@ export const Home: React.FC = () => {
               </div>
 
               {/* Social Proof Mini */}
-              <div className="pt-6 border-t border-stone-200/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-stone-600">
-                <div className="flex items-center space-x-2">
+              <div className="pt-5 sm:pt-6 border-t border-stone-200/80 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-6 text-sm text-stone-600">
+                <div className="flex items-center space-x-2.5">
                   <div className="flex -space-x-2">
                     <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="/photos/photo-1.jpg" alt="User 1" />
                     <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="/photos/photo-3.jpg" alt="User 2" />
@@ -218,7 +218,7 @@ export const Home: React.FC = () => {
                   <div className="text-left">
                     <div className="flex items-center text-amber-500">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={14} fill="currentColor" />
+                        <Star key={i} size={13} fill="currentColor" />
                       ))}
                     </div>
                     <span className="text-xs font-semibold text-stone-800">1.000+ Tamu Terlayani</span>
@@ -236,41 +236,41 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Right Interactive Mockup Showcase */}
-            <div className="lg:col-span-5 flex justify-center relative">
+            <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full">
               
-              {/* Floating Badge: RSVP Counter */}
-              <div className="absolute -left-4 sm:-left-8 top-12 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-stone-100 flex items-center space-x-3 z-20 animate-float">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                  <CheckCircle2 size={20} />
+              {/* Floating Badge: RSVP Counter (Tablet & Desktop) */}
+              <div className="hidden min-[540px]:flex absolute -left-4 sm:-left-8 top-12 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl shadow-xl border border-stone-100 items-center space-x-3 z-20 animate-float">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                  <CheckCircle2 size={18} />
                 </div>
                 <div className="text-left">
-                  <p className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">RSVP Real-Time</p>
-                  <p className="text-sm font-extrabold text-stone-800">348 Tamu Hadir</p>
+                  <p className="text-[10px] sm:text-[11px] font-bold text-stone-500 uppercase tracking-wider">RSVP Real-Time</p>
+                  <p className="text-xs sm:text-sm font-extrabold text-stone-800">348 Tamu Hadir</p>
                 </div>
               </div>
 
-              {/* Floating Badge: Digital Envelope */}
-              <div className="absolute -right-4 sm:-right-6 bottom-20 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-stone-100 flex items-center space-x-3 z-20" style={{ animation: 'float 8s ease-in-out infinite 1s' }}>
-                <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
-                  <Gift size={20} />
+              {/* Floating Badge: Digital Envelope (Tablet & Desktop) */}
+              <div className="hidden min-[540px]:flex absolute -right-4 sm:-right-6 bottom-20 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl shadow-xl border border-stone-100 items-center space-x-3 z-20" style={{ animation: 'float 8s ease-in-out infinite 1s' }}>
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+                  <Gift size={18} />
                 </div>
                 <div className="text-left">
-                  <p className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Amplop Digital</p>
-                  <p className="text-sm font-extrabold text-stone-800">Transfer &amp; QRIS Aman</p>
+                  <p className="text-[10px] sm:text-[11px] font-bold text-stone-500 uppercase tracking-wider">Amplop Digital</p>
+                  <p className="text-xs sm:text-sm font-extrabold text-stone-800">Transfer &amp; QRIS Aman</p>
                 </div>
               </div>
 
               {/* Phone Frame Mockup */}
-              <div className="w-[300px] sm:w-[330px] rounded-[48px] bg-stone-950 p-3.5 shadow-[0_25px_60px_-15px_rgba(44,30,26,0.35)] border-[5px] border-stone-800 relative">
+              <div className="w-full max-w-[275px] min-[380px]:max-w-[305px] sm:max-w-[330px] rounded-[40px] sm:rounded-[48px] bg-stone-950 p-3 sm:p-3.5 shadow-[0_20px_50px_-10px_rgba(44,30,26,0.3)] sm:shadow-[0_25px_60px_-15px_rgba(44,30,26,0.35)] border-[4px] sm:border-[5px] border-stone-800 relative mx-auto">
                 
                 {/* Speaker & Camera Notch */}
-                <div className="w-32 h-4 bg-stone-900 rounded-full mx-auto mb-2 flex items-center justify-center space-x-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-stone-950" />
-                  <div className="w-2 h-2 rounded-full bg-blue-900/60" />
+                <div className="w-28 sm:w-32 h-3.5 sm:h-4 bg-stone-900 rounded-full mx-auto mb-2 flex items-center justify-center space-x-1.5">
+                  <div className="w-2 h-2 rounded-full bg-stone-950" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-900/60" />
                 </div>
 
                 {/* Phone Screen Container */}
-                <div className="rounded-[36px] bg-[#fbf9f6] overflow-hidden border border-stone-200/40 relative text-center">
+                <div className="rounded-[30px] sm:rounded-[36px] bg-[#fbf9f6] overflow-hidden border border-stone-200/40 relative text-center">
                   
                   {/* Music Player Header Pill */}
                   <div className="bg-primary-900 text-white px-3 py-2 flex items-center justify-between text-xs">
@@ -283,7 +283,7 @@ export const Home: React.FC = () => {
                       </button>
                       <div className="text-left leading-tight">
                         <p className="text-[9px] text-amber-200 font-semibold tracking-wider uppercase">Now Playing</p>
-                        <p className="text-[11px] font-medium truncate max-w-[130px]">Beautiful In White</p>
+                        <p className="text-[11px] font-medium truncate max-w-[120px] sm:max-w-[130px]">Beautiful In White</p>
                       </div>
                     </div>
                     {/* Animated Equalizer */}
@@ -296,49 +296,49 @@ export const Home: React.FC = () => {
                   </div>
 
                   {/* Invitation Preview Hero */}
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-56 sm:h-64 overflow-hidden">
                     <img 
                       src="/bg-floral.jpg" 
                       alt="Tema Split Floral" 
                       className="w-full h-full object-cover" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-5 text-white">
-                      <p className="text-xs uppercase tracking-[0.2em] text-amber-200 font-medium">Tema Split Floral</p>
-                      <h3 className="font-cinzel text-2xl font-bold tracking-wide mt-0.5">Kevin &amp; Jessica</h3>
-                      <p className="text-[11px] text-stone-200 mt-1 font-light flex items-center space-x-1">
-                        <Calendar size={12} className="text-amber-300 inline" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-4 sm:p-5 text-white">
+                      <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-amber-200 font-medium">Tema Split Floral</p>
+                      <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide mt-0.5">Kevin &amp; Jessica</h3>
+                      <p className="text-[10px] sm:text-[11px] text-stone-200 mt-1 font-light flex items-center space-x-1">
+                        <Calendar size={11} className="text-amber-300 inline" />
                         <span>Sabtu, 24 Oktober 2026</span>
                       </p>
                     </div>
                   </div>
 
                   {/* Countdown Box */}
-                  <div className="p-4 bg-white border-b border-stone-100">
-                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-2">Menuju Hari Bahagia</p>
+                  <div className="p-3.5 sm:p-4 bg-white border-b border-stone-100">
+                    <p className="text-[9px] sm:text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1.5 sm:mb-2">Menuju Hari Bahagia</p>
                     <div className="grid grid-cols-4 gap-1.5 text-center">
-                      <div className="bg-primary-50 p-1.5 rounded-lg border border-primary-100">
-                        <span className="block text-sm font-bold text-primary-900 font-mono">124</span>
-                        <span className="text-[9px] text-primary-700">Hari</span>
+                      <div className="bg-primary-50 p-1 sm:p-1.5 rounded-lg border border-primary-100">
+                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">124</span>
+                        <span className="text-[8px] sm:text-[9px] text-primary-700">Hari</span>
                       </div>
-                      <div className="bg-primary-50 p-1.5 rounded-lg border border-primary-100">
-                        <span className="block text-sm font-bold text-primary-900 font-mono">08</span>
-                        <span className="text-[9px] text-primary-700">Jam</span>
+                      <div className="bg-primary-50 p-1 sm:p-1.5 rounded-lg border border-primary-100">
+                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">08</span>
+                        <span className="text-[8px] sm:text-[9px] text-primary-700">Jam</span>
                       </div>
-                      <div className="bg-primary-50 p-1.5 rounded-lg border border-primary-100">
-                        <span className="block text-sm font-bold text-primary-900 font-mono">42</span>
-                        <span className="text-[9px] text-primary-700">Menit</span>
+                      <div className="bg-primary-50 p-1 sm:p-1.5 rounded-lg border border-primary-100">
+                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">42</span>
+                        <span className="text-[8px] sm:text-[9px] text-primary-700">Menit</span>
                       </div>
-                      <div className="bg-primary-50 p-1.5 rounded-lg border border-primary-100">
-                        <span className="block text-sm font-bold text-primary-900 font-mono">19</span>
-                        <span className="text-[9px] text-primary-700">Detik</span>
+                      <div className="bg-primary-50 p-1 sm:p-1.5 rounded-lg border border-primary-100">
+                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">19</span>
+                        <span className="text-[8px] sm:text-[9px] text-primary-700">Detik</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Bottom Actions inside Mockup */}
-                  <div className="p-4 space-y-2.5">
+                  <div className="p-3.5 sm:p-4 space-y-2">
                     <button className="w-full bg-primary-800 hover:bg-primary-900 text-white py-2.5 rounded-xl text-xs font-bold shadow transition-colors flex items-center justify-center space-x-2">
-                      <Heart size={14} className="text-rose-400 fill-rose-400" />
+                      <Heart size={13} className="text-rose-400 fill-rose-400" />
                       <span>Buka Undangan</span>
                     </button>
                     <div className="flex space-x-2 text-[10px]">
@@ -356,7 +356,19 @@ export const Home: React.FC = () => {
                 </div>
 
                 {/* Bottom Home Indicator */}
-                <div className="w-28 h-1 bg-stone-700 rounded-full mx-auto mt-3" />
+                <div className="w-24 sm:w-28 h-1 bg-stone-700 rounded-full mx-auto mt-2.5 sm:mt-3" />
+              </div>
+
+              {/* Mobile Badges Row (Visible ONLY on phones < 540px) */}
+              <div className="flex min-[540px]:hidden items-center justify-center gap-2 mt-4 w-full">
+                <div className="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-xs border border-stone-200/80 flex items-center space-x-2">
+                  <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
+                  <span className="text-[11px] font-bold text-stone-800">RSVP Real-Time</span>
+                </div>
+                <div className="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-xs border border-stone-200/80 flex items-center space-x-2">
+                  <Gift size={14} className="text-rose-600 shrink-0" />
+                  <span className="text-[11px] font-bold text-stone-800">Amplop &amp; QRIS</span>
+                </div>
               </div>
 
             </div>
@@ -365,25 +377,25 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* METRICS STATS BAR (Strictly matching real state) */}
-      <section className="bg-white border-y border-stone-200/80 py-10 relative z-10">
+      {/* METRICS STATS BAR */}
+      <section className="bg-white border-y border-stone-200/80 py-8 sm:py-10 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-stone-200">
-            <div className="pt-4 md:pt-0">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary-900 font-cinzel">1.000+</div>
-              <p className="text-sm font-semibold text-stone-500 mt-1">Tamu Telah Terlayani</p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 text-center">
+            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">1.000+</div>
+              <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Tamu Terlayani</p>
             </div>
-            <div className="pt-4 md:pt-0">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary-900 font-cinzel">99.8%</div>
-              <p className="text-sm font-semibold text-stone-500 mt-1">Kepuasan Pasangan</p>
+            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">99.8%</div>
+              <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Kepuasan Pasangan</p>
             </div>
-            <div className="pt-4 md:pt-0">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary-900 font-cinzel">1 Tema</div>
-              <p className="text-sm font-semibold text-stone-500 mt-1">Masterpiece (Split Floral)</p>
+            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">1 Tema</div>
+              <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Split Floral</p>
             </div>
-            <div className="pt-4 md:pt-0">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary-900 font-cinzel">Real-Time</div>
-              <p className="text-sm font-semibold text-stone-500 mt-1">Notifikasi RSVP &amp; Doa</p>
+            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">Real-Time</div>
+              <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Notifikasi RSVP &amp; Doa</p>
             </div>
           </div>
         </div>
@@ -581,16 +593,16 @@ export const Home: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-3 pt-4 border-t border-stone-100">
+                      <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-4 border-t border-stone-100">
                         <Link 
                           to="/themes"
-                          className="flex-1 py-3 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 text-center transition-colors block"
+                          className="w-full sm:flex-1 py-3 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 text-center transition-colors block"
                         >
                           Lihat Detail di Katalog
                         </Link>
                         <Link 
                           to="/admin/invitations/create"
-                          className="flex-1 py-3 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 text-center transition-colors shadow-md block"
+                          className="w-full sm:flex-1 py-3 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 text-center transition-colors shadow-md block"
                         >
                           Pilih Tema Ini
                         </Link>
@@ -689,26 +701,26 @@ export const Home: React.FC = () => {
       </section>
 
       {/* PRICING PLANS SECTION */}
-      <section id="pricing" className="py-24 bg-stone-100/70 border-y border-stone-200/70 relative">
+      <section id="pricing" className="py-16 sm:py-24 bg-stone-100/70 border-y border-stone-200/70 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3">
             <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-white border border-primary-200 px-3.5 py-1.5 rounded-full">
               <Gift size={14} />
               <span>Pilihan Paket &amp; Harga</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
               Investasi Terbaik untuk Momen Seumur Hidup
             </h2>
-            <p className="text-base sm:text-lg text-stone-600">
+            <p className="text-sm sm:text-base lg:text-lg text-stone-600">
               Pilih paket yang paling sesuai dengan kebutuhan pernikahan impian Anda dan pasangan.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
             
             {/* 1. STARTER PLAN */}
-            <div className="bg-[#faf7f2] rounded-3xl p-7 sm:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+            <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
               <div>
                 {/* Header */}
                 <div className="text-center pb-5 border-b border-stone-200/70">
@@ -722,7 +734,7 @@ export const Home: React.FC = () => {
                   {/* Price with strikethrough */}
                   <div className="mt-4 flex flex-col items-center justify-center">
                     <div className="flex items-center space-x-2">
-                      <span className="line-through text-stone-400 text-base sm:text-lg font-semibold">
+                      <span className="line-through text-stone-400 text-sm sm:text-base font-semibold">
                         Rp 150.000
                       </span>
                       <span className="bg-rose-100 text-rose-700 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
@@ -797,9 +809,9 @@ export const Home: React.FC = () => {
             </div>
 
             {/* 2. PREMIUM PLAN (Featured Best Seller) */}
-            <div className="bg-[#1b2a47] text-white rounded-3xl p-7 sm:p-8 border-2 border-amber-300 shadow-2xl flex flex-col justify-between relative transform md:-translate-y-3">
+            <div className="bg-[#1b2a47] text-white rounded-3xl p-5 sm:p-7 md:p-8 border-2 border-amber-300 shadow-2xl flex flex-col justify-between relative transform md:-translate-y-3">
               {/* Best Seller Top Ribbon */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-stone-950 text-[11px] font-black px-5 py-1 rounded-full uppercase tracking-wider shadow-md">
+              <div className="absolute -top-3.5 sm:-top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-stone-950 text-[10px] sm:text-[11px] font-black px-4 sm:px-5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider shadow-md whitespace-nowrap">
                 BEST SELLER
               </div>
 
@@ -886,7 +898,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* 3. CUSTOM PLAN */}
-            <div className="bg-[#faf7f2] rounded-3xl p-7 sm:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+            <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
               <div>
                 {/* Header */}
                 <div className="text-center pb-5 border-b border-stone-200/70">
@@ -898,7 +910,7 @@ export const Home: React.FC = () => {
                   </p>
 
                   <div className="mt-4 flex flex-col items-center justify-center">
-                    <div className="text-2xl sm:text-3xl font-black text-stone-950 font-cinzel leading-tight">
+                    <div className="text-xl min-[360px]:text-2xl sm:text-3xl font-black text-stone-950 font-cinzel leading-tight whitespace-nowrap">
                       Rp 400.000 – 550.000
                     </div>
                     <span className="text-[11px] font-semibold text-stone-500 mt-0.5">Mulai dari</span>
@@ -971,83 +983,83 @@ export const Home: React.FC = () => {
       </section>
 
       {/* TESTIMONIALS SECTION */}
-      <section id="testimonials" className="py-24 relative overflow-hidden">
+      <section id="testimonials" className="py-16 sm:py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3">
             <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-primary-50 border border-primary-200 px-3.5 py-1.5 rounded-full">
               <Heart size={14} className="text-rose-500 fill-rose-500" />
               <span>Kisah Bahagia</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
               Cerita Dari Pasangan Pengantin Kami
             </h2>
-            <p className="text-base sm:text-lg text-stone-600">
+            <p className="text-sm sm:text-base lg:text-lg text-stone-600">
               Banyak pasangan telah mempercayakan momen sakral mereka bersama WD Group. Inilah pengalaman mereka.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             
             {/* Testimonial 1 */}
-            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex items-center space-x-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
+                    <Star key={i} size={15} fill="currentColor" />
                   ))}
                 </div>
-                <p className="text-stone-700 italic text-sm leading-relaxed">
+                <p className="text-stone-700 italic text-xs sm:text-sm leading-relaxed">
                   &ldquo;Tamu undangan kami pada kagum sama undangannya! Musiknya romantis banget, terus fitur RSVP bikin kami gampang banget rekap katering. Pelayanan admin WD Group juga super ramah dan cepat tanggap.&rdquo;
                 </p>
               </div>
-              <div className="flex items-center space-x-3 pt-6 border-t border-stone-100 mt-6">
-                <img src="/photos/photo-4.jpg" alt="Rendy & Maya" className="w-12 h-12 rounded-full object-cover border-2 border-primary-200" />
+              <div className="flex items-center space-x-3 pt-5 border-t border-stone-100 mt-5">
+                <img src="/photos/photo-4.jpg" alt="Rendy & Maya" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-primary-200" />
                 <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Rendy &amp; Maya</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Jakarta • Tema Split Floral</p>
+                  <h4 className="font-bold text-stone-900 text-xs sm:text-sm">Rendy &amp; Maya</h4>
+                  <p className="text-[11px] sm:text-xs text-stone-500">Pernikahan di Jakarta • Tema Split Floral</p>
                 </div>
               </div>
             </div>
 
             {/* Testimonial 2 */}
-            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex items-center space-x-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
+                    <Star key={i} size={15} fill="currentColor" />
                   ))}
                 </div>
-                <p className="text-stone-700 italic text-sm leading-relaxed">
+                <p className="text-stone-700 italic text-xs sm:text-sm leading-relaxed">
                   &ldquo;Awalnya bingung cari undangan yang elegan tapi ga ribet. Ketemu WD Group, 10 menit beres langsung bisa sebar link ke WhatsApp teman-teman kantor. Amplop digitalnya sangat ngebantu banget!&rdquo;
                 </p>
               </div>
-              <div className="flex items-center space-x-3 pt-6 border-t border-stone-100 mt-6">
-                <img src="/photos/photo-5.jpg" alt="Dimas & Nadia" className="w-12 h-12 rounded-full object-cover border-2 border-primary-200" />
+              <div className="flex items-center space-x-3 pt-5 border-t border-stone-100 mt-5">
+                <img src="/photos/photo-5.jpg" alt="Dimas & Nadia" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-primary-200" />
                 <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Dimas &amp; Nadia</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Bandung • Tema Split Floral</p>
+                  <h4 className="font-bold text-stone-900 text-xs sm:text-sm">Dimas &amp; Nadia</h4>
+                  <p className="text-[11px] sm:text-xs text-stone-500">Pernikahan di Bandung • Tema Split Floral</p>
                 </div>
               </div>
             </div>
 
             {/* Testimonial 3 */}
-            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex items-center space-x-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
+                    <Star key={i} size={15} fill="currentColor" />
                   ))}
                 </div>
-                <p className="text-stone-700 italic text-sm leading-relaxed">
+                <p className="text-stone-700 italic text-xs sm:text-sm leading-relaxed">
                   &ldquo;Visual gerbang arch saat dibuka bener-bener mewah dan sakral. Doa restu dari keluarga besar mengalir deras di buku tamu. Terima kasih banyak WD Group telah menyempurnakan hari bahagia kami!&rdquo;
                 </p>
               </div>
-              <div className="flex items-center space-x-3 pt-6 border-t border-stone-100 mt-6">
-                <img src="/photos/photo-6.jpg" alt="Faris & Aisyah" className="w-12 h-12 rounded-full object-cover border-2 border-primary-200" />
+              <div className="flex items-center space-x-3 pt-5 border-t border-stone-100 mt-5">
+                <img src="/photos/photo-6.jpg" alt="Faris & Aisyah" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-primary-200" />
                 <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Faris &amp; Aisyah</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Surabaya • Tema Split Floral</p>
+                  <h4 className="font-bold text-stone-900 text-xs sm:text-sm">Faris &amp; Aisyah</h4>
+                  <p className="text-[11px] sm:text-xs text-stone-500">Pernikahan di Surabaya • Tema Split Floral</p>
                 </div>
               </div>
             </div>
@@ -1057,41 +1069,41 @@ export const Home: React.FC = () => {
       </section>
 
       {/* FAQ SECTION */}
-      <section id="faq" className="py-24 bg-stone-100/70 border-t border-stone-200/70 relative">
+      <section id="faq" className="py-16 sm:py-24 bg-stone-100/70 border-t border-stone-200/70 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center mb-16 space-y-3">
+          <div className="text-center mb-10 sm:mb-16 space-y-3">
             <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-white border border-primary-200 px-3.5 py-1.5 rounded-full">
               <span>Pertanyaan Umum</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
               Ada Pertanyaan? Kami Punya Jawabannya
             </h2>
-            <p className="text-base text-stone-600">
+            <p className="text-sm sm:text-base text-stone-600">
               Berikut hal-hal yang paling sering ditanyakan oleh calon pengantin.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {faqs.map((faq, idx) => (
               <div 
                 key={idx}
-                className="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm"
+                className="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-xs"
               >
                 <button
                   onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
-                  className="w-full p-6 text-left font-bold text-stone-900 flex justify-between items-center hover:text-primary-800 transition-colors"
+                  className="w-full p-4 sm:p-6 text-left font-bold text-stone-900 flex justify-between items-center hover:text-primary-800 transition-colors gap-3"
                 >
-                  <span className="text-base sm:text-lg">{faq.q}</span>
+                  <span className="text-sm sm:text-base lg:text-lg leading-snug">{faq.q}</span>
                   <ChevronDown 
-                    size={20} 
-                    className={`text-primary-700 transform transition-transform duration-300 flex-shrink-0 ml-4 ${
+                    size={18} 
+                    className={`text-primary-700 transform transition-transform duration-300 flex-shrink-0 ${
                       openFaqIndex === idx ? 'rotate-180' : ''
                     }`} 
                   />
                 </button>
                 {openFaqIndex === idx && (
-                  <div className="px-6 pb-6 text-stone-600 text-sm leading-relaxed border-t border-stone-100 pt-4">
+                  <div className="px-4 pb-4 sm:px-6 sm:pb-6 text-stone-600 text-xs sm:text-sm leading-relaxed border-t border-stone-100 pt-3 sm:pt-4">
                     {faq.a}
                   </div>
                 )}
@@ -1103,48 +1115,48 @@ export const Home: React.FC = () => {
       </section>
 
       {/* CALL TO ACTION BANNER */}
-      <section className="py-20 relative overflow-hidden bg-primary-900 text-white">
+      <section className="py-14 sm:py-20 relative overflow-hidden bg-primary-900 text-white">
         <div className="absolute inset-0 opacity-15 pointer-events-none">
           <img src="/cover-lunar-bg.jpg" alt="Texture" className="w-full h-full object-cover" />
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
-          <span className="inline-block font-cinzel text-amber-300 uppercase tracking-widest text-sm font-bold">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-5 sm:space-y-6">
+          <span className="inline-block font-cinzel text-amber-300 uppercase tracking-widest text-xs sm:text-sm font-bold">
             WD GROUP DIGITAL INVITATION
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
             Wujudkan Undangan Pernikahan Impian Anda Hari Ini
           </h2>
-          <p className="text-base sm:text-xl text-stone-200 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-sm sm:text-lg lg:text-xl text-stone-200 max-w-2xl mx-auto font-light leading-relaxed">
             Mulai langkah awal menuju hari bahagia Anda. Ciptakan momen spesial yang abadi dan elegan bersama layanan profesional kami.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-3 sm:pt-4 w-full">
             <a 
               href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-stone-950 font-extrabold text-base shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2"
+              className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-stone-950 font-extrabold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2"
             >
-              <MessageCircle size={20} />
+              <MessageCircle size={18} />
               <span>Hubungi Admin via WhatsApp</span>
             </a>
 
             <Link 
               to="/themes"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-base border border-white/20 backdrop-blur-md transition-all flex items-center justify-center space-x-2"
+              className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm sm:text-base border border-white/20 backdrop-blur-md transition-all flex items-center justify-center space-x-2"
             >
               <span>Katalog Tema</span>
-              <ArrowRight size={18} />
+              <ArrowRight size={16} />
             </Link>
           </div>
         </div>
       </section>
 
       {/* LUXURY FOOTER */}
-      <footer className="bg-stone-950 text-stone-400 py-16 border-t border-stone-800 text-sm">
+      <footer className="bg-stone-950 text-stone-400 py-12 sm:py-16 border-t border-stone-800 text-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-12">
             
             {/* Brand Info */}
             <div className="space-y-4 md:col-span-1">
@@ -1200,9 +1212,9 @@ export const Home: React.FC = () => {
 
           </div>
 
-          <div className="pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-stone-500 gap-4">
+          <div className="pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-stone-500 gap-4 text-center sm:text-left">
             <p>&copy; {new Date().getFullYear()} WD Group. Seluruh Hak Cipta Dilindungi Undang-Undang.</p>
-            <div className="flex space-x-6">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
               <a href="#" className="hover:text-stone-300">Kebijakan Privasi</a>
               <a href="#" className="hover:text-stone-300">Syarat &amp; Ketentuan</a>
               <a href="#" className="hover:text-stone-300">Hubungi Kami</a>

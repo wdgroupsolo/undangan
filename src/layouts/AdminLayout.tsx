@@ -52,11 +52,19 @@ export const AdminLayout: React.FC = () => {
         </button>
       </div>
 
+      {/* Mobile Drawer Backdrop */}
+      {isMobileMenuOpen && (
+        <div 
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="fixed inset-0 bg-black/50 backdrop-blur-xs z-30 md:hidden transition-opacity"
+        />
+      )}
+
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 bg-white border-r border-gray-200 w-64 flex flex-col transition-transform duration-300 z-10
-        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-        md:relative md:translate-x-0
+        fixed inset-y-0 left-0 bg-white border-r border-gray-200 w-64 flex flex-col transition-transform duration-300 z-40
+        ${isMobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}
+        md:relative md:translate-x-0 md:shadow-none
       `}>
         <div className="p-6 border-b border-gray-200 hidden md:block">
           <span className="text-2xl font-bold text-gray-800 tracking-tight">WD GROUP</span>
