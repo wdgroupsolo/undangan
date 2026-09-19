@@ -738,11 +738,11 @@ export const Home: React.FC = () => {
                         Rp 150.000
                       </span>
                       <span className="bg-rose-100 text-rose-700 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
-                        Hemat 33%
+                        Hemat 67%
                       </span>
                     </div>
                     <div className="text-3xl sm:text-4xl font-black text-stone-950 font-cinzel mt-0.5">
-                      Rp 100.000
+                      Rp 50.000
                     </div>
                   </div>
                 </div>
@@ -798,7 +798,7 @@ export const Home: React.FC = () => {
                   Cocok untuk yang ingin undangan <strong>simpel &amp; hemat</strong>.
                 </div>
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Promo%20Rp%20100.000)"
+                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Promo%20Rp%2050.000)"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full block text-center py-3.5 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs sm:text-sm shadow transition-all"
@@ -826,8 +826,16 @@ export const Home: React.FC = () => {
                   </p>
 
                   <div className="mt-4 flex flex-col items-center justify-center">
-                    <div className="text-3xl sm:text-4xl font-black text-white font-cinzel">
-                      Rp 250.000
+                    <div className="flex items-center space-x-2">
+                      <span className="line-through text-amber-200/70 text-sm sm:text-base font-semibold">
+                        Rp 250.000
+                      </span>
+                      <span className="bg-amber-300 text-stone-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                        Hemat 40%
+                      </span>
+                    </div>
+                    <div className="text-3xl sm:text-4xl font-black text-white font-cinzel mt-0.5">
+                      Rp 150.000
                     </div>
                   </div>
                 </div>
@@ -887,7 +895,7 @@ export const Home: React.FC = () => {
                   Pilihan <strong>terbaik</strong> untuk hasil yang <strong>lebih maksimal</strong>.
                 </div>
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Rp%20250.000)"
+                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Promo%20Rp%20150.000)"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full block text-center py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 hover:from-amber-300 hover:to-amber-100 font-extrabold text-xs sm:text-sm text-stone-950 shadow-lg transition-all"
@@ -910,10 +918,18 @@ export const Home: React.FC = () => {
                   </p>
 
                   <div className="mt-4 flex flex-col items-center justify-center">
-                    <div className="text-xl min-[360px]:text-2xl sm:text-3xl font-black text-stone-950 font-cinzel leading-tight whitespace-nowrap">
-                      Rp 400.000 – 550.000
+                    <div className="flex items-center space-x-2">
+                      <span className="line-through text-stone-400 text-sm sm:text-base font-semibold">
+                        Rp 350.000
+                      </span>
+                      <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                        Transparan
+                      </span>
                     </div>
-                    <span className="text-[11px] font-semibold text-stone-500 mt-0.5">Mulai dari</span>
+                    <div className="text-xl min-[360px]:text-2xl sm:text-3xl font-black text-stone-950 font-cinzel mt-0.5 leading-tight whitespace-nowrap">
+                      Rp 250.000 – 350.000
+                    </div>
+                    <span className="text-[11px] font-semibold text-stone-500 mt-0.5">Estimasi jelas sesuai kebutuhan fitur</span>
                   </div>
                 </div>
 
@@ -925,11 +941,11 @@ export const Home: React.FC = () => {
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>100% custom design</span>
+                    <span>100% custom design (Request tema)</span>
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>Sesuai tema wedding</span>
+                    <span>Sesuai tema &amp; dekorasi wedding</span>
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
@@ -937,7 +953,7 @@ export const Home: React.FC = () => {
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>Custom animation</span>
+                    <span>Custom animation &amp; audio</span>
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
@@ -945,11 +961,11 @@ export const Home: React.FC = () => {
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>RSVP database</span>
+                    <span>RSVP database + direct WA</span>
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
-                    <span>Digital envelope</span>
+                    <span>Digital envelope &amp; gift registry</span>
                   </li>
                   <li className="flex items-center space-x-2.5">
                     <CheckCircle2 size={16} className="text-primary-700 flex-shrink-0" />
@@ -965,15 +981,15 @@ export const Home: React.FC = () => {
               {/* Bottom Note & Button */}
               <div className="space-y-4 pt-2">
                 <div className="bg-[#ede8df] rounded-xl p-3 text-center text-xs text-stone-700">
-                  Untuk kamu yang ingin <strong>desain eksklusif dan berbeda</strong>.
+                  Konsultasi gratis &amp; <strong>estimasi biaya transparan</strong> sesuai kebutuhan.
                 </div>
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20Paket%20Custom"
+                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20Paket%20Custom%20undangan%20digital"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3.5 rounded-xl border border-stone-300 font-bold text-xs sm:text-sm text-stone-700 hover:bg-stone-50 transition-colors"
+                  className="w-full block text-center py-3.5 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all"
                 >
-                  Pilih Paket Custom
+                  Konsultasi Paket Custom
                 </a>
               </div>
             </div>
