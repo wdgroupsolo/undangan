@@ -779,9 +779,9 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               {/* Arch Groom Photo */}
               <div className="w-[275px] sm:w-[285px] aspect-[4/5] bg-[#e6dfd3] rounded-t-[140px] rounded-b-none overflow-hidden mb-6 relative shadow-[0_12px_28px_rgba(74,56,40,0.16)] mx-auto z-10">
                 <img 
-                  src={couple?.groom_photo || '/groom-default.png'} 
+                  src={(couple?.groom_photo && couple.groom_photo.trim() !== '') ? couple.groom_photo : '/groom-default.png'} 
                   alt={groomFullName} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
+                  className="w-full h-full object-cover object-[center_15%] group-hover:scale-105 transition-transform duration-1000" 
                 />
               </div>
               
@@ -838,9 +838,9 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               {/* Arch Bride Photo */}
               <div className="w-[275px] sm:w-[285px] aspect-[4/5] bg-[#e6dfd3] rounded-t-[140px] rounded-b-none overflow-hidden mb-6 relative shadow-[0_12px_28px_rgba(74,56,40,0.16)] mx-auto z-10">
                 <img 
-                  src={couple?.bride_photo || '/bride-default.png'} 
+                  src={(couple?.bride_photo && couple.bride_photo.trim() !== '') ? couple.bride_photo : '/bride-default.png'} 
                   alt={brideFullName} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
+                  className="w-full h-full object-cover object-[center_15%] group-hover:scale-105 transition-transform duration-1000" 
                 />
               </div>
               

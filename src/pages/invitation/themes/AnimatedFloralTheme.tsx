@@ -112,9 +112,9 @@ export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ invita
               <div className="absolute -inset-4 border border-[#d1c5b4] rounded-t-full rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               <div className="aspect-[3/4] bg-gray-200 rounded-t-[1000px] overflow-hidden mb-8 relative shadow-md border-4 border-white mx-auto max-w-sm">
                 <img 
-                  src={couple?.groom_photo || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'} 
+                  src={(couple?.groom_photo && couple.groom_photo.trim() !== '') ? couple.groom_photo : '/groom-default.png'} 
                   alt={couple?.groom_full_name} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                  className="w-full h-full object-cover object-[center_15%] group-hover:scale-105 transition-transform duration-1000"
                 />
               </div>
               <p className="font-serif italic text-3xl mb-3 text-[#a39178]">{couple?.groom_nickname || couple?.groom_full_name || 'Groom'}</p>
@@ -129,9 +129,9 @@ export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ invita
               <div className="absolute -inset-4 border border-[#d1c5b4] rounded-t-full rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               <div className="aspect-[3/4] bg-gray-200 rounded-t-[1000px] overflow-hidden mb-8 relative shadow-md border-4 border-white mx-auto max-w-sm">
                 <img 
-                  src={couple?.bride_photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'} 
+                  src={(couple?.bride_photo && couple.bride_photo.trim() !== '') ? couple.bride_photo : '/bride-default.png'} 
                   alt={couple?.bride_full_name} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                  className="w-full h-full object-cover object-[center_15%] group-hover:scale-105 transition-transform duration-1000"
                 />
               </div>
               <p className="font-serif italic text-3xl mb-3 text-[#a39178]">{couple?.bride_nickname || couple?.bride_full_name || 'Bride'}</p>
