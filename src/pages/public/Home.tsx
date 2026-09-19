@@ -221,7 +221,7 @@ export const Home: React.FC = () => {
                         <Star key={i} size={14} fill="currentColor" />
                       ))}
                     </div>
-                    <span className="text-xs font-semibold text-stone-800">10.000+ Pasangan Bahagia</span>
+                    <span className="text-xs font-semibold text-stone-800">1.000+ Tamu Terlayani</span>
                   </div>
                 </div>
 
@@ -370,8 +370,8 @@ export const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-stone-200">
             <div className="pt-4 md:pt-0">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary-900 font-cinzel">10.000+</div>
-              <p className="text-sm font-semibold text-stone-500 mt-1">Undangan Telah Dibuat</p>
+              <div className="text-3xl sm:text-4xl font-extrabold text-primary-900 font-cinzel">1.000+</div>
+              <p className="text-sm font-semibold text-stone-500 mt-1">Tamu Telah Terlayani</p>
             </div>
             <div className="pt-4 md:pt-0">
               <div className="text-3xl sm:text-4xl font-extrabold text-primary-900 font-cinzel">99.8%</div>
@@ -874,7 +874,7 @@ export const Home: React.FC = () => {
               Cerita Dari Pasangan Pengantin Kami
             </h2>
             <p className="text-base sm:text-lg text-stone-600">
-              Ribuan pasangan telah mempercayakan momen sakral mereka bersama WD Group. Inilah pengalaman mereka.
+              Banyak pasangan telah mempercayakan momen sakral mereka bersama WD Group. Inilah pengalaman mereka.
             </p>
           </div>
 
@@ -1007,7 +1007,7 @@ export const Home: React.FC = () => {
             Wujudkan Undangan Pernikahan Impian Anda Hari Ini
           </h2>
           <p className="text-base sm:text-xl text-stone-200 max-w-2xl mx-auto font-light leading-relaxed">
-            Bergabunglah dengan ribuan pasangan bahagia lainnya. Ciptakan momen spesial yang abadi dan elegan bersama layanan profesional kami.
+            Mulai langkah awal menuju hari bahagia Anda. Ciptakan momen spesial yang abadi dan elegan bersama layanan profesional kami.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
