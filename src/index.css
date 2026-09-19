@@ -91,6 +91,55 @@
   .font-poppins {
     font-family: 'Poppins', sans-serif;
   }
+  .font-imperial {
+    font-family: 'Imperial Script', 'Great Vibes', cursive;
+  }
+  .font-lora {
+    font-family: 'Lora', Georgia, serif;
+  }
+
+  @keyframes windSwayLeft {
+    0%, 100% {
+      transform: rotate(3deg) translateY(0px) scale(1);
+    }
+    50% {
+      transform: rotate(-2deg) translateY(-6px) scale(1.015);
+    }
+  }
+
+  @keyframes windSwayRight {
+    0%, 100% {
+      transform: translateY(-50%) rotate(-3deg) scaleX(-1) translateY(0px);
+    }
+    50% {
+      transform: translateY(-50%) rotate(2deg) scaleX(-1) translateY(-6px);
+    }
+  }
+
+  .animate-wind-left {
+    transform-origin: top left;
+    animation: windSwayLeft 6.5s ease-in-out infinite;
+  }
+
+  .animate-wind-right {
+    transform-origin: center right;
+    animation: windSwayRight 7s ease-in-out infinite 0.8s;
+  }
+
+  @keyframes subtlePulseGlow {
+    0%, 100% {
+      box-shadow: 0 4px 15px rgba(154, 110, 118, 0.3);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 6px 22px rgba(154, 110, 118, 0.55);
+      transform: scale(1.025);
+    }
+  }
+
+  .btn-open-invitation {
+    animation: subtlePulseGlow 3s ease-in-out infinite;
+  }
 
   @keyframes float {
     0%, 100% { transform: translateY(0) scale(1); opacity: 0.2; }

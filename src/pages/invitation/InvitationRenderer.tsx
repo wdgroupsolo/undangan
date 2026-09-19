@@ -8,12 +8,14 @@ import { BaseTheme } from './themes/BaseTheme';
 import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
 import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
+import { SecretGardenTheme } from './themes/SecretGardenTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
   const guestName = searchParams.get('to') || 'Tamu Undangan';
+  const requestedTheme = searchParams.get('theme');
 
   // Opening sequence states:
   // 'cover'      -> Initial front cover (split on desktop, fullscreen on mobile) with [Buka Undangan] button
@@ -138,11 +140,17 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  if (!invitation) {
-    return <Navigate to="/404" replace />;
-  }
+  const activeThemeSlug = requestedTheme || invitation?.theme?.slug || 'split-floral';
+  const isSecretGarden = activeThemeSlug === 'secret-garden';
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden;
 
-  const coverImage = gallery?.[0]?.image_url || (invitation.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg');
+  const coverImage = isSecretGarden
+    ? '/themes/secret-garden/assets/preview.jpg'
+    : (gallery?.[0]?.image_url || (invitation.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
+
+  const entranceVideoSrc = isSecretGarden
+    ? '/themes/secret-garden/assets/video.mp4'
+    : '/video-cover.mp4';
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
@@ -191,7 +199,6 @@ export const InvitationRenderer: React.FC = () => {
     }, 5200);
   };
 
-  const isSplitTheme = invitation.theme?.slug === 'split-floral';
   const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && (isSplitTheme || isVideoExiting));
 
   return (
@@ -235,7 +242,17 @@ export const InvitationRenderer: React.FC = () => {
       {/* Main Invitation Content */}
       <div className={`transition-opacity duration-1000 ${isInvitationVisible ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
         {(openingStage === 'opened' || openingStage === 'arch-video') && (
-          (invitation.theme?.slug === 'animated-luxury' || invitation.theme?.slug === 'elegant-gold' || invitation.theme?.slug === 'navy-luxury') ? (
+          isSecretGarden ? (
+            <SecretGardenTheme 
+              invitation={invitation}
+              couple={couple}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+            />
+          ) : (invitation.theme?.slug === 'animated-luxury' || invitation.theme?.slug === 'elegant-gold' || invitation.theme?.slug === 'navy-luxury') ? (
             <LuxuryAnimatedTheme 
               invitation={invitation}
               couple={couple}
@@ -281,63 +298,138 @@ export const InvitationRenderer: React.FC = () => {
 
       {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) */}
       {openingStage === 'cover' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-neutral-950">
-          {/* Fullscreen Photo with Cinematic Dark Vignette Overlay */}
-          <div className="absolute inset-0 z-0">
-            <img 
-              src={coverImage} 
-              alt="Cover" 
-              className="w-full h-full object-cover object-center scale-105"
-            />
-            {/* Cinematic Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/60" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.45)_100%)]" />
-          </div>
-
-          {/* Centered Content: Clean, High Luxury Typography, No Duplicates */}
-          <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 sm:px-10 max-w-2xl mx-auto py-8 text-white">
-            {/* Subtitle */}
-            <p 
-              className="text-xs sm:text-sm uppercase tracking-[0.35em] text-gray-200 font-medium mb-3 sm:mb-4 drop-shadow-md"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
-              Undangan Pernikahan
-            </p>
-
-            {/* Couple Names */}
-            <h1 
-              className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.2rem] text-white font-normal tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-4 uppercase leading-none flex-wrap"
-              style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}
-            >
-              <span style={{ fontVariantLigatures: 'common-ligatures' }}>{groom}</span>
-              <span className="text-2xl sm:text-4xl md:text-5xl font-serif font-light italic opacity-90 mx-1">&amp;</span>
-              <span style={{ fontVariantLigatures: 'common-ligatures' }}>{bride}</span>
-            </h1>
-
-            {/* Recipient Glass Card */}
-            <div className="backdrop-blur-md bg-black/30 border border-white/20 rounded-2xl px-6 sm:px-10 py-4 sm:py-5 max-w-sm w-full mx-auto mb-7 sm:mb-9 shadow-2xl space-y-1">
-              <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                Kepada Yth.
-              </p>
-              <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                Bapak/Ibu/Saudara/i:
-              </p>
-              <p className="text-lg sm:text-2xl font-bold text-white tracking-wide pt-0.5 drop-shadow-md" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                {guestName}
-              </p>
+        isSecretGarden ? (
+          /* Exact Cover from User Screenshot: kedaigrafisdigital.com/theme/preview/secret-garden */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0e0b08]">
+            {/* Background image matching user screenshot */}
+            <div className="absolute inset-0 z-0">
+              <img 
+                src="/themes/secret-garden/assets/preview.jpg" 
+                alt="Cover Secret Garden" 
+                className="w-full h-full object-cover object-center scale-105"
+              />
+              <div className="absolute inset-0 bg-black/50" />
             </div>
 
-            {/* Buka Undangan Button */}
-            <button 
-              onClick={handleOpen}
-              className="group inline-flex items-center gap-2.5 sm:gap-3 bg-white hover:bg-[#f8f5ee] text-[#3a291a] px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-semibold text-xs sm:text-sm md:text-base shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.25)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
-              <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-[#3a291a] group-hover:scale-110 transition-transform duration-200" />
-              <span>Buka Undangan</span>
-            </button>
+            {/* Secret Garden Cover Content from user screenshot */}
+            <div className="relative z-10 w-full h-full flex flex-col justify-center items-center py-12 px-6 gap-y-10 sm:gap-y-14 text-center text-white">
+              <div className="flex flex-col items-center justify-center w-full">
+                <p 
+                  className="text-xs sm:text-sm font-light text-white tracking-[0.25em] uppercase mb-4"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  UNDANGAN PERNIKAHAN
+                </p>
+                <div className="flex flex-row items-center justify-center gap-x-2 sm:gap-x-4 flex-wrap">
+                  <h1 
+                    className="text-4xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+                    style={{ fontFamily: "'Imperial Script', cursive" }}
+                  >
+                    {groom}
+                  </h1>
+                  <span 
+                    className="text-2xl sm:text-4xl text-white font-normal drop-shadow"
+                    style={{ fontFamily: "'Imperial Script', cursive" }}
+                  >
+                    &amp;
+                  </span>
+                  <h1 
+                    className="text-4xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+                    style={{ fontFamily: "'Imperial Script', cursive" }}
+                  >
+                    {bride}
+                  </h1>
+                </div>
+              </div>
+
+              {/* Bottom Section: Nama Tamu & Button */}
+              <div className="flex flex-col items-center gap-y-1 w-full">
+                <p 
+                  className="text-white text-center text-xs sm:text-sm tracking-wider opacity-90 mb-1 leading-relaxed"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Kepada Yth.<br />
+                  Bapak/Ibu/Saudara/i:
+                </p>
+                <p 
+                  className="text-white text-center text-base sm:text-lg font-semibold tracking-wide mb-6 drop-shadow"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {guestName}
+                </p>
+                <button 
+                  onClick={handleOpen} 
+                  className="btn-open-invitation px-8 py-3 rounded-full text-sm font-medium transition-transform hover:scale-105 shadow-xl tracking-wider cursor-pointer"
+                  style={{ 
+                    background: 'linear-gradient(239.94deg, #D7A5AE 0%, #774B53 100%)', 
+                    color: '#FFFFFF',
+                    fontFamily: "'Poppins', sans-serif" 
+                  }}
+                >
+                  BUKA UNDANGAN
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-neutral-950">
+            {/* Fullscreen Photo with Cinematic Dark Vignette Overlay */}
+            <div className="absolute inset-0 z-0">
+              <img 
+                src={coverImage} 
+                alt="Cover" 
+                className="w-full h-full object-cover object-center scale-105"
+              />
+              {/* Cinematic Gradient Overlays */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/60" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.45)_100%)]" />
+            </div>
+
+            {/* Centered Content: Clean, High Luxury Typography, No Duplicates */}
+            <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 sm:px-10 max-w-2xl mx-auto py-8 text-white">
+              {/* Subtitle */}
+              <p 
+                className="text-xs sm:text-sm uppercase tracking-[0.35em] text-gray-200 font-medium mb-3 sm:mb-4 drop-shadow-md"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                Undangan Pernikahan
+              </p>
+
+              {/* Couple Names */}
+              <h1 
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.2rem] text-white font-normal tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-4 uppercase leading-none flex-wrap"
+                style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}
+              >
+                <span style={{ fontVariantLigatures: 'common-ligatures' }}>{groom}</span>
+                <span className="text-2xl sm:text-4xl md:text-5xl font-serif font-light italic opacity-90 mx-1">&amp;</span>
+                <span style={{ fontVariantLigatures: 'common-ligatures' }}>{bride}</span>
+              </h1>
+
+              {/* Recipient Glass Card */}
+              <div className="backdrop-blur-md bg-black/30 border border-white/20 rounded-2xl px-6 sm:px-10 py-4 sm:py-5 max-w-sm w-full mx-auto mb-7 sm:mb-9 shadow-2xl space-y-1">
+                <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  Kepada Yth.
+                </p>
+                <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  Bapak/Ibu/Saudara/i:
+                </p>
+                <p className="text-lg sm:text-2xl font-bold text-white tracking-wide pt-0.5 drop-shadow-md" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  {guestName}
+                </p>
+              </div>
+
+              {/* Buka Undangan Button */}
+              <button 
+                onClick={handleOpen}
+                className="group inline-flex items-center gap-2.5 sm:gap-3 bg-white hover:bg-[#f8f5ee] text-[#3a291a] px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-semibold text-xs sm:text-sm md:text-base shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.25)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-[#3a291a] group-hover:scale-110 transition-transform duration-200" />
+                <span>Buka Undangan</span>
+              </button>
+            </div>
+          </div>
+        )
       )}
 
       {/* 2. Entrance Animation: Vintage Arch Video */}
@@ -362,8 +454,8 @@ export const InvitationRenderer: React.FC = () => {
           <div className="relative w-full h-full max-h-[100dvh] flex items-center justify-center p-0">
             <video
               ref={videoRef}
-              src="/video-cover.mp4"
-              poster="/arch-clean.png"
+              src={entranceVideoSrc}
+              poster={isSecretGarden ? '/themes/secret-garden/assets/preview.jpg' : '/arch-clean.png'}
               autoPlay
               playsInline
               muted

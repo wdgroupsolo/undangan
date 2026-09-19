@@ -627,91 +627,122 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Theme Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             
-            {/* Real Theme 1: Split Floral (Guaranteed Always Rendered) */}
-            {displayThemes.map((theme) => (
-              <div 
-                key={theme.id || theme.slug}
-                className="bg-white rounded-3xl overflow-hidden border-2 border-primary-200 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col group col-span-1 md:col-span-2 lg:col-span-2"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-12 h-full">
-                  {/* Image Preview Container */}
-                  <div className="md:col-span-6 relative aspect-[16/10] sm:aspect-[16/9] md:aspect-auto min-h-[220px] sm:min-h-[280px] md:min-h-full overflow-hidden bg-stone-200">
-                    <img 
-                      src={theme.preview_image || '/bg-floral.jpg'} 
-                      alt={theme.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
-                    />
-                    <div className="absolute top-4 left-4 flex flex-col gap-1.5">
-                      <span className="bg-primary-900/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
-                        {theme.category || 'Floral & Classic'}
-                      </span>
-                      <span className="bg-amber-400 text-stone-900 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow w-fit">
-                        Tema Aktif Saat Ini
-                      </span>
-                    </div>
+            {/* Real Active Theme Cards (Split Floral & Secret Garden) */}
+            {displayThemes.map((theme) => {
+              const isGarden = theme.slug === 'secret-garden';
 
-                    <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center space-x-1 shadow text-xs font-bold text-stone-800">
-                      <Star size={12} className="text-amber-500 fill-amber-500" />
-                      <span>5.0</span>
-                    </div>
-                  </div>
-
-                  {/* Theme Info */}
-                  <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-6">
-                    <div>
-                      <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-primary-700 mb-1">
-                        <Sparkles size={14} className="text-amber-500" />
-                        <span>Flagship Masterpiece</span>
+              return (
+                <div 
+                  key={theme.id || theme.slug}
+                  className="bg-white rounded-3xl overflow-hidden border-2 border-primary-200 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col group col-span-1"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-12 h-full">
+                    {/* Image Preview Container */}
+                    <div className="sm:col-span-6 relative aspect-[16/10] sm:aspect-auto min-h-[220px] sm:min-h-full overflow-hidden bg-stone-200">
+                      <img 
+                        src={theme.preview_image || '/bg-floral.jpg'} 
+                        alt={theme.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                      />
+                      <div className="absolute top-4 left-4 flex flex-col gap-1.5">
+                        <span className="bg-primary-900/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
+                          {theme.category || (isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
+                        </span>
+                        <span className="bg-amber-400 text-stone-900 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow w-fit">
+                          {theme.badge || 'Tema Aktif'}
+                        </span>
                       </div>
-                      <h3 className="font-bold text-2xl text-stone-900">{theme.name}</h3>
-                      <p className="text-stone-600 text-sm mt-3 leading-relaxed">
-                        {theme.description || 'Tema split screen klasik dengan ornamen floral melengkung vintage, entrance video arch, dan alunan saxophone romantis.'}
-                      </p>
 
-                      <div className="mt-5 space-y-2 text-xs text-stone-700">
-                        <div className="flex items-center space-x-2">
-                          <Check size={14} className="text-emerald-600 flex-shrink-0" />
-                          <span>Transisi Video Cover Entrance Megah</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Check size={14} className="text-emerald-600 flex-shrink-0" />
-                          <span>Tampilan Split-Screen Desktop &amp; Fullscreen Mobile</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Check size={14} className="text-emerald-600 flex-shrink-0" />
-                          <span>Backsound Saxophone &amp; Pemutar Audio Piringan Hitam</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Check size={14} className="text-emerald-600 flex-shrink-0" />
-                          <span>RSVP, Buku Tamu, Amplop Digital &amp; Google Maps</span>
-                        </div>
+                      <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center space-x-1 shadow text-xs font-bold text-stone-800">
+                        <Star size={12} className="text-amber-500 fill-amber-500" />
+                        <span>5.0</span>
                       </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-4 border-t border-stone-100">
-                      <Link 
-                        to="/themes"
-                        className="w-full sm:flex-1 py-3 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 hover:border-primary-400 text-center transition-all block"
-                      >
-                        Lihat Detail di Katalog
-                      </Link>
-                      <Link 
-                        to="/admin/invitations/create"
-                        className="w-full sm:flex-1 py-3 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 hover:shadow-lg text-center transition-all shadow-md block transform hover:-translate-y-0.5"
-                      >
-                        Pilih Tema Ini
-                      </Link>
+                    {/* Theme Info */}
+                    <div className="sm:col-span-6 p-6 sm:p-7 flex flex-col justify-between space-y-5">
+                      <div>
+                        <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-primary-700 mb-1">
+                          <Sparkles size={14} className="text-amber-500" />
+                          <span>{isGarden ? 'Trending Masterpiece' : 'Flagship Masterpiece'}</span>
+                        </div>
+                        <h3 className="font-bold text-2xl text-stone-900">{theme.name}</h3>
+                        <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                          {theme.description || (isGarden 
+                            ? 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance sinematik, dan ornamen bunga melayang.'
+                            : 'Tema split screen klasik dengan ornamen floral melengkung vintage, entrance video arch, dan alunan saxophone romantis.')}
+                        </p>
+
+                        <div className="mt-4 space-y-1.5 text-xs text-stone-700">
+                          {isGarden ? (
+                            <>
+                              <div className="flex items-center space-x-2">
+                                <Check size={14} className="text-emerald-600 flex-shrink-0" />
+                                <span>Video Entrance Sinematik HD</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Check size={14} className="text-emerald-600 flex-shrink-0" />
+                                <span>Nuansa Dusty Rose &amp; Dresscode Swatches</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Check size={14} className="text-emerald-600 flex-shrink-0" />
+                                <span>Bingkai Oval Arched &amp; Amplop Digital</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Check size={14} className="text-emerald-600 flex-shrink-0" />
+                                <span>Hitung Mundur Real-Time &amp; Add to Calendar</span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="flex items-center space-x-2">
+                                <Check size={14} className="text-emerald-600 flex-shrink-0" />
+                                <span>Transisi Video Cover Entrance Megah</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Check size={14} className="text-emerald-600 flex-shrink-0" />
+                                <span>Tampilan Split-Screen Desktop &amp; Fullscreen Mobile</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Check size={14} className="text-emerald-600 flex-shrink-0" />
+                                <span>Backsound Saxophone &amp; Pemutar Audio Piringan Hitam</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Check size={14} className="text-emerald-600 flex-shrink-0" />
+                                <span>RSVP, Buku Tamu, Amplop Digital &amp; Google Maps</span>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t border-stone-100">
+                        <Link 
+                          to="/themes"
+                          className="w-full sm:flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 hover:border-primary-400 text-center transition-all block"
+                        >
+                          Lihat Katalog
+                        </Link>
+                        <a 
+                          href={`/invitation/bagas-siti?theme=${theme.slug}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 hover:shadow-lg text-center transition-all shadow-md block transform hover:-translate-y-0.5"
+                        >
+                          Demo Tema
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
-            {/* Coming Soon Card (Responsive: Horizontal on Tablet, Vertical on Desktop & Mobile) */}
-            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-6 sm:p-8 flex flex-col md:flex-row lg:flex-col justify-between items-center text-center md:text-left lg:text-center col-span-1 md:col-span-2 lg:col-span-1 gap-6 reveal-init delay-150 hover:border-primary-400 transition-colors">
-              <div className="space-y-4 my-auto flex flex-col md:flex-row lg:flex-col items-center gap-4 md:gap-5 lg:gap-0">
+            {/* Coming Soon Banner Below */}
+            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-6 sm:p-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left col-span-1 lg:col-span-2 gap-6 reveal-init delay-150 hover:border-primary-400 transition-colors">
+              <div className="space-y-3 my-auto flex flex-col md:flex-row items-center gap-4 md:gap-5">
                 <div className="w-14 h-14 rounded-2xl bg-stone-200 text-stone-600 flex items-center justify-center shrink-0 shadow-inner">
                   <Clock size={24} />
                 </div>

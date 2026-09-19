@@ -108,21 +108,22 @@ export const ThemeCatalog: React.FC = () => {
             <p className="text-sm font-medium text-stone-500">Memuat koleksi tema...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             
-            {/* Real Active Theme Card (Split Floral) */}
+            {/* Real Active Theme Cards (Split Floral & Secret Garden) */}
             {filteredThemes?.map((theme) => {
               const imageSrc = theme.preview_image || '/bg-floral.jpg';
+              const isGarden = theme.slug === 'secret-garden';
 
               return (
                 <div 
                   key={theme.id || theme.slug} 
-                  className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border-2 border-primary-200 flex flex-col group md:col-span-2"
+                  className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border-2 border-primary-200 flex flex-col group col-span-1"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-12 h-full">
                     
                     {/* Theme Thumbnail Preview Container */}
-                    <div className="sm:col-span-6 aspect-[4/3] sm:aspect-auto bg-stone-100 relative overflow-hidden">
+                    <div className="sm:col-span-6 aspect-[4/3] sm:aspect-auto bg-stone-100 relative overflow-hidden min-h-[220px]">
                       <img 
                         src={imageSrc} 
                         alt={theme.name} 
@@ -132,10 +133,10 @@ export const ThemeCatalog: React.FC = () => {
                       {/* Top Badges */}
                       <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10">
                         <span className="bg-primary-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
-                          {theme.category || 'Floral & Classic'}
+                          {theme.category || (isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
                         </span>
                         <span className="bg-amber-400 text-stone-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow w-fit">
-                          Tema Aktif
+                          {theme.badge || 'Tema Aktif'}
                         </span>
                       </div>
 
@@ -157,47 +158,70 @@ export const ThemeCatalog: React.FC = () => {
                     </div>
 
                     {/* Theme Content Details */}
-                    <div className="sm:col-span-6 p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-4">
+                    <div className="sm:col-span-6 p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
                       <div>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-2.5 py-1 rounded-md">
-                          Masterpiece Edition
+                          {isGarden ? 'Trending Masterpiece' : 'Masterpiece Edition'}
                         </span>
                         <h3 className="text-2xl font-bold text-stone-900 mt-2">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed">
-                          {theme.description || 'Tema split screen klasik dengan ornamen floral, entrance video arch, dan alunan saxophone romantis.'}
+                          {theme.description || (isGarden 
+                            ? 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance, dan ornamen bunga melayang.' 
+                            : 'Tema split screen klasik dengan ornamen floral, entrance video arch, dan alunan saxophone romantis.')}
                         </p>
 
                         <div className="mt-4 pt-3 border-t border-stone-100 space-y-1.5 text-xs text-stone-600">
-                          <div className="flex items-center space-x-2">
-                            <CheckCircle2 size={13} className="text-emerald-600" />
-                            <span>Entrance Video Arch Cover</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <CheckCircle2 size={13} className="text-emerald-600" />
-                            <span>Audio Saxophone Romantis</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <CheckCircle2 size={13} className="text-emerald-600" />
-                            <span>Split Screen Desktop / Full Mobile</span>
-                          </div>
+                          {isGarden ? (
+                            <>
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle2 size={13} className="text-emerald-600" />
+                                <span>Video Entrance Sinematik HD</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle2 size={13} className="text-emerald-600" />
+                                <span>Nuansa Dusty Rose &amp; Dresscode Swatches</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle2 size={13} className="text-emerald-600" />
+                                <span>Bingkai Oval Arched &amp; Amplop Digital</span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle2 size={13} className="text-emerald-600" />
+                                <span>Entrance Video Arch Cover</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle2 size={13} className="text-emerald-600" />
+                                <span>Audio Saxophone Romantis</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle2 size={13} className="text-emerald-600" />
+                                <span>Split Screen Desktop / Full Mobile</span>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
 
                       <div className="flex flex-col sm:flex-row gap-2 pt-4">
                         <button 
                           onClick={() => setPreviewTheme(theme)}
-                          className="w-full sm:flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-700 font-bold text-xs hover:bg-stone-50 transition-colors flex items-center justify-center space-x-1"
+                          className="w-full sm:flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-700 font-bold text-xs hover:bg-stone-50 transition-colors flex items-center justify-center space-x-1 cursor-pointer"
                         >
                           <Eye size={14} />
                           <span>Preview Live</span>
                         </button>
-                        <Link 
-                          to="/admin/invitations/create"
+                        <a 
+                          href={`/invitation/bagas-siti?theme=${theme.slug}`}
+                          target="_blank"
+                          rel="noreferrer"
                           className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs text-center transition-colors shadow-xs flex items-center justify-center space-x-1"
                         >
-                          <span>Gunakan Tema</span>
+                          <span>Buka Demo</span>
                           <ArrowRight size={14} />
-                        </Link>
+                        </a>
                       </div>
                     </div>
 
@@ -206,9 +230,9 @@ export const ThemeCatalog: React.FC = () => {
               );
             })}
 
-            {/* Coming Soon Card (Responsive: Horizontal on Tablet, Vertical on Desktop & Mobile) */}
-            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-6 sm:p-8 flex flex-col md:flex-row lg:flex-col justify-between items-center text-center md:text-left lg:text-center col-span-1 md:col-span-2 lg:col-span-1 gap-6">
-              <div className="space-y-4 my-auto flex flex-col md:flex-row lg:flex-col items-center gap-4 md:gap-5 lg:gap-0">
+            {/* Coming Soon Card (Spanning 2 columns horizontally below) */}
+            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-6 sm:p-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left col-span-1 lg:col-span-2 gap-6">
+              <div className="space-y-3 my-auto flex flex-col md:flex-row items-center gap-4 md:gap-5">
                 <div className="w-14 h-14 rounded-2xl bg-stone-200 text-stone-600 flex items-center justify-center shrink-0 shadow-inner">
                   <Clock size={24} />
                 </div>
@@ -216,23 +240,22 @@ export const ThemeCatalog: React.FC = () => {
                   <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
                     Koleksi Berikutnya
                   </span>
-                  <h3 className="text-lg font-bold text-stone-900 mt-2">Tema Baru Segera Hadir</h3>
-                  <p className="text-xs text-stone-500 mt-2 leading-relaxed max-w-sm">
-                    Kami sedang merancang pilihan tema baru bernuansa Royal Gold, Minimalist Ivory, dan Islamic Grace.
+                  <h3 className="text-lg font-bold text-stone-900 mt-2">Tema Eksklusif Berikutnya Segera Hadir</h3>
+                  <p className="text-xs text-stone-500 mt-1 leading-relaxed max-w-xl">
+                    Tim desainer WD Group sedang merancang tema-tema premium baru dengan berbagai variasi gaya adat nusantara, modern minimalis monokrom, dan royal arabian.
                   </p>
                 </div>
               </div>
-
               <a 
-                href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20apakah%20saya%20bisa%20request%20custom%20tema%20undangan?"
+                href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20custom%20desain%20tema%20undangan%20pernikahan" 
                 target="_blank"
-                rel="noopener noreferrer"
-                className="w-full md:w-auto lg:w-full py-2.5 px-6 rounded-xl bg-white border border-stone-300 text-stone-700 text-xs font-bold hover:bg-stone-100 transition-colors text-center shrink-0"
+                rel="noreferrer"
+                className="py-2.5 px-6 rounded-xl bg-stone-900 hover:bg-stone-950 text-white text-xs font-bold shrink-0 transition-colors inline-flex items-center gap-2"
               >
-                Konsultasi Custom Tema
+                <span>Request Tema Khusus</span>
+                <ArrowRight size={14} />
               </a>
             </div>
-
           </div>
         )}
 
