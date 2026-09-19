@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { themeService } from '../../services/themeService';
@@ -12,6 +12,7 @@ import {
   CheckCircle2, 
   Users, 
   ChevronDown, 
+  ChevronUp,
   Star, 
   Play, 
   Pause, 
@@ -32,11 +33,70 @@ export const Home: React.FC = () => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Real live countdown ticker in mockup
+  const [countdown, setCountdown] = useState({
+    days: 124,
+    hours: 8,
+    minutes: 42,
+    seconds: 19
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev.seconds > 0) {
+          return { ...prev, seconds: prev.seconds - 1 };
+        } else if (prev.minutes > 0) {
+          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+        } else if (prev.hours > 0) {
+          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        } else if (prev.days > 0) {
+          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
+        }
+        return prev;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Smooth Scroll-To-Top button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // IntersectionObserver for Butter-Smooth Scroll Reveals
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    const elements = document.querySelectorAll('.reveal-init, .reveal-left, .reveal-right, .reveal-scale');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   const { data: themes } = useQuery({
     queryKey: ['themes', 'active'],
     queryFn: themeService.getActiveThemes,
   });
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const faqs = [
     {
@@ -63,11 +123,11 @@ export const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#faf8f5] text-gray-800 font-jakarta selection:bg-primary-500 selection:text-white overflow-x-hidden">
-      {/* Background Decorative Blur Spheres */}
+      {/* Background Decorative Blur Spheres with Smooth Organic Float */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-amber-100/60 blur-3xl" />
-        <div className="absolute top-1/3 -left-40 w-96 h-96 rounded-full bg-rose-100/50 blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-primary-100/40 blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-amber-100/60 blur-3xl animate-orb-1" />
+        <div className="absolute top-1/3 -left-40 w-96 h-96 rounded-full bg-rose-100/50 blur-3xl animate-orb-2" />
+        <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-primary-100/40 blur-3xl animate-orb-3" />
       </div>
 
       {/* Top Notification Bar */}
@@ -160,14 +220,22 @@ export const Home: React.FC = () => {
 
       {/* HERO SECTION */}
       <section id="hero" className="relative pt-8 pb-16 sm:pt-12 sm:pb-24 lg:pt-20 lg:pb-32 overflow-hidden">
+        {/* Ambient Floating Rose & Gold Petals */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-12 left-[10%] w-3.5 h-3.5 rounded-full bg-rose-300/40 blur-[0.5px] animate-petal-1" />
+          <div className="absolute top-28 left-[40%] w-4 h-2.5 rounded-full bg-amber-200/35 rotate-45 animate-petal-2" />
+          <div className="absolute top-6 right-[18%] w-3 h-4 rounded-full bg-rose-200/45 -rotate-12 animate-petal-3" />
+          <div className="absolute top-44 right-[8%] w-3.5 h-3.5 rounded-full bg-amber-300/30 animate-petal-4" />
+        </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
             
             {/* Left Content Column */}
-            <div className="lg:col-span-7 text-center lg:text-left space-y-5 sm:space-y-6">
+            <div className="lg:col-span-7 text-center lg:text-left space-y-5 sm:space-y-6 reveal-left">
               
               {/* Luxury Badge */}
-              <div className="inline-flex items-center space-x-2 bg-white/90 border border-primary-200/80 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-xs">
+              <div className="inline-flex items-center space-x-2 bg-white/95 border border-primary-200/80 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-xs hover:border-primary-400 transition-colors">
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-500 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-600"></span>
@@ -187,20 +255,22 @@ export const Home: React.FC = () => {
                 </p>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons with Shimmer Light Sweep */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 w-full">
                 <a 
                   href="#themes"
-                  className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-primary-800 via-primary-700 to-primary-900 text-white font-bold text-sm sm:text-base shadow-xl shadow-primary-900/20 hover:shadow-2xl hover:shadow-primary-900/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-3 group"
+                  className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-primary-800 via-primary-700 to-primary-900 text-white font-bold text-sm sm:text-base shadow-xl shadow-primary-900/20 hover:shadow-2xl hover:shadow-primary-900/30 transition-all transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center space-x-3 group relative overflow-hidden"
                 >
-                  <Sparkles size={18} className="text-amber-300 group-hover:rotate-12 transition-transform" />
+                  {/* Subtle Shimmer Reflection */}
+                  <span className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+                  <Sparkles size={18} className="text-amber-300 group-hover:rotate-12 transition-transform duration-300" />
                   <span>Lihat Tema Split Floral</span>
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform duration-300" />
                 </a>
 
                 <Link 
                   to="/themes"
-                  className="w-full sm:w-auto px-6 sm:px-7 py-3.5 sm:py-4 rounded-2xl bg-white text-stone-800 font-bold text-sm sm:text-base border border-stone-300/80 hover:bg-stone-50 hover:border-stone-400 transition-all shadow-xs flex items-center justify-center space-x-2"
+                  className="w-full sm:w-auto px-6 sm:px-7 py-3.5 sm:py-4 rounded-2xl bg-white text-stone-800 font-bold text-sm sm:text-base border border-stone-300/80 hover:bg-stone-50 hover:border-primary-400 hover:shadow-md transition-all flex items-center justify-center space-x-2 transform hover:-translate-y-0.5"
                 >
                   <Smartphone size={18} className="text-primary-700" />
                   <span>Katalog Tema</span>
@@ -209,11 +279,11 @@ export const Home: React.FC = () => {
 
               {/* Social Proof Mini */}
               <div className="pt-5 sm:pt-6 border-t border-stone-200/80 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-6 text-sm text-stone-600">
-                <div className="flex items-center space-x-2.5">
+                <div className="flex items-center space-x-2.5 group cursor-default">
                   <div className="flex -space-x-2">
-                    <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="/photos/photo-1.jpg" alt="User 1" />
-                    <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="/photos/photo-3.jpg" alt="User 2" />
-                    <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="/photos/photo-4.jpg" alt="User 3" />
+                    <img className="w-8 h-8 rounded-full border-2 border-white object-cover transition-transform group-hover:scale-105" src="/photos/photo-1.jpg" alt="User 1" />
+                    <img className="w-8 h-8 rounded-full border-2 border-white object-cover transition-transform group-hover:scale-105" src="/photos/photo-3.jpg" alt="User 2" />
+                    <img className="w-8 h-8 rounded-full border-2 border-white object-cover transition-transform group-hover:scale-105" src="/photos/photo-4.jpg" alt="User 3" />
                   </div>
                   <div className="text-left">
                     <div className="flex items-center text-amber-500">
@@ -236,10 +306,10 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Right Interactive Mockup Showcase */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full">
+            <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full reveal-right">
               
               {/* Floating Badge: RSVP Counter (Tablet & Desktop) */}
-              <div className="hidden min-[540px]:flex absolute -left-4 sm:-left-8 top-12 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl shadow-xl border border-stone-100 items-center space-x-3 z-20 animate-float">
+              <div className="hidden min-[540px]:flex absolute -left-4 sm:-left-8 top-12 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl shadow-xl border border-stone-100 items-center space-x-3 z-20 animate-float-gentle hover:scale-105 transition-transform duration-300 cursor-default">
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
                   <CheckCircle2 size={18} />
                 </div>
@@ -250,7 +320,7 @@ export const Home: React.FC = () => {
               </div>
 
               {/* Floating Badge: Digital Envelope (Tablet & Desktop) */}
-              <div className="hidden min-[540px]:flex absolute -right-4 sm:-right-6 bottom-20 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl shadow-xl border border-stone-100 items-center space-x-3 z-20" style={{ animation: 'float 8s ease-in-out infinite 1s' }}>
+              <div className="hidden min-[540px]:flex absolute -right-4 sm:-right-6 bottom-20 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl shadow-xl border border-stone-100 items-center space-x-3 z-20 animate-float-reverse hover:scale-105 transition-transform duration-300 cursor-default">
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
                   <Gift size={18} />
                 </div>
@@ -260,8 +330,8 @@ export const Home: React.FC = () => {
                 </div>
               </div>
 
-              {/* Phone Frame Mockup */}
-              <div className="w-full max-w-[275px] min-[380px]:max-w-[305px] sm:max-w-[330px] rounded-[40px] sm:rounded-[48px] bg-stone-950 p-3 sm:p-3.5 shadow-[0_20px_50px_-10px_rgba(44,30,26,0.3)] sm:shadow-[0_25px_60px_-15px_rgba(44,30,26,0.35)] border-[4px] sm:border-[5px] border-stone-800 relative mx-auto">
+              {/* Phone Frame Mockup with Interactive Tilt / Hover */}
+              <div className="w-full max-w-[275px] min-[380px]:max-w-[305px] sm:max-w-[330px] rounded-[40px] sm:rounded-[48px] bg-stone-950 p-3 sm:p-3.5 shadow-[0_20px_50px_-10px_rgba(44,30,26,0.3)] sm:shadow-[0_25px_60px_-15px_rgba(44,30,26,0.35)] border-[4px] sm:border-[5px] border-stone-800 relative mx-auto transition-transform duration-500 hover:scale-[1.02]">
                 
                 {/* Speaker & Camera Notch */}
                 <div className="w-28 sm:w-32 h-3.5 sm:h-4 bg-stone-900 rounded-full mx-auto mb-2 flex items-center justify-center space-x-1.5">
@@ -273,11 +343,21 @@ export const Home: React.FC = () => {
                 <div className="rounded-[30px] sm:rounded-[36px] bg-[#fbf9f6] overflow-hidden border border-stone-200/40 relative text-center">
                   
                   {/* Music Player Header Pill */}
-                  <div className="bg-primary-900 text-white px-3 py-2 flex items-center justify-between text-xs">
+                  <div className="bg-primary-900 text-white px-3 py-2 flex items-center justify-between text-xs relative">
+                    {/* Floating Notes when playing */}
+                    {isPlayingAudio && (
+                      <div className="absolute -top-3 right-4 pointer-events-none">
+                        <span className="absolute text-amber-300 text-xs animate-music-note-1 font-bold">♪</span>
+                        <span className="absolute text-amber-200 text-sm animate-music-note-2 font-bold -left-3">♫</span>
+                        <span className="absolute text-rose-300 text-[10px] animate-music-note-3 font-bold left-3">♩</span>
+                      </div>
+                    )}
+
                     <div className="flex items-center space-x-2">
                       <button 
                         onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-                        className="w-6 h-6 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-700 transition-colors"
+                        className="w-6 h-6 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-700 transition-all hover:scale-110 active:scale-95"
+                        title={isPlayingAudio ? 'Jeda Musik' : 'Putar Musik'}
                       >
                         {isPlayingAudio ? <Pause size={10} /> : <Play size={10} className="ml-0.5" />}
                       </button>
@@ -288,19 +368,19 @@ export const Home: React.FC = () => {
                     </div>
                     {/* Animated Equalizer */}
                     <div className="flex items-end space-x-0.5 h-4">
-                      <div className={`w-1 bg-amber-300 rounded-full ${isPlayingAudio ? 'animate-sound-1' : 'h-1'}`} />
-                      <div className={`w-1 bg-amber-300 rounded-full ${isPlayingAudio ? 'animate-sound-2' : 'h-2'}`} />
-                      <div className={`w-1 bg-amber-300 rounded-full ${isPlayingAudio ? 'animate-sound-3' : 'h-1'}`} />
-                      <div className={`w-1 bg-amber-300 rounded-full ${isPlayingAudio ? 'animate-sound-2' : 'h-3'}`} />
+                      <div className={`w-1 bg-amber-300 rounded-full transition-all ${isPlayingAudio ? 'animate-sound-1' : 'h-1'}`} />
+                      <div className={`w-1 bg-amber-300 rounded-full transition-all ${isPlayingAudio ? 'animate-sound-2' : 'h-2'}`} />
+                      <div className={`w-1 bg-amber-300 rounded-full transition-all ${isPlayingAudio ? 'animate-sound-3' : 'h-1'}`} />
+                      <div className={`w-1 bg-amber-300 rounded-full transition-all ${isPlayingAudio ? 'animate-sound-2' : 'h-3'}`} />
                     </div>
                   </div>
 
                   {/* Invitation Preview Hero */}
-                  <div className="relative h-56 sm:h-64 overflow-hidden">
+                  <div className="relative h-56 sm:h-64 overflow-hidden group">
                     <img 
                       src="/bg-floral.jpg" 
                       alt="Tema Split Floral" 
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-4 sm:p-5 text-white">
                       <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-amber-200 font-medium">Tema Split Floral</p>
@@ -312,24 +392,27 @@ export const Home: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Countdown Box */}
+                  {/* Live Dynamic Countdown Box */}
                   <div className="p-3.5 sm:p-4 bg-white border-b border-stone-100">
-                    <p className="text-[9px] sm:text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1.5 sm:mb-2">Menuju Hari Bahagia</p>
+                    <div className="flex items-center justify-center space-x-1.5 mb-1.5 sm:mb-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <p className="text-[9px] sm:text-[10px] font-bold text-stone-400 uppercase tracking-widest">Menuju Hari Bahagia</p>
+                    </div>
                     <div className="grid grid-cols-4 gap-1.5 text-center">
-                      <div className="bg-primary-50 p-1 sm:p-1.5 rounded-lg border border-primary-100">
-                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">124</span>
+                      <div className="bg-primary-50/90 p-1 sm:p-1.5 rounded-lg border border-primary-100 hover:border-primary-300 transition-colors">
+                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">{countdown.days}</span>
                         <span className="text-[8px] sm:text-[9px] text-primary-700">Hari</span>
                       </div>
-                      <div className="bg-primary-50 p-1 sm:p-1.5 rounded-lg border border-primary-100">
-                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">08</span>
+                      <div className="bg-primary-50/90 p-1 sm:p-1.5 rounded-lg border border-primary-100 hover:border-primary-300 transition-colors">
+                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">{String(countdown.hours).padStart(2, '0')}</span>
                         <span className="text-[8px] sm:text-[9px] text-primary-700">Jam</span>
                       </div>
-                      <div className="bg-primary-50 p-1 sm:p-1.5 rounded-lg border border-primary-100">
-                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">42</span>
+                      <div className="bg-primary-50/90 p-1 sm:p-1.5 rounded-lg border border-primary-100 hover:border-primary-300 transition-colors">
+                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">{String(countdown.minutes).padStart(2, '0')}</span>
                         <span className="text-[8px] sm:text-[9px] text-primary-700">Menit</span>
                       </div>
-                      <div className="bg-primary-50 p-1 sm:p-1.5 rounded-lg border border-primary-100">
-                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono">19</span>
+                      <div className="bg-primary-50/90 p-1 sm:p-1.5 rounded-lg border border-primary-100 hover:border-primary-300 transition-colors">
+                        <span className="block text-xs sm:text-sm font-bold text-primary-900 font-mono transition-all duration-300">{String(countdown.seconds).padStart(2, '0')}</span>
                         <span className="text-[8px] sm:text-[9px] text-primary-700">Detik</span>
                       </div>
                     </div>
@@ -337,16 +420,16 @@ export const Home: React.FC = () => {
 
                   {/* Bottom Actions inside Mockup */}
                   <div className="p-3.5 sm:p-4 space-y-2">
-                    <button className="w-full bg-primary-800 hover:bg-primary-900 text-white py-2.5 rounded-xl text-xs font-bold shadow transition-colors flex items-center justify-center space-x-2">
-                      <Heart size={13} className="text-rose-400 fill-rose-400" />
+                    <button className="w-full bg-primary-800 hover:bg-primary-900 active:scale-98 text-white py-2.5 rounded-xl text-xs font-bold shadow transition-all flex items-center justify-center space-x-2">
+                      <Heart size={13} className="text-rose-400 fill-rose-400 animate-pulse" />
                       <span>Buka Undangan</span>
                     </button>
                     <div className="flex space-x-2 text-[10px]">
-                      <div className="flex-1 bg-stone-100 text-stone-700 py-1.5 rounded-lg font-medium flex items-center justify-center space-x-1">
+                      <div className="flex-1 bg-stone-100 text-stone-700 py-1.5 rounded-lg font-medium flex items-center justify-center space-x-1 hover:bg-stone-200 transition-colors cursor-default">
                         <MapPin size={11} className="text-primary-700" />
                         <span>Google Maps</span>
                       </div>
-                      <div className="flex-1 bg-stone-100 text-stone-700 py-1.5 rounded-lg font-medium flex items-center justify-center space-x-1">
+                      <div className="flex-1 bg-stone-100 text-stone-700 py-1.5 rounded-lg font-medium flex items-center justify-center space-x-1 hover:bg-stone-200 transition-colors cursor-default">
                         <Gift size={11} className="text-primary-700" />
                         <span>Kirim Kado</span>
                       </div>
@@ -378,22 +461,22 @@ export const Home: React.FC = () => {
       </section>
 
       {/* METRICS STATS BAR */}
-      <section className="bg-white border-y border-stone-200/80 py-8 sm:py-10 relative z-10">
+      <section className="bg-white border-y border-stone-200/80 py-8 sm:py-10 relative z-10 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 text-center">
-            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none">
+            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none reveal-init delay-75 hover:scale-105 transition-all duration-300">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">1.000+</div>
               <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Tamu Terlayani</p>
             </div>
-            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none">
+            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none reveal-init delay-150 hover:scale-105 transition-all duration-300">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">99.8%</div>
               <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Kepuasan Pasangan</p>
             </div>
-            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none">
+            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none reveal-init delay-200 hover:scale-105 transition-all duration-300">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">1 Tema</div>
               <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Split Floral</p>
             </div>
-            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none">
+            <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none reveal-init delay-300 hover:scale-105 transition-all duration-300">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">Real-Time</div>
               <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Notifikasi RSVP &amp; Doa</p>
             </div>
@@ -402,11 +485,11 @@ export const Home: React.FC = () => {
       </section>
 
       {/* FEATURES SECTION */}
-      <section id="features" className="py-24 relative">
+      <section id="features" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-primary-50 border border-primary-200 px-3.5 py-1.5 rounded-full">
-              <Sparkles size={14} />
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3 reveal-init">
+            <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-primary-50 border border-primary-200 px-3.5 py-1.5 rounded-full hover:bg-primary-100 transition-colors">
+              <Sparkles size={14} className="animate-spin-slow" />
               <span>Fitur Premium &amp; Terlengkap</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
@@ -420,8 +503,8 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             
             {/* Feature 1 */}
-            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary-800 group-hover:text-amber-200 transition-all">
+            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 group cursor-default reveal-init delay-75">
+              <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-primary-800 group-hover:text-amber-200 transition-all duration-300">
                 <Smartphone size={26} />
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-2">Desain Mobile-First</h3>
@@ -431,8 +514,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Feature 2 */}
-            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary-800 group-hover:text-rose-200 transition-all">
+            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 group cursor-default reveal-init delay-150">
+              <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-primary-800 group-hover:text-rose-200 transition-all duration-300">
                 <Music size={26} />
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-2">Musik Latar Romantis</h3>
@@ -442,8 +525,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary-800 group-hover:text-emerald-200 transition-all">
+            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 group cursor-default reveal-init delay-200">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-primary-800 group-hover:text-emerald-200 transition-all duration-300">
                 <CheckCircle2 size={26} />
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-2">RSVP &amp; Buku Tamu</h3>
@@ -453,8 +536,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Feature 4 */}
-            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary-800 group-hover:text-blue-200 transition-all">
+            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 group cursor-default reveal-init delay-300">
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-primary-800 group-hover:text-blue-200 transition-all duration-300">
                 <Gift size={26} />
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-2">Amplop Digital &amp; QRIS</h3>
@@ -464,8 +547,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Feature 5 */}
-            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary-800 group-hover:text-purple-200 transition-all">
+            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 group cursor-default reveal-init delay-75">
+              <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-primary-800 group-hover:text-purple-200 transition-all duration-300">
                 <MapPin size={26} />
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-2">Navigasi Google Maps</h3>
@@ -475,8 +558,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Feature 6 */}
-            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary-800 group-hover:text-indigo-200 transition-all">
+            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 group cursor-default reveal-init delay-150">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-primary-800 group-hover:text-indigo-200 transition-all duration-300">
                 <Users size={26} />
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-2">Kustom Nama Tamu</h3>
@@ -486,8 +569,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Feature 7 */}
-            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-orange-50 text-orange-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary-800 group-hover:text-orange-200 transition-all">
+            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 group cursor-default reveal-init delay-200">
+              <div className="w-14 h-14 rounded-2xl bg-orange-50 text-orange-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-primary-800 group-hover:text-orange-200 transition-all duration-300">
                 <Heart size={26} />
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-2">Love Story &amp; Galeri</h3>
@@ -497,8 +580,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Feature 8 */}
-            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary-800 group-hover:text-teal-200 transition-all">
+            <div className="bg-white rounded-3xl p-7 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 group cursor-default reveal-init delay-300">
+              <div className="w-14 h-14 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-primary-800 group-hover:text-teal-200 transition-all duration-300">
                 <Calendar size={26} />
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-2">Pengingat Kalender</h3>
@@ -515,9 +598,9 @@ export const Home: React.FC = () => {
       <section id="themes" className="py-24 bg-stone-100/70 border-y border-stone-200/70 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-            <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-white border border-primary-200 px-3 py-1 rounded-full">
-              <Palette size={14} />
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3 reveal-init">
+            <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-white border border-primary-200 px-3.5 py-1.5 rounded-full hover:bg-primary-50 transition-colors">
+              <Palette size={14} className="animate-spin-slow" />
               <span>Tema Desain Tersedia</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
@@ -536,7 +619,7 @@ export const Home: React.FC = () => {
               themes.map((theme) => (
                 <div 
                   key={theme.id || theme.slug}
-                  className="bg-white rounded-3xl overflow-hidden border-2 border-primary-200 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group md:col-span-2 lg:col-span-2"
+                  className="bg-white rounded-3xl overflow-hidden border-2 border-primary-200 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col group md:col-span-2 lg:col-span-2 reveal-scale"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 h-full">
                     {/* Image Preview Container */}
@@ -544,7 +627,7 @@ export const Home: React.FC = () => {
                       <img 
                         src={theme.preview_image || '/bg-floral.jpg'} 
                         alt={theme.name} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
                       />
                       <div className="absolute top-4 left-4 flex flex-col gap-1.5">
                         <span className="bg-primary-900/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
@@ -565,7 +648,7 @@ export const Home: React.FC = () => {
                     <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-6">
                       <div>
                         <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-primary-700 mb-1">
-                          <Sparkles size={14} />
+                          <Sparkles size={14} className="text-amber-500" />
                           <span>Flagship Masterpiece</span>
                         </div>
                         <h3 className="font-bold text-2xl text-stone-900">{theme.name}</h3>
@@ -596,13 +679,13 @@ export const Home: React.FC = () => {
                       <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-4 border-t border-stone-100">
                         <Link 
                           to="/themes"
-                          className="w-full sm:flex-1 py-3 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 text-center transition-colors block"
+                          className="w-full sm:flex-1 py-3 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 hover:border-primary-400 text-center transition-all block"
                         >
                           Lihat Detail di Katalog
                         </Link>
                         <Link 
                           to="/admin/invitations/create"
-                          className="w-full sm:flex-1 py-3 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 text-center transition-colors shadow-md block"
+                          className="w-full sm:flex-1 py-3 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 hover:shadow-lg text-center transition-all shadow-md block transform hover:-translate-y-0.5"
                         >
                           Pilih Tema Ini
                         </Link>
@@ -614,7 +697,7 @@ export const Home: React.FC = () => {
             ) : null}
 
             {/* Coming Soon Card */}
-            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-8 flex flex-col justify-between items-center text-center">
+            <div className="bg-stone-50/80 rounded-3xl border-2 border-dashed border-stone-300 p-8 flex flex-col justify-between items-center text-center reveal-init delay-150 hover:border-primary-400 transition-colors">
               <div className="space-y-4 my-auto">
                 <div className="w-14 h-14 rounded-2xl bg-stone-200 text-stone-600 flex items-center justify-center mx-auto shadow-inner">
                   <Clock size={24} />
@@ -648,9 +731,9 @@ export const Home: React.FC = () => {
       {/* HOW IT WORKS SECTION */}
       <section id="how-it-works" className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3 reveal-init">
             <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-primary-50 border border-primary-200 px-3.5 py-1.5 rounded-full">
-              <Zap size={14} />
+              <Zap size={14} className="text-amber-500" />
               <span>Mudah &amp; Praktis</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
@@ -664,8 +747,8 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             
             {/* Step 1 */}
-            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm relative text-center flex flex-col items-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary-800 text-amber-200 font-cinzel text-2xl font-bold flex items-center justify-center mb-6 shadow-lg shadow-primary-900/20">
+            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 relative text-center flex flex-col items-center group cursor-default reveal-init delay-100">
+              <div className="w-16 h-16 rounded-2xl bg-primary-800 text-amber-200 font-cinzel text-2xl font-bold flex items-center justify-center mb-6 shadow-lg shadow-primary-900/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                 01
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-3">Pilih Tema Desain</h3>
@@ -675,8 +758,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Step 2 */}
-            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm relative text-center flex flex-col items-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary-800 text-amber-200 font-cinzel text-2xl font-bold flex items-center justify-center mb-6 shadow-lg shadow-primary-900/20">
+            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 relative text-center flex flex-col items-center group cursor-default reveal-init delay-200">
+              <div className="w-16 h-16 rounded-2xl bg-primary-800 text-amber-200 font-cinzel text-2xl font-bold flex items-center justify-center mb-6 shadow-lg shadow-primary-900/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                 02
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-3">Lengkapi Data Acara</h3>
@@ -686,8 +769,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Step 3 */}
-            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm relative text-center flex flex-col items-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary-800 text-amber-200 font-cinzel text-2xl font-bold flex items-center justify-center mb-6 shadow-lg shadow-primary-900/20">
+            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:border-primary-300 hover:-translate-y-2 transition-all duration-300 relative text-center flex flex-col items-center group cursor-default reveal-init delay-300">
+              <div className="w-16 h-16 rounded-2xl bg-primary-800 text-amber-200 font-cinzel text-2xl font-bold flex items-center justify-center mb-6 shadow-lg shadow-primary-900/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                 03
               </div>
               <h3 className="text-xl font-bold text-stone-900 mb-3">Bagikan Sekali Klik</h3>
@@ -704,9 +787,9 @@ export const Home: React.FC = () => {
       <section id="pricing" className="py-16 sm:py-24 bg-stone-100/70 border-y border-stone-200/70 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3">
-            <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-white border border-primary-200 px-3.5 py-1.5 rounded-full">
-              <Gift size={14} />
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3 reveal-init">
+            <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-white border border-primary-200 px-3.5 py-1.5 rounded-full hover:bg-primary-50 transition-colors">
+              <Gift size={14} className="text-rose-500" />
               <span>Pilihan Paket &amp; Harga</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
@@ -720,7 +803,7 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
             
             {/* 1. STARTER PLAN */}
-            <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+            <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 reveal-init delay-100">
               <div>
                 {/* Header */}
                 <div className="text-center pb-5 border-b border-stone-200/70">
@@ -801,7 +884,7 @@ export const Home: React.FC = () => {
                   href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Promo%20Rp%2050.000)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3.5 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs sm:text-sm shadow transition-all"
+                  className="w-full block text-center py-3.5 rounded-xl bg-primary-800 hover:bg-primary-900 active:scale-98 text-white font-bold text-xs sm:text-sm shadow transition-all hover:shadow-lg"
                 >
                   Pilih Paket Starter
                 </a>
@@ -809,7 +892,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* 2. PREMIUM PLAN (Featured Best Seller) */}
-            <div className="bg-[#1b2a47] text-white rounded-3xl p-5 sm:p-7 md:p-8 border-2 border-amber-300 shadow-2xl flex flex-col justify-between relative transform md:-translate-y-3">
+            <div className="bg-[#1b2a47] text-white rounded-3xl p-5 sm:p-7 md:p-8 border-2 border-amber-300 shadow-2xl flex flex-col justify-between relative transform md:-translate-y-3 hover:-translate-y-5 hover:shadow-[0_25px_60px_-15px_rgba(27,42,71,0.6)] transition-all duration-500 reveal-scale delay-200">
               {/* Best Seller Top Ribbon */}
               <div className="absolute -top-3.5 sm:-top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-stone-950 text-[10px] sm:text-[11px] font-black px-4 sm:px-5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider shadow-md whitespace-nowrap">
                 BEST SELLER
@@ -889,7 +972,7 @@ export const Home: React.FC = () => {
                 </ul>
               </div>
 
-              {/* Bottom Note & Button */}
+              {/* Bottom Note & Button with Shimmer Sweep */}
               <div className="space-y-4 pt-2">
                 <div className="bg-[#121c30] rounded-xl p-3 text-center text-xs text-stone-200 border border-white/10">
                   Pilihan <strong>terbaik</strong> untuk hasil yang <strong>lebih maksimal</strong>.
@@ -898,15 +981,16 @@ export const Home: React.FC = () => {
                   href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Promo%20Rp%20150.000)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 hover:from-amber-300 hover:to-amber-100 font-extrabold text-xs sm:text-sm text-stone-950 shadow-lg transition-all"
+                  className="w-full block text-center py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 hover:from-amber-300 hover:to-amber-100 font-extrabold text-xs sm:text-sm text-stone-950 shadow-lg hover:shadow-2xl transition-all relative overflow-hidden group active:scale-98"
                 >
-                  Pesan Paket Premium Sekarang
+                  <span className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none" />
+                  <span className="relative z-10">Pesan Paket Premium Sekarang</span>
                 </a>
               </div>
             </div>
 
             {/* 3. CUSTOM PLAN */}
-            <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+            <div className="bg-[#faf7f2] rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/90 shadow-md flex flex-col justify-between hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 reveal-init delay-300">
               <div>
                 {/* Header */}
                 <div className="text-center pb-5 border-b border-stone-200/70">
@@ -986,7 +1070,7 @@ export const Home: React.FC = () => {
                   href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3.5 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all"
+                  className="w-full block text-center py-3.5 rounded-xl bg-stone-900 hover:bg-stone-950 active:scale-98 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-xl transition-all"
                 >
                   Konsultasi Paket Custom
                 </a>
@@ -1001,9 +1085,9 @@ export const Home: React.FC = () => {
       <section id="testimonials" className="py-16 sm:py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3">
-            <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-primary-50 border border-primary-200 px-3.5 py-1.5 rounded-full">
-              <Heart size={14} className="text-rose-500 fill-rose-500" />
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3 reveal-init">
+            <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-primary-50 border border-primary-200 px-3.5 py-1.5 rounded-full hover:bg-primary-100 transition-colors">
+              <Heart size={14} className="text-rose-500 fill-rose-500 animate-pulse" />
               <span>Kisah Bahagia</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
@@ -1017,7 +1101,7 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             
             {/* Testimonial 1 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between reveal-init delay-100 cursor-default">
               <div className="space-y-4">
                 <div className="flex items-center space-x-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
@@ -1038,7 +1122,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Testimonial 2 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between reveal-init delay-200 cursor-default">
               <div className="space-y-4">
                 <div className="flex items-center space-x-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
@@ -1059,7 +1143,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Testimonial 3 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm flex flex-col justify-between">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between reveal-init delay-300 cursor-default">
               <div className="space-y-4">
                 <div className="flex items-center space-x-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
@@ -1087,7 +1171,7 @@ export const Home: React.FC = () => {
       <section id="faq" className="py-16 sm:py-24 bg-stone-100/70 border-t border-stone-200/70 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center mb-10 sm:mb-16 space-y-3">
+          <div className="text-center mb-10 sm:mb-16 space-y-3 reveal-init">
             <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-primary-700 bg-white border border-primary-200 px-3.5 py-1.5 rounded-full">
               <span>Pertanyaan Umum</span>
             </div>
@@ -1103,7 +1187,8 @@ export const Home: React.FC = () => {
             {faqs.map((faq, idx) => (
               <div 
                 key={idx}
-                className="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-xs"
+                className="bg-white rounded-2xl border border-stone-200 hover:border-primary-300 overflow-hidden transition-all shadow-xs reveal-init"
+                style={{ transitionDelay: `${idx * 75}ms` }}
               >
                 <button
                   onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
@@ -1113,12 +1198,12 @@ export const Home: React.FC = () => {
                   <ChevronDown 
                     size={18} 
                     className={`text-primary-700 transform transition-transform duration-300 flex-shrink-0 ${
-                      openFaqIndex === idx ? 'rotate-180' : ''
+                      openFaqIndex === idx ? 'rotate-180 text-primary-800' : ''
                     }`} 
                   />
                 </button>
                 {openFaqIndex === idx && (
-                  <div className="px-4 pb-4 sm:px-6 sm:pb-6 text-stone-600 text-xs sm:text-sm leading-relaxed border-t border-stone-100 pt-3 sm:pt-4">
+                  <div className="px-4 pb-4 sm:px-6 sm:pb-6 text-stone-600 text-xs sm:text-sm leading-relaxed border-t border-stone-100 pt-3 sm:pt-4 animate-reveal-up">
                     {faq.a}
                   </div>
                 )}
@@ -1135,7 +1220,7 @@ export const Home: React.FC = () => {
           <img src="/cover-lunar-bg.jpg" alt="Texture" className="w-full h-full object-cover" />
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-5 sm:space-y-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-5 sm:space-y-6 reveal-scale">
           <span className="inline-block font-cinzel text-amber-300 uppercase tracking-widest text-xs sm:text-sm font-bold">
             WD GROUP DIGITAL INVITATION
           </span>
@@ -1151,15 +1236,16 @@ export const Home: React.FC = () => {
               href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-stone-950 font-extrabold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2"
+              className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-stone-950 font-extrabold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center space-x-2 relative overflow-hidden group"
             >
-              <MessageCircle size={18} />
-              <span>Hubungi Admin via WhatsApp</span>
+              <span className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+              <MessageCircle size={18} className="relative z-10" />
+              <span className="relative z-10">Hubungi Admin via WhatsApp</span>
             </a>
 
             <Link 
               to="/themes"
-              className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm sm:text-base border border-white/20 backdrop-blur-md transition-all flex items-center justify-center space-x-2"
+              className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm sm:text-base border border-white/20 backdrop-blur-md transition-all flex items-center justify-center space-x-2 transform hover:-translate-y-0.5"
             >
               <span>Katalog Tema</span>
               <ArrowRight size={16} />
@@ -1260,6 +1346,34 @@ export const Home: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* FLOATING ACTION WIDGETS (Smooth & Interactive) */}
+      <div className="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end space-y-3 pointer-events-none">
+        {/* Floating WhatsApp Quick Consultation Button with Pulse */}
+        <a
+          href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20undangan%20pernikahan%20digital"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pointer-events-auto flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-full shadow-2xl shadow-emerald-950/30 transition-all transform hover:scale-105 active:scale-95 group relative border border-emerald-400/30"
+          aria-label="Konsultasi WhatsApp"
+        >
+          <span className="absolute -inset-1 rounded-full bg-emerald-400 opacity-30 animate-ping pointer-events-none" />
+          <MessageCircle size={18} className="relative z-10 fill-white/20 shrink-0" />
+          <span className="relative z-10 text-xs font-bold hidden sm:inline-block pr-1">Tanya Kami di WA</span>
+        </a>
+
+        {/* Floating Scroll-To-Top Button */}
+        {showScrollTop && (
+          <button
+            onClick={scrollToTop}
+            className="pointer-events-auto w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md text-stone-700 border border-stone-200/90 shadow-xl hover:bg-primary-900 hover:text-amber-200 hover:border-primary-900 transition-all flex items-center justify-center transform hover:scale-110 active:scale-95 animate-reveal-up"
+            aria-label="Scroll to top"
+            title="Kembali ke Atas"
+          >
+            <ChevronUp size={20} />
+          </button>
+        )}
+      </div>
 
     </div>
   );
