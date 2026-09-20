@@ -27,7 +27,7 @@ export const InvitationRenderer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const animTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const animTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data: invitation, isLoading: isLoadingInv } = useQuery({
     queryKey: ['invitation', slug],
