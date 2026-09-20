@@ -23,9 +23,11 @@ export const InvitationRenderer: React.FC = () => {
   const isDirectOpened = searchParams.get('opened') === 'true';
   const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'opened'>(isDirectOpened ? 'opened' : 'cover');
   const [isVideoExiting, setIsVideoExiting] = useState(false);
+  const [canSkipVideo, setCanSkipVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const animTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data: invitation, isLoading: isLoadingInv } = useQuery({
     queryKey: ['invitation', slug],
@@ -169,15 +171,24 @@ export const InvitationRenderer: React.FC = () => {
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
+    if (animTimeoutRef.current) {
+      clearTimeout(animTimeoutRef.current);
+      animTimeoutRef.current = null;
+    }
     setIsVideoExiting(true);
     setTimeout(() => {
       setOpeningStage('opened');
       setIsVideoExiting(false);
+      setCanSkipVideo(false);
     }, 700);
   };
 
   // Handle clicking "Buka Undangan": starts audio and triggers entrance animation sequence
-  const handleOpen = () => {
+  const handleOpen = (e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
+
     if (audioRef.current) {
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
@@ -201,7 +212,14 @@ export const InvitationRenderer: React.FC = () => {
       }
     }
 
+    // Reset skip guard so initial button click/tap cannot dismiss the video prematurely
+    setCanSkipVideo(false);
     setOpeningStage('arch-video');
+
+    // Allow skip ONLY after 1.5s delay to prevent accidental tap/click-through from "Buka Undangan"
+    setTimeout(() => {
+      setCanSkipVideo(true);
+    }, 1500);
 
     // Trigger video playback immediately on user interaction
     setTimeout(() => {
@@ -212,7 +230,8 @@ export const InvitationRenderer: React.FC = () => {
     }, 50);
 
     // Video plays arch entrance and zooms through, then transitions directly into the invitation (~5.2s)
-    setTimeout(() => {
+    if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
+    animTimeoutRef.current = setTimeout(() => {
       setOpeningStage((prev) => {
         if (prev === 'arch-video') {
           handleFinishAnimation();
@@ -258,8 +277,12 @@ export const InvitationRenderer: React.FC = () => {
       )}
 
       {/* Main Invitation Content */}
-      <div className={`transition-opacity duration-1000 ${isInvitationVisible ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
-        {(openingStage === 'opened' || openingStage === 'arch-video') && (
+      <div className={`transition-opacity duration-1000 ${
+        isInvitationVisible 
+          ? 'opacity-100' 
+          : (isSplitTheme ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden')
+      }`}>
+        {(openingStage === 'opened' || openingStage === 'arch-video' || isSplitTheme) && (
           isSecretGarden ? (
             <SecretGardenTheme 
               invitation={invitation}
@@ -314,11 +337,16 @@ export const InvitationRenderer: React.FC = () => {
         )}
       </div>
 
-      {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) */}
+      {/* 1. Initial Front Cover:
+          - On Desktop: Positioned inside the right 42% column, matching the invitation card container
+          - On Mobile: Fullscreen 100% width and height
+      */}
       {openingStage === 'cover' && (
         isSecretGarden ? (
           /* Exact Cover matching Secret Garden theme */
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0e0b08]">
+          <div className={`fixed top-0 right-0 h-full ${
+            isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full'
+          } z-40 flex items-center justify-center overflow-hidden select-none bg-[#0e0b08]`}>
             {/* Background image matching theme */}
             <div className="absolute inset-0 z-0">
               <img 
@@ -341,19 +369,19 @@ export const InvitationRenderer: React.FC = () => {
                 </p>
                 <div className="flex flex-row items-center justify-center gap-x-2 sm:gap-x-3 flex-wrap">
                   <h1 
-                    className="text-5xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)]"
+                    className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)]"
                     style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
                   >
                     {groomDisplayName}
                   </h1>
                   <span 
-                    className="text-3xl sm:text-4xl text-white font-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mx-1"
+                    className="text-2xl sm:text-3xl lg:text-3xl text-white font-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mx-1"
                     style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
                   >
                     &amp;
                   </span>
                   <h1 
-                    className="text-5xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)]"
+                    className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)]"
                     style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
                   >
                     {brideDisplayName}
@@ -396,7 +424,9 @@ export const InvitationRenderer: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-neutral-950">
+          <div className={`fixed top-0 right-0 h-full ${
+            isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full'
+          } z-40 flex items-center justify-center overflow-hidden select-none bg-neutral-950`}>
             {/* Fullscreen Photo with Cinematic Dark Vignette Overlay */}
             <div className="absolute inset-0 z-0">
               <img 
@@ -421,23 +451,23 @@ export const InvitationRenderer: React.FC = () => {
 
               {/* Couple Names */}
               <h1 
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.2rem] text-white font-normal tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-4 uppercase leading-none flex-wrap"
+                className="text-2xl sm:text-4xl lg:text-4xl xl:text-5xl text-white font-normal tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-3 uppercase leading-none flex-wrap"
                 style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}
               >
                 <span style={{ fontVariantLigatures: 'common-ligatures' }}>{groom}</span>
-                <span className="text-2xl sm:text-4xl md:text-5xl font-serif font-light italic opacity-90 mx-1">&amp;</span>
+                <span className="text-xl sm:text-3xl font-serif font-light italic opacity-90 mx-1">&amp;</span>
                 <span style={{ fontVariantLigatures: 'common-ligatures' }}>{bride}</span>
               </h1>
 
               {/* Recipient Glass Card */}
-              <div className="backdrop-blur-md bg-black/30 border border-white/20 rounded-2xl px-6 sm:px-10 py-4 sm:py-5 max-w-sm w-full mx-auto mb-7 sm:mb-9 shadow-2xl space-y-1">
+              <div className="backdrop-blur-md bg-black/30 border border-white/20 rounded-2xl px-6 sm:px-8 py-3.5 sm:py-4 max-w-sm w-full mx-auto mb-6 sm:mb-8 shadow-2xl space-y-1">
                 <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                   Kepada Yth.
                 </p>
                 <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                   Bapak/Ibu/Saudara/i:
                 </p>
-                <p className="text-lg sm:text-2xl font-bold text-white tracking-wide pt-0.5 drop-shadow-md" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                <p className="text-base sm:text-xl font-bold text-white tracking-wide pt-0.5 drop-shadow-md" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                   {guestName}
                 </p>
               </div>
@@ -456,22 +486,29 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Vintage Arch Video - FULLSCREEN ON ALL DEVICES */}
+      {/* 2. Entrance Animation: Vintage Arch Video */}
+      {/* On Desktop: plays ONLY on the right 42% panel, matching the invitation card container */}
+      {/* On Mobile: plays 100% fullscreen */}
       {openingStage === 'arch-video' && (
         <div 
-          onClick={handleFinishAnimation}
-          className={`fixed inset-0 w-full h-full z-50 bg-[#0e0b08] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out overflow-hidden select-none ${
+          onClick={() => {
+            if (canSkipVideo) handleFinishAnimation();
+          }}
+          className={`fixed top-0 right-0 h-full ${
+            isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full'
+          } z-50 bg-[#0e0b08] flex items-center justify-center transition-opacity duration-700 ease-out overflow-hidden select-none ${
             isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
-          }`}
+          } ${canSkipVideo ? 'cursor-pointer' : ''}`}
         >
           {/* Ambient subtle paper noise pattern */}
           <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#8c7b6c_1px,transparent_1px)] [background-size:20px_20px]" />
 
-          {/* Video Container: Fills full screen on mobile & desktop */}
+          {/* Video Container: Fills right 42% panel on desktop, and fills full screen on mobile */}
           <div className="relative w-full h-full flex items-center justify-center p-0">
             <video
               ref={videoRef}
               src={entranceVideoSrc}
+              poster={isSecretGarden ? '/themes/secret-garden/assets/inner-cover.jpg' : '/arch-clean.png'}
               autoPlay
               playsInline
               muted
@@ -480,10 +517,18 @@ export const InvitationRenderer: React.FC = () => {
             />
           </div>
 
-          {/* Skip hint */}
-          <div className="absolute bottom-6 right-6 z-10 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-sm text-white/70 text-[11px] font-sans tracking-wider uppercase pointer-events-none">
-            Ketuk untuk lewati
-          </div>
+          {/* Skip Button: Appears after 1.5s delay to prevent accidental tap/click pass-through */}
+          {canSkipVideo && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFinishAnimation();
+              }}
+              className="absolute bottom-6 right-6 z-10 px-3.5 py-1.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-white/90 text-[11px] font-sans tracking-wider uppercase shadow-lg border border-white/20 transition-all duration-200 cursor-pointer animate-fade-in"
+            >
+              Lewati &rarr;
+            </button>
+          )}
         </div>
       )}
     </div>
