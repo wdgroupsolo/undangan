@@ -110,10 +110,13 @@ export const ThemeCatalog: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             
-            {/* Real Active Theme Cards (Split Floral & Secret Garden) */}
             {filteredThemes?.map((theme) => {
-              const imageSrc = theme.preview_image || '/bg-floral.jpg';
               const isGarden = theme.slug === 'secret-garden';
+              const imageSrc = theme.slug === 'secret-garden' 
+                ? '/themes/secret-garden-theme-preview.png' 
+                : (theme.slug === 'split-floral' 
+                    ? '/themes/split-floral-theme-preview.png' 
+                    : (theme.preview_image || '/themes/split-floral-theme-preview.png'));
 
               return (
                 <div 
@@ -122,16 +125,16 @@ export const ThemeCatalog: React.FC = () => {
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-12 h-full">
                     
-                    {/* Theme Thumbnail Preview Container */}
-                    <div className="sm:col-span-6 aspect-[4/3] sm:aspect-auto bg-stone-100 relative overflow-hidden min-h-[220px]">
+                    {/* Theme Thumbnail Preview Container (5 cols) */}
+                    <div className="sm:col-span-5 aspect-[4/3] sm:aspect-auto bg-stone-900 relative overflow-hidden min-h-[260px]">
                       <img 
                         src={imageSrc} 
                         alt={theme.name} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" 
                       />
                       
                       {/* Top Badges */}
-                      <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10">
+                      <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10">
                         <span className="bg-primary-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
                           {theme.category || (isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
                         </span>
@@ -140,7 +143,7 @@ export const ThemeCatalog: React.FC = () => {
                         </span>
                       </div>
 
-                      <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center space-x-1 shadow text-xs font-bold text-stone-800 z-10">
+                      <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center space-x-1 shadow text-xs font-bold text-stone-800 z-10">
                         <Star size={12} className="text-amber-500 fill-amber-500" />
                         <span>5.0</span>
                       </div>
@@ -157,51 +160,45 @@ export const ThemeCatalog: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Theme Content Details */}
-                    <div className="sm:col-span-6 p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+                    {/* Theme Content Details (7 cols) */}
+                    <div className="sm:col-span-7 p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
                       <div>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-2.5 py-1 rounded-md">
-                          {isGarden ? 'Trending Masterpiece' : 'Masterpiece Edition'}
+                          {isGarden ? 'Trending Masterpiece' : theme.slug === 'split-floral' ? 'Masterpiece Edition' : (theme.category || 'Special Edition')}
                         </span>
-                        <h3 className="text-2xl font-bold text-stone-900 mt-2">{theme.name}</h3>
-                        <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                        <h3 className="text-xl sm:text-2xl font-bold text-stone-900 mt-2">{theme.name}</h3>
+                        <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-3 sm:line-clamp-none">
                           {theme.description || (isGarden 
                             ? 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance, dan ornamen bunga melayang.' 
                             : 'Tema split screen klasik dengan ornamen floral, entrance video arch, dan alunan saxophone romantis.')}
                         </p>
 
                         <div className="mt-4 pt-3 border-t border-stone-100 space-y-1.5 text-xs text-stone-600">
-                          {isGarden ? (
-                            <>
-                              <div className="flex items-center space-x-2">
-                                <CheckCircle2 size={13} className="text-emerald-600" />
-                                <span>Video Entrance Sinematik HD</span>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <CheckCircle2 size={13} className="text-emerald-600" />
-                                <span>Nuansa Dusty Rose &amp; Dresscode Swatches</span>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <CheckCircle2 size={13} className="text-emerald-600" />
-                                <span>Bingkai Oval Arched &amp; Amplop Digital</span>
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              <div className="flex items-center space-x-2">
-                                <CheckCircle2 size={13} className="text-emerald-600" />
-                                <span>Entrance Video Arch Cover</span>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <CheckCircle2 size={13} className="text-emerald-600" />
-                                <span>Audio Saxophone Romantis</span>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <CheckCircle2 size={13} className="text-emerald-600" />
-                                <span>Split Screen Desktop / Full Mobile</span>
-                              </div>
-                            </>
-                          )}
+                          {(isGarden ? [
+                            'Video Entrance Sinematik HD',
+                            'Nuansa Dusty Rose & Dresscode Swatches',
+                            'Bingkai Oval Arched & Amplop Digital',
+                            'Hitung Mundur Real-Time & Add to Calendar'
+                          ] : theme.slug === 'split-floral' ? [
+                            'Entrance Video Arch Cover',
+                            'Audio Saxophone Romantis',
+                            'Split Screen Desktop / Full Mobile',
+                            'RSVP, Buku Tamu & Amplop Digital'
+                          ] : (
+                            Array.isArray(theme.features) && theme.features.length > 0
+                              ? theme.features.slice(0, 4).map((f: any) => typeof f === 'string' ? f : f.name || 'Fitur Lengkap')
+                              : [
+                                'Desain Responsif Mobile & Desktop',
+                                'RSVP & Buku Tamu Real-Time',
+                                'Amplop Digital & QRIS',
+                                'Google Maps & Hitung Mundur'
+                              ]
+                          )).map((feat, idx) => (
+                            <div key={idx} className="flex items-center space-x-2">
+                              <CheckCircle2 size={13} className="text-emerald-600 flex-shrink-0" />
+                              <span className="line-clamp-1">{feat}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
 

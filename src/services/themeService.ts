@@ -16,6 +16,24 @@ export interface Theme {
   rating?: string;
 }
 
+// Official Theme Screenshot Previews
+export const THEME_SCREENSHOT_MAP: Record<string, string> = {
+  'split-floral': '/themes/split-floral-theme-preview.png',
+  'secret-garden': '/themes/secret-garden-theme-preview.png',
+};
+
+export const enhanceThemeWithScreenshot = (theme: any): Theme => {
+  const screenshot = THEME_SCREENSHOT_MAP[theme.slug];
+  if (screenshot) {
+    return {
+      ...theme,
+      preview_image: screenshot,
+      thumbnail: screenshot,
+    };
+  }
+  return theme as Theme;
+};
+
 // Fallback theme sesuai data riil yang ada di database (Split Floral)
 export const REAL_SPLIT_FLORAL_THEME: Theme = {
   id: '409ac803-1486-4995-9a5d-de5f65d170bc',
@@ -23,8 +41,8 @@ export const REAL_SPLIT_FLORAL_THEME: Theme = {
   slug: 'split-floral',
   description: 'Tema split screen klasik dengan ornamen floral, bingkai lengkung vintage, entrance video arch, dan alunan saxophone romantis.',
   category: 'Elegant & Classic',
-  preview_image: '/bg-floral.jpg',
-  thumbnail: '/bg-floral.jpg',
+  preview_image: '/themes/split-floral-theme-preview.png',
+  thumbnail: '/themes/split-floral-theme-preview.png',
   status: 'active',
   badge: 'Tema Utama',
   rating: '5.0',
@@ -40,8 +58,8 @@ export const REAL_SECRET_GARDEN_THEME: Theme = {
   slug: 'secret-garden',
   description: 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance sinematik, dan ornamen bunga melayang.',
   category: 'Botanical & Garden',
-  preview_image: '/themes/secret-garden/assets/preview.jpg',
-  thumbnail: '/themes/secret-garden/assets/preview.jpg',
+  preview_image: '/themes/secret-garden-theme-preview.png',
+  thumbnail: '/themes/secret-garden-theme-preview.png',
   status: 'active',
   badge: 'Tema Baru Populer',
   rating: '5.0',
@@ -98,7 +116,7 @@ export const themeService = {
           merged.push(REAL_SECRET_GARDEN_THEME);
         }
       }
-      return (merged as unknown) as Theme[];
+      return merged.map(enhanceThemeWithScreenshot);
     } catch (err) {
       console.warn('Menggunakan fallback data tema riil:', err);
       return DEFAULT_THEMES;
@@ -147,7 +165,7 @@ export const themeService = {
           merged.push(REAL_SECRET_GARDEN_THEME);
         }
       }
-      return (merged as unknown) as Theme[];
+      return merged.map(enhanceThemeWithScreenshot);
     } catch (err) {
       return DEFAULT_THEMES;
     }
@@ -165,7 +183,7 @@ export const themeService = {
         .single();
       
       if (!error && data) {
-        return (data as unknown) as Theme;
+        return enhanceThemeWithScreenshot(data);
       }
     } catch (_) {}
 
@@ -185,7 +203,7 @@ export const themeService = {
         .single();
       
       if (!error && data) {
-        return (data as unknown) as Theme;
+        return enhanceThemeWithScreenshot(data);
       }
     } catch (_) {}
 

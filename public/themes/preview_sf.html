@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Split Floral Preview Portrait</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 640px;
+      height: 840px;
+      overflow: hidden;
+      background: #120f0d;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .card-wrap {
+      width: 640px;
+      height: 840px;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 45%, #251c15 0%, #14100d 75%, #0a0806 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bg-blur {
+      position: absolute;
+      inset: 0;
+      background-image: url('/bg-floral.jpg');
+      background-size: cover;
+      background-position: center 20%;
+      opacity: 0.32;
+      filter: blur(16px);
+      transform: scale(1.15);
+    }
+
+    .glow-top {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.26) 0%, transparent 70%);
+      top: -60px;
+      right: -60px;
+      filter: blur(40px);
+    }
+
+    .glow-bottom {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(160, 115, 75, 0.22) 0%, transparent 70%);
+      bottom: -60px;
+      left: -60px;
+      filter: blur(40px);
+    }
+
+    /* Left Tilted Peek */
+    .peek-left {
+      position: absolute;
+      left: 15px;
+      top: 140px;
+      width: 220px;
+      height: 440px;
+      border-radius: 34px;
+      overflow: hidden;
+      transform: rotate(-10deg) scale(0.88);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+      border: 4px solid rgba(255,255,255,0.15);
+      z-index: 2;
+      opacity: 0.85;
+    }
+    .peek-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Right Tilted Peek */
+    .peek-right {
+      position: absolute;
+      right: 15px;
+      top: 140px;
+      width: 220px;
+      height: 440px;
+      border-radius: 34px;
+      overflow: hidden;
+      transform: rotate(10deg) scale(0.88);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+      border: 4px solid rgba(255,255,255,0.15);
+      z-index: 2;
+      opacity: 0.85;
+    }
+    .peek-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Main Center Phone */
+    .phone {
+      width: 320px;
+      height: 640px;
+      background: #110e0b;
+      border-radius: 48px;
+      border: 8px solid #42362b;
+      box-shadow: 0 30px 80px -10px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.18);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #f4efdf;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 86px;
+      height: 19px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 50;
+    }
+
+    .screen-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('/bg-floral.jpg');
+      background-size: cover;
+      background-position: top center;
+    }
+
+    .screen-content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 155px;
+      text-align: center;
+    }
+
+    .sf-title {
+      font-size: 8.5px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #4a3a2a;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .sf-names {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 30px;
+      color: #3d2e1f;
+      line-height: 1.1;
+      font-weight: 700;
+      text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+    }
+
+    .sf-amp {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: #5c4735;
+      margin: 3px 0;
+    }
+
+    .sf-date {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #4a3a2a;
+      margin-top: 16px;
+      background: rgba(255,255,255,0.9);
+      padding: 4px 14px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .sf-button {
+      margin-top: 30px;
+      background: #846358;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 9px 20px;
+      border-radius: 30px;
+      box-shadow: 0 8px 22px rgba(132, 99, 88, 0.55);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Floating Feature Pills */
+    .pill {
+      position: absolute;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      color: #261e17;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      z-index: 20;
+    }
+
+    .pill-1 {
+      top: 90px;
+      left: 30px;
+      border-left: 4px solid #c89d5c;
+    }
+
+    .pill-2 {
+      bottom: 60px;
+      left: 30px;
+      border-left: 4px solid #c89d5c;
+    }
+
+    .pill-3 {
+      top: 90px;
+      right: 30px;
+      border-left: 4px solid #846358;
+    }
+
+    .pill-4 {
+      bottom: 60px;
+      right: 30px;
+      border-left: 4px solid #846358;
+    }
+  </style>
+</head>
+<body>
+  <div class="card-wrap">
+    <div class="bg-blur"></div>
+    <div class="glow-top"></div>
+    <div class="glow-bottom"></div>
+
+    <!-- Left Peek -->
+    <div class="peek-left">
+      <img src="/themes/split-floral-mobile.png" alt="Split Floral Mobile">
+    </div>
+
+    <!-- Right Peek -->
+    <div class="peek-right">
+      <img src="/bg-floral.jpg" alt="Floral Arch">
+    </div>
+
+    <!-- Center Phone -->
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="screen-bg"></div>
+        <div class="screen-content">
+          <div class="sf-title">Undangan Pernikahan</div>
+          <div class="sf-names">STEVEN</div>
+          <div class="sf-amp">&amp;</div>
+          <div class="sf-names">BUNGA</div>
+          <div class="sf-date">Sabtu, 24 Oktober 2026</div>
+          <div class="sf-button">
+            <span>💌 Buka Undangan</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pills -->
+    <div class="pill pill-1">
+      <span>🏛️</span>
+      <span>Split-Screen Desktop</span>
+    </div>
+    <div class="pill pill-2">
+      <span>🎷</span>
+      <span>Saxophone Backsound</span>
+    </div>
+    <div class="pill pill-3">
+      <span>🕊️</span>
+      <span>Vintage Flying Birds</span>
+    </div>
+    <div class="pill pill-4">
+      <span>🌕</span>
+      <span>Moon &amp; Floral Arch</span>
+    </div>
+  </div>
+</body>
+</html>

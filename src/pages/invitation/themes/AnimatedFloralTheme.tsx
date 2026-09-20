@@ -42,7 +42,7 @@ export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ invita
   );
 
   return (
-    <div className="min-h-screen bg-[#f4f0e6] font-serif text-[#5a4f40] relative overflow-x-hidden selection:bg-[#9c8471] selection:text-white">
+    <div className="min-h-screen bg-[#f4f0e6] font-serif text-[#5a4f40] relative overflow-x-clip selection:bg-[#9c8471] selection:text-white">
       
       {/* Falling Leaves Animation Layer */}
       <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">

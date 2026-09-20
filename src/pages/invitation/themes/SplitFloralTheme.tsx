@@ -564,7 +564,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   );
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen font-sans text-gray-800 overflow-x-hidden bg-[#f4f0e6]">
+    <div className="flex flex-col lg:flex-row min-h-screen font-sans text-gray-800 overflow-x-clip bg-[#f4f0e6]">
       
       {/* LEFT SIDE - FIXED ON DESKTOP & LAPTOP ONLY (Approx 58% width) */}
       <div className="hidden lg:block lg:w-[58%] lg:fixed lg:top-0 lg:left-0 h-screen relative overflow-hidden">

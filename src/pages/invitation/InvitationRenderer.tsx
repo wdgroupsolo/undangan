@@ -20,8 +20,8 @@ export const InvitationRenderer: React.FC = () => {
   // Opening sequence states:
   // 'cover'      -> Initial front cover (split on desktop, fullscreen on mobile) with [Buka Undangan] button
   // 'arch-video' -> Entrance video animation (on desktop: right 40% only; on mobile: fullscreen)
-  // 'opened'     -> Invitation fully opened and interactive
-  const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'opened'>('cover');
+  const isDirectOpened = searchParams.get('opened') === 'true';
+  const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'opened'>(isDirectOpened ? 'opened' : 'cover');
   const [isVideoExiting, setIsVideoExiting] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -111,6 +111,16 @@ export const InvitationRenderer: React.FC = () => {
     }
   }, [groom, bride, couple]);
 
+  // Completely hide browser scrollbar on invitation view while preserving smooth scrolling
+  useEffect(() => {
+    document.documentElement.classList.add('no-scrollbar');
+    document.body.classList.add('no-scrollbar');
+    return () => {
+      document.documentElement.classList.remove('no-scrollbar');
+      document.body.classList.remove('no-scrollbar');
+    };
+  }, []);
+
   const toggleMusic = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (!audioRef.current) return;
@@ -144,8 +154,11 @@ export const InvitationRenderer: React.FC = () => {
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden;
 
+  const groomDisplayName = isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom;
+  const brideDisplayName = isSecretGarden && (bride === 'Bunga' || bride === 'Siti') ? 'Maudy' : bride;
+
   const coverImage = isSecretGarden
-    ? '/themes/secret-garden/assets/preview.jpg'
+    ? '/themes/secret-garden/assets/cover-desktop.jpg'
     : (gallery?.[0]?.image_url || (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isSecretGarden
@@ -202,7 +215,7 @@ export const InvitationRenderer: React.FC = () => {
   const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && (isSplitTheme || isVideoExiting));
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen no-scrollbar overflow-x-clip">
       {/* Background Audio */}
       <audio 
         ref={audioRef} 
@@ -224,18 +237,13 @@ export const InvitationRenderer: React.FC = () => {
       {openingStage !== 'cover' && (
         <button
           onClick={toggleMusic}
-          aria-label={isPlaying ? 'Hentikan Lagu' : 'Putar Lagu'}
-          title={isPlaying ? 'Hentikan Lagu' : 'Putar Lagu'}
-          className="fixed bottom-5 left-5 sm:bottom-6 sm:left-6 md:bottom-7 md:left-7 z-40 group cursor-pointer transition-transform duration-300 hover:scale-110 active:scale-95 focus:outline-none select-none"
+          aria-label="Toggle Background Music"
+          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
         >
-          <div 
-            className={`w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-black/55 hover:bg-black/75 backdrop-blur-md flex items-center justify-center border border-white/25 shadow-xl transition-all ${
-              isPlaying ? 'animate-spin' : ''
-            }`}
+          <Disc 
+            className={`w-6 h-6 text-white group-hover:text-primary-300 transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
             style={{ animationDuration: '4s' }}
-          >
-            <Disc className="text-white w-4 h-4 sm:w-5 sm:h-5" />
-          </div>
+          />
         </button>
       )}
 
@@ -299,53 +307,59 @@ export const InvitationRenderer: React.FC = () => {
       {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) */}
       {openingStage === 'cover' && (
         isSecretGarden ? (
-          /* Exact Cover from User Screenshot: kedaigrafisdigital.com/theme/preview/secret-garden */
+          /* Exact Cover matching Secret Garden theme */
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0e0b08]">
-            {/* Background image matching user screenshot */}
+            {/* Background image matching theme */}
             <div className="absolute inset-0 z-0">
               <img 
-                src="/themes/secret-garden/assets/preview.jpg" 
+                src="/themes/secret-garden/assets/cover-desktop.jpg" 
                 alt="Cover Secret Garden" 
                 className="w-full h-full object-cover object-center scale-105"
               />
-              <div className="absolute inset-0 bg-black/50" />
+              <div className="absolute inset-0 bg-black/45" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
             </div>
 
-            {/* Secret Garden Cover Content from user screenshot */}
-            <div className="relative z-10 w-full h-full flex flex-col justify-center items-center py-12 px-6 gap-y-10 sm:gap-y-14 text-center text-white">
+            {/* Secret Garden Cover Content */}
+            <div className="relative z-10 w-full h-full flex flex-col justify-center items-center py-12 px-6 gap-y-8 sm:gap-y-12 text-center text-white">
               <div className="flex flex-col items-center justify-center w-full">
                 <p 
-                  className="text-xs sm:text-sm font-light text-white tracking-[0.25em] uppercase mb-4"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                  className="text-xs sm:text-sm font-medium text-white/90 tracking-[0.3em] uppercase mb-3 drop-shadow"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   UNDANGAN PERNIKAHAN
                 </p>
-                <div className="flex flex-row items-center justify-center gap-x-2 sm:gap-x-4 flex-wrap">
+                <div className="flex flex-row items-center justify-center gap-x-2 sm:gap-x-3 flex-wrap">
                   <h1 
-                    className="text-4xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
-                    style={{ fontFamily: "'Imperial Script', cursive" }}
+                    className="text-5xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)]"
+                    style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
                   >
-                    {groom}
+                    {groomDisplayName}
                   </h1>
                   <span 
-                    className="text-2xl sm:text-4xl text-white font-normal drop-shadow"
-                    style={{ fontFamily: "'Imperial Script', cursive" }}
+                    className="text-3xl sm:text-4xl text-white font-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mx-1"
+                    style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
                   >
                     &amp;
                   </span>
                   <h1 
-                    className="text-4xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
-                    style={{ fontFamily: "'Imperial Script', cursive" }}
+                    className="text-5xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)]"
+                    style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
                   >
-                    {bride}
+                    {brideDisplayName}
                   </h1>
                 </div>
+                <p 
+                  className="text-sm sm:text-base font-serif text-white/90 drop-shadow-md tracking-wider mt-2"
+                  style={{ fontFamily: "'Playfair Display', 'Lora', serif" }}
+                >
+                  Minggu, 27 September 2028
+                </p>
               </div>
 
               {/* Bottom Section: Nama Tamu & Button */}
               <div className="flex flex-col items-center gap-y-1 w-full">
                 <p 
-                  className="text-white text-center text-xs sm:text-sm tracking-wider opacity-90 mb-1 leading-relaxed"
                   style={{ fontFamily: "'Poppins', sans-serif" }}
                 >
                   Kepada Yth.<br />
