@@ -1003,19 +1003,32 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                     </p>
                   )}
 
-                  {/* Location Button (rendered only if maps_url is provided) */}
+                  {/* Wedding-Themed Location Map Card */}
                   {event.maps_url ? (
-                    <a 
-                      href={event.maps_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="inline-flex items-center justify-center gap-2 bg-[#3e2e22] text-white px-7 py-2.5 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase shadow-lg hover:bg-[#251b14] transition-all duration-300 active:scale-95"
-                    >
-                      <svg className="w-3.5 h-3.5 text-white shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                        <path fillRule="evenodd" clipRule="evenodd" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
-                      </svg>
-                      <span>Arahkan ke Lokasi</span>
-                    </a>
+                    <div className="w-full mt-5 text-center">
+                      <div className="p-2.5 rounded-2xl bg-white/85 backdrop-blur-sm border border-[#3e2e22]/15 shadow-md">
+                        <div className="w-full h-36 rounded-xl overflow-hidden relative border border-[#3e2e22]/10 bg-stone-100">
+                          <iframe 
+                            title={`Lokasi ${event.location}`}
+                            src={`https://maps.google.com/maps?q=${encodeURIComponent(event.location || 'Gedung Muhammadiyah Mataram')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                            className="w-full h-full border-0 block"
+                            style={{ filter: 'contrast(96%) saturate(90%) sepia(8%)' }}
+                            loading="lazy"
+                          />
+                        </div>
+                        <a 
+                          href={event.maps_url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="mt-2.5 inline-flex items-center justify-center gap-2 bg-[#3e2e22] text-white w-full py-2.5 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase shadow-md hover:bg-[#251b14] transition-all duration-300 active:scale-95"
+                        >
+                          <svg className="w-3.5 h-3.5 text-white shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+                          </svg>
+                          <span>Buka Google Maps</span>
+                        </a>
+                      </div>
+                    </div>
                   ) : null}
                 </div>
               </div>

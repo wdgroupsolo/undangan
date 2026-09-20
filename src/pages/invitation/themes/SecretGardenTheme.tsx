@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Heart, Calendar, MapPin, Clock, Copy, Check, ExternalLink, 
   Send, ChevronLeft, ChevronRight, Gift, Disc, Music, CheckCircle2,
-  X, MessageCircle, FileText, Video, Play
+  X, MessageCircle, FileText, Video, Play, Navigation
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
@@ -227,12 +227,13 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
   const brideFather = formatName(couple?.bride_father_name) || 'Hendra';
   const brideMother = formatName(couple?.bride_mother_name) || 'Yaselin';
 
-  const groomPhoto = couple?.groom_photo_url || `${ASSETS}/groom.jpg`;
-  const bridePhoto = couple?.bride_photo_url || `${ASSETS}/bride.jpg`;
+  const groomPhoto = couple?.groom_photo_url || ((couple as any)?.groom_photo && (couple as any).groom_photo.trim() !== '' ? (couple as any).groom_photo : '/groom-default.png');
+  const bridePhoto = couple?.bride_photo_url || ((couple as any)?.bride_photo && (couple as any).bride_photo.trim() !== '' ? (couple as any).bride_photo : '/bride-default.png');
   const heroPhoto = 
     couple?.cover_photo_url ||
     invitation?.cover_image_url || 
-    `${ASSETS}/cover-desktop.jpg`;
+    gallery?.[0]?.image_url || 
+    '/cover-lunar-bg.jpg';
 
   // Countdown timer state & formatted dates matching reference photo
   const targetDateStr = events[0]?.event_date || '2028-09-27T09:00:00';
@@ -387,9 +388,10 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
   // Photo Slide Animation (photos sliding vertically inside capsule frame)
   const [photoSlideIndex, setPhotoSlideIndex] = useState(0);
   const slidePhotos = [
-    `${ASSETS}/couple-hanbok.jpg`,
-    `${ASSETS}/couple-jawa.jpg`,
-    heroPhoto,
+    '/gallery-slide-1.jpg',
+    '/gallery-slide-2.jpg',
+    '/gallery-slide-3.jpg',
+    '/gallery-ceremony.jpg',
   ];
 
   useEffect(() => {
@@ -502,39 +504,39 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
     }
   ];
 
-  // Default Stories if none provided (Matching Reference Photos)
+  // Default Stories if none provided (Matching Split Floral Theme photos)
   const displayStories = stories?.length > 0 ? stories : [
     {
       judul: 'Pertemuan Pertama',
       tanggal: 'Tahun 2016',
       cerita: 'Kami pertama kali bertemu di bangku kuliah pada tahun 2016. Dari pertemanan sederhana, kami mulai saling mengenal lebih dekat dan merasa nyaman satu sama lain.',
-      photo: `${ASSETS}/preview.jpg`
+      photo: '/gallery-slide-1.jpg'
     },
     {
       judul: 'Mulai Menjalin Hubungan',
       tanggal: 'Tahun 2017',
       cerita: 'Seiring berjalannya waktu, kebersamaan kami tumbuh menjadi komitmen. Tahun ini menjadi awal perjalanan kami sebagai pasangan.',
-      photo: `${ASSETS}/groom.jpg`
+      photo: '/gallery-slide-2.jpg'
     },
     {
       judul: 'Hari Bahagia Kami',
       tanggal: 'Tahun 2023',
       cerita: 'InsyaAllah kami akan melangsungkan akad dan resepsi pernikahan. Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu.',
-      photo: `${ASSETS}/preview.jpg`
+      photo: '/gallery-slide-3.jpg'
     }
   ];
 
-  // Default Gallery photos matching reference photo (9 photos in 3x3 grid)
+  // Default Gallery photos matching Split Floral Theme
   const displayGallery = gallery?.length > 0 ? gallery : [
-    { image_url: `${ASSETS}/sg-gallery-1.jpg`, caption: 'Akad & Adat Jawa' },
-    { image_url: `${ASSETS}/sg-gallery-2.jpg`, caption: 'Hanbok in Nature' },
-    { image_url: `${ASSETS}/sg-gallery-3.jpg`, caption: 'Beskap & Kemben' },
-    { image_url: `${ASSETS}/sg-gallery-4.jpg`, caption: 'Kebaya Merah' },
-    { image_url: `${ASSETS}/sg-gallery-5.jpg`, caption: 'Hanbok Portrait' },
-    { image_url: `${ASSETS}/sg-gallery-6.jpg`, caption: 'Walking Together' },
-    { image_url: `${ASSETS}/sg-gallery-7.jpg`, caption: 'The Beautiful Bride' },
-    { image_url: `${ASSETS}/sg-gallery-8.jpg`, caption: 'The Handsome Groom' },
-    { image_url: `${ASSETS}/sg-gallery-9.jpg`, caption: 'Evening Romance' },
+    { image_url: '/gallery-ceremony.jpg', caption: 'Akad Nikah' },
+    { image_url: '/gallery-slide-2.jpg', caption: 'Kebersamaan' },
+    { image_url: '/gallery-slide-1.jpg', caption: 'Prewedding Moments' },
+    { image_url: '/gallery-slide-3.jpg', caption: 'Romantic Walk' },
+    { image_url: '/gallery-grid-1.jpg', caption: 'Sweet Memories' },
+    { image_url: '/gallery-grid-2.jpg', caption: 'Cherished Moments' },
+    { image_url: '/gallery-grid-3.jpg', caption: 'Golden Hour' },
+    { image_url: '/gallery-grid-5.jpg', caption: 'Happy Smiles' },
+    { image_url: '/gallery-grid-6.jpg', caption: 'Love & Promise' },
   ];
 
   return (
@@ -1240,15 +1242,55 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                       {evt.location}
                     </h4>
 
-                    {/* Google Maps Card - only if evt.has_map is true */}
+                    {/* Wedding-Themed Google Maps Section */}
                     {evt.has_map && (
-                      <div className="w-full max-w-[340px] sm:max-w-[360px] h-[195px] sm:h-[210px] rounded-[20px] overflow-hidden shadow-md relative bg-[#C4E3ED] border border-black/5">
-                        <iframe 
-                          title={`Peta Lokasi ${evt.location}`}
-                          src={mapEmbedUrl}
-                          className="w-full h-full border-0 block"
-                          loading="lazy"
-                        />
+                      <div className="w-full max-w-[340px] sm:max-w-[360px] mx-auto mt-2 text-center">
+                        <div 
+                          className="p-2.5 sm:p-3 rounded-[22px] shadow-lg border relative overflow-hidden"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.88)',
+                            backdropFilter: 'blur(8px)',
+                            borderColor: 'rgba(136, 84, 97, 0.25)',
+                            boxShadow: '0 10px 30px rgba(119, 75, 83, 0.12)'
+                          }}
+                        >
+                          {/* Card Header Badge */}
+                          <div className="flex items-center justify-center gap-1.5 pb-2 text-[#7A4B56]">
+                            <MapPin size={14} className="text-[#885461]" />
+                            <span 
+                              className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase"
+                              style={{ fontFamily: "'Lora', Georgia, serif" }}
+                            >
+                              Petunjuk Lokasi Acara
+                            </span>
+                          </div>
+
+                          {/* Map Window with Wedding-Harmonized Filter */}
+                          <div className="w-full h-[180px] sm:h-[195px] rounded-[16px] overflow-hidden relative shadow-inner border border-[#885461]/15 bg-stone-100">
+                            <iframe 
+                              title={`Peta Lokasi ${evt.location}`}
+                              src={mapEmbedUrl}
+                              className="w-full h-full border-0 block"
+                              style={{ filter: 'contrast(96%) saturate(90%) sepia(8%)' }}
+                              loading="lazy"
+                            />
+                          </div>
+
+                          {/* Action Button: Buka Google Maps */}
+                          <a 
+                            href={evt.maps_url || `https://maps.google.com/?q=${locationQuery}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-3 w-full py-2.5 px-4 rounded-full text-white text-xs font-semibold tracking-wider uppercase shadow-md hover:scale-[1.02] active:scale-95 transition-all inline-flex items-center justify-center gap-2 cursor-pointer select-none"
+                            style={{ 
+                              background: 'linear-gradient(135deg, #784E59 0%, #BA8995 100%)',
+                              fontFamily: "'Poppins', sans-serif"
+                            }}
+                          >
+                            <Navigation size={13} />
+                            <span>Buka Google Maps</span>
+                          </a>
+                        </div>
                       </div>
                     )}
                   </div>

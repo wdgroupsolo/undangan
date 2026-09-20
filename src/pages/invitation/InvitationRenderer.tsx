@@ -157,9 +157,11 @@ export const InvitationRenderer: React.FC = () => {
   const groomDisplayName = isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom;
   const brideDisplayName = isSecretGarden && (bride === 'Bunga' || bride === 'Siti') ? 'Maudy' : bride;
 
-  const coverImage = isSecretGarden
-    ? '/themes/secret-garden/assets/cover-desktop.jpg'
-    : (gallery?.[0]?.image_url || (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
+  const coverImage = 
+    couple?.cover_photo_url || 
+    invitation?.cover_image_url || 
+    gallery?.[0]?.image_url || 
+    (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg');
 
   const entranceVideoSrc = isSecretGarden
     ? '/themes/secret-garden/assets/video.mp4'
@@ -201,6 +203,14 @@ export const InvitationRenderer: React.FC = () => {
 
     setOpeningStage('arch-video');
 
+    // Trigger video playback immediately on user interaction
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(err => console.warn('Video play error:', err));
+      }
+    }, 50);
+
     // Video plays arch entrance and zooms through, then transitions directly into the invitation (~5.2s)
     setTimeout(() => {
       setOpeningStage((prev) => {
@@ -212,7 +222,7 @@ export const InvitationRenderer: React.FC = () => {
     }, 5200);
   };
 
-  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && (isSplitTheme || isVideoExiting));
+  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
 
   return (
     <div className="relative min-h-screen no-scrollbar overflow-x-clip">
@@ -312,7 +322,7 @@ export const InvitationRenderer: React.FC = () => {
             {/* Background image matching theme */}
             <div className="absolute inset-0 z-0">
               <img 
-                src="/themes/secret-garden/assets/cover-desktop.jpg" 
+                src={coverImage} 
                 alt="Cover Secret Garden" 
                 className="w-full h-full object-cover object-center scale-105"
               />
@@ -446,36 +456,33 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Vintage Arch Video */}
-      {/* On Desktop: plays ONLY on the right 42% panel, while left 58% shows photo + text */}
-      {/* On Mobile & Tablet: plays 100% FULLSCREEN without left text */}
+      {/* 2. Entrance Animation: Vintage Arch Video - FULLSCREEN ON ALL DEVICES */}
       {openingStage === 'arch-video' && (
         <div 
           onClick={handleFinishAnimation}
-          className={`fixed top-0 right-0 h-full ${
-            isSplitTheme ? 'w-full lg:w-[42%] lg:left-[58%]' : 'w-full inset-0'
-          } z-50 bg-[#f4efdf] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out overflow-hidden select-none ${
+          className={`fixed inset-0 w-full h-full z-50 bg-[#0e0b08] flex items-center justify-center cursor-pointer transition-opacity duration-700 ease-out overflow-hidden select-none ${
             isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
           }`}
-          style={{
-            backgroundImage: 'radial-gradient(ellipse at center, #faf6ee 0%, #efe7db 100%)'
-          }}
         >
           {/* Ambient subtle paper noise pattern */}
-          <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#8c7b6c_1px,transparent_1px)] [background-size:20px_20px]" />
+          <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#8c7b6c_1px,transparent_1px)] [background-size:20px_20px]" />
 
-          {/* Video Container: Fills right 40% panel on desktop, and fills full screen on mobile */}
-          <div className="relative w-full h-full max-h-[100dvh] flex items-center justify-center p-0">
+          {/* Video Container: Fills full screen on mobile & desktop */}
+          <div className="relative w-full h-full flex items-center justify-center p-0">
             <video
               ref={videoRef}
               src={entranceVideoSrc}
-              poster={isSecretGarden ? '/themes/secret-garden/assets/preview.jpg' : '/arch-clean.png'}
               autoPlay
               playsInline
               muted
               className="w-full h-full object-cover object-center"
               onEnded={handleFinishAnimation}
             />
+          </div>
+
+          {/* Skip hint */}
+          <div className="absolute bottom-6 right-6 z-10 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-sm text-white/70 text-[11px] font-sans tracking-wider uppercase pointer-events-none">
+            Ketuk untuk lewati
           </div>
         </div>
       )}
