@@ -614,53 +614,57 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
               />
             </div>
 
-            {/* Couple Info - Positioned in the middle of the archway, perfectly matching reference photo */}
-            <div className="relative z-10 flex flex-col items-center justify-center pt-[22vh] sm:pt-[24vh] md:pt-[26vh] px-4 max-w-md mx-auto text-center select-none">
-              <p 
-                className="text-xs sm:text-sm uppercase tracking-[0.24em] font-medium mb-3 sm:mb-4 text-[#261f22] drop-shadow-[0_1px_2px_rgba(255,255,255,0.95)]"
-                style={{ fontFamily: "'Playfair Display', 'Cinzel', serif" }}
-              >
-                UNDANGAN PERNIKAHAN
-              </p>
+            {/* Couple Info - In an elegant frosted glass cartouche so text is 100% crisp and readable against botanical background */}
+            <div className="relative z-10 flex flex-col items-center justify-center pt-[18vh] sm:pt-[20vh] md:pt-[22vh] px-4 max-w-md mx-auto text-center select-none">
+              <div className="backdrop-blur-md bg-white/75 border border-white/80 shadow-[0_12px_40px_rgba(60,30,40,0.15)] rounded-[2rem] px-6 sm:px-8 py-5 sm:py-6 w-full max-w-[320px] sm:max-w-sm flex flex-col items-center">
+                <p 
+                  className="text-xs sm:text-sm uppercase tracking-[0.26em] font-semibold mb-2 sm:mb-3 text-[#3d2028] drop-shadow-sm"
+                  style={{ fontFamily: "'Playfair Display', 'Cinzel', serif" }}
+                >
+                  UNDANGAN PERNIKAHAN
+                </p>
 
-              <div className="flex flex-col items-center justify-center my-1 sm:my-1.5">
-                <h1 
-                  className="text-5xl sm:text-[3.8rem] md:text-[4.4rem] font-normal tracking-wide leading-[1.0]"
-                  style={{ 
-                    fontFamily: "'Great Vibes', cursive", 
-                    color: '#793d4e',
-                    textShadow: '0 1px 3px rgba(255,255,255,0.95), 0 0 2px rgba(255,255,255,0.85)'
-                  }}
+                <div className="flex flex-col items-center justify-center my-0.5 sm:my-1">
+                  <h1 
+                    className="text-5xl sm:text-[3.8rem] md:text-[4.2rem] font-normal tracking-wide leading-[1.05]"
+                    style={{ 
+                      fontFamily: "'Great Vibes', cursive", 
+                      color: '#5e2332',
+                      textShadow: '0 1px 2px rgba(255,255,255,0.9), 0 0 12px rgba(255,255,255,0.7)'
+                    }}
+                  >
+                    {groomNickname}
+                  </h1>
+                  <span 
+                    className="text-2xl sm:text-3xl my-0.5 leading-none font-serif italic text-[#3d2028] font-medium"
+                    style={{ 
+                      fontFamily: "'Playfair Display', 'Lora', serif",
+                      textShadow: '0 1px 2px rgba(255,255,255,0.9)'
+                    }}
+                  >
+                    &amp;
+                  </span>
+                  <h1 
+                    className="text-5xl sm:text-[3.8rem] md:text-[4.2rem] font-normal tracking-wide leading-[1.05]"
+                    style={{ 
+                      fontFamily: "'Great Vibes', cursive", 
+                      color: '#5e2332',
+                      textShadow: '0 1px 2px rgba(255,255,255,0.9), 0 0 12px rgba(255,255,255,0.7)'
+                    }}
+                  >
+                    {brideNickname}
+                  </h1>
+                </div>
+
+                <div className="w-16 h-[1px] bg-[#5e2332]/25 my-2.5 sm:my-3" />
+
+                <p 
+                  className="text-xs sm:text-sm font-semibold tracking-[0.38em] uppercase text-[#3d2028] drop-shadow-sm"
+                  style={{ fontFamily: "'Playfair Display', 'Lora', serif" }}
                 >
-                  {groomNickname}
-                </h1>
-                <span 
-                  className="text-2xl sm:text-3xl my-0.5 leading-none font-serif italic text-[#332227]"
-                  style={{ 
-                    fontFamily: "'Playfair Display', 'Lora', serif",
-                    textShadow: '0 1px 2px rgba(255,255,255,0.95)'
-                  }}
-                >
-                  &amp;
-                </span>
-                <h1 
-                  className="text-5xl sm:text-[3.8rem] md:text-[4.4rem] font-normal tracking-wide leading-[1.0]"
-                  style={{ 
-                    fontFamily: "'Great Vibes', cursive", 
-                    color: '#793d4e',
-                    textShadow: '0 1px 3px rgba(255,255,255,0.95), 0 0 2px rgba(255,255,255,0.85)'
-                  }}
-                >
-                  {brideNickname}
-                </h1>
+                  {formattedDateDot}
+                </p>
               </div>
-
-              <p 
-                className="mt-3 sm:mt-4 text-xs sm:text-sm font-medium tracking-[0.38em] uppercase text-[#261f22] drop-shadow-[0_1px_2px_rgba(255,255,255,0.95)]"
-                style={{ fontFamily: "'Playfair Display', 'Lora', serif" }}
-              >
-                {formattedDateDot}
-              </p>
             </div>
           </section>
 

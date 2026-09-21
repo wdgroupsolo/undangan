@@ -479,7 +479,7 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Vintage Arch Video (Bagian yang dimaksud: di desktop kecil di panel kanan, bukan full) */}
+      {/* 2. Entrance Animation: Vintage Arch Video */}
       {openingStage === 'arch-video' && (
         <div 
           onClick={() => {
@@ -494,7 +494,7 @@ export const InvitationRenderer: React.FC = () => {
           {/* Ambient subtle paper noise pattern */}
           <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#8c7b6c_1px,transparent_1px)] [background-size:20px_20px]" />
 
-          {/* Video Container: Fills right 42% panel on desktop, and fills full screen on mobile */}
+          {/* Video Container */}
           <div className="relative w-full h-full flex items-center justify-center p-0">
             <video
               ref={videoRef}
@@ -508,7 +508,7 @@ export const InvitationRenderer: React.FC = () => {
             />
           </div>
 
-          {/* Skip hint: "Ketuk untuk lewati" matches user screenshot */}
+          {/* Skip hint */}
           <div 
             onClick={(e) => {
               if (canSkipVideo) {
