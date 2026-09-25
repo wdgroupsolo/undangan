@@ -146,14 +146,14 @@ export const Home: React.FC = () => {
       </div>
 
       {/* Top Notification Bar */}
-      <div className="bg-primary-900 text-primary-100 text-[11px] sm:text-xs py-2 px-3 sm:px-4 text-center font-medium tracking-wide flex flex-wrap items-center justify-center gap-1.5 relative z-50 leading-tight">
+      <div className="bg-primary-900 text-primary-100 text-[11px] sm:text-xs py-2 px-3 sm:px-4 text-center font-medium tracking-wide flex flex-wrap items-center justify-center gap-1.5 relative z-50 leading-tight animate-grow-down [animation-delay:0ms] origin-top">
         <Sparkles size={13} className="text-amber-300 animate-pulse shrink-0" />
         <span>Tema Eksklusif {displayThemes[0]?.name || 'Terbaru'} kini telah hadir!</span>
         <a href="#themes" className="underline font-bold text-white hover:text-amber-200 ml-1">Lihat Tema &rarr;</a>
       </div>
 
       {/* Luxury Navigation Header */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/70 transition-all shadow-xs">
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/70 transition-all shadow-xs animate-reveal-up [animation-delay:300ms]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16 sm:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2.5 sm:space-x-3 group">
@@ -247,10 +247,10 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
             
             {/* Left Content Column */}
-            <div className="lg:col-span-7 text-center lg:text-left space-y-5 sm:space-y-6 reveal-left">
+            <div className="lg:col-span-7 text-center lg:text-left space-y-5 sm:space-y-6">
               
               {/* Luxury Badge */}
-              <div className="inline-flex items-center space-x-2 bg-white/95 border border-primary-200/80 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-xs hover:border-primary-400 transition-colors">
+              <div className="inline-flex items-center space-x-2 bg-white/95 border border-primary-200/80 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-xs hover:border-primary-400 transition-colors reveal-left delay-75">
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-500 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-600"></span>
@@ -261,7 +261,7 @@ export const Home: React.FC = () => {
               </div>
 
               {/* Main Headline */}
-              <div className="space-y-3">
+              <div className="space-y-3 reveal-left delay-150">
                 <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-stone-900 tracking-tight leading-[1.2]">
                   Abadikan Momen Indah dengan <span className="font-playfair italic font-normal text-primary-700 underline decoration-amber-300 decoration-wavy decoration-2">Undangan Digital</span> yang Elegan
                 </h1>
@@ -271,7 +271,7 @@ export const Home: React.FC = () => {
               </div>
 
               {/* Action Buttons with Shimmer Light Sweep */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 w-full">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 w-full reveal-left delay-300">
                 <a 
                   href="#themes"
                   className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-primary-800 via-primary-700 to-primary-900 text-white font-bold text-sm sm:text-base shadow-xl shadow-primary-900/20 hover:shadow-2xl hover:shadow-primary-900/30 transition-all transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center space-x-3 group relative overflow-hidden"
@@ -293,7 +293,7 @@ export const Home: React.FC = () => {
               </div>
 
               {/* Social Proof Mini */}
-              <div className="pt-5 sm:pt-6 border-t border-stone-200/80 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-6 text-sm text-stone-600">
+              <div className="pt-5 sm:pt-6 border-t border-stone-200/80 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-6 text-sm text-stone-600 reveal-left delay-500">
                 <div className="flex items-center space-x-2.5 group cursor-default">
                   <div className="flex -space-x-2">
                     <img className="w-8 h-8 rounded-full border-2 border-white object-cover transition-transform group-hover:scale-105" src="/photos/photo-1.jpg" alt="User 1" />
@@ -321,7 +321,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Right Interactive Mockup Showcase */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full reveal-right">
+            <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full reveal-scale delay-300">
               
               {/* Floating Badge: RSVP Counter (Tablet & Desktop) */}
               <div className="hidden min-[540px]:flex absolute -left-4 sm:-left-8 top-12 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl shadow-xl border border-stone-100 items-center space-x-3 z-20 animate-float-gentle hover:scale-105 transition-transform duration-300 cursor-default">
