@@ -1449,14 +1449,14 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                   {/* 2. Makan & Minum */}
                   <div className="flex flex-col items-center text-center">
                     <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border border-white/40 flex items-center justify-center mb-2 bg-white/10">
-                      <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-white stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                      <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-white stroke-[2.2] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                         {/* Fork */}
-                        <path d="M9 21V10" />
-                        <path d="M6 6v4a3 3 0 0 0 6 0V6" />
-                        <path d="M9 6v4" />
-                        {/* Spoon */}
-                        <path d="M15 21V11" />
-                        <path d="M15 11c-2 0-3-2-3-4V6c0-2 1-3 3-3s3 1 3 3v1c0 2-1 4-3 4z" />
+                        <path d="M8 21v-9" />
+                        <path d="M5 6v4a3 3 0 0 0 6 0V6" />
+                        <path d="M8 6v4" />
+                        {/* Knife / Spoon */}
+                        <path d="M16 21v-9" />
+                        <path d="M16 12c-2.5 0-2.5-7 0-7s2.5 7 0 7z" />
                       </svg>
                     </div>
                     <p 
@@ -1470,13 +1470,13 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                   {/* 3. Mendoakan */}
                   <div className="flex flex-col items-center text-center">
                     <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border border-white/40 flex items-center justify-center mb-2 bg-white/10">
-                      <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-white stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-                        {/* The palms base */}
-                        <path d="M6 14c0 3 2.5 5 6 5s6-2 6-5" />
-                        {/* Left Hand Fingers */}
-                        <path d="M6 14V8a2.5 2.5 0 0 1 5 0v6" />
-                        {/* Right Hand Fingers */}
-                        <path d="M18 14V8a2.5 2.5 0 0 0-5 0v6" />
+                      <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-white stroke-[2.2] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                        {/* Center touch line */}
+                        <path d="M12 15V6a2 2 0 0 0-4 0v5" />
+                        <path d="M12 15V6a2 2 0 0 1 4 0v5" />
+                        {/* Cupped palms */}
+                        <path d="M12 15H5a2 2 0 0 1 0-4h3" />
+                        <path d="M12 15h7a2 2 0 0 0 0-4h-3" />
                       </svg>
                     </div>
                     <p 
