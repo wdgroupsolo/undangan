@@ -1428,9 +1428,9 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
               <div className="grid grid-cols-3 gap-y-7 gap-x-2 sm:gap-x-4 max-w-[350px] sm:max-w-[365px] mx-auto mb-14 sm:mb-16">
                 {/* 1. Sholat */}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#2C5E55] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-[#2C5E55] stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="5" y="3" width="14" height="18" rx="2" fill="#2C5E55" fillOpacity="0.12" />
+                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#885461] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-[#885461] stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="5" y="3" width="14" height="18" rx="2" fill="#885461" fillOpacity="0.12" />
                       <path d="M7 8c1-2.5 3-3.5 5-3.5s4 1 5 3.5" />
                       <circle cx="12" cy="11.5" r="2.5" />
                       <path d="M12 10.5v1.2l.8.8" />
@@ -1438,7 +1438,7 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                     </svg>
                   </div>
                   <p 
-                    className="text-[9px] sm:text-[9.5px] font-bold text-[#2C5E55] leading-tight max-w-[85px] mx-auto text-center"
+                    className="text-[9px] sm:text-[9.5px] font-bold text-[#885461] leading-tight max-w-[85px] mx-auto text-center"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Memperhatikan waktu sholat
@@ -1447,15 +1447,15 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
 
                 {/* 2. Makan & Minum */}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#2C5E55] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#2C5E55] flex items-center justify-center">
+                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#885461] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#885461] flex items-center justify-center">
                       <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 fill-white" viewBox="0 0 24 24">
                         <path d="M7 2a2.5 2.5 0 0 0-2.5 2.5c0 1.3 1.1 2.3 2.5 2.3v14.2h1.5V6.8c1.4 0 2.5-1 2.5-2.3A2.5 2.5 0 0 0 8.5 2H7zm8 0v4.5a1.2 1.2 0 0 1-1.2 1.2v13.3h1.5v-5.5h1.4v5.5h1.5V7.7a1.2 1.2 0 0 1-1.2-1.2V2h-2z" />
                       </svg>
                     </div>
                   </div>
                   <p 
-                    className="text-[9px] sm:text-[9.5px] font-bold text-[#2C5E55] leading-tight max-w-[85px] mx-auto text-center"
+                    className="text-[9px] sm:text-[9.5px] font-bold text-[#885461] leading-tight max-w-[85px] mx-auto text-center"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Memperhatikan adab makan & minum
@@ -1464,8 +1464,8 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
 
                 {/* 3. Mendoakan */}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#2C5E55] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-[#2C5E55] stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#885461] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-[#885461] stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M7 16c0-3 2-6 2-9a1.5 1.5 0 0 1 3 0v4" />
                       <path d="M17 16c0-3-2-6-2-9a1.5 1.5 0 0 0-3 0v4" />
                       <path d="M8.5 13c1 1.5 2 2 3.5 2s2.5-.5 3.5-2" />
@@ -1473,7 +1473,7 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                     </svg>
                   </div>
                   <p 
-                    className="text-[9px] sm:text-[9.5px] font-bold text-[#2C5E55] leading-tight max-w-[85px] mx-auto text-center"
+                    className="text-[9px] sm:text-[9.5px] font-bold text-[#885461] leading-tight max-w-[85px] mx-auto text-center"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Mendoakan Kedua Mempelai
@@ -1482,18 +1482,18 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
 
                 {/* 4. Menjaga Jarak */}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#2C5E55] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 fill-[#2C5E55]" viewBox="0 0 24 24">
+                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#885461] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 fill-[#885461]" viewBox="0 0 24 24">
                       <circle cx="5.5" cy="5.5" r="2.2" />
                       <path d="M3 10c0-1.1.9-2 2-2h1c1.1 0 2 .9 2 2v6.5H6.5V21H4.5v-4.5H3V10z" />
                       <circle cx="18.5" cy="5.5" r="2.2" />
                       <path d="M16 10c0-1.1.9-2 2-2h1c1.1 0 2 .9 2 2l1.2 7h-2.2V21h-2v-4h-2.2l1.2-7z" />
                       <path d="M8.5 15.5l1.5-1.5v1h4v-1l1.5 1.5-1.5 1.5v-1h-4v1l-1.5-1.5z" />
-                      <path d="M10.5 10.5l1.5 1.5 3-3" fill="none" stroke="#2C5E55" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M10.5 10.5l1.5 1.5 3-3" fill="none" stroke="#885461" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                   <p 
-                    className="text-[9px] sm:text-[9.5px] font-bold text-[#2C5E55] leading-tight max-w-[88px] mx-auto text-center"
+                    className="text-[9px] sm:text-[9.5px] font-bold text-[#885461] leading-tight max-w-[88px] mx-auto text-center"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Memperhatikan adab lawan jenis, dan menjaga jarak
@@ -1502,14 +1502,14 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
 
                 {/* 5. Menutup Aurat */}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#2C5E55] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-[#2C5E55] stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#885461] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-[#885461] stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 3C8 3 6 5.5 6 10c0 4 2.5 8 3.5 11h5c1-3 3.5-7 3.5-11 0-4.5-2-7-6-7z" />
                       <path d="M9.5 9c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5c0 2-1 3.5-2.5 3.5S9.5 11 9.5 9z" />
                     </svg>
                   </div>
                   <p 
-                    className="text-[9px] sm:text-[9.5px] font-bold text-[#2C5E55] leading-tight max-w-[88px] mx-auto text-center"
+                    className="text-[9px] sm:text-[9.5px] font-bold text-[#885461] leading-tight max-w-[88px] mx-auto text-center"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Memakai pakaian yang sopan dan menutup aurat
@@ -1518,15 +1518,15 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
 
                 {/* 6. Dilarang Foto */}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#2C5E55] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-[#2C5E55] stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-full border-2 border-[#885461] flex items-center justify-center mb-2 bg-[#F3ECE5]/45">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 stroke-[#885461] stroke-[1.8] fill-none" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M7 15h10a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1h-2l-1-1.5h-4L9 9H7a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1z" />
                       <circle cx="12" cy="12" r="2" />
                       <line x1="4" y1="4" x2="20" y2="20" strokeWidth="2.2" />
                     </svg>
                   </div>
                   <p 
-                    className="text-[9px] sm:text-[9.5px] font-bold text-[#2C5E55] leading-tight max-w-[85px] mx-auto text-center"
+                    className="text-[9px] sm:text-[9.5px] font-bold text-[#885461] leading-tight max-w-[85px] mx-auto text-center"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Dilarang mengambil foto tanpa izin
