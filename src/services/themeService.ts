@@ -68,7 +68,24 @@ export const REAL_SECRET_GARDEN_THEME: Theme = {
   created_at: '2026-09-19T10:00:00.000000+00:00'
 };
 
+export const REAL_ROYAL_ELEGANCE_THEME: Theme = {
+  id: 'c1d2e3f4-5678-9012-3456-789abcdef012',
+  name: 'Royal Elegance',
+  slug: 'royal-elegance',
+  description: 'Tema elegan dengan cover layar penuh, gradien warna gelap maroon, dan sentuhan emas eksklusif.',
+  category: 'Elegant & Classic',
+  preview_image: '/themes/royal-elegance-theme-preview.png',
+  thumbnail: '/themes/royal-elegance-theme-preview.png',
+  status: 'active',
+  badge: 'New Exclusive',
+  rating: '5.0',
+  features: ['cover', 'couple', 'countdown', 'events', 'gallery', 'story', 'rsvp', 'guestbook', 'gift', 'music'],
+  theme_config: { primaryColor: '#D4AF37', secondaryColor: '#2F1515', style: 'elegant' },
+  created_at: '2026-09-25T10:00:00.000000+00:00'
+};
+
 export const DEFAULT_THEMES: Theme[] = [
+  REAL_ROYAL_ELEGANCE_THEME,
   REAL_SPLIT_FLORAL_THEME,
   REAL_SECRET_GARDEN_THEME,
 ];
@@ -175,6 +192,9 @@ export const themeService = {
     if (id === REAL_SECRET_GARDEN_THEME.id || id === 'secret-garden') {
       return REAL_SECRET_GARDEN_THEME;
     }
+    if (id === REAL_ROYAL_ELEGANCE_THEME.id || id === 'royal-elegance') {
+      return REAL_ROYAL_ELEGANCE_THEME;
+    }
     try {
       const { data, error } = await supabase
         .from('themes')
@@ -193,6 +213,9 @@ export const themeService = {
   async getThemeBySlug(slug: string): Promise<Theme> {
     if (slug === 'secret-garden') {
       return REAL_SECRET_GARDEN_THEME;
+    }
+    if (slug === 'royal-elegance') {
+      return REAL_ROYAL_ELEGANCE_THEME;
     }
     try {
       const { data, error } = await supabase

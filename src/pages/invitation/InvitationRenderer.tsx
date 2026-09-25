@@ -9,6 +9,7 @@ import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
 import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
 import { SecretGardenTheme } from './themes/SecretGardenTheme';
+import { RoyalEleganceTheme } from './themes/RoyalEleganceTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
@@ -154,6 +155,7 @@ export const InvitationRenderer: React.FC = () => {
 
   const activeThemeSlug = requestedTheme || (invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral';
   const isSecretGarden = activeThemeSlug === 'secret-garden';
+  const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden;
 
   const groomDisplayName = isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom;
@@ -283,7 +285,17 @@ export const InvitationRenderer: React.FC = () => {
           : (isSplitTheme && openingStage === 'arch-video' ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden')
       }`}>
         {(openingStage === 'opened' || openingStage === 'arch-video') && (
-          isSecretGarden ? (
+          isRoyalElegance ? (
+            <RoyalEleganceTheme 
+              invitation={invitation}
+              couple={couple}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+            />
+          ) : isSecretGarden ? (
             <SecretGardenTheme 
               invitation={invitation}
               couple={couple}
@@ -339,7 +351,68 @@ export const InvitationRenderer: React.FC = () => {
 
       {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) with [Buka Undangan] Button */}
       {openingStage === 'cover' && (
-        isSecretGarden ? (
+        isRoyalElegance ? (
+          /* Exact Cover matching Royal Elegance (from reference image) */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#110e0c]">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+              <img 
+                src={coverImage} 
+                alt="Cover Royal Elegance" 
+                className="w-full h-full object-cover object-center scale-105"
+              />
+              {/* Very strong dark maroon/brown vignette at the bottom */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2c1315] via-[#2c1315]/70 to-transparent" />
+            </div>
+
+            <div className="relative z-10 w-full h-full flex flex-col justify-end items-center pb-20 px-6 text-center text-white">
+              {/* Cover Text */}
+              <div className="w-full mb-8 space-y-4">
+                <p 
+                  className="text-xs sm:text-sm text-gray-200 tracking-[0.1em]"
+                  style={{ fontFamily: "'Lora', serif" }}
+                >
+                  The Wedding Of
+                </p>
+                <h1 
+                  className="text-5xl sm:text-6xl text-white font-normal drop-shadow-md leading-tight"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  {groom} &amp; {bride}
+                </h1>
+              </div>
+
+              {/* Recipient */}
+              <div className="w-full mb-10 space-y-2">
+                <p 
+                  className="text-xs sm:text-sm text-gray-200 tracking-wider"
+                  style={{ fontFamily: "'Lora', serif" }}
+                >
+                  Dear :
+                </p>
+                <p 
+                  className="text-base sm:text-lg text-white font-medium tracking-wide drop-shadow"
+                  style={{ fontFamily: "'Lora', serif" }}
+                >
+                  {guestName}
+                </p>
+              </div>
+
+              {/* Buka Undangan Button */}
+              <button 
+                onClick={handleOpen} 
+                className="btn-open-invitation px-8 py-3.5 rounded-full text-xs font-semibold tracking-[0.2em] uppercase transition-transform hover:scale-105 shadow-[0_8px_30px_rgba(0,0,0,0.5)] cursor-pointer"
+                style={{ 
+                  background: 'linear-gradient(90deg, #d4af37 0%, #aa771c 100%)', 
+                  color: '#FFFFFF',
+                  fontFamily: "'Montserrat', sans-serif" 
+                }}
+              >
+                BUKA UNDANGAN
+              </button>
+            </div>
+          </div>
+        ) : isSecretGarden ? (
           /* Exact Cover matching Secret Garden theme */
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0e0b08]">
             {/* Background image matching theme */}
