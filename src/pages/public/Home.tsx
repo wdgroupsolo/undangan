@@ -148,7 +148,7 @@ export const Home: React.FC = () => {
       {/* Top Notification Bar */}
       <div className="bg-primary-900 text-primary-100 text-[11px] sm:text-xs py-2 px-3 sm:px-4 text-center font-medium tracking-wide flex flex-wrap items-center justify-center gap-1.5 relative z-50 leading-tight">
         <Sparkles size={13} className="text-amber-300 animate-pulse shrink-0" />
-        <span>Tema Eksklusif Split Floral kini telah hadir dengan video entrance arch &amp; musik saxophone!</span>
+        <span>Tema Eksklusif {displayThemes[0]?.name || 'Terbaru'} kini telah hadir!</span>
         <a href="#themes" className="underline font-bold text-white hover:text-amber-200 ml-1">Lihat Tema &rarr;</a>
       </div>
 
@@ -279,7 +279,7 @@ export const Home: React.FC = () => {
                   {/* Subtle Shimmer Reflection */}
                   <span className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
                   <Sparkles size={18} className="text-amber-300 group-hover:rotate-12 transition-transform duration-300" />
-                  <span>Lihat Tema Split Floral</span>
+                  <span>Lihat Tema {displayThemes[0]?.name || 'Terbaru'}</span>
                   <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform duration-300" />
                 </a>
 
@@ -393,12 +393,12 @@ export const Home: React.FC = () => {
                   {/* Invitation Preview Hero */}
                   <div className="relative h-56 sm:h-64 overflow-hidden group">
                     <img 
-                      src="/bg-floral.jpg" 
-                      alt="Tema Split Floral" 
+                      src={displayThemes[0]?.preview_image || displayThemes[0]?.thumbnail || "/bg-floral.jpg"} 
+                      alt={`Tema ${displayThemes[0]?.name || 'Terbaru'}`} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-4 sm:p-5 text-white">
-                      <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-amber-200 font-medium">Tema Split Floral</p>
+                      <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-amber-200 font-medium">{displayThemes[0]?.name || 'Tema Eksklusif'}</p>
                       <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide mt-0.5">Kevin &amp; Jessica</h3>
                       <p className="text-[10px] sm:text-[11px] text-stone-200 mt-1 font-light flex items-center space-x-1">
                         <Calendar size={11} className="text-amber-300 inline" />
@@ -488,8 +488,8 @@ export const Home: React.FC = () => {
               <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Kepuasan Pasangan</p>
             </div>
             <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none reveal-init delay-200 hover:scale-105 transition-all duration-300">
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">1 Tema</div>
-              <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Split Floral</p>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">{displayThemes.length} Tema</div>
+              <p className="text-xs sm:text-sm font-semibold text-stone-500 mt-1">Eksklusif</p>
             </div>
             <div className="bg-stone-50/60 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-stone-200/60 sm:border-none reveal-init delay-300 hover:scale-105 transition-all duration-300">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary-900 font-cinzel">Real-Time</div>
