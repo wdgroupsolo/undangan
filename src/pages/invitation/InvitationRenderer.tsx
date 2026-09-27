@@ -125,6 +125,28 @@ export const InvitationRenderer: React.FC = () => {
     };
   }, []);
 
+  // Coordinate background music with interactive video elements (e.g. video greeting)
+  useEffect(() => {
+    const handlePauseBgm = () => {
+      if (audioRef.current && !audioRef.current.paused) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+    const handleResumeBgm = () => {
+      if (audioRef.current && audioRef.current.paused && openingStage === 'opened') {
+        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
+    };
+
+    window.addEventListener('wedding:pause-bgm', handlePauseBgm);
+    window.addEventListener('wedding:resume-bgm', handleResumeBgm);
+    return () => {
+      window.removeEventListener('wedding:pause-bgm', handlePauseBgm);
+      window.removeEventListener('wedding:resume-bgm', handleResumeBgm);
+    };
+  }, [openingStage]);
+
   const toggleMusic = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (!audioRef.current) return;

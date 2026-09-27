@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Calendar, MapPin, Gift, CreditCard, Clock, Heart, Send, Check, X, Copy, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, Gift, CreditCard, Clock, Heart, Send, Check, X, Copy, ChevronDown, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX, Maximize2, RotateCcw, Sparkles } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
 // Self-contained Instagram Icon SVG (safe across all lucide versions)
@@ -187,6 +187,122 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
   const [isLiveStreamVisible, setIsLiveStreamVisible] = useState(false);
 
   const [activeLightboxIdx, setActiveLightboxIdx] = useState<number | null>(null);
+
+  // Video Greeting State (Konsep 2 - Royal Golden Arch Player)
+  const videoGreetingRef = useRef<HTMLVideoElement | null>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+  const [isVideoMuted, setIsVideoMuted] = useState<boolean>(false);
+  const [videoProgress, setVideoProgress] = useState<number>(0);
+  const [videoCurrentTime, setVideoCurrentTime] = useState<string>('00:00');
+  const [videoDuration, setVideoDuration] = useState<string>('00:00');
+  const [showVideoControls, setShowVideoControls] = useState<boolean>(true);
+  const controlsTimeoutRef = useRef<any>(null);
+
+  const videoUrl = invitation?.settings?.video_url || couple?.greeting_video_url || couple?.video_url || '/maroon-video.mp4';
+
+  const formatVideoTime = (seconds: number) => {
+    if (isNaN(seconds) || seconds < 0) return '00:00';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
+  const handlePlayVideo = () => {
+    if (!videoGreetingRef.current) return;
+    videoGreetingRef.current.play().then(() => {
+      setIsVideoPlaying(true);
+      // Pause background music so speech/video is clearly heard
+      window.dispatchEvent(new CustomEvent('wedding:pause-bgm'));
+    }).catch((err) => {
+      console.warn('Video play blocked:', err);
+    });
+  };
+
+  const handlePauseVideo = () => {
+    if (!videoGreetingRef.current) return;
+    videoGreetingRef.current.pause();
+    setIsVideoPlaying(false);
+    // Resume background music
+    window.dispatchEvent(new CustomEvent('wedding:resume-bgm'));
+  };
+
+  const handleTogglePlayVideo = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (isVideoPlaying) {
+      handlePauseVideo();
+    } else {
+      handlePlayVideo();
+    }
+  };
+
+  const handleToggleMute = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!videoGreetingRef.current) return;
+    const newMuted = !isVideoMuted;
+    videoGreetingRef.current.muted = newMuted;
+    setIsVideoMuted(newMuted);
+  };
+
+  const handleVideoTimeUpdate = () => {
+    if (!videoGreetingRef.current) return;
+    const current = videoGreetingRef.current.currentTime;
+    const duration = videoGreetingRef.current.duration || 0;
+    setVideoCurrentTime(formatVideoTime(current));
+    if (duration > 0) {
+      setVideoProgress((current / duration) * 100);
+    }
+  };
+
+  const handleVideoLoadedMetadata = () => {
+    if (!videoGreetingRef.current) return;
+    setVideoDuration(formatVideoTime(videoGreetingRef.current.duration || 0));
+  };
+
+  const handleVideoEnded = () => {
+    setIsVideoPlaying(false);
+    setVideoProgress(0);
+    if (videoGreetingRef.current) {
+      videoGreetingRef.current.currentTime = 0;
+    }
+    // Resume background music when video finishes
+    window.dispatchEvent(new CustomEvent('wedding:resume-bgm'));
+  };
+
+  const handleSeekVideo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!videoGreetingRef.current) return;
+    const seekPercent = parseFloat(e.target.value);
+    const duration = videoGreetingRef.current.duration || 0;
+    if (duration > 0) {
+      const targetTime = (seekPercent / 100) * duration;
+      videoGreetingRef.current.currentTime = targetTime;
+      setVideoProgress(seekPercent);
+    }
+  };
+
+  const handleFullscreenVideo = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!videoGreetingRef.current) return;
+    if (videoGreetingRef.current.requestFullscreen) {
+      videoGreetingRef.current.requestFullscreen();
+    }
+  };
+
+  const handleVideoInteraction = () => {
+    setShowVideoControls(true);
+    if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    if (isVideoPlaying) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        setShowVideoControls(false);
+      }, 3500);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+      window.dispatchEvent(new CustomEvent('wedding:resume-bgm'));
+    };
+  }, []);
 
   // Staggered on-scroll entrance animations for Couple & Countdown sections (replays on scroll)
   useEffect(() => {
@@ -1144,9 +1260,17 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
               />
 
               <div className="relative z-10">
-                {/* Video Frame with Cinematic Zoom & Shimmer Sheen */}
+                {/* Section Header Tag */}
+                <div className="text-center mb-3">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#801824]/10 border border-[#801824]/20 text-[#801824] text-[11px] font-serif uppercase tracking-widest font-medium shadow-sm">
+                    <Sparkles className="w-3 h-3 text-[#c4a46a]" />
+                    Video Ucapan &amp; Pesan Mempelai
+                  </span>
+                </div>
+
+                {/* Royal Arched Video Stage Frame Container (Konsep 2) */}
                 <div 
-                  className={`rounded-[1.5rem] overflow-hidden aspect-[4/3] sm:aspect-video relative shadow-inner border border-[#d8cebe]/60 transition-all duration-[1200ms] ease-out ${
+                  className={`rounded-[1.75rem] overflow-hidden aspect-[16/10] sm:aspect-video relative shadow-[0_14px_40px_rgba(0,0,0,0.35)] border-2 border-[#d4af37]/75 transition-all duration-[1200ms] ease-out group select-none bg-[#1a080b] ${
                     isCountdownVisible 
                       ? 'opacity-100 scale-100' 
                       : 'opacity-0 scale-[0.94]'
@@ -1155,26 +1279,192 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
                     willChange: 'transform, opacity',
                     transitionDelay: isCountdownVisible ? '250ms' : '0ms',
                   }}
+                  onMouseMove={handleVideoInteraction}
+                  onClick={handleVideoInteraction}
                 >
+                  {/* HTML5 Video Element */}
                   <video 
-                    src="/maroon-video.mp4" 
-                    autoPlay 
-                    loop 
-                    muted 
+                    ref={videoGreetingRef}
+                    src={videoUrl} 
                     playsInline
-                    className={`w-full h-full object-cover transition-transform duration-[1800ms] ease-out ${
-                      isCountdownVisible ? 'scale-100' : 'scale-110'
+                    preload="metadata"
+                    onTimeUpdate={handleVideoTimeUpdate}
+                    onLoadedMetadata={handleVideoLoadedMetadata}
+                    onEnded={handleVideoEnded}
+                    onClick={handleTogglePlayVideo}
+                    className={`w-full h-full object-cover transition-opacity duration-700 ${
+                      isVideoPlaying ? 'opacity-100' : 'opacity-0'
                     }`}
                   />
-                  {/* Subtle Light Reflection Sheen on Video Entrance */}
-                  {isCountdownVisible && (
+
+                  {/* INITIAL / PAUSED COVER STATE: Royal Golden Arch Frame with Roses & Chandelier (Matches Reference Screenshot) */}
+                  {!isVideoPlaying && (
                     <div 
-                      className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full"
-                      style={{
-                        animation: 'shimmer-sweep 1.6s ease-out 0.45s forwards'
-                      }}
-                    />
+                      className="absolute inset-0 z-20 flex flex-col items-center justify-between p-4 cursor-pointer overflow-hidden"
+                      onClick={handlePlayVideo}
+                    >
+                      {/* Background: Our Generated Royal Arch Frame with Roses, Chandelier, Amber Glow */}
+                      <img 
+                        src="/maroon-video-frame.jpg" 
+                        alt="Royal Wedding Arch Frame" 
+                        className="absolute inset-0 w-full h-full object-cover object-center scale-[1.02] transition-transform duration-700 group-hover:scale-105"
+                      />
+
+                      {/* Warm Vignette Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50 pointer-events-none" />
+
+                      {/* Ambient Sparkles */}
+                      <GoldSparkles count={8} />
+
+                      {/* Top Header inside Arch: "WEDDING OF" */}
+                      <div className="relative z-10 pt-1.5 text-center">
+                        <p 
+                          className="text-[10px] sm:text-xs tracking-[0.35em] uppercase text-[#fbf0d8] font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)]"
+                          style={{ fontFamily: "'Montserrat', sans-serif" }}
+                        >
+                          THE WEDDING OF
+                        </p>
+                        <h2 
+                          className="text-2xl sm:text-3xl text-[#fff8ea] font-normal italic tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] mt-0.5"
+                          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                          {groomNick} <span className="text-[#f3da9f] font-light">&amp;</span> {brideNick}
+                        </h2>
+                      </div>
+
+                      {/* Center: Luxury Royal Golden Play Button */}
+                      <div className="relative z-10 flex flex-col items-center my-auto group/btn">
+                        <div className="relative">
+                          {/* Pulsing Outer Halo */}
+                          <div className="absolute -inset-2.5 rounded-full bg-[#d4af37]/35 blur-sm animate-pulse pointer-events-none" />
+                          
+                          {/* 3D Gold Rimmed Button */}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handlePlayVideo();
+                            }}
+                            className="relative w-15 h-15 sm:w-18 sm:h-18 rounded-full bg-gradient-to-tr from-[#99732f] via-[#ffd778] to-[#99732f] p-[2.5px] shadow-[0_8px_24px_rgba(0,0,0,0.6)] hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer"
+                            aria-label="Putar Video Ucapan"
+                          >
+                            <div className="w-full h-full rounded-full bg-[#4a0d14] flex items-center justify-center border border-[#ffd778]/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
+                              <Play className="w-6 h-6 sm:w-8 sm:h-8 text-[#f3da9f] fill-[#f3da9f] ml-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                            </div>
+                          </button>
+                        </div>
+
+                        {/* Interactive Pill Tag */}
+                        <div className="mt-2.5 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-[#d4af37]/50 shadow-lg flex items-center gap-1.5 transition-transform duration-300 group-hover/btn:scale-105">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#ffd778] animate-ping" />
+                          <span className="text-[10px] sm:text-xs text-[#fbf0d8] font-serif tracking-wider uppercase font-medium">
+                            Putar Video Ucapan
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Bottom Footer Note inside Poster */}
+                      <div className="relative z-10 pb-1 text-center">
+                        <p className="text-[10px] text-[#fbf0d8]/85 font-sans tracking-wide drop-shadow-sm">
+                          Pesan &amp; Doa Restu dari Kedua Mempelai
+                        </p>
+                      </div>
+                    </div>
                   )}
+
+                  {/* ACTIVE PLAYING CONTROLS OVERLAY */}
+                  {isVideoPlaying && (
+                    <div 
+                      className={`absolute inset-0 z-20 flex flex-col justify-between p-3 sm:p-4 bg-gradient-to-b from-black/60 via-transparent to-black/85 transition-opacity duration-300 ${
+                        showVideoControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                      }`}
+                    >
+                      {/* Top Bar: Title & Sound Toggle Button */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                          <span className="text-xs text-white/95 font-serif tracking-wider drop-shadow-md">
+                            {groomNick} &amp; {brideNick} • Video Ucapan
+                          </span>
+                        </div>
+
+                        {/* Sound Toggle (Mute / Unmute) */}
+                        <button
+                          type="button"
+                          onClick={handleToggleMute}
+                          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/25 text-white hover:bg-black/85 hover:border-[#d4af37]/60 transition-all text-xs shadow-lg cursor-pointer"
+                          aria-label={isVideoMuted ? "Nyalakan Suara" : "Bisukan Suara"}
+                        >
+                          {isVideoMuted ? (
+                            <>
+                              <VolumeX className="w-3.5 h-3.5 text-rose-300" />
+                              <span className="text-[10px] text-white/90">Hening</span>
+                            </>
+                          ) : (
+                            <>
+                              <Volume2 className="w-3.5 h-3.5 text-[#ffd778]" />
+                              <span className="text-[10px] text-white/90">Suara Nyala</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Center Play/Pause Tap Button */}
+                      <div className="flex items-center justify-center my-auto">
+                        <button
+                          type="button"
+                          onClick={handleTogglePlayVideo}
+                          className="w-12 h-12 rounded-full bg-black/55 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-xl cursor-pointer"
+                          aria-label="Pause Video"
+                        >
+                          <Pause className="w-5 h-5 text-white" />
+                        </button>
+                      </div>
+
+                      {/* Bottom Bar: Progress Slider, Time & Fullscreen */}
+                      <div className="space-y-1.5">
+                        {/* Gold Progress Scrubber */}
+                        <div className="relative w-full h-1.5 bg-white/25 rounded-full overflow-hidden cursor-pointer">
+                          <div 
+                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#ffd778] via-[#e2b755] to-[#c49735] transition-all duration-150"
+                            style={{ width: `${videoProgress}%` }}
+                          />
+                          <input 
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={videoProgress}
+                            onChange={handleSeekVideo}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            aria-label="Video Progress"
+                          />
+                        </div>
+
+                        {/* Controls Bottom Row */}
+                        <div className="flex items-center justify-between text-[11px] text-white/90 font-mono">
+                          <div className="flex items-center gap-2">
+                            <span>{videoCurrentTime}</span>
+                            <span className="text-white/40">/</span>
+                            <span className="text-white/70">{videoDuration}</span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={handleFullscreenVideo}
+                              className="p-1 hover:text-[#ffd778] transition-colors cursor-pointer"
+                              aria-label="Fullscreen Video"
+                            >
+                              <Maximize2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Card Corner Flourish */}
+                  <CardCornerFlourish />
                 </div>
 
                 {/* Countdown Section Inside Card */}
