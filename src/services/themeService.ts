@@ -102,7 +102,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
     secondaryColor: '#c4a46a', 
     style: 'royal-classic',
     entranceVideo: '/maroon-gate-entrance.mp4',
-    backgroundEnd: '/maroon-gate-end.jpg'
+    backgroundEnd: '/gate-bg-open.jpg'
   },
   created_at: '2026-09-27T12:00:00.000000+00:00'
 };

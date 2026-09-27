@@ -1047,7 +1047,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
               >
                 <div className="relative w-48 h-60 sm:w-52 sm:h-64 rounded-[50%] overflow-hidden border-[2px] border-[#fdfcf9] shadow-inner">
                   <img 
-                    src={couple?.bride_photo_url || '/bride-default.jpg'} 
+                    src={couple?.bride_photo_url || '/bride-default.png'} 
                     alt={brideName}
                     className={`w-full h-full object-cover object-center transition-transform duration-[1800ms] ease-out ${
                       isBrideVisible ? 'scale-100' : 'scale-115'
@@ -1161,7 +1161,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
               >
                 <div className="relative w-48 h-60 sm:w-52 sm:h-64 rounded-[50%] overflow-hidden border-[2px] border-[#fdfcf9] shadow-inner">
                   <img 
-                    src={couple?.groom_photo_url || '/groom-default.jpg'} 
+                    src={couple?.groom_photo_url || '/groom-default.png'} 
                     alt={groomName}
                     className={`w-full h-full object-cover object-center transition-transform duration-[1800ms] ease-out ${
                       isGroomVisible ? 'scale-100' : 'scale-115'

@@ -665,7 +665,7 @@ export const InvitationRenderer: React.FC = () => {
             style={{
               backgroundImage: `url(${
                 isMaroonGold 
-                  ? '/maroon-gate-end.jpg' 
+                  ? '/gate-bg-open.jpg' 
                   : isSecretGarden 
                     ? '/themes/secret-garden/assets/inner-cover.jpg' 
                     : '/arch-clean.png'
@@ -683,7 +683,7 @@ export const InvitationRenderer: React.FC = () => {
               src={entranceVideoSrc}
               poster={
                 isMaroonGold 
-                  ? '/maroon-gate-end.jpg' 
+                  ? '/gate-bg-open.jpg' 
                   : isSecretGarden 
                     ? '/themes/secret-garden/assets/inner-cover.jpg' 
                     : '/arch-clean.png'
