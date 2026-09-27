@@ -721,16 +721,16 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
           </div>
 
           {/* Top Title & Monogram */}
-          <div className="relative z-10 pt-12 sm:pt-16 flex flex-col items-center">
+          <div className="relative z-10 pt-10 sm:pt-14 flex flex-col items-center">
             <p 
               className="text-[10px] sm:text-xs tracking-[0.4em] text-[#4a3530] font-serif uppercase font-medium mb-1 drop-shadow-sm"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
               THE WEDDING OF
             </p>
-            {/* Monogram overlapping the oval */}
+            {/* Monogram */}
             <span 
-              className="text-4xl sm:text-5xl text-[#c4a46a] font-serif tracking-[0.1em] font-normal drop-shadow-md z-20 translate-y-7"
+              className="text-3xl sm:text-4xl lg:text-5xl text-[#c4a46a] font-serif tracking-[0.15em] font-normal drop-shadow-md z-20 mt-1 mb-2"
               style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
             >
               {monogram}
@@ -738,7 +738,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
           </div>
 
           {/* Center Oval Couple Portrait */}
-          <div className="relative z-10 my-auto flex flex-col items-center">
+          <div className="relative z-10 my-auto flex flex-col items-center pt-1">
             {/* Oval Frame with thin border */}
             <div className="relative w-52 h-64 sm:w-60 sm:h-72 rounded-[50%] overflow-hidden border-[1.5px] border-[#fdfcf9] shadow-[0_8px_30px_rgba(0,0,0,0.15)] z-10">
               <div className="w-full h-full rounded-[50%] overflow-hidden">
