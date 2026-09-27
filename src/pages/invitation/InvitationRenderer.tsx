@@ -10,6 +10,8 @@ import { SplitFloralTheme } from './themes/SplitFloralTheme';
 import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
 import { SecretGardenTheme } from './themes/SecretGardenTheme';
 import { RoyalEleganceTheme } from './themes/RoyalEleganceTheme';
+import { MaroonGoldTheme } from './themes/MaroonGoldTheme';
+import { VintageGateEntrance } from '../../components/VintageGateEntrance';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
@@ -156,7 +158,8 @@ export const InvitationRenderer: React.FC = () => {
   const activeThemeSlug = requestedTheme || (invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral';
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden;
+  const isMaroonGold = activeThemeSlug === 'maroon-gold';
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold;
 
   const groomDisplayName = isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom;
   const brideDisplayName = isSecretGarden && (bride === 'Bunga' || bride === 'Siti') ? 'Maudy' : bride;
@@ -165,7 +168,7 @@ export const InvitationRenderer: React.FC = () => {
     couple?.cover_photo_url || 
     invitation?.cover_image_url || 
     gallery?.[0]?.image_url || 
-    (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg');
+    (isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isSecretGarden
     ? '/themes/secret-garden/assets/video.mp4'
@@ -212,6 +215,11 @@ export const InvitationRenderer: React.FC = () => {
             window.addEventListener('touchstart', unlockAudio, { once: true });
           });
       }
+    }
+
+    if (isMaroonGold) {
+      setOpeningStage('opened');
+      return;
     }
 
     // Reset skip guard so initial button click/tap cannot dismiss the video prematurely
@@ -295,6 +303,16 @@ export const InvitationRenderer: React.FC = () => {
               gifts={gifts || []}
               music={music}
             />
+          ) : isMaroonGold ? (
+            <MaroonGoldTheme 
+              invitation={invitation}
+              couple={couple}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+            />
           ) : isSecretGarden ? (
             <SecretGardenTheme 
               invitation={invitation}
@@ -351,7 +369,65 @@ export const InvitationRenderer: React.FC = () => {
 
       {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) with [Buka Undangan] Button */}
       {openingStage === 'cover' && (
-        isRoyalElegance ? (
+        isMaroonGold ? (
+          /* Maroon Gold Cover matching exactly the user reference image */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#301114]">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+              <img 
+                src={coverImage} 
+                alt="Cover Maroon Gold" 
+                className="w-full h-full object-cover object-center scale-105"
+              />
+              {/* Very strong dark maroon vignette at the bottom */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#3a1518] via-[#3a1518]/60 to-transparent" />
+            </div>
+
+            <div className="relative z-10 w-full h-full flex flex-col justify-end items-center pb-16 px-6 text-center text-white">
+              {/* Cover Text */}
+              <div className="w-full mb-8 space-y-4">
+                <p 
+                  className="text-sm text-gray-200 tracking-wide drop-shadow-md font-serif"
+                >
+                  The Wedding Of
+                </p>
+                <h1 
+                  className="text-5xl sm:text-6xl text-white font-normal drop-shadow-lg leading-tight"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  {groom} &amp; {bride}
+                </h1>
+              </div>
+
+              {/* Recipient */}
+              <div className="w-full mb-10 space-y-3">
+                <p 
+                  className="text-sm text-gray-200 font-serif drop-shadow-md"
+                >
+                  Dear :
+                </p>
+                <p 
+                  className="text-base sm:text-lg text-white font-medium drop-shadow-md font-serif"
+                >
+                  {guestName}
+                </p>
+              </div>
+
+              {/* Buka Undangan Button */}
+              <button 
+                onClick={handleOpen} 
+                className="px-10 py-3.5 rounded-[50px] text-xs font-semibold tracking-widest transition-transform hover:scale-105 shadow-xl cursor-pointer"
+                style={{ 
+                  background: 'linear-gradient(90deg, #d3b474 0%, #aa8740 100%)', 
+                  color: '#FFFFFF',
+                  fontFamily: "'Montserrat', sans-serif" 
+                }}
+              >
+                BUKA UNDANGAN
+              </button>
+            </div>
+          </div>
+        ) : isRoyalElegance ? (
           /* Exact Cover matching Royal Elegance (from reference image) */
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#110e0c]">
             {/* Background Image */}
@@ -552,10 +628,13 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Vintage Arch Video */}
+      {/* 2. Entrance Animation: Vintage Arch Video or Custom Gate */}
       {openingStage === 'arch-video' && (
-        <div 
-          onClick={() => {
+        isMaroonGold ? (
+          <VintageGateEntrance onComplete={handleFinishAnimation} />
+        ) : (
+          <div 
+            onClick={() => {
             if (canSkipVideo) handleFinishAnimation();
           }}
           className={`fixed top-0 right-0 h-full ${
@@ -596,6 +675,7 @@ export const InvitationRenderer: React.FC = () => {
             Ketuk untuk lewati
           </div>
         </div>
+        )
       )}
     </div>
   );

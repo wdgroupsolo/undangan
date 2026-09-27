@@ -84,8 +84,25 @@ export const REAL_ROYAL_ELEGANCE_THEME: Theme = {
   created_at: '2026-09-25T10:00:00.000000+00:00'
 };
 
+export const REAL_MAROON_GOLD_THEME: Theme = {
+  id: 'd2e3f4g5-6789-0123-4567-89abcdef0123',
+  name: 'Maroon Gold',
+  slug: 'maroon-gold',
+  description: 'Tema klasik dengan nuansa merah marun dan emas yang mewah.',
+  category: 'Elegant & Classic',
+  preview_image: '/themes/maroon-gold-theme-preview.png',
+  thumbnail: '/themes/maroon-gold-theme-preview.png',
+  status: 'active',
+  badge: 'Tema Baru',
+  rating: '5.0',
+  features: ['cover', 'couple', 'countdown', 'events', 'gallery', 'story', 'rsvp', 'guestbook', 'gift', 'music'],
+  theme_config: { primaryColor: '#8a333c', secondaryColor: '#ba9550', style: 'elegant' },
+  created_at: '2026-09-25T12:00:00.000000+00:00'
+};
+
 export const DEFAULT_THEMES: Theme[] = [
   REAL_ROYAL_ELEGANCE_THEME,
+  REAL_MAROON_GOLD_THEME,
   REAL_SPLIT_FLORAL_THEME,
   REAL_SECRET_GARDEN_THEME,
 ];
@@ -195,6 +212,9 @@ export const themeService = {
     if (id === REAL_ROYAL_ELEGANCE_THEME.id || id === 'royal-elegance') {
       return REAL_ROYAL_ELEGANCE_THEME;
     }
+    if (id === REAL_MAROON_GOLD_THEME.id || id === 'maroon-gold') {
+      return REAL_MAROON_GOLD_THEME;
+    }
     try {
       const { data, error } = await supabase
         .from('themes')
@@ -216,6 +236,9 @@ export const themeService = {
     }
     if (slug === 'royal-elegance') {
       return REAL_ROYAL_ELEGANCE_THEME;
+    }
+    if (slug === 'maroon-gold') {
+      return REAL_MAROON_GOLD_THEME;
     }
     try {
       const { data, error } = await supabase
