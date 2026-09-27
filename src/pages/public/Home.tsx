@@ -721,7 +721,7 @@ export const Home: React.FC = () => {
                           Lihat Katalog
                         </Link>
                         <a 
-                          href={theme.slug ? `/invitation/bagas-siti?theme=${theme.slug}` : '/themes'}
+                          href={theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}` : '/themes'}
                           target="_blank"
                           rel="noreferrer"
                           className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 hover:shadow-lg text-center transition-all shadow-md block transform hover:-translate-y-0.5"

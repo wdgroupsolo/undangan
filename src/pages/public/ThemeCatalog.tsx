@@ -211,7 +211,7 @@ export const ThemeCatalog: React.FC = () => {
                           <span>Preview Live</span>
                         </button>
                         <a 
-                          href={`/invitation/bagas-siti?theme=${theme.slug}`}
+                          href={`/invitation/steven-bunga?theme=${theme.slug}`}
                           target="_blank"
                           rel="noreferrer"
                           className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 hover:bg-primary-900 text-white font-bold text-xs text-center transition-colors shadow-xs flex items-center justify-center space-x-1"

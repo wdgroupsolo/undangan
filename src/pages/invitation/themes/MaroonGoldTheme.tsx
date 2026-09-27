@@ -241,7 +241,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
     {
       name: 'Alyasha',
       attendance: 'Hadir',
-      message: 'Happy Wedding Habib & Adiba ❤️',
+      message: 'Happy Wedding Steven & Bunga ❤️',
       date: '4 menit lalu'
     }
   ]);
@@ -426,11 +426,35 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
   const hadirCount = wishes.filter(w => w.attendance === 'Hadir').length;
   const tidakHadirCount = wishes.filter(w => w.attendance === 'Tidak Hadir').length;
 
-  const groomName = couple?.groom_full_name || couple?.groom_nickname || 'Habib';
-  const brideName = couple?.bride_full_name || couple?.bride_nickname || 'Adiba';
-  const groomNick = couple?.groom_nickname || (couple?.groom_full_name ? couple.groom_full_name.split(' ')[0] : 'Habib');
-  const brideNick = couple?.bride_nickname || (couple?.bride_full_name ? couple.bride_full_name.split(' ')[0] : 'Adiba');
-  const monogram = `${groomNick[0] || 'H'}${brideNick[0] || 'A'}`.toUpperCase();
+  const groomNick = (() => {
+    const nick = couple?.groom_nickname?.trim();
+    const full = couple?.groom_full_name?.trim();
+    if (nick && nick.toLowerCase() !== 'bagas' && nick.toLowerCase() !== 'habib') return nick;
+    if (full && full.toLowerCase() !== 'bagas' && full.toLowerCase() !== 'habib') return full.split(' ')[0];
+    return 'Steven';
+  })();
+
+  const brideNick = (() => {
+    const nick = couple?.bride_nickname?.trim();
+    const full = couple?.bride_full_name?.trim();
+    if (nick && nick.toLowerCase() !== 'siti' && nick.toLowerCase() !== 'adiba') return nick;
+    if (full && full.toLowerCase() !== 'siti' && full.toLowerCase() !== 'adiba') return full.split(' ')[0];
+    return 'Bunga';
+  })();
+
+  const groomName = (() => {
+    const full = couple?.groom_full_name?.trim();
+    if (full && full.toLowerCase() !== 'bagas' && full.toLowerCase() !== 'habib') return full;
+    return 'Steven Pratama';
+  })();
+
+  const brideName = (() => {
+    const full = couple?.bride_full_name?.trim();
+    if (full && full.toLowerCase() !== 'siti' && full.toLowerCase() !== 'adiba') return full;
+    return 'Bunga Lestari';
+  })();
+
+  const monogram = `${groomNick[0] || 'S'}${brideNick[0] || 'B'}`.toUpperCase();
 
   // Default gifts fallback matching template
   const defaultGifts = [

@@ -35,14 +35,26 @@ export const invitationService = {
   },
 
   async getInvitationBySlug(slug: string) {
+    const targetSlug = slug === 'bagas-siti' ? 'steven-bunga' : slug;
     const { data, error } = await supabase
       .from('invitations')
       .select('*, theme:themes(*)')
-      .eq('slug', slug)
+      .eq('slug', targetSlug)
       .eq('status', 'published')
       .single();
     
-    if (error) throw error;
+    if (error) {
+      if (targetSlug !== 'steven-bunga') {
+        const { data: fallbackData } = await supabase
+          .from('invitations')
+          .select('*, theme:themes(*)')
+          .eq('slug', 'steven-bunga')
+          .eq('status', 'published')
+          .single();
+        if (fallbackData) return fallbackData;
+      }
+      throw error;
+    }
     return data;
   },
 
