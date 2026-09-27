@@ -645,20 +645,13 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
         {/* ========================================================================= */}
         <section className="relative min-h-[100dvh] flex flex-col items-center justify-between text-center px-4 pt-10 pb-8 overflow-hidden select-none">
           
-          {/* Background Scene: Scenic etching backdrop */}
+          {/* Background Scene: Scenic etching backdrop (matches video ending frame seamlessly) */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img 
               src="/gate-bg-open.jpg" 
               alt="Vintage Botanical Backdrop" 
-              className="w-full h-full object-cover object-center opacity-85 origin-center"
-              style={{
-                animation: 'breathe-bg 16s ease-in-out infinite',
-                willChange: 'transform',
-                backfaceVisibility: 'hidden',
-              }}
+              className="w-full h-full object-cover object-center opacity-100 origin-center"
             />
-            {/* Soft Warm Tint Overlay */}
-            <div className="absolute inset-0 bg-[#f4efe8]/20 mix-blend-color" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#f4efe8] via-transparent via-15% to-transparent" />
           </div>
 

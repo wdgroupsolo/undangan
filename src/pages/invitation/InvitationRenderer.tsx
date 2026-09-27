@@ -11,7 +11,6 @@ import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
 import { SecretGardenTheme } from './themes/SecretGardenTheme';
 import { RoyalEleganceTheme } from './themes/RoyalEleganceTheme';
 import { MaroonGoldTheme } from './themes/MaroonGoldTheme';
-import { VintageGateEntrance } from '../../components/VintageGateEntrance';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
@@ -172,7 +171,9 @@ export const InvitationRenderer: React.FC = () => {
 
   const entranceVideoSrc = isSecretGarden
     ? '/themes/secret-garden/assets/video.mp4'
-    : '/video-cover.mp4';
+    : isMaroonGold
+      ? '/maroon-gate-entrance.mp4'
+      : '/video-cover.mp4';
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
@@ -217,11 +218,6 @@ export const InvitationRenderer: React.FC = () => {
       }
     }
 
-    if (isMaroonGold) {
-      setOpeningStage('opened');
-      return;
-    }
-
     // Reset skip guard so initial button click/tap cannot dismiss the video prematurely
     setCanSkipVideo(false);
     setOpeningStage('arch-video');
@@ -239,7 +235,8 @@ export const InvitationRenderer: React.FC = () => {
       }
     }, 50);
 
-    // Video plays arch entrance and zooms through, then transitions directly into the invitation (~5.2s)
+    // Entrance animation duration: ~10.2s for maroon-gold gate video, ~5.2s for others
+    const timeoutDuration = isMaroonGold ? 10200 : 5200;
     if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
     animTimeoutRef.current = setTimeout(() => {
       setOpeningStage((prev) => {
@@ -248,7 +245,7 @@ export const InvitationRenderer: React.FC = () => {
         }
         return prev;
       });
-    }, 5200);
+    }, timeoutDuration);
   };
 
   const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
@@ -628,13 +625,10 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Vintage Arch Video or Custom Gate */}
+      {/* 2. Entrance Animation: Gate Entrance Video */}
       {openingStage === 'arch-video' && (
-        isMaroonGold ? (
-          <VintageGateEntrance onComplete={handleFinishAnimation} />
-        ) : (
-          <div 
-            onClick={() => {
+        <div 
+          onClick={() => {
             if (canSkipVideo) handleFinishAnimation();
           }}
           className={`fixed top-0 right-0 h-full ${
@@ -643,6 +637,20 @@ export const InvitationRenderer: React.FC = () => {
             isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
           } ${canSkipVideo ? 'cursor-pointer' : ''}`}
         >
+          {/* Background image matching video final frame for seamless zero-gap crossfade */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center pointer-events-none"
+            style={{
+              backgroundImage: `url(${
+                isMaroonGold 
+                  ? '/maroon-gate-end.jpg' 
+                  : isSecretGarden 
+                    ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                    : '/arch-clean.png'
+              })`
+            }}
+          />
+
           {/* Ambient subtle paper noise pattern */}
           <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#8c7b6c_1px,transparent_1px)] [background-size:20px_20px]" />
 
@@ -651,7 +659,13 @@ export const InvitationRenderer: React.FC = () => {
             <video
               ref={videoRef}
               src={entranceVideoSrc}
-              poster={isSecretGarden ? '/themes/secret-garden/assets/inner-cover.jpg' : '/arch-clean.png'}
+              poster={
+                isMaroonGold 
+                  ? '/maroon-gate-end.jpg' 
+                  : isSecretGarden 
+                    ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                    : '/arch-clean.png'
+              }
               autoPlay
               playsInline
               muted
@@ -675,7 +689,6 @@ export const InvitationRenderer: React.FC = () => {
             Ketuk untuk lewati
           </div>
         </div>
-        )
       )}
     </div>
   );
