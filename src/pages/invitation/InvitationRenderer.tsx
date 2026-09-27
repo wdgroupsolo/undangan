@@ -11,6 +11,7 @@ import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
 import { SecretGardenTheme } from './themes/SecretGardenTheme';
 import { RoyalEleganceTheme } from './themes/RoyalEleganceTheme';
 import { MaroonGoldTheme } from './themes/MaroonGoldTheme';
+import { JavaneseHeritageTheme } from './themes/JavaneseHeritageTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
@@ -139,9 +140,17 @@ export const InvitationRenderer: React.FC = () => {
       }
     };
 
+    const handleStartBgm = () => {
+      if (audioRef.current && audioRef.current.paused) {
+        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
+    };
+
+    window.addEventListener('wedding:play-bgm', handleStartBgm);
     window.addEventListener('wedding:pause-bgm', handlePauseBgm);
     window.addEventListener('wedding:resume-bgm', handleResumeBgm);
     return () => {
+      window.removeEventListener('wedding:play-bgm', handleStartBgm);
       window.removeEventListener('wedding:pause-bgm', handlePauseBgm);
       window.removeEventListener('wedding:resume-bgm', handleResumeBgm);
     };
@@ -180,10 +189,11 @@ export const InvitationRenderer: React.FC = () => {
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold;
+  const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage;
 
-  const groomDisplayName = isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom;
-  const brideDisplayName = isSecretGarden && (bride === 'Bunga' || bride === 'Siti') ? 'Maudy' : bride;
+  const groomDisplayName = isJavaneseHeritage ? 'Habib' : (isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom);
+  const brideDisplayName = isJavaneseHeritage ? 'Adiba' : (isSecretGarden && (bride === 'Bunga' || bride === 'Siti') ? 'Maudy' : bride);
 
   const coverImage = 
     couple?.cover_photo_url || 
@@ -311,8 +321,18 @@ export const InvitationRenderer: React.FC = () => {
           ? 'opacity-100' 
           : (isSplitTheme && openingStage === 'arch-video' ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden')
       }`}>
-        {(openingStage === 'opened' || openingStage === 'arch-video') && (
-          isRoyalElegance ? (
+        {(openingStage === 'opened' || openingStage === 'arch-video' || isJavaneseHeritage) && (
+          isJavaneseHeritage ? (
+            <JavaneseHeritageTheme 
+              invitation={invitation}
+              couple={couple}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+            />
+          ) : isRoyalElegance ? (
             <RoyalEleganceTheme 
               invitation={invitation}
               couple={couple}
@@ -387,7 +407,7 @@ export const InvitationRenderer: React.FC = () => {
       </div>
 
       {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) with [Buka Undangan] Button */}
-      {openingStage === 'cover' && (
+      {openingStage === 'cover' && !isJavaneseHeritage && (
         isMaroonGold ? (
           /* Maroon Gold Cover matching exactly the user reference image */
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#301114]">

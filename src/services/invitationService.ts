@@ -35,7 +35,7 @@ export const invitationService = {
   },
 
   async getInvitationBySlug(slug: string) {
-    const targetSlug = slug === 'bagas-siti' ? 'steven-bunga' : slug;
+    const targetSlug = (slug === 'bagas-siti' || slug === 'habib-adiba') ? 'steven-bunga' : slug;
     const { data, error } = await supabase
       .from('invitations')
       .select('*, theme:themes(*)')

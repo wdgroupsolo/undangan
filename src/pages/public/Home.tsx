@@ -632,15 +632,31 @@ export const Home: React.FC = () => {
             {/* Real Active Theme Cards */}
             {displayThemes.map((theme) => {
               const isGarden = theme.slug === 'secret-garden';
+              const isJavanese = theme.slug === 'javanese-heritage' || theme.slug === 'jawa-klasik' || theme.slug === 'borobudur';
+              const isMaroon = theme.slug === 'maroon-gold';
               const isSplit = theme.slug === 'split-floral';
 
-              const previewImg = isGarden 
+              const previewImg = theme.preview_image || theme.thumbnail || (isGarden 
                 ? '/themes/secret-garden-theme-preview.png'
                 : (isSplit 
                     ? '/themes/split-floral-theme-preview.png' 
-                    : (theme.preview_image || theme.thumbnail || '/themes/split-floral-theme-preview.png'));
+                    : '/themes/javanese-heritage-theme-preview.png'));
 
-              const featuresList = isGarden ? [
+              const demoUrl = isJavanese 
+                ? '/invitation/habib-adiba?theme=javanese-heritage' 
+                : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}` : '/themes');
+
+              const featuresList = isJavanese ? [
+                'Ilustrasi Candi Borobudur & Batik Truntum',
+                'Ornamen Anggrek Marun & Nuansa Terracotta',
+                'Split Screen Desktop & Full Mobile Interaktif',
+                'Amplop Digital (BCA/Mandiri/BSI), RSVP & Buku Tamu'
+              ] : isMaroon ? [
+                'Transisi Video Gerbang Istana Kerajaan',
+                'Nuansa Merah Marun & Bingkai Emas Vintage',
+                'Timeline Kisah Cinta & Galeri Lightbox',
+                'RSVP Real-Time & Rekening Amplop Digital'
+              ] : isGarden ? [
                 'Video Entrance Sinematik HD',
                 'Nuansa Dusty Rose & Dresscode Swatches',
                 'Bingkai Oval Arched & Amplop Digital',
@@ -676,7 +692,7 @@ export const Home: React.FC = () => {
                       />
                       <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10">
                         <span className="bg-primary-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
-                          {theme.category || (isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
+                          {theme.category || (isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
                         </span>
                         <span className="bg-amber-400 text-stone-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow w-fit">
                           {theme.badge || 'Tema Aktif'}
@@ -694,11 +710,13 @@ export const Home: React.FC = () => {
                       <div>
                         <div className="flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider text-primary-700 mb-1">
                           <Sparkles size={14} className="text-amber-500" />
-                          <span>{isGarden ? 'Trending Masterpiece' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}</span>
+                          <span>{isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Trending Masterpiece' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}</span>
                         </div>
                         <h3 className="font-bold text-xl sm:text-2xl text-stone-900">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-3 sm:line-clamp-none">
-                          {theme.description || (isGarden 
+                          {theme.description || (isJavanese
+                            ? 'Tema bernuansa kemegahan Candi Borobudur, ornamen batik klasik, paduan warna terracotta & merah marun, serta rangkaian anggrek vintage.'
+                            : isGarden 
                             ? 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance sinematik, dan ornamen bunga melayang.'
                             : 'Tema split screen klasik dengan ornamen floral melengkung vintage, entrance video arch, dan alunan saxophone romantis.')}
                         </p>
@@ -721,7 +739,7 @@ export const Home: React.FC = () => {
                           Lihat Katalog
                         </Link>
                         <a 
-                          href={theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}` : '/themes'}
+                          href={demoUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 hover:shadow-lg text-center transition-all shadow-md block transform hover:-translate-y-0.5"

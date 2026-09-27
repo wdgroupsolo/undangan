@@ -17,6 +17,9 @@ export interface Theme {
 }
 
 export const THEME_SCREENSHOT_MAP: Record<string, string> = {
+  'javanese-heritage': '/themes/javanese-heritage-theme-preview.png',
+  'jawa-klasik': '/themes/javanese-heritage-theme-preview.png',
+  'borobudur': '/themes/javanese-heritage-theme-preview.png',
   'split-floral': '/themes/split-floral-theme-preview.png',
   'secret-garden': '/themes/secret-garden-theme-preview.png',
   'maroon-gold': '/themes/maroon-gold-theme-preview.png',
@@ -33,6 +36,29 @@ export const enhanceThemeWithScreenshot = (theme: any): Theme => {
     };
   }
   return theme as Theme;
+};
+
+// New Masterpiece Theme: Javanese Heritage (Borobudur & Nusantara Royal Floral)
+export const REAL_JAVANESE_HERITAGE_THEME: Theme = {
+  id: 'e3f4a5b6-7890-4234-9678-9abcdef01234',
+  name: 'Javanese Heritage',
+  slug: 'javanese-heritage',
+  description: 'Tema tradisional bernuansa Candi Borobudur, ornamen batik klasik, paduan warna terracotta & merah marun, serta rangkaian anggrek vintage nusantara.',
+  category: 'Traditional & Heritage',
+  preview_image: '/themes/javanese-heritage-theme-preview.png',
+  thumbnail: '/themes/javanese-heritage-theme-preview.png',
+  status: 'active',
+  badge: 'Tema Baru Populer',
+  rating: '5.0',
+  features: ['cover', 'couple', 'countdown', 'events', 'gallery', 'story', 'rsvp', 'guestbook', 'gift', 'music'],
+  theme_config: { 
+    primaryColor: '#6a1a24', 
+    secondaryColor: '#df9b8e', 
+    style: 'javanese-heritage',
+    backgroundImage: '/themes/javanese-heritage-bg.jpg',
+    desktopBackground: '/themes/javanese-heritage-desktop.jpg'
+  },
+  created_at: '2026-09-28T01:00:00.000000+00:00'
 };
 
 // Fallback theme sesuai data riil yang ada di database (Split Floral)
@@ -108,6 +134,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
 };
 
 export const DEFAULT_THEMES: Theme[] = [
+  REAL_JAVANESE_HERITAGE_THEME,
   REAL_MAROON_GOLD_THEME,
   REAL_SECRET_GARDEN_THEME,
   REAL_SPLIT_FLORAL_THEME,
@@ -188,6 +215,35 @@ export const themeService = {
         }
       }
 
+      if (!existingSlugs.has('javanese-heritage')) {
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_JAVANESE_HERITAGE_THEME.id,
+              name: REAL_JAVANESE_HERITAGE_THEME.name,
+              slug: REAL_JAVANESE_HERITAGE_THEME.slug,
+              description: REAL_JAVANESE_HERITAGE_THEME.description,
+              category: REAL_JAVANESE_HERITAGE_THEME.category,
+              preview_image: REAL_JAVANESE_HERITAGE_THEME.preview_image,
+              thumbnail: REAL_JAVANESE_HERITAGE_THEME.thumbnail,
+              status: 'active',
+              features: REAL_JAVANESE_HERITAGE_THEME.features,
+              theme_config: REAL_JAVANESE_HERITAGE_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_JAVANESE_HERITAGE_THEME);
+          }
+        } catch {
+          merged.push(REAL_JAVANESE_HERITAGE_THEME);
+        }
+      }
+
       return merged.map(enhanceThemeWithScreenshot);
     } catch (err) {
       console.warn('Menggunakan fallback data tema riil:', err);
@@ -209,6 +265,35 @@ export const themeService = {
 
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
+
+      if (!existingSlugs.has('javanese-heritage')) {
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_JAVANESE_HERITAGE_THEME.id,
+              name: REAL_JAVANESE_HERITAGE_THEME.name,
+              slug: REAL_JAVANESE_HERITAGE_THEME.slug,
+              description: REAL_JAVANESE_HERITAGE_THEME.description,
+              category: REAL_JAVANESE_HERITAGE_THEME.category,
+              preview_image: REAL_JAVANESE_HERITAGE_THEME.preview_image,
+              thumbnail: REAL_JAVANESE_HERITAGE_THEME.thumbnail,
+              status: 'active',
+              features: REAL_JAVANESE_HERITAGE_THEME.features,
+              theme_config: REAL_JAVANESE_HERITAGE_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_JAVANESE_HERITAGE_THEME);
+          }
+        } catch {
+          merged.push(REAL_JAVANESE_HERITAGE_THEME);
+        }
+      }
 
       if (!existingSlugs.has('secret-garden')) {
         try {
@@ -275,6 +360,9 @@ export const themeService = {
   },
 
   async getTheme(id: string): Promise<Theme> {
+    if (id === REAL_JAVANESE_HERITAGE_THEME.id || id === 'javanese-heritage' || id === 'jawa-klasik' || id === 'borobudur') {
+      return REAL_JAVANESE_HERITAGE_THEME;
+    }
     if (id === REAL_SECRET_GARDEN_THEME.id || id === 'secret-garden') {
       return REAL_SECRET_GARDEN_THEME;
     }
@@ -296,10 +384,13 @@ export const themeService = {
       }
     } catch (_) {}
 
-    return REAL_SPLIT_FLORAL_THEME;
+    return REAL_JAVANESE_HERITAGE_THEME;
   },
 
   async getThemeBySlug(slug: string): Promise<Theme> {
+    if (slug === 'javanese-heritage' || slug === 'jawa-klasik' || slug === 'borobudur') {
+      return REAL_JAVANESE_HERITAGE_THEME;
+    }
     if (slug === 'secret-garden') {
       return REAL_SECRET_GARDEN_THEME;
     }
