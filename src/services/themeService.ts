@@ -16,10 +16,11 @@ export interface Theme {
   rating?: string;
 }
 
-// Official Theme Screenshot Previews
 export const THEME_SCREENSHOT_MAP: Record<string, string> = {
   'split-floral': '/themes/split-floral-theme-preview.png',
   'secret-garden': '/themes/secret-garden-theme-preview.png',
+  'maroon-gold': '/themes/maroon-gold-theme-preview.png',
+  'royal-elegance': '/themes/royal-elegance-theme-preview.png',
 };
 
 export const enhanceThemeWithScreenshot = (theme: any): Theme => {
@@ -85,26 +86,32 @@ export const REAL_ROYAL_ELEGANCE_THEME: Theme = {
 };
 
 export const REAL_MAROON_GOLD_THEME: Theme = {
-  id: 'd2e3f4g5-6789-0123-4567-89abcdef0123',
+  id: 'd2e3f4a5-6789-4123-8567-89abcdef0123',
   name: 'Maroon Gold',
   slug: 'maroon-gold',
-  description: 'Tema klasik dengan nuansa merah marun dan emas yang mewah.',
-  category: 'Elegant & Classic',
+  description: 'Tema klasik mewah bernuansa merah marun & emas kerajaan, bingkai oval vintage, video entrance gerbang istana, dan pemandangan alam romantis.',
+  category: 'Royal & Classic',
   preview_image: '/themes/maroon-gold-theme-preview.png',
   thumbnail: '/themes/maroon-gold-theme-preview.png',
   status: 'active',
-  badge: 'Tema Baru',
+  badge: 'Tema Baru Populer',
   rating: '5.0',
   features: ['cover', 'couple', 'countdown', 'events', 'gallery', 'story', 'rsvp', 'guestbook', 'gift', 'music'],
-  theme_config: { primaryColor: '#8a333c', secondaryColor: '#ba9550', style: 'elegant' },
-  created_at: '2026-09-25T12:00:00.000000+00:00'
+  theme_config: { 
+    primaryColor: '#8a333c', 
+    secondaryColor: '#c4a46a', 
+    style: 'royal-classic',
+    entranceVideo: '/maroon-gate-entrance.mp4',
+    backgroundEnd: '/maroon-gate-end.jpg'
+  },
+  created_at: '2026-09-27T12:00:00.000000+00:00'
 };
 
 export const DEFAULT_THEMES: Theme[] = [
-  REAL_ROYAL_ELEGANCE_THEME,
   REAL_MAROON_GOLD_THEME,
-  REAL_SPLIT_FLORAL_THEME,
   REAL_SECRET_GARDEN_THEME,
+  REAL_SPLIT_FLORAL_THEME,
+  REAL_ROYAL_ELEGANCE_THEME,
 ];
 
 export const themeService = {
@@ -119,9 +126,10 @@ export const themeService = {
         return DEFAULT_THEMES;
       }
 
-      // Merge database themes with Secret Garden if not yet inserted to database
+      // Merge database themes with Secret Garden and Maroon Gold if not yet in database
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
+
       if (!existingSlugs.has('secret-garden')) {
         try {
           const { data: inserted, error: insertErr } = await supabase
@@ -150,6 +158,36 @@ export const themeService = {
           merged.push(REAL_SECRET_GARDEN_THEME);
         }
       }
+
+      if (!existingSlugs.has('maroon-gold')) {
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_MAROON_GOLD_THEME.id,
+              name: REAL_MAROON_GOLD_THEME.name,
+              slug: REAL_MAROON_GOLD_THEME.slug,
+              description: REAL_MAROON_GOLD_THEME.description,
+              category: REAL_MAROON_GOLD_THEME.category,
+              preview_image: REAL_MAROON_GOLD_THEME.preview_image,
+              thumbnail: REAL_MAROON_GOLD_THEME.thumbnail,
+              status: 'active',
+              features: REAL_MAROON_GOLD_THEME.features,
+              theme_config: REAL_MAROON_GOLD_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_MAROON_GOLD_THEME);
+          }
+        } catch {
+          merged.push(REAL_MAROON_GOLD_THEME);
+        }
+      }
+
       return merged.map(enhanceThemeWithScreenshot);
     } catch (err) {
       console.warn('Menggunakan fallback data tema riil:', err);
@@ -171,6 +209,7 @@ export const themeService = {
 
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
+
       if (!existingSlugs.has('secret-garden')) {
         try {
           const { data: inserted, error: insertErr } = await supabase
@@ -199,6 +238,36 @@ export const themeService = {
           merged.push(REAL_SECRET_GARDEN_THEME);
         }
       }
+
+      if (!existingSlugs.has('maroon-gold')) {
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_MAROON_GOLD_THEME.id,
+              name: REAL_MAROON_GOLD_THEME.name,
+              slug: REAL_MAROON_GOLD_THEME.slug,
+              description: REAL_MAROON_GOLD_THEME.description,
+              category: REAL_MAROON_GOLD_THEME.category,
+              preview_image: REAL_MAROON_GOLD_THEME.preview_image,
+              thumbnail: REAL_MAROON_GOLD_THEME.thumbnail,
+              status: 'active',
+              features: REAL_MAROON_GOLD_THEME.features,
+              theme_config: REAL_MAROON_GOLD_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_MAROON_GOLD_THEME);
+          }
+        } catch {
+          merged.push(REAL_MAROON_GOLD_THEME);
+        }
+      }
+
       return merged.map(enhanceThemeWithScreenshot);
     } catch (err) {
       return DEFAULT_THEMES;
