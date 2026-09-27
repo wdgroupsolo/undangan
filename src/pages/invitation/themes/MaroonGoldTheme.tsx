@@ -430,7 +430,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
   const brideName = couple?.bride_full_name || couple?.bride_nickname || 'Adiba';
   const groomNick = couple?.groom_nickname || (couple?.groom_full_name ? couple.groom_full_name.split(' ')[0] : 'Habib');
   const brideNick = couple?.bride_nickname || (couple?.bride_full_name ? couple.bride_full_name.split(' ')[0] : 'Adiba');
-  const monogram = `${groomNick[0] || 'H'}${brideNick[0] || 'A'}`;
+  const monogram = `${groomNick[0] || 'H'}${brideNick[0] || 'A'}`.toUpperCase();
 
   // Default gifts fallback matching template
   const defaultGifts = [
@@ -723,14 +723,14 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
           {/* Top Title & Monogram */}
           <div className="relative z-10 pt-10 sm:pt-14 flex flex-col items-center">
             <p 
-              className="text-[10px] sm:text-xs tracking-[0.4em] text-[#4a3530] font-serif uppercase font-medium mb-1 drop-shadow-sm"
+              className="text-xs sm:text-sm md:text-base lg:text-lg tracking-[0.35em] sm:tracking-[0.45em] text-[#241315] font-serif uppercase font-semibold mb-2 drop-shadow-sm"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
               THE WEDDING OF
             </p>
-            {/* Monogram */}
+            {/* Monogram in rich black */}
             <span 
-              className="text-3xl sm:text-4xl lg:text-5xl text-[#c4a46a] font-serif tracking-[0.15em] font-normal drop-shadow-md z-20 mt-1 mb-2"
+              className="text-4xl sm:text-5xl lg:text-6xl text-[#1a1113] font-serif tracking-[0.2em] font-medium drop-shadow-sm z-20 mb-3"
               style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
             >
               {monogram}
