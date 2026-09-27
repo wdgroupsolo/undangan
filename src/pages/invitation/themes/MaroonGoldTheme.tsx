@@ -865,26 +865,6 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
             <div className="absolute inset-0 bg-gradient-to-b from-[#f4efe8] via-transparent via-15% to-[#f4efe8]" />
           </div>
 
-          {/* Flanking Side Ornaments: Peacocks & Botanicals (matching user reference) */}
-          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden select-none">
-            {/* Left Peacock standing gracefully beside Bride */}
-            <div className="absolute top-[22%] -left-3 sm:left-1 w-[38%] max-w-[190px] opacity-85">
-              <img 
-                src="/peacock-left.png" 
-                alt="" 
-                className="w-full h-auto object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.12)]" 
-              />
-            </div>
-            {/* Right Peacock standing gracefully beside Groom */}
-            <div className="absolute bottom-[10%] -right-3 sm:right-1 w-[38%] max-w-[190px] opacity-85">
-              <img 
-                src="/peacock-right.png" 
-                alt="" 
-                className="w-full h-auto object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.12)]" 
-              />
-            </div>
-          </div>
-
           <div className="relative z-10 max-w-md mx-auto space-y-12 sm:space-y-14 flex flex-col items-center text-center">
             
             {/* Intro Text (On-Scroll Fade-In) */}
