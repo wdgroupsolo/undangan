@@ -1340,44 +1340,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               ))}
             </div>
 
-            {/* Header: OUR GALLERY (Matching Image 2 at bottom of the card) */}
-            <div className="mt-12 sm:mt-14 text-center select-none pt-6 border-t border-[#5c131c]/20">
-              <h2 
-                className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                OUR GALLERY
-              </h2>
-            </div>
-
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 6. OUR GALLERY PHOTOS & LIGHTBOX                                          */}
-        {/* ========================================================================= */}
-        <section id="gallery-section" className="py-8 px-4 sm:px-6 relative z-10 bg-[#fbf7f0]">
-          <div className="max-w-md mx-auto text-center space-y-6">
-            <div className="grid grid-cols-2 gap-3">
-              {displayGallery.map((item, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setActiveLightboxIdx(idx)}
-                  className={`${item.span} ${item.aspect} rounded-2xl overflow-hidden shadow-md border border-[#8c2d38]/25 relative group cursor-pointer`}
-                >
-                  <img 
-                    src={item.image_url} 
-                    alt={item.caption}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                    <span className="text-xs text-white font-serif italic">
-                      {item.caption}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
