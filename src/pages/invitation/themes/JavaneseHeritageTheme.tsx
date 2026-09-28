@@ -592,22 +592,29 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     return () => clearInterval(interval);
   }, [targetDateStr]);
 
-  // Gallery fallback
+  // Gallery fallback matching user reference screenshots (Habib & Adiba)
   const defaultGallery = [
-    { image_url: '/photos/photo-1.jpg', span: 'col-span-1', aspect: 'aspect-[3/4]', caption: 'Tatap Penuh Makna' },
-    { image_url: '/photos/photo-4.jpg', span: 'col-span-1', aspect: 'aspect-[3/4]', caption: 'Langkah Bersama' },
-    { image_url: '/photos/photo-5.jpg', span: 'col-span-1', aspect: 'aspect-[3/4]', caption: 'Janji Hati' },
-    { image_url: '/photos/photo-7.jpg', span: 'col-span-1', aspect: 'aspect-[3/4]', caption: 'Harmoni Kasih' },
-    { image_url: '/photos/photo-6.jpg', span: 'col-span-2', aspect: 'aspect-[16/10]', caption: 'Dalam Naungan Restu' },
-    { image_url: '/photos/photo-8.jpg', span: 'col-span-1', aspect: 'aspect-[3/4]', caption: 'Senyum Bahagia' },
-    { image_url: '/photos/photo-9.jpg', span: 'col-span-1', aspect: 'aspect-[3/4]', caption: 'Menuju Hari Abadi' },
+    { 
+      image_url: '/themes/gallery-habib-adiba-1.png', 
+      caption: 'Langkah Bersama Menuju Hari Bahagia' 
+    },
+    { 
+      image_url: '/themes/gallery-habib-adiba-2.png', 
+      caption: 'Dalam Kehangatan Pendopo Jawa' 
+    },
+    { 
+      image_url: '/themes/gallery-habib-adiba-3.png', 
+      caption: 'Duduk Berdua Mengukir Janji Kasih' 
+    },
+    { 
+      image_url: '/themes/gallery-habib-adiba-4.png', 
+      caption: 'Adat Luhur & Keagungan Cinta' 
+    },
   ];
 
   const displayGallery = (gallery && gallery.length > 0)
-    ? gallery.map((item, idx) => ({
+    ? gallery.map((item) => ({
         image_url: item.image_url,
-        span: idx === 4 ? 'col-span-2' : 'col-span-1',
-        aspect: idx === 4 ? 'aspect-[16/10]' : 'aspect-[3/4]',
         caption: item.caption || 'Momen Bahagia'
       }))
     : defaultGallery;
@@ -1336,6 +1343,57 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                   <p className="text-xs sm:text-[13px] text-[#42151b] font-serif leading-[1.85] text-justify sm:text-left">
                     {story.description}
                   </p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 6. OUR GALLERY (Exact Recreation of User Reference Screenshot)             */}
+        {/* ========================================================================= */}
+        <section id="gallery-section" className="relative py-10 px-3 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden">
+          
+          {/* Subtle Ambient Background Borobudur & Floral Garland Motif */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <img 
+              src="/themes/javanese-heritage-bg.jpg" 
+              alt="Javanese Heritage Background" 
+              className="w-full h-full object-cover object-bottom opacity-70 select-none"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0] via-[#fbf7f0]/45 to-[#fbf7f0]/85" />
+          </div>
+
+          {/* Centered Thin Maroon Border Card Container matching Screenshot */}
+          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-4 py-8 sm:px-6 sm:py-10 flex flex-col text-center">
+            
+            {/* Header: OUR GALLERY (Centered) */}
+            <h2 
+              className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase text-center mb-6 select-none"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              OUR GALLERY
+            </h2>
+
+            {/* 2-Column Photo Grid Matching Screenshot Exactly */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
+              {displayGallery.map((item, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => setActiveLightboxIdx(idx)}
+                  className="aspect-[3/4.2] rounded-[18px] sm:rounded-2xl overflow-hidden shadow-sm border border-[#5c131c]/20 relative group cursor-pointer bg-[#efe7db] transition-transform duration-300 hover:scale-[1.02] active:scale-98"
+                >
+                  <img 
+                    src={item.image_url} 
+                    alt={item.caption}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                    <span className="text-[11px] text-white font-serif italic line-clamp-1">
+                      {item.caption}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
