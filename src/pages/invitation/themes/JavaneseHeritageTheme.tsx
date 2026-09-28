@@ -1402,7 +1402,68 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
         {/* ========================================================================= */}
-        {/* 7. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
+        {/* 7. LIVE STREAMING (Exact Recreation of User Reference Screenshot)         */}
+        {/* ========================================================================= */}
+        <section id="streaming-section" className="relative py-12 px-3 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden">
+          
+          {/* Subtle Ambient Background Borobudur & Floral Garland Motif */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <img 
+              src="/themes/javanese-heritage-bg.jpg" 
+              alt="Javanese Heritage Background" 
+              className="w-full h-full object-cover object-bottom opacity-70 select-none"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0] via-[#fbf7f0]/45 to-[#fbf7f0]/85" />
+          </div>
+
+          {/* Centered Thin Maroon Border Card Container matching Screenshot */}
+          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col items-center text-center">
+            
+            {/* Header: LIVE STREAMING */}
+            <h2 
+              className="text-2xl sm:text-[28px] tracking-[0.18em] text-[#5c131c] font-normal uppercase mb-3 select-none"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              LIVE STREAMING
+            </h2>
+
+            {/* Description Text */}
+            <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mb-6">
+              - Kami mengundang Bapak/Ibu/Saudara/i untuk menyaksikan pernikahan kami secara virtual yang disiarkan langsung melalui media sosial di bawah ini:
+            </p>
+
+            {/* Event Date (Sunday, 28 December 2025) */}
+            <h3 
+              className="text-sm sm:text-base font-bold text-[#5c131c] uppercase tracking-wide font-serif mb-1"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              MINGGU, 28 DESEMBER 2025
+            </h3>
+
+            {/* Event Time */}
+            <p className="text-xs sm:text-[13px] font-serif italic text-[#5c131c] mb-6 tracking-wide">
+              10.00 WIB – Selesai
+            </p>
+
+            {/* Golden Pill Instagram Button (KLIK DI SINI) */}
+            <a
+              href={couple?.streaming_url || `https://instagram.com/${(couple?.bride_instagram || 'adibasyakilla').replace('@', '')}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Tonton Live Streaming di Instagram"
+              className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-[#caa772] hover:bg-[#b8955f] text-white shadow-[0_4px_16px_rgba(184,150,95,0.45)] border border-[#dfbf8e] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer select-none group"
+            >
+              <InstagramIcon className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+              <span className="text-xs sm:text-[13px] font-bold tracking-[0.18em] uppercase">
+                KLIK DI SINI
+              </span>
+            </a>
+
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 8. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
         {/* ========================================================================= */}
         <section className="py-14 px-5 sm:px-8 relative z-10 bg-[#3d1117] text-white text-center shadow-inner overflow-hidden">
           <div className="max-w-md mx-auto space-y-6">
