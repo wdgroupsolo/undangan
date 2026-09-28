@@ -1722,7 +1722,8 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
           </div>
         </section>
         {/* ========================================================================= */}
-        {/* 6. GALLERY SECTION                                                        */}
+        {/* ========================================================================= */}
+        {/* 6. ALBUM SECTION                                                          */}
         {/* ========================================================================= */}
         <section className="py-16 sm:py-20 px-4 sm:px-6 relative z-10 bg-[#301114] text-white overflow-hidden">
           {/* Ambient Gold Sparkles */}
@@ -1733,7 +1734,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
               className="text-3xl sm:text-4xl font-normal text-center text-[#f4efe8] drop-shadow-sm tracking-wide"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Gallery
+              Album
             </h2>
 
             <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
@@ -1745,7 +1746,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
                 >
                   <img 
                     src={item.image_url} 
-                    alt={`Gallery ${idx + 1}`}
+                    alt={`Album ${idx + 1}`}
                     className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 select-none" 
                     loading="lazy"
                   />
@@ -2214,7 +2215,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
           >
             <img 
               src={displayGallery[activeLightboxIdx].image_url} 
-              alt={`Gallery Fullscreen ${activeLightboxIdx + 1}`}
+              alt={`Album Fullscreen ${activeLightboxIdx + 1}`}
               className="w-full h-auto max-h-[78vh] object-contain object-center rounded-2xl" 
             />
 
