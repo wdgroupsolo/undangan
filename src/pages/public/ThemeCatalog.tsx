@@ -123,7 +123,7 @@ export const ThemeCatalog: React.FC = () => {
                     : '/themes/javanese-heritage-theme-preview.png'));
 
               const demoUrl = isJavanese 
-                ? '/invitation/habib-adiba?theme=javanese-heritage' 
+                ? '/invitation/steven-bunga?theme=javanese-heritage' 
                 : `/invitation/steven-bunga?theme=${theme.slug}`;
 
               return (

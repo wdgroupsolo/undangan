@@ -643,7 +643,7 @@ export const Home: React.FC = () => {
                     : '/themes/javanese-heritage-theme-preview.png'));
 
               const demoUrl = isJavanese 
-                ? '/invitation/habib-adiba?theme=javanese-heritage' 
+                ? '/invitation/steven-bunga?theme=javanese-heritage' 
                 : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}` : '/themes');
 
               const featuresList = isJavanese ? [
