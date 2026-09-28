@@ -429,6 +429,70 @@ export const JavanesePetals: React.FC<{ count?: number }> = ({ count = 10 }) => 
   );
 };
 
+// Premium On-Scroll Reveal Component (Replays on scroll, matching previous MaroonGold theme)
+const ScrollReveal: React.FC<{
+  children: React.ReactNode;
+  animation?: 'fade-up' | 'fade-down' | 'zoom-in' | 'slide-left' | 'slide-right' | 'arch-reveal' | 'fade-in';
+  delay?: number;
+  duration?: number;
+  className?: string;
+}> = ({ children, animation = 'fade-up', delay = 0, duration = 900, className = '' }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const getAnimClass = () => {
+    if (!isVisible) {
+      switch (animation) {
+        case 'fade-up':
+          return 'opacity-0 translate-y-10 scale-[0.98]';
+        case 'fade-down':
+          return 'opacity-0 -translate-y-8';
+        case 'zoom-in':
+          return 'opacity-0 scale-[0.88]';
+        case 'slide-left':
+          return 'opacity-0 -translate-x-12';
+        case 'slide-right':
+          return 'opacity-0 translate-x-12';
+        case 'arch-reveal':
+          return 'opacity-0 translate-y-14 scale-[0.92] blur-[1px]';
+        case 'fade-in':
+        default:
+          return 'opacity-0';
+      }
+    }
+    return 'opacity-100 translate-y-0 translate-x-0 scale-100 blur-0';
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all ease-[cubic-bezier(0.16,1,0.3,1)] ${getAnimClass()} ${className}`}
+      style={{
+        transitionDuration: `${duration}ms`,
+        transitionDelay: isVisible ? `${delay}ms` : '0ms',
+        willChange: 'transform, opacity',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
 interface JavaneseHeritageThemeProps {
   invitation: any;
   couple: any;
@@ -850,7 +914,8 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           {/* ========================================================================= */}
           {/* THE SIGNATURE DOUBLE MAROON OVAL ARCH FRAME (Matching 'seperti ini' screenshot) */}
           {/* ========================================================================= */}
-          <div className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] max-h-[92vh] flex flex-col items-center justify-between p-4 sm:p-5 my-auto">
+          <ScrollReveal animation="arch-reveal" duration={1000} delay={60} className="w-full flex justify-center my-auto">
+            <div className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] max-h-[92vh] flex flex-col items-center justify-between p-4 sm:p-5 my-auto">
             
             {/* Outer Maroon Arch Line */}
             <div className="absolute inset-0 rounded-[190px] sm:rounded-[215px] border-[2.5px] border-[#5c131c] shadow-[0_4px_24px_rgba(92,19,28,0.18)] pointer-events-none z-10" />
@@ -916,9 +981,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                 </div>
               </button>
             </div>
-
           </div>
-        </section>
+        </ScrollReveal>
+      </section>
 
         {/* ========================================================================= */}
         {/* 2. WITH LOVE & AYAT SUCI (Exact recreation of 'ini bawahnya' screenshot)   */}
@@ -930,51 +995,58 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           <div className="max-w-md mx-auto relative z-10 space-y-7">
             
             {/* Couple Window Photo Card with Corner Floral Sprays */}
-            <div className="relative mx-auto max-w-[310px] sm:max-w-[340px] px-2 pt-2">
-              
-              {/* Floral Accent Top Right Corner */}
-              <PhotoCornerFloralTopRight className="absolute -top-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 z-20 pointer-events-none" />
+            <ScrollReveal animation="arch-reveal" delay={80}>
+              <div className="relative mx-auto max-w-[310px] sm:max-w-[340px] px-2 pt-2">
+                
+                {/* Floral Accent Top Right Corner */}
+                <PhotoCornerFloralTopRight className="absolute -top-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 z-20 pointer-events-none" />
 
-              {/* Floral Accent Bottom Left Corner */}
-              <PhotoCornerFloralBottomLeft className="absolute -bottom-4 -left-4 w-20 h-20 sm:w-24 sm:h-24 z-20 pointer-events-none" />
+                {/* Floral Accent Bottom Left Corner */}
+                <PhotoCornerFloralBottomLeft className="absolute -bottom-4 -left-4 w-20 h-20 sm:w-24 sm:h-24 z-20 pointer-events-none" />
 
-              {/* Photo Container */}
-              <div className="relative z-10 w-full aspect-[4/3.2] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(92,19,28,0.18)] border border-[#8c2d38]/20 bg-[#efe7db]">
-                <img 
-                  src="/themes/habib-adiba-window.jpg" 
-                  alt="Habib & Adiba" 
-                  className="w-full h-full object-cover object-center scale-102"
-                />
+                {/* Photo Container */}
+                <div className="relative z-10 w-full aspect-[4/3.2] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(92,19,28,0.18)] border border-[#8c2d38]/20 bg-[#efe7db]">
+                  <img 
+                    src="/themes/habib-adiba-window.jpg" 
+                    alt="Habib & Adiba" 
+                    className="w-full h-full object-cover object-center scale-102"
+                  />
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* WITH LOVE Heading */}
             <div className="space-y-4 pt-1">
-              <h2 
-                className="text-2xl sm:text-3xl font-normal text-[#5c131c] tracking-[0.2em] uppercase font-serif drop-shadow-xs"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                WITH LOVE
-              </h2>
+              <ScrollReveal animation="fade-up" delay={200}>
+                <h2 
+                  className="text-2xl sm:text-3xl font-normal text-[#5c131c] tracking-[0.2em] uppercase font-serif drop-shadow-xs"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  WITH LOVE
+                </h2>
+              </ScrollReveal>
 
               {/* Holy Verse Quote (Exact Wording from Screenshot) */}
-              <p className="text-xs sm:text-[13px] text-[#42151b] font-serif leading-[1.85] px-2 sm:px-4 drop-shadow-xs">
-                &ldquo;Dan diantara tanda-tanda kekuasaanNya ialah Dia menciptakan untukmu pasangan-pasangan dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikanNya diantaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;
-              </p>
+              <ScrollReveal animation="fade-up" delay={320}>
+                <p className="text-xs sm:text-[13px] text-[#42151b] font-serif leading-[1.85] px-2 sm:px-4 drop-shadow-xs">
+                  &ldquo;Dan diantara tanda-tanda kekuasaanNya ialah Dia menciptakan untukmu pasangan-pasangan dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikanNya diantaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;
+                </p>
+              </ScrollReveal>
 
               {/* Citation */}
-              <p 
-                className="text-xs sm:text-[13px] font-serif font-medium text-[#5c131c] tracking-wide"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                (Q.S. Ar. Rum : 21)
-              </p>
+              <ScrollReveal animation="fade-up" delay={440}>
+                <p 
+                  className="text-xs sm:text-[13px] font-serif font-medium text-[#5c131c] tracking-wide"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  (Q.S. Ar. Rum : 21)
+                </p>
+              </ScrollReveal>
             </div>
 
           </div>
         </section>
 
-        {/* ========================================================================= */}
         {/* ========================================================================= */}
         {/* 3. BRIDE & GROOM SECTION (Exact recreation of user reference screenshots)  */}
         {/* ========================================================================= */}
@@ -991,135 +1063,141 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           </div>
 
           {/* Centered Thin Maroon Border Card Container */}
-          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-8 sm:py-10 flex flex-col items-center text-center">
-            
-            {/* Header: BRIDE & GROOM */}
-            <h2 
-              className="text-2xl sm:text-[28px] tracking-[0.25em] text-[#5c131c] font-normal uppercase mb-3 select-none"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              BRIDE &amp; GROOM
-            </h2>
+          <ScrollReveal animation="fade-up" delay={80} className="w-full">
+            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-8 sm:py-10 flex flex-col items-center text-center">
+              
+              {/* Header: BRIDE & GROOM */}
+              <ScrollReveal animation="fade-up" delay={120}>
+                <h2 
+                  className="text-2xl sm:text-[28px] tracking-[0.25em] text-[#5c131c] font-normal uppercase mb-3 select-none"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  BRIDE &amp; GROOM
+                </h2>
+              </ScrollReveal>
 
-            {/* Greeting & Invitation Intro */}
-            <div className="space-y-1.5 text-center mb-8 px-1">
-              <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] font-semibold leading-relaxed">
-                Assalamualaikum Wr. Wb.
-              </p>
-              <p className="text-[11px] sm:text-xs font-serif text-[#5a1c24] leading-relaxed">
-                Dengan memohon rahmat dan ridho Allah SWT,<br />
-                kami bermaksud mengundang<br />
-                Bapak/Ibu/Saudara/i untuk menghadiri acara<br />
-                pernikahan putra-putri kami:
-              </p>
+              {/* Greeting & Invitation Intro */}
+              <ScrollReveal animation="fade-up" delay={180}>
+                <div className="space-y-1.5 text-center mb-8 px-1">
+                  <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] font-semibold leading-relaxed">
+                    Assalamualaikum Wr. Wb.
+                  </p>
+                  <p className="text-[11px] sm:text-xs font-serif text-[#5a1c24] leading-relaxed">
+                    Dengan memohon rahmat dan ridho Allah SWT,<br />
+                    kami bermaksud mengundang<br />
+                    Bapak/Ibu/Saudara/i untuk menghadiri acara<br />
+                    pernikahan putra-putri kami:
+                  </p>
+                </div>
+              </ScrollReveal>
+
+              {/* BRIDE (Adiba) */}
+              <ScrollReveal animation="slide-left" delay={240} className="w-full">
+                <div className="w-full flex flex-col items-center">
+                  {/* Bride Oval Photo */}
+                  <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
+                    <img 
+                      src={couple?.bride_photo_url || '/themes/adiba-portrait.png'} 
+                      alt={brideNick}
+                      className="w-full h-full object-cover object-top rounded-[50%]"
+                    />
+                  </div>
+
+                  {/* Script Nickname */}
+                  <p 
+                    className="text-3xl sm:text-4xl text-[#5c131c] tracking-wide my-1 select-none"
+                    style={{ fontFamily: "'Great Vibes', cursive" }}
+                  >
+                    {brideNick}
+                  </p>
+
+                  {/* Full Name in All-Caps Serif */}
+                  <h3 
+                    className="text-base sm:text-lg text-[#5c131c] font-bold tracking-[0.14em] uppercase font-serif mt-0.5"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {brideFullName}
+                  </h3>
+
+                  {/* Parents Info */}
+                  <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed mt-2 max-w-[260px]">
+                    Putri dari Pasangan Bapak {couple?.bride_father_name || 'Anas Rifai'}<br />
+                    &amp; Ibu {couple?.bride_mother_name || 'Kholifah'}
+                  </p>
+
+                  {/* Circular Maroon Instagram Button */}
+                  <a
+                    href={`https://instagram.com/${(couple?.bride_instagram || 'adibasyakilla').replace('@', '')}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Instagram ${brideNick}`}
+                    className="w-8 h-8 rounded-full bg-[#5c131c] flex items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer mt-3"
+                  >
+                    <InstagramIcon className="w-4 h-4 text-white" />
+                  </a>
+                </div>
+              </ScrollReveal>
+
+              {/* FLORAL AMPERSAND DIVIDER */}
+              <ScrollReveal animation="zoom-in" delay={300}>
+                <div className="flex items-center justify-center my-7 select-none">
+                  <img 
+                    src="/themes/floral-ampersand.png" 
+                    alt="&" 
+                    className="w-7 h-9 object-contain drop-shadow-xs"
+                  />
+                </div>
+              </ScrollReveal>
+
+              {/* GROOM (Habib) */}
+              <ScrollReveal animation="slide-right" delay={240} className="w-full">
+                <div className="w-full flex flex-col items-center">
+                  {/* Groom Oval Photo */}
+                  <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
+                    <img 
+                      src={couple?.groom_photo_url || '/themes/habib-portrait.png'} 
+                      alt={groomNick}
+                      className="w-full h-full object-cover object-top rounded-[50%]"
+                    />
+                  </div>
+
+                  {/* Script Nickname */}
+                  <p 
+                    className="text-3xl sm:text-4xl text-[#5c131c] tracking-wide my-1 select-none"
+                    style={{ fontFamily: "'Great Vibes', cursive" }}
+                  >
+                    {groomNick}
+                  </p>
+
+                  {/* Full Name in All-Caps Serif */}
+                  <h3 
+                    className="text-base sm:text-lg text-[#5c131c] font-bold tracking-[0.14em] uppercase font-serif mt-0.5"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {groomFullName}
+                  </h3>
+
+                  {/* Parents Info */}
+                  <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed mt-2 max-w-[260px]">
+                    Putra dari Pasangan Bapak {couple?.groom_father_name || 'H. M. Dawam'}<br />
+                    &amp; Ibu {couple?.groom_mother_name || 'Dewi Sudarwati (Almh)'}
+                  </p>
+
+                  {/* Circular Maroon Instagram Button */}
+                  <a
+                    href={`https://instagram.com/${(couple?.groom_instagram || 'habibyulianto').replace('@', '')}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Instagram ${groomNick}`}
+                    className="w-8 h-8 rounded-full bg-[#5c131c] flex items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer mt-3"
+                  >
+                    <InstagramIcon className="w-4 h-4 text-white" />
+                  </a>
+                </div>
+              </ScrollReveal>
+
             </div>
-
-            {/* ========================================================================= */}
-            {/* BRIDE (Adiba - Comes First Matching Reference)                           */}
-            {/* ========================================================================= */}
-            <div className="w-full flex flex-col items-center">
-              {/* Bride Oval Photo */}
-              <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
-                <img 
-                  src={couple?.bride_photo_url || '/themes/adiba-portrait.png'} 
-                  alt={brideNick}
-                  className="w-full h-full object-cover object-top rounded-[50%]"
-                />
-              </div>
-
-              {/* Script Nickname */}
-              <p 
-                className="text-3xl sm:text-4xl text-[#5c131c] tracking-wide my-1 select-none"
-                style={{ fontFamily: "'Great Vibes', cursive" }}
-              >
-                {brideNick}
-              </p>
-
-              {/* Full Name in All-Caps Serif */}
-              <h3 
-                className="text-base sm:text-lg text-[#5c131c] font-bold tracking-[0.14em] uppercase font-serif mt-0.5"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {brideFullName}
-              </h3>
-
-              {/* Parents Info */}
-              <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed mt-2 max-w-[260px]">
-                Putri dari Pasangan Bapak {couple?.bride_father_name || 'Anas Rifai'}<br />
-                &amp; Ibu {couple?.bride_mother_name || 'Kholifah'}
-              </p>
-
-              {/* Circular Maroon Instagram Button */}
-              <a
-                href={`https://instagram.com/${(couple?.bride_instagram || 'adibasyakilla').replace('@', '')}`}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Instagram ${brideNick}`}
-                className="w-8 h-8 rounded-full bg-[#5c131c] flex items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer mt-3"
-              >
-                <InstagramIcon className="w-4 h-4 text-white" />
-              </a>
-            </div>
-
-            {/* ========================================================================= */}
-            {/* FLORAL AMPERSAND DIVIDER (Matching Reference)                            */}
-            {/* ========================================================================= */}
-            <div className="flex items-center justify-center my-7 select-none">
-              <img 
-                src="/themes/floral-ampersand.png" 
-                alt="&" 
-                className="w-7 h-9 object-contain drop-shadow-xs"
-              />
-            </div>
-
-            {/* ========================================================================= */}
-            {/* GROOM (Habib - Comes Second Matching Reference)                          */}
-            {/* ========================================================================= */}
-            <div className="w-full flex flex-col items-center">
-              {/* Groom Oval Photo */}
-              <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
-                <img 
-                  src={couple?.groom_photo_url || '/themes/habib-portrait.png'} 
-                  alt={groomNick}
-                  className="w-full h-full object-cover object-top rounded-[50%]"
-                />
-              </div>
-
-              {/* Script Nickname */}
-              <p 
-                className="text-3xl sm:text-4xl text-[#5c131c] tracking-wide my-1 select-none"
-                style={{ fontFamily: "'Great Vibes', cursive" }}
-              >
-                {groomNick}
-              </p>
-
-              {/* Full Name in All-Caps Serif */}
-              <h3 
-                className="text-base sm:text-lg text-[#5c131c] font-bold tracking-[0.14em] uppercase font-serif mt-0.5"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {groomFullName}
-              </h3>
-
-              {/* Parents Info */}
-              <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed mt-2 max-w-[260px]">
-                Putra dari Pasangan Bapak {couple?.groom_father_name || 'H. M. Dawam'}<br />
-                &amp; Ibu {couple?.groom_mother_name || 'Dewi Sudarwati (Almh)'}
-              </p>
-
-              {/* Circular Maroon Instagram Button */}
-              <a
-                href={`https://instagram.com/${(couple?.groom_instagram || 'habibyulianto').replace('@', '')}`}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Instagram ${groomNick}`}
-                className="w-8 h-8 rounded-full bg-[#5c131c] flex items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer mt-3"
-              >
-                <InstagramIcon className="w-4 h-4 text-white" />
-              </a>
-            </div>
-
-          </div>
+          </ScrollReveal>
         </section>
 
         {/* ========================================================================= */}
@@ -1138,21 +1216,23 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           <BatikKawungCluster className="absolute -bottom-4 -right-4 w-32 h-32 pointer-events-none opacity-45" />
 
           {/* Quick Jump Buttons for Akad Nikah & Resepsi */}
-          <div className="relative z-20 flex items-center justify-center gap-2 mb-8">
-            {displayEvents.map((evt, idx) => (
-              <button
-                key={evt.id || idx}
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById(idx === 0 ? 'card-akad' : 'card-resepsi');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="px-5 py-2 rounded-full text-[11px] sm:text-xs font-serif uppercase tracking-[0.2em] bg-black/35 hover:bg-black/55 text-[#fbf7f0]/85 border border-[#c5a880]/35 transition-all duration-300 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
-              >
-                {idx === 0 ? 'Akad Nikah' : 'Resepsi'}
-              </button>
-            ))}
-          </div>
+          <ScrollReveal animation="fade-up" delay={80}>
+            <div className="relative z-20 flex items-center justify-center gap-2 mb-8">
+              {displayEvents.map((evt, idx) => (
+                <button
+                  key={evt.id || idx}
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById(idx === 0 ? 'card-akad' : 'card-resepsi');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-5 py-2 rounded-full text-[11px] sm:text-xs font-serif uppercase tracking-[0.2em] bg-black/35 hover:bg-black/55 text-[#fbf7f0]/85 border border-[#c5a880]/35 transition-all duration-300 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+                >
+                  {idx === 0 ? 'Akad Nikah' : 'Resepsi'}
+                </button>
+              ))}
+            </div>
+          </ScrollReveal>
 
           {/* Sequential Cards Container: AKAD NIKAH first, RESEPSI second directly below it */}
           <div className="relative z-10 space-y-12 sm:space-y-16 max-w-[380px] mx-auto">
@@ -1169,117 +1249,139 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               } = parseEventDisplay(evt, idx);
 
               return (
-                <div 
+                <ScrollReveal 
                   key={evt.id || idx}
-                  id={idx === 0 ? 'card-akad' : 'card-resepsi'}
-                  className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] mx-auto rounded-[190px] sm:rounded-[215px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_12px_40px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col items-center justify-between p-5 pt-12 sm:pt-14 pb-8 text-center transition-all duration-300"
+                  animation="arch-reveal" 
+                  delay={100}
+                  duration={1000}
+                  className="w-full flex justify-center"
                 >
-                  {/* Soft Radial Parchment Warmth */}
-                  <div className="absolute inset-0 bg-radial from-[#fdf9f2] via-[#faf2e6] to-[#f4e8d3] pointer-events-none" />
+                  <div 
+                    id={idx === 0 ? 'card-akad' : 'card-resepsi'}
+                    className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] mx-auto rounded-[190px] sm:rounded-[215px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_12px_40px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col items-center justify-between p-5 pt-12 sm:pt-14 pb-8 text-center transition-all duration-300"
+                  >
+                    {/* Soft Radial Parchment Warmth */}
+                    <div className="absolute inset-0 bg-radial from-[#fdf9f2] via-[#faf2e6] to-[#f4e8d3] pointer-events-none" />
 
-                  {/* Gunungan Wayang (Kayon) Watermark */}
-                  <JavaneseGunungan className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-[220px] sm:w-[250px] h-[340px] sm:h-[380px] mx-auto opacity-[0.18] pointer-events-none text-[#5c131c]" />
+                    {/* Gunungan Wayang (Kayon) Watermark */}
+                    <JavaneseGunungan className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-[220px] sm:w-[250px] h-[340px] sm:h-[380px] mx-auto opacity-[0.18] pointer-events-none text-[#5c131c]" />
 
-                  {/* Climbing Green Ivy Vine on Upper Right Gold Rim */}
-                  <ArchRightVine className="absolute -right-3 top-8 sm:top-10 z-20 pointer-events-none" />
+                    {/* Climbing Green Ivy Vine on Upper Right Gold Rim */}
+                    <ArchRightVine className="absolute -right-3 top-8 sm:top-10 z-20 pointer-events-none" />
 
-                  {/* Delicate Botanical Twig Buds in Top Right Corner */}
-                  <PhotoCornerFloralTopRight className="absolute -top-3 -right-3 w-20 h-20 sm:w-24 sm:h-24 z-15 pointer-events-none opacity-80" />
+                    {/* Delicate Botanical Twig Buds in Top Right Corner */}
+                    <PhotoCornerFloralTopRight className="absolute -top-3 -right-3 w-20 h-20 sm:w-24 sm:h-24 z-15 pointer-events-none opacity-80" />
 
-                  {/* Curved Bottom Floral Garland of Burgundy Orchids and Cream Peonies */}
-                  <div className="absolute inset-x-0 bottom-0 h-44 sm:h-52 overflow-hidden rounded-b-[188px] sm:rounded-b-[213px] pointer-events-none z-10">
-                    <img 
-                      src="/themes/javanese-heritage-bg.jpg" 
-                      alt="Curved Floral Garland" 
-                      className="w-full h-full object-cover object-bottom scale-110"
-                    />
-                    {/* Subtle gradient feather at top of garland */}
-                    <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#faf2e6] via-[#faf2e6]/40 to-transparent" />
-                  </div>
-
-                  {/* Card Top Section: Title & Date */}
-                  <div className="relative z-20 w-full flex flex-col items-center">
-                    
-                    {/* Event Title */}
-                    <h3 
-                      className="text-2xl sm:text-[28px] font-normal tracking-[0.18em] text-[#5c131c] uppercase"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                    >
-                      {title}
-                    </h3>
-
-                    {/* Day */}
-                    <p 
-                      className="text-xs sm:text-[13px] tracking-[0.25em] text-[#6a1a24] font-serif uppercase font-medium mt-2"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                    >
-                      {dayName}
-                    </p>
-
-                    {/* Big Date Number (27 for Akad, 28 for Resepsi) */}
-                    <div 
-                      className="text-[48px] sm:text-[56px] font-light text-[#5c131c] leading-none my-1"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                    >
-                      {dayNum}
+                    {/* Curved Bottom Floral Garland of Burgundy Orchids and Cream Peonies */}
+                    <div className="absolute inset-x-0 bottom-0 h-44 sm:h-52 overflow-hidden rounded-b-[188px] sm:rounded-b-[213px] pointer-events-none z-10">
+                      <img 
+                        src="/themes/javanese-heritage-bg.jpg" 
+                        alt="Curved Floral Garland" 
+                        className="w-full h-full object-cover object-bottom scale-110"
+                      />
+                      {/* Subtle gradient feather at top of garland */}
+                      <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#faf2e6] via-[#faf2e6]/40 to-transparent" />
                     </div>
 
-                    {/* Month & Year */}
-                    <p 
-                      className="text-xs sm:text-[13px] tracking-[0.22em] text-[#6a1a24] font-serif uppercase font-medium"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                    >
-                      {monthYear}
-                    </p>
+                    {/* Card Top Section: Title & Date */}
+                    <div className="relative z-20 w-full flex flex-col items-center">
+                      
+                      {/* Event Title */}
+                      <ScrollReveal animation="fade-up" delay={160}>
+                        <h3 
+                          className="text-2xl sm:text-[28px] font-normal tracking-[0.18em] text-[#5c131c] uppercase"
+                          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                          {title}
+                        </h3>
+                      </ScrollReveal>
 
-                    {/* Horizontal Divider Line with Time ABOVE and Peaked Joglo House Icon strictly matching both screenshots */}
-                    <div className="w-full max-w-[240px] sm:max-w-[260px] flex flex-col items-center mt-5 sm:mt-6 mb-2">
-                      <p className="text-xs sm:text-[13px] text-[#5c131c] font-serif italic mb-1.5 tracking-wide font-normal">
-                        {timeStr}
-                      </p>
-                      <div className="w-full flex items-center justify-center">
-                        <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
-                        <div className="px-3 text-[#5c131c]">
-                          <TraditionalHouseIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#5c131c]" />
+                      {/* Day */}
+                      <ScrollReveal animation="fade-up" delay={220}>
+                        <p 
+                          className="text-xs sm:text-[13px] tracking-[0.25em] text-[#6a1a24] font-serif uppercase font-medium mt-2"
+                          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                          {dayName}
+                        </p>
+                      </ScrollReveal>
+
+                      {/* Big Date Number (27 for Akad, 28 for Resepsi) */}
+                      <ScrollReveal animation="zoom-in" delay={280}>
+                        <div 
+                          className="text-[48px] sm:text-[56px] font-light text-[#5c131c] leading-none my-1"
+                          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                          {dayNum}
                         </div>
-                        <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
-                      </div>
+                      </ScrollReveal>
+
+                      {/* Month & Year */}
+                      <ScrollReveal animation="fade-up" delay={340}>
+                        <p 
+                          className="text-xs sm:text-[13px] tracking-[0.22em] text-[#6a1a24] font-serif uppercase font-medium"
+                          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                          {monthYear}
+                        </p>
+                      </ScrollReveal>
+
+                      {/* Horizontal Divider Line with Time ABOVE and Peaked Joglo House Icon */}
+                      <ScrollReveal animation="fade-up" delay={400} className="w-full max-w-[240px] sm:max-w-[260px]">
+                        <div className="w-full flex flex-col items-center mt-5 sm:mt-6 mb-2">
+                          <p className="text-xs sm:text-[13px] text-[#5c131c] font-serif italic mb-1.5 tracking-wide font-normal">
+                            {timeStr}
+                          </p>
+                          <div className="w-full flex items-center justify-center">
+                            <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
+                            <div className="px-3 text-[#5c131c]">
+                              <TraditionalHouseIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#5c131c]" />
+                            </div>
+                            <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
+                          </div>
+                        </div>
+                      </ScrollReveal>
+
+                    </div>
+
+                    {/* Card Bottom Section: Location & Frosted 'LIHAT LOKASI' Button */}
+                    <div className="relative z-20 w-full flex flex-col items-center mt-12 sm:mt-16 mb-4 sm:mb-6 px-4">
+                      <ScrollReveal animation="fade-up" delay={460}>
+                        <p 
+                          className="text-sm sm:text-base font-serif text-[#4e1b22] font-medium tracking-wide drop-shadow-xs"
+                          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                          {location}
+                        </p>
+                      </ScrollReveal>
+
+                      {address && address !== location && (
+                        <ScrollReveal animation="fade-up" delay={500}>
+                          <p className="text-[11px] sm:text-xs text-[#6e2b34] font-serif leading-relaxed mt-1 max-w-[240px]">
+                            {address}
+                          </p>
+                        </ScrollReveal>
+                      )}
+
+                      {/* Frosted Glass 'LIHAT LOKASI' Pill Button */}
+                      {mapsUrl && (
+                        <ScrollReveal animation="zoom-in" delay={540}>
+                          <a
+                            href={mapsUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1.5 px-6 py-2 rounded-full bg-[#f4e8d3]/45 hover:bg-[#f4e8d3]/70 text-[#5c131c] border border-[#c5a880]/60 backdrop-blur-[3px] text-[11px] sm:text-xs font-serif uppercase tracking-[0.22em] font-semibold transition-all shadow-[0_2px_10px_rgba(92,19,28,0.15)] hover:scale-105 active:scale-95 cursor-pointer mt-3 z-20"
+                          >
+                            <MapPin className="w-3.5 h-3.5 text-[#5c131c]" />
+                            <span>Lihat Lokasi</span>
+                          </a>
+                        </ScrollReveal>
+                      )}
+
                     </div>
 
                   </div>
-
-                  {/* Card Bottom Section: Location & Frosted 'LIHAT LOKASI' Button */}
-                  <div className="relative z-20 w-full flex flex-col items-center mt-12 sm:mt-16 mb-4 sm:mb-6 px-4">
-                    
-                    <p 
-                      className="text-sm sm:text-base font-serif text-[#4e1b22] font-medium tracking-wide drop-shadow-xs"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                    >
-                      {location}
-                    </p>
-
-                    {address && address !== location && (
-                      <p className="text-[11px] sm:text-xs text-[#6e2b34] font-serif leading-relaxed mt-1 max-w-[240px]">
-                        {address}
-                      </p>
-                    )}
-
-                    {/* Frosted Glass 'LIHAT LOKASI' Pill Button Matching Reference Images */}
-                    {mapsUrl && (
-                      <a
-                        href={mapsUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-6 py-2 rounded-full bg-[#f4e8d3]/45 hover:bg-[#f4e8d3]/70 text-[#5c131c] border border-[#c5a880]/60 backdrop-blur-[3px] text-[11px] sm:text-xs font-serif uppercase tracking-[0.22em] font-semibold transition-all shadow-[0_2px_10px_rgba(92,19,28,0.15)] hover:scale-105 active:scale-95 cursor-pointer mt-3 z-20"
-                      >
-                        <MapPin className="w-3.5 h-3.5 text-[#5c131c]" />
-                        <span>Lihat Lokasi</span>
-                      </a>
-                    )}
-
-                  </div>
-
-                </div>
+                </ScrollReveal>
               );
             })}
           </div>
@@ -1303,104 +1405,63 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           </div>
 
           {/* Centered Thin Maroon Border Card Container matching Screenshot */}
-          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col text-left">
-            
-            {/* Header: LOVE STORY (Centered) */}
-            <h2 
-              className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase text-center mb-1.5 select-none"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              LOVE STORY
-            </h2>
-
-            {/* Subtitle Quote (Centered) */}
-            <div className="text-center text-xs sm:text-[13px] font-serif text-[#5c131c] leading-relaxed mb-6 px-2">
-              <p>Setiap Kisah Cinta Itu Indah,</p>
-              <p>Tapi Miliki Kamu Adalah Favoritku</p>
-            </div>
-
-            {/* Couple Window Photo */}
-            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-[#5c131c]/25 mb-8 bg-[#efe7db]">
-              <img 
-                src="/themes/habib-adiba-window.jpg" 
-                alt="Habib & Adiba Love Story" 
-                className="w-full h-full object-cover object-center scale-102"
-              />
-            </div>
-
-            {/* Chapters (Left aligned) */}
-            <div className="space-y-6 sm:space-y-7">
-              {displayStories.map((story, i) => (
-                <div key={i} className="space-y-1.5">
-                  <h3 
-                    className="text-base sm:text-lg text-[#5c131c] font-bold tracking-wide font-serif"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  >
-                    {story.title}
-                  </h3>
-                  <p className="text-xs sm:text-[13px] text-[#42151b] font-serif leading-[1.85] text-justify sm:text-left">
-                    {story.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 6. OUR GALLERY (Exact Recreation of User Reference Screenshot)             */}
-        {/* ========================================================================= */}
-        <section id="gallery-section" className="relative py-10 px-3 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden">
-          
-          {/* Subtle Ambient Background Borobudur & Floral Garland Motif */}
-          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-            <img 
-              src="/themes/javanese-heritage-bg.jpg" 
-              alt="Javanese Heritage Background" 
-              className="w-full h-full object-cover object-bottom opacity-70 select-none"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0] via-[#fbf7f0]/45 to-[#fbf7f0]/85" />
-          </div>
-
-          {/* Centered Thin Maroon Border Card Container matching Screenshot */}
-          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-4 py-8 sm:px-6 sm:py-10 flex flex-col text-center">
-            
-            {/* Header: OUR GALLERY (Centered) */}
-            <h2 
-              className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase text-center mb-6 select-none"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              OUR GALLERY
-            </h2>
-
-            {/* 2-Column Photo Grid Matching Screenshot Exactly */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
-              {displayGallery.map((item, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setActiveLightboxIdx(idx)}
-                  className="aspect-[3/4.2] rounded-[18px] sm:rounded-2xl overflow-hidden shadow-sm border border-[#5c131c]/20 relative group cursor-pointer bg-[#efe7db] transition-transform duration-300 hover:scale-[1.02] active:scale-98"
+          <ScrollReveal animation="fade-up" delay={80} className="w-full">
+            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col text-left">
+              
+              {/* Header: LOVE STORY (Centered) */}
+              <ScrollReveal animation="fade-up" delay={140}>
+                <h2 
+                  className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase text-center mb-1.5 select-none"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  <img 
-                    src={item.image_url} 
-                    alt={item.caption}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
-                    <span className="text-[11px] text-white font-serif italic line-clamp-1">
-                      {item.caption}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  LOVE STORY
+                </h2>
+              </ScrollReveal>
 
-          </div>
+              {/* Subtitle Quote (Centered) */}
+              <ScrollReveal animation="fade-up" delay={200}>
+                <div className="text-center text-xs sm:text-[13px] font-serif text-[#5c131c] leading-relaxed mb-6 px-2">
+                  <p>Setiap Kisah Cinta Itu Indah,</p>
+                  <p>Tapi Miliki Kamu Adalah Favoritku</p>
+                </div>
+              </ScrollReveal>
+
+              {/* Couple Window Photo */}
+              <ScrollReveal animation="zoom-in" delay={260}>
+                <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-[#5c131c]/25 mb-8 bg-[#efe7db]">
+                  <img 
+                    src="/themes/habib-adiba-window.jpg" 
+                    alt="Habib & Adiba Love Story" 
+                    className="w-full h-full object-cover object-center scale-102"
+                  />
+                </div>
+              </ScrollReveal>
+
+              {/* Chapters (Left aligned) */}
+              <div className="space-y-6 sm:space-y-7">
+                {displayStories.map((story, i) => (
+                  <ScrollReveal key={i} animation="fade-up" delay={300 + i * 120}>
+                    <div className="space-y-1.5">
+                      <h3 
+                        className="text-base sm:text-lg text-[#5c131c] font-bold tracking-wide font-serif"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                      >
+                        {story.title}
+                      </h3>
+                      <p className="text-xs sm:text-[13px] text-[#42151b] font-serif leading-[1.85] text-justify sm:text-left">
+                        {story.description}
+                      </p>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+
+            </div>
+          </ScrollReveal>
         </section>
 
         {/* ========================================================================= */}
-        {/* 7. LIVE STREAMING (Exact Recreation of User Reference Screenshot)         */}
+        {/* 6. LIVE STREAMING (Exact Recreation of User Reference Screenshot)         */}
         {/* ========================================================================= */}
         <section id="streaming-section" className="relative py-12 px-3 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden">
           
@@ -1415,53 +1476,65 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           </div>
 
           {/* Centered Thin Maroon Border Card Container matching Screenshot */}
-          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col items-center text-center">
-            
-            {/* Header: LIVE STREAMING */}
-            <h2 
-              className="text-2xl sm:text-[28px] tracking-[0.18em] text-[#5c131c] font-normal uppercase mb-3 select-none"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              LIVE STREAMING
-            </h2>
+          <ScrollReveal animation="fade-up" delay={80} className="w-full">
+            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col items-center text-center">
+              
+              {/* Header: LIVE STREAMING */}
+              <ScrollReveal animation="fade-up" delay={140}>
+                <h2 
+                  className="text-2xl sm:text-[28px] tracking-[0.18em] text-[#5c131c] font-normal uppercase mb-3 select-none"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  LIVE STREAMING
+                </h2>
+              </ScrollReveal>
 
-            {/* Description Text */}
-            <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mb-6">
-              - Kami mengundang Bapak/Ibu/Saudara/i untuk menyaksikan pernikahan kami secara virtual yang disiarkan langsung melalui media sosial di bawah ini:
-            </p>
+              {/* Description Text */}
+              <ScrollReveal animation="fade-up" delay={200}>
+                <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mb-6">
+                  - Kami mengundang Bapak/Ibu/Saudara/i untuk menyaksikan pernikahan kami secara virtual yang disiarkan langsung melalui media sosial di bawah ini:
+                </p>
+              </ScrollReveal>
 
-            {/* Event Date (Sunday, 28 December 2025) */}
-            <h3 
-              className="text-sm sm:text-base font-bold text-[#5c131c] uppercase tracking-wide font-serif mb-1"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              MINGGU, 28 DESEMBER 2025
-            </h3>
+              {/* Event Date (Sunday, 28 December 2025) */}
+              <ScrollReveal animation="fade-up" delay={260}>
+                <h3 
+                  className="text-sm sm:text-base font-bold text-[#5c131c] uppercase tracking-wide font-serif mb-1"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  MINGGU, 28 DESEMBER 2025
+                </h3>
+              </ScrollReveal>
 
-            {/* Event Time */}
-            <p className="text-xs sm:text-[13px] font-serif italic text-[#5c131c] mb-6 tracking-wide">
-              10.00 WIB – Selesai
-            </p>
+              {/* Event Time */}
+              <ScrollReveal animation="fade-up" delay={300}>
+                <p className="text-xs sm:text-[13px] font-serif italic text-[#5c131c] mb-6 tracking-wide">
+                  10.00 WIB – Selesai
+                </p>
+              </ScrollReveal>
 
-            {/* Golden Pill Instagram Button (KLIK DI SINI) */}
-            <a
-              href={couple?.streaming_url || `https://instagram.com/${(couple?.bride_instagram || 'adibasyakilla').replace('@', '')}`}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Tonton Live Streaming di Instagram"
-              className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-[#caa772] hover:bg-[#b8955f] text-white shadow-[0_4px_16px_rgba(184,150,95,0.45)] border border-[#dfbf8e] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer select-none group"
-            >
-              <InstagramIcon className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
-              <span className="text-xs sm:text-[13px] font-bold tracking-[0.18em] uppercase">
-                KLIK DI SINI
-              </span>
-            </a>
+              {/* Golden Pill Instagram Button (KLIK DI SINI) */}
+              <ScrollReveal animation="zoom-in" delay={360}>
+                <a
+                  href={couple?.streaming_url || `https://instagram.com/${(couple?.bride_instagram || 'adibasyakilla').replace('@', '')}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Tonton Live Streaming di Instagram"
+                  className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-[#caa772] hover:bg-[#b8955f] text-white shadow-[0_4px_16px_rgba(184,150,95,0.45)] border border-[#dfbf8e] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer select-none group"
+                >
+                  <InstagramIcon className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                  <span className="text-xs sm:text-[13px] font-bold tracking-[0.18em] uppercase">
+                    KLIK DI SINI
+                  </span>
+                </a>
+              </ScrollReveal>
 
-          </div>
+            </div>
+          </ScrollReveal>
         </section>
 
         {/* ========================================================================= */}
-        {/* 8. WEDDING GIFT & WISHES (Exact Recreation of User Reference Screenshots) */}
+        {/* 7. WEDDING GIFT & WISHES (Exact Recreation of User Reference Screenshots) */}
         {/* ========================================================================= */}
         <section id="gift-wishes-section" className="relative py-12 px-3 sm:px-6 z-10 bg-[#4e1017] text-white overflow-hidden">
           
@@ -1480,246 +1553,268 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           {/* ------------------------------------------------------------------------- */}
           {/* Card 1: WEDDING GIFT                                                      */}
           {/* ------------------------------------------------------------------------- */}
-          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[34px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-5 py-8 sm:px-7 sm:py-9 flex flex-col items-center text-center overflow-hidden mb-8">
-            
-            {/* Ambient Watermark Texture & Gunungan Wayang in Background */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-20">
-              <JavaneseGunungan className="w-64 sm:w-72 h-auto" />
-            </div>
-            <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply bg-[radial-gradient(#caa772_1px,transparent_1px)] [background-size:16px_16px]" />
-
-            {/* Title: WEDDING GIFT */}
-            <h2 
-              className="text-2xl sm:text-[28px] tracking-[0.18em] text-[#5c131c] font-normal uppercase mb-3.5 select-none relative z-10"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              WEDDING GIFT
-            </h2>
-
-            {/* Paragraph Text */}
-            <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mx-auto mb-6 relative z-10">
-              Doa restu Anda merupakan karunia yang sangat berarti bagi kami, dan jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara cashless.
-            </p>
-
-            {/* Golden Pill Button: ➔ KLIK DI SINI */}
-            <button
-              type="button"
-              onClick={() => setShowGiftDetails(prev => !prev)}
-              aria-label="Buka Rincian Rekening Hadiah"
-              className="relative z-10 inline-flex items-center justify-center gap-2 px-8 py-2.5 rounded-full bg-gradient-to-r from-[#d1b07c] via-[#caa772] to-[#b8955f] hover:from-[#caa772] hover:to-[#a8854f] text-white shadow-[0_4px_16px_rgba(184,150,95,0.45)] border border-[#dfbf8e] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer select-none group"
-            >
-              <span className="text-xs sm:text-[13px] font-bold tracking-[0.18em] uppercase flex items-center gap-1.5">
-                {showGiftDetails ? (
-                  <>
-                    <X className="w-3.5 h-3.5" />
-                    <span>TUTUP</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-base leading-none">➔</span>
-                    <span>KLIK DI SINI</span>
-                  </>
-                )}
-              </span>
-            </button>
-
-            {/* Expandable Bank Account Cards when clicked */}
-            {showGiftDetails && (
-              <div className="w-full mt-6 space-y-3.5 text-left relative z-10 animate-in fade-in slide-in-from-top-3 duration-300">
-                {displayGifts.map((gift, idx) => (
-                  <div 
-                    key={idx}
-                    className="bg-[#fbf7f0]/95 backdrop-blur-xs rounded-2xl p-4 shadow-sm border border-[#caa772]/50 space-y-2 relative overflow-hidden"
-                  >
-                    <div className="flex items-center justify-between border-b border-[#8c2d38]/15 pb-2">
-                      <span className="font-sans font-bold text-xs sm:text-sm text-[#4e0e16] tracking-wider">
-                        {gift.provider}
-                      </span>
-                      <CreditCard className="w-4 h-4 text-[#8c2d38]" />
-                    </div>
-
-                    <div className="space-y-0.5">
-                      <p className="text-[10px] text-[#7a2832] font-serif uppercase tracking-wider">
-                        Nomor Rekening :
-                      </p>
-                      <p className="text-base sm:text-lg font-mono font-bold text-[#3d1117] tracking-wider">
-                        {gift.account_number}
-                      </p>
-                      <p className="text-xs text-[#5c242c] font-serif">
-                        a.n {gift.account_name}
-                      </p>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(gift.account_number, idx)}
-                      className="w-full py-2 px-3 rounded-xl bg-[#8c3d49]/10 hover:bg-[#8c3d49] text-[#8c3d49] hover:text-white transition-all text-xs font-serif flex items-center justify-center gap-1.5 cursor-pointer border border-[#8c3d49]/30"
-                    >
-                      {copiedIndex === idx ? (
-                        <>
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                          <span className="font-semibold text-emerald-700">Tersalin!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5" />
-                          <span>Salin Nomor Rekening</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                ))}
+          <ScrollReveal animation="arch-reveal" delay={80} className="w-full mb-8">
+            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[34px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-5 py-8 sm:px-7 sm:py-9 flex flex-col items-center text-center overflow-hidden">
+              
+              {/* Ambient Watermark Texture & Gunungan Wayang in Background */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-20">
+                <JavaneseGunungan className="w-64 sm:w-72 h-auto" />
               </div>
-            )}
+              <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply bg-[radial-gradient(#caa772_1px,transparent_1px)] [background-size:16px_16px]" />
 
-          </div>
+              {/* Title: WEDDING GIFT */}
+              <ScrollReveal animation="fade-up" delay={140}>
+                <h2 
+                  className="text-2xl sm:text-[28px] tracking-[0.18em] text-[#5c131c] font-normal uppercase mb-3.5 select-none relative z-10"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  WEDDING GIFT
+                </h2>
+              </ScrollReveal>
+
+              {/* Paragraph Text */}
+              <ScrollReveal animation="fade-up" delay={200}>
+                <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mx-auto mb-6 relative z-10">
+                  Doa restu Anda merupakan karunia yang sangat berarti bagi kami, dan jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara cashless.
+                </p>
+              </ScrollReveal>
+
+              {/* Golden Pill Button: ➔ KLIK DI SINI */}
+              <ScrollReveal animation="zoom-in" delay={260}>
+                <button
+                  type="button"
+                  onClick={() => setShowGiftDetails(prev => !prev)}
+                  aria-label="Buka Rincian Rekening Hadiah"
+                  className="relative z-10 inline-flex items-center justify-center gap-2 px-8 py-2.5 rounded-full bg-gradient-to-r from-[#d1b07c] via-[#caa772] to-[#b8955f] hover:from-[#caa772] hover:to-[#a8854f] text-white shadow-[0_4px_16px_rgba(184,150,95,0.45)] border border-[#dfbf8e] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer select-none group"
+                >
+                  <span className="text-xs sm:text-[13px] font-bold tracking-[0.18em] uppercase flex items-center gap-1.5">
+                    {showGiftDetails ? (
+                      <>
+                        <X className="w-3.5 h-3.5" />
+                        <span>TUTUP</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-base leading-none">➔</span>
+                        <span>KLIK DI SINI</span>
+                      </>
+                    )}
+                  </span>
+                </button>
+              </ScrollReveal>
+
+              {/* Expandable Bank Account Cards when clicked */}
+              {showGiftDetails && (
+                <div className="w-full mt-6 space-y-3.5 text-left relative z-10 animate-in fade-in slide-in-from-top-3 duration-300">
+                  {displayGifts.map((gift, idx) => (
+                    <div 
+                      key={idx}
+                      className="bg-[#fbf7f0]/95 backdrop-blur-xs rounded-2xl p-4 shadow-sm border border-[#caa772]/50 space-y-2 relative overflow-hidden"
+                    >
+                      <div className="flex items-center justify-between border-b border-[#8c2d38]/15 pb-2">
+                        <span className="font-sans font-bold text-xs sm:text-sm text-[#4e0e16] tracking-wider">
+                          {gift.provider}
+                        </span>
+                        <CreditCard className="w-4 h-4 text-[#8c2d38]" />
+                      </div>
+
+                      <div className="space-y-0.5">
+                        <p className="text-[10px] text-[#7a2832] font-serif uppercase tracking-wider">
+                          Nomor Rekening :
+                        </p>
+                        <p className="text-base sm:text-lg font-mono font-bold text-[#3d1117] tracking-wider">
+                          {gift.account_number}
+                        </p>
+                        <p className="text-xs text-[#5c242c] font-serif">
+                          a.n {gift.account_name}
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(gift.account_number, idx)}
+                        className="w-full py-2 px-3 rounded-xl bg-[#8c3d49]/10 hover:bg-[#8c3d49] text-[#8c3d49] hover:text-white transition-all text-xs font-serif flex items-center justify-center gap-1.5 cursor-pointer border border-[#8c3d49]/30"
+                      >
+                        {copiedIndex === idx ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                            <span className="font-semibold text-emerald-700">Tersalin!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Salin Nomor Rekening</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+            </div>
+          </ScrollReveal>
 
           {/* ------------------------------------------------------------------------- */}
           {/* Card 2: WISHES                                                            */}
           {/* ------------------------------------------------------------------------- */}
-          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[34px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-5 py-8 sm:px-7 sm:py-9 flex flex-col text-center relative overflow-hidden">
-            
-            {/* Ambient Watermark Texture & Gunungan Wayang in Background */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-20">
-              <JavaneseGunungan className="w-64 sm:w-72 h-auto" />
-            </div>
-            <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply bg-[radial-gradient(#caa772_1px,transparent_1px)] [background-size:16px_16px]" />
-
-            {/* Header: WISHES */}
-            <h2 
-              className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase mb-2 select-none relative z-10"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              WISHES
-            </h2>
-
-            {/* Subtitle */}
-            <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mx-auto mb-4 relative z-10">
-              Berikan ucapan harapan dan do'a kepada kedua mempelai
-            </p>
-
-            {/* Comment Counter (e.g. 1 Comment) */}
-            <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22]/90 mb-4 select-none relative z-10 font-medium">
-              {wishes.length} {wishes.length === 1 ? 'Comment' : 'Comments'}
-            </p>
-
-            {/* Stats Summary Pills (Hadir & Tidak Hadir) */}
-            <div className="grid grid-cols-2 gap-3 mb-5 max-w-[310px] w-full mx-auto relative z-10">
-              {/* Hadir Pill */}
-              <div className="bg-[#dcfce7] border border-[#bbf7d0] rounded-2xl py-3 px-3 flex flex-col items-center justify-center shadow-xs">
-                <span className="text-2xl sm:text-[26px] font-bold text-[#166534] leading-tight">
-                  {hadirCount}
-                </span>
-                <span className="text-xs font-serif text-[#166534] mt-0.5">
-                  Hadir
-                </span>
+          <ScrollReveal animation="arch-reveal" delay={120} className="w-full">
+            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[34px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-5 py-8 sm:px-7 sm:py-9 flex flex-col text-center relative overflow-hidden">
+              
+              {/* Ambient Watermark Texture & Gunungan Wayang in Background */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-20">
+                <JavaneseGunungan className="w-64 sm:w-72 h-auto" />
               </div>
+              <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply bg-[radial-gradient(#caa772_1px,transparent_1px)] [background-size:16px_16px]" />
 
-              {/* Tidak Hadir Pill */}
-              <div className="bg-[#fee2e2] border border-[#fecaca] rounded-2xl py-3 px-3 flex flex-col items-center justify-center shadow-xs">
-                <span className="text-2xl sm:text-[26px] font-bold text-[#991b1b] leading-tight">
-                  {tidakHadirCount}
-                </span>
-                <span className="text-xs font-serif text-[#991b1b] mt-0.5">
-                  Tidak Hadir
-                </span>
-              </div>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmitWish} className="space-y-3 relative z-10 w-full text-left">
-              {/* Nama */}
-              <div>
-                <input
-                  type="text"
-                  value={wishName}
-                  onChange={(e) => setWishName(e.target.value)}
-                  placeholder="Nama"
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#3d1117] placeholder:text-[#a09081] focus:outline-none focus:border-[#8c3d49] shadow-xs"
-                />
-              </div>
-
-              {/* Ucapan */}
-              <div>
-                <textarea
-                  id="wishes-message-input"
-                  rows={3}
-                  value={wishText}
-                  onChange={(e) => setWishText(e.target.value)}
-                  placeholder="Ucapan"
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#3d1117] placeholder:text-[#a09081] focus:outline-none focus:border-[#8c3d49] shadow-xs resize-none"
-                />
-              </div>
-
-              {/* Konfirmasi Kehadiran Select */}
-              <div className="relative">
-                <select
-                  value={wishAttendance}
-                  onChange={(e) => setWishAttendance(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#5a483e] focus:outline-none focus:border-[#8c3d49] shadow-xs appearance-none cursor-pointer"
+              {/* Header: WISHES */}
+              <ScrollReveal animation="fade-up" delay={160}>
+                <h2 
+                  className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase mb-2 select-none relative z-10"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  <option value="Hadir">Hadir</option>
-                  <option value="Tidak Hadir">Tidak Hadir</option>
-                  <option value="Ragu-ragu">Ragu-ragu</option>
-                </select>
-                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#a09081]">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                  </svg>
-                </div>
-              </div>
+                  WISHES
+                </h2>
+              </ScrollReveal>
 
-              {/* Kirim Button */}
-              <button
-                type="submit"
-                className="w-full py-2.5 rounded-xl bg-[#8c3d49] hover:bg-[#782f3a] active:bg-[#63242e] text-white text-xs sm:text-sm font-medium tracking-wide transition-all shadow-[0_2px_8px_rgba(140,61,73,0.35)] cursor-pointer"
-              >
-                Kirim
-              </button>
-            </form>
+              {/* Subtitle */}
+              <ScrollReveal animation="fade-up" delay={200}>
+                <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mx-auto mb-4 relative z-10">
+                  Berikan ucapan harapan dan do'a kepada kedua mempelai
+                </p>
+              </ScrollReveal>
 
-            {/* Comments Feed */}
-            <div className="mt-6 pt-4 border-t border-[#8c2d38]/15 space-y-4 text-left relative z-10 w-full max-h-80 overflow-y-auto pr-1">
-              {wishes.map((w, idx) => (
-                <div key={idx} className="pb-3 border-b border-[#8c2d38]/10 last:border-b-0 space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-xs sm:text-[13px] text-[#4e1017]">
-                      {w.name}
+              {/* Comment Counter (e.g. 1 Comment) */}
+              <ScrollReveal animation="fade-up" delay={240}>
+                <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22]/90 mb-4 select-none relative z-10 font-medium">
+                  {wishes.length} {wishes.length === 1 ? 'Comment' : 'Comments'}
+                </p>
+              </ScrollReveal>
+
+              {/* Stats Summary Pills (Hadir & Tidak Hadir) */}
+              <ScrollReveal animation="zoom-in" delay={280}>
+                <div className="grid grid-cols-2 gap-3 mb-5 max-w-[310px] w-full mx-auto relative z-10">
+                  {/* Hadir Pill */}
+                  <div className="bg-[#dcfce7] border border-[#bbf7d0] rounded-2xl py-3 px-3 flex flex-col items-center justify-center shadow-xs">
+                    <span className="text-2xl sm:text-[26px] font-bold text-[#166534] leading-tight">
+                      {hadirCount}
                     </span>
-                    {/* Green verified check badge */}
-                    <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#16a34a] text-white shrink-0">
-                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    <span className="text-xs font-serif text-[#166534] mt-0.5">
+                      Hadir
                     </span>
                   </div>
-                  <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed">
-                    {w.message}
-                  </p>
-                  <div className="flex items-center gap-3 pt-0.5">
-                    <span className="text-[11px] text-[#7d3f47]/80 font-serif">
-                      {w.date}
+
+                  {/* Tidak Hadir Pill */}
+                  <div className="bg-[#fee2e2] border border-[#fecaca] rounded-2xl py-3 px-3 flex flex-col items-center justify-center shadow-xs">
+                    <span className="text-2xl sm:text-[26px] font-bold text-[#991b1b] leading-tight">
+                      {tidakHadirCount}
                     </span>
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        setWishText(`@${w.name} `);
-                        const inputEl = document.getElementById('wishes-message-input');
-                        if (inputEl) inputEl.focus();
-                      }}
-                      className="text-[11px] font-semibold text-[#8c3d49] hover:underline cursor-pointer"
+                    <span className="text-xs font-serif text-[#991b1b] mt-0.5">
+                      Tidak Hadir
+                    </span>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              {/* Form */}
+              <ScrollReveal animation="fade-up" delay={320} className="w-full">
+                <form onSubmit={handleSubmitWish} className="space-y-3 relative z-10 w-full text-left">
+                  {/* Nama */}
+                  <div>
+                    <input
+                      type="text"
+                      value={wishName}
+                      onChange={(e) => setWishName(e.target.value)}
+                      placeholder="Nama"
+                      className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#3d1117] placeholder:text-[#a09081] focus:outline-none focus:border-[#8c3d49] shadow-xs"
+                    />
+                  </div>
+
+                  {/* Ucapan */}
+                  <div>
+                    <textarea
+                      id="wishes-message-input"
+                      rows={3}
+                      value={wishText}
+                      onChange={(e) => setWishText(e.target.value)}
+                      placeholder="Ucapan"
+                      className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#3d1117] placeholder:text-[#a09081] focus:outline-none focus:border-[#8c3d49] shadow-xs resize-none"
+                    />
+                  </div>
+
+                  {/* Konfirmasi Kehadiran Select */}
+                  <div className="relative">
+                    <select
+                      value={wishAttendance}
+                      onChange={(e) => setWishAttendance(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#5a483e] focus:outline-none focus:border-[#8c3d49] shadow-xs appearance-none cursor-pointer"
                     >
-                      Reply
-                    </button>
+                      <option value="Hadir">Hadir</option>
+                      <option value="Tidak Hadir">Tidak Hadir</option>
+                      <option value="Ragu-ragu">Ragu-ragu</option>
+                    </select>
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#a09081]">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                      </svg>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
 
-          </div>
+                  {/* Kirim Button */}
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 rounded-xl bg-[#8c3d49] hover:bg-[#782f3a] active:bg-[#63242e] text-white text-xs sm:text-sm font-medium tracking-wide transition-all shadow-[0_2px_8px_rgba(140,61,73,0.35)] cursor-pointer"
+                  >
+                    Kirim
+                  </button>
+                </form>
+              </ScrollReveal>
+
+              {/* Comments Feed */}
+              <ScrollReveal animation="fade-up" delay={360} className="w-full">
+                <div className="mt-6 pt-4 border-t border-[#8c2d38]/15 space-y-4 text-left relative z-10 w-full max-h-80 overflow-y-auto pr-1">
+                  {wishes.map((w, idx) => (
+                    <div key={idx} className="pb-3 border-b border-[#8c2d38]/10 last:border-b-0 space-y-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-xs sm:text-[13px] text-[#4e1017]">
+                          {w.name}
+                        </span>
+                        {/* Green verified check badge */}
+                        <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#16a34a] text-white shrink-0">
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed">
+                        {w.message}
+                      </p>
+                      <div className="flex items-center gap-3 pt-0.5">
+                        <span className="text-[11px] text-[#7d3f47]/80 font-serif">
+                          {w.date}
+                        </span>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            setWishText(`@${w.name} `);
+                            const inputEl = document.getElementById('wishes-message-input');
+                            if (inputEl) inputEl.focus();
+                          }}
+                          className="text-[11px] font-semibold text-[#8c3d49] hover:underline cursor-pointer"
+                        >
+                          Reply
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollReveal>
+
+            </div>
+          </ScrollReveal>
 
         </section>
 
         {/* ========================================================================= */}
-        {/* 9. PENUTUP & UCAPAN TERIMA KASIH (Exact User Reference Screenshot)        */}
+        {/* 8. PENUTUP & UCAPAN TERIMA KASIH (Exact User Reference Screenshot)        */}
         {/* ========================================================================= */}
         <section id="closing-section" className="relative pt-10 pb-16 px-4 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden min-h-[640px] flex flex-col items-center justify-between">
           
@@ -1737,77 +1832,41 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           <div className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] mx-auto flex flex-col items-center text-center">
             
             {/* Arch Photo Frame (Rounded Top Arch, Flat Bottom, Deep Maroon Border) */}
-            <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#5c131c] overflow-hidden shadow-[0_10px_28px_rgba(92,19,28,0.22)] bg-[#f5ebe1] mb-6">
-              <img 
-                src="/themes/habib-adiba-closing.jpg" 
-                alt={`${groomNick} & ${brideNick}`} 
-                className="w-full h-full object-cover object-[center_18%]"
-              />
-            </div>
+            <ScrollReveal animation="arch-reveal" delay={80}>
+              <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#5c131c] overflow-hidden shadow-[0_10px_28px_rgba(92,19,28,0.22)] bg-[#f5ebe1] mb-6">
+                <img 
+                  src="/themes/habib-adiba-closing.jpg" 
+                  alt={`${groomNick} & ${brideNick}`} 
+                  className="w-full h-full object-cover object-[center_18%]"
+                />
+              </div>
+            </ScrollReveal>
 
             {/* Closing Thank You Text */}
-            <div className="space-y-3 px-3 max-w-[320px] sm:max-w-[340px] mx-auto mb-7">
-              <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
-                Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restunya untuk pernikahan kami.
-              </p>
-              <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
-                Atas doa &amp; restunya, kami ucapkan terima kasih.
-              </p>
-            </div>
+            <ScrollReveal animation="fade-up" delay={220}>
+              <div className="space-y-3 px-3 max-w-[320px] sm:max-w-[340px] mx-auto mb-7">
+                <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
+                  Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restunya untuk pernikahan kami.
+                </p>
+                <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
+                  Atas doa &amp; restunya, kami ucapkan terima kasih.
+                </p>
+              </div>
+            </ScrollReveal>
 
             {/* Names: HABIB & ADIBA (Strictly matching screenshot) */}
-            <h2 
-              className="text-2xl sm:text-[28px] tracking-[0.08em] text-[#5c131c] font-normal uppercase select-none pb-24 sm:pb-28"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              {groomNick.toUpperCase()} <span className="italic font-serif font-normal">&amp;</span> {brideNick.toUpperCase()}
-            </h2>
+            <ScrollReveal animation="fade-up" delay={340}>
+              <h2 
+                className="text-2xl sm:text-[28px] tracking-[0.08em] text-[#5c131c] font-normal uppercase select-none pb-24 sm:pb-28"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                {groomNick.toUpperCase()} <span className="italic font-serif font-normal">&amp;</span> {brideNick.toUpperCase()}
+              </h2>
+            </ScrollReveal>
 
           </div>
 
         </section>
-
-        {/* Lightbox Modal for Gallery */}
-        {activeLightboxIdx !== null && (
-          <div 
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 select-none"
-            onClick={() => setActiveLightboxIdx(null)}
-          >
-            <button 
-              className="absolute top-5 right-5 text-white/80 hover:text-white p-2"
-              onClick={() => setActiveLightboxIdx(null)}
-            >
-              <X className="w-7 h-7" />
-            </button>
-
-            <button
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white p-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                setActiveLightboxIdx(prev => (prev! > 0 ? prev! - 1 : displayGallery.length - 1));
-              }}
-            >
-              <ChevronLeft className="w-8 h-8" />
-            </button>
-
-            <img 
-              src={displayGallery[activeLightboxIdx].image_url} 
-              alt=""
-              className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            />
-
-            <button
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white p-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                setActiveLightboxIdx(prev => (prev! < displayGallery.length - 1 ? prev! + 1 : 0));
-              }}
-            >
-              <ChevronRight className="w-8 h-8" />
-            </button>
-          </div>
-        )}
 
       </div>
     </div>
