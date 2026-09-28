@@ -2172,7 +2172,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         {/* ========================================================================= */}
         {/* 8. PENUTUP & UCAPAN TERIMA KASIH (Exact User Reference Screenshot)        */}
         {/* ========================================================================= */}
-        <section id="closing-section" className="relative pt-10 pb-16 px-4 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden min-h-[640px] flex flex-col items-center justify-between">
+        <section id="closing-section" className="relative pt-10 pb-28 px-4 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden min-h-[640px] flex flex-col items-center justify-between">
           
           {/* Authentic Javanese Heritage Background with Stupas & Florals */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -2181,18 +2181,19 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               alt="Javanese Heritage Background" 
               className="w-full h-full object-cover object-bottom opacity-85 select-none"
             />
-            {/* Soft vignette to blend with previous section */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0]/50 via-transparent to-transparent pointer-events-none" />
+            {/* Soft vignette and morning mist to keep Borobudur landscape elegant & readable */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0]/60 via-[#fbf7f0]/15 to-[#fbf7f0]/70 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-[#fbf7f0]/95 via-[#fbf7f0]/60 to-transparent pointer-events-none" />
           </div>
 
           {/* Floating Gold Prada Dust */}
-          <FloatingGoldenDust count={8} />
+          <FloatingGoldenDust count={10} />
 
           <div className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] mx-auto flex flex-col items-center text-center">
             
             {/* Arch Photo Frame with Royal Gold Border and Subtle Halo */}
             <ScrollReveal animation="arch-reveal" delay={80}>
-              <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#d4af37] overflow-hidden shadow-[0_12px_36px_rgba(92,19,28,0.28),_0_0_24px_rgba(212,175,55,0.25)] bg-[#f5ebe1] mb-6">
+              <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#d4af37] overflow-hidden shadow-[0_14px_38px_rgba(92,19,28,0.28),_0_0_24px_rgba(212,175,55,0.25)] bg-[#f5ebe1] mb-6">
                 <img 
                   src={couple?.cover_photo_url || '/photos/photo-3.jpg'} 
                   alt={`${groomNick} & ${brideNick}`} 
@@ -2201,26 +2202,57 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               </div>
             </ScrollReveal>
 
-            {/* Closing Thank You Text */}
-            <ScrollReveal animation="fade-up" delay={220}>
-              <div className="space-y-3 px-3 max-w-[320px] sm:max-w-[340px] mx-auto mb-7">
-                <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
-                  Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restunya untuk pernikahan kami.
-                </p>
-                <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
-                  Atas doa &amp; restunya, kami ucapkan terima kasih.
-                </p>
-              </div>
-            </ScrollReveal>
+            {/* Royal Closing Plaque (Kartu Penutup & Ucapan Terima Kasih Mewah) */}
+            <ScrollReveal animation="fade-up" delay={220} className="w-full">
+              <div className="relative w-full max-w-[340px] sm:max-w-[365px] mx-auto rounded-3xl bg-[#fffdfa]/95 backdrop-blur-md border-2 border-[#d4af37]/70 shadow-[0_16px_40px_rgba(78,27,34,0.2),_0_0_24px_rgba(212,175,55,0.25)] p-6 sm:p-7 mb-10 overflow-hidden">
+                
+                {/* Inner Delicate Gold Hairline Frame */}
+                <div className="absolute inset-1.5 rounded-[22px] border border-[#d4af37]/35 pointer-events-none" />
 
-            {/* Names: STEVEN & BUNGA (Strictly matching screenshot) */}
-            <ScrollReveal animation="fade-up" delay={340}>
-              <h2 
-                className="text-2xl sm:text-[28px] tracking-[0.08em] text-[#5c131c] font-normal uppercase select-none pb-24 sm:pb-28"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {groomNick.toUpperCase()} <span className="italic font-serif font-normal">&amp;</span> {brideNick.toUpperCase()}
-              </h2>
+                {/* 4 Royal Gold Filigree Corner Accents */}
+                <RoyalGoldCorner className="absolute top-2 left-2 w-8 h-8 pointer-events-none opacity-85" flip="top-left" />
+                <RoyalGoldCorner className="absolute top-2 right-2 w-8 h-8 pointer-events-none opacity-85" flip="top-right" />
+                <RoyalGoldCorner className="absolute bottom-2 left-2 w-8 h-8 pointer-events-none opacity-85" flip="bottom-left" />
+                <RoyalGoldCorner className="absolute bottom-2 right-2 w-8 h-8 pointer-events-none opacity-85" flip="bottom-right" />
+
+                {/* Plaque Content */}
+                <div className="relative z-10 flex flex-col items-center text-center space-y-3.5">
+                  
+                  {/* Royal Gold Motif Accent */}
+                  <div className="flex items-center justify-center gap-2 mb-0.5">
+                    <div className="w-8 h-[1px] bg-gradient-to-r from-transparent to-[#d4af37]" />
+                    <span className="text-[#d4af37] text-xs">✦</span>
+                    <div className="w-8 h-[1px] bg-gradient-to-l from-transparent to-[#d4af37]" />
+                  </div>
+
+                  {/* Paragraph 1 - Clear, High Contrast, Crisp Serif Typography */}
+                  <p className="text-[13px] sm:text-[14px] font-serif text-[#2f0c11] leading-relaxed font-medium">
+                    Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restunya untuk pernikahan kami.
+                  </p>
+
+                  {/* Paragraph 2 */}
+                  <p className="text-[13px] sm:text-[14px] font-serif text-[#661620] leading-relaxed font-semibold">
+                    Atas doa &amp; restunya, kami ucapkan terima kasih.
+                  </p>
+
+                  {/* Royal Gold Divider */}
+                  <div className="w-28 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent my-1" />
+
+                  {/* Sign-off & Names */}
+                  <div className="pt-0.5">
+                    <p className="text-[10px] sm:text-[11px] tracking-[0.25em] indent-[0.25em] uppercase text-[#8c2d38] font-serif font-semibold mb-1">
+                      KAMI YANG BERBAHAGIA
+                    </p>
+                    <h2 
+                      className="text-2xl sm:text-[28px] tracking-[0.1em] text-[#5c131c] font-normal uppercase select-none drop-shadow-xs"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {groomNick.toUpperCase()} <span className="italic font-serif font-light text-[#8c2d38] mx-0.5">&amp;</span> {brideNick.toUpperCase()}
+                    </h2>
+                  </div>
+
+                </div>
+              </div>
             </ScrollReveal>
 
           </div>
