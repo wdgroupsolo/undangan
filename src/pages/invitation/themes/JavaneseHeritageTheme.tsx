@@ -240,9 +240,190 @@ export const JavaneseMonogram: React.FC<{ initials?: string; className?: string 
   );
 };
 
+// Royal Javanese Gold Filigree & Floral Garland for Event Card Bottom (Pure Luxury, No Candi Stupas)
+const RoyalCardBottomOrnament: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`pointer-events-none select-none ${className}`}>
+    <svg viewBox="0 0 320 90" fill="none" className="w-full h-full">
+      <defs>
+        <linearGradient id="royalGoldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#aa771c" stopOpacity="0.3" />
+          <stop offset="25%" stopColor="#d4af37" stopOpacity="0.95" />
+          <stop offset="50%" stopColor="#fff2cf" stopOpacity="1" />
+          <stop offset="75%" stopColor="#d4af37" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#aa771c" stopOpacity="0.3" />
+        </linearGradient>
+        <linearGradient id="maroonFlowerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#a4333e" />
+          <stop offset="100%" stopColor="#5c131c" />
+        </linearGradient>
+      </defs>
+
+      {/* Primary Gold Arc Scroll */}
+      <path 
+        d="M20 85 C75 48, 115 50, 160 52 C205 50, 245 48, 300 85" 
+        stroke="url(#royalGoldGrad)" 
+        strokeWidth="1.8" 
+        fill="none" 
+      />
+      {/* Secondary Dotted Gold Hairline */}
+      <path 
+        d="M40 86 C85 58, 120 60, 160 62 C200 60, 235 58, 280 86" 
+        stroke="url(#royalGoldGrad)" 
+        strokeWidth="0.8" 
+        strokeDasharray="2 3" 
+        fill="none" 
+      />
+
+      {/* Central Royal Lotus Rosette */}
+      <g transform="translate(160, 52)">
+        <path d="M0 -15 C-8 -5, -12 2, 0 8 C12 2, 8 -5, 0 -15 Z" fill="url(#maroonFlowerGrad)" stroke="#d4af37" strokeWidth="0.8" />
+        <path d="M0 -4 C-14 -12, -18 4, 0 6" fill="url(#maroonFlowerGrad)" opacity="0.85" />
+        <path d="M0 -4 C14 -12, 18 4, 0 6" fill="url(#maroonFlowerGrad)" opacity="0.85" />
+        <circle cx="0" cy="5" r="3.5" fill="#fff2cf" stroke="#d4af37" strokeWidth="0.8" />
+        <circle cx="0" cy="5" r="1.5" fill="#5c131c" />
+        {/* Radiating golden starlets */}
+        <circle cx="-25" cy="4" r="2" fill="#d4af37" />
+        <circle cx="25" cy="4" r="2" fill="#d4af37" />
+        <circle cx="-50" cy="9" r="1.6" fill="#d4af37" opacity="0.8" />
+        <circle cx="50" cy="9" r="1.6" fill="#d4af37" opacity="0.8" />
+        <circle cx="-75" cy="16" r="1.3" fill="#d4af37" opacity="0.6" />
+        <circle cx="75" cy="16" r="1.3" fill="#d4af37" opacity="0.6" />
+      </g>
+
+      {/* Left Symmetrical Foliage Scrolls */}
+      <path d="M125 54 C115 46, 100 48, 95 58 C90 68, 105 74, 115 66" stroke="url(#royalGoldGrad)" strokeWidth="1.2" fill="none" />
+      <circle cx="95" cy="58" r="2.5" fill="#8c2530" />
+      <path d="M85 60 C70 54, 60 61, 58 71" stroke="url(#royalGoldGrad)" strokeWidth="1" fill="none" />
+      <circle cx="58" cy="71" r="2" fill="#d4af37" />
+
+      {/* Right Symmetrical Foliage Scrolls */}
+      <path d="M195 54 C205 46, 220 48, 225 58 C230 68, 215 74, 205 66" stroke="url(#royalGoldGrad)" strokeWidth="1.2" fill="none" />
+      <circle cx="225" cy="58" r="2.5" fill="#8c2530" />
+      <path d="M235 60 C250 54, 260 61, 262 71" stroke="url(#royalGoldGrad)" strokeWidth="1" fill="none" />
+      <circle cx="262" cy="71" r="2" fill="#d4af37" />
+    </svg>
+  </div>
+);
+
+// Royal 24K Gold Corner Filigree (Keraton Lung-lungan Style) with Subtle Living Luster
+const RoyalGoldCorner: React.FC<{ className?: string; flip?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' }> = ({ 
+  className = '', 
+  flip = 'top-left' 
+}) => {
+  const getTransform = () => {
+    switch (flip) {
+      case 'top-right': return 'scaleX(-1)';
+      case 'bottom-left': return 'scaleY(-1)';
+      case 'bottom-right': return 'scale(-1, -1)';
+      case 'top-left':
+      default: return 'none';
+    }
+  };
+
+  return (
+    <div 
+      className={`pointer-events-none select-none ${className}`}
+      style={{ transform: getTransform() }}
+    >
+      <svg viewBox="0 0 100 100" fill="none" className="w-full h-full drop-shadow-[0_2px_8px_rgba(212,175,55,0.35)]">
+        <defs>
+          <linearGradient id="goldCornerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fff2cf" />
+            <stop offset="35%" stopColor="#d4af37" />
+            <stop offset="70%" stopColor="#aa771c" />
+            <stop offset="100%" stopColor="#63440e" />
+          </linearGradient>
+        </defs>
+
+        {/* Outer Corner Frame Borders */}
+        <path d="M8 90 L8 8 L90 8" stroke="url(#goldCornerGrad)" strokeWidth="1.6" fill="none" />
+        <path d="M14 80 L14 14 L80 14" stroke="url(#goldCornerGrad)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
+
+        {/* Corner Royal Rosette (Batik Truntum Motif) */}
+        <g transform="translate(22, 22)">
+          <circle cx="0" cy="0" r="4.5" fill="#d4af37" />
+          <circle cx="0" cy="0" r="2" fill="#5c131c" />
+          {/* 4 Petals */}
+          <ellipse cx="0" cy="-7" rx="2" ry="3.5" fill="url(#goldCornerGrad)" />
+          <ellipse cx="0" cy="7" rx="2" ry="3.5" fill="url(#goldCornerGrad)" />
+          <ellipse cx="-7" cy="0" rx="3.5" ry="2" fill="url(#goldCornerGrad)" />
+          <ellipse cx="7" cy="0" rx="3.5" ry="2" fill="url(#goldCornerGrad)" />
+        </g>
+
+        {/* Curling Royal Golden Foliage Swirls */}
+        <path 
+          d="M18 45 C24 34, 38 32, 45 18 C50 25, 62 22, 74 18" 
+          stroke="url(#goldCornerGrad)" 
+          strokeWidth="1.4" 
+          strokeLinecap="round" 
+          fill="none" 
+        />
+        <path 
+          d="M45 18 C38 38, 32 54, 18 72" 
+          stroke="url(#goldCornerGrad)" 
+          strokeWidth="1.2" 
+          strokeLinecap="round" 
+          fill="none" 
+        />
+
+        {/* Delicate Golden Leaves */}
+        <path d="M38 32 C48 34, 52 44, 44 48 C36 50, 34 40, 38 32 Z" fill="url(#goldCornerGrad)" opacity="0.9" />
+        <path d="M26 58 C36 61, 38 70, 30 74 C24 74, 22 66, 26 58 Z" fill="url(#goldCornerGrad)" opacity="0.9" />
+        <path d="M58 22 C61 31, 70 34, 74 27 C74 21, 66 20, 58 22 Z" fill="url(#goldCornerGrad)" opacity="0.9" />
+
+        {/* Little Golden Droplets / Stardust */}
+        <circle cx="80" cy="18" r="1.8" fill="#fff2cf" />
+        <circle cx="18" cy="80" r="1.8" fill="#fff2cf" />
+        <circle cx="50" cy="50" r="1.4" fill="#d4af37" />
+      </svg>
+    </div>
+  );
+};
+
+// Floating Gold Glitter & Prada Dust with Smooth Realistic Drift
+const FloatingGoldenDust: React.FC<{ count?: number }> = ({ count = 12 }) => {
+  const particles = [
+    { top: '8%', left: '15%', size: 4, dur: '6s', delay: '0s' },
+    { top: '18%', left: '82%', size: 5, dur: '7.5s', delay: '1.2s' },
+    { top: '28%', left: '25%', size: 3, dur: '5.5s', delay: '2.5s' },
+    { top: '38%', left: '75%', size: 6, dur: '8s', delay: '0.8s' },
+    { top: '48%', left: '10%', size: 4, dur: '6.5s', delay: '3.2s' },
+    { top: '58%', left: '88%', size: 3.5, dur: '7s', delay: '1.8s' },
+    { top: '68%', left: '30%', size: 5, dur: '6.2s', delay: '2.1s' },
+    { top: '78%', left: '70%', size: 4, dur: '7.8s', delay: '0.4s' },
+    { top: '88%', left: '18%', size: 4.5, dur: '6.8s', delay: '3.8s' },
+    { top: '94%', left: '80%', size: 3, dur: '5.8s', delay: '1.5s' },
+    { top: '14%', left: '50%', size: 3.5, dur: '7.2s', delay: '2.8s' },
+    { top: '52%', left: '60%', size: 5.5, dur: '8.2s', delay: '0.2s' },
+  ].slice(0, count);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-25">
+      {particles.map((p, idx) => (
+        <div
+          key={idx}
+          className="absolute rounded-full bg-gradient-to-tr from-[#caa772] via-[#ffd778] to-[#ffffff]"
+          style={{
+            top: p.top,
+            left: p.left,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            boxShadow: '0 0 8px 1px rgba(212, 175, 55, 0.75), 0 0 16px 2px rgba(255, 235, 170, 0.4)',
+            animation: `gold-dust-float ${p.dur} ease-in-out infinite ${p.delay}`,
+            willChange: 'transform, opacity',
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
 // Climbing Ivy / Betel Vines on Left Arch Border (Curling over the maroon frame)
 const ArchLeftVine: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`pointer-events-none select-none ${className}`}>
+  <div 
+    className={`pointer-events-none select-none origin-bottom ${className}`}
+    style={{ animation: 'organic-vine-sway 6.8s ease-in-out infinite' }}
+  >
     <svg viewBox="0 0 50 110" fill="none" className="w-11 h-22 sm:w-13 sm:h-26 drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)]">
       {/* Curling green stem */}
       <path 
@@ -289,9 +470,12 @@ const ArchLeftVine: React.FC<{ className?: string }> = ({ className = '' }) => (
   </div>
 );
 
-// Climbing Ivy / Betel Vines on Right Arch Border (Curling over the maroon frame)
+// Climbing Ivy / Betel Vines on Right Arch Border (Curling over the maroon frame with living sway)
 const ArchRightVine: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`pointer-events-none select-none ${className}`}>
+  <div 
+    className={`pointer-events-none select-none origin-bottom ${className}`}
+    style={{ animation: 'organic-vine-sway 7.6s ease-in-out infinite 0.9s' }}
+  >
     <svg viewBox="0 0 50 110" fill="none" className="w-11 h-22 sm:w-13 sm:h-26 drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)]">
       {/* Curling green stem */}
       <path 
@@ -340,7 +524,10 @@ const ArchRightVine: React.FC<{ className?: string }> = ({ className = '' }) => 
 
 // Realistic Burgundy Orchid & Cream Peony Floral Corner for Photo Card (Top Right)
 const PhotoCornerFloralTopRight: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`pointer-events-none select-none ${className}`}>
+  <div 
+    className={`pointer-events-none select-none origin-top-right ${className}`}
+    style={{ animation: 'gentle-floral-breathe 8s ease-in-out infinite' }}
+  >
     <svg viewBox="0 0 100 100" fill="none" className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)]">
       {/* Delicate twig with buds */}
       <path d="M40 85 C65 60, 75 35, 92 10" stroke="#5a1820" strokeWidth="1.5" strokeLinecap="round" />
@@ -378,7 +565,10 @@ const PhotoCornerFloralTopRight: React.FC<{ className?: string }> = ({ className
 
 // Realistic Burgundy Orchid & Cream Peony Floral Corner for Photo Card (Bottom Left)
 const PhotoCornerFloralBottomLeft: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`pointer-events-none select-none ${className}`}>
+  <div 
+    className={`pointer-events-none select-none origin-bottom-left ${className}`}
+    style={{ animation: 'gentle-floral-breathe 8.8s ease-in-out infinite 1.4s' }}
+  >
     <svg viewBox="0 0 100 100" fill="none" className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)]">
       {/* Delicate twig with buds */}
       <path d="M60 15 C35 40, 25 65, 8 90" stroke="#5a1820" strokeWidth="1.5" strokeLinecap="round" />
@@ -414,17 +604,17 @@ const PhotoCornerFloralBottomLeft: React.FC<{ className?: string }> = ({ classNa
   </div>
 );
 
-// Floating Floral & Gold Sparkle Particles
+// Floating Floral & Gold Sparkle Particles with Smooth Realistic 3D Tumbling
 export const JavanesePetals: React.FC<{ count?: number }> = ({ count = 10 }) => {
   const petals = [
-    { top: '10%', left: '12%', size: 14, duration: '9s', delay: '0s', rot: '25deg' },
-    { top: '24%', left: '85%', size: 18, duration: '12s', delay: '1.5s', rot: '-40deg' },
-    { top: '40%', left: '16%', size: 12, duration: '8.5s', delay: '3s', rot: '65deg' },
-    { top: '56%', left: '82%', size: 16, duration: '11s', delay: '0.8s', rot: '-15deg' },
-    { top: '72%', left: '10%', size: 14, duration: '10s', delay: '2.2s', rot: '45deg' },
-    { top: '88%', left: '76%', size: 20, duration: '13s', delay: '1.8s', rot: '-50deg' },
-    { top: '32%', left: '70%', size: 12, duration: '9.5s', delay: '2.5s', rot: '30deg' },
-    { top: '64%', left: '25%', size: 15, duration: '10.5s', delay: '0.4s', rot: '-35deg' },
+    { top: '8%', left: '12%', size: 15, dur: '10s', delay: '0s', rot: '25deg', type: 'maroon' },
+    { top: '22%', left: '84%', size: 13, dur: '13s', delay: '1.8s', rot: '-35deg', type: 'gold' },
+    { top: '36%', left: '15%', size: 14, dur: '9.5s', delay: '3.2s', rot: '55deg', type: 'blush' },
+    { top: '50%', left: '82%', size: 18, dur: '12s', delay: '0.9s', rot: '-20deg', type: 'maroon' },
+    { top: '65%', left: '9%', size: 12, dur: '11s', delay: '2.4s', rot: '40deg', type: 'gold' },
+    { top: '79%', left: '78%', size: 19, dur: '14s', delay: '1.5s', rot: '-45deg', type: 'maroon' },
+    { top: '91%', left: '22%', size: 14, dur: '10.5s', delay: '3.7s', rot: '30deg', type: 'blush' },
+    { top: '28%', left: '68%', size: 12, dur: '9.8s', delay: '2.1s', rot: '15deg', type: 'gold' },
   ].slice(0, count);
 
   return (
@@ -432,25 +622,41 @@ export const JavanesePetals: React.FC<{ count?: number }> = ({ count = 10 }) => 
       {petals.map((p, idx) => (
         <div
           key={idx}
-          className="absolute opacity-65"
+          className="absolute"
           style={{
             top: p.top,
             left: p.left,
             width: `${p.size}px`,
             height: `${p.size}px`,
             transform: `rotate(${p.rot})`,
-            animation: `javanese-petal-float ${p.duration} ease-in-out infinite ${p.delay}`,
+            animation: `realistic-petal-drift ${p.dur} cubic-bezier(0.4, 0, 0.2, 1) infinite ${p.delay}`,
             willChange: 'transform, opacity',
           }}
         >
-          {/* Burgundy / Terracotta Orchid Petal Shape */}
-          <svg viewBox="0 0 30 30" fill="none" className="w-full h-full text-[#7a1e28]">
-            <path 
-              d="M15 2 C22 8, 28 16, 26 23 C24 28, 17 29, 13 26 C8 22, 6 14, 15 2 Z" 
-              fill="currentColor" 
-              opacity="0.75" 
-            />
-          </svg>
+          {p.type === 'maroon' && (
+            <svg viewBox="0 0 30 30" fill="none" className="w-full h-full text-[#7a1e28] drop-shadow-[0_2px_4px_rgba(92,19,28,0.3)]">
+              <path 
+                d="M15 2 C22 8, 28 16, 26 23 C24 28, 17 29, 13 26 C8 22, 6 14, 15 2 Z" 
+                fill="currentColor" 
+                opacity="0.85" 
+              />
+            </svg>
+          )}
+          {p.type === 'gold' && (
+            <svg viewBox="0 0 24 24" fill="none" className="w-full h-full drop-shadow-[0_0_6px_rgba(212,175,55,0.7)]">
+              <circle cx="12" cy="12" r="6" fill="#d4af37" opacity="0.85" />
+              <path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z" fill="#fff5d0" opacity="0.95" />
+            </svg>
+          )}
+          {p.type === 'blush' && (
+            <svg viewBox="0 0 30 30" fill="none" className="w-full h-full text-[#e8c0ad] drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
+              <path 
+                d="M15 3 C21 9, 27 15, 25 22 C23 27, 18 28, 14 25 C9 21, 7 14, 15 3 Z" 
+                fill="currentColor" 
+                opacity="0.85" 
+              />
+            </svg>
+          )}
         </div>
       ))}
     </div>
@@ -829,6 +1035,79 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
       
       {/* Inline Keyframes & Micro-animations */}
       <style>{`
+        @keyframes organic-vine-sway {
+          0%, 100% {
+            transform: rotate(0deg) translateY(0);
+          }
+          30% {
+            transform: rotate(1.6deg) translateY(-0.8px);
+          }
+          70% {
+            transform: rotate(-1.3deg) translateY(0.4px);
+          }
+        }
+
+        @keyframes gentle-floral-breathe {
+          0%, 100% {
+            transform: scale(1) rotate(0deg);
+          }
+          50% {
+            transform: scale(1.025) rotate(0.6deg);
+          }
+        }
+
+        @keyframes gold-dust-float {
+          0%, 100% {
+            transform: translate3d(0, 0, 0) scale(0.85);
+            opacity: 0.35;
+          }
+          50% {
+            transform: translate3d(6px, -15px, 0) scale(1.2);
+            opacity: 0.95;
+          }
+        }
+
+        @keyframes realistic-petal-drift {
+          0% {
+            transform: translate3d(0, 0, 0) rotate(0deg) scale(0.9);
+            opacity: 0.35;
+          }
+          35% {
+            transform: translate3d(8px, -14px, 0) rotate(14deg) scale(1.06);
+            opacity: 0.85;
+          }
+          70% {
+            transform: translate3d(-6px, -24px, 0) rotate(-10deg) scale(1);
+            opacity: 0.75;
+          }
+          100% {
+            transform: translate3d(0, 0, 0) rotate(0deg) scale(0.9);
+            opacity: 0.35;
+          }
+        }
+
+        @keyframes gold-filigree-shimmer {
+          0%, 100% {
+            filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.45));
+            opacity: 0.92;
+          }
+          50% {
+            filter: drop-shadow(0 0 8px rgba(255, 225, 120, 0.85));
+            opacity: 1;
+          }
+        }
+
+        @keyframes royal-pulse-glow {
+          0%, 100% {
+            box-shadow: 0 16px 45px rgba(92, 19, 28, 0.22), 0 0 20px rgba(212, 175, 55, 0.18);
+            border-color: rgba(212, 175, 55, 0.75);
+          }
+          50% {
+            box-shadow: 0 20px 55px rgba(92, 19, 28, 0.3), 0 0 32px rgba(212, 175, 55, 0.4);
+            border-color: rgba(255, 225, 120, 0.95);
+          }
+        }
+
         @keyframes javanese-petal-float {
           0% {
             transform: translate3d(0, 0, 0) rotate(0deg) scale(0.9);
@@ -955,8 +1234,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0]/15 via-transparent to-[#fbf7f0]/25" />
           </div>
 
-          {/* Floating Petals Drift */}
+          {/* Floating Petals Drift & Living Golden Prada Dust */}
           <JavanesePetals count={8} />
+          <FloatingGoldenDust count={10} />
 
           {/* ========================================================================= */}
           {/* ARCH CONTENT AREA (Matching the entrance video's Borobudur Arch scene)     */}
@@ -966,6 +1246,10 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             
             {/* Soft inner radial parchment glow for contrast behind text over stupas */}
             <div className="absolute inset-0 rounded-[180px] bg-gradient-to-b from-[#fbf7f0]/40 via-transparent to-[#fbf7f0]/30 pointer-events-none z-0" />
+
+            {/* Royal Gold Filigree on Arch Shoulders */}
+            <RoyalGoldCorner className="absolute top-2 left-2 w-12 h-12 pointer-events-none opacity-75" flip="top-left" />
+            <RoyalGoldCorner className="absolute top-2 right-2 w-12 h-12 pointer-events-none opacity-75" flip="top-right" />
 
             {/* TOP: Calligraphic Monogram */}
             <div className="relative z-20 pt-7 sm:pt-9">
@@ -1024,8 +1308,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         {/* 2. WITH LOVE & AYAT SUCI (Exact recreation of 'ini bawahnya' screenshot)   */}
         {/* ========================================================================= */}
         <section id="ayat-section" className="py-14 px-5 sm:px-8 relative z-10 bg-[#fbf7f0] border-t border-[#8c2d38]/15 text-center overflow-hidden">
-          {/* Subtle Ambient Petals */}
+          {/* Subtle Ambient Petals & Golden Stardust */}
           <JavanesePetals count={6} />
+          <FloatingGoldenDust count={8} />
 
           <div className="max-w-md mx-auto relative z-10 space-y-7">
             
@@ -1039,8 +1324,8 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                 {/* Floral Accent Bottom Left Corner */}
                 <PhotoCornerFloralBottomLeft className="absolute -bottom-4 -left-4 w-20 h-20 sm:w-24 sm:h-24 z-20 pointer-events-none" />
 
-                {/* Photo Container */}
-                <div className="relative z-10 w-full aspect-[4/3.2] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(92,19,28,0.18)] border border-[#8c2d38]/20 bg-[#efe7db]">
+                {/* Photo Container with Luxurious Gold Border and Glow */}
+                <div className="relative z-10 w-full aspect-[4/3.2] rounded-2xl overflow-hidden shadow-[0_12px_36px_rgba(92,19,28,0.22),_0_0_20px_rgba(212,175,55,0.25)] border-[2px] border-[#d4af37]/80 bg-[#efe7db]">
                   <img 
                     src={couple?.cover_photo_url || '/photos/photo-3.jpg'} 
                     alt={`${groomNick} & ${brideNick}`} 
@@ -1097,6 +1382,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0] via-[#fbf7f0]/40 to-[#fbf7f0]/85" />
           </div>
 
+          {/* Floating Golden Dust Particles */}
+          <FloatingGoldenDust count={8} />
+
           {/* Centered Thin Maroon Border Card Container */}
           <ScrollReveal animation="fade-up" delay={80} className="w-full">
             <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-8 sm:py-10 flex flex-col items-center text-center">
@@ -1126,16 +1414,19 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                 </div>
               </ScrollReveal>
 
-              {/* BRIDE (Adiba) */}
+              {/* BRIDE */}
               <ScrollReveal animation="slide-left" delay={240} className="w-full">
                 <div className="w-full flex flex-col items-center">
-                  {/* Bride Oval Photo */}
-                  <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
-                    <img 
-                      src={couple?.bride_photo_url || '/bride-default.png'} 
-                      alt={brideNick}
-                      className="w-full h-full object-cover object-top rounded-[50%]"
-                    />
+                  {/* Bride Oval Photo with Royal Gold Frame & Halo */}
+                  <div className="relative group my-2">
+                    <div className="absolute -inset-1 rounded-[50%] bg-gradient-to-tr from-[#d4af37] via-[#fff2cf] to-[#aa771c] opacity-65 blur-[3px]" />
+                    <div className="relative w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[2.5px] border-[#d4af37] p-1 bg-[#faf2e6] shadow-[0_10px_26px_rgba(92,19,28,0.22)]">
+                      <img 
+                        src={couple?.bride_photo_url || '/bride-default.png'} 
+                        alt={brideNick}
+                        className="w-full h-full object-cover object-top rounded-[50%]"
+                      />
+                    </div>
                   </div>
 
                   {/* Script Nickname */}
@@ -1184,16 +1475,19 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                 </div>
               </ScrollReveal>
 
-              {/* GROOM (Steven) */}
+              {/* GROOM */}
               <ScrollReveal animation="slide-right" delay={240} className="w-full">
                 <div className="w-full flex flex-col items-center">
-                  {/* Groom Oval Photo */}
-                  <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
-                    <img 
-                      src={couple?.groom_photo_url || '/groom-default.png'} 
-                      alt={groomNick}
-                      className="w-full h-full object-cover object-top rounded-[50%]"
-                    />
+                  {/* Groom Oval Photo with Royal Gold Frame & Halo */}
+                  <div className="relative group my-2">
+                    <div className="absolute -inset-1 rounded-[50%] bg-gradient-to-tr from-[#d4af37] via-[#fff2cf] to-[#aa771c] opacity-65 blur-[3px]" />
+                    <div className="relative w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[2.5px] border-[#d4af37] p-1 bg-[#faf2e6] shadow-[0_10px_26px_rgba(92,19,28,0.22)]">
+                      <img 
+                        src={couple?.groom_photo_url || '/groom-default.png'} 
+                        alt={groomNick}
+                        className="w-full h-full object-cover object-top rounded-[50%]"
+                      />
+                    </div>
                   </div>
 
                   {/* Script Nickname */}
@@ -1293,29 +1587,41 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                 >
                   <div 
                     id={idx === 0 ? 'card-akad' : 'card-resepsi'}
-                    className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] mx-auto rounded-[190px] sm:rounded-[215px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_12px_40px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col items-center justify-between p-5 pt-12 sm:pt-14 pb-8 text-center transition-all duration-300"
+                    className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] mx-auto rounded-[190px] sm:rounded-[215px] border-[2.5px] border-[#d4af37] bg-gradient-to-b from-[#fdfbf6] via-[#faf2e6] to-[#f5ebd8] shadow-[0_18px_50px_rgba(92,19,28,0.28),_0_0_25px_rgba(212,175,55,0.22)] overflow-hidden flex flex-col items-center justify-between p-5 pt-12 sm:pt-14 pb-8 text-center transition-all duration-300"
+                    style={{ animation: 'royal-pulse-glow 7.5s ease-in-out infinite' }}
                   >
                     {/* Soft Radial Parchment Warmth */}
                     <div className="absolute inset-0 bg-radial from-[#fdf9f2] via-[#faf2e6] to-[#f4e8d3] pointer-events-none" />
 
-                    {/* Gunungan Wayang (Kayon) Watermark */}
-                    <JavaneseGunungan className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-[220px] sm:w-[250px] h-[340px] sm:h-[380px] mx-auto opacity-[0.18] pointer-events-none text-[#5c131c]" />
+                    {/* Royal 24K Gold Corner Filigree on Upper Arch Shoulders */}
+                    <RoyalGoldCorner className="absolute top-2.5 left-2.5 w-14 h-14 sm:w-16 sm:h-16 z-15 pointer-events-none opacity-85" flip="top-left" />
+                    <RoyalGoldCorner className="absolute top-2.5 right-2.5 w-14 h-14 sm:w-16 sm:h-16 z-15 pointer-events-none opacity-85" flip="top-right" />
 
-                    {/* Climbing Green Ivy Vine on Upper Right Gold Rim */}
+                    {/* Gunungan Wayang (Kayon) Watermark */}
+                    <JavaneseGunungan className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-[220px] sm:w-[250px] h-[340px] sm:h-[380px] mx-auto opacity-[0.16] pointer-events-none text-[#5c131c]" />
+
+                    {/* Climbing Green Ivy Vines on Upper Left & Right Arch Borders with Smooth Living Sway */}
+                    <ArchLeftVine className="absolute -left-3 top-16 sm:top-20 z-20 pointer-events-none" />
                     <ArchRightVine className="absolute -right-3 top-8 sm:top-10 z-20 pointer-events-none" />
 
                     {/* Delicate Botanical Twig Buds in Top Right Corner */}
                     <PhotoCornerFloralTopRight className="absolute -top-3 -right-3 w-20 h-20 sm:w-24 sm:h-24 z-15 pointer-events-none opacity-80" />
 
-                    {/* Curved Bottom Floral Garland of Burgundy Orchids and Cream Peonies */}
-                    <div className="absolute inset-x-0 bottom-0 h-44 sm:h-52 overflow-hidden rounded-b-[188px] sm:rounded-b-[213px] pointer-events-none z-10">
-                      <img 
-                        src="/themes/javanese-heritage-bg.jpg" 
-                        alt="Curved Floral Garland" 
-                        className="w-full h-full object-cover object-bottom scale-110"
-                      />
-                      {/* Subtle gradient feather at top of garland */}
-                      <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#faf2e6] via-[#faf2e6]/40 to-transparent" />
+                    {/* Floating Golden Dust Particles Inside Card */}
+                    <FloatingGoldenDust count={8} />
+
+                    {/* Ultra-Luxurious Royal Gold Filigree Bottom Garland (NO CANDI STUPAS) */}
+                    <div className="absolute inset-x-0 bottom-0 h-44 sm:h-52 overflow-hidden rounded-b-[188px] sm:rounded-b-[213px] pointer-events-none z-10 flex flex-col justify-end">
+                      {/* Rich Silk Amber & Gold Gradient Backdrop */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#f5ebd8] via-[#faf2e6]/85 to-transparent" />
+                      
+                      {/* Living Shimmering Gold Filigree Garland */}
+                      <div 
+                        className="relative z-10 pb-1 px-2"
+                        style={{ animation: 'gold-filigree-shimmer 6s ease-in-out infinite' }}
+                      >
+                        <RoyalCardBottomOrnament className="w-full h-24 sm:h-28 text-[#d4af37]" />
+                      </div>
                     </div>
 
                     {/* Card Top Section: Title & Date */}
@@ -1379,11 +1685,11 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
                     </div>
 
-                    {/* Card Bottom Section: Location & Frosted 'LIHAT LOKASI' Button */}
+                    {/* Card Bottom Section: Location & Lavish Royal Gold 'LIHAT LOKASI' Button */}
                     <div className="relative z-20 w-full flex flex-col items-center mt-12 sm:mt-16 mb-4 sm:mb-6 px-4">
                       <ScrollReveal animation="fade-up" delay={460}>
                         <p 
-                          className="text-sm sm:text-base font-serif text-[#4e1b22] font-medium tracking-wide drop-shadow-xs"
+                          className="text-sm sm:text-base font-serif text-[#4e1b22] font-semibold tracking-wide drop-shadow-xs"
                           style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                         >
                           {location}
@@ -1398,17 +1704,22 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                         </ScrollReveal>
                       )}
 
-                      {/* Frosted Glass 'LIHAT LOKASI' Pill Button */}
+                      {/* Royal Gold 'LIHAT LOKASI' Button */}
                       {mapsUrl && (
                         <ScrollReveal animation="zoom-in" delay={540}>
                           <a
                             href={mapsUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-1.5 px-6 py-2 rounded-full bg-[#f4e8d3]/45 hover:bg-[#f4e8d3]/70 text-[#5c131c] border border-[#c5a880]/60 backdrop-blur-[3px] text-[11px] sm:text-xs font-serif uppercase tracking-[0.22em] font-semibold transition-all shadow-[0_2px_10px_rgba(92,19,28,0.15)] hover:scale-105 active:scale-95 cursor-pointer mt-3 z-20"
+                            className="group relative inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f5e2a3] to-[#c59e30] text-[#4e0e16] font-serif uppercase tracking-[0.22em] text-[11px] sm:text-xs font-bold transition-all duration-300 shadow-[0_4px_18px_rgba(212,175,55,0.45),_0_2px_8px_rgba(92,19,28,0.2)] hover:shadow-[0_6px_25px_rgba(212,175,55,0.7)] hover:scale-105 active:scale-95 cursor-pointer mt-3 z-20 border border-[#fff2cf] overflow-hidden"
                           >
-                            <MapPin className="w-3.5 h-3.5 text-[#5c131c]" />
-                            <span>Lihat Lokasi</span>
+                            {/* Golden Shimmer Sweep */}
+                            <span 
+                              className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-25deg] pointer-events-none"
+                              style={{ animation: 'shimmer-sweep-gold 4.5s ease-in-out infinite' }}
+                            />
+                            <MapPin className="w-3.5 h-3.5 text-[#5c131c] drop-shadow-xs transition-transform group-hover:scale-110" />
+                            <span className="drop-shadow-xs">Lihat Lokasi</span>
                           </a>
                         </ScrollReveal>
                       )}
@@ -1441,8 +1752,12 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
           {/* Centered Thin Maroon Border Card Container matching Screenshot */}
           <ScrollReveal animation="fade-up" delay={80} className="w-full">
-            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col text-left">
+            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#d4af37]/80 bg-[#fbf7f0]/90 backdrop-blur-[3px] shadow-[0_8px_30px_rgba(92,19,28,0.12),_0_0_20px_rgba(212,175,55,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col text-left">
               
+              {/* Royal Gold Filigree Corners */}
+              <RoyalGoldCorner className="absolute top-2.5 left-2.5 w-11 h-11 pointer-events-none opacity-65" flip="top-left" />
+              <RoyalGoldCorner className="absolute top-2.5 right-2.5 w-11 h-11 pointer-events-none opacity-65" flip="top-right" />
+
               {/* Header: LOVE STORY (Centered) */}
               <ScrollReveal animation="fade-up" delay={140}>
                 <h2 
@@ -1463,7 +1778,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
               {/* Couple Window Photo */}
               <ScrollReveal animation="zoom-in" delay={260}>
-                <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-[#5c131c]/25 mb-8 bg-[#efe7db]">
+                <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md border-[2px] border-[#d4af37]/60 mb-8 bg-[#efe7db]">
                   <img 
                     src={couple?.cover_photo_url || '/photos/photo-6.jpg'} 
                     alt={`${groomNick} & ${brideNick} Love Story`} 
@@ -1512,8 +1827,12 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
           {/* Centered Thin Maroon Border Card Container matching Screenshot */}
           <ScrollReveal animation="fade-up" delay={80} className="w-full">
-            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col items-center text-center">
+            <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#d4af37]/80 bg-[#fbf7f0]/90 backdrop-blur-[3px] shadow-[0_8px_30px_rgba(92,19,28,0.12),_0_0_20px_rgba(212,175,55,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col items-center text-center">
               
+              {/* Royal Gold Filigree Corners */}
+              <RoyalGoldCorner className="absolute top-2.5 left-2.5 w-11 h-11 pointer-events-none opacity-65" flip="top-left" />
+              <RoyalGoldCorner className="absolute top-2.5 right-2.5 w-11 h-11 pointer-events-none opacity-65" flip="top-right" />
+
               {/* Header: LIVE STREAMING */}
               <ScrollReveal animation="fade-up" delay={140}>
                 <h2 
@@ -1555,9 +1874,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Tonton Live Streaming di Instagram"
-                  className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-[#caa772] hover:bg-[#b8955f] text-white shadow-[0_4px_16px_rgba(184,150,95,0.45)] border border-[#dfbf8e] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer select-none group"
+                  className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f5e2a3] to-[#c59e30] text-[#4e0e16] font-bold shadow-[0_4px_18px_rgba(212,175,55,0.45)] border border-[#fff2cf] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer select-none group"
                 >
-                  <InstagramIcon className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                  <InstagramIcon className="w-4 h-4 text-[#4e0e16] group-hover:scale-110 transition-transform" />
                   <span className="text-xs sm:text-[13px] font-bold tracking-[0.18em] uppercase">
                     KLIK DI SINI
                   </span>
@@ -1864,11 +2183,14 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0]/50 via-transparent to-transparent pointer-events-none" />
           </div>
 
+          {/* Floating Gold Prada Dust */}
+          <FloatingGoldenDust count={8} />
+
           <div className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] mx-auto flex flex-col items-center text-center">
             
-            {/* Arch Photo Frame (Rounded Top Arch, Flat Bottom, Deep Maroon Border) */}
+            {/* Arch Photo Frame with Royal Gold Border and Subtle Halo */}
             <ScrollReveal animation="arch-reveal" delay={80}>
-              <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#5c131c] overflow-hidden shadow-[0_10px_28px_rgba(92,19,28,0.22)] bg-[#f5ebe1] mb-6">
+              <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#d4af37] overflow-hidden shadow-[0_12px_36px_rgba(92,19,28,0.28),_0_0_24px_rgba(212,175,55,0.25)] bg-[#f5ebe1] mb-6">
                 <img 
                   src={couple?.cover_photo_url || '/photos/photo-3.jpg'} 
                   alt={`${groomNick} & ${brideNick}`} 
