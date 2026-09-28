@@ -1719,48 +1719,65 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
         {/* ========================================================================= */}
-        {/* 9. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
+        {/* 9. PENUTUP & UCAPAN TERIMA KASIH (Exact User Reference Screenshot)        */}
         {/* ========================================================================= */}
-        <section className="py-14 px-5 sm:px-8 relative z-10 bg-[#3d1117] text-white text-center shadow-inner overflow-hidden">
-          <div className="max-w-md mx-auto space-y-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-[#e8c5b8] font-sans font-medium">
-              Waktu Menuju Bahagia
-            </p>
-            <h2 
-              className="text-3xl sm:text-4xl text-[#fff8ea] font-normal"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Menuju Hari Bahagia
-            </h2>
+        <section id="closing-section" className="relative pt-10 pb-16 px-4 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden min-h-[640px] flex flex-col items-center justify-between">
+          
+          {/* Authentic Javanese Heritage Background with Stupas & Florals */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <img 
+              src="/themes/javanese-heritage-bg.jpg" 
+              alt="Javanese Heritage Background" 
+              className="w-full h-full object-cover object-bottom opacity-85 select-none"
+            />
+            {/* Soft vignette to blend with previous section */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0]/50 via-transparent to-transparent pointer-events-none" />
+          </div>
 
-            <div className="grid grid-cols-4 gap-2.5 max-w-xs mx-auto pt-2">
-              {[
-                { label: 'Hari', value: timeLeft.days },
-                { label: 'Jam', value: timeLeft.hours },
-                { label: 'Menit', value: timeLeft.minutes },
-                { label: 'Detik', value: timeLeft.seconds },
-              ].map((item, i) => (
-                <div 
-                  key={i} 
-                  className="flex flex-col items-center bg-[#290a0f] border border-[#df9b8e]/35 rounded-2xl py-3 px-1 shadow-md"
-                >
-                  <span 
-                    className="text-2xl sm:text-3xl text-[#f3da9f] font-normal"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {String(item.value)}
-                  </span>
-                  <span className="text-[10px] text-[#e8c5b8] font-serif uppercase tracking-wider mt-1">
-                    {item.label}
-                  </span>
-                </div>
-              ))}
+          <div className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] mx-auto flex flex-col items-center text-center">
+            
+            {/* Arch Photo Frame (Rounded Top Arch, Flat Bottom, Deep Maroon Border) */}
+            <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#5c131c] overflow-hidden shadow-[0_10px_28px_rgba(92,19,28,0.22)] bg-[#f5ebe1] mb-6">
+              <img 
+                src="/themes/habib-adiba-closing.jpg" 
+                alt={`${groomNick} & ${brideNick}`} 
+                className="w-full h-full object-cover object-[center_18%]"
+              />
             </div>
 
-            <p className="text-xs text-[#e8c5b8]/90 font-serif italic pt-1">
-              {formatEventDate(targetDateStr)}
-            </p>
+            {/* Closing Thank You Text */}
+            <div className="space-y-3 px-3 max-w-[320px] sm:max-w-[340px] mx-auto mb-6">
+              <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restunya untuk pernikahan kami.
+              </p>
+              <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
+                Atas doa &amp; restunya, kami ucapkan terima kasih.
+              </p>
+            </div>
+
+            {/* Couple Signature & Family Names */}
+            <div className="space-y-1">
+              <p className="text-xs font-serif font-semibold text-[#5c131c] tracking-wider uppercase">
+                Kami yang Berbahagia :
+              </p>
+              <h2 
+                className="text-2xl sm:text-[28px] text-[#5c131c] font-normal"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                {groomNick} &amp; {brideNick}
+              </h2>
+              <p className="text-[11px] text-[#7a2832] font-serif">
+                Beserta Seluruh Keluarga Besar
+              </p>
+            </div>
+
+            {/* Footer Brand Watermark */}
+            <div className="pt-10 pb-2 text-[10px] text-[#7a2832]/60 font-sans tracking-widest uppercase select-none">
+              WD Group Solo • Digital Wedding Invitation
+            </div>
+
           </div>
+
         </section>
 
         {/* Lightbox Modal for Gallery */}
@@ -1804,51 +1821,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             </button>
           </div>
         )}
-
-        {/* ========================================================================= */}
-        {/* 10. PENUTUP & UCAPAN TERIMA KASIH (Closing)                               */}
-        {/* ========================================================================= */}
-        <section className="py-20 px-6 sm:px-8 relative z-10 bg-[#2b0c11] text-[#f5e8da] text-center overflow-hidden">
-          <JavanesePetals count={6} />
-
-          <div className="max-w-md mx-auto space-y-6 relative z-10">
-            <JavaneseMonogram initials={`${groomNick[0]}${brideNick[0]}`} />
-
-            <h2 
-              className="text-3xl sm:text-4xl text-[#fff8ea] font-normal"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Matur Nuwun
-            </h2>
-
-            <p className="text-xs text-[#e8c5b8] font-serif leading-relaxed px-4">
-              Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu kepada kami.
-            </p>
-
-            <p className="text-xs font-serif italic text-[#df9b8e]">
-              Wassalamu’alaikum Warahmatullahi Wabarakatuh
-            </p>
-
-            <JavaneseDivider className="opacity-60" />
-
-            <p className="text-sm font-serif font-semibold text-[#f3da9f] tracking-wide">
-              Kami yang Berbahagia :
-            </p>
-            <p 
-              className="text-2xl text-[#ffffff] font-normal"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              {groomNick} &amp; {brideNick}
-            </p>
-            <p className="text-xs text-[#e8c5b8]/80 font-serif">
-              Beserta Seluruh Keluarga Besar
-            </p>
-
-            <div className="pt-8 text-[11px] text-[#e8c5b8]/60 font-sans tracking-widest uppercase">
-              WD Group Solo • Digital Wedding Invitation
-            </div>
-          </div>
-        </section>
 
       </div>
     </div>
