@@ -384,13 +384,13 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   const groomFullName = (() => {
     const full = couple?.groom_full_name?.trim();
     if (full && full.toLowerCase() !== 'bagas' && full.toLowerCase() !== 'steven pratama') return full;
-    return 'Habibie Pratama Putra, S.T.';
+    return 'HABIB YULIANTO';
   })();
 
   const brideFullName = (() => {
     const full = couple?.bride_full_name?.trim();
     if (full && full.toLowerCase() !== 'siti' && full.toLowerCase() !== 'bunga lestari') return full;
-    return 'Adiba Shakila Az-Zahra, S.Ked.';
+    return 'ADIBA PUTRI SYAKILLA';
   })();
 
   // Events fallback
@@ -832,101 +832,150 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
         {/* ========================================================================= */}
-        {/* 3. KEDUA MEMPELAI (The Couple)                                           */}
         {/* ========================================================================= */}
-        <section className="py-16 px-5 sm:px-8 relative z-10 bg-[#f7f0e6] border-y border-[#8c2d38]/15">
-          <div className="max-w-md mx-auto text-center space-y-8">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-[#8c2d38] font-serif font-semibold">
-                Sang Mempelai
+        {/* 3. BRIDE & GROOM SECTION (Exact recreation of user reference screenshots)  */}
+        {/* ========================================================================= */}
+        <section id="mempelai-section" className="relative py-12 px-3 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden">
+          
+          {/* Subtle Ambient Background Borobudur & Floral Garland Motif */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <img 
+              src="/themes/javanese-heritage-bg.jpg" 
+              alt="Javanese Heritage Background" 
+              className="w-full h-full object-cover object-bottom opacity-70 select-none"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0] via-[#fbf7f0]/40 to-[#fbf7f0]/85" />
+          </div>
+
+          {/* Centered Thin Maroon Border Card Container */}
+          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-8 sm:py-10 flex flex-col items-center text-center">
+            
+            {/* Header: BRIDE & GROOM */}
+            <h2 
+              className="text-2xl sm:text-[28px] tracking-[0.25em] text-[#5c131c] font-normal uppercase mb-3 select-none"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              BRIDE &amp; GROOM
+            </h2>
+
+            {/* Greeting & Invitation Intro */}
+            <div className="space-y-1.5 text-center mb-8 px-1">
+              <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] font-semibold leading-relaxed">
+                Assalamualaikum Wr. Wb.
               </p>
-              <h2 
-                className="text-3xl sm:text-4xl text-[#4e0e16] font-normal mt-1"
-                style={{ fontFamily: "'Playfair Display', serif" }}
+              <p className="text-[11px] sm:text-xs font-serif text-[#5a1c24] leading-relaxed">
+                Dengan memohon rahmat dan ridho Allah SWT,<br />
+                kami bermaksud mengundang<br />
+                Bapak/Ibu/Saudara/i untuk menghadiri acara<br />
+                pernikahan putra-putri kami:
+              </p>
+            </div>
+
+            {/* ========================================================================= */}
+            {/* BRIDE (Adiba - Comes First Matching Reference)                           */}
+            {/* ========================================================================= */}
+            <div className="w-full flex flex-col items-center">
+              {/* Bride Oval Photo */}
+              <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
+                <img 
+                  src={couple?.bride_photo_url || '/themes/adiba-portrait.png'} 
+                  alt={brideNick}
+                  className="w-full h-full object-cover object-top rounded-[50%]"
+                />
+              </div>
+
+              {/* Script Nickname */}
+              <p 
+                className="text-3xl sm:text-4xl text-[#5c131c] tracking-wide my-1 select-none"
+                style={{ fontFamily: "'Great Vibes', cursive" }}
               >
-                Kedua Mempelai
-              </h2>
-              <JavaneseDivider />
-              <p className="text-xs text-[#5c242c] font-serif leading-relaxed px-3">
-                Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan. Dengan memohon rahmat dan ridho-Nya, kami bermaksud melangsungkan pernikahan:
+                {brideNick}
               </p>
+
+              {/* Full Name in All-Caps Serif */}
+              <h3 
+                className="text-base sm:text-lg text-[#5c131c] font-bold tracking-[0.14em] uppercase font-serif mt-0.5"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                {brideFullName}
+              </h3>
+
+              {/* Parents Info */}
+              <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed mt-2 max-w-[260px]">
+                Putri dari Pasangan Bapak {couple?.bride_father_name || 'Anas Rifai'}<br />
+                &amp; Ibu {couple?.bride_mother_name || 'Kholifah'}
+              </p>
+
+              {/* Circular Maroon Instagram Button */}
+              <a
+                href={`https://instagram.com/${(couple?.bride_instagram || 'adibasyakilla').replace('@', '')}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Instagram ${brideNick}`}
+                className="w-8 h-8 rounded-full bg-[#5c131c] flex items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer mt-3"
+              >
+                <InstagramIcon className="w-4 h-4 text-white" />
+              </a>
             </div>
 
-            {/* Groom Profile */}
-            <div className="bg-[#fbf7f0] rounded-[2rem] p-6 shadow-md border border-[#8c2d38]/20 relative overflow-hidden">
-              <JavaneseBatikCorner className="absolute -top-3 -left-3 w-16 h-16" />
-              <JavaneseBatikCorner className="absolute -bottom-3 -right-3 w-16 h-16 -scale-100" />
-              
-              <div className="relative z-10 flex flex-col items-center space-y-3">
-                <div className="w-36 h-44 sm:w-40 sm:h-48 rounded-[50%] overflow-hidden border-2 border-[#8c2d38] p-1 bg-[#fffaf5] shadow-lg">
-                  <img 
-                    src={couple?.groom_photo_url || '/groom-default.png'} 
-                    alt={groomNick}
-                    className="w-full h-full object-cover object-top rounded-[50%]"
-                  />
-                </div>
-                <h3 
-                  className="text-2xl text-[#4e0e16] font-normal"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  {groomFullName}
-                </h3>
-                <p className="text-xs text-[#63272e] font-serif leading-relaxed">
-                  Putra dari Pasangan :<br />
-                  <span className="font-semibold text-[#3d1117]">
-                    Bapak {couple?.groom_father_name || 'H. Ahmad Supriyanto'} &amp; Ibu {couple?.groom_mother_name || 'Hj. Siti Aminah'}
-                  </span>
-                </p>
-                <a
-                  href={`https://instagram.com/${(couple?.groom_instagram || groomNick).toLowerCase().replace('@', '')}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#8c2d38]/10 text-[#8c2d38] border border-[#8c2d38]/30 hover:bg-[#8c2d38] hover:text-white transition-all text-xs font-sans"
-                >
-                  <InstagramIcon className="w-3.5 h-3.5" />
-                  <span>@{couple?.groom_instagram || groomNick.toLowerCase()}</span>
-                </a>
+            {/* ========================================================================= */}
+            {/* FLORAL AMPERSAND DIVIDER (Matching Reference)                            */}
+            {/* ========================================================================= */}
+            <div className="flex items-center justify-center my-7 select-none">
+              <img 
+                src="/themes/floral-ampersand.png" 
+                alt="&" 
+                className="w-7 h-9 object-contain drop-shadow-xs"
+              />
+            </div>
+
+            {/* ========================================================================= */}
+            {/* GROOM (Habib - Comes Second Matching Reference)                          */}
+            {/* ========================================================================= */}
+            <div className="w-full flex flex-col items-center">
+              {/* Groom Oval Photo */}
+              <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
+                <img 
+                  src={couple?.groom_photo_url || '/themes/habib-portrait.png'} 
+                  alt={groomNick}
+                  className="w-full h-full object-cover object-top rounded-[50%]"
+                />
               </div>
+
+              {/* Script Nickname */}
+              <p 
+                className="text-3xl sm:text-4xl text-[#5c131c] tracking-wide my-1 select-none"
+                style={{ fontFamily: "'Great Vibes', cursive" }}
+              >
+                {groomNick}
+              </p>
+
+              {/* Full Name in All-Caps Serif */}
+              <h3 
+                className="text-base sm:text-lg text-[#5c131c] font-bold tracking-[0.14em] uppercase font-serif mt-0.5"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                {groomFullName}
+              </h3>
+
+              {/* Parents Info */}
+              <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed mt-2 max-w-[260px]">
+                Putra dari Pasangan Bapak {couple?.groom_father_name || 'H. M. Dawam'}<br />
+                &amp; Ibu {couple?.groom_mother_name || 'Dewi Sudarwati (Almh)'}
+              </p>
+
+              {/* Circular Maroon Instagram Button */}
+              <a
+                href={`https://instagram.com/${(couple?.groom_instagram || 'habibyulianto').replace('@', '')}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Instagram ${groomNick}`}
+                className="w-8 h-8 rounded-full bg-[#5c131c] flex items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer mt-3"
+              >
+                <InstagramIcon className="w-4 h-4 text-white" />
+              </a>
             </div>
 
-            <div className="text-2xl font-serif italic text-[#8c2d38]">&amp;</div>
-
-            {/* Bride Profile */}
-            <div className="bg-[#fbf7f0] rounded-[2rem] p-6 shadow-md border border-[#8c2d38]/20 relative overflow-hidden">
-              <JavaneseBatikCorner className="absolute -top-3 -left-3 w-16 h-16" />
-              <JavaneseBatikCorner className="absolute -bottom-3 -right-3 w-16 h-16 -scale-100" />
-              
-              <div className="relative z-10 flex flex-col items-center space-y-3">
-                <div className="w-36 h-44 sm:w-40 sm:h-48 rounded-[50%] overflow-hidden border-2 border-[#8c2d38] p-1 bg-[#fffaf5] shadow-lg">
-                  <img 
-                    src={couple?.bride_photo_url || '/bride-default.png'} 
-                    alt={brideNick}
-                    className="w-full h-full object-cover object-top rounded-[50%]"
-                  />
-                </div>
-                <h3 
-                  className="text-2xl text-[#4e0e16] font-normal"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  {brideFullName}
-                </h3>
-                <p className="text-xs text-[#63272e] font-serif leading-relaxed">
-                  Putri dari Pasangan :<br />
-                  <span className="font-semibold text-[#3d1117]">
-                    Bapak {couple?.bride_father_name || 'H. Bambang Sugiarto'} &amp; Ibu {couple?.bride_mother_name || 'Hj. Endang Lestari'}
-                  </span>
-                </p>
-                <a
-                  href={`https://instagram.com/${(couple?.bride_instagram || brideNick).toLowerCase().replace('@', '')}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#8c2d38]/10 text-[#8c2d38] border border-[#8c2d38]/30 hover:bg-[#8c2d38] hover:text-white transition-all text-xs font-sans"
-                >
-                  <InstagramIcon className="w-3.5 h-3.5" />
-                  <span>@{couple?.bride_instagram || brideNick.toLowerCase()}</span>
-                </a>
-              </div>
-            </div>
           </div>
         </section>
 
