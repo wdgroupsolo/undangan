@@ -64,51 +64,141 @@ const JavaneseDivider: React.FC<{ className?: string }> = ({ className = '' }) =
   </div>
 );
 
-// Intertwined Calligraphic Monogram Emblem (Matches User Reference Top Logo)
+// Intertwined Calligraphic Monogram Emblem (Matches User Reference Top Logo exactly)
 const JavaneseMonogram: React.FC<{ initials?: string; className?: string }> = ({ 
   initials = 'HA', 
   className = '' 
 }) => (
   <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
-    <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center relative">
-      {/* Outer Hairline Rings with Batik Accents */}
-      <div className="absolute inset-0 rounded-full border border-[#8c2d38]/25 scale-95" />
-      <div className="absolute inset-1.5 rounded-full border border-[#8c2d38]/40" />
-      
-      {/* 4 Cardinal Dot Accents */}
-      <span className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#8c2d38]" />
-      <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#8c2d38]" />
-      <span className="absolute left-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#8c2d38]" />
-      <span className="absolute right-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#8c2d38]" />
+    <svg 
+      viewBox="0 0 110 135" 
+      fill="none" 
+      className="w-16 h-20 sm:w-20 sm:h-24 text-[#5c131c] drop-shadow-[0_2px_4px_rgba(92,19,28,0.22)]"
+    >
+      {/* Front Serif D Stem */}
+      <path 
+        d="M58 24 L58 108 M50 24 L66 24 M50 108 L66 108" 
+        stroke="currentColor" 
+        strokeWidth="3.6" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+      />
+      {/* Front D Outer Curve */}
+      <path 
+        d="M58 24 C90 24, 98 44, 98 66 C98 88, 90 108, 58 108" 
+        stroke="currentColor" 
+        strokeWidth="3.8" 
+        strokeLinecap="round" 
+        fill="none" 
+      />
+      {/* Back Intertwined D / Calligraphic Flourish Swash */}
+      <path 
+        d="M36 86 C22 76, 26 56, 38 42 C48 30, 68 26, 76 25 M76 25 L76 96 C76 108, 62 116, 46 116 C30 116, 18 104, 34 90 C48 78, 72 86, 82 95" 
+        stroke="currentColor" 
+        strokeWidth="3" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        fill="none" 
+      />
+    </svg>
+  </div>
+);
 
-      {/* Intertwined Calligraphic Monogram SVG */}
-      <svg viewBox="0 0 100 100" className="w-16 h-16 sm:w-20 sm:h-20 text-[#6a1a24] drop-shadow-sm">
-        {/* Letter H Flourish */}
-        <path 
-          d="M32 24 C32 24, 30 45, 30 74 M46 26 C46 26, 44 47, 44 72 M28 48 C36 47, 44 47, 48 48" 
-          stroke="currentColor" 
-          strokeWidth="3.2" 
-          strokeLinecap="round" 
-          fill="none" 
-        />
-        {/* Curving Swash Over Letter A */}
-        <path 
-          d="M24 32 C35 15, 60 16, 70 34 C76 46, 75 62, 64 72 C55 80, 36 78, 40 60 C42 50, 56 46, 68 54" 
-          stroke="currentColor" 
-          strokeWidth="2.4" 
-          strokeLinecap="round" 
-          fill="none" 
-        />
-        {/* Letter A / D Arch */}
-        <path 
-          d="M54 74 L66 26 L76 74 M58 58 L72 58" 
-          stroke="currentColor" 
-          strokeWidth="3" 
-          strokeLinecap="round" 
-          fill="none" 
-        />
-      </svg>
-    </div>
+// Climbing Ivy / Betel Vines on Left Arch Border (Curling over the maroon frame)
+const ArchLeftVine: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`pointer-events-none select-none ${className}`}>
+    <svg viewBox="0 0 50 110" fill="none" className="w-11 h-22 sm:w-13 sm:h-26 drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)]">
+      {/* Curling green stem */}
+      <path 
+        d="M18 105 C24 85, 12 70, 22 50 C28 36, 16 20, 26 6" 
+        stroke="#4f633a" 
+        strokeWidth="1.8" 
+        strokeLinecap="round" 
+      />
+      {/* Leaf 1 (Bottom) */}
+      <path 
+        d="M18 90 C8 88, 2 76, 10 68 C22 62, 26 76, 18 90 Z" 
+        fill="#556b3e" 
+        stroke="#3c4d2b" 
+        strokeWidth="0.8" 
+      />
+      <path d="M12 76 C15 78, 18 84, 18 90" stroke="#79945c" strokeWidth="0.8" />
+
+      {/* Leaf 2 (Middle Left, Heart Shape) */}
+      <path 
+        d="M16 56 C4 52, 0 38, 12 30 C22 24, 28 40, 16 56 Z" 
+        fill="#637c49" 
+        stroke="#42552f" 
+        strokeWidth="0.8" 
+      />
+      <path d="M12 36 C15 42, 16 48, 16 56" stroke="#87a666" strokeWidth="0.8" />
+
+      {/* Leaf 3 (Middle Right, Curling Over Arch Border) */}
+      <path 
+        d="M24 44 C36 40, 46 46, 42 58 C36 68, 25 56, 24 44 Z" 
+        fill="#4c6037" 
+        stroke="#334224" 
+        strokeWidth="0.8" 
+      />
+      <path d="M36 50 C31 52, 27 48, 24 44" stroke="#6f8c51" strokeWidth="0.8" />
+
+      {/* Leaf 4 (Top Bud) */}
+      <path 
+        d="M26 14 C18 10, 16 0, 25 2 C32 4, 34 12, 26 14 Z" 
+        fill="#6b854e" 
+        stroke="#475a34" 
+        strokeWidth="0.8" 
+      />
+    </svg>
+  </div>
+);
+
+// Climbing Ivy / Betel Vines on Right Arch Border (Curling over the maroon frame)
+const ArchRightVine: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`pointer-events-none select-none ${className}`}>
+    <svg viewBox="0 0 50 110" fill="none" className="w-11 h-22 sm:w-13 sm:h-26 drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)]">
+      {/* Curling green stem */}
+      <path 
+        d="M32 105 C26 85, 38 70, 28 50 C22 36, 34 20, 24 6" 
+        stroke="#4f633a" 
+        strokeWidth="1.8" 
+        strokeLinecap="round" 
+      />
+      {/* Leaf 1 (Bottom Right) */}
+      <path 
+        d="M32 90 C42 88, 48 76, 40 68 C28 62, 24 76, 32 90 Z" 
+        fill="#4c6037" 
+        stroke="#334224" 
+        strokeWidth="0.8" 
+      />
+      <path d="M38 76 C35 78, 32 84, 32 90" stroke="#6f8c51" strokeWidth="0.8" />
+
+      {/* Leaf 2 (Middle Right, Heart Shape) */}
+      <path 
+        d="M34 56 C46 52, 50 38, 38 30 C28 24, 22 40, 34 56 Z" 
+        fill="#637c49" 
+        stroke="#42552f" 
+        strokeWidth="0.8" 
+      />
+      <path d="M38 36 C35 42, 34 48, 34 56" stroke="#87a666" strokeWidth="0.8" />
+
+      {/* Leaf 3 (Middle Left, Curling Inwards) */}
+      <path 
+        d="M26 44 C14 40, 4 46, 8 58 C14 68, 25 56, 26 44 Z" 
+        fill="#556b3e" 
+        stroke="#3c4d2b" 
+        strokeWidth="0.8" 
+      />
+      <path d="M14 50 C19 52, 23 48, 26 44" stroke="#79945c" strokeWidth="0.8" />
+
+      {/* Leaf 4 (Top Bud) */}
+      <path 
+        d="M24 14 C32 10, 34 0, 25 2 C18 4, 16 12, 24 14 Z" 
+        fill="#6b854e" 
+        stroke="#475a34" 
+        strokeWidth="0.8" 
+      />
+    </svg>
   </div>
 );
 
@@ -401,6 +491,21 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     }
   };
 
+  // Format arch date strictly matching reference format (e.g. 28 . 12 . 2025)
+  const formattedArchDate = (() => {
+    const rawDate = events?.[0]?.event_date;
+    if (rawDate) {
+      try {
+        const clean = String(rawDate).split('T')[0];
+        const parts = clean.split('-');
+        if (parts.length === 3) {
+          return `${parts[2]} . ${parts[1]} . ${parts[0]}`;
+        }
+      } catch (_) {}
+    }
+    return '28 . 12 . 2025';
+  })();
+
   const handleOpenInvitation = () => {
     setHasOpened(true);
     try {
@@ -447,6 +552,17 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         @keyframes gentle-pulse {
           0%, 100% { transform: scale(1); opacity: 0.95; }
           50% { transform: scale(1.03); opacity: 1; }
+        }
+
+        @keyframes scroll-pill-bounce {
+          0%, 100% {
+            transform: translateY(0);
+            opacity: 0.85;
+          }
+          50% {
+            transform: translateY(12px);
+            opacity: 1;
+          }
         }
       `}</style>
 
@@ -509,9 +625,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
       <div className="w-full lg:w-[42%] lg:ml-[58%] min-h-screen relative z-10 bg-[#fbf7f0] shadow-[0_0_60px_rgba(0,0,0,0.3)] border-l border-[#8c2d38]/20">
 
         {/* ========================================================================= */}
-        {/* 1. HERO / COVER CARD (Exact recreation of user reference screenshot)       */}
+        {/* 1. HERO / COVER CARD (Exact recreation of 'seperti ini' reference)         */}
         {/* ========================================================================= */}
-        <section className="relative min-h-[100dvh] flex flex-col items-center justify-between text-center px-4 py-8 overflow-hidden select-none">
+        <section className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center px-3 py-6 sm:py-8 overflow-hidden select-none">
           
           {/* Background Scene: Authentic Borobudur Stupas & Vintage Orchid Borders */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -521,64 +637,113 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               className="w-full h-full object-cover object-center origin-center"
             />
             {/* Subtle Gradient Veil */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0]/20 via-transparent to-[#fbf7f0]/30" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0]/15 via-transparent to-[#fbf7f0]/25" />
           </div>
 
           {/* Floating Petals Drift */}
-          <JavanesePetals count={10} />
+          <JavanesePetals count={8} />
 
-          {/* Top Monogram Logo (Intertwined H & A / H & D from reference image) */}
-          <div className="relative z-10 pt-4 sm:pt-6">
-            <JavaneseMonogram initials={`${groomNick[0]}${brideNick[0]}`} />
-          </div>
+          {/* ========================================================================= */}
+          {/* THE SIGNATURE DOUBLE MAROON OVAL ARCH FRAME (Matching 'seperti ini' screenshot) */}
+          {/* ========================================================================= */}
+          <div className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] max-h-[92vh] flex flex-col items-center justify-between p-4 sm:p-5 my-auto">
+            
+            {/* Outer Maroon Arch Line */}
+            <div className="absolute inset-0 rounded-[190px] sm:rounded-[215px] border-[2.5px] border-[#5c131c] shadow-[0_4px_24px_rgba(92,19,28,0.18)] pointer-events-none z-10" />
 
-          {/* Main Title & Couple Names */}
-          <div className="relative z-10 my-auto py-6 space-y-3">
-            <p 
-              className="text-[11px] sm:text-xs tracking-[0.3em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-sm"
-            >
-              THE WEDDING OF
-            </p>
+            {/* Inner Maroon Arch Line with 5px gap */}
+            <div className="absolute inset-[5px] rounded-[185px] sm:rounded-[210px] border-[1.5px] border-[#5c131c]/90 pointer-events-none z-10" />
 
-            <h1 
-              className="text-4xl sm:text-5xl text-[#58141e] font-normal tracking-wide drop-shadow-sm"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              {groomNick.toUpperCase()} <span className="font-light italic text-[#8c2d38]">&amp;</span> {brideNick.toUpperCase()}
-            </h1>
+            {/* Soft inner radial parchment glow for contrast */}
+            <div className="absolute inset-[7px] rounded-[183px] sm:rounded-[208px] bg-gradient-to-b from-[#fbf7f0]/60 via-[#fbf7f0]/25 to-[#fbf7f0]/50 pointer-events-none z-0" />
 
-            {/* Guest Invitation Box */}
-            <div className="pt-4 space-y-1">
-              <p className="text-xs sm:text-sm text-[#7a2832] font-serif italic">
-                Dear :
-              </p>
-              <h3 
-                className="text-xl sm:text-2xl text-[#3d1117] font-serif italic font-medium tracking-wide drop-shadow-sm"
-              >
-                {guestName}
-              </h3>
+            {/* Climbing Green Ivy / Betel Vines on Left Arch Border */}
+            <ArchLeftVine className="absolute -left-3.5 top-[32%] z-20 pointer-events-none" />
+
+            {/* Climbing Green Ivy / Betel Vines on Right Arch Border */}
+            <ArchRightVine className="absolute -right-3.5 top-[37%] z-20 pointer-events-none" />
+
+            {/* TOP: Calligraphic Monogram */}
+            <div className="relative z-20 pt-7 sm:pt-9">
+              <JavaneseMonogram />
             </div>
-          </div>
 
-          {/* Bottom Action: "BUKA UNDANGAN" Button */}
-          <div className="relative z-10 pb-6 w-full max-w-[280px]">
-            <button
-              onClick={handleOpenInvitation}
-              className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-[0_8px_25px_rgba(106,26,36,0.35)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#7c1d29] via-[#63141f] to-[#4e0e16] border border-[#d4af37]/50"
-            >
-              {/* Shimmer Light Ray */}
-              <div 
-                className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full"
-                style={{ animation: 'shimmer-sweep-gold 2.6s ease-in-out infinite' }}
-              />
+            {/* MIDDLE: Typography - THE WEDDING OF HABIB & ADIBA */}
+            <div className="relative z-20 my-auto py-2 space-y-2 text-center">
+              <p 
+                className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                THE WEDDING OF
+              </p>
 
-              <div className="relative flex items-center justify-center gap-2">
-                <span className="text-xs sm:text-sm font-serif font-bold uppercase tracking-[0.25em] text-[#fff6e6] drop-shadow-sm">
-                  BUKA UNDANGAN
-                </span>
-                <Sparkles className="w-3.5 h-3.5 text-[#f3da9f]" />
-              </div>
-            </button>
+              <h1 
+                className="text-[32px] sm:text-[38px] leading-tight text-[#4e0e16] font-normal tracking-wide drop-shadow-sm"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                {groomNick.toUpperCase()} <span className="font-light italic text-[#7c1d29]">&amp;</span> {brideNick.toUpperCase()}
+              </h1>
+
+              <p 
+                className="text-xs sm:text-[13px] tracking-[0.25em] text-[#6a1a24] font-serif pt-1"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                {formattedArchDate}
+              </p>
+            </div>
+
+            {/* BOTTOM: Either BUKA UNDANGAN (if !hasOpened) or the Capsule Scroll Down Indicator (if hasOpened) */}
+            <div className="relative z-20 pb-7 sm:pb-9 flex flex-col items-center">
+              {!hasOpened ? (
+                /* Cover Stage: Dear Recipient + Buka Undangan */
+                <div className="flex flex-col items-center space-y-3 w-full max-w-[260px] animate-fade-in">
+                  <div className="text-center">
+                    <p className="text-[11px] text-[#7a2832] font-serif italic">
+                      Dear :
+                    </p>
+                    <p className="text-sm sm:text-base font-serif italic font-semibold text-[#3d1117] tracking-wide line-clamp-1">
+                      {guestName}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={handleOpenInvitation}
+                    className="group relative w-full overflow-hidden rounded-full py-2.5 px-6 shadow-[0_8px_20px_rgba(92,19,28,0.35)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#7c1d29] via-[#63141f] to-[#4e0e16] border border-[#d4af37]/60"
+                  >
+                    <div 
+                      className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full"
+                      style={{ animation: 'shimmer-sweep-gold 2.6s ease-in-out infinite' }}
+                    />
+                    <div className="relative flex items-center justify-center gap-1.5">
+                      <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#fff6e6] drop-shadow-sm">
+                        BUKA UNDANGAN
+                      </span>
+                      <Sparkles className="w-3.5 h-3.5 text-[#f3da9f]" />
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                /* Opened Stage: The Exact Vertical Capsule Scroll Indicator from Screenshot */
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('ayat-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  aria-label="Scroll ke Bawah"
+                  className="flex flex-col items-center group cursor-pointer animate-fade-in transition-transform hover:scale-110 active:scale-95"
+                >
+                  <div className="w-[22px] h-[42px] rounded-full border-[1.8px] border-[#6a1a24] flex items-start justify-center pt-2 shadow-xs group-hover:border-[#4e0e16] transition-colors">
+                    {/* Animated sliding scroll pill dot */}
+                    <div 
+                      className="w-[3px] h-[7px] rounded-full bg-[#6a1a24] group-hover:bg-[#4e0e16]"
+                      style={{ animation: 'scroll-pill-bounce 2s ease-in-out infinite' }}
+                    />
+                  </div>
+                </button>
+              )}
+            </div>
+
           </div>
         </section>
 
