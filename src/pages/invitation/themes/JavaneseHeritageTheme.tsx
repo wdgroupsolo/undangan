@@ -454,23 +454,21 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   // State management
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [activeLightboxIdx, setActiveLightboxIdx] = useState<number | null>(null);
+  const [showGiftDetails, setShowGiftDetails] = useState(false);
   const [wishName, setWishName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [wishAttendance, setWishAttendance] = useState('Hadir');
   const [wishText, setWishText] = useState('');
   const [wishes, setWishes] = useState<Array<{ name: string; attendance: string; message: string; date: string }>>([
     {
-      name: 'Raden Mas Suryo & Istri',
+      name: 'Della',
       attendance: 'Hadir',
-      message: 'Nderek mangayubagyo, selamat menempuh hidup baru Habib & Adiba. Mugi tansah pinaringan berkah, ayem tentrem, lan sakinah mawaddah warahmah.',
-      date: '10 menit lalu'
-    },
-    {
-      name: 'Alyasha Putri',
-      attendance: 'Hadir',
-      message: 'Happy Wedding Habib & Adiba! Semoga menjadi keluarga yang penuh cinta dan kebahagiaan selalu ❤️',
-      date: '25 menit lalu'
+      message: 'Happy Wedding Habib & Adiba',
+      date: '1 menit lalu'
     }
   ]);
+
+  const hadirCount = wishes.filter(w => w.attendance === 'Hadir').length;
+  const tidakHadirCount = wishes.filter(w => w.attendance === 'Tidak Hadir').length;
 
   // Couple names - Habib & Adiba as canonical demo
   const groomNick = (() => {
@@ -1463,7 +1461,265 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
         {/* ========================================================================= */}
-        {/* 8. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
+        {/* 8. WEDDING GIFT & WISHES (Exact Recreation of User Reference Screenshots) */}
+        {/* ========================================================================= */}
+        <section id="gift-wishes-section" className="relative py-12 px-3 sm:px-6 z-10 bg-[#4e1017] text-white overflow-hidden">
+          
+          {/* Ambient Deep Maroon Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#4e1017] via-[#3a0b11] to-[#4e1017] pointer-events-none" />
+
+          {/* Corner Rosettes: Batik Kawung */}
+          <BatikKawungCluster className="absolute -top-12 -right-12 w-48 h-48 sm:w-60 sm:h-60 opacity-90 z-0 pointer-events-none" />
+          <BatikKawungCluster className="absolute -bottom-10 -right-10 w-44 h-44 sm:w-56 sm:h-56 opacity-85 z-0 pointer-events-none" />
+
+          {/* Left Climbing Foliage Vines */}
+          <ArchLeftVine className="absolute top-16 -left-1 sm:left-2 opacity-95 z-0 pointer-events-none" />
+          <ArchLeftVine className="absolute top-[48%] -left-1 sm:left-2 opacity-85 z-0 pointer-events-none" />
+          <ArchLeftVine className="absolute bottom-24 -left-1 sm:left-2 opacity-90 z-0 pointer-events-none" />
+
+          {/* ------------------------------------------------------------------------- */}
+          {/* Card 1: WEDDING GIFT                                                      */}
+          {/* ------------------------------------------------------------------------- */}
+          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[34px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-5 py-8 sm:px-7 sm:py-9 flex flex-col items-center text-center overflow-hidden mb-8">
+            
+            {/* Ambient Watermark Texture & Gunungan Wayang in Background */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-20">
+              <JavaneseGunungan className="w-64 sm:w-72 h-auto" />
+            </div>
+            <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply bg-[radial-gradient(#caa772_1px,transparent_1px)] [background-size:16px_16px]" />
+
+            {/* Title: WEDDING GIFT */}
+            <h2 
+              className="text-2xl sm:text-[28px] tracking-[0.18em] text-[#5c131c] font-normal uppercase mb-3.5 select-none relative z-10"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              WEDDING GIFT
+            </h2>
+
+            {/* Paragraph Text */}
+            <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mx-auto mb-6 relative z-10">
+              Doa restu Anda merupakan karunia yang sangat berarti bagi kami, dan jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara cashless.
+            </p>
+
+            {/* Golden Pill Button: ➔ KLIK DI SINI */}
+            <button
+              type="button"
+              onClick={() => setShowGiftDetails(prev => !prev)}
+              aria-label="Buka Rincian Rekening Hadiah"
+              className="relative z-10 inline-flex items-center justify-center gap-2 px-8 py-2.5 rounded-full bg-gradient-to-r from-[#d1b07c] via-[#caa772] to-[#b8955f] hover:from-[#caa772] hover:to-[#a8854f] text-white shadow-[0_4px_16px_rgba(184,150,95,0.45)] border border-[#dfbf8e] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer select-none group"
+            >
+              <span className="text-xs sm:text-[13px] font-bold tracking-[0.18em] uppercase flex items-center gap-1.5">
+                {showGiftDetails ? (
+                  <>
+                    <X className="w-3.5 h-3.5" />
+                    <span>TUTUP</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-base leading-none">➔</span>
+                    <span>KLIK DI SINI</span>
+                  </>
+                )}
+              </span>
+            </button>
+
+            {/* Expandable Bank Account Cards when clicked */}
+            {showGiftDetails && (
+              <div className="w-full mt-6 space-y-3.5 text-left relative z-10 animate-in fade-in slide-in-from-top-3 duration-300">
+                {displayGifts.map((gift, idx) => (
+                  <div 
+                    key={idx}
+                    className="bg-[#fbf7f0]/95 backdrop-blur-xs rounded-2xl p-4 shadow-sm border border-[#caa772]/50 space-y-2 relative overflow-hidden"
+                  >
+                    <div className="flex items-center justify-between border-b border-[#8c2d38]/15 pb-2">
+                      <span className="font-sans font-bold text-xs sm:text-sm text-[#4e0e16] tracking-wider">
+                        {gift.provider}
+                      </span>
+                      <CreditCard className="w-4 h-4 text-[#8c2d38]" />
+                    </div>
+
+                    <div className="space-y-0.5">
+                      <p className="text-[10px] text-[#7a2832] font-serif uppercase tracking-wider">
+                        Nomor Rekening :
+                      </p>
+                      <p className="text-base sm:text-lg font-mono font-bold text-[#3d1117] tracking-wider">
+                        {gift.account_number}
+                      </p>
+                      <p className="text-xs text-[#5c242c] font-serif">
+                        a.n {gift.account_name}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(gift.account_number, idx)}
+                      className="w-full py-2 px-3 rounded-xl bg-[#8c3d49]/10 hover:bg-[#8c3d49] text-[#8c3d49] hover:text-white transition-all text-xs font-serif flex items-center justify-center gap-1.5 cursor-pointer border border-[#8c3d49]/30"
+                    >
+                      {copiedIndex === idx ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          <span className="font-semibold text-emerald-700">Tersalin!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Salin Nomor Rekening</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+
+          {/* ------------------------------------------------------------------------- */}
+          {/* Card 2: WISHES                                                            */}
+          {/* ------------------------------------------------------------------------- */}
+          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[34px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-5 py-8 sm:px-7 sm:py-9 flex flex-col text-center relative overflow-hidden">
+            
+            {/* Ambient Watermark Texture & Gunungan Wayang in Background */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-20">
+              <JavaneseGunungan className="w-64 sm:w-72 h-auto" />
+            </div>
+            <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply bg-[radial-gradient(#caa772_1px,transparent_1px)] [background-size:16px_16px]" />
+
+            {/* Header: WISHES */}
+            <h2 
+              className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase mb-2 select-none relative z-10"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              WISHES
+            </h2>
+
+            {/* Subtitle */}
+            <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed max-w-[310px] mx-auto mb-4 relative z-10">
+              Berikan ucapan harapan dan do'a kepada kedua mempelai
+            </p>
+
+            {/* Comment Counter (e.g. 1 Comment) */}
+            <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22]/90 mb-4 select-none relative z-10 font-medium">
+              {wishes.length} {wishes.length === 1 ? 'Comment' : 'Comments'}
+            </p>
+
+            {/* Stats Summary Pills (Hadir & Tidak Hadir) */}
+            <div className="grid grid-cols-2 gap-3 mb-5 max-w-[310px] w-full mx-auto relative z-10">
+              {/* Hadir Pill */}
+              <div className="bg-[#dcfce7] border border-[#bbf7d0] rounded-2xl py-3 px-3 flex flex-col items-center justify-center shadow-xs">
+                <span className="text-2xl sm:text-[26px] font-bold text-[#166534] leading-tight">
+                  {hadirCount}
+                </span>
+                <span className="text-xs font-serif text-[#166534] mt-0.5">
+                  Hadir
+                </span>
+              </div>
+
+              {/* Tidak Hadir Pill */}
+              <div className="bg-[#fee2e2] border border-[#fecaca] rounded-2xl py-3 px-3 flex flex-col items-center justify-center shadow-xs">
+                <span className="text-2xl sm:text-[26px] font-bold text-[#991b1b] leading-tight">
+                  {tidakHadirCount}
+                </span>
+                <span className="text-xs font-serif text-[#991b1b] mt-0.5">
+                  Tidak Hadir
+                </span>
+              </div>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmitWish} className="space-y-3 relative z-10 w-full text-left">
+              {/* Nama */}
+              <div>
+                <input
+                  type="text"
+                  value={wishName}
+                  onChange={(e) => setWishName(e.target.value)}
+                  placeholder="Nama"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#3d1117] placeholder:text-[#a09081] focus:outline-none focus:border-[#8c3d49] shadow-xs"
+                />
+              </div>
+
+              {/* Ucapan */}
+              <div>
+                <textarea
+                  id="wishes-message-input"
+                  rows={3}
+                  value={wishText}
+                  onChange={(e) => setWishText(e.target.value)}
+                  placeholder="Ucapan"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#3d1117] placeholder:text-[#a09081] focus:outline-none focus:border-[#8c3d49] shadow-xs resize-none"
+                />
+              </div>
+
+              {/* Konfirmasi Kehadiran Select */}
+              <div className="relative">
+                <select
+                  value={wishAttendance}
+                  onChange={(e) => setWishAttendance(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#d6c7b2] bg-white text-xs sm:text-sm text-[#5a483e] focus:outline-none focus:border-[#8c3d49] shadow-xs appearance-none cursor-pointer"
+                >
+                  <option value="Hadir">Hadir</option>
+                  <option value="Tidak Hadir">Tidak Hadir</option>
+                  <option value="Ragu-ragu">Ragu-ragu</option>
+                </select>
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#a09081]">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Kirim Button */}
+              <button
+                type="submit"
+                className="w-full py-2.5 rounded-xl bg-[#8c3d49] hover:bg-[#782f3a] active:bg-[#63242e] text-white text-xs sm:text-sm font-medium tracking-wide transition-all shadow-[0_2px_8px_rgba(140,61,73,0.35)] cursor-pointer"
+              >
+                Kirim
+              </button>
+            </form>
+
+            {/* Comments Feed */}
+            <div className="mt-6 pt-4 border-t border-[#8c2d38]/15 space-y-4 text-left relative z-10 w-full max-h-80 overflow-y-auto pr-1">
+              {wishes.map((w, idx) => (
+                <div key={idx} className="pb-3 border-b border-[#8c2d38]/10 last:border-b-0 space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-xs sm:text-[13px] text-[#4e1017]">
+                      {w.name}
+                    </span>
+                    {/* Green verified check badge */}
+                    <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#16a34a] text-white shrink-0">
+                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed">
+                    {w.message}
+                  </p>
+                  <div className="flex items-center gap-3 pt-0.5">
+                    <span className="text-[11px] text-[#7d3f47]/80 font-serif">
+                      {w.date}
+                    </span>
+                    <button 
+                      type="button"
+                      onClick={() => {
+                        setWishText(`@${w.name} `);
+                        const inputEl = document.getElementById('wishes-message-input');
+                        if (inputEl) inputEl.focus();
+                      }}
+                      className="text-[11px] font-semibold text-[#8c3d49] hover:underline cursor-pointer"
+                    >
+                      Reply
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 9. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
         {/* ========================================================================= */}
         <section className="py-14 px-5 sm:px-8 relative z-10 bg-[#3d1117] text-white text-center shadow-inner overflow-hidden">
           <div className="max-w-md mx-auto space-y-6">
@@ -1507,7 +1763,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           </div>
         </section>
 
-        {/* Lightbox Modal */}
+        {/* Lightbox Modal for Gallery */}
         {activeLightboxIdx !== null && (
           <div 
             className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 select-none"
@@ -1548,177 +1804,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             </button>
           </div>
         )}
-
-        {/* ========================================================================= */}
-        {/* 8. AMPLOP DIGITAL / WEDDING GIFT                                          */}
-        {/* ========================================================================= */}
-        <section className="py-16 px-5 sm:px-8 relative z-10 bg-[#f7f0e6] border-y border-[#8c2d38]/15">
-          <div className="max-w-md mx-auto text-center space-y-8">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-[#8c2d38] font-serif font-semibold">
-                Tanda Kasih
-              </p>
-              <h2 
-                className="text-3xl sm:text-4xl text-[#4e0e16] font-normal mt-1"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Amplop Digital
-              </h2>
-              <JavaneseDivider />
-              <p className="text-xs text-[#5c242c] font-serif leading-relaxed px-4">
-                Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika Anda ingin memberikan tanda kasih, Anda dapat melalui:
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              {displayGifts.map((gift, idx) => (
-                <div 
-                  key={idx}
-                  className="bg-[#fbf7f0] rounded-2xl p-5 shadow-sm border border-[#8c2d38]/25 text-left space-y-3 relative overflow-hidden"
-                >
-                  <div className="flex items-center justify-between border-b border-[#8c2d38]/15 pb-2">
-                    <span className="font-sans font-bold text-sm text-[#4e0e16] tracking-wider">
-                      {gift.provider}
-                    </span>
-                    <CreditCard className="w-4 h-4 text-[#8c2d38]" />
-                  </div>
-
-                  <div className="space-y-0.5">
-                    <p className="text-[11px] text-[#7a2832] font-serif">Nomor Rekening :</p>
-                    <p className="text-lg font-mono font-bold text-[#3d1117] tracking-wider">
-                      {gift.account_number}
-                    </p>
-                    <p className="text-xs text-[#5c242c] font-serif">
-                      a.n {gift.account_name}
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => handleCopy(gift.account_number, idx)}
-                    className="w-full py-2 px-4 rounded-xl bg-[#8c2d38]/10 hover:bg-[#8c2d38] text-[#8c2d38] hover:text-white transition-all text-xs font-serif flex items-center justify-center gap-1.5 cursor-pointer border border-[#8c2d38]/25"
-                  >
-                    {copiedIndex === idx ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        <span className="font-semibold text-emerald-700">Tersalin!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Salin Nomor Rekening</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 9. DOA & UCAPAN RESTU (RSVP & Wishes)                                     */}
-        {/* ========================================================================= */}
-        <section className="py-16 px-5 sm:px-8 relative z-10 bg-[#fbf7f0]">
-          <div className="max-w-md mx-auto text-center space-y-8">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-[#8c2d38] font-serif font-semibold">
-                Doa &amp; Kehadiran
-              </p>
-              <h2 
-                className="text-3xl sm:text-4xl text-[#4e0e16] font-normal mt-1"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Ucapan &amp; Doa Restu
-              </h2>
-              <JavaneseDivider />
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmitWish} className="bg-[#f7f0e6] rounded-[2rem] p-6 shadow-sm border border-[#8c2d38]/25 text-left space-y-4">
-              <div>
-                <label className="block text-xs font-serif text-[#4e0e16] mb-1 font-semibold">
-                  Nama Anda :
-                </label>
-                <input
-                  type="text"
-                  value={wishName}
-                  onChange={(e) => setWishName(e.target.value)}
-                  placeholder="Tuliskan nama Anda..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#8c2d38]/30 bg-[#fbf7f0] text-sm text-[#3d1117] focus:outline-none focus:border-[#8c2d38]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-serif text-[#4e0e16] mb-1 font-semibold">
-                  Konfirmasi Kehadiran :
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {['Hadir', 'Tidak Hadir'].map((opt) => (
-                    <button
-                      type="button"
-                      key={opt}
-                      onClick={() => setWishAttendance(opt)}
-                      className={`py-2 px-3 rounded-xl border text-xs font-serif flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                        wishAttendance === opt
-                          ? 'bg-[#8c2d38] text-white border-[#8c2d38]'
-                          : 'bg-[#fbf7f0] text-[#6e2b34] border-[#8c2d38]/25 hover:border-[#8c2d38]'
-                      }`}
-                    >
-                      {opt === 'Hadir' ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-                      <span>{opt}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-serif text-[#4e0e16] mb-1 font-semibold">
-                  Ucapan &amp; Doa Restu :
-                </label>
-                <textarea
-                  rows={3}
-                  value={wishText}
-                  onChange={(e) => setWishText(e.target.value)}
-                  placeholder="Berikan ucapan selamat & doa restu..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#8c2d38]/30 bg-[#fbf7f0] text-sm text-[#3d1117] focus:outline-none focus:border-[#8c2d38] resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 rounded-xl bg-[#8c2d38] hover:bg-[#6e1e27] text-white text-xs font-serif uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer font-semibold"
-              >
-                <Send className="w-3.5 h-3.5" />
-                <span>Kirim Ucapan</span>
-              </button>
-            </form>
-
-            {/* Wishes Feed */}
-            <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
-              {wishes.map((w, idx) => (
-                <div 
-                  key={idx}
-                  className="bg-[#fdfaf5] border border-[#8c2d38]/20 rounded-2xl p-4 text-left shadow-sm space-y-1.5"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-xs text-[#4e0e16] font-serif">
-                      {w.name}
-                    </span>
-                    <span className="text-[10px] text-white bg-[#8c2d38]/80 px-2 py-0.5 rounded-full font-sans">
-                      {w.attendance}
-                    </span>
-                  </div>
-                  <p className="text-xs text-[#5c242c] font-serif leading-relaxed">
-                    {w.message}
-                  </p>
-                  <p className="text-[10px] text-[#9a4b56] font-sans">
-                    {w.date}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ========================================================================= */}
         {/* 10. PENUTUP & UCAPAN TERIMA KASIH (Closing)                               */}
