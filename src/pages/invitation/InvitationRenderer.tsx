@@ -473,19 +473,19 @@ export const InvitationRenderer: React.FC = () => {
               </div>
 
               {/* MIDDLE: Typography - THE WEDDING OF STEVEN & BUNGA */}
-              <div className="relative z-10 my-auto py-3 space-y-2 text-center">
+              <div className="relative z-10 my-auto py-3 space-y-2 text-center flex flex-col items-center">
                 <p 
-                  className="text-xs tracking-[0.35em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs"
+                  className="text-xs tracking-[0.3em] indent-[0.3em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs text-center"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
                   THE WEDDING OF
                 </p>
 
                 <h1 
-                  className="text-[34px] sm:text-[40px] leading-tight text-[#4e0e16] font-normal tracking-wide drop-shadow-sm font-serif"
+                  className="text-[25px] xs:text-[28px] sm:text-[34px] leading-tight text-[#4e0e16] font-normal tracking-wide drop-shadow-sm font-serif whitespace-nowrap text-center"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  {groomDisplayName.toUpperCase()} <span className="font-light italic text-[#7c1d29]">&amp;</span> {brideDisplayName.toUpperCase()}
+                  {groomDisplayName.toUpperCase()} <span className="font-light italic text-[#7c1d29] mx-1">&amp;</span> {brideDisplayName.toUpperCase()}
                 </h1>
               </div>
 

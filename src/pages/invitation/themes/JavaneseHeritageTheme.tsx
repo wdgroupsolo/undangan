@@ -1244,44 +1244,46 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           <ScrollReveal animation="arch-reveal" duration={1000} delay={60} className="w-full flex justify-center my-auto">
             <div className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] max-h-[92vh] flex flex-col items-center justify-between p-4 sm:p-5 my-auto">
             
-            {/* Soft inner radial parchment glow for contrast behind text over stupas */}
-            <div className="absolute inset-0 rounded-[180px] bg-gradient-to-b from-[#fbf7f0]/40 via-transparent to-[#fbf7f0]/30 pointer-events-none z-0" />
+            {/* Soft inner radial parchment glow for contrast behind text in open sky */}
+            <div className="absolute inset-0 rounded-[180px] bg-gradient-to-b from-[#fbf7f0]/45 via-transparent to-[#fbf7f0]/25 pointer-events-none z-0" />
+            <div className="absolute top-10 inset-x-4 h-64 rounded-full bg-gradient-to-b from-[#fbf7f0]/75 via-[#fbf7f0]/50 to-transparent blur-md pointer-events-none z-10" />
 
             {/* Royal Gold Filigree on Arch Shoulders */}
             <RoyalGoldCorner className="absolute top-2 left-2 w-12 h-12 pointer-events-none opacity-75" flip="top-left" />
             <RoyalGoldCorner className="absolute top-2 right-2 w-12 h-12 pointer-events-none opacity-75" flip="top-right" />
 
-            {/* TOP: Calligraphic Monogram */}
-            <div className="relative z-20 pt-7 sm:pt-9">
-              <JavaneseMonogram initials="SB" />
-            </div>
+            {/* UPPER BLOCK: Monogram & Typography in the luminous open sky area (above stupa peak) */}
+            <div className="relative z-20 w-full flex flex-col items-center pt-6 sm:pt-8">
+              {/* TOP: Calligraphic Monogram */}
+              <JavaneseMonogram initials="SB" className="mb-3 sm:mb-4" />
 
-            {/* MIDDLE: Typography - THE WEDDING OF STEVEN & BUNGA */}
-            <div className="relative z-20 my-auto py-2 space-y-2 text-center">
-              <p 
-                className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                THE WEDDING OF
-              </p>
+              {/* Typography Group: Perfectly Centered */}
+              <div className="space-y-1.5 sm:space-y-2 text-center flex flex-col items-center w-full px-2">
+                <p 
+                  className="text-[11px] sm:text-xs tracking-[0.3em] indent-[0.3em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs text-center"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  THE WEDDING OF
+                </p>
 
-              <h1 
-                className="text-[32px] sm:text-[38px] leading-tight text-[#4e0e16] font-normal tracking-wide drop-shadow-sm"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {groomNick.toUpperCase()} <span className="font-light italic text-[#7c1d29]">&amp;</span> {brideNick.toUpperCase()}
-              </h1>
+                <h1 
+                  className="text-[25px] xs:text-[28px] sm:text-[34px] leading-tight text-[#4e0e16] font-normal tracking-wide drop-shadow-sm whitespace-nowrap text-center"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {groomNick.toUpperCase()} <span className="font-light italic text-[#7c1d29] mx-1">&amp;</span> {brideNick.toUpperCase()}
+                </h1>
 
-              <p 
-                className="text-xs sm:text-[13px] tracking-[0.25em] text-[#6a1a24] font-serif pt-1"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {formattedArchDate}
-              </p>
+                <p 
+                  className="text-xs sm:text-[13px] tracking-[0.25em] indent-[0.25em] text-[#6a1a24] font-serif pt-0.5 text-center"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {formattedArchDate}
+                </p>
+              </div>
             </div>
 
             {/* BOTTOM: Horizontal Capsule Scroll Down Indicator matching video reference */}
-            <div className="relative z-20 pb-7 sm:pb-9 flex flex-col items-center">
+            <div className="relative z-20 pb-7 sm:pb-9 flex flex-col items-center mt-auto">
               <button
                 type="button"
                 onClick={() => {
