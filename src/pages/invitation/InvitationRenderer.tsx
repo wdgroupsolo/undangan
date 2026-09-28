@@ -185,7 +185,7 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  const activeThemeSlug = requestedTheme || (invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral';
+  const activeThemeSlug = requestedTheme || (slug === 'habib-adiba' ? 'javanese-heritage' : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral'));
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
@@ -280,7 +280,7 @@ export const InvitationRenderer: React.FC = () => {
     }, timeoutDuration);
   };
 
-  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
+  const isInvitationVisible = isJavaneseHeritage || openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
 
   return (
     <div className="relative min-h-screen no-scrollbar overflow-x-clip">
@@ -302,7 +302,7 @@ export const InvitationRenderer: React.FC = () => {
       />
 
       {/* Vinyl Disc Music Control Button (Stop & Start Audio, Responsive on Mobile & Desktop) */}
-      {openingStage !== 'cover' && (
+      {(openingStage !== 'cover' || (isJavaneseHeritage && isPlaying)) && (
         <button
           onClick={toggleMusic}
           aria-label="Toggle Background Music"
@@ -321,7 +321,7 @@ export const InvitationRenderer: React.FC = () => {
           ? 'opacity-100' 
           : (isSplitTheme && openingStage === 'arch-video' ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden')
       }`}>
-        {(openingStage === 'opened' || openingStage === 'arch-video' || isJavaneseHeritage) && (
+        {(isInvitationVisible || openingStage === 'arch-video') && (
           isJavaneseHeritage ? (
             <JavaneseHeritageTheme 
               invitation={invitation}

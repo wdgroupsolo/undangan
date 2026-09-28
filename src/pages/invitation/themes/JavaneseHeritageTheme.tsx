@@ -403,6 +403,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
   const handleOpenInvitation = () => {
     setHasOpened(true);
+    try {
+      window.dispatchEvent(new CustomEvent('wedding:play-bgm'));
+    } catch (_) {}
     // Smooth scroll down slightly to quote
     setTimeout(() => {
       const quoteEl = document.getElementById('ayat-section');
