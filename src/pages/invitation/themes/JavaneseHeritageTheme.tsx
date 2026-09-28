@@ -65,7 +65,7 @@ const JavaneseDivider: React.FC<{ className?: string }> = ({ className = '' }) =
 );
 
 // Intertwined Calligraphic Monogram Emblem (Matches User Reference Top Logo exactly)
-const JavaneseMonogram: React.FC<{ initials?: string; className?: string }> = ({ 
+export const JavaneseMonogram: React.FC<{ initials?: string; className?: string }> = ({ 
   initials = 'HA', 
   className = '' 
 }) => (
@@ -279,7 +279,7 @@ const PhotoCornerFloralBottomLeft: React.FC<{ className?: string }> = ({ classNa
 );
 
 // Floating Floral & Gold Sparkle Particles
-const JavanesePetals: React.FC<{ count?: number }> = ({ count = 10 }) => {
+export const JavanesePetals: React.FC<{ count?: number }> = ({ count = 10 }) => {
   const petals = [
     { top: '10%', left: '12%', size: 14, duration: '9s', delay: '0s', rot: '25deg' },
     { top: '24%', left: '85%', size: 18, duration: '12s', delay: '1.5s', rot: '-40deg' },
@@ -344,7 +344,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   const guestName = searchParams.get('to') || 'Tamu Undangan';
 
   // State management
-  const [hasOpened, setHasOpened] = useState<boolean>(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [activeLightboxIdx, setActiveLightboxIdx] = useState<number | null>(null);
   const [wishName, setWishName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
@@ -399,7 +398,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     {
       id: 'default-akad',
       name: 'Akad Nikah',
-      event_date: '2026-10-12',
+      event_date: '2025-12-28',
       start_time: '08.00',
       end_time: '10.00 WIB',
       location: 'Pendopo Agung Candi Borobudur',
@@ -409,7 +408,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     {
       id: 'default-resepsi',
       name: 'Resepsi Pernikahan',
-      event_date: '2026-10-12',
+      event_date: '2025-12-28',
       start_time: '11.00',
       end_time: '14.00 WIB',
       location: 'Grand Heritage Ballroom',
@@ -421,7 +420,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   const displayEvents = events && events.length > 0 ? events : defaultEvents;
 
   // Countdown timer
-  const targetDateStr = displayEvents?.[0]?.event_date || '2026-10-12';
+  const targetDateStr = displayEvents?.[0]?.event_date || '2025-12-28';
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -546,7 +545,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
   // Format date helper
   const formatEventDate = (dateStr?: string) => {
-    if (!dateStr) return 'Sabtu, 12 Oktober 2026';
+    if (!dateStr) return 'Minggu, 28 Desember 2025';
     try {
       const clean = String(dateStr).split('T')[0];
       const parts = clean.split('-');
@@ -561,9 +560,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           });
         }
       }
-      return 'Sabtu, 12 Oktober 2026';
+      return 'Minggu, 28 Desember 2025';
     } catch {
-      return 'Sabtu, 12 Oktober 2026';
+      return 'Minggu, 28 Desember 2025';
     }
   };
 
@@ -581,20 +580,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     }
     return '28 . 12 . 2025';
   })();
-
-  const handleOpenInvitation = () => {
-    setHasOpened(true);
-    try {
-      window.dispatchEvent(new CustomEvent('wedding:play-bgm'));
-    } catch (_) {}
-    // Smooth scroll down slightly to quote
-    setTimeout(() => {
-      const quoteEl = document.getElementById('ayat-section');
-      if (quoteEl) {
-        quoteEl.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 300);
-  };
 
   return (
     <div className="min-h-screen text-[#3d1117] bg-[#fbf7f0] selection:bg-[#7c1d29] selection:text-white relative overflow-x-hidden font-serif">
@@ -768,56 +753,25 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               </p>
             </div>
 
-            {/* BOTTOM: Either BUKA UNDANGAN (if !hasOpened) or the Capsule Scroll Down Indicator (if hasOpened) */}
+            {/* BOTTOM: Vertical Capsule Scroll Down Indicator matching 'seperti ini' screenshot */}
             <div className="relative z-20 pb-7 sm:pb-9 flex flex-col items-center">
-              {!hasOpened ? (
-                /* Cover Stage: Dear Recipient + Buka Undangan */
-                <div className="flex flex-col items-center space-y-3 w-full max-w-[260px] animate-fade-in">
-                  <div className="text-center">
-                    <p className="text-[11px] text-[#7a2832] font-serif italic">
-                      Dear :
-                    </p>
-                    <p className="text-sm sm:text-base font-serif italic font-semibold text-[#3d1117] tracking-wide line-clamp-1">
-                      {guestName}
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={handleOpenInvitation}
-                    className="group relative w-full overflow-hidden rounded-full py-2.5 px-6 shadow-[0_8px_20px_rgba(92,19,28,0.35)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#7c1d29] via-[#63141f] to-[#4e0e16] border border-[#d4af37]/60"
-                  >
-                    <div 
-                      className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full"
-                      style={{ animation: 'shimmer-sweep-gold 2.6s ease-in-out infinite' }}
-                    />
-                    <div className="relative flex items-center justify-center gap-1.5">
-                      <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#fff6e6] drop-shadow-sm">
-                        BUKA UNDANGAN
-                      </span>
-                      <Sparkles className="w-3.5 h-3.5 text-[#f3da9f]" />
-                    </div>
-                  </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById('ayat-section');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                aria-label="Scroll ke Bawah"
+                className="flex flex-col items-center group cursor-pointer animate-fade-in transition-transform hover:scale-110 active:scale-95"
+              >
+                <div className="w-[22px] h-[42px] rounded-full border-[1.8px] border-[#6a1a24] flex items-start justify-center pt-2 shadow-xs group-hover:border-[#4e0e16] transition-colors">
+                  {/* Animated sliding scroll pill dot */}
+                  <div 
+                    className="w-[3px] h-[7px] rounded-full bg-[#6a1a24] group-hover:bg-[#4e0e16]"
+                    style={{ animation: 'scroll-pill-bounce 2s ease-in-out infinite' }}
+                  />
                 </div>
-              ) : (
-                /* Opened Stage: The Exact Vertical Capsule Scroll Indicator from Screenshot */
-                <button
-                  type="button"
-                  onClick={() => {
-                    const el = document.getElementById('ayat-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  aria-label="Scroll ke Bawah"
-                  className="flex flex-col items-center group cursor-pointer animate-fade-in transition-transform hover:scale-110 active:scale-95"
-                >
-                  <div className="w-[22px] h-[42px] rounded-full border-[1.8px] border-[#6a1a24] flex items-start justify-center pt-2 shadow-xs group-hover:border-[#4e0e16] transition-colors">
-                    {/* Animated sliding scroll pill dot */}
-                    <div 
-                      className="w-[3px] h-[7px] rounded-full bg-[#6a1a24] group-hover:bg-[#4e0e16]"
-                      style={{ animation: 'scroll-pill-bounce 2s ease-in-out infinite' }}
-                    />
-                  </div>
-                </button>
-              )}
+              </button>
             </div>
 
           </div>

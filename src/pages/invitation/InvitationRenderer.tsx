@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useSearchParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Mail, Disc } from 'lucide-react';
+import { Mail, Disc, Sparkles } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
 import { editorService } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
@@ -11,7 +11,7 @@ import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
 import { SecretGardenTheme } from './themes/SecretGardenTheme';
 import { RoyalEleganceTheme } from './themes/RoyalEleganceTheme';
 import { MaroonGoldTheme } from './themes/MaroonGoldTheme';
-import { JavaneseHeritageTheme } from './themes/JavaneseHeritageTheme';
+import { JavaneseHeritageTheme, JavaneseMonogram, JavanesePetals } from './themes/JavaneseHeritageTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
@@ -250,6 +250,11 @@ export const InvitationRenderer: React.FC = () => {
       }
     }
 
+    if (isJavaneseHeritage) {
+      setOpeningStage('opened');
+      return;
+    }
+
     // Reset skip guard so initial button click/tap cannot dismiss the video prematurely
     setCanSkipVideo(false);
     setOpeningStage('arch-video');
@@ -280,7 +285,7 @@ export const InvitationRenderer: React.FC = () => {
     }, timeoutDuration);
   };
 
-  const isInvitationVisible = isJavaneseHeritage || openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
+  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
 
   return (
     <div className="relative min-h-screen no-scrollbar overflow-x-clip">
@@ -407,8 +412,117 @@ export const InvitationRenderer: React.FC = () => {
       </div>
 
       {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) with [Buka Undangan] Button */}
-      {openingStage === 'cover' && !isJavaneseHeritage && (
-        isMaroonGold ? (
+      {openingStage === 'cover' && (
+        isJavaneseHeritage ? (
+          /* Javanese Heritage Cover matching media_1790532676505.png */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#24090d]">
+            {/* Inline Keyframes for Cover */}
+            <style>{`
+              @keyframes javanese-petal-float {
+                0% {
+                  transform: translate3d(0, 0, 0) rotate(0deg) scale(0.9);
+                  opacity: 0.3;
+                }
+                50% {
+                  transform: translate3d(8px, -18px, 0) rotate(20deg) scale(1.1);
+                  opacity: 0.85;
+                }
+                100% {
+                  transform: translate3d(0, 0, 0) rotate(0deg) scale(0.9);
+                  opacity: 0.3;
+                }
+              }
+
+              @keyframes shimmer-sweep-gold {
+                0% {
+                  transform: translateX(-150%) skewX(-20deg);
+                }
+                100% {
+                  transform: translateX(250%) skewX(-20deg);
+                }
+              }
+            `}</style>
+
+            {/* Desktop Panoramic Backdrop */}
+            <div className="absolute inset-0 z-0">
+              <img 
+                src="/themes/javanese-heritage-desktop.jpg" 
+                alt="Borobudur Heritage Landscape" 
+                className="w-full h-full object-cover object-center scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/85" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#24090d] via-transparent to-black/60" />
+            </div>
+
+            {/* Ambient Petals */}
+            <JavanesePetals count={10} />
+
+            {/* Centered Mobile/Portrait Invitation Card (100% on mobile, max-w-[410px] on desktop) */}
+            <div className="relative z-10 w-full h-full sm:h-auto sm:max-w-[410px] sm:min-h-[620px] sm:max-h-[92vh] sm:rounded-[26px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-8 bg-[#fbf7f0] shadow-[0_25px_70px_rgba(0,0,0,0.7)] sm:border sm:border-[#8c2d38]/30">
+              
+              {/* Card Background: Authentic Borobudur Stupas & Vintage Floral Frame */}
+              <img 
+                src="/themes/javanese-heritage-bg.jpg" 
+                alt="Javanese Heritage Background" 
+                className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+              />
+              
+              {/* Soft radial parchment glow */}
+              <div className="absolute inset-0 bg-radial-at-c from-[#fbf7f0]/45 via-transparent to-[#fbf7f0]/20 pointer-events-none" />
+
+              {/* TOP: Calligraphic Monogram */}
+              <div className="relative z-10 pt-7 sm:pt-9">
+                <JavaneseMonogram />
+              </div>
+
+              {/* MIDDLE: Typography - THE WEDDING OF HABIB & ADIBA */}
+              <div className="relative z-10 my-auto py-3 space-y-2 text-center">
+                <p 
+                  className="text-xs tracking-[0.35em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  THE WEDDING OF
+                </p>
+
+                <h1 
+                  className="text-[34px] sm:text-[40px] leading-tight text-[#4e0e16] font-normal tracking-wide drop-shadow-sm font-serif"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {groomDisplayName.toUpperCase()} <span className="font-light italic text-[#7c1d29]">&amp;</span> {brideDisplayName.toUpperCase()}
+                </h1>
+              </div>
+
+              {/* BOTTOM: Dear Recipient + BUKA UNDANGAN Pill Button */}
+              <div className="relative z-10 pb-7 sm:pb-9 flex flex-col items-center w-full max-w-[260px]">
+                <div className="text-center mb-5">
+                  <p className="text-xs text-[#7a2832] font-serif italic mb-0.5">
+                    Dear :
+                  </p>
+                  <p className="text-base sm:text-lg font-serif italic font-semibold text-[#3d1117] tracking-wide line-clamp-1">
+                    {guestName}
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleOpen}
+                  className="group relative w-full overflow-hidden rounded-full py-3 px-8 shadow-[0_8px_25px_rgba(92,19,28,0.38)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#7c1d29] via-[#63141f] to-[#4e0e16] border border-[#d4af37]/60"
+                >
+                  <div 
+                    className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full"
+                    style={{ animation: 'shimmer-sweep-gold 2.6s ease-in-out infinite' }}
+                  />
+                  <div className="relative flex items-center justify-center gap-2">
+                    <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#fff6e6] drop-shadow-sm">
+                      BUKA UNDANGAN
+                    </span>
+                    <Sparkles className="w-3.5 h-3.5 text-[#f3da9f]" />
+                  </div>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        ) : isMaroonGold ? (
           /* Maroon Gold Cover matching exactly the user reference image */
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#301114]">
             {/* Background Image */}
