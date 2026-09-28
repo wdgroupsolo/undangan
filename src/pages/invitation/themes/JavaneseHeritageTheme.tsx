@@ -64,6 +64,114 @@ const JavaneseDivider: React.FC<{ className?: string }> = ({ className = '' }) =
   </div>
 );
 
+// Traditional Javanese Gunungan (Kayon / Tree of Life) Watermark
+const JavaneseGunungan: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`pointer-events-none select-none ${className}`}>
+    <svg viewBox="0 0 200 300" fill="none" className="w-full h-full text-[#6a1a24]">
+      {/* Outer Kayon Leaf Silhouette */}
+      <path
+        d="M100 12 C115 45, 155 85, 178 135 C192 165, 195 205, 175 240 C158 270, 122 275, 100 275 C78 275, 42 270, 25 240 C5 205, 8 165, 22 135 C45 85, 85 45, 100 12 Z"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        fill="currentColor"
+        fillOpacity="0.05"
+      />
+      {/* Inner Scalloped Filigree Border */}
+      <path
+        d="M100 24 C112 52, 145 88, 166 132 C178 160, 180 196, 164 230 C150 258, 118 263, 100 263 C82 263, 50 258, 36 230 C20 196, 22 160, 34 132 C55 88, 88 52, 100 24 Z"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeDasharray="2 3"
+      />
+      {/* Central Tree Trunk (Batang Pohon Hayat) */}
+      <path d="M100 95 L100 270" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
+      {/* Paduraksa / Sacred Temple Gate at Bottom */}
+      <path d="M68 238 L100 212 L132 238" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="74" y="238" width="52" height="34" rx="2" stroke="currentColor" strokeWidth="1.4" fill="none" />
+      <path d="M88 272 L88 250 C88 245, 112 245, 112 250 L112 272" stroke="currentColor" strokeWidth="1.4" />
+      {/* Tree Branches & Floral Swirls */}
+      <path d="M100 175 C78 162, 55 180, 45 162 C38 148, 55 132, 72 138 C88 144, 98 160, 100 166" stroke="currentColor" strokeWidth="1.2" fill="none" />
+      <path d="M100 175 C122 162, 145 180, 155 162 C162 148, 145 132, 128 138 C112 144, 102 160, 100 166" stroke="currentColor" strokeWidth="1.2" fill="none" />
+      <path d="M100 140 C82 125, 68 135, 58 120 C48 105, 68 90, 82 100 C92 108, 98 128, 100 135" stroke="currentColor" strokeWidth="1.2" fill="none" />
+      <path d="M100 140 C118 125, 132 135, 142 120 C152 105, 132 90, 118 100 C108 108, 102 128, 100 135" stroke="currentColor" strokeWidth="1.2" fill="none" />
+      <path d="M100 95 C90 80, 80 88, 75 75 C70 65, 84 55, 94 64 L100 75" stroke="currentColor" strokeWidth="1" fill="none" />
+      <path d="M100 95 C110 80, 120 88, 125 75 C130 65, 116 55, 106 64 L100 75" stroke="currentColor" strokeWidth="1" fill="none" />
+      {/* Bottom Tangkai / Handle */}
+      <rect x="94" y="272" width="12" height="28" rx="3" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  </div>
+);
+
+// Traditional Batik Kawung White/Cream Motif Clusters for Maroon Background
+const BatikKawungCluster: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`pointer-events-none select-none ${className}`}>
+    <svg viewBox="0 0 160 160" fill="none" className="w-full h-full text-[#fbf7f0]">
+      {/* Authentic Intersecting Batik Kawung Geometry */}
+      <g transform="translate(45, 45)">
+        <ellipse cx="0" cy="-13" rx="7" ry="13" fill="currentColor" opacity="0.9" />
+        <ellipse cx="0" cy="13" rx="7" ry="13" fill="currentColor" opacity="0.9" />
+        <ellipse cx="-13" cy="0" rx="13" ry="7" fill="currentColor" opacity="0.9" />
+        <ellipse cx="13" cy="0" rx="13" ry="7" fill="currentColor" opacity="0.9" />
+        <circle cx="0" cy="0" r="3.5" stroke="currentColor" strokeWidth="1" fill="none" />
+        <circle cx="0" cy="0" r="1.5" fill="currentColor" />
+        <circle cx="0" cy="-7" r="1.2" fill="#4e1017" />
+        <circle cx="0" cy="7" r="1.2" fill="#4e1017" />
+        <circle cx="-7" cy="0" r="1.2" fill="#4e1017" />
+        <circle cx="7" cy="0" r="1.2" fill="#4e1017" />
+      </g>
+      <g transform="translate(115, 45)">
+        <ellipse cx="0" cy="-13" rx="7" ry="13" fill="currentColor" opacity="0.8" />
+        <ellipse cx="0" cy="13" rx="7" ry="13" fill="currentColor" opacity="0.8" />
+        <ellipse cx="-13" cy="0" rx="13" ry="7" fill="currentColor" opacity="0.8" />
+        <ellipse cx="13" cy="0" rx="13" ry="7" fill="currentColor" opacity="0.8" />
+        <circle cx="0" cy="0" r="3.5" stroke="currentColor" strokeWidth="1" fill="none" />
+        <circle cx="0" cy="0" r="1.5" fill="currentColor" />
+      </g>
+      <g transform="translate(45, 115)">
+        <ellipse cx="0" cy="-13" rx="7" ry="13" fill="currentColor" opacity="0.8" />
+        <ellipse cx="0" cy="13" rx="7" ry="13" fill="currentColor" opacity="0.8" />
+        <ellipse cx="-13" cy="0" rx="13" ry="7" fill="currentColor" opacity="0.8" />
+        <ellipse cx="13" cy="0" rx="13" ry="7" fill="currentColor" opacity="0.8" />
+        <circle cx="0" cy="0" r="3.5" stroke="currentColor" strokeWidth="1" fill="none" />
+        <circle cx="0" cy="0" r="1.5" fill="currentColor" />
+      </g>
+      <g transform="translate(115, 115)">
+        <ellipse cx="0" cy="-13" rx="7" ry="13" fill="currentColor" opacity="0.9" />
+        <ellipse cx="0" cy="13" rx="7" ry="13" fill="currentColor" opacity="0.9" />
+        <ellipse cx="-13" cy="0" rx="13" ry="7" fill="currentColor" opacity="0.9" />
+        <ellipse cx="13" cy="0" rx="13" ry="7" fill="currentColor" opacity="0.9" />
+        <circle cx="0" cy="0" r="3.5" stroke="currentColor" strokeWidth="1" fill="none" />
+        <circle cx="0" cy="0" r="1.5" fill="currentColor" />
+      </g>
+      {/* Center rosette */}
+      <g transform="translate(80, 80)">
+        <ellipse cx="0" cy="-11" rx="6" ry="11" fill="currentColor" opacity="0.75" />
+        <ellipse cx="0" cy="11" rx="6" ry="11" fill="currentColor" opacity="0.75" />
+        <ellipse cx="-11" cy="0" rx="11" ry="6" fill="currentColor" opacity="0.75" />
+        <ellipse cx="11" cy="0" rx="11" ry="6" fill="currentColor" opacity="0.75" />
+        <circle cx="0" cy="0" r="2.5" fill="currentColor" />
+      </g>
+      {/* Cross accent starlets */}
+      <circle cx="80" cy="45" r="2" fill="currentColor" opacity="0.6" />
+      <circle cx="80" cy="115" r="2" fill="currentColor" opacity="0.6" />
+      <circle cx="45" cy="80" r="2" fill="currentColor" opacity="0.6" />
+      <circle cx="115" cy="80" r="2" fill="currentColor" opacity="0.6" />
+    </svg>
+  </div>
+);
+
+// Traditional House / Roof Icon
+const TraditionalHouseIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+  >
+    {/* Traditional Peaked House Gable with Door */}
+    <path d="M12 2.8 L2 10.5 L4.2 12.2 L5.5 11.2 L5.5 20.8 L18.5 20.8 L18.5 11.2 L19.8 12.2 L22 10.5 L12 2.8 Z M10 19.8 L10 13.8 C10 13.2 10.4 12.8 11 12.8 L13 12.8 C13.6 12.8 14 13.2 14 13.8 L14 19.8 L10 19.8 Z" />
+  </svg>
+);
+
 // Intertwined Calligraphic Monogram Emblem (Matches User Reference Top Logo exactly)
 export const JavaneseMonogram: React.FC<{ initials?: string; className?: string }> = ({ 
   initials = 'HA', 
@@ -393,15 +501,18 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     return 'ADIBA PUTRI SYAKILLA';
   })();
 
-  // Events fallback
+  // Active Event Tab Index (0: Akad Nikah, 1: Resepsi)
+  const [activeEventIndex, setActiveEventIndex] = useState<number>(0);
+
+  // Events fallback matching user reference screenshots
   const defaultEvents = [
     {
       id: 'default-akad',
       name: 'Akad Nikah',
-      event_date: '2025-12-28',
-      start_time: '08.00',
-      end_time: '10.00 WIB',
-      location: 'Pendopo Agung Candi Borobudur',
+      event_date: '2025-12-27',
+      start_time: '10:00 WIB',
+      end_time: 'Selesai',
+      location: 'Kediaman Mempelai Wanita',
       address: 'Kawasan Wisata Candi Borobudur, Magelang, Jawa Tengah',
       maps_url: 'https://maps.google.com/?q=Candi+Borobudur',
     },
@@ -409,8 +520,8 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
       id: 'default-resepsi',
       name: 'Resepsi Pernikahan',
       event_date: '2025-12-28',
-      start_time: '11.00',
-      end_time: '14.00 WIB',
+      start_time: '11:00 WIB',
+      end_time: '14:00 WIB',
       location: 'Grand Heritage Ballroom',
       address: 'Plataran Heritage Borobudur, Jawa Tengah',
       maps_url: 'https://maps.google.com/?q=Plataran+Heritage+Borobudur',
@@ -418,6 +529,39 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   ];
 
   const displayEvents = events && events.length > 0 ? events : defaultEvents;
+
+  // Helper to parse event fields for the arch card strictly matching reference format
+  const parseEventDisplay = (evt: any, idx: number) => {
+    const isAkad = idx === 0 || (evt?.name && evt.name.toLowerCase().includes('akad'));
+    let dayName = isAkad ? 'MINGGU' : 'MINGGU';
+    let dayNum = isAkad ? '27' : '28';
+    let monthYear = 'DESEMBER 2025';
+
+    if (evt?.event_date) {
+      try {
+        const clean = String(evt.event_date).split('T')[0];
+        const parts = clean.split('-');
+        if (parts.length === 3) {
+          const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+          if (!isNaN(d.getTime())) {
+            dayName = d.toLocaleDateString('id-ID', { weekday: 'long' }).toUpperCase();
+            dayNum = String(d.getDate());
+            monthYear = d.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }).toUpperCase();
+          }
+        }
+      } catch (_) {}
+    }
+
+    const title = evt?.name ? evt.name.toUpperCase() : (isAkad ? 'AKAD NIKAH' : 'RESEPSI PERNIKAHAN');
+    const start = evt?.start_time || (isAkad ? '10:00 WIB' : '11:00 WIB');
+    const end = evt?.end_time || (isAkad ? 'Selesai' : '14:00 WIB');
+    const timeStr = `${start} - ${end}`;
+    const location = evt?.location || (isAkad ? 'Kediaman Mempelai Wanita' : 'Grand Heritage Ballroom');
+    const address = evt?.address || '';
+    const mapsUrl = evt?.maps_url || 'https://maps.google.com/?q=Candi+Borobudur';
+
+    return { title, dayName, dayNum, monthYear, timeStr, location, address, mapsUrl };
+  };
 
   // Countdown timer
   const targetDateStr = displayEvents?.[0]?.event_date || '2025-12-28';
@@ -980,7 +1124,168 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
         {/* ========================================================================= */}
-        {/* 4. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
+        {/* 4. RANGKAIAN ACARA (Exact Oval Arch Recreation of 'ini bawahnya' reference) */}
+        {/* ========================================================================= */}
+        <section id="acara-section" className="relative py-12 sm:py-16 px-3 sm:px-6 z-10 bg-[#4e1017] overflow-hidden text-center select-none shadow-[inset_0_4px_30px_rgba(0,0,0,0.4)]">
+          
+          {/* Deep Royal Maroon Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#4e1017] via-[#400b12] to-[#34070d] pointer-events-none" />
+
+          {/* White/Cream Batik Kawung Motifs on Background Corners matching Screenshot */}
+          <BatikKawungCluster className="absolute -top-3 -right-3 w-36 h-36 sm:w-48 sm:h-48 pointer-events-none opacity-55" />
+          <BatikKawungCluster className="absolute top-28 -right-8 w-28 h-28 pointer-events-none opacity-35" />
+          <BatikKawungCluster className="absolute -bottom-3 -left-3 w-36 h-36 sm:w-48 sm:h-48 pointer-events-none opacity-55" />
+          <BatikKawungCluster className="absolute bottom-28 -left-8 w-28 h-28 pointer-events-none opacity-35" />
+          <BatikKawungCluster className="absolute -bottom-4 -right-4 w-32 h-32 pointer-events-none opacity-45" />
+
+          {/* Pill Tab Selector to seamlessly switch between Akad Nikah & Resepsi Pernikahan */}
+          <div className="relative z-20 flex items-center justify-center gap-2 mb-6 sm:mb-8">
+            {displayEvents.map((evt, idx) => (
+              <button
+                key={evt.id || idx}
+                type="button"
+                onClick={() => setActiveEventIndex(idx)}
+                className={`px-4 sm:px-5 py-2 rounded-full text-[11px] sm:text-xs font-serif uppercase tracking-[0.2em] transition-all duration-300 cursor-pointer ${
+                  activeEventIndex === idx
+                    ? 'bg-[#c5a880] text-[#3d0d14] font-bold shadow-[0_4px_16px_rgba(197,168,128,0.4)] scale-105'
+                    : 'bg-black/35 text-[#fbf7f0]/80 hover:bg-black/55 border border-[#c5a880]/30'
+                }`}
+              >
+                {evt.name || (idx === 0 ? 'Akad Nikah' : 'Resepsi')}
+              </button>
+            ))}
+          </div>
+
+          {/* Active Event Card Data */}
+          {(() => {
+            const currentEvent = displayEvents[activeEventIndex] || displayEvents[0] || defaultEvents[0];
+            const { 
+              title, 
+              dayName, 
+              dayNum, 
+              monthYear, 
+              timeStr, 
+              location, 
+              address, 
+              mapsUrl 
+            } = parseEventDisplay(currentEvent, activeEventIndex);
+
+            return (
+              <div className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] mx-auto rounded-[190px] sm:rounded-[215px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_12px_40px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col items-center justify-between p-5 pt-12 sm:pt-14 pb-8 text-center transition-all duration-500">
+                
+                {/* Soft Radial Parchment Warmth */}
+                <div className="absolute inset-0 bg-radial from-[#fdf9f2] via-[#faf2e6] to-[#f4e8d3] pointer-events-none" />
+
+                {/* Gunungan Wayang (Kayon) Watermark */}
+                <JavaneseGunungan className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-[220px] sm:w-[250px] h-[340px] sm:h-[380px] mx-auto opacity-[0.18] pointer-events-none text-[#5c131c]" />
+
+                {/* Climbing Green Ivy Vine on Upper Right Gold Rim */}
+                <ArchRightVine className="absolute -right-3 top-8 sm:top-10 z-20 pointer-events-none" />
+
+                {/* Delicate Botanical Twig Buds in Top Right Corner */}
+                <PhotoCornerFloralTopRight className="absolute -top-3 -right-3 w-20 h-20 sm:w-24 sm:h-24 z-15 pointer-events-none opacity-80" />
+
+                {/* Curved Bottom Floral Garland of Burgundy Orchids and Cream Peonies */}
+                <div className="absolute inset-x-0 bottom-0 h-44 sm:h-52 overflow-hidden rounded-b-[188px] sm:rounded-b-[213px] pointer-events-none z-10">
+                  <img 
+                    src="/themes/javanese-heritage-bg.jpg" 
+                    alt="Curved Floral Garland" 
+                    className="w-full h-full object-cover object-bottom scale-110"
+                  />
+                  {/* Subtle gradient feather at top of garland */}
+                  <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#faf2e6] via-[#faf2e6]/40 to-transparent" />
+                </div>
+
+                {/* Card Top Section: Title & Date */}
+                <div className="relative z-20 w-full flex flex-col items-center">
+                  
+                  {/* Event Title */}
+                  <h3 
+                    className="text-2xl sm:text-[28px] font-normal tracking-[0.18em] text-[#5c131c] uppercase"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {title}
+                  </h3>
+
+                  {/* Day */}
+                  <p 
+                    className="text-xs sm:text-[13px] tracking-[0.25em] text-[#6a1a24] font-serif uppercase font-medium mt-2"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {dayName}
+                  </p>
+
+                  {/* Big Date Number (27) */}
+                  <div 
+                    className="text-[48px] sm:text-[56px] font-light text-[#5c131c] leading-none my-1"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {dayNum}
+                  </div>
+
+                  {/* Month & Year */}
+                  <p 
+                    className="text-xs sm:text-[13px] tracking-[0.22em] text-[#6a1a24] font-serif uppercase font-medium"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {monthYear}
+                  </p>
+
+                  {/* Horizontal Divider Line with Traditional House Icon & Time */}
+                  <div className="w-full max-w-[240px] sm:max-w-[260px] flex flex-col items-center mt-5 sm:mt-6 mb-2">
+                    <div className="w-full flex items-center justify-center">
+                      <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
+                      <div className="px-3 text-[#5c131c]">
+                        <TraditionalHouseIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#5c131c]" />
+                      </div>
+                      <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
+                    </div>
+                    <p className="text-xs sm:text-[13px] text-[#5c131c] font-serif italic mt-1 tracking-wide font-normal">
+                      {timeStr}
+                    </p>
+                  </div>
+
+                </div>
+
+                {/* Card Bottom Section: Location & Action above the Bottom Flowers */}
+                <div className="relative z-20 w-full flex flex-col items-center mt-12 sm:mt-16 mb-4 sm:mb-6 px-4">
+                  
+                  <p 
+                    className="text-sm sm:text-base font-serif text-[#4e1b22] font-medium tracking-wide drop-shadow-xs"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {location}
+                  </p>
+
+                  {address && (
+                    <p className="text-[11px] sm:text-xs text-[#6e2b34] font-serif leading-relaxed mt-1 max-w-[240px]">
+                      {address}
+                    </p>
+                  )}
+
+                  {/* Google Maps Button */}
+                  {mapsUrl && (
+                    <a
+                      href={mapsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#5c131c] hover:bg-[#430d14] text-[#fbf7f0] border border-[#c5a880]/60 text-[11px] sm:text-xs font-serif uppercase tracking-wider transition-all shadow-md hover:scale-105 active:scale-95 cursor-pointer mt-3"
+                    >
+                      <MapPin className="w-3.5 h-3.5 text-[#fbf7f0]" />
+                      <span>Google Maps</span>
+                    </a>
+                  )}
+
+                </div>
+
+              </div>
+            );
+          })()}
+
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 5. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
         {/* ========================================================================= */}
         <section className="py-14 px-5 sm:px-8 relative z-10 bg-[#3d1117] text-white text-center shadow-inner overflow-hidden">
           <div className="max-w-md mx-auto space-y-6">
@@ -1021,82 +1326,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             <p className="text-xs text-[#e8c5b8]/90 font-serif italic pt-1">
               {formatEventDate(targetDateStr)}
             </p>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 5. RANGKAIAN ACARA (Wedding Events)                                       */}
-        {/* ========================================================================= */}
-        <section className="py-16 px-5 sm:px-8 relative z-10 bg-[#fbf7f0]">
-          <div className="max-w-md mx-auto text-center space-y-8">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-[#8c2d38] font-serif font-semibold">
-                Agenda Bahagia
-              </p>
-              <h2 
-                className="text-3xl sm:text-4xl text-[#4e0e16] font-normal mt-1"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Rangkaian Acara
-              </h2>
-              <JavaneseDivider />
-            </div>
-
-            <div className="space-y-6">
-              {displayEvents.map((evt, idx) => (
-                <div 
-                  key={evt.id || idx}
-                  className="bg-[#fdfaf5] border border-[#8c2d38]/25 rounded-[2rem] p-6 shadow-md relative overflow-hidden text-center space-y-3"
-                >
-                  <JavaneseBatikCorner className="absolute top-2 left-2 w-14 h-14" />
-                  <JavaneseBatikCorner className="absolute top-2 right-2 w-14 h-14 -scale-x-100" />
-                  
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-[#8c2d38]/10 text-[#8c2d38] text-[11px] font-serif uppercase tracking-widest font-semibold">
-                    {evt.name}
-                  </span>
-
-                  <h3 
-                    className="text-2xl text-[#4e0e16] font-normal pt-1"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {evt.name}
-                  </h3>
-
-                  <div className="space-y-1 text-xs text-[#5c242c] font-serif">
-                    <p className="font-semibold text-sm text-[#3d1117]">
-                      {formatEventDate(evt.event_date)}
-                    </p>
-                    <p className="flex items-center justify-center gap-1.5 text-[#8c2d38]">
-                      <Clock className="w-3.5 h-3.5" />
-                      Pukul : {evt.start_time} - {evt.end_time || 'Selesai'}
-                    </p>
-                  </div>
-
-                  <div className="border-t border-[#8c2d38]/15 pt-3 space-y-1">
-                    <p className="text-sm font-semibold text-[#4e0e16]">
-                      {evt.location}
-                    </p>
-                    <p className="text-xs text-[#6e2b34] leading-relaxed px-4">
-                      {evt.address || 'Kawasan Candi Borobudur, Jawa Tengah'}
-                    </p>
-                  </div>
-
-                  {evt.maps_url && (
-                    <div className="pt-2">
-                      <a
-                        href={evt.maps_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#8c2d38] hover:bg-[#6e1e27] text-white text-xs font-serif uppercase tracking-wider transition-all shadow-md cursor-pointer"
-                      >
-                        <MapPin className="w-3.5 h-3.5" />
-                        <span>Buka Google Maps</span>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
