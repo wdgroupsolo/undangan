@@ -306,7 +306,7 @@ const RoyalCardBottomOrnament: React.FC<{ className?: string }> = ({ className =
 );
 
 // Royal 24K Gold Corner Filigree (Keraton Lung-lungan Style) with Subtle Living Luster
-const RoyalGoldCorner: React.FC<{ className?: string; flip?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' }> = ({ 
+export const RoyalGoldCorner: React.FC<{ className?: string; flip?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' }> = ({ 
   className = '', 
   flip = 'top-left' 
 }) => {
@@ -381,7 +381,7 @@ const RoyalGoldCorner: React.FC<{ className?: string; flip?: 'top-left' | 'top-r
 };
 
 // Floating Gold Glitter & Prada Dust with Smooth Realistic Drift
-const FloatingGoldenDust: React.FC<{ count?: number }> = ({ count = 12 }) => {
+export const FloatingGoldenDust: React.FC<{ count?: number }> = ({ count = 12 }) => {
   const particles = [
     { top: '8%', left: '15%', size: 4, dur: '6s', delay: '0s' },
     { top: '18%', left: '82%', size: 5, dur: '7.5s', delay: '1.2s' },

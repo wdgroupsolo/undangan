@@ -11,7 +11,7 @@ import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
 import { SecretGardenTheme } from './themes/SecretGardenTheme';
 import { RoyalEleganceTheme } from './themes/RoyalEleganceTheme';
 import { MaroonGoldTheme } from './themes/MaroonGoldTheme';
-import { JavaneseHeritageTheme, JavaneseMonogram, JavanesePetals } from './themes/JavaneseHeritageTheme';
+import { JavaneseHeritageTheme, JavaneseMonogram, JavanesePetals, RoyalGoldCorner, FloatingGoldenDust } from './themes/JavaneseHeritageTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
@@ -455,64 +455,97 @@ export const InvitationRenderer: React.FC = () => {
             <JavanesePetals count={10} />
 
             {/* Centered Mobile/Portrait Invitation Card (100% on mobile, max-w-[410px] on desktop) */}
-            <div className="relative z-10 w-full h-full sm:h-auto sm:max-w-[410px] sm:min-h-[620px] sm:max-h-[92vh] sm:rounded-[26px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-8 bg-[#fbf7f0] shadow-[0_25px_70px_rgba(0,0,0,0.7)] sm:border sm:border-[#8c2d38]/30">
+            <div className="relative z-10 w-full h-full sm:h-auto sm:max-w-[410px] sm:min-h-[620px] sm:max-h-[92vh] sm:rounded-[28px] overflow-hidden flex flex-col justify-between items-center text-center p-5 sm:p-7 bg-[#fbf7f0] shadow-[0_25px_70px_rgba(48,17,20,0.5),_0_0_35px_rgba(212,175,55,0.3)] sm:border-[2.5px] sm:border-[#d4af37] sm:ring-1 sm:ring-[#c5a880]/50 sm:ring-offset-2 sm:ring-offset-[#fbf7f0]">
               
-              {/* Card Background: Authentic Borobudur Stupas & Vintage Floral Frame */}
+              {/* Card Background: Authentic Gunungan Wayang & Vintage Floral Frame */}
               <img 
                 src="/themes/javanese-cover-poster.jpg" 
                 alt="Javanese Heritage Background" 
                 className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
               />
               
-              {/* Soft radial parchment glow */}
-              <div className="absolute inset-0 bg-radial-at-c from-[#fbf7f0]/45 via-transparent to-[#fbf7f0]/20 pointer-events-none" />
+              {/* Soft radial parchment veil to soften background and enhance contrast */}
+              <div className="absolute inset-0 bg-radial from-[#ffffff]/75 via-[#fdf9f2]/40 to-transparent pointer-events-none" />
 
-              {/* TOP: Calligraphic Monogram */}
-              <div className="relative z-10 pt-7 sm:pt-9">
-                <JavaneseMonogram initials="SB" />
-              </div>
+              {/* Royal 24K Gold Filigree Corners */}
+              <RoyalGoldCorner className="absolute top-2 left-2 w-11 h-11 pointer-events-none opacity-80 z-20" flip="top-left" />
+              <RoyalGoldCorner className="absolute top-2 right-2 w-11 h-11 pointer-events-none opacity-80 z-20" flip="top-right" />
+              <RoyalGoldCorner className="absolute bottom-2 left-2 w-11 h-11 pointer-events-none opacity-80 z-20" flip="bottom-left" />
+              <RoyalGoldCorner className="absolute bottom-2 right-2 w-11 h-11 pointer-events-none opacity-80 z-20" flip="bottom-right" />
 
-              {/* MIDDLE: Typography - THE WEDDING OF STEVEN & BUNGA */}
-              <div className="relative z-10 my-auto py-3 space-y-2 text-center flex flex-col items-center">
+              {/* Floating Golden Dust Particles */}
+              <FloatingGoldenDust count={8} />
+
+              {/* ========================================================================= */}
+              {/* CENTRAL ROYAL IVORY SILK CARTOUCHE (Crystal-Clear Text & Royal Luxury)   */}
+              {/* ========================================================================= */}
+              <div className="relative z-20 w-full max-w-[325px] rounded-3xl bg-gradient-to-b from-[#ffffff]/94 via-[#fdfbf7]/90 to-[#f6ede0]/94 backdrop-blur-[8px] border-[1.5px] border-[#d4af37] shadow-[0_10px_35px_rgba(92,19,28,0.22),_0_0_20px_rgba(212,175,55,0.25)] p-4 sm:p-5 flex flex-col items-center text-center my-auto">
+                
+                {/* Monogram in Royal Gold Medallion Ring */}
+                <div className="relative mb-2 flex items-center justify-center">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-[1.5px] border-[#d4af37] bg-gradient-to-b from-[#fffbf2] to-[#f5ebd8] shadow-[0_2px_10px_rgba(212,175,55,0.35)] flex items-center justify-center p-1.5">
+                    <JavaneseMonogram initials="SB" className="scale-80" />
+                  </div>
+                </div>
+
+                {/* THE WEDDING OF */}
                 <p 
-                  className="text-xs tracking-[0.3em] indent-[0.3em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs text-center"
+                  className="text-[10px] sm:text-[11px] tracking-[0.35em] indent-[0.35em] uppercase text-[#7c1d29] font-serif font-bold text-center drop-shadow-xs mb-1"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
                   THE WEDDING OF
                 </p>
 
+                {/* STEVEN & BUNGA (Crisp, Single-Line, Optically Centered) */}
                 <h1 
-                  className="text-[25px] xs:text-[28px] sm:text-[34px] leading-tight text-[#4e0e16] font-normal tracking-wide drop-shadow-sm font-serif whitespace-nowrap text-center"
+                  className="text-[23px] xs:text-[26px] sm:text-[30px] leading-tight text-[#4e0e16] font-normal tracking-[0.06em] whitespace-nowrap text-center drop-shadow-xs font-serif my-1"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  {groomDisplayName.toUpperCase()} <span className="font-light italic text-[#7c1d29] mx-1">&amp;</span> {brideDisplayName.toUpperCase()}
+                  {groomDisplayName.toUpperCase()} <span className="font-light italic text-[#8c2530] mx-1">&amp;</span> {brideDisplayName.toUpperCase()}
                 </h1>
+
+                {/* Traditional Gold Filigree Divider with Event Date */}
+                <div className="flex items-center justify-center gap-2 mt-1.5 w-full max-w-[200px]">
+                  <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                  <p 
+                    className="text-[10px] sm:text-[11px] tracking-[0.2em] indent-[0.2em] text-[#6a1a24] font-serif font-semibold text-center"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    28 . 12 . 2025
+                  </p>
+                  <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                </div>
+
               </div>
 
-              {/* BOTTOM: Dear Recipient + BUKA UNDANGAN Pill Button */}
-              <div className="relative z-10 pb-7 sm:pb-9 flex flex-col items-center w-full max-w-[260px]">
-                <div className="text-center mb-5">
-                  <p className="text-xs text-[#7a2832] font-serif italic mb-0.5">
-                    Dear :
+              {/* ========================================================================= */}
+              {/* BOTTOM: Recipient Guest Plaque + Luxurious BUKA UNDANGAN Button           */}
+              {/* ========================================================================= */}
+              <div className="relative z-20 pb-4 sm:pb-6 flex flex-col items-center w-full max-w-[285px] mt-auto">
+                {/* Guest Plaque */}
+                <div className="w-full rounded-2xl bg-gradient-to-b from-[#ffffff]/92 to-[#fdf9f2]/88 backdrop-blur-[6px] border border-[#d4af37]/80 shadow-[0_4px_16px_rgba(92,19,28,0.14)] py-2.5 px-4 mb-3 text-center">
+                  <p className="text-[10px] sm:text-[11px] tracking-[0.22em] uppercase text-[#7c1d29] font-serif font-medium">
+                    Kepada Yth. Bapak/Ibu/Saudara/i :
                   </p>
-                  <p className="text-base sm:text-lg font-serif italic font-semibold text-[#3d1117] tracking-wide line-clamp-1">
+                  <p className="text-sm sm:text-base font-serif font-bold text-[#3d1117] tracking-wide mt-0.5 line-clamp-1">
                     {guestName}
                   </p>
                 </div>
 
+                {/* Buka Undangan Button */}
                 <button
                   onClick={handleOpen}
-                  className="group relative w-full overflow-hidden rounded-full py-3 px-8 shadow-[0_8px_25px_rgba(92,19,28,0.38)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#7c1d29] via-[#63141f] to-[#4e0e16] border border-[#d4af37]/60"
+                  className="group relative w-full overflow-hidden rounded-full py-3 px-8 shadow-[0_8px_25px_rgba(92,19,28,0.48),_0_0_22px_rgba(212,175,55,0.38)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#6e131d] via-[#8c2530] to-[#550c14] border-[1.5px] border-[#d4af37]"
                 >
                   <div 
-                    className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full"
-                    style={{ animation: 'shimmer-sweep-gold 2.6s ease-in-out infinite' }}
+                    className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full"
+                    style={{ animation: 'shimmer-sweep-gold 2.4s ease-in-out infinite' }}
                   />
                   <div className="relative flex items-center justify-center gap-2">
                     <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#fff6e6] drop-shadow-sm">
                       BUKA UNDANGAN
                     </span>
-                    <Sparkles className="w-3.5 h-3.5 text-[#f3da9f]" />
+                    <Sparkles className="w-4 h-4 text-[#ffd778] animate-pulse" />
                   </div>
                 </button>
               </div>
