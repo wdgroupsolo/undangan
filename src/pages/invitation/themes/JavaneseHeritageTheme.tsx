@@ -518,13 +518,13 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     },
     {
       id: 'default-resepsi',
-      name: 'Resepsi Pernikahan',
+      name: 'Resepsi',
       event_date: '2025-12-28',
-      start_time: '11:00 WIB',
-      end_time: '14:00 WIB',
-      location: 'Grand Heritage Ballroom',
-      address: 'Plataran Heritage Borobudur, Jawa Tengah',
-      maps_url: 'https://maps.google.com/?q=Plataran+Heritage+Borobudur',
+      start_time: '10:00 WIB',
+      end_time: 'Selesai',
+      location: 'Kediaman Mempelai Wanita',
+      address: 'Kawasan Wisata Candi Borobudur, Magelang, Jawa Tengah',
+      maps_url: 'https://maps.google.com/?q=Candi+Borobudur',
     }
   ];
 
@@ -533,7 +533,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   // Helper to parse event fields for the arch card strictly matching reference format
   const parseEventDisplay = (evt: any, idx: number) => {
     const isAkad = idx === 0 || (evt?.name && evt.name.toLowerCase().includes('akad'));
-    let dayName = isAkad ? 'MINGGU' : 'MINGGU';
+    let dayName = 'MINGGU';
     let dayNum = isAkad ? '27' : '28';
     let monthYear = 'DESEMBER 2025';
 
@@ -552,11 +552,13 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
       } catch (_) {}
     }
 
-    const title = evt?.name ? evt.name.toUpperCase() : (isAkad ? 'AKAD NIKAH' : 'RESEPSI PERNIKAHAN');
-    const start = evt?.start_time || (isAkad ? '10:00 WIB' : '11:00 WIB');
-    const end = evt?.end_time || (isAkad ? 'Selesai' : '14:00 WIB');
+    const title = evt?.name 
+      ? (evt.name.toLowerCase() === 'resepsi pernikahan' ? 'RESEPSI' : evt.name.toUpperCase()) 
+      : (isAkad ? 'AKAD NIKAH' : 'RESEPSI');
+    const start = evt?.start_time || '10:00 WIB';
+    const end = evt?.end_time || 'Selesai';
     const timeStr = `${start} - ${end}`;
-    const location = evt?.location || (isAkad ? 'Kediaman Mempelai Wanita' : 'Grand Heritage Ballroom');
+    const location = evt?.location || 'Kediaman Mempelai Wanita';
     const address = evt?.address || '';
     const mapsUrl = evt?.maps_url || 'https://maps.google.com/?q=Candi+Borobudur';
 
@@ -1124,163 +1126,166 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
         {/* ========================================================================= */}
-        {/* 4. RANGKAIAN ACARA (Exact Oval Arch Recreation of 'ini bawahnya' reference) */}
+        {/* 4. RANGKAIAN ACARA (AKAD NIKAH & RESEPSI OVAL ARCH CARDS)                 */}
         {/* ========================================================================= */}
         <section id="acara-section" className="relative py-12 sm:py-16 px-3 sm:px-6 z-10 bg-[#4e1017] overflow-hidden text-center select-none shadow-[inset_0_4px_30px_rgba(0,0,0,0.4)]">
           
           {/* Deep Royal Maroon Background Gradient */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#4e1017] via-[#400b12] to-[#34070d] pointer-events-none" />
 
-          {/* White/Cream Batik Kawung Motifs on Background Corners matching Screenshot */}
+          {/* White/Cream Batik Kawung Motifs on Background Corners */}
           <BatikKawungCluster className="absolute -top-3 -right-3 w-36 h-36 sm:w-48 sm:h-48 pointer-events-none opacity-55" />
-          <BatikKawungCluster className="absolute top-28 -right-8 w-28 h-28 pointer-events-none opacity-35" />
+          <BatikKawungCluster className="absolute top-[28%] -right-8 w-28 h-28 pointer-events-none opacity-35" />
+          <BatikKawungCluster className="absolute top-[52%] -left-8 w-28 h-28 pointer-events-none opacity-35" />
           <BatikKawungCluster className="absolute -bottom-3 -left-3 w-36 h-36 sm:w-48 sm:h-48 pointer-events-none opacity-55" />
-          <BatikKawungCluster className="absolute bottom-28 -left-8 w-28 h-28 pointer-events-none opacity-35" />
           <BatikKawungCluster className="absolute -bottom-4 -right-4 w-32 h-32 pointer-events-none opacity-45" />
 
-          {/* Pill Tab Selector to seamlessly switch between Akad Nikah & Resepsi Pernikahan */}
-          <div className="relative z-20 flex items-center justify-center gap-2 mb-6 sm:mb-8">
+          {/* Quick Jump Buttons for Akad Nikah & Resepsi */}
+          <div className="relative z-20 flex items-center justify-center gap-2 mb-8">
             {displayEvents.map((evt, idx) => (
               <button
                 key={evt.id || idx}
                 type="button"
-                onClick={() => setActiveEventIndex(idx)}
-                className={`px-4 sm:px-5 py-2 rounded-full text-[11px] sm:text-xs font-serif uppercase tracking-[0.2em] transition-all duration-300 cursor-pointer ${
-                  activeEventIndex === idx
-                    ? 'bg-[#c5a880] text-[#3d0d14] font-bold shadow-[0_4px_16px_rgba(197,168,128,0.4)] scale-105'
-                    : 'bg-black/35 text-[#fbf7f0]/80 hover:bg-black/55 border border-[#c5a880]/30'
-                }`}
+                onClick={() => {
+                  const el = document.getElementById(idx === 0 ? 'card-akad' : 'card-resepsi');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-5 py-2 rounded-full text-[11px] sm:text-xs font-serif uppercase tracking-[0.2em] bg-black/35 hover:bg-black/55 text-[#fbf7f0]/85 border border-[#c5a880]/35 transition-all duration-300 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
               >
-                {evt.name || (idx === 0 ? 'Akad Nikah' : 'Resepsi')}
+                {idx === 0 ? 'Akad Nikah' : 'Resepsi'}
               </button>
             ))}
           </div>
 
-          {/* Active Event Card Data */}
-          {(() => {
-            const currentEvent = displayEvents[activeEventIndex] || displayEvents[0] || defaultEvents[0];
-            const { 
-              title, 
-              dayName, 
-              dayNum, 
-              monthYear, 
-              timeStr, 
-              location, 
-              address, 
-              mapsUrl 
-            } = parseEventDisplay(currentEvent, activeEventIndex);
+          {/* Sequential Cards Container: AKAD NIKAH first, RESEPSI second directly below it */}
+          <div className="relative z-10 space-y-12 sm:space-y-16 max-w-[380px] mx-auto">
+            {displayEvents.map((evt, idx) => {
+              const { 
+                title, 
+                dayName, 
+                dayNum, 
+                monthYear, 
+                timeStr, 
+                location, 
+                address, 
+                mapsUrl 
+              } = parseEventDisplay(evt, idx);
 
-            return (
-              <div className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] mx-auto rounded-[190px] sm:rounded-[215px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_12px_40px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col items-center justify-between p-5 pt-12 sm:pt-14 pb-8 text-center transition-all duration-500">
-                
-                {/* Soft Radial Parchment Warmth */}
-                <div className="absolute inset-0 bg-radial from-[#fdf9f2] via-[#faf2e6] to-[#f4e8d3] pointer-events-none" />
+              return (
+                <div 
+                  key={evt.id || idx}
+                  id={idx === 0 ? 'card-akad' : 'card-resepsi'}
+                  className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] mx-auto rounded-[190px] sm:rounded-[215px] border-[2px] border-[#c5a880] bg-[#faf3e8] shadow-[0_12px_40px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col items-center justify-between p-5 pt-12 sm:pt-14 pb-8 text-center transition-all duration-300"
+                >
+                  {/* Soft Radial Parchment Warmth */}
+                  <div className="absolute inset-0 bg-radial from-[#fdf9f2] via-[#faf2e6] to-[#f4e8d3] pointer-events-none" />
 
-                {/* Gunungan Wayang (Kayon) Watermark */}
-                <JavaneseGunungan className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-[220px] sm:w-[250px] h-[340px] sm:h-[380px] mx-auto opacity-[0.18] pointer-events-none text-[#5c131c]" />
+                  {/* Gunungan Wayang (Kayon) Watermark */}
+                  <JavaneseGunungan className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-[220px] sm:w-[250px] h-[340px] sm:h-[380px] mx-auto opacity-[0.18] pointer-events-none text-[#5c131c]" />
 
-                {/* Climbing Green Ivy Vine on Upper Right Gold Rim */}
-                <ArchRightVine className="absolute -right-3 top-8 sm:top-10 z-20 pointer-events-none" />
+                  {/* Climbing Green Ivy Vine on Upper Right Gold Rim */}
+                  <ArchRightVine className="absolute -right-3 top-8 sm:top-10 z-20 pointer-events-none" />
 
-                {/* Delicate Botanical Twig Buds in Top Right Corner */}
-                <PhotoCornerFloralTopRight className="absolute -top-3 -right-3 w-20 h-20 sm:w-24 sm:h-24 z-15 pointer-events-none opacity-80" />
+                  {/* Delicate Botanical Twig Buds in Top Right Corner */}
+                  <PhotoCornerFloralTopRight className="absolute -top-3 -right-3 w-20 h-20 sm:w-24 sm:h-24 z-15 pointer-events-none opacity-80" />
 
-                {/* Curved Bottom Floral Garland of Burgundy Orchids and Cream Peonies */}
-                <div className="absolute inset-x-0 bottom-0 h-44 sm:h-52 overflow-hidden rounded-b-[188px] sm:rounded-b-[213px] pointer-events-none z-10">
-                  <img 
-                    src="/themes/javanese-heritage-bg.jpg" 
-                    alt="Curved Floral Garland" 
-                    className="w-full h-full object-cover object-bottom scale-110"
-                  />
-                  {/* Subtle gradient feather at top of garland */}
-                  <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#faf2e6] via-[#faf2e6]/40 to-transparent" />
-                </div>
-
-                {/* Card Top Section: Title & Date */}
-                <div className="relative z-20 w-full flex flex-col items-center">
-                  
-                  {/* Event Title */}
-                  <h3 
-                    className="text-2xl sm:text-[28px] font-normal tracking-[0.18em] text-[#5c131c] uppercase"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  >
-                    {title}
-                  </h3>
-
-                  {/* Day */}
-                  <p 
-                    className="text-xs sm:text-[13px] tracking-[0.25em] text-[#6a1a24] font-serif uppercase font-medium mt-2"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  >
-                    {dayName}
-                  </p>
-
-                  {/* Big Date Number (27) */}
-                  <div 
-                    className="text-[48px] sm:text-[56px] font-light text-[#5c131c] leading-none my-1"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  >
-                    {dayNum}
+                  {/* Curved Bottom Floral Garland of Burgundy Orchids and Cream Peonies */}
+                  <div className="absolute inset-x-0 bottom-0 h-44 sm:h-52 overflow-hidden rounded-b-[188px] sm:rounded-b-[213px] pointer-events-none z-10">
+                    <img 
+                      src="/themes/javanese-heritage-bg.jpg" 
+                      alt="Curved Floral Garland" 
+                      className="w-full h-full object-cover object-bottom scale-110"
+                    />
+                    {/* Subtle gradient feather at top of garland */}
+                    <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#faf2e6] via-[#faf2e6]/40 to-transparent" />
                   </div>
 
-                  {/* Month & Year */}
-                  <p 
-                    className="text-xs sm:text-[13px] tracking-[0.22em] text-[#6a1a24] font-serif uppercase font-medium"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  >
-                    {monthYear}
-                  </p>
-
-                  {/* Horizontal Divider Line with Traditional House Icon & Time */}
-                  <div className="w-full max-w-[240px] sm:max-w-[260px] flex flex-col items-center mt-5 sm:mt-6 mb-2">
-                    <div className="w-full flex items-center justify-center">
-                      <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
-                      <div className="px-3 text-[#5c131c]">
-                        <TraditionalHouseIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#5c131c]" />
-                      </div>
-                      <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
-                    </div>
-                    <p className="text-xs sm:text-[13px] text-[#5c131c] font-serif italic mt-1 tracking-wide font-normal">
-                      {timeStr}
-                    </p>
-                  </div>
-
-                </div>
-
-                {/* Card Bottom Section: Location & Action above the Bottom Flowers */}
-                <div className="relative z-20 w-full flex flex-col items-center mt-12 sm:mt-16 mb-4 sm:mb-6 px-4">
-                  
-                  <p 
-                    className="text-sm sm:text-base font-serif text-[#4e1b22] font-medium tracking-wide drop-shadow-xs"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  >
-                    {location}
-                  </p>
-
-                  {address && (
-                    <p className="text-[11px] sm:text-xs text-[#6e2b34] font-serif leading-relaxed mt-1 max-w-[240px]">
-                      {address}
-                    </p>
-                  )}
-
-                  {/* Google Maps Button */}
-                  {mapsUrl && (
-                    <a
-                      href={mapsUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#5c131c] hover:bg-[#430d14] text-[#fbf7f0] border border-[#c5a880]/60 text-[11px] sm:text-xs font-serif uppercase tracking-wider transition-all shadow-md hover:scale-105 active:scale-95 cursor-pointer mt-3"
+                  {/* Card Top Section: Title & Date */}
+                  <div className="relative z-20 w-full flex flex-col items-center">
+                    
+                    {/* Event Title */}
+                    <h3 
+                      className="text-2xl sm:text-[28px] font-normal tracking-[0.18em] text-[#5c131c] uppercase"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
-                      <MapPin className="w-3.5 h-3.5 text-[#fbf7f0]" />
-                      <span>Google Maps</span>
-                    </a>
-                  )}
+                      {title}
+                    </h3>
+
+                    {/* Day */}
+                    <p 
+                      className="text-xs sm:text-[13px] tracking-[0.25em] text-[#6a1a24] font-serif uppercase font-medium mt-2"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {dayName}
+                    </p>
+
+                    {/* Big Date Number (27 for Akad, 28 for Resepsi) */}
+                    <div 
+                      className="text-[48px] sm:text-[56px] font-light text-[#5c131c] leading-none my-1"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {dayNum}
+                    </div>
+
+                    {/* Month & Year */}
+                    <p 
+                      className="text-xs sm:text-[13px] tracking-[0.22em] text-[#6a1a24] font-serif uppercase font-medium"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {monthYear}
+                    </p>
+
+                    {/* Horizontal Divider Line with Time ABOVE and Peaked Joglo House Icon strictly matching both screenshots */}
+                    <div className="w-full max-w-[240px] sm:max-w-[260px] flex flex-col items-center mt-5 sm:mt-6 mb-2">
+                      <p className="text-xs sm:text-[13px] text-[#5c131c] font-serif italic mb-1.5 tracking-wide font-normal">
+                        {timeStr}
+                      </p>
+                      <div className="w-full flex items-center justify-center">
+                        <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
+                        <div className="px-3 text-[#5c131c]">
+                          <TraditionalHouseIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#5c131c]" />
+                        </div>
+                        <div className="h-[1px] flex-1 bg-[#5c131c]/60" />
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Card Bottom Section: Location & Frosted 'LIHAT LOKASI' Button */}
+                  <div className="relative z-20 w-full flex flex-col items-center mt-12 sm:mt-16 mb-4 sm:mb-6 px-4">
+                    
+                    <p 
+                      className="text-sm sm:text-base font-serif text-[#4e1b22] font-medium tracking-wide drop-shadow-xs"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {location}
+                    </p>
+
+                    {address && address !== location && (
+                      <p className="text-[11px] sm:text-xs text-[#6e2b34] font-serif leading-relaxed mt-1 max-w-[240px]">
+                        {address}
+                      </p>
+                    )}
+
+                    {/* Frosted Glass 'LIHAT LOKASI' Pill Button Matching Reference Images */}
+                    {mapsUrl && (
+                      <a
+                        href={mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-6 py-2 rounded-full bg-[#f4e8d3]/45 hover:bg-[#f4e8d3]/70 text-[#5c131c] border border-[#c5a880]/60 backdrop-blur-[3px] text-[11px] sm:text-xs font-serif uppercase tracking-[0.22em] font-semibold transition-all shadow-[0_2px_10px_rgba(92,19,28,0.15)] hover:scale-105 active:scale-95 cursor-pointer mt-3 z-20"
+                      >
+                        <MapPin className="w-3.5 h-3.5 text-[#5c131c]" />
+                        <span>Lihat Lokasi</span>
+                      </a>
+                    )}
+
+                  </div>
 
                 </div>
-
-              </div>
-            );
-          })()}
+              );
+            })}
+          </div>
 
         </section>
 
