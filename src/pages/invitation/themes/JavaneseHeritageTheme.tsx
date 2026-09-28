@@ -172,45 +172,73 @@ const TraditionalHouseIcon: React.FC<{ className?: string }> = ({ className = "w
   </svg>
 );
 
-// Intertwined Calligraphic Monogram Emblem (Matches User Reference Top Logo exactly)
+// Intertwined Calligraphic Monogram Emblem (Matches Steven & Bunga / Javanese theme emblem)
 export const JavaneseMonogram: React.FC<{ initials?: string; className?: string }> = ({ 
-  initials = 'HA', 
+  initials = 'SB', 
   className = '' 
-}) => (
-  <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
-    <svg 
-      viewBox="0 0 110 135" 
-      fill="none" 
-      className="w-16 h-20 sm:w-20 sm:h-24 text-[#5c131c] drop-shadow-[0_2px_4px_rgba(92,19,28,0.22)]"
-    >
-      {/* Front Serif D Stem */}
-      <path 
-        d="M58 24 L58 108 M50 24 L66 24 M50 108 L66 108" 
-        stroke="currentColor" 
-        strokeWidth="3.6" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-      />
-      {/* Front D Outer Curve */}
-      <path 
-        d="M58 24 C90 24, 98 44, 98 66 C98 88, 90 108, 58 108" 
-        stroke="currentColor" 
-        strokeWidth="3.8" 
-        strokeLinecap="round" 
-        fill="none" 
-      />
-      {/* Back Intertwined D / Calligraphic Flourish Swash */}
-      <path 
-        d="M36 86 C22 76, 26 56, 38 42 C48 30, 68 26, 76 25 M76 25 L76 96 C76 108, 62 116, 46 116 C30 116, 18 104, 34 90 C48 78, 72 86, 82 95" 
-        stroke="currentColor" 
-        strokeWidth="3" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        fill="none" 
-      />
-    </svg>
-  </div>
-);
+}) => {
+  const isSB = initials.toUpperCase() === 'SB' || initials.toUpperCase() === 'S & B';
+  return (
+    <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
+      {isSB ? (
+        <svg 
+          viewBox="0 0 110 135" 
+          fill="none" 
+          className="w-16 h-20 sm:w-20 sm:h-24 text-[#5c131c] drop-shadow-[0_2px_4px_rgba(92,19,28,0.22)]"
+        >
+          {/* Elegant S Curve intertwined with B */}
+          <path 
+            d="M66 28 C56 22, 40 22, 34 30 C28 38, 32 48, 42 54 C54 60, 62 66, 62 78 C62 92, 48 98, 36 94 C28 90, 24 82, 24 82" 
+            stroke="currentColor" 
+            strokeWidth="3.2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            fill="none" 
+          />
+          {/* Letter B Stem */}
+          <path 
+            d="M56 25 L56 104 M48 25 L64 25 M48 104 L64 104" 
+            stroke="currentColor" 
+            strokeWidth="3.4" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+          />
+          {/* Letter B Upper Loop */}
+          <path 
+            d="M56 25 C78 25, 86 36, 86 48 C86 60, 76 63, 56 63" 
+            stroke="currentColor" 
+            strokeWidth="3.2" 
+            strokeLinecap="round" 
+            fill="none" 
+          />
+          {/* Letter B Lower Loop */}
+          <path 
+            d="M56 63 C80 63, 89 73, 89 87 C89 104, 76 104, 56 104" 
+            stroke="currentColor" 
+            strokeWidth="3.4" 
+            strokeLinecap="round" 
+            fill="none" 
+          />
+          {/* Flourish swash wrapping below */}
+          <path 
+            d="M26 108 C38 116, 74 118, 88 110" 
+            stroke="currentColor" 
+            strokeWidth="1.6" 
+            strokeDasharray="2 3" 
+            strokeLinecap="round" 
+          />
+        </svg>
+      ) : (
+        <div 
+          className="w-16 h-20 sm:w-20 sm:h-24 flex items-center justify-center font-serif text-3xl sm:text-4xl text-[#5c131c] tracking-widest italic drop-shadow-[0_2px_4px_rgba(92,19,28,0.22)]"
+          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+        >
+          {initials}
+        </div>
+      )}
+    </div>
+  );
+};
 
 // Climbing Ivy / Betel Vines on Left Arch Border (Curling over the maroon frame)
 const ArchLeftVine: React.FC<{ className?: string }> = ({ className = '' }) => (
@@ -526,7 +554,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     {
       name: 'Della',
       attendance: 'Hadir',
-      message: 'Happy Wedding Habib & Adiba',
+      message: 'Happy Wedding Steven & Bunga ❤️',
       date: '1 menit lalu'
     }
   ]);
@@ -534,33 +562,33 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   const hadirCount = wishes.filter(w => w.attendance === 'Hadir').length;
   const tidakHadirCount = wishes.filter(w => w.attendance === 'Tidak Hadir').length;
 
-  // Couple names - Habib & Adiba as canonical demo
+  // Couple names - Steven & Bunga as canonical demo
   const groomNick = (() => {
     const nick = couple?.groom_nickname?.trim();
     const full = couple?.groom_full_name?.trim();
-    if (nick && nick.toLowerCase() !== 'bagas' && nick.toLowerCase() !== 'steven') return nick;
-    if (full && full.toLowerCase() !== 'bagas' && full.toLowerCase() !== 'steven') return full.split(' ')[0];
-    return 'Habib';
+    if (nick && nick.toLowerCase() !== 'bagas' && nick.toLowerCase() !== 'habib') return nick;
+    if (full && full.toLowerCase() !== 'bagas' && full.toLowerCase() !== 'habib') return full.split(' ')[0];
+    return 'Steven';
   })();
 
   const brideNick = (() => {
     const nick = couple?.bride_nickname?.trim();
     const full = couple?.bride_full_name?.trim();
-    if (nick && nick.toLowerCase() !== 'siti' && nick.toLowerCase() !== 'bunga') return nick;
-    if (full && full.toLowerCase() !== 'siti' && full.toLowerCase() !== 'bunga') return full.split(' ')[0];
-    return 'Adiba';
+    if (nick && nick.toLowerCase() !== 'siti' && nick.toLowerCase() !== 'adiba') return nick;
+    if (full && full.toLowerCase() !== 'siti' && full.toLowerCase() !== 'adiba') return full.split(' ')[0];
+    return 'Bunga';
   })();
 
   const groomFullName = (() => {
     const full = couple?.groom_full_name?.trim();
-    if (full && full.toLowerCase() !== 'bagas' && full.toLowerCase() !== 'steven pratama') return full;
-    return 'HABIB YULIANTO';
+    if (full && full.toLowerCase() !== 'bagas' && full.toLowerCase() !== 'habib yulianto') return full;
+    return 'STEVEN PRATAMA';
   })();
 
   const brideFullName = (() => {
     const full = couple?.bride_full_name?.trim();
-    if (full && full.toLowerCase() !== 'siti' && full.toLowerCase() !== 'bunga lestari') return full;
-    return 'ADIBA PUTRI SYAKILLA';
+    if (full && full.toLowerCase() !== 'siti' && full.toLowerCase() !== 'adiba putri syakilla') return full;
+    return 'BUNGA LESTARI';
   })();
 
   // Active Event Tab Index (0: Akad Nikah, 1: Resepsi)
@@ -654,23 +682,31 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     return () => clearInterval(interval);
   }, [targetDateStr]);
 
-  // Gallery fallback matching user reference screenshots (Habib & Adiba)
+  // Gallery fallback matching user photos (Steven & Bunga)
   const defaultGallery = [
     { 
-      image_url: '/themes/gallery-habib-adiba-1.png', 
+      image_url: '/photos/photo-1.jpg', 
       caption: 'Langkah Bersama Menuju Hari Bahagia' 
     },
     { 
-      image_url: '/themes/gallery-habib-adiba-2.png', 
-      caption: 'Dalam Kehangatan Pendopo Jawa' 
+      image_url: '/photos/photo-4.jpg', 
+      caption: 'Dalam Kehangatan Janji Kasih' 
     },
     { 
-      image_url: '/themes/gallery-habib-adiba-3.png', 
-      caption: 'Duduk Berdua Mengukir Janji Kasih' 
+      image_url: '/photos/photo-5.jpg', 
+      caption: 'Duduk Berdua Mengukir Cerita Cinta' 
     },
     { 
-      image_url: '/themes/gallery-habib-adiba-4.png', 
+      image_url: '/photos/photo-6.jpg', 
       caption: 'Adat Luhur & Keagungan Cinta' 
+    },
+    { 
+      image_url: '/photos/photo-7.jpg', 
+      caption: 'Bersama Menatap Masa Depan' 
+    },
+    { 
+      image_url: '/photos/photo-8.jpg', 
+      caption: 'Tawa & Bahagia yang Terpatri' 
     },
   ];
 
@@ -933,10 +969,10 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
             {/* TOP: Calligraphic Monogram */}
             <div className="relative z-20 pt-7 sm:pt-9">
-              <JavaneseMonogram />
+              <JavaneseMonogram initials="SB" />
             </div>
 
-            {/* MIDDLE: Typography - THE WEDDING OF HABIB & ADIBA */}
+            {/* MIDDLE: Typography - THE WEDDING OF STEVEN & BUNGA */}
             <div className="relative z-20 my-auto py-2 space-y-2 text-center">
               <p 
                 className="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs"
@@ -1006,8 +1042,8 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                 {/* Photo Container */}
                 <div className="relative z-10 w-full aspect-[4/3.2] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(92,19,28,0.18)] border border-[#8c2d38]/20 bg-[#efe7db]">
                   <img 
-                    src="/themes/habib-adiba-window.jpg" 
-                    alt="Habib & Adiba" 
+                    src={couple?.cover_photo_url || '/photos/photo-3.jpg'} 
+                    alt={`${groomNick} & ${brideNick}`} 
                     className="w-full h-full object-cover object-center scale-102"
                   />
                 </div>
@@ -1096,7 +1132,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                   {/* Bride Oval Photo */}
                   <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
                     <img 
-                      src={couple?.bride_photo_url || '/themes/adiba-portrait.png'} 
+                      src={couple?.bride_photo_url || '/bride-default.png'} 
                       alt={brideNick}
                       className="w-full h-full object-cover object-top rounded-[50%]"
                     />
@@ -1120,13 +1156,13 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
                   {/* Parents Info */}
                   <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed mt-2 max-w-[260px]">
-                    Putri dari Pasangan Bapak {couple?.bride_father_name || 'Anas Rifai'}<br />
-                    &amp; Ibu {couple?.bride_mother_name || 'Kholifah'}
+                    Putri dari Pasangan Bapak {couple?.bride_father_name || 'Bapak'}<br />
+                    &amp; Ibu {couple?.bride_mother_name || 'Ibu'}
                   </p>
 
                   {/* Circular Maroon Instagram Button */}
                   <a
-                    href={`https://instagram.com/${(couple?.bride_instagram || 'adibasyakilla').replace('@', '')}`}
+                    href={`https://instagram.com/${(couple?.bride_instagram || 'bungalestari').replace('@', '')}`}
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`Instagram ${brideNick}`}
@@ -1148,13 +1184,13 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                 </div>
               </ScrollReveal>
 
-              {/* GROOM (Habib) */}
+              {/* GROOM (Steven) */}
               <ScrollReveal animation="slide-right" delay={240} className="w-full">
                 <div className="w-full flex flex-col items-center">
                   {/* Groom Oval Photo */}
                   <div className="w-36 h-48 sm:w-44 sm:h-58 rounded-[50%] overflow-hidden border-[1.5px] border-[#5c131c]/50 p-1 bg-[#fbf7f0] shadow-md mb-2">
                     <img 
-                      src={couple?.groom_photo_url || '/themes/habib-portrait.png'} 
+                      src={couple?.groom_photo_url || '/groom-default.png'} 
                       alt={groomNick}
                       className="w-full h-full object-cover object-top rounded-[50%]"
                     />
@@ -1178,13 +1214,13 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
                   {/* Parents Info */}
                   <p className="text-xs sm:text-[13px] text-[#4e1b22] font-serif leading-relaxed mt-2 max-w-[260px]">
-                    Putra dari Pasangan Bapak {couple?.groom_father_name || 'H. M. Dawam'}<br />
-                    &amp; Ibu {couple?.groom_mother_name || 'Dewi Sudarwati (Almh)'}
+                    Putra dari Pasangan Bapak {couple?.groom_father_name || 'Bapak'}<br />
+                    &amp; Ibu {couple?.groom_mother_name || 'Ibu'}
                   </p>
 
                   {/* Circular Maroon Instagram Button */}
                   <a
-                    href={`https://instagram.com/${(couple?.groom_instagram || 'habibyulianto').replace('@', '')}`}
+                    href={`https://instagram.com/${(couple?.groom_instagram || 'stevenpratama').replace('@', '')}`}
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`Instagram ${groomNick}`}
@@ -1429,8 +1465,8 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               <ScrollReveal animation="zoom-in" delay={260}>
                 <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-[#5c131c]/25 mb-8 bg-[#efe7db]">
                   <img 
-                    src="/themes/habib-adiba-window.jpg" 
-                    alt="Habib & Adiba Love Story" 
+                    src={couple?.cover_photo_url || '/photos/photo-6.jpg'} 
+                    alt={`${groomNick} & ${brideNick} Love Story`} 
                     className="w-full h-full object-cover object-center scale-102"
                   />
                 </div>
@@ -1515,7 +1551,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               {/* Golden Pill Instagram Button (KLIK DI SINI) */}
               <ScrollReveal animation="zoom-in" delay={360}>
                 <a
-                  href={couple?.streaming_url || `https://instagram.com/${(couple?.bride_instagram || 'adibasyakilla').replace('@', '')}`}
+                  href={couple?.streaming_url || `https://instagram.com/${(couple?.bride_instagram || 'bungalestari').replace('@', '')}`}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Tonton Live Streaming di Instagram"
@@ -1834,7 +1870,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             <ScrollReveal animation="arch-reveal" delay={80}>
               <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#5c131c] overflow-hidden shadow-[0_10px_28px_rgba(92,19,28,0.22)] bg-[#f5ebe1] mb-6">
                 <img 
-                  src="/themes/habib-adiba-closing.jpg" 
+                  src={couple?.cover_photo_url || '/photos/photo-3.jpg'} 
                   alt={`${groomNick} & ${brideNick}`} 
                   className="w-full h-full object-cover object-[center_18%]"
                 />
@@ -1853,7 +1889,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               </div>
             </ScrollReveal>
 
-            {/* Names: HABIB & ADIBA (Strictly matching screenshot) */}
+            {/* Names: STEVEN & BUNGA (Strictly matching screenshot) */}
             <ScrollReveal animation="fade-up" delay={340}>
               <h2 
                 className="text-2xl sm:text-[28px] tracking-[0.08em] text-[#5c131c] font-normal uppercase select-none pb-24 sm:pb-28"

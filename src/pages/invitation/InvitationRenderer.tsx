@@ -185,15 +185,15 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  const activeThemeSlug = requestedTheme || (slug === 'habib-adiba' ? 'javanese-heritage' : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral'));
+  const activeThemeSlug = requestedTheme || (slug === 'habib-adiba' || slug === 'steven-bunga' ? 'javanese-heritage' : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral'));
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
   const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage;
 
-  const groomDisplayName = isJavaneseHeritage ? 'Habib' : (isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom);
-  const brideDisplayName = isJavaneseHeritage ? 'Adiba' : (isSecretGarden && (bride === 'Bunga' || bride === 'Siti') ? 'Maudy' : bride);
+  const groomDisplayName = isJavaneseHeritage ? (groom && groom !== 'Bagas' && groom !== 'Habib' ? groom : 'Steven') : (isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom);
+  const brideDisplayName = isJavaneseHeritage ? (bride && bride !== 'Siti' && bride !== 'Adiba' ? bride : 'Bunga') : (isSecretGarden && (bride === 'Bunga' || bride === 'Siti') ? 'Maudy' : bride);
 
   const coverImage = 
     couple?.cover_photo_url || 
@@ -469,10 +469,10 @@ export const InvitationRenderer: React.FC = () => {
 
               {/* TOP: Calligraphic Monogram */}
               <div className="relative z-10 pt-7 sm:pt-9">
-                <JavaneseMonogram />
+                <JavaneseMonogram initials="SB" />
               </div>
 
-              {/* MIDDLE: Typography - THE WEDDING OF HABIB & ADIBA */}
+              {/* MIDDLE: Typography - THE WEDDING OF STEVEN & BUNGA */}
               <div className="relative z-10 my-auto py-3 space-y-2 text-center">
                 <p 
                   className="text-xs tracking-[0.35em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs"
