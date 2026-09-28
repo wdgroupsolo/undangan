@@ -1746,7 +1746,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             </div>
 
             {/* Closing Thank You Text */}
-            <div className="space-y-3 px-3 max-w-[320px] sm:max-w-[340px] mx-auto mb-6">
+            <div className="space-y-3 px-3 max-w-[320px] sm:max-w-[340px] mx-auto mb-7">
               <p className="text-xs sm:text-[13px] font-serif text-[#4e1b22] leading-relaxed">
                 Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restunya untuk pernikahan kami.
               </p>
@@ -1755,26 +1755,13 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               </p>
             </div>
 
-            {/* Couple Signature & Family Names */}
-            <div className="space-y-1">
-              <p className="text-xs font-serif font-semibold text-[#5c131c] tracking-wider uppercase">
-                Kami yang Berbahagia :
-              </p>
-              <h2 
-                className="text-2xl sm:text-[28px] text-[#5c131c] font-normal"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {groomNick} &amp; {brideNick}
-              </h2>
-              <p className="text-[11px] text-[#7a2832] font-serif">
-                Beserta Seluruh Keluarga Besar
-              </p>
-            </div>
-
-            {/* Footer Brand Watermark */}
-            <div className="pt-10 pb-2 text-[10px] text-[#7a2832]/60 font-sans tracking-widest uppercase select-none">
-              WD Group Solo • Digital Wedding Invitation
-            </div>
+            {/* Names: HABIB & ADIBA (Strictly matching screenshot) */}
+            <h2 
+              className="text-2xl sm:text-[28px] tracking-[0.08em] text-[#5c131c] font-normal uppercase select-none pb-24 sm:pb-28"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              {groomNick.toUpperCase()} <span className="italic font-serif font-normal">&amp;</span> {brideNick.toUpperCase()}
+            </h2>
 
           </div>
 
