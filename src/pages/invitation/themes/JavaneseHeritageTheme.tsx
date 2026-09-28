@@ -612,27 +612,19 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
       }))
     : defaultGallery;
 
-  // Love stories fallback
+  // Love stories fallback strictly matching reference screenshots
   const defaultStories = [
     {
-      year: '2021',
-      title: 'Awal Pertemuan',
-      description: 'Pertemuan tak sengaja di pelataran Candi Borobudur saat senja. Sebuah perbincangan sederhana yang menumbuhkan rasa kagum dan saling mengenal satu sama lain.'
+      title: 'Awal Bertemu',
+      description: 'Awal mengenal dimulai sejak duduk di bangku SMA, namun saat itu kami tidak saling akrab. Pada tahun 2019, kami mulai dekat dan saling mengenal satu sama lain.'
     },
     {
-      year: '2023',
-      title: 'Menjalin Komitmen',
-      description: 'Setelah dua tahun saling membersamai dalam suka dan duka, kami meyakinkan hati untuk saling berkomitmen melangkah menuju jenjang yang lebih serius.'
+      title: 'Lamaran',
+      description: 'Setelah 4 tahun mengenal dekat, kami berdua meyakini mampu melangkah ke jenjang yang lebih serius. Pada 18 November 2023, kami pun resmi bertunangan dengan restu dari kedua orang tua dan keluarga besar.'
     },
     {
-      year: '2025',
-      title: 'Lamaran & Restu',
-      description: 'Dengan memohon doa dan restu dari kedua orang tua dan keluarga besar, kami mengikat janji pertunangan secara sakral dan bersiap menyongsong hari pernikahan.'
-    },
-    {
-      year: '2026',
-      title: 'Ijab Qabul & Bahagia',
-      description: 'Alhamdulillah, hari yang kami nantikan tiba. Bersatunya dua insan dalam ikatan suci pernikahan, melangkah bersama membangun keluarga yang sakinah, mawaddah, warahmah.'
+      title: 'Pernikahan',
+      description: 'Akhirnya, Kapal kami segera berlayar.. terima kasih kepada keluarga besar dan juga teman-teman yang telah menjadi saksi perjalanan cinta kami. Semoga kami dapat membawa kapal ini terus berlayar dan berlabuh di tujuan yang sama'
     }
   ];
 
@@ -1290,7 +1282,107 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
         {/* ========================================================================= */}
-        {/* 5. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
+        {/* ========================================================================= */}
+        {/* 5. LOVE STORY (Exact Recreation of 'ini bawahnya' reference screenshots)   */}
+        {/* ========================================================================= */}
+        <section id="love-story-section" className="relative py-12 px-3 sm:px-6 z-10 bg-[#fbf7f0] overflow-hidden">
+          
+          {/* Subtle Ambient Background Borobudur & Floral Garland Motif */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <img 
+              src="/themes/javanese-heritage-bg.jpg" 
+              alt="Javanese Heritage Background" 
+              className="w-full h-full object-cover object-bottom opacity-70 select-none"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fbf7f0] via-[#fbf7f0]/45 to-[#fbf7f0]/85" />
+          </div>
+
+          {/* Centered Thin Maroon Border Card Container matching Screenshot */}
+          <div className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] mx-auto rounded-[28px] sm:rounded-[36px] border-[1.5px] border-[#5c131c] bg-[#fbf7f0]/85 backdrop-blur-[2px] shadow-[0_4px_24px_rgba(92,19,28,0.12)] px-5 py-8 sm:px-7 sm:py-10 flex flex-col text-left">
+            
+            {/* Header: LOVE STORY (Centered) */}
+            <h2 
+              className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase text-center mb-1.5 select-none"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              LOVE STORY
+            </h2>
+
+            {/* Subtitle Quote (Centered) */}
+            <div className="text-center text-xs sm:text-[13px] font-serif text-[#5c131c] leading-relaxed mb-6 px-2">
+              <p>Setiap Kisah Cinta Itu Indah,</p>
+              <p>Tapi Miliki Kamu Adalah Favoritku</p>
+            </div>
+
+            {/* Couple Window Photo */}
+            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-[#5c131c]/25 mb-8 bg-[#efe7db]">
+              <img 
+                src="/themes/habib-adiba-window.jpg" 
+                alt="Habib & Adiba Love Story" 
+                className="w-full h-full object-cover object-center scale-102"
+              />
+            </div>
+
+            {/* Chapters (Left aligned) */}
+            <div className="space-y-6 sm:space-y-7">
+              {displayStories.map((story, i) => (
+                <div key={i} className="space-y-1.5">
+                  <h3 
+                    className="text-base sm:text-lg text-[#5c131c] font-bold tracking-wide font-serif"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {story.title}
+                  </h3>
+                  <p className="text-xs sm:text-[13px] text-[#42151b] font-serif leading-[1.85] text-justify sm:text-left">
+                    {story.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Header: OUR GALLERY (Matching Image 2 at bottom of the card) */}
+            <div className="mt-12 sm:mt-14 text-center select-none pt-6 border-t border-[#5c131c]/20">
+              <h2 
+                className="text-2xl sm:text-[28px] tracking-[0.2em] text-[#5c131c] font-normal uppercase"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                OUR GALLERY
+              </h2>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 6. OUR GALLERY PHOTOS & LIGHTBOX                                          */}
+        {/* ========================================================================= */}
+        <section id="gallery-section" className="py-8 px-4 sm:px-6 relative z-10 bg-[#fbf7f0]">
+          <div className="max-w-md mx-auto text-center space-y-6">
+            <div className="grid grid-cols-2 gap-3">
+              {displayGallery.map((item, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => setActiveLightboxIdx(idx)}
+                  className={`${item.span} ${item.aspect} rounded-2xl overflow-hidden shadow-md border border-[#8c2d38]/25 relative group cursor-pointer`}
+                >
+                  <img 
+                    src={item.image_url} 
+                    alt={item.caption}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                    <span className="text-xs text-white font-serif italic">
+                      {item.caption}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 7. COUNTDOWN TIMER SECTION (Menuju Hari Bahagia)                           */}
         {/* ========================================================================= */}
         <section className="py-14 px-5 sm:px-8 relative z-10 bg-[#3d1117] text-white text-center shadow-inner overflow-hidden">
           <div className="max-w-md mx-auto space-y-6">
@@ -1331,91 +1423,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             <p className="text-xs text-[#e8c5b8]/90 font-serif italic pt-1">
               {formatEventDate(targetDateStr)}
             </p>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 6. LOVE STORY (Kisah Cinta Kami)                                          */}
-        {/* ========================================================================= */}
-        <section className="py-16 px-5 sm:px-8 relative z-10 bg-[#f7f0e6] border-y border-[#8c2d38]/15">
-          <div className="max-w-md mx-auto text-center space-y-8">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-[#8c2d38] font-serif font-semibold">
-                Perjalanan Kasih
-              </p>
-              <h2 
-                className="text-3xl sm:text-4xl text-[#4e0e16] font-normal mt-1"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Kisah Cinta Kami
-              </h2>
-              <JavaneseDivider />
-            </div>
-
-            <div className="relative border-l-2 border-[#8c2d38]/30 ml-4 sm:ml-6 space-y-8 text-left">
-              {displayStories.map((story, i) => (
-                <div key={i} className="relative pl-6 sm:pl-8">
-                  {/* Timeline Badge */}
-                  <span className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#8c2d38] border-2 border-[#f7f0e6] shadow-sm" />
-
-                  <div className="bg-[#fbf7f0] rounded-2xl p-4 sm:p-5 shadow-sm border border-[#8c2d38]/20 space-y-1.5">
-                    <span className="text-[11px] font-sans font-bold text-[#8c2d38] tracking-widest uppercase">
-                      {story.year}
-                    </span>
-                    <h4 
-                      className="text-lg text-[#4e0e16] font-medium"
-                      style={{ fontFamily: "'Playfair Display', serif" }}
-                    >
-                      {story.title}
-                    </h4>
-                    <p className="text-xs text-[#5c242c] font-serif leading-relaxed">
-                      {story.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 7. GALERI MOMEN BAHAGIA (Gallery & Lightbox)                               */}
-        {/* ========================================================================= */}
-        <section className="py-16 px-5 sm:px-8 relative z-10 bg-[#fbf7f0]">
-          <div className="max-w-md mx-auto text-center space-y-8">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-[#8c2d38] font-serif font-semibold">
-                Potret Bahagia
-              </p>
-              <h2 
-                className="text-3xl sm:text-4xl text-[#4e0e16] font-normal mt-1"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Galeri Kenangan
-              </h2>
-              <JavaneseDivider />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              {displayGallery.map((item, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setActiveLightboxIdx(idx)}
-                  className={`${item.span} ${item.aspect} rounded-2xl overflow-hidden shadow-md border border-[#8c2d38]/25 relative group cursor-pointer`}
-                >
-                  <img 
-                    src={item.image_url} 
-                    alt={item.caption}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                    <span className="text-xs text-white font-serif italic">
-                      {item.caption}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
