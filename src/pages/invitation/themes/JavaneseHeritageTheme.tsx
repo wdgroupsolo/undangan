@@ -202,6 +202,82 @@ const ArchRightVine: React.FC<{ className?: string }> = ({ className = '' }) => 
   </div>
 );
 
+// Realistic Burgundy Orchid & Cream Peony Floral Corner for Photo Card (Top Right)
+const PhotoCornerFloralTopRight: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`pointer-events-none select-none ${className}`}>
+    <svg viewBox="0 0 100 100" fill="none" className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)]">
+      {/* Delicate twig with buds */}
+      <path d="M40 85 C65 60, 75 35, 92 10" stroke="#5a1820" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="85" cy="18" r="3" fill="#8c2530" />
+      <circle cx="75" cy="28" r="3.5" fill="#a4333e" />
+      <circle cx="94" cy="10" r="2.5" fill="#f0d5b0" />
+
+      {/* Main Burgundy Orchid Center Flower */}
+      <g transform="translate(62, 45)">
+        <path d="M0 0 C-10 -18, 10 -18, 0 0" fill="#7a1d27" stroke="#4d1016" strokeWidth="0.8" />
+        <path d="M0 0 C-18 12, -22 -2, 0 0" fill="#8a232e" stroke="#4d1016" strokeWidth="0.8" />
+        <path d="M0 0 C18 12, 22 -2, 0 0" fill="#8a232e" stroke="#4d1016" strokeWidth="0.8" />
+        <ellipse cx="-10" cy="-6" rx="10" ry="7" fill="#68151e" transform="rotate(-20 -10 -6)" />
+        <ellipse cx="10" cy="-6" rx="10" ry="7" fill="#68151e" transform="rotate(20 10 -6)" />
+        <path d="M-6 2 C-10 12, 10 12, 6 2 Z" fill="#9e2b36" />
+        <circle cx="0" cy="0" r="2.5" fill="#f3da9f" />
+      </g>
+
+      {/* Cream / Golden Peony Flower Accent */}
+      <g transform="translate(80, 68)">
+        <circle cx="0" cy="0" r="14" fill="#e8cfad" stroke="#c4a57b" strokeWidth="0.8" />
+        <circle cx="0" cy="0" r="10" fill="#f3dfc3" />
+        <circle cx="0" cy="0" r="6" fill="#faebd7" />
+        <circle cx="0" cy="0" r="3" fill="#df9b8e" />
+      </g>
+
+      {/* Small Orchid Blossom */}
+      <g transform="translate(42, 68)">
+        <ellipse cx="0" cy="0" rx="9" ry="7" fill="#781c25" />
+        <circle cx="0" cy="0" r="2" fill="#fadcaf" />
+      </g>
+    </svg>
+  </div>
+);
+
+// Realistic Burgundy Orchid & Cream Peony Floral Corner for Photo Card (Bottom Left)
+const PhotoCornerFloralBottomLeft: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`pointer-events-none select-none ${className}`}>
+    <svg viewBox="0 0 100 100" fill="none" className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)]">
+      {/* Delicate twig with buds */}
+      <path d="M60 15 C35 40, 25 65, 8 90" stroke="#5a1820" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="15" cy="82" r="3" fill="#8c2530" />
+      <circle cx="25" cy="72" r="3.5" fill="#a4333e" />
+      <circle cx="6" cy="90" r="2.5" fill="#f0d5b0" />
+
+      {/* Main Burgundy Orchid Center Flower */}
+      <g transform="translate(38, 55)">
+        <path d="M0 0 C-10 18, 10 18, 0 0" fill="#7a1d27" stroke="#4d1016" strokeWidth="0.8" />
+        <path d="M0 0 C-18 -12, -22 2, 0 0" fill="#8a232e" stroke="#4d1016" strokeWidth="0.8" />
+        <path d="M0 0 C18 -12, 22 2, 0 0" fill="#8a232e" stroke="#4d1016" strokeWidth="0.8" />
+        <ellipse cx="-10" cy="6" rx="10" ry="7" fill="#68151e" transform="rotate(20 -10 6)" />
+        <ellipse cx="10" cy="6" rx="10" ry="7" fill="#68151e" transform="rotate(-20 10 6)" />
+        <path d="M-6 -2 C-10 -12, 10 -12, 6 -2 Z" fill="#9e2b36" />
+        <circle cx="0" cy="0" r="2.5" fill="#f3da9f" />
+      </g>
+
+      {/* Cream / Golden Peony Flower Accent */}
+      <g transform="translate(20, 32)">
+        <circle cx="0" cy="0" r="14" fill="#e8cfad" stroke="#c4a57b" strokeWidth="0.8" />
+        <circle cx="0" cy="0" r="10" fill="#f3dfc3" />
+        <circle cx="0" cy="0" r="6" fill="#faebd7" />
+        <circle cx="0" cy="0" r="3" fill="#df9b8e" />
+      </g>
+
+      {/* Small Orchid Blossom */}
+      <g transform="translate(58, 32)">
+        <ellipse cx="0" cy="0" rx="9" ry="7" fill="#781c25" />
+        <circle cx="0" cy="0" r="2" fill="#fadcaf" />
+      </g>
+    </svg>
+  </div>
+);
+
 // Floating Floral & Gold Sparkle Particles
 const JavanesePetals: React.FC<{ count?: number }> = ({ count = 10 }) => {
   const petals = [
@@ -748,24 +824,56 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
         {/* ========================================================================= */}
-        {/* 2. AYAT SUCI & DOA SECTION (QS Ar-Rum 21)                                  */}
+        {/* 2. WITH LOVE & AYAT SUCI (Exact recreation of 'ini bawahnya' screenshot)   */}
         {/* ========================================================================= */}
-        <section id="ayat-section" className="py-16 px-6 sm:px-8 relative z-10 bg-[#fbf7f0] border-t border-[#8c2d38]/15 text-center">
-          <div className="max-w-md mx-auto space-y-5">
-            {/* Arabic Bismillah */}
-            <p className="text-xl sm:text-2xl text-[#6a1a24] font-serif tracking-widest leading-loose">
-              بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-            </p>
+        <section id="ayat-section" className="py-14 px-5 sm:px-8 relative z-10 bg-[#fbf7f0] border-t border-[#8c2d38]/15 text-center overflow-hidden">
+          {/* Subtle Ambient Petals */}
+          <JavanesePetals count={6} />
 
-            <JavaneseDivider />
+          <div className="max-w-md mx-auto relative z-10 space-y-7">
+            
+            {/* Couple Window Photo Card with Corner Floral Sprays */}
+            <div className="relative mx-auto max-w-[310px] sm:max-w-[340px] px-2 pt-2">
+              
+              {/* Floral Accent Top Right Corner */}
+              <PhotoCornerFloralTopRight className="absolute -top-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 z-20 pointer-events-none" />
 
-            <p className="text-xs sm:text-[13px] text-[#4a1c22] font-serif italic leading-relaxed px-2">
-              &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;
-            </p>
+              {/* Floral Accent Bottom Left Corner */}
+              <PhotoCornerFloralBottomLeft className="absolute -bottom-4 -left-4 w-20 h-20 sm:w-24 sm:h-24 z-20 pointer-events-none" />
 
-            <p className="text-xs font-serif font-semibold text-[#8c2d38] uppercase tracking-widest">
-              — QS. Ar-Rum Ayat 21 —
-            </p>
+              {/* Photo Container */}
+              <div className="relative z-10 w-full aspect-[4/3.2] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(92,19,28,0.18)] border border-[#8c2d38]/20 bg-[#efe7db]">
+                <img 
+                  src="/themes/habib-adiba-window.jpg" 
+                  alt="Habib & Adiba" 
+                  className="w-full h-full object-cover object-center scale-102"
+                />
+              </div>
+            </div>
+
+            {/* WITH LOVE Heading */}
+            <div className="space-y-4 pt-1">
+              <h2 
+                className="text-2xl sm:text-3xl font-normal text-[#5c131c] tracking-[0.2em] uppercase font-serif drop-shadow-xs"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                WITH LOVE
+              </h2>
+
+              {/* Holy Verse Quote (Exact Wording from Screenshot) */}
+              <p className="text-xs sm:text-[13px] text-[#42151b] font-serif leading-[1.85] px-2 sm:px-4 drop-shadow-xs">
+                &ldquo;Dan diantara tanda-tanda kekuasaanNya ialah Dia menciptakan untukmu pasangan-pasangan dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikanNya diantaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;
+              </p>
+
+              {/* Citation */}
+              <p 
+                className="text-xs sm:text-[13px] font-serif font-medium text-[#5c131c] tracking-wide"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                (Q.S. Ar. Rum : 21)
+              </p>
+            </div>
+
           </div>
         </section>
 
