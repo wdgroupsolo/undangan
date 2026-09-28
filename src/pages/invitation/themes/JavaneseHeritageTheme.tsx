@@ -832,6 +832,17 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             opacity: 1;
           }
         }
+
+        @keyframes scroll-dot-slide {
+          0%, 100% {
+            transform: translateX(0);
+            opacity: 0.85;
+          }
+          50% {
+            transform: translateX(24px);
+            opacity: 1;
+          }
+        }
       `}</style>
 
       {/* ========================================================================= */}
@@ -912,25 +923,13 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           <JavanesePetals count={8} />
 
           {/* ========================================================================= */}
-          {/* THE SIGNATURE DOUBLE MAROON OVAL ARCH FRAME (Matching 'seperti ini' screenshot) */}
+          {/* ARCH CONTENT AREA (Matching the entrance video's Borobudur Arch scene)     */}
           {/* ========================================================================= */}
           <ScrollReveal animation="arch-reveal" duration={1000} delay={60} className="w-full flex justify-center my-auto">
             <div className="relative z-10 w-full max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[620px] max-h-[92vh] flex flex-col items-center justify-between p-4 sm:p-5 my-auto">
             
-            {/* Outer Maroon Arch Line */}
-            <div className="absolute inset-0 rounded-[190px] sm:rounded-[215px] border-[2.5px] border-[#5c131c] shadow-[0_4px_24px_rgba(92,19,28,0.18)] pointer-events-none z-10" />
-
-            {/* Inner Maroon Arch Line with 5px gap */}
-            <div className="absolute inset-[5px] rounded-[185px] sm:rounded-[210px] border-[1.5px] border-[#5c131c]/90 pointer-events-none z-10" />
-
-            {/* Soft inner radial parchment glow for contrast */}
-            <div className="absolute inset-[7px] rounded-[183px] sm:rounded-[208px] bg-gradient-to-b from-[#fbf7f0]/60 via-[#fbf7f0]/25 to-[#fbf7f0]/50 pointer-events-none z-0" />
-
-            {/* Climbing Green Ivy / Betel Vines on Left Arch Border */}
-            <ArchLeftVine className="absolute -left-3.5 top-[32%] z-20 pointer-events-none" />
-
-            {/* Climbing Green Ivy / Betel Vines on Right Arch Border */}
-            <ArchRightVine className="absolute -right-3.5 top-[37%] z-20 pointer-events-none" />
+            {/* Soft inner radial parchment glow for contrast behind text over stupas */}
+            <div className="absolute inset-0 rounded-[180px] bg-gradient-to-b from-[#fbf7f0]/40 via-transparent to-[#fbf7f0]/30 pointer-events-none z-0" />
 
             {/* TOP: Calligraphic Monogram */}
             <div className="relative z-20 pt-7 sm:pt-9">
@@ -961,7 +960,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               </p>
             </div>
 
-            {/* BOTTOM: Vertical Capsule Scroll Down Indicator matching 'seperti ini' screenshot */}
+            {/* BOTTOM: Horizontal Capsule Scroll Down Indicator matching video reference */}
             <div className="relative z-20 pb-7 sm:pb-9 flex flex-col items-center">
               <button
                 type="button"
@@ -970,15 +969,15 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
                 aria-label="Scroll ke Bawah"
-                className="flex flex-col items-center group cursor-pointer animate-fade-in transition-transform hover:scale-110 active:scale-95"
+                className="group flex items-center justify-between w-[68px] h-[30px] px-2.5 rounded-full bg-[#fbf7f0]/90 hover:bg-[#ffffff] border border-[#5c131c]/30 shadow-[0_2px_8px_rgba(92,19,28,0.12)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
               >
-                <div className="w-[22px] h-[42px] rounded-full border-[1.8px] border-[#6a1a24] flex items-start justify-center pt-2 shadow-xs group-hover:border-[#4e0e16] transition-colors">
-                  {/* Animated sliding scroll pill dot */}
-                  <div 
-                    className="w-[3px] h-[7px] rounded-full bg-[#6a1a24] group-hover:bg-[#4e0e16]"
-                    style={{ animation: 'scroll-pill-bounce 2s ease-in-out infinite' }}
-                  />
-                </div>
+                {/* Sliding Maroon Dot */}
+                <div 
+                  className="w-2.5 h-2.5 rounded-full bg-[#5c131c] group-hover:bg-[#3d1117] transition-colors"
+                  style={{ animation: 'scroll-dot-slide 2.2s ease-in-out infinite' }}
+                />
+                <div className="w-[1px] h-3.5 bg-[#5c131c]/25" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#5c131c]/20" />
               </button>
             </div>
           </div>

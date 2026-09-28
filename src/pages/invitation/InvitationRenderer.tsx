@@ -201,11 +201,13 @@ export const InvitationRenderer: React.FC = () => {
     gallery?.[0]?.image_url || 
     (isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
-  const entranceVideoSrc = isSecretGarden
-    ? '/themes/secret-garden/assets/video.mp4'
-    : isMaroonGold
-      ? '/maroon-gate-entrance.mp4'
-      : '/video-cover.mp4';
+  const entranceVideoSrc = isJavaneseHeritage
+    ? '/themes/javanese-heritage-entrance.mp4'
+    : isSecretGarden
+      ? '/themes/secret-garden/assets/video.mp4'
+      : isMaroonGold
+        ? '/maroon-gate-entrance.mp4'
+        : '/video-cover.mp4';
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
@@ -250,11 +252,6 @@ export const InvitationRenderer: React.FC = () => {
       }
     }
 
-    if (isJavaneseHeritage) {
-      setOpeningStage('opened');
-      return;
-    }
-
     // Reset skip guard so initial button click/tap cannot dismiss the video prematurely
     setCanSkipVideo(false);
     setOpeningStage('arch-video');
@@ -272,8 +269,8 @@ export const InvitationRenderer: React.FC = () => {
       }
     }, 50);
 
-    // Entrance animation duration: ~10.2s for maroon-gold gate video, ~5.2s for others
-    const timeoutDuration = isMaroonGold ? 10200 : 5200;
+    // Entrance animation duration: ~18.2s for javanese-heritage, ~10.2s for maroon-gold gate video, ~5.2s for others
+    const timeoutDuration = isJavaneseHeritage ? 18200 : isMaroonGold ? 10200 : 5200;
     if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
     animTimeoutRef.current = setTimeout(() => {
       setOpeningStage((prev) => {
@@ -462,7 +459,7 @@ export const InvitationRenderer: React.FC = () => {
               
               {/* Card Background: Authentic Borobudur Stupas & Vintage Floral Frame */}
               <img 
-                src="/themes/javanese-heritage-bg.jpg" 
+                src="/themes/javanese-cover-poster.jpg" 
                 alt="Javanese Heritage Background" 
                 className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
               />
@@ -798,11 +795,13 @@ export const InvitationRenderer: React.FC = () => {
             className="absolute inset-0 bg-cover bg-center pointer-events-none"
             style={{
               backgroundImage: `url(${
-                isMaroonGold 
-                  ? '/gate-bg-open.jpg' 
-                  : isSecretGarden 
-                    ? '/themes/secret-garden/assets/inner-cover.jpg' 
-                    : '/arch-clean.png'
+                isJavaneseHeritage
+                  ? '/themes/javanese-heritage-bg.jpg'
+                  : isMaroonGold 
+                    ? '/gate-bg-open.jpg' 
+                    : isSecretGarden 
+                      ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                      : '/arch-clean.png'
               })`
             }}
           />
@@ -816,16 +815,23 @@ export const InvitationRenderer: React.FC = () => {
               ref={videoRef}
               src={entranceVideoSrc}
               poster={
-                isMaroonGold 
-                  ? '/gate-bg-open.jpg' 
-                  : isSecretGarden 
-                    ? '/themes/secret-garden/assets/inner-cover.jpg' 
-                    : '/arch-clean.png'
+                isJavaneseHeritage
+                  ? '/themes/javanese-cover-poster.jpg'
+                  : isMaroonGold 
+                    ? '/gate-bg-open.jpg' 
+                    : isSecretGarden 
+                      ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                      : '/arch-clean.png'
               }
               autoPlay
               playsInline
               muted
               className="w-full h-full object-cover object-center"
+              onTimeUpdate={() => {
+                if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
+                  handleFinishAnimation();
+                }
+              }}
               onEnded={handleFinishAnimation}
             />
           </div>
