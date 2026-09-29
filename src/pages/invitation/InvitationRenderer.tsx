@@ -452,7 +452,7 @@ export const InvitationRenderer: React.FC = () => {
             <JavanesePetals count={10} />
 
             {/* Centered Mobile/Portrait Invitation Card (100% on mobile, max-w-[410px] on desktop) */}
-            <div className="relative z-10 w-full h-full sm:h-auto sm:max-w-[410px] sm:min-h-[620px] sm:max-h-[92vh] sm:rounded-[28px] overflow-hidden flex flex-col justify-center items-center text-center p-4 xs:p-5 sm:p-7 bg-[#fbf7f0] shadow-[0_25px_70px_rgba(48,17,20,0.5),_0_0_35px_rgba(212,175,55,0.3)] sm:border-[2.5px] sm:border-[#d4af37] sm:ring-1 sm:ring-[#c5a880]/50 sm:ring-offset-2 sm:ring-offset-[#fbf7f0]">
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[410px] sm:min-h-[620px] sm:max-h-[92vh] sm:rounded-[28px] overflow-hidden flex flex-col items-center justify-center text-center p-4 sm:p-7 bg-[#fbf7f0] shadow-[0_25px_70px_rgba(48,17,20,0.5),_0_0_35px_rgba(212,175,55,0.3)] sm:border-[2.5px] sm:border-[#d4af37] sm:ring-1 sm:ring-[#c5a880]/50 sm:ring-offset-2 sm:ring-offset-[#fbf7f0]">
               
               {/* Card Background: Authentic Gunungan Wayang & Vintage Floral Frame */}
               <img 
@@ -476,7 +476,7 @@ export const InvitationRenderer: React.FC = () => {
               {/* ========================================================================= */}
               {/* UNIFIED CENTERED INVITATION CONTENT (Optically Centered on Mobile & Desktop) */}
               {/* ========================================================================= */}
-              <div className="relative z-20 my-auto flex flex-col items-center justify-center w-full max-w-[325px] gap-3 sm:gap-3.5 py-2">
+              <div className="relative z-20 flex flex-col items-center justify-center w-full max-w-[325px] mx-auto gap-3 sm:gap-3.5 py-1">
                 
                 {/* 1. CENTRAL ROYAL IVORY SILK CARTOUCHE */}
                 <div className="w-full rounded-3xl bg-gradient-to-b from-[#ffffff]/95 via-[#fdfbf7]/92 to-[#f6ede0]/95 backdrop-blur-[8px] border-[1.5px] border-[#d4af37] shadow-[0_10px_35px_rgba(92,19,28,0.22),_0_0_20px_rgba(212,175,55,0.25)] p-4 sm:p-5 flex flex-col items-center text-center">
