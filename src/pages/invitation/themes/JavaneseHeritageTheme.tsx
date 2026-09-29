@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { 
-  Calendar, MapPin, Gift, CreditCard, Clock, Heart, Send, Check, X, Copy, 
-  ChevronLeft, ChevronRight, Sparkles, Navigation, CheckCircle2, XCircle
-} from 'lucide-react';
+import { MapPin, CreditCard, Check, X, Copy } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
 // Self-contained Instagram Icon SVG
@@ -20,48 +17,6 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4"
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
-);
-
-// Javanese Batik Truntum & Kawung Motif Corner Ornaments
-const JavaneseBatikCorner: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`pointer-events-none select-none ${className}`}>
-    <svg viewBox="0 0 100 100" fill="none" className="w-full h-full opacity-35 text-[#8c2d38]">
-      {/* Central Flower Petals (Ceplok/Kawung geometry) */}
-      <circle cx="50" cy="50" r="14" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2" />
-      <circle cx="50" cy="50" r="6" fill="currentColor" opacity="0.4" />
-      {/* 4 Petals */}
-      <path d="M50 20 C62 32, 62 42, 50 50 C38 42, 38 32, 50 20 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="1" />
-      <path d="M50 80 C62 68, 62 58, 50 50 C38 58, 38 68, 50 80 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="1" />
-      <path d="M20 50 C32 38, 42 38, 50 50 C42 62, 32 62, 20 50 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="1" />
-      <path d="M80 50 C68 38, 58 38, 50 50 C58 62, 68 62, 80 50 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="1" />
-      {/* Diagonal Starlets (Truntum motifs) */}
-      <circle cx="28" cy="28" r="3" fill="currentColor" opacity="0.5" />
-      <circle cx="72" cy="28" r="3" fill="currentColor" opacity="0.5" />
-      <circle cx="28" cy="72" r="3" fill="currentColor" opacity="0.5" />
-      <circle cx="72" cy="72" r="3" fill="currentColor" opacity="0.5" />
-      <path d="M28 22 L28 34 M22 28 L34 28" stroke="currentColor" strokeWidth="0.8" opacity="0.4" />
-      <path d="M72 22 L72 34 M66 28 L78 28" stroke="currentColor" strokeWidth="0.8" opacity="0.4" />
-      <path d="M28 66 L28 78 M22 72 L34 72" stroke="currentColor" strokeWidth="0.8" opacity="0.4" />
-      <path d="M72 66 L72 78 M66 72 L78 72" stroke="currentColor" strokeWidth="0.8" opacity="0.4" />
-    </svg>
-  </div>
-);
-
-// Traditional Javanese Gunungan / Batik Floral Divider
-const JavaneseDivider: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`flex items-center justify-center gap-3 my-4 ${className}`}>
-    <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent via-[#8c2d38]/50 to-[#8c2d38]" />
-    <div className="flex items-center gap-1.5 text-[#8c2d38]">
-      <span className="w-1.5 h-1.5 rounded-full bg-[#8c2d38]" />
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-[#8c2d38]">
-        {/* Stylized Lotus / Gunungan Bud */}
-        <path d="M12 2 C13 7, 18 10, 18 14 C18 17.5, 15.3 20.5, 12 21 C8.7 20.5, 6 17.5, 6 14 C6 10, 11 7, 12 2 Z" opacity="0.85" />
-        <path d="M12 7 C12 11, 15 13, 15 15.5 C15 17.5, 13.5 19, 12 19.5 C10.5 19, 9 17.5, 9 15.5 C9 13, 12 11, 12 7 Z" fill="#fcf8f2" />
-      </svg>
-      <span className="w-1.5 h-1.5 rounded-full bg-[#8c2d38]" />
-    </div>
-    <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent via-[#8c2d38]/50 to-[#8c2d38]" />
-  </div>
 );
 
 // Traditional Javanese Gunungan (Kayon / Tree of Life) Watermark
@@ -738,11 +693,9 @@ interface JavaneseHeritageThemeProps {
 }
 
 export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
-  invitation,
   couple,
   events = [],
   stories = [],
-  gallery = [],
   gifts = [],
 }) => {
   const toast = useToast();
@@ -751,7 +704,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
   // State management
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-  const [activeLightboxIdx, setActiveLightboxIdx] = useState<number | null>(null);
   const [showGiftDetails, setShowGiftDetails] = useState(false);
   const [wishName, setWishName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [wishAttendance, setWishAttendance] = useState('Hadir');
@@ -796,9 +748,6 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     if (full && full.toLowerCase() !== 'siti' && full.toLowerCase() !== 'adiba putri syakilla') return full;
     return 'BUNGA LESTARI';
   })();
-
-  // Active Event Tab Index (0: Akad Nikah, 1: Resepsi)
-  const [activeEventIndex, setActiveEventIndex] = useState<number>(0);
 
   // Events fallback matching user reference screenshots
   const defaultEvents = [
@@ -845,7 +794,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
             monthYear = d.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }).toUpperCase();
           }
         }
-      } catch (_) {}
+      } catch {}
     }
 
     const title = evt?.name 
@@ -861,67 +810,8 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
     return { title, dayName, dayNum, monthYear, timeStr, location, address, mapsUrl };
   };
 
-  // Countdown timer
+  // Event Target Date for Display
   const targetDateStr = displayEvents?.[0]?.event_date || '2025-12-28';
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    const calculateTime = () => {
-      const target = new Date(targetDateStr).getTime();
-      const now = new Date().getTime();
-      const diff = target - now;
-
-      if (diff > 0) {
-        setTimeLeft({
-          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((diff / 1000 / 60) % 60),
-          seconds: Math.floor((diff / 1000) % 60),
-        });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
-    };
-
-    calculateTime();
-    const interval = setInterval(calculateTime, 1000);
-    return () => clearInterval(interval);
-  }, [targetDateStr]);
-
-  // Gallery fallback matching user photos (Steven & Bunga)
-  const defaultGallery = [
-    { 
-      image_url: '/photos/photo-1.jpg', 
-      caption: 'Langkah Bersama Menuju Hari Bahagia' 
-    },
-    { 
-      image_url: '/photos/photo-4.jpg', 
-      caption: 'Dalam Kehangatan Janji Kasih' 
-    },
-    { 
-      image_url: '/photos/photo-5.jpg', 
-      caption: 'Duduk Berdua Mengukir Cerita Cinta' 
-    },
-    { 
-      image_url: '/photos/photo-6.jpg', 
-      caption: 'Adat Luhur & Keagungan Cinta' 
-    },
-    { 
-      image_url: '/photos/photo-7.jpg', 
-      caption: 'Bersama Menatap Masa Depan' 
-    },
-    { 
-      image_url: '/photos/photo-8.jpg', 
-      caption: 'Tawa & Bahagia yang Terpatri' 
-    },
-  ];
-
-  const displayGallery = (gallery && gallery.length > 0)
-    ? gallery.map((item) => ({
-        image_url: item.image_url,
-        caption: item.caption || 'Momen Bahagia'
-      }))
-    : defaultGallery;
 
   // Love stories fallback strictly matching reference screenshots
   const defaultStories = [
@@ -1025,7 +915,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         if (parts.length === 3) {
           return `${parts[2]} . ${parts[1]} . ${parts[0]}`;
         }
-      } catch (_) {}
+      } catch {}
     }
     return '28 . 12 . 2025';
   })();

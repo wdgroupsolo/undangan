@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Calendar, MapPin, Gift, CreditCard, Clock, Heart, Sparkles } from 'lucide-react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Calendar, MapPin, Gift, CreditCard, Clock, Sparkles } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
 interface LuxuryAnimatedThemeProps {
@@ -12,9 +12,9 @@ interface LuxuryAnimatedThemeProps {
   music: any;
 }
 
-export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invitation, couple, events, stories, gallery, gifts }) => {
+export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invitation, couple, events, gallery, gifts }) => {
   const toast = useToast();
-  const [scrollY, setScrollY] = useState(0);
+  const [_scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,29 +38,33 @@ export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invita
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const colors = invitation.theme?.colors || {
-    primary: '#D4AF37', // Gold
-    secondary: '#1A1A1A', // Dark
-    background: '#0a0a0a', // Almost black
-    text: '#ffffff'
-  };
+  const particles = useMemo(() => {
+    return Array.from({ length: 15 }, (_, i) => ({
+      id: i,
+      size: `${(i % 5) * 1.5 + 3}px`,
+      top: `${(i * 19) % 95 + 2}%`,
+      left: `${(i * 23) % 95 + 2}%`,
+      delay: `${(i * 0.7) % 5}s`,
+      duration: `${(i % 6) + 10}s`
+    }));
+  }, []);
 
   return (
     <div className="min-h-screen font-serif overflow-hidden bg-black text-white selection:bg-yellow-600 selection:text-black">
       
       {/* Decorative Floating Particles */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {[...Array(15)].map((_, i) => (
+        {particles.map((p) => (
           <div 
-            key={i} 
+            key={p.id} 
             className="absolute rounded-full bg-yellow-500/20 blur-sm animate-float"
             style={{
-              width: Math.random() * 8 + 2 + 'px',
-              height: Math.random() * 8 + 2 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              animationDelay: Math.random() * 5 + 's',
-              animationDuration: Math.random() * 10 + 10 + 's'
+              width: p.size,
+              height: p.size,
+              top: p.top,
+              left: p.left,
+              animationDelay: p.delay,
+              animationDuration: p.duration
             }}
           />
         ))}

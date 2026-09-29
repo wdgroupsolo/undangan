@@ -19,7 +19,6 @@ import {
   ShieldCheck, 
   Smartphone, 
   ArrowRight, 
-  ExternalLink, 
   MessageCircle, 
   Check, 
   Menu, 
@@ -76,9 +75,11 @@ export const Home: React.FC = () => {
   });
 
   // Always guaranteed to have at least Split Floral theme immediately
-  const displayThemes = (activeThemes && activeThemes.length > 0) 
-    ? activeThemes 
-    : [REAL_SPLIT_FLORAL_THEME];
+  const displayThemes = React.useMemo(() => {
+    return (activeThemes && activeThemes.length > 0) 
+      ? activeThemes 
+      : [REAL_SPLIT_FLORAL_THEME];
+  }, [activeThemes]);
 
   // IntersectionObserver for Butter-Smooth Scroll Reveals with Safety Timer
   useEffect(() => {

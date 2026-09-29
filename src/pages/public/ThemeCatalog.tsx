@@ -10,7 +10,6 @@ import {
   Eye, 
   ArrowRight, 
   X, 
-  Calendar, 
   Disc,
   Clock,
   MessageCircle,

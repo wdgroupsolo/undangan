@@ -65,7 +65,7 @@ export const StoryStep: React.FC<{ invitationId: string }> = ({ invitationId }) 
       )}
 
       <div className="space-y-4 relative border-l-2 border-gray-200 ml-4 pl-6">
-        {stories?.map((story, index) => (
+        {stories?.map((story) => (
           <div key={story.id} className="relative bg-white p-5 rounded-xl border border-gray-200">
             <div className="absolute -left-9 top-6 bg-primary-500 w-4 h-4 rounded-full border-4 border-white shadow-sm"></div>
             <div className="flex justify-between items-start">

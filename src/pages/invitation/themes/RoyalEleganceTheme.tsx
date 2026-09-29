@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Calendar, MapPin, Gift, CreditCard, Clock, Heart, Music, Quote } from 'lucide-react';
+import { Calendar, MapPin, Gift, CreditCard, Clock, Quote } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
 interface BaseThemeProps {
@@ -12,7 +12,7 @@ interface BaseThemeProps {
   music: any;
 }
 
-export const RoyalEleganceTheme: React.FC<BaseThemeProps> = ({ invitation, couple, events, stories, gallery, gifts }) => {
+export const RoyalEleganceTheme: React.FC<BaseThemeProps> = ({ couple, events, gallery, gifts }) => {
   const toast = useToast();
 
   useEffect(() => {

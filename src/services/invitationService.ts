@@ -57,7 +57,7 @@ export const invitationService = {
           .single();
         if (fallbackData) return fallbackData;
       }
-    } catch (_) {}
+    } catch {}
 
     // Resilient fallback for demo routes so invitation preview never fails
     return {

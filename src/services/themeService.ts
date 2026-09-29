@@ -354,7 +354,7 @@ export const themeService = {
       }
 
       return merged.map(enhanceThemeWithScreenshot);
-    } catch (err) {
+    } catch {
       return DEFAULT_THEMES;
     }
   },
@@ -382,7 +382,7 @@ export const themeService = {
       if (!error && data) {
         return enhanceThemeWithScreenshot(data);
       }
-    } catch (_) {}
+    } catch {}
 
     return REAL_JAVANESE_HERITAGE_THEME;
   },
@@ -411,7 +411,7 @@ export const themeService = {
       if (!error && data) {
         return enhanceThemeWithScreenshot(data);
       }
-    } catch (_) {}
+    } catch {}
 
     return slug === 'secret-garden' ? REAL_SECRET_GARDEN_THEME : REAL_SPLIT_FLORAL_THEME;
   },

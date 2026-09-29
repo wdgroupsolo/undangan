@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editorService } from '../../../services/editorService';
 import { useToast } from '../../../context/ToastContext';
-import { Upload } from 'lucide-react';
 
 interface CoupleInfoStepProps {
   invitationId: string;

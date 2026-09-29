@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Calendar, MapPin, Gift, CreditCard, Clock, Heart } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart } from 'lucide-react';
 
 interface AnimatedFloralThemeProps {
   invitation: any;
@@ -11,21 +11,17 @@ interface AnimatedFloralThemeProps {
   music: any;
 }
 
-export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ invitation, couple, events, stories, gallery, gifts }) => {
-  const [leaves, setLeaves] = useState<any[]>([]);
-
-  useEffect(() => {
-    // Generate random leaves for animation
-    const newLeaves = Array.from({ length: 25 }).map((_, i) => ({
+export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ couple, events }) => {
+  const [leaves] = useState<any[]>(() => 
+    Array.from({ length: 25 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
       animationDuration: `${Math.random() * 8 + 8}s`,
       animationDelay: `${Math.random() * 10}s`,
       size: `${Math.random() * 1.5 + 1}rem`,
       rotation: Math.random() * 360
-    }));
-    setLeaves(newLeaves);
-  }, []);
+    }))
+  );
 
   // Placeholder images for vintage floral decorations
   const floralFrameUrl = "https://images.unsplash.com/photo-1550624021-39cbf8159b34?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; // Using an abstract vintage texture as placeholder

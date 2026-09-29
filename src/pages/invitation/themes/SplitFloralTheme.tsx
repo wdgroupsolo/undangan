@@ -33,10 +33,10 @@ const GallerySlideshow: React.FC<{ gallery: any[] }> = ({ gallery }) => {
   useEffect(() => {
     if (images.length <= 1) return;
     const interval = setInterval(() => {
-      nextSlide();
+      setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [currentIndex, images.length]);
+  }, [images.length]);
 
   // Touch Swipe Handlers (Mobile)
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -139,31 +139,45 @@ const GallerySlideshow: React.FC<{ gallery: any[] }> = ({ gallery }) => {
   );
 };
 
+// Realistic Bird Silhouette SVG (curved swallow wings, no cross/insect shape)
+const BirdSilhouette: React.FC<{ flapClass: string; size?: number }> = ({ flapClass, size = 26 }) => (
+  <div className={flapClass}>
+    <svg 
+      width={size} 
+      height={Math.round(size * 0.46)} 
+      viewBox="0 0 32 15" 
+      fill="currentColor"
+      className="text-[#3a291a] opacity-80 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]"
+    >
+      <path d="M 0 3 C 6 -1, 13 4, 16 7 C 19 4, 26 -1, 32 3 C 25 4, 19 8, 16 14 C 13 8, 7 4, 0 3 Z" />
+    </svg>
+  </div>
+);
+
+const calculateCountdownTime = (eventDate?: string) => {
+  const target = eventDate ? new Date(eventDate) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  const now = new Date();
+  const diff = target.getTime() - now.getTime();
+
+  if (diff <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }
+
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((diff / (1000 * 60)) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+  };
+};
+
 // Countdown Timer Component
 const CountdownTimer: React.FC<{ eventDate: string }> = ({ eventDate }) => {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [timeLeft, setTimeLeft] = useState(() => calculateCountdownTime(eventDate));
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const target = eventDate ? new Date(eventDate) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-      const now = new Date();
-      const diff = target.getTime() - now.getTime();
-
-      if (diff <= 0) {
-        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-      }
-
-      return {
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      };
-    };
-
-    setTimeLeft(calculateTimeLeft());
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
+      setTimeLeft(calculateCountdownTime(eventDate));
     }, 1000);
 
     return () => clearInterval(timer);
@@ -282,7 +296,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
         if (Array.isArray(parsed) && parsed.length > 0) {
           return parsed.map((item: any) => ({
             ...item,
-            name: item.name ? item.name.replace(/Kedaigrafis/gi, 'WD Group') : item.name,
+            name: item.name ? item.name.replace(/Kedaigrafis/gi, brandName) : item.name,
             socialMedia: item.socialMedia ? item.socialMedia.replace(/kedaigrafis/gi, 'wdgroupcompany').replace(/@wdgroup\b/gi, '@wdgroupcompany') : item.socialMedia,
             message: item.message ? item.message.replace(/Jessi (&|dan) Maudy/gi, coupleNamesCombined) : item.message,
           }));
@@ -294,34 +308,32 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
 
   // Automatically synchronize wishes if couple data or branding changes
   useEffect(() => {
-    setWishes(prev => {
-      let changed = false;
-      const updated = prev.map(item => {
-        let name = item.name;
-        let social = item.socialMedia;
-        let message = item.message;
-        if (name && name.includes('Kedaigrafis')) {
-          name = name.replace(/Kedaigrafis/gi, brandName);
-          changed = true;
-        }
-        if (social && (social.includes('kedaigrafis') || social === '@wdgroup')) {
-          social = social.replace(/kedaigrafis/gi, 'wdgroupcompany').replace(/@wdgroup\b/gi, '@wdgroupcompany');
-          changed = true;
-        }
-        if (message && (/Jessi (&|dan) Maudy/i.test(message) || message.includes('Mempelai Pria & Mempelai Wanita'))) {
-          message = message.replace(/Jessi (&|dan) Maudy/gi, coupleNamesCombined).replace(/Mempelai Pria & Mempelai Wanita/gi, coupleNamesCombined);
-          changed = true;
-        }
-        return { ...item, name, socialMedia: social, message };
-      });
-      if (changed) {
-        try {
-          localStorage.setItem(storageKey, JSON.stringify(updated));
-        } catch {}
+    let changed = false;
+    const updated = wishes.map(item => {
+      let name = item.name;
+      let social = item.socialMedia;
+      let message = item.message;
+      if (name && name.includes('Kedaigrafis')) {
+        name = name.replace(/Kedaigrafis/gi, brandName);
+        changed = true;
       }
-      return updated;
+      if (social && (social.includes('kedaigrafis') || social === '@wdgroup')) {
+        social = social.replace(/kedaigrafis/gi, 'wdgroupcompany').replace(/@wdgroup\b/gi, '@wdgroupcompany');
+        changed = true;
+      }
+      if (message && (/Jessi (&|dan) Maudy/i.test(message) || message.includes('Mempelai Pria & Mempelai Wanita'))) {
+        message = message.replace(/Jessi (&|dan) Maudy/gi, coupleNamesCombined).replace(/Mempelai Pria & Mempelai Wanita/gi, coupleNamesCombined);
+        changed = true;
+      }
+      return { ...item, name, socialMedia: social, message };
     });
-  }, [coupleNamesCombined, brandName, storageKey]);
+    if (changed) {
+      setWishes(updated);
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+      } catch {}
+    }
+  }, [coupleNamesCombined, brandName, storageKey, wishes]);
 
   const [wishName, setWishName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [wishSocial, setWishSocial] = useState('');
@@ -547,21 +559,6 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
       maps_url: 'https://maps.google.com'
     }
   ];
-
-  // Realistic Bird Silhouette SVG (curved swallow wings, no cross/insect shape)
-  const BirdSilhouette = ({ flapClass, size = 26 }: { flapClass: string; size?: number }) => (
-    <div className={flapClass}>
-      <svg 
-        width={size} 
-        height={Math.round(size * 0.46)} 
-        viewBox="0 0 32 15" 
-        fill="currentColor"
-        className="text-[#3a291a] opacity-80 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]"
-      >
-        <path d="M 0 3 C 6 -1, 13 4, 16 7 C 19 4, 26 -1, 32 3 C 25 4, 19 8, 16 14 C 13 8, 7 4, 0 3 Z" />
-      </svg>
-    </div>
-  );
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen font-sans text-gray-800 overflow-x-clip bg-[#f4f0e6]">

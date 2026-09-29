@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Calendar, MapPin, Gift, CreditCard, Clock, Heart, Send, Check, X, Copy, ChevronDown, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX, Maximize2, RotateCcw, Sparkles } from 'lucide-react';
+import { MapPin, Gift, CreditCard, Check, X, Copy, ChevronDown, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX, Maximize2, Sparkles } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
 // Self-contained Instagram Icon SVG (safe across all lucide versions)

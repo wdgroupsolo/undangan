@@ -25,5 +25,8 @@ dist-ssr
 *.sln
 *.sw?
 scratch/
+resources/raw-media/
+*.mp4
 bisa_buatkan_animasi_masuk_ger.mp4
 gemini_generated_video_c0cc839c.mp4
+oxlint-report.txt

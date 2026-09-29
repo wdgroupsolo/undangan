@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, useSearchParams, Navigate } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Mail, Disc, Sparkles } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
@@ -50,12 +50,9 @@ export const InvitationRenderer: React.FC = () => {
   const defaultMusicUrl = '/beautiful-in-white.mp3';
   const [currentAudioSrc, setCurrentAudioSrc] = useState<string>(defaultMusicUrl);
 
-  // Update audio source when music data loads or changes
   useEffect(() => {
     if (music?.music_url && music.music_url.trim() !== '') {
       setCurrentAudioSrc(encodeURI(music.music_url.trim()));
-    } else {
-      setCurrentAudioSrc(defaultMusicUrl);
     }
   }, [music?.music_url]);
 

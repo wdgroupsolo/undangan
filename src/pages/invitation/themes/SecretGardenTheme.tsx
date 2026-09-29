@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Heart, Calendar, MapPin, Clock, Copy, Check, ExternalLink, 
-  Send, ChevronLeft, ChevronRight, Gift, Disc, Music, CheckCircle2,
-  X, MessageCircle, FileText, Video, Play, Navigation
+  Calendar, MapPin, Copy, Check, ExternalLink, 
+  ChevronLeft, ChevronRight, Gift,
+  X, FileText, Video, Navigation
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
@@ -104,11 +104,12 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
   stories = [],
   gallery = [],
   gifts = [],
-  music,
+  music: _music,
 }) => {
   const toast = useToast();
   const searchParams = new URLSearchParams(window.location.search);
   const guestName = searchParams.get('to') || 'Tamu Undangan';
+  const targetSection = searchParams.get('section');
   const rightPanelRef = useRef<HTMLDivElement>(null);
 
   // Lock root viewport overflow on desktop so Opera GX / Chrome native window scrollbar cannot appear
@@ -132,31 +133,30 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
   }, []);
 
   useEffect(() => {
-    const sec = searchParams.get('section');
-    if (!sec) return;
+    if (!targetSection) return;
 
     let targetId = '';
-    if (sec === '1' || sec === 'hero') targetId = 'section-1';
-    else if (sec === '2' || sec === 'quotes' || sec === 'quote') targetId = 'section-quotes';
-    else if (sec === 'bride') targetId = 'section-bride';
-    else if (sec === 'bride-bottom') targetId = 'section-bride-bottom';
-    else if (sec === '3' || sec === 'mempelai') targetId = 'section-3';
-    else if (sec === '4' || sec === 'story') targetId = 'section-story';
-    else if (sec === 'story-bottom') targetId = 'section-story-bottom';
-    else if (sec === '5' || sec === 'countdown') targetId = 'section-countdown';
-    else if (sec === 'countdown-bottom') targetId = 'section-countdown';
-    else if (sec === '6' || sec === 'event' || sec === 'events' || sec === 'akad') targetId = 'section-events';
-    else if (sec === 'resepsi' || sec === 'resepsi-1') targetId = 'section-resepsi-1';
-    else if (sec === 'resepsi-2') targetId = 'section-resepsi-2';
-    else if (sec === '7' || sec === 'dresscode') targetId = 'section-dresscode';
-    else if (sec === '8' || sec === 'adab' || sec === 'info') targetId = 'section-adab';
-    else if (sec === '9' || sec === 'gallery') targetId = 'section-gallery';
-    else if (sec === '10' || sec === 'amplop' || sec === 'gift') targetId = 'section-amplop';
-    else if (sec === 'streaming') targetId = 'section-streaming';
-    else if (sec === '11' || sec === 'rsvp') targetId = 'section-rsvp';
-    else if (sec === 'story-ig') targetId = 'section-story-ig';
-    else if (sec === '12' || sec === 'ucapan') targetId = 'section-ucapan';
-    else if (sec === '13' || sec === 'closing') targetId = 'section-closing';
+    if (targetSection === '1' || targetSection === 'hero') targetId = 'section-1';
+    else if (targetSection === '2' || targetSection === 'quotes' || targetSection === 'quote') targetId = 'section-quotes';
+    else if (targetSection === 'bride') targetId = 'section-bride';
+    else if (targetSection === 'bride-bottom') targetId = 'section-bride-bottom';
+    else if (targetSection === '3' || targetSection === 'mempelai') targetId = 'section-3';
+    else if (targetSection === '4' || targetSection === 'story') targetId = 'section-story';
+    else if (targetSection === 'story-bottom') targetId = 'section-story-bottom';
+    else if (targetSection === '5' || targetSection === 'countdown') targetId = 'section-countdown';
+    else if (targetSection === 'countdown-bottom') targetId = 'section-countdown';
+    else if (targetSection === '6' || targetSection === 'event' || targetSection === 'events' || targetSection === 'akad') targetId = 'section-events';
+    else if (targetSection === 'resepsi' || targetSection === 'resepsi-1') targetId = 'section-resepsi-1';
+    else if (targetSection === 'resepsi-2') targetId = 'section-resepsi-2';
+    else if (targetSection === '7' || targetSection === 'dresscode') targetId = 'section-dresscode';
+    else if (targetSection === '8' || targetSection === 'adab' || targetSection === 'info') targetId = 'section-adab';
+    else if (targetSection === '9' || targetSection === 'gallery') targetId = 'section-gallery';
+    else if (targetSection === '10' || targetSection === 'amplop' || targetSection === 'gift') targetId = 'section-amplop';
+    else if (targetSection === 'streaming') targetId = 'section-streaming';
+    else if (targetSection === '11' || targetSection === 'rsvp') targetId = 'section-rsvp';
+    else if (targetSection === 'story-ig') targetId = 'section-story-ig';
+    else if (targetSection === '12' || targetSection === 'ucapan') targetId = 'section-ucapan';
+    else if (targetSection === '13' || targetSection === 'closing') targetId = 'section-closing';
 
     if (targetId) {
       const timer = setTimeout(() => {
@@ -175,7 +175,7 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
       }, 350);
       return () => clearTimeout(timer);
     }
-  }, [searchParams]);
+  }, [targetSection]);
 
   const handleLeftWheel = (e: React.WheelEvent) => {
     if (rightPanelRef.current) {
@@ -403,12 +403,9 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
 
   // RSVP Form State
   const [rsvpName, setRsvpName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
-  const [rsvpAttendance, setRsvpAttendance] = useState<'hadir' | 'tidak_hadir' | 'ragu'>('hadir');
-  const [rsvpGuestCount, setRsvpGuestCount] = useState('1');
   const [rsvpWishes, setRsvpWishes] = useState('');
   const [rsvpSosmed, setRsvpSosmed] = useState('');
   const [isRsvpSubmitting, setIsRsvpSubmitting] = useState(false);
-  const [rsvpSuccess, setRsvpSuccess] = useState(false);
 
   // Wishes List & Pagination
   const storageKey = `sg_wishes_${invitation?.slug || 'secret-garden'}`;
@@ -466,7 +463,6 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
       } catch {}
       setRsvpWishes('');
       setIsRsvpSubmitting(false);
-      setRsvpSuccess(true);
       toast.success('Ucapan dan doa restu berhasil dikirimkan!');
     }, 600);
   };
