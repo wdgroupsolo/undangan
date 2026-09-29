@@ -1150,7 +1150,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
               {/* Typography Group: Perfectly Centered */}
               <div className="space-y-1.5 sm:space-y-2 text-center flex flex-col items-center w-full px-2">
                 <p 
-                  className="text-[11px] sm:text-xs tracking-[0.3em] indent-[0.3em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs text-center"
+                  className="text-[11px] sm:text-xs tracking-[0.25em] uppercase text-[#6a1a24] font-serif font-semibold drop-shadow-xs text-center"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
                   THE WEDDING OF
@@ -1164,7 +1164,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                 </h1>
 
                 <p 
-                  className="text-xs sm:text-[13px] tracking-[0.25em] indent-[0.25em] text-[#6a1a24] font-serif pt-0.5 text-center"
+                  className="text-xs sm:text-[13px] tracking-[0.18em] text-[#6a1a24] font-serif pt-0.5 text-center"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
                   {formattedArchDate}
@@ -2130,7 +2130,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
                   {/* Sign-off & Names */}
                   <div className="pt-0.5">
-                    <p className="text-[10px] sm:text-[11px] tracking-[0.25em] indent-[0.25em] uppercase text-[#8c2d38] font-serif font-semibold mb-1">
+                    <p className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-[#8c2d38] font-serif font-semibold mb-1">
                       KAMI YANG BERBAHAGIA
                     </p>
                     <h2 
