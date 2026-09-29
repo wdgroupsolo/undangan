@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { MapPin, CreditCard, Check, X, Copy } from 'lucide-react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { MapPin, CreditCard, Check, X, Copy, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
 // Self-contained Instagram Icon SVG
@@ -696,6 +696,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   couple,
   events = [],
   stories = [],
+  gallery = [],
   gifts = [],
 }) => {
   const toast = useToast();
@@ -708,6 +709,72 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   const [wishName, setWishName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [wishAttendance, setWishAttendance] = useState('Hadir');
   const [wishText, setWishText] = useState('');
+
+  // Closing section photo slideshow state (cycles through 3 photos)
+  const [closingPhotoIndex, setClosingPhotoIndex] = useState<number>(0);
+  const touchStartXRef = useRef<number | null>(null);
+
+  // 3 Canonical matching photos for the closing arch slider
+  const closingSlides = useMemo(() => {
+    const defaults = ['/photos/photo-3.jpg', '/photos/photo-4.jpg', '/photos/photo-5.jpg'];
+    const customList: string[] = [];
+    if (couple?.cover_photo_url && !defaults.includes(couple.cover_photo_url)) {
+      customList.push(couple.cover_photo_url);
+    }
+    if (Array.isArray(gallery) && gallery.length > 0) {
+      gallery.forEach((g: any) => {
+        const url = g?.image_url || g?.url;
+        if (url && typeof url === 'string' && !customList.includes(url)) {
+          customList.push(url);
+        }
+      });
+    }
+    if (customList.length >= 3) {
+      return customList.slice(0, 3);
+    }
+    const combined = [...customList];
+    for (const d of defaults) {
+      if (combined.length >= 3) break;
+      if (!combined.includes(d)) combined.push(d);
+    }
+    return combined.slice(0, 3);
+  }, [couple?.cover_photo_url, gallery]);
+
+  // Auto-play slideshow every 3.8s
+  useEffect(() => {
+    if (closingSlides.length <= 1) return;
+    const interval = setInterval(() => {
+      setClosingPhotoIndex((prev) => (prev + 1) % closingSlides.length);
+    }, 3800);
+    return () => clearInterval(interval);
+  }, [closingSlides.length]);
+
+  const handlePrevClosingPhoto = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setClosingPhotoIndex((prev) => (prev - 1 + closingSlides.length) % closingSlides.length);
+  };
+
+  const handleNextClosingPhoto = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setClosingPhotoIndex((prev) => (prev + 1) % closingSlides.length);
+  };
+
+  const handleClosingTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleClosingTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null) return;
+    const diff = touchStartXRef.current - e.changedTouches[0].clientX;
+    touchStartXRef.current = null;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        handleNextClosingPhoto();
+      } else {
+        handlePrevClosingPhoto();
+      }
+    }
+  };
   const [wishes, setWishes] = useState<Array<{ name: string; attendance: string; message: string; date: string }>>([
     {
       name: 'Della',
@@ -2081,14 +2148,75 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
           <div className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] mx-auto flex flex-col items-center text-center">
             
-            {/* Arch Photo Frame with Royal Gold Border and Subtle Halo */}
+            {/* Arch Photo Frame Slideshow (Can cycle 3 photos with auto-play, manual controls & swipe) */}
             <ScrollReveal animation="arch-reveal" delay={80}>
-              <div className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#d4af37] overflow-hidden shadow-[0_14px_38px_rgba(92,19,28,0.28),_0_0_24px_rgba(212,175,55,0.25)] bg-[#f5ebe1] mb-6">
-                <img 
-                  src={couple?.cover_photo_url || '/photos/photo-3.jpg'} 
-                  alt={`${groomNick} & ${brideNick}`} 
-                  className="w-full h-full object-cover object-[center_18%]"
-                />
+              <div 
+                className="relative w-[215px] sm:w-[245px] aspect-[3/4.1] rounded-t-[110px] sm:rounded-t-[125px] rounded-b-none border-[3px] border-[#d4af37] overflow-hidden shadow-[0_14px_38px_rgba(92,19,28,0.28),_0_0_24px_rgba(212,175,55,0.25)] bg-[#f5ebe1] mb-6 group select-none cursor-grab active:cursor-grabbing"
+                onTouchStart={handleClosingTouchStart}
+                onTouchEnd={handleClosingTouchEnd}
+              >
+                {/* 3 Photos with smooth Crossfade & Scale */}
+                {closingSlides.map((photoUrl, idx) => (
+                  <div 
+                    key={idx}
+                    className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+                      idx === closingPhotoIndex 
+                        ? 'opacity-100 scale-100 z-10 pointer-events-auto' 
+                        : 'opacity-0 scale-105 z-0 pointer-events-none'
+                    }`}
+                  >
+                    <img 
+                      src={photoUrl} 
+                      alt={`${groomNick} & ${brideNick} ${idx + 1}`} 
+                      className={`w-full h-full object-cover ${
+                        idx === 0 ? 'object-[center_18%]' : idx === 1 ? 'object-[center_20%]' : 'object-[center_20%]'
+                      }`}
+                    />
+                    {/* Subtle bottom vignette to ensure navigation dots are clear */}
+                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/55 via-black/20 to-transparent pointer-events-none" />
+                  </div>
+                ))}
+
+                {/* Left Navigation Arrow */}
+                <button
+                  type="button"
+                  onClick={handlePrevClosingPhoto}
+                  aria-label="Foto Sebelumnya"
+                  className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-black/45 hover:bg-black/70 text-[#ffd778] backdrop-blur-xs border border-[#d4af37]/60 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 shadow-md cursor-pointer opacity-90 sm:opacity-0 sm:group-hover:opacity-100"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                {/* Right Navigation Arrow */}
+                <button
+                  type="button"
+                  onClick={handleNextClosingPhoto}
+                  aria-label="Foto Selanjutnya"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-black/45 hover:bg-black/70 text-[#ffd778] backdrop-blur-xs border border-[#d4af37]/60 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 shadow-md cursor-pointer opacity-90 sm:opacity-0 sm:group-hover:opacity-100"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+
+                {/* 3 Pagination Indicator Dots / Pills */}
+                <div className="absolute bottom-2.5 inset-x-0 z-20 flex items-center justify-center gap-1.5 pointer-events-auto">
+                  {closingSlides.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setClosingPhotoIndex(idx);
+                      }}
+                      aria-label={`Pindah ke foto ${idx + 1}`}
+                      className={`transition-all duration-300 rounded-full cursor-pointer ${
+                        idx === closingPhotoIndex
+                          ? 'w-5 h-1.5 bg-[#ffd778] shadow-[0_0_8px_rgba(255,215,120,0.85)]'
+                          : 'w-1.5 h-1.5 bg-white/55 hover:bg-white/90'
+                      }`}
+                    />
+                  ))}
+                </div>
+
               </div>
             </ScrollReveal>
 
