@@ -22,7 +22,8 @@ import {
   X,
   Palette,
   ExternalLink,
-  Sparkles
+  Sparkles,
+  HelpCircle
 } from 'lucide-react';
 
 export const Home: React.FC = () => {
@@ -112,24 +113,34 @@ export const Home: React.FC = () => {
 
   const faqs = [
     {
+      category: 'Proses & Waktu',
       q: 'Berapa lama waktu pengerjaan undangan digital?',
-      a: 'Pengerjaan draf awal memakan waktu 1 hingga 2 hari kerja setelah data acara lengkap. Untuk kebutuhan mendesak, tersedia layanan kilat dalam hitungan jam.'
+      a: 'Pengerjaan draf awal memakan waktu 1 hingga 2 hari kerja setelah data acara dan foto lengkap. Jika Anda memiliki kebutuhan mendesak, tersedia layanan kilat siap sebar dalam hitungan jam.'
     },
     {
+      category: 'Audio & Musik',
       q: 'Apakah bisa menggunakan musik atau lagu pilihan sendiri?',
-      a: 'Tentu. Anda dapat memilih koleksi instrumen romantis yang kami sediakan, atau menyematkan judul lagu favorit kenangan Anda berdua.'
+      a: 'Tentu saja. Anda dapat memilih dari koleksi instrumen romantis yang kami sediakan (piano, orkestra, akustik, gamelan modern), atau menyematkan judul lagu kenangan favorit Anda berdua.'
     },
     {
+      category: 'Fitur WhatsApp',
       q: 'Bagaimana cara mengirim undangan dengan nama tamu yang berbeda?',
-      a: 'Sistem generator nama tamu WD Group memungkinkan Anda membuat tautan khusus untuk setiap penerima secara otomatis, lengkap dengan format teks sapaan resmi siap kirim ke WhatsApp.'
+      a: 'Anda mendapatkan akses generator nama tamu otomatis WD Group. Cukup masukkan daftar nama kerabat, sistem akan membuatkan tautan khusus beserta format sapaan WhatsApp resmi yang santun dan siap dikirim satu per satu tanpa repot.'
     },
     {
-      q: 'Apakah ada batasan kuota tamu undangan?',
-      a: 'Tidak ada batasan kuota. Satu tautan undangan dapat dibagikan kepada seluruh kerabat, keluarga, dan rekan kerja tanpa biaya tambahan.'
+      category: 'Kuota & Akses',
+      q: 'Apakah ada batasan kuota tamu undangan atau masa aktif?',
+      a: 'Tidak ada batasan kuota. Satu tautan undangan dapat dibagikan kepada ratusan hingga ribuan kerabat tanpa biaya tambahan. Masa aktif tautan berlaku penuh hingga acara selesai dan tetap tersimpan sebagai kenang-kenangan.'
     },
     {
+      category: 'RSVP & Amplop',
       q: 'Bagaimana tamu mengisi RSVP dan mengirim amplop digital?',
-      a: 'Tamu cukup mengisi formulir kehadiran langsung di halaman undangan. Untuk amplop digital, tersedia tombol salin nomor rekening bank serta QRIS yang dapat dipindai dengan mudah.'
+      a: 'Tamu cukup mengisi formulir kehadiran langsung di halaman undangan secara real-time. Untuk amplop digital, tersedia tombol satu klik salin nomor rekening bank serta QRIS resmi yang dapat dipindai dengan mudah dari berbagai aplikasi e-wallet atau m-banking.'
+    },
+    {
+      category: 'Layanan & Garansi',
+      q: 'Apakah ada jaminan revisi jika terjadi perubahan jadwal atau lokasi?',
+      a: 'Ya, kami memberikan fasilitas revisi tanpa biaya tambahan untuk perubahan jam, tanggal, titik maps lokasi, maupun penambahan susunan acara hingga hari H pernikahan Anda berlangsung.'
     }
   ];
 
@@ -1045,47 +1056,116 @@ export const Home: React.FC = () => {
       </section>
 
       {/* FAQ SECTION */}
-      <section id="faq" className="py-20 sm:py-24 bg-[#f5f1eb] border-t border-stone-200">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="faq" className="py-20 sm:py-24 bg-[#f7f4ee] border-t border-stone-200/80 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center mb-14 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              Tanya Jawab
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Pertanyaan yang Sering Diajukan
-            </h2>
-            <p className="text-sm sm:text-base text-stone-600">
-              Informasi praktis seputar pembuatan, revisi, dan penggunaan undangan digital WD Group.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {faqs.map((faq, idx) => (
-              <div 
-                key={idx}
-                className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-xs"
-              >
-                <button
-                  onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
-                  className="w-full p-5 sm:p-6 text-left font-bold text-stone-900 flex justify-between items-center hover:text-primary-800 transition-colors gap-4"
-                  aria-expanded={openFaqIndex === idx}
-                >
-                  <span className="text-sm sm:text-base leading-snug">{faq.q}</span>
-                  <ChevronDown 
-                    size={18} 
-                    className={`text-stone-500 transform transition-transform duration-300 shrink-0 ${
-                      openFaqIndex === idx ? 'rotate-180 text-primary-800' : ''
-                    }`} 
-                  />
-                </button>
-                {openFaqIndex === idx && (
-                  <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-stone-600 text-xs sm:text-sm leading-relaxed border-t border-stone-100 pt-3">
-                    {faq.a}
-                  </div>
-                )}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+            
+            {/* Left Column: Editorial Sticky Header & Concierge Support Card */}
+            <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-200/80 text-stone-800 text-xs font-semibold tracking-wide">
+                  <HelpCircle size={14} className="text-primary-800" />
+                  <span>Pusat Bantuan &amp; FAQ</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
+                  Pertanyaan yang Sering Diajukan
+                </h2>
+                <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+                  Informasi transparan seputar proses kreasi, kustomisasi musik kenangan, generator nama WhatsApp, hingga jaminan revisi sebelum hari bahagia Anda.
+                </p>
               </div>
-            ))}
+
+              {/* Concierge Support Card */}
+              <div className="bg-[#1c1917] rounded-3xl p-6 sm:p-7 text-white border border-stone-800 shadow-lg relative overflow-hidden">
+                <div className="relative z-10 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Layanan Konsultasi Aktif</span>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-1.5">
+                      Punya Pertanyaan atau Konsep Khusus?
+                    </h3>
+                    <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+                      Tim wedding specialist kami siap membantu pemilihan tema, penyesuaian ornamen adat, hingga panduan sebar undangan secara personal.
+                    </p>
+                  </div>
+
+                  <a 
+                    href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20seputar%20undangan%20pernikahan%20digital"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs sm:text-sm transition-all shadow-md group"
+                  >
+                    <MessageCircle size={16} className="text-stone-950 group-hover:scale-110 transition-transform" />
+                    <span>Konsultasi Gratis via WhatsApp</span>
+                  </a>
+
+                  <div className="pt-3 border-t border-stone-800 flex items-center justify-between text-[11px] text-stone-400">
+                    <span>Senin - Minggu: 08.00 - 22.00</span>
+                    <span>Respon rata-rata &lt; 15 menit</span>
+                  </div>
+                </div>
+
+                <div className="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+              </div>
+            </div>
+
+            {/* Right Column: Interactive Numbered Accordion List */}
+            <div className="lg:col-span-7 space-y-3.5">
+              {faqs.map((faq, idx) => {
+                const isOpen = openFaqIndex === idx;
+                return (
+                  <div 
+                    key={idx}
+                    className={`rounded-2xl transition-all duration-200 border overflow-hidden ${
+                      isOpen 
+                        ? 'bg-white border-amber-600/40 shadow-sm ring-1 ring-amber-600/15' 
+                        : 'bg-white/85 hover:bg-white border-stone-200/90 hover:border-stone-300 shadow-xs'
+                    }`}
+                  >
+                    <button
+                      onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                      className="w-full p-5 sm:p-6 text-left flex items-start justify-between gap-4 group"
+                      aria-expanded={isOpen}
+                    >
+                      <div className="space-y-1.5 flex-1 pr-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-mono font-bold text-amber-700 tracking-wider">
+                            0{idx + 1}
+                          </span>
+                          <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-stone-100 text-stone-600 border border-stone-200/80">
+                            {faq.category}
+                          </span>
+                        </div>
+                        <h3 className={`text-sm sm:text-base font-bold leading-snug transition-colors ${
+                          isOpen ? 'text-primary-900' : 'text-stone-900 group-hover:text-primary-800'
+                        }`}>
+                          {faq.q}
+                        </h3>
+                      </div>
+
+                      <div className={`w-8 h-8 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300 ${
+                        isOpen 
+                          ? 'bg-primary-900 border-primary-900 text-white rotate-180 shadow-xs' 
+                          : 'bg-stone-50 border-stone-200 text-stone-500 group-hover:bg-stone-100 group-hover:text-stone-800'
+                      }`}>
+                        <ChevronDown size={16} />
+                      </div>
+                    </button>
+
+                    {isOpen && (
+                      <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-stone-600 text-xs sm:text-sm leading-relaxed border-t border-stone-100 pt-4 bg-stone-50/40">
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
           </div>
 
         </div>
