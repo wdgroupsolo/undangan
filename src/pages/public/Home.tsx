@@ -1005,7 +1005,7 @@ export const Home: React.FC = () => {
                 &ldquo;Sangat suka dengan detail visual dan ornamen batiknya. Tamu-tamu keluarga besar kami sangat mengapresiasi karena mudah dibuka di HP dan musiknya sakral.&rdquo;
               </p>
               <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/photo-4.jpg" alt="Rendy & Maya" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
+                <img src="/photos/avatar-rendy-maya.jpg" alt="Rendy & Maya" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
                 <div>
                   <h4 className="font-bold text-stone-900 text-sm">Rendy &amp; Maya</h4>
                   <p className="text-xs text-stone-500">Pernikahan di Solo • Tema Javanese Heritage</p>
@@ -1018,7 +1018,7 @@ export const Home: React.FC = () => {
                 &ldquo;Pelayanan cepat dan ramah, revisi langsung dibantu admin. Fitur generator nama tamu di WhatsApp sangat membantu menghemat waktu sebar undangan.&rdquo;
               </p>
               <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/photo-5.jpg" alt="Dimas & Nadia" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
+                <img src="/photos/avatar-dimas-nadia.jpg" alt="Dimas & Nadia" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
                 <div>
                   <h4 className="font-bold text-stone-900 text-sm">Dimas &amp; Nadia</h4>
                   <p className="text-xs text-stone-500">Pernikahan di Yogyakarta • Tema Split Floral</p>
@@ -1031,7 +1031,7 @@ export const Home: React.FC = () => {
                 &ldquo;Transisi video gerbang pembukanya sangat mewah. Banyak teman kami yang memuji undangannya terasa eksklusif dan beda dari undangan digital biasa.&rdquo;
               </p>
               <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/photo-6.jpg" alt="Faris & Aisyah" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
+                <img src="/photos/avatar-faris-aisyah.jpg" alt="Faris & Aisyah" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
                 <div>
                   <h4 className="font-bold text-stone-900 text-sm">Faris &amp; Aisyah</h4>
                   <p className="text-xs text-stone-500">Pernikahan di Semarang • Tema Maroon Gold</p>
