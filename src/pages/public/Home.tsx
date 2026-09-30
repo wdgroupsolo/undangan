@@ -25,7 +25,10 @@ import {
   Palette,
   ExternalLink,
   Sparkles,
-  HelpCircle
+  HelpCircle,
+  Bot,
+  Send,
+  RotateCcw
 } from 'lucide-react';
 
 export const Home: React.FC = () => {
@@ -218,38 +221,145 @@ export const Home: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const faqs = [
+  interface ChatMessage {
+    id: string;
+    sender: 'bot' | 'user';
+    text: string;
+    time: string;
+    actionUrl?: string;
+    actionLabel?: string;
+  }
+
+  const FAQ_KNOWLEDGE_BASE = [
     {
-      category: 'Proses & Waktu',
-      q: 'Berapa lama waktu pengerjaan undangan digital?',
-      a: 'Pengerjaan draf awal memakan waktu 1 hingga 2 hari kerja setelah data acara dan foto lengkap. Jika Anda memiliki kebutuhan mendesak, tersedia layanan kilat siap sebar dalam hitungan jam.'
+      id: 'proses',
+      chip: '⚡ Berapa lama pengerjaannya?',
+      keywords: ['lama', 'waktu', 'proses', 'cepat', 'berapa lama', 'hari', 'kilat', 'draf', 'selesai'],
+      question: 'Berapa lama waktu pengerjaan undangan digital?',
+      answer: 'Pengerjaan draf awal memakan waktu 1 hingga 2 hari kerja setelah data acara dan foto lengkap. Jika Anda memiliki kebutuhan mendesak, kami menyediakan layanan kilat siap sebar dalam hitungan jam tanpa mengurangi kualitas desain.'
     },
     {
-      category: 'Audio & Musik',
-      q: 'Apakah bisa menggunakan musik atau lagu pilihan sendiri?',
-      a: 'Tentu saja. Anda dapat memilih dari koleksi instrumen romantis yang kami sediakan (piano, orkestra, akustik, gamelan modern), atau menyematkan judul lagu kenangan favorit Anda berdua.'
+      id: 'musik',
+      chip: '🎵 Bisa pakai lagu sendiri?',
+      keywords: ['musik', 'lagu', 'audio', 'sound', 'backsound', 'request lagu', 'mp3', 'gamelan', 'piano'],
+      question: 'Apakah bisa menggunakan musik atau lagu pilihan sendiri?',
+      answer: 'Tentu saja! Anda dapat memilih dari katalog aransemen instrumen romantis eksklusif kami (piano, akustik, orkestra, gamelan modern), atau menyematkan judul lagu kenangan favorit Anda berdua.'
     },
     {
-      category: 'Fitur WhatsApp',
-      q: 'Bagaimana cara mengirim undangan dengan nama tamu yang berbeda?',
-      a: 'Anda mendapatkan akses generator nama tamu otomatis WD Group. Cukup masukkan daftar nama kerabat, sistem akan membuatkan tautan khusus beserta format sapaan WhatsApp resmi yang santun dan siap dikirim satu per satu tanpa repot.'
+      id: 'wa-generator',
+      chip: '💬 Cara kirim nama tamu WhatsApp?',
+      keywords: ['wa', 'whatsapp', 'nama tamu', 'tamu', 'generator', 'kirim', 'sebar', 'link', 'tautan'],
+      question: 'Bagaimana cara mengirim undangan dengan nama tamu yang berbeda?',
+      answer: 'Anda mendapatkan akses fitur Generator Nama Tamu WD Group secara gratis. Cukup masukkan daftar nama kerabat, sistem akan otomatis membuatkan tautan khusus (contoh: Kepada Yth. Bapak/Ibu...) beserta draf teks sapaan WhatsApp santun yang siap Anda kirim satu per satu tanpa repot mengetik manual.'
     },
     {
-      category: 'Kuota & Akses',
-      q: 'Apakah ada batasan kuota tamu undangan atau masa aktif?',
-      a: 'Tidak ada batasan kuota. Satu tautan undangan dapat dibagikan kepada ratusan hingga ribuan kerabat tanpa biaya tambahan. Masa aktif tautan berlaku penuh hingga acara selesai dan tetap tersimpan sebagai kenang-kenangan.'
+      id: 'kuota',
+      chip: '👥 Batasan kuota tamu & masa aktif?',
+      keywords: ['kuota', 'batas', 'jumlah', 'tamu', 'berapa orang', 'masa aktif', 'aktif', 'kadaluarsa'],
+      question: 'Apakah ada batasan kuota tamu undangan atau masa aktif?',
+      answer: 'Tidak ada batasan kuota sama sekali! Satu tautan undangan dapat dibagikan kepada ratusan hingga ribuan kerabat tanpa biaya tambahan. Masa aktif tautan berlaku penuh hingga acara selesai dan tetap tersimpan sebagai kenang-kenangan.'
     },
     {
-      category: 'RSVP & Amplop',
-      q: 'Bagaimana tamu mengisi RSVP dan mengirim amplop digital?',
-      a: 'Tamu cukup mengisi formulir kehadiran langsung di halaman undangan secara real-time. Untuk amplop digital, tersedia tombol satu klik salin nomor rekening bank serta QRIS resmi yang dapat dipindai dengan mudah dari berbagai aplikasi e-wallet atau m-banking.'
+      id: 'rsvp',
+      chip: '💌 RSVP & Amplop Digital?',
+      keywords: ['rsvp', 'amplop', 'kado', 'hadiah', 'rekening', 'qris', 'bank', 'kehadiran', 'ucapan'],
+      question: 'Bagaimana tamu mengisi RSVP dan mengirim amplop digital?',
+      answer: 'Tamu cukup mengisi formulir kehadiran langsung di halaman undangan secara real-time. Untuk amplop digital, tersedia tombol satu klik salin nomor rekening bank (BCA, Mandiri, BSI, dll) serta QRIS resmi yang aman dipindai dari m-banking atau e-wallet mana pun.'
     },
     {
-      category: 'Layanan & Garansi',
-      q: 'Apakah ada jaminan revisi jika terjadi perubahan jadwal atau lokasi?',
-      a: 'Ya, kami memberikan fasilitas revisi tanpa biaya tambahan untuk perubahan jam, tanggal, titik maps lokasi, maupun penambahan susunan acara hingga hari H pernikahan Anda berlangsung.'
+      id: 'revisi',
+      chip: '🛡️ Garansi revisi jadwal/lokasi?',
+      keywords: ['revisi', 'garansi', 'ubah', 'ganti', 'jadwal', 'lokasi', 'batal', 'geser', 'waktu'],
+      question: 'Apakah ada garansi jika ada perubahan jadwal atau lokasi acara?',
+      answer: 'Ya, kami memberikan fasilitas jaminan revisi data tanpa biaya tambahan untuk perubahan tanggal, jam acara, maupun titik maps lokasi hingga hari H pernikahan Anda berlangsung.'
+    },
+    {
+      id: 'harga',
+      chip: '💰 Berapa harga paket undangan?',
+      keywords: ['harga', 'biaya', 'paket', 'biaya buat', 'promo', 'murah', 'starter', 'premium', 'custom', 'bayar'],
+      question: 'Berapa harga paket pembuatan undangan digital di WD Group?',
+      answer: 'Paket kami mulai dari Rp 99.000 untuk Paket Starter, Rp 150.000 untuk Paket Premium (fitur lengkap + video gerbang sinematik), dan Paket Custom Bespoke untuk konsep khusus dari nol. Semua sudah termasuk revisi dan generator tamu WhatsApp.'
     }
   ];
+
+  const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
+    {
+      id: 'bot-init-1',
+      sender: 'bot',
+      text: 'Halo kak! 👋 Selamat datang di WD Group. Saya Asisten Virtual yang siap membantu menjawab pertanyaan Anda seputar undangan pernikahan digital secara instan.',
+      time: 'Online'
+    },
+    {
+      id: 'bot-init-2',
+      sender: 'bot',
+      text: 'Silakan klik salah satu topik pertanyaan di bawah, atau ketik langsung pertanyaan Anda di kolom pesan:',
+      time: 'Online'
+    }
+  ];
+
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);
+  const [chatInput, setChatInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const chatMessagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages, isTyping]);
+
+  const handleAskQuestion = (questionText: string, customAnswer?: string) => {
+    const trimmed = questionText.trim();
+    if (!trimmed) return;
+
+    const userMsg: ChatMessage = {
+      id: 'user-' + Date.now(),
+      sender: 'user',
+      text: trimmed,
+      time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setChatMessages(prev => [...prev, userMsg]);
+    setChatInput('');
+    setIsTyping(true);
+
+    setTimeout(() => {
+      let botResponse = customAnswer;
+      let actionUrl: string | undefined = undefined;
+      let actionLabel: string | undefined = undefined;
+
+      if (!botResponse) {
+        const lower = trimmed.toLowerCase();
+        const found = FAQ_KNOWLEDGE_BASE.find(f => 
+          f.question.toLowerCase() === lower || 
+          f.keywords.some(k => lower.includes(k))
+        );
+
+        if (found) {
+          botResponse = found.answer;
+        } else {
+          botResponse = 'Terima kasih atas pertanyaannya! Untuk pertanyaan atau request khusus ini, Anda bisa langsung berdiskusi dengan desainer manusia kami melalui WhatsApp agar dapat disesuaikan langsung:';
+          actionUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(`Halo WD Group, saya ingin konsultasi: "${trimmed}"`)}`;
+          actionLabel = 'Lanjut Tanya via WhatsApp';
+        }
+      }
+
+      const botMsg: ChatMessage = {
+        id: 'bot-' + Date.now(),
+        sender: 'bot',
+        text: botResponse,
+        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+        actionUrl,
+        actionLabel
+      };
+
+      setIsTyping(false);
+      setChatMessages(prev => [...prev, botMsg]);
+    }, 400);
+  };
+
+  const handleResetChat = () => {
+    setChatMessages(INITIAL_CHAT_MESSAGES);
+    setIsTyping(false);
+  };
 
   return (
     <div className="min-h-screen bg-[#faf8f5] text-stone-800 font-jakarta selection:bg-primary-700 selection:text-white overflow-x-clip">
@@ -1239,117 +1349,209 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* FAQ SECTION */}
+      {/* FAQ CHATBOT SECTION */}
       <section id="faq" className="py-20 sm:py-24 bg-[#f7f4ee] border-t border-stone-200/80 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          {/* Section Header */}
+          <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-200/80 text-stone-800 text-xs font-semibold tracking-wide">
+              <Bot size={15} className="text-primary-800" />
+              <span>Asisten Tanya Jawab Pintar</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
+              Pertanyaan yang Sering Diajukan
+            </h2>
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+              Pilih pertanyaan cepat atau ngobrol interaktif dengan asisten virtual WD Group untuk mendapatkan informasi lengkap secara instan.
+            </p>
+          </div>
+
+          {/* Chatbot Window Container */}
+          <div className="bg-white rounded-3xl border border-stone-300/80 shadow-xl overflow-hidden flex flex-col">
             
-            {/* Left Column: Editorial Sticky Header & Concierge Support Card */}
-            <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
-              <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-200/80 text-stone-800 text-xs font-semibold tracking-wide">
-                  <HelpCircle size={14} className="text-primary-800" />
-                  <span>Pusat Bantuan &amp; FAQ</span>
+            {/* Chatbot Header */}
+            <div className="bg-stone-950 text-white px-5 py-4 flex items-center justify-between border-b border-stone-800">
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-amber-300 font-bold border border-amber-300/30 shadow-xs">
+                    <Bot size={20} />
+                  </div>
+                  <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-stone-950 animate-pulse" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
-                  Pertanyaan yang Sering Diajukan
-                </h2>
-                <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
-                  Informasi transparan seputar proses kreasi, kustomisasi musik kenangan, generator nama WhatsApp, hingga jaminan revisi sebelum hari bahagia Anda.
-                </p>
+                <div>
+                  <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+                    <span>WD Wedding Assistant</span>
+                    <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">Bot FAQ</span>
+                  </h3>
+                  <p className="text-xs text-stone-400">Online • Menjawab otomatis 24/7</p>
+                </div>
               </div>
 
-              {/* Concierge Support Card */}
-              <div className="bg-[#1c1917] rounded-3xl p-6 sm:p-7 text-white border border-stone-800 shadow-lg relative overflow-hidden">
-                <div className="relative z-10 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>Layanan Konsultasi Aktif</span>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-white mb-1.5">
-                      Punya Pertanyaan atau Konsep Khusus?
-                    </h3>
-                    <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
-                      Tim wedding specialist kami siap membantu pemilihan tema, penyesuaian ornamen adat, hingga panduan sebar undangan secara personal.
-                    </p>
-                  </div>
-
-                  <a 
-                    href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20seputar%20undangan%20pernikahan%20digital"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs sm:text-sm transition-all shadow-md group"
-                  >
-                    <MessageCircle size={16} className="text-stone-950 group-hover:scale-110 transition-transform" />
-                    <span>Konsultasi Gratis via WhatsApp</span>
-                  </a>
-
-                  <div className="pt-3 border-t border-stone-800 flex items-center justify-between text-[11px] text-stone-400">
-                    <span>Senin - Minggu: 08.00 - 22.00</span>
-                    <span>Respon rata-rata &lt; 15 menit</span>
-                  </div>
-                </div>
-
-                <div className="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={handleResetChat}
+                  className="px-2.5 py-1.5 rounded-lg bg-stone-800/80 hover:bg-stone-800 text-stone-300 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
+                  title="Mulai Ulang Percakapan"
+                >
+                  <RotateCcw size={13} />
+                  <span className="hidden sm:inline">Reset</span>
+                </button>
+                <a
+                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20tanya%20langsung%20dengan%20tim%20desainer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
+                >
+                  <MessageCircle size={13} />
+                  <span className="hidden sm:inline">Chat WA Desainer</span>
+                </a>
               </div>
             </div>
 
-            {/* Right Column: Interactive Numbered Accordion List */}
-            <div className="lg:col-span-7 space-y-3.5">
-              {faqs.map((faq, idx) => {
-                const isOpen = openFaqIndex === idx;
+            {/* Chat Messages Log Area */}
+            <div className="h-[360px] sm:h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fbf9f6]/80 text-xs sm:text-sm">
+              <div className="text-center my-1">
+                <span className="text-[10px] font-medium text-stone-400 bg-stone-100 px-3 py-1 rounded-full">
+                  Percakapan Dimulai Otomatis
+                </span>
+              </div>
+
+              {chatMessages.map((msg) => {
+                const isUser = msg.sender === 'user';
                 return (
-                  <div 
-                    key={idx}
-                    className={`rounded-2xl transition-all duration-200 border overflow-hidden ${
-                      isOpen 
-                        ? 'bg-white border-amber-600/40 shadow-sm ring-1 ring-amber-600/15' 
-                        : 'bg-white/85 hover:bg-white border-stone-200/90 hover:border-stone-300 shadow-xs'
-                    }`}
+                  <div
+                    key={msg.id}
+                    className={`flex items-end gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
                   >
-                    <button
-                      onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                      className="w-full p-5 sm:p-6 text-left flex items-start justify-between gap-4 group"
-                      aria-expanded={isOpen}
+                    {!isUser && (
+                      <div className="w-7 h-7 rounded-full bg-primary-900 text-amber-300 flex items-center justify-center shrink-0 text-xs shadow-2xs">
+                        <Bot size={14} />
+                      </div>
+                    )}
+                    
+                    <div
+                      className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 shadow-2xs leading-relaxed space-y-2 ${
+                        isUser
+                          ? 'bg-primary-900 text-white rounded-br-xs text-right'
+                          : 'bg-white text-stone-800 border border-stone-200/90 rounded-bl-xs text-left'
+                      }`}
                     >
-                      <div className="space-y-1.5 flex-1 pr-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-mono font-bold text-amber-700 tracking-wider">
-                            0{idx + 1}
-                          </span>
-                          <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-stone-100 text-stone-600 border border-stone-200/80">
-                            {faq.category}
-                          </span>
+                      <p className="whitespace-pre-line text-xs sm:text-sm">{msg.text}</p>
+
+                      {msg.actionUrl && (
+                        <div className="pt-2">
+                          <a
+                            href={msg.actionUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-2xs"
+                          >
+                            <MessageCircle size={14} />
+                            <span>{msg.actionLabel || 'Hubungi WhatsApp'}</span>
+                          </a>
                         </div>
-                        <h3 className={`text-sm sm:text-base font-bold leading-snug transition-colors ${
-                          isOpen ? 'text-primary-900' : 'text-stone-900 group-hover:text-primary-800'
-                        }`}>
-                          {faq.q}
-                        </h3>
-                      </div>
+                      )}
 
-                      <div className={`w-8 h-8 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300 ${
-                        isOpen 
-                          ? 'bg-primary-900 border-primary-900 text-white rotate-180 shadow-xs' 
-                          : 'bg-stone-50 border-stone-200 text-stone-500 group-hover:bg-stone-100 group-hover:text-stone-800'
-                      }`}>
-                        <ChevronDown size={16} />
-                      </div>
-                    </button>
+                      <span
+                        className={`block text-[10px] font-mono mt-1 ${
+                          isUser ? 'text-amber-200/80 text-right' : 'text-stone-400 text-left'
+                        }`}
+                      >
+                        {msg.time}
+                      </span>
+                    </div>
 
-                    {isOpen && (
-                      <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-stone-600 text-xs sm:text-sm leading-relaxed border-t border-stone-100 pt-4 bg-stone-50/40">
-                        {faq.a}
+                    {isUser && (
+                      <div className="w-7 h-7 rounded-full bg-stone-300 text-stone-700 flex items-center justify-center shrink-0 text-xs font-bold">
+                        Anda
                       </div>
                     )}
                   </div>
                 );
               })}
+
+              {isTyping && (
+                <div className="flex items-center gap-2.5 justify-start">
+                  <div className="w-7 h-7 rounded-full bg-primary-900 text-amber-300 flex items-center justify-center shrink-0 text-xs">
+                    <Bot size={14} />
+                  </div>
+                  <div className="bg-white border border-stone-200/90 rounded-2xl rounded-bl-xs px-4 py-3 shadow-2xs flex items-center space-x-1.5">
+                    <span className="w-2 h-2 rounded-full bg-stone-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-2 h-2 rounded-full bg-stone-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-2 h-2 rounded-full bg-stone-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                </div>
+              )}
+
+              <div ref={chatMessagesEndRef} />
             </div>
 
+            {/* Quick Questions Chips Bar */}
+            <div className="p-3 bg-stone-100/90 border-t border-stone-200">
+              <div className="flex items-center justify-between mb-2 px-1">
+                <span className="text-[11px] font-bold text-stone-600 flex items-center gap-1">
+                  <Sparkles size={12} className="text-amber-600" />
+                  <span>Pilihan Pertanyaan Cepat:</span>
+                </span>
+                <span className="text-[10px] text-stone-400">Klik untuk bertanya</span>
+              </div>
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+                {FAQ_KNOWLEDGE_BASE.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleAskQuestion(item.question, item.answer)}
+                    className="px-3 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-amber-100 hover:text-amber-900 border border-stone-300/80 text-stone-700 transition-colors whitespace-nowrap cursor-pointer shrink-0 shadow-2xs active:scale-95"
+                  >
+                    {item.chip}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Interactive Chat Input Form */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleAskQuestion(chatInput);
+              }}
+              className="p-3 sm:p-4 bg-white border-t border-stone-200 flex items-center gap-2"
+            >
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Ketik pertanyaan seputar undangan, atau klik pilihan di atas..."
+                className="flex-1 px-4 py-2.5 rounded-xl bg-stone-50 border border-stone-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-800/20 focus:border-primary-800 transition-all placeholder:text-stone-400"
+              />
+              <button
+                type="submit"
+                disabled={!chatInput.trim()}
+                className="w-10 h-10 rounded-xl bg-primary-900 hover:bg-primary-950 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer shrink-0 active:scale-95"
+                title="Kirim Pertanyaan"
+                aria-label="Kirim Pertanyaan"
+              >
+                <Send size={16} />
+              </button>
+            </form>
+
+          </div>
+
+          {/* Under-Chat Reassurance Card */}
+          <div className="mt-6 p-4 rounded-2xl bg-stone-200/50 border border-stone-300/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div className="flex items-center space-x-2.5 text-xs text-stone-600">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+              <span>Tim customer care &amp; desainer manusia aktif setiap hari <strong>08.00 - 22.00 WIB</strong></span>
+            </div>
+            <a
+              href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-primary-900 hover:text-primary-950 underline flex items-center gap-1"
+            >
+              <span>Hubungi Desainer di WhatsApp</span>
+              <ArrowRight size={13} />
+            </a>
           </div>
 
         </div>
