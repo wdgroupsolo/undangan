@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Mail, Disc, Sparkles } from 'lucide-react';
+import { Mail, Disc, Sparkles, MailOpen, Crown } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
 import { editorService } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
@@ -10,7 +10,7 @@ import { SplitFloralTheme } from './themes/SplitFloralTheme';
 import { AnimatedFloralTheme } from './themes/AnimatedFloralTheme';
 import { SecretGardenTheme } from './themes/SecretGardenTheme';
 import { RoyalEleganceTheme } from './themes/RoyalEleganceTheme';
-import { MaroonGoldTheme } from './themes/MaroonGoldTheme';
+import { MaroonGoldTheme, CardCornerFlourish, GoldSparkles, WaxSealBadge } from './themes/MaroonGoldTheme';
 import { JavaneseHeritageTheme, JavaneseMonogram, JavanesePetals, RoyalGoldCorner, FloatingGoldenDust } from './themes/JavaneseHeritageTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
@@ -571,61 +571,130 @@ export const InvitationRenderer: React.FC = () => {
             </div>
           </div>
         ) : isMaroonGold ? (
-          /* Maroon Gold Cover matching exactly the user reference image */
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#301114]">
-            {/* Background Image */}
+          /* Royal Maroon & Gold Grand Luxury Cover */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#1a0407]">
+            {/* Inline Keyframes for Shimmer & Royal Glow */}
+            <style>{`
+              @keyframes royal-shimmer-sweep {
+                0% { transform: translateX(-150%) skewX(-20deg); }
+                100% { transform: translateX(250%) skewX(-20deg); }
+              }
+              @keyframes royal-pulse-glow {
+                0%, 100% { 
+                  box-shadow: 0 0 15px rgba(212, 175, 55, 0.35), 0 8px 30px rgba(117, 16, 28, 0.55); 
+                }
+                50% { 
+                  box-shadow: 0 0 30px rgba(212, 175, 55, 0.65), 0 12px 42px rgba(117, 16, 28, 0.75); 
+                }
+              }
+            `}</style>
+
+            {/* Desktop Panoramic Backdrop with Dark Damask & Velvet Ambience */}
             <div className="absolute inset-0 z-0">
               <img 
                 src={coverImage} 
-                alt="Cover Maroon Gold" 
-                className="w-full h-full object-cover object-center scale-105"
+                alt="Maroon Gold Landscape" 
+                className="w-full h-full object-cover object-center scale-105 filter blur-[3px]"
               />
-              {/* Very strong dark maroon vignette at the bottom */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#3a1518] via-[#3a1518]/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#140204]/95 via-[#29050b]/88 to-[#140204]/95" />
+              <div className="absolute inset-0 bg-radial from-transparent via-[#1a0407]/65 to-[#0b0103]" />
             </div>
 
-            <div className="relative z-10 w-full h-full flex flex-col justify-end items-center pb-16 px-6 text-center text-white">
-              {/* Cover Text */}
-              <div className="w-full mb-8 space-y-4">
-                <p 
-                  className="text-sm text-gray-200 tracking-wide drop-shadow-md font-serif"
-                >
-                  The Wedding Of
-                </p>
+            {/* Ambient Floating Golden Sparkles */}
+            <GoldSparkles count={14} className="z-1" />
+
+            {/* Centered Luxury Portrait Invitation Card (100% on Mobile, max-w-[420px] on Desktop) */}
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[660px] sm:max-h-[94vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-5 sm:p-7 bg-[#230508] shadow-[0_25px_80px_rgba(0,0,0,0.85),_0_0_45px_rgba(212,175,55,0.3)] sm:border-[2.5px] sm:border-[#d4af37]/85 sm:ring-1 sm:ring-[#f3da9f]/40 sm:ring-offset-2 sm:ring-offset-[#180306]">
+              
+              {/* Card Photo Backdrop with Radial & Bottom Vignette */}
+              <div className="absolute inset-0 z-0 pointer-events-none">
+                <img 
+                  src={coverImage} 
+                  alt="Couple Cover" 
+                  className="w-full h-full object-cover object-center scale-105"
+                />
+                {/* Deep Royal Burgundy Vignette Gradients */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#230508] via-[#230508]/80 via-50% to-black/40" />
+                <div className="absolute inset-0 bg-radial from-transparent via-[#230508]/50 to-[#230508]/95" />
+              </div>
+
+              {/* Victorian Royal Gold Filigree Corners */}
+              <CardCornerFlourish />
+
+              {/* Subtle Gold Inset Arched Frame Line */}
+              <div className="absolute inset-2.5 sm:inset-3 rounded-[28px] sm:rounded-[30px] border border-[#d4af37]/40 pointer-events-none z-10" />
+
+              {/* TOP HEADER: Wax Seal & Royal Monogram */}
+              <div className="relative z-20 flex flex-col items-center pt-2 sm:pt-3">
+                <WaxSealBadge monogram={`${groomDisplayName[0] || 'S'}${brideDisplayName[0] || 'B'}`.toUpperCase()} />
+                
+                <div className="flex items-center justify-center gap-1.5 mt-1 text-[#f3da9f]">
+                  <Crown className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <p 
+                    className="text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-[#f3da9f] font-serif font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
+                    style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
+                  >
+                    THE WEDDING OF
+                  </p>
+                  <Crown className="w-3.5 h-3.5 text-[#d4af37]" />
+                </div>
+              </div>
+
+              {/* CENTER: Couple Names & Wedding Date */}
+              <div className="relative z-20 flex flex-col items-center my-auto py-2 w-full max-w-[340px]">
                 <h1 
-                  className="text-5xl sm:text-6xl text-white font-normal drop-shadow-lg leading-tight"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="text-3xl sm:text-4xl lg:text-[40px] leading-tight text-white font-normal tracking-[0.03em] text-center drop-shadow-[0_3px_12px_rgba(0,0,0,0.95)] my-1"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  {groom} &amp; {bride}
+                  {groomDisplayName} <span className="italic font-light text-[#f3da9f] mx-1">&amp;</span> {brideDisplayName}
                 </h1>
+
+                {/* Royal Gold Line Divider with Event Date */}
+                <div className="flex items-center justify-center gap-2 mt-2 w-full max-w-[240px]">
+                  <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#d4af37]/70 to-[#d4af37]" />
+                  <p 
+                    className="text-[11px] sm:text-xs tracking-[0.15em] text-[#f5dfa8] font-serif font-medium whitespace-nowrap drop-shadow-sm"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '25 Oktober 2026'}
+                  </p>
+                  <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#d4af37]/70 to-[#d4af37]" />
+                </div>
               </div>
 
-              {/* Recipient */}
-              <div className="w-full mb-10 space-y-3">
-                <p 
-                  className="text-sm text-gray-200 font-serif drop-shadow-md"
+              {/* BOTTOM: Recipient Guest Card & BUKA UNDANGAN Button */}
+              <div className="relative z-20 flex flex-col items-center w-full max-w-[330px] gap-3 pb-2 sm:pb-3">
+                {/* Royal Recipient Cartouche */}
+                <div className="w-full rounded-2xl bg-gradient-to-b from-[#3a0a10]/85 via-[#2b070c]/90 to-[#1d0407]/95 backdrop-blur-md border border-[#d4af37]/65 shadow-[0_8px_24px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.15)] py-2.5 px-4 text-center">
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#e2b96f] font-serif font-medium">
+                    Kepada Yth. Bapak/Ibu/Saudara/i :
+                  </p>
+                  <p className="text-base sm:text-lg font-serif font-bold text-white tracking-wide mt-0.5 line-clamp-1 drop-shadow-sm">
+                    {guestName}
+                  </p>
+                </div>
+
+                {/* Buka Undangan Royal Button */}
+                <button
+                  onClick={handleOpen}
+                  className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-[0_10px_35px_rgba(128,20,31,0.65),_0_0_25px_rgba(212,175,55,0.45)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#7a121d] via-[#a82433] to-[#610c15] border-[1.5px] border-[#e8c872]"
+                  style={{ animation: 'royal-pulse-glow 3.5s ease-in-out infinite' }}
                 >
-                  Dear :
-                </p>
-                <p 
-                  className="text-base sm:text-lg text-white font-medium drop-shadow-md font-serif"
-                >
-                  {guestName}
-                </p>
+                  {/* Shimmer Light Reflection */}
+                  <div 
+                    className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full"
+                    style={{ animation: 'royal-shimmer-sweep 2.6s ease-in-out infinite' }}
+                  />
+                  <div className="relative flex items-center justify-center gap-2.5">
+                    <MailOpen className="w-4 h-4 text-[#ffd778]" />
+                    <span className="text-xs font-serif font-bold uppercase tracking-[0.28em] text-[#fff8ee] drop-shadow-sm">
+                      BUKA UNDANGAN
+                    </span>
+                    <Sparkles className="w-4 h-4 text-[#ffd778] animate-pulse" />
+                  </div>
+                </button>
               </div>
 
-              {/* Buka Undangan Button */}
-              <button 
-                onClick={handleOpen} 
-                className="px-10 py-3.5 rounded-[50px] text-xs font-semibold tracking-widest transition-transform hover:scale-105 shadow-xl cursor-pointer"
-                style={{ 
-                  background: 'linear-gradient(90deg, #d3b474 0%, #aa8740 100%)', 
-                  color: '#FFFFFF',
-                  fontFamily: "'Montserrat', sans-serif" 
-                }}
-              >
-                BUKA UNDANGAN
-              </button>
             </div>
           </div>
         ) : isRoyalElegance ? (
@@ -690,140 +759,263 @@ export const InvitationRenderer: React.FC = () => {
             </div>
           </div>
         ) : isSecretGarden ? (
-          /* Exact Cover matching Secret Garden theme */
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0e0b08]">
-            {/* Background image matching theme */}
+          /* Romantic Botanical Secret Garden Luxury Cover */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#140b0d]">
+            {/* Inline Keyframes for Shimmer & Glow */}
+            <style>{`
+              @keyframes garden-shimmer-sweep {
+                0% { transform: translateX(-150%) skewX(-20deg); }
+                100% { transform: translateX(250%) skewX(-20deg); }
+              }
+              @keyframes garden-pulse-glow {
+                0%, 100% { box-shadow: 0 0 15px rgba(216, 164, 175, 0.4), 0 8px 30px rgba(120, 60, 72, 0.5); }
+                50% { box-shadow: 0 0 30px rgba(216, 164, 175, 0.7), 0 12px 40px rgba(120, 60, 72, 0.7); }
+              }
+            `}</style>
+
+            {/* Desktop Panoramic Backdrop with Soft Botanical Ambiance */}
             <div className="absolute inset-0 z-0">
               <img 
                 src={coverImage} 
-                alt="Cover Secret Garden" 
-                className="w-full h-full object-cover object-center scale-105"
+                alt="Secret Garden Landscape" 
+                className="w-full h-full object-cover object-center scale-105 filter blur-[4px]"
               />
-              <div className="absolute inset-0 bg-black/45" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#12080a]/95 via-[#231014]/85 to-[#12080a]/95" />
+              <div className="absolute inset-0 bg-radial from-transparent via-[#140b0d]/70 to-[#0a0405]" />
             </div>
 
-            {/* Secret Garden Cover Content */}
-            <div className="relative z-10 w-full h-full flex flex-col justify-center items-center py-12 px-6 gap-y-8 sm:gap-y-12 text-center text-white">
-              <div className="flex flex-col items-center justify-center w-full">
-                <p 
-                  className="text-xs sm:text-sm font-medium text-white/90 tracking-[0.3em] uppercase mb-3 drop-shadow"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  UNDANGAN PERNIKAHAN
-                </p>
-                <div className="flex flex-row items-center justify-center gap-x-2 sm:gap-x-3 flex-wrap">
-                  <h1 
-                    className="text-5xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)]"
-                    style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
-                  >
-                    {groomDisplayName}
-                  </h1>
-                  <span 
-                    className="text-3xl sm:text-4xl text-white font-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mx-1"
-                    style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
-                  >
-                    &amp;
-                  </span>
-                  <h1 
-                    className="text-5xl sm:text-6xl md:text-7xl text-white tracking-wide font-normal leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)]"
-                    style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
-                  >
-                    {brideDisplayName}
-                  </h1>
-                </div>
-                <p 
-                  className="text-sm sm:text-base font-serif text-white/90 drop-shadow-md tracking-wider mt-2"
-                  style={{ fontFamily: "'Playfair Display', 'Lora', serif" }}
-                >
-                  Minggu, 27 September 2028
-                </p>
+            {/* Centered Luxury Portrait Invitation Card */}
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[660px] sm:max-h-[94vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-5 sm:p-7 bg-[#231216] shadow-[0_25px_80px_rgba(0,0,0,0.85),_0_0_40px_rgba(216,164,175,0.25)] sm:border-[2.5px] sm:border-[#d8a4af]/80 sm:ring-1 sm:ring-[#f5d5db]/30 sm:ring-offset-2 sm:ring-offset-[#170a0d]">
+              
+              {/* Card Photo Backdrop with Radial & Bottom Vignette */}
+              <div className="absolute inset-0 z-0 pointer-events-none">
+                <img 
+                  src={coverImage} 
+                  alt="Couple Cover" 
+                  className="w-full h-full object-cover object-center scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#231216] via-[#231216]/80 via-48% to-black/35" />
+                <div className="absolute inset-0 bg-radial from-transparent via-[#231216]/45 to-[#231216]/95" />
               </div>
 
-              {/* Bottom Section: Nama Tamu & Button */}
-              <div className="flex flex-col items-center gap-y-1 w-full">
-                <p 
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
+              {/* Romantic Botanical Arch Inset Frame */}
+              <div className="absolute inset-2.5 sm:inset-3 rounded-[28px] sm:rounded-[30px] border border-[#d8a4af]/40 pointer-events-none z-10" />
+
+              {/* TOP: Monogram Medallion & Title */}
+              <div className="relative z-20 flex flex-col items-center pt-2 sm:pt-3">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#803e4d] via-[#5c2431] to-[#38111b] shadow-[0_6px_20px_rgba(0,0,0,0.4),inset_0_1px_2px_rgba(255,255,255,0.25)] flex items-center justify-center border border-[#d8a4af]/60 p-1 mb-1.5">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#f0c5ce]/40 flex items-center justify-center bg-[#461a24]/80">
+                    <span 
+                      className="text-lg sm:text-xl font-serif text-[#fbebf0] font-normal tracking-widest drop-shadow-sm"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                      {`${groomDisplayName[0] || 'J'}${brideDisplayName[0] || 'M'}`.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-center gap-1.5 mt-0.5 text-[#f5d5db]">
+                  <Sparkles className="w-3.5 h-3.5 text-[#d8a4af]" />
+                  <p 
+                    className="text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-[#f5d5db] font-serif font-bold drop-shadow-sm"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    UNDANGAN PERNIKAHAN
+                  </p>
+                  <Sparkles className="w-3.5 h-3.5 text-[#d8a4af]" />
+                </div>
+              </div>
+
+              {/* CENTER: Couple Names in Romantic Cursive Calligraphy */}
+              <div className="relative z-20 flex flex-col items-center my-auto py-2 w-full max-w-[340px]">
+                <h1 
+                  className="text-4xl sm:text-5xl lg:text-[54px] leading-tight text-white font-normal text-center drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] my-1"
+                  style={{ fontFamily: "'Great Vibes', 'Imperial Script', cursive" }}
                 >
-                  Kepada Yth.<br />
-                  Bapak/Ibu/Saudara/i:
-                </p>
-                <p 
-                  className="text-white text-center text-base sm:text-lg font-semibold tracking-wide mb-6 drop-shadow"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                  {groomDisplayName} <span className="text-2xl sm:text-3xl text-[#f5d5db] mx-1 font-serif">&amp;</span> {brideDisplayName}
+                </h1>
+
+                {/* Soft Mauve Line Divider with Event Date */}
+                <div className="flex items-center justify-center gap-2 mt-2 w-full max-w-[240px]">
+                  <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#d8a4af]/70 to-[#d8a4af]" />
+                  <p 
+                    className="text-[11px] sm:text-xs tracking-[0.15em] text-[#fae6eb] font-serif font-medium whitespace-nowrap drop-shadow-sm"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '27 September 2028'}
+                  </p>
+                  <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#d8a4af]/70 to-[#d8a4af]" />
+                </div>
+              </div>
+
+              {/* BOTTOM: Recipient Guest Card & BUKA UNDANGAN Button */}
+              <div className="relative z-20 flex flex-col items-center w-full max-w-[330px] gap-3 pb-2 sm:pb-3">
+                {/* Guest Cartouche */}
+                <div className="w-full rounded-2xl bg-gradient-to-b from-[#3d1921]/85 via-[#2b1016]/90 to-[#1c080d]/95 backdrop-blur-md border border-[#d8a4af]/60 shadow-[0_8px_24px_rgba(0,0,0,0.55),inset_0_1px_1px_rgba(255,255,255,0.15)] py-2.5 px-4 text-center">
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#e8b5be] font-serif font-medium">
+                    Kepada Yth. Bapak/Ibu/Saudara/i :
+                  </p>
+                  <p className="text-base sm:text-lg font-serif font-bold text-white tracking-wide mt-0.5 line-clamp-1 drop-shadow-sm">
+                    {guestName}
+                  </p>
+                </div>
+
+                {/* Buka Undangan Button */}
+                <button
+                  onClick={handleOpen}
+                  className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-[0_10px_35px_rgba(148,85,99,0.65),_0_0_25px_rgba(216,164,175,0.45)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#803d4a] via-[#a85868] to-[#6a2c38] border-[1.5px] border-[#f0c5ce]"
+                  style={{ animation: 'garden-pulse-glow 3.5s ease-in-out infinite' }}
                 >
-                  {guestName}
-                </p>
-                <button 
-                  onClick={handleOpen} 
-                  className="btn-open-invitation px-8 py-3 rounded-full text-sm font-medium transition-transform hover:scale-105 shadow-xl tracking-wider cursor-pointer"
-                  style={{ 
-                    background: 'linear-gradient(239.94deg, #D7A5AE 0%, #774B53 100%)', 
-                    color: '#FFFFFF',
-                    fontFamily: "'Poppins', sans-serif" 
-                  }}
-                >
-                  BUKA UNDANGAN
+                  <div 
+                    className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full"
+                    style={{ animation: 'garden-shimmer-sweep 2.6s ease-in-out infinite' }}
+                  />
+                  <div className="relative flex items-center justify-center gap-2.5">
+                    <MailOpen className="w-4 h-4 text-[#ffd7e2]" />
+                    <span className="text-xs font-serif font-bold uppercase tracking-[0.28em] text-[#fff5f7] drop-shadow-sm">
+                      BUKA UNDANGAN
+                    </span>
+                    <Sparkles className="w-4 h-4 text-[#ffd7e2] animate-pulse" />
+                  </div>
                 </button>
               </div>
+
             </div>
           </div>
         ) : (
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-neutral-950">
-            {/* Fullscreen Photo with Cinematic Dark Vignette Overlay */}
+          /* Split Floral Masterpiece Luxury Cover */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#130f0c]">
+            {/* Inline Keyframes */}
+            <style>{`
+              @keyframes split-shimmer-sweep {
+                0% { transform: translateX(-150%) skewX(-20deg); }
+                100% { transform: translateX(250%) skewX(-20deg); }
+              }
+              @keyframes split-pulse-glow {
+                0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4), 0 8px 30px rgba(74, 48, 30, 0.55); }
+                50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.7), 0 12px 42px rgba(74, 48, 30, 0.75); }
+              }
+            `}</style>
+
+            {/* Desktop Panoramic Backdrop with Warm Golden Luxury Mood */}
             <div className="absolute inset-0 z-0">
               <img 
                 src={coverImage} 
-                alt="Cover" 
-                className="w-full h-full object-cover object-center scale-105"
+                alt="Split Floral Landscape" 
+                className="w-full h-full object-cover object-center scale-105 filter blur-[3px]"
               />
-              {/* Cinematic Gradient Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/60" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.45)_100%)]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#120d0a]/95 via-[#231a14]/88 to-[#120d0a]/95" />
+              <div className="absolute inset-0 bg-radial from-transparent via-[#140e0b]/70 to-[#0a0705]" />
             </div>
 
-            {/* Centered Content: Clean, High Luxury Typography, No Duplicates */}
-            <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 sm:px-10 max-w-2xl mx-auto py-8 text-white">
-              {/* Subtitle */}
-              <p 
-                className="text-xs sm:text-sm uppercase tracking-[0.35em] text-gray-200 font-medium mb-3 sm:mb-4 drop-shadow-md"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
-              >
-                Undangan Pernikahan
-              </p>
-
-              {/* Couple Names */}
-              <h1 
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.2rem] text-white font-normal tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-4 uppercase leading-none flex-wrap"
-                style={{ fontFamily: '"Cinzel Decorative", Georgia, serif' }}
-              >
-                <span style={{ fontVariantLigatures: 'common-ligatures' }}>{groom}</span>
-                <span className="text-2xl sm:text-4xl md:text-5xl font-serif font-light italic opacity-90 mx-1">&amp;</span>
-                <span style={{ fontVariantLigatures: 'common-ligatures' }}>{bride}</span>
-              </h1>
-
-              {/* Recipient Glass Card */}
-              <div className="backdrop-blur-md bg-black/30 border border-white/20 rounded-2xl px-6 sm:px-10 py-4 sm:py-5 max-w-sm w-full mx-auto mb-7 sm:mb-9 shadow-2xl space-y-1">
-                <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  Kepada Yth.
-                </p>
-                <p className="text-xs sm:text-sm font-normal text-gray-300 tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  Bapak/Ibu/Saudara/i:
-                </p>
-                <p className="text-lg sm:text-2xl font-bold text-white tracking-wide pt-0.5 drop-shadow-md" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  {guestName}
-                </p>
+            {/* Centered Luxury Portrait Invitation Card */}
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[660px] sm:max-h-[94vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-5 sm:p-7 bg-[#1c1511] shadow-[0_25px_80px_rgba(0,0,0,0.85),_0_0_45px_rgba(212,175,55,0.3)] sm:border-[2.5px] sm:border-[#d4af37]/85 sm:ring-1 sm:ring-[#f3da9f]/40 sm:ring-offset-2 sm:ring-offset-[#140e0b]">
+              
+              {/* Card Photo Backdrop with Radial & Bottom Vignette */}
+              <div className="absolute inset-0 z-0 pointer-events-none">
+                <img 
+                  src={coverImage} 
+                  alt="Couple Cover" 
+                  className="w-full h-full object-cover object-center scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1c1511] via-[#1c1511]/80 via-48% to-black/35" />
+                <div className="absolute inset-0 bg-radial from-transparent via-[#1c1511]/45 to-[#1c1511]/95" />
               </div>
 
-              {/* Buka Undangan Button */}
-              <button 
-                onClick={handleOpen}
-                className="group inline-flex items-center gap-2.5 sm:gap-3 bg-white hover:bg-[#f8f5ee] text-[#3a291a] px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-semibold text-xs sm:text-sm md:text-base shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.25)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
-              >
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-[#3a291a] group-hover:scale-110 transition-transform duration-200" />
-                <span>Buka Undangan</span>
-              </button>
+              {/* Vintage Floral Edge Accents */}
+              <img 
+                src="/floral-edge-left.png" 
+                alt="Floral Left" 
+                className="absolute top-0 left-0 w-28 h-auto opacity-35 pointer-events-none z-10 -translate-x-3 -translate-y-3"
+              />
+              <img 
+                src="/floral-edge-right.png" 
+                alt="Floral Right" 
+                className="absolute top-0 right-0 w-28 h-auto opacity-35 pointer-events-none z-10 translate-x-3 -translate-y-3"
+              />
+
+              {/* 24K Gold Inset Arched Frame Line */}
+              <div className="absolute inset-2.5 sm:inset-3 rounded-[28px] sm:rounded-[30px] border border-[#d4af37]/45 pointer-events-none z-10" />
+
+              {/* TOP: Royal Medallion & Title */}
+              <div className="relative z-20 flex flex-col items-center pt-2 sm:pt-3">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#4a3420] via-[#2c1d10] to-[#1a1109] shadow-[0_6px_20px_rgba(0,0,0,0.4),inset_0_1px_2px_rgba(255,255,255,0.25)] flex items-center justify-center border border-[#d4af37]/70 p-1 mb-1.5">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#f3da9f]/40 flex items-center justify-center bg-[#23170e]/80">
+                    <span 
+                      className="text-lg sm:text-xl font-serif text-[#f3da9f] font-normal tracking-widest drop-shadow-sm"
+                      style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
+                    >
+                      {`${groom[0] || 'S'}${bride[0] || 'B'}`.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-center gap-1.5 mt-0.5 text-[#f3da9f]">
+                  <Crown className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <p 
+                    className="text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-[#f3da9f] font-serif font-bold drop-shadow-sm"
+                    style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
+                  >
+                    THE WEDDING OF
+                  </p>
+                  <Crown className="w-3.5 h-3.5 text-[#d4af37]" />
+                </div>
+              </div>
+
+              {/* CENTER: Couple Names & Event Date */}
+              <div className="relative z-20 flex flex-col items-center my-auto py-2 w-full max-w-[340px]">
+                <h1 
+                  className="text-3xl sm:text-4xl lg:text-[40px] leading-tight text-white font-normal tracking-[0.03em] text-center drop-shadow-[0_3px_12px_rgba(0,0,0,0.95)] my-1"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {groom} <span className="italic font-light text-[#f3da9f] mx-1">&amp;</span> {bride}
+                </h1>
+
+                {/* Gold Line Divider with Event Date */}
+                <div className="flex items-center justify-center gap-2 mt-2 w-full max-w-[240px]">
+                  <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#d4af37]/70 to-[#d4af37]" />
+                  <p 
+                    className="text-[11px] sm:text-xs tracking-[0.15em] text-[#f5dfa8] font-serif font-medium whitespace-nowrap drop-shadow-sm"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '24 Oktober 2026'}
+                  </p>
+                  <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#d4af37]/70 to-[#d4af37]" />
+                </div>
+              </div>
+
+              {/* BOTTOM: Recipient Guest Card & BUKA UNDANGAN Button */}
+              <div className="relative z-20 flex flex-col items-center w-full max-w-[330px] gap-3 pb-2 sm:pb-3">
+                {/* Guest Cartouche */}
+                <div className="w-full rounded-2xl bg-gradient-to-b from-[#2e2116]/85 via-[#20160d]/90 to-[#140e08]/95 backdrop-blur-md border border-[#d4af37]/65 shadow-[0_8px_24px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.15)] py-2.5 px-4 text-center">
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#e2b96f] font-serif font-medium">
+                    Kepada Yth. Bapak/Ibu/Saudara/i :
+                  </p>
+                  <p className="text-base sm:text-lg font-serif font-bold text-white tracking-wide mt-0.5 line-clamp-1 drop-shadow-sm">
+                    {guestName}
+                  </p>
+                </div>
+
+                {/* Buka Undangan Royal Gold Button */}
+                <button
+                  onClick={handleOpen}
+                  className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-[0_10px_35px_rgba(143,112,52,0.6),_0_0_25px_rgba(212,175,55,0.45)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#6b4e20] via-[#9e7631] to-[#543c17] border-[1.5px] border-[#e8c872]"
+                  style={{ animation: 'split-pulse-glow 3.5s ease-in-out infinite' }}
+                >
+                  <div 
+                    className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full"
+                    style={{ animation: 'split-shimmer-sweep 2.6s ease-in-out infinite' }}
+                  />
+                  <div className="relative flex items-center justify-center gap-2.5">
+                    <MailOpen className="w-4 h-4 text-[#ffd778]" />
+                    <span className="text-xs font-serif font-bold uppercase tracking-[0.28em] text-[#fff8ee] drop-shadow-sm">
+                      BUKA UNDANGAN
+                    </span>
+                    <Sparkles className="w-4 h-4 text-[#ffd778] animate-pulse" />
+                  </div>
+                </button>
+              </div>
+
             </div>
           </div>
         )

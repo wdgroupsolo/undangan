@@ -20,7 +20,7 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4"
 );
 
 // Victorian Royal Gold Filigree Corner Ornaments
-const CardCornerFlourish: React.FC = () => (
+export const CardCornerFlourish: React.FC = () => (
   <>
     <div className="absolute top-2.5 left-2.5 w-7 h-7 pointer-events-none opacity-75 text-[#c4a46a]">
       <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2">
@@ -66,7 +66,7 @@ const CardCornerFlourish: React.FC = () => (
 );
 
 // Ambient Floating Gold Sparkles
-const GoldSparkles: React.FC<{ count?: number; className?: string }> = ({ count = 12, className = '' }) => {
+export const GoldSparkles: React.FC<{ count?: number; className?: string }> = ({ count = 12, className = '' }) => {
   const sparkles = [
     { top: '12%', left: '15%', size: 3, duration: '6s', delay: '0s' },
     { top: '22%', left: '82%', size: 4, duration: '7.5s', delay: '1.2s' },
@@ -104,7 +104,7 @@ const GoldSparkles: React.FC<{ count?: number; className?: string }> = ({ count 
 };
 
 // Royal Wax Seal Monogram Badge
-const WaxSealBadge: React.FC<{ monogram: string }> = ({ monogram }) => (
+export const WaxSealBadge: React.FC<{ monogram: string }> = ({ monogram }) => (
   <div className="relative inline-flex items-center justify-center select-none my-2">
     {/* Outer uneven wax disc with rich crimson gradient & realistic seal rim */}
     <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-gradient-to-br from-[#801824] via-[#5c0e18] to-[#36060c] shadow-[0_6px_20px_rgba(0,0,0,0.35),inset_0_2px_4px_rgba(255,255,255,0.22),inset_0_-3px_6px_rgba(0,0,0,0.6)] flex items-center justify-center border border-[#962330]/60 relative">
