@@ -47,14 +47,34 @@ export const InvitationRenderer: React.FC = () => {
   const { data: gifts } = useQuery({ queryKey: ['gifts', invId], queryFn: () => editorService.getGifts(invId!), enabled: !!invId });
   const { data: music } = useQuery({ queryKey: ['music', invId], queryFn: () => editorService.getMusic(invId!), enabled: !!invId });
 
-  const defaultMusicUrl = '/beautiful-in-white.mp3';
+  const activeThemeSlug = requestedTheme || (slug === 'habib-adiba' || slug === 'steven-bunga' ? 'javanese-heritage' : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral'));
+
+  const getThemeDefaultMusic = (themeSlug?: string) => {
+    switch (themeSlug) {
+      case 'javanese-heritage':
+      case 'jawa-klasik':
+      case 'borobudur':
+        return '/music/javanese-gamelan.mp3';
+      case 'maroon-gold':
+        return '/music/maroon-gold-canon.mp3';
+      case 'secret-garden':
+        return '/music/secret-garden.mp3';
+      case 'split-floral':
+      default:
+        return '/beautiful-in-white.mp3';
+    }
+  };
+
+  const defaultMusicUrl = getThemeDefaultMusic(activeThemeSlug);
   const [currentAudioSrc, setCurrentAudioSrc] = useState<string>(defaultMusicUrl);
 
   useEffect(() => {
-    if (music?.music_url && music.music_url.trim() !== '') {
+    if (music?.music_url && music.music_url.trim() !== '' && music.music_url !== '/beautiful-in-white.mp3') {
       setCurrentAudioSrc(encodeURI(music.music_url.trim()));
+    } else {
+      setCurrentAudioSrc(defaultMusicUrl);
     }
-  }, [music?.music_url]);
+  }, [music?.music_url, defaultMusicUrl]);
 
   // Ensure audio element reloads buffer whenever source changes
   useEffect(() => {
@@ -182,7 +202,6 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  const activeThemeSlug = requestedTheme || (slug === 'habib-adiba' || slug === 'steven-bunga' ? 'javanese-heritage' : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral'));
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';

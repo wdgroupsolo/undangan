@@ -86,13 +86,41 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
             <Music className="w-5 h-5 text-primary-600" />
             <h3 className="text-lg font-bold text-gray-900">Background Music (Musik Latar)</h3>
           </div>
-          <button 
-            type="button"
-            onClick={() => setMusicData({ music_name: 'Beautiful in White (Saxophone Cover)', music_url: '/beautiful-in-white.mp3', autoplay: true })}
-            className="text-xs text-primary-600 hover:text-primary-700 font-medium underline"
-          >
-            Gunakan Lagu Romantis Bawaan
-          </button>
+        </div>
+
+        {/* Quick Theme Music Presets */}
+        <div className="mb-4">
+          <p className="text-xs font-semibold text-gray-600 mb-2">Pilih Rekomendasi Musik Sesuai Tema:</p>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setMusicData({ music_name: 'Beautiful in White (Saxophone Cover)', music_url: '/beautiful-in-white.mp3', autoplay: true })}
+              className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-primary-50 hover:border-primary-300 text-gray-700 transition-colors"
+            >
+              🌸 Split Floral (Beautiful in White)
+            </button>
+            <button
+              type="button"
+              onClick={() => setMusicData({ music_name: 'Gending Nyawiji (Gamelan Tradisional)', music_url: '/music/javanese-gamelan.mp3', autoplay: true })}
+              className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-primary-50 hover:border-primary-300 text-gray-700 transition-colors"
+            >
+              🏛️ Javanese Heritage (Gending Nyawiji)
+            </button>
+            <button
+              type="button"
+              onClick={() => setMusicData({ music_name: 'Canon in D Major (Classical Strings & Harp)', music_url: '/music/maroon-gold-canon.mp3', autoplay: true })}
+              className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-primary-50 hover:border-primary-300 text-gray-700 transition-colors"
+            >
+              👑 Maroon Gold (Canon in D Major)
+            </button>
+            <button
+              type="button"
+              onClick={() => setMusicData({ music_name: 'Gymnopédie No. 1 (Romantic Piano Solo)', music_url: '/music/secret-garden.mp3', autoplay: true })}
+              className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-primary-50 hover:border-primary-300 text-gray-700 transition-colors"
+            >
+              🌿 Secret Garden (Gymnopédie No. 1)
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
