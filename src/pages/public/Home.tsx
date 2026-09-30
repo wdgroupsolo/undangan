@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { themeService, REAL_SPLIT_FLORAL_THEME } from '../../services/themeService';
+import { themeService, REAL_SPLIT_FLORAL_THEME, DEFAULT_THEMES } from '../../services/themeService';
 import { 
   Heart, 
   Music, 
@@ -12,6 +12,8 @@ import {
   Users, 
   ChevronDown, 
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Play, 
   Pause, 
   Smartphone, 
@@ -27,10 +29,115 @@ import {
 } from 'lucide-react';
 
 export const Home: React.FC = () => {
-  const [isPlayingAudio, setIsPlayingAudio] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Showcase Themes for Hero Phone Mockup Slider
+  const showcaseThemes = [
+    {
+      id: 'javanese-heritage',
+      name: 'Javanese Heritage',
+      slug: 'javanese-heritage',
+      badge: 'Tema Tradisional Unggulan',
+      couple: 'Habib & Adiba',
+      date: 'Sabtu, 24 Oktober 2026',
+      preview: '/themes/javanese-heritage-theme-preview.png',
+      musicTitle: 'Gending Jawa Sakral',
+      musicUrl: '/music/javanese-gamelan.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=javanese-heritage'
+    },
+    {
+      id: 'maroon-gold',
+      name: 'Maroon Gold',
+      slug: 'maroon-gold',
+      badge: 'Tema Kerajaan & Mewah',
+      couple: 'Faris & Aisyah',
+      date: 'Minggu, 15 November 2026',
+      preview: '/themes/maroon-gold-theme-preview.png',
+      musicTitle: 'Canon in D (Royal Strings)',
+      musicUrl: '/music/maroon-gold-canon.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=maroon-gold'
+    },
+    {
+      id: 'secret-garden',
+      name: 'Secret Garden',
+      slug: 'secret-garden',
+      badge: 'Tema Romantis & Botanical',
+      couple: 'Dimas & Nadia',
+      date: 'Sabtu, 12 Desember 2026',
+      preview: '/themes/secret-garden-theme-preview.png',
+      musicTitle: 'A Thousand Years (Piano)',
+      musicUrl: '/music/secret-garden.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=secret-garden'
+    },
+    {
+      id: 'split-floral',
+      name: 'Split Floral',
+      slug: 'split-floral',
+      badge: 'Tema Klasik & Modern',
+      couple: 'Steven & Bunga',
+      date: 'Minggu, 20 Desember 2026',
+      preview: '/themes/split-floral-theme-preview.png',
+      musicTitle: 'Beautiful In White',
+      musicUrl: '/beautiful-in-white.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=split-floral'
+    }
+  ];
+
+  const [activeMockupThemeIndex, setActiveMockupThemeIndex] = useState(0);
+  const currentShowcase = showcaseThemes[activeMockupThemeIndex];
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const mockupAudioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
+  // Sync audio source when theme changes if playing
+  useEffect(() => {
+    if (mockupAudioRef.current) {
+      mockupAudioRef.current.src = currentShowcase.musicUrl;
+      if (isPlayingAudio) {
+        mockupAudioRef.current.play().catch(() => setIsPlayingAudio(false));
+      }
+    }
+  }, [activeMockupThemeIndex]);
+
+  const toggleMockupAudio = () => {
+    if (!mockupAudioRef.current) return;
+    if (isPlayingAudio) {
+      mockupAudioRef.current.pause();
+      setIsPlayingAudio(false);
+    } else {
+      mockupAudioRef.current.play().then(() => {
+        setIsPlayingAudio(true);
+      }).catch(err => {
+        console.warn('Playback blocked by browser policy:', err);
+        setIsPlayingAudio(false);
+      });
+    }
+  };
+
+  const handlePrevTheme = () => {
+    setActiveMockupThemeIndex(prev => (prev - 1 + showcaseThemes.length) % showcaseThemes.length);
+  };
+
+  const handleNextTheme = () => {
+    setActiveMockupThemeIndex(prev => (prev + 1) % showcaseThemes.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartX;
+    if (diff > 40) {
+      handlePrevTheme();
+    } else if (diff < -40) {
+      handleNextTheme();
+    }
+    setTouchStartX(null);
+  };
 
   // Live countdown ticker inside the phone mockup preview
   const [countdown, setCountdown] = useState({
@@ -72,11 +179,11 @@ export const Home: React.FC = () => {
     queryFn: themeService.getActiveThemes,
   });
 
-  // Guaranteed fallback to active themes or default Split Floral
+  // Guaranteed fallback to active themes or default themes
   const displayThemes = React.useMemo(() => {
     return (activeThemes && activeThemes.length > 0) 
       ? activeThemes 
-      : [REAL_SPLIT_FLORAL_THEME];
+      : DEFAULT_THEMES;
   }, [activeThemes]);
 
   // IntersectionObserver for clean scroll reveals with safety fallback
@@ -301,8 +408,16 @@ export const Home: React.FC = () => {
             {/* Right Interactive Mockup Showcase */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full">
               
+              {/* Real Audio Player for Mockup Preview */}
+              <audio 
+                ref={mockupAudioRef} 
+                src={currentShowcase.musicUrl} 
+                preload="none" 
+                onEnded={() => setIsPlayingAudio(false)} 
+              />
+
               {/* Phone Frame Mockup */}
-              <div className="w-full max-w-[280px] min-[380px]:max-w-[310px] sm:max-w-[330px] rounded-[44px] bg-stone-950 p-3 sm:p-3.5 shadow-2xl border-4 border-stone-800 relative mx-auto">
+              <div className="w-full max-w-[280px] min-[380px]:max-w-[310px] sm:max-w-[330px] rounded-[44px] bg-stone-950 p-3 sm:p-3.5 shadow-2xl border-4 border-stone-800 relative mx-auto select-none">
                 
                 {/* Speaker & Notch */}
                 <div className="w-28 h-3.5 bg-stone-900 rounded-full mx-auto mb-2.5 flex items-center justify-center space-x-1.5">
@@ -317,8 +432,8 @@ export const Home: React.FC = () => {
                   <div className="bg-primary-900 text-white px-3.5 py-2.5 flex items-center justify-between text-xs">
                     <div className="flex items-center space-x-2">
                       <button 
-                        onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-                        className="w-6 h-6 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-700 transition-colors"
+                        onClick={toggleMockupAudio}
+                        className="w-6 h-6 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-700 transition-colors cursor-pointer"
                         title={isPlayingAudio ? 'Jeda Musik' : 'Putar Musik'}
                         aria-label={isPlayingAudio ? 'Jeda Musik' : 'Putar Musik'}
                       >
@@ -326,31 +441,79 @@ export const Home: React.FC = () => {
                       </button>
                       <div className="text-left leading-tight">
                         <p className="text-[9px] text-amber-200 font-semibold tracking-wider uppercase">Musik Undangan</p>
-                        <p className="text-[11px] font-medium truncate max-w-[130px]">Beautiful In White</p>
+                        <p className="text-[11px] font-medium truncate max-w-[130px] text-stone-100">{currentShowcase.musicTitle}</p>
                       </div>
                     </div>
-                    <Music size={13} className="text-amber-200" />
+                    <Music size={13} className={`text-amber-200 ${isPlayingAudio ? 'animate-bounce' : ''}`} />
                   </div>
 
-                  {/* Invitation Preview Hero */}
-                  <div className="relative h-60 sm:h-64 overflow-hidden">
+                  {/* Invitation Preview Hero with Slide Controls & Touch Swipe */}
+                  <div 
+                    className="relative h-60 sm:h-64 overflow-hidden group touch-pan-y"
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
+                  >
                     <img 
-                      src={displayThemes[0]?.preview_image || displayThemes[0]?.thumbnail || "/bg-floral.jpg"} 
-                      alt={`Tema ${displayThemes[0]?.name || 'Pilihan'}`} 
-                      className="w-full h-full object-cover" 
+                      key={currentShowcase.slug}
+                      src={currentShowcase.preview} 
+                      alt={`Tema ${currentShowcase.name}`} 
+                      className="w-full h-full object-cover transition-all duration-300" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/20 to-transparent flex flex-col justify-end p-4 text-white text-left">
-                      <p className="text-[10px] uppercase tracking-widest text-amber-200 font-semibold">
-                        {displayThemes[0]?.name || 'Tema Eksklusif'}
-                      </p>
-                      <h2 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide mt-0.5 text-white">
-                        Kevin &amp; Jessica
-                      </h2>
+
+                    {/* Prev Slide Arrow */}
+                    <button
+                      onClick={handlePrevTheme}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-stone-950/65 hover:bg-stone-950/90 text-white backdrop-blur-xs flex items-center justify-center transition-all z-20 shadow-md border border-white/25 active:scale-95 cursor-pointer"
+                      aria-label="Tema Sebelumnya"
+                      title="Tema Sebelumnya"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+
+                    {/* Next Slide Arrow */}
+                    <button
+                      onClick={handleNextTheme}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-stone-950/65 hover:bg-stone-950/90 text-white backdrop-blur-xs flex items-center justify-center transition-all z-20 shadow-md border border-white/25 active:scale-95 cursor-pointer"
+                      aria-label="Tema Selanjutnya"
+                      title="Tema Selanjutnya"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+
+                    {/* Overlay Details */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/30 to-transparent flex flex-col justify-end p-4 text-white text-left pointer-events-none">
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[10px] uppercase tracking-widest text-amber-300 font-bold drop-shadow-xs">
+                          {currentShowcase.name}
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-black/50 backdrop-blur-xs text-white/90 font-mono font-bold">
+                          {activeMockupThemeIndex + 1}/{showcaseThemes.length}
+                        </span>
+                      </div>
+                      <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide text-white drop-shadow-xs">
+                        {currentShowcase.couple}
+                      </h3>
                       <p className="text-[11px] text-stone-200 mt-1 font-light flex items-center space-x-1">
-                        <Calendar size={12} className="text-amber-200 inline" />
-                        <span>Sabtu, 24 Oktober 2026</span>
+                        <Calendar size={12} className="text-amber-300 inline shrink-0" />
+                        <span>{currentShowcase.date}</span>
                       </p>
                     </div>
+                  </div>
+
+                  {/* Slide Indicators */}
+                  <div className="flex items-center justify-center gap-1.5 pt-2 pb-1 bg-white">
+                    {showcaseThemes.map((th, i) => (
+                      <button
+                        key={th.id}
+                        onClick={() => setActiveMockupThemeIndex(i)}
+                        className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                          activeMockupThemeIndex === i 
+                            ? 'w-5 bg-primary-900' 
+                            : 'w-1.5 bg-stone-300 hover:bg-stone-400'
+                        }`}
+                        aria-label={`Pilih tema ${th.name}`}
+                      />
+                    ))}
                   </div>
 
                   {/* Live Dynamic Countdown Box */}
@@ -378,16 +541,16 @@ export const Home: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Clean Bottom Action */}
+                  {/* Dynamic Demo Button - changes link and name based on active theme */}
                   <div className="p-3.5 bg-[#faf8f5]">
                     <a 
-                      href={displayThemes[0]?.slug ? `/invitation/steven-bunga?theme=${displayThemes[0].slug}` : '/themes'}
+                      href={currentShowcase.demoUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="w-full bg-primary-800 hover:bg-primary-900 text-white py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 shadow-xs"
+                      className="w-full bg-primary-800 hover:bg-primary-900 text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 shadow-sm group active:scale-98"
                     >
-                      <span>Buka Undangan Demo</span>
-                      <ArrowRight size={13} />
+                      <span>Buka Undangan Demo ({currentShowcase.name})</span>
+                      <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
                     </a>
                   </div>
 
@@ -395,6 +558,27 @@ export const Home: React.FC = () => {
 
                 {/* Bottom Home Indicator */}
                 <div className="w-24 h-1 bg-stone-700 rounded-full mx-auto mt-2.5" />
+              </div>
+
+              {/* Theme Switcher Pills under Phone Mockup */}
+              <div className="mt-4 flex items-center justify-center gap-1.5 flex-wrap max-w-xs sm:max-w-sm">
+                {showcaseThemes.map((th, i) => {
+                  const isActive = activeMockupThemeIndex === i;
+                  return (
+                    <button
+                      key={th.id}
+                      onClick={() => setActiveMockupThemeIndex(i)}
+                      className={`px-3 py-1.5 rounded-full text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                        isActive 
+                          ? 'bg-primary-900 text-amber-300 shadow-xs ring-2 ring-primary-900/20' 
+                          : 'bg-white text-stone-600 hover:bg-stone-100 hover:text-stone-900 border border-stone-200'
+                      }`}
+                    >
+                      {isActive && <Sparkles size={11} className="text-amber-300 shrink-0" />}
+                      <span>{th.name}</span>
+                    </button>
+                  );
+                })}
               </div>
 
             </div>
