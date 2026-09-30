@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { MapPin, Gift, CreditCard, Check, X, Copy, ChevronDown, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX, Maximize2, Sparkles } from 'lucide-react';
+import { MapPin, Gift, CreditCard, Check, X, Copy, ChevronDown, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX, Maximize2, Sparkles, Calendar } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
+import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
+import { CalendarEventData } from '../../../utils/calendar';
 
 // Self-contained Instagram Icon SVG (safe across all lucide versions)
 const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
@@ -150,6 +152,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
   const [showGiftDropdown, setShowGiftDropdown] = useState<boolean>(false);
   const quoteSectionRef = useRef<HTMLElement | null>(null);
   const [isQuoteVisible, setIsQuoteVisible] = useState(false);
+  const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
 
   // Staggered on-scroll fade-in for Quote section (photo first, then text)
   // Staggered on-scroll fade-in for Quote section (replays on scroll)
@@ -1520,6 +1523,29 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
                       </div>
                     ))}
                   </div>
+
+                  {/* Tambahkan Ke Kalender Action Button */}
+                  <div className="pt-6 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setCalendarModalEvent({
+                        title: `The Wedding of ${groomName} & ${brideName}`,
+                        description: `Undangan Pernikahan ${groomName} & ${brideName}. Mohon doa restu atas pernikahan kami.`,
+                        location: displayEvents?.[0]?.location || 'Lokasi Acara',
+                        eventDate: targetDateStr,
+                        startTime: displayEvents?.[0]?.start_time || '10:00',
+                        endTime: displayEvents?.[0]?.end_time || 'Selesai',
+                      })}
+                      className="inline-flex items-center justify-center gap-2 py-2.5 px-7 rounded-full text-xs sm:text-[13px] text-white transition-all duration-300 hover:bg-[#3f191e] hover:scale-105 active:scale-95 shadow-md cursor-pointer relative overflow-hidden group"
+                      style={{
+                        backgroundColor: '#59272d',
+                        fontFamily: "'Playfair Display', serif"
+                      }}
+                    >
+                      <Calendar className="w-3.5 h-3.5 text-[#f3da9f]" />
+                      <span className="font-medium tracking-wide">Tambahkan ke Kalender</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1597,13 +1623,13 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
                     </p>
                   </div>
 
-                  {/* Location Button with Golden Shimmer Sweep */}
-                  <div className="pt-3 flex justify-center">
+                  {/* Action Buttons: Location & Calendar Reminder */}
+                  <div className="pt-3 flex flex-wrap items-center justify-center gap-2.5">
                     <a 
                       href={event.maps_url || (event.location ? `https://maps.google.com/?q=${encodeURIComponent(event.location)}` : 'https://maps.google.com')}
                       target="_blank" 
                       rel="noreferrer"
-                      className="inline-flex items-center justify-center gap-2 py-2.5 px-8 rounded-full text-xs sm:text-[13px] text-white transition-all duration-300 hover:bg-[#3f191e] active:scale-95 shadow-md cursor-pointer relative overflow-hidden group"
+                      className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full text-xs sm:text-[13px] text-white transition-all duration-300 hover:bg-[#3f191e] active:scale-95 shadow-md cursor-pointer relative overflow-hidden group"
                       style={{
                         backgroundColor: '#59272d',
                         fontFamily: "'Playfair Display', serif"
@@ -1619,6 +1645,23 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
                       <MapPin className="w-3.5 h-3.5 fill-white text-white relative z-10" />
                       <span className="font-medium tracking-wide relative z-10">Lokasi Acara</span>
                     </a>
+
+                    <button
+                      type="button"
+                      onClick={() => setCalendarModalEvent({
+                        title: `The Wedding of ${groomName} & ${brideName} - ${event.name || 'Acara'}`,
+                        description: `Undangan Pernikahan ${groomName} & ${brideName} (${event.name || 'Acara'}).`,
+                        location: event.location || 'Lokasi Acara',
+                        eventDate: event.event_date || targetDateStr,
+                        startTime: event.start_time || '10:00',
+                        endTime: event.end_time || 'Selesai',
+                      })}
+                      className="inline-flex items-center justify-center gap-1.5 py-2.5 px-6 rounded-full text-xs text-[#59272d] border border-[#59272d]/40 bg-white/80 hover:bg-[#59272d] hover:text-white transition-all duration-300 active:scale-95 shadow-xs cursor-pointer"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span className="font-medium">Simpan Tanggal</span>
+                    </button>
                   </div>
 
                 </div>
@@ -2253,6 +2296,16 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
             </p>
           </div>
         </div>
+      )}
+
+      {/* Calendar Reminder Modal */}
+      {calendarModalEvent && (
+        <CalendarReminderModal
+          isOpen={!!calendarModalEvent}
+          onClose={() => setCalendarModalEvent(null)}
+          event={calendarModalEvent}
+          themeStyle="maroon"
+        />
       )}
 
     </div>

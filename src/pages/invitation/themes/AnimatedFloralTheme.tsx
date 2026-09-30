@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, Calendar } from 'lucide-react';
+import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
+import { CalendarEventData } from '../../../utils/calendar';
 
 interface AnimatedFloralThemeProps {
   invitation: any;
@@ -12,6 +14,7 @@ interface AnimatedFloralThemeProps {
 }
 
 export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ couple, events }) => {
+  const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
   const [leaves] = useState<any[]>(() => 
     Array.from({ length: 25 }).map((_, i) => ({
       id: i,
@@ -167,11 +170,28 @@ export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ couple
                     <p className="font-semibold text-[#5a4f40]">{event.location}</p>
                     <p className="leading-relaxed">{event.address}</p>
                     
-                    {event.maps_url && (
-                      <a href={event.maps_url} target="_blank" rel="noreferrer" className="inline-block mt-6 text-xs uppercase tracking-[0.2em] px-8 py-3 border border-[#a39178] text-[#6b5c46] hover:bg-[#a39178] hover:text-white transition-colors duration-300">
-                        View Location
-                      </a>
-                    )}
+                    <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
+                      {event.maps_url && (
+                        <a href={event.maps_url} target="_blank" rel="noreferrer" className="inline-block text-xs uppercase tracking-[0.2em] px-6 py-2.5 border border-[#a39178] text-[#6b5c46] hover:bg-[#a39178] hover:text-white transition-colors duration-300">
+                          View Location
+                        </a>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setCalendarModalEvent({
+                          title: `The Wedding of ${couple?.groom_nickname || couple?.groom_full_name || 'Groom'} & ${couple?.bride_nickname || couple?.bride_full_name || 'Bride'} - ${event.name}`,
+                          description: `Undangan Pernikahan ${couple?.groom_full_name || 'Mempelai Pria'} & ${couple?.bride_full_name || 'Mempelai Wanita'}.`,
+                          location: `${event.location}${event.address ? ' - ' + event.address : ''}`,
+                          eventDate: event.event_date,
+                          startTime: event.start_time,
+                          endTime: event.end_time || 'Selesai',
+                        })}
+                        className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] px-6 py-2.5 bg-[#a39178] text-white hover:bg-[#8b7e6a] transition-colors duration-300 font-medium cursor-pointer"
+                      >
+                        <Calendar size={13} />
+                        <span>Simpan Tanggal</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -198,6 +218,16 @@ export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ couple
           Powered by WD Group
         </a>
       </footer>
+
+      {/* Calendar Reminder Modal */}
+      {calendarModalEvent && (
+        <CalendarReminderModal
+          isOpen={!!calendarModalEvent}
+          onClose={() => setCalendarModalEvent(null)}
+          event={calendarModalEvent}
+          themeStyle="rose"
+        />
+      )}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Gift, Copy, Check, X } from 'lucide-react';
+import { Gift, Copy, Check, X, Calendar } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
+import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
+import { CalendarEventData } from '../../../utils/calendar';
 
 // Gallery Slideshow Component with Continuous Auto-Slide & Touch/Mouse Swipe
 const GallerySlideshow: React.FC<{ gallery: any[] }> = ({ gallery }) => {
@@ -263,6 +265,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const [showGiftDetails, setShowGiftDetails] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
 
   const [showRsvpModal, setShowRsvpModal] = useState(false);
   const [rsvpName, setRsvpName] = useState(guestName && guestName !== 'Tamu Undangan' ? guestName : '');
@@ -897,6 +900,29 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               Tambahkan ke Kalender
             </p>
             <CountdownTimer eventDate={displayEvents[0]?.event_date} />
+
+            {/* Tambahkan ke Kalender Action Button */}
+            <div className="mt-8 flex justify-center">
+              <button
+                type="button"
+                onClick={() => {
+                  const mainEvt = displayEvents[0];
+                  setCalendarModalEvent({
+                    title: `The Wedding of ${groomFullName} & ${brideFullName}`,
+                    description: `Undangan Pernikahan ${groomFullName} & ${brideFullName}. Mohon doa restu atas pernikahan kami.`,
+                    location: mainEvt?.location || 'Lokasi Resepsi',
+                    eventDate: mainEvt?.event_date || '2026-10-25',
+                    startTime: mainEvt?.start_time || '10:00',
+                    endTime: mainEvt?.end_time || 'Selesai',
+                  });
+                }}
+                className="inline-flex items-center justify-center gap-2.5 px-8 py-3 rounded-full text-xs sm:text-[13px] font-bold tracking-wider uppercase bg-[#f4ede2] text-[#4a392c] hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg cursor-pointer"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                <Calendar size={15} className="text-[#846358]" />
+                <span>Simpan Pengingat Kalender</span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -1024,6 +1050,24 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                           </svg>
                           <span>Buka Google Maps</span>
                         </a>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCalendarModalEvent({
+                              title: `The Wedding of ${groomFullName} & ${brideFullName} - ${event.name || 'Acara'}`,
+                              description: `Undangan Pernikahan ${groomFullName} & ${brideFullName} (${event.name || 'Acara'}).`,
+                              location: event.location || 'Lokasi Acara',
+                              eventDate: event.event_date || displayEvents[0]?.event_date || '2026-10-25',
+                              startTime: event.start_time || '10:00',
+                              endTime: event.end_time || 'Selesai',
+                            });
+                          }}
+                          className="mt-2 inline-flex items-center justify-center gap-2 bg-[#f4ede2] border border-[#3e2e22]/20 text-[#3e2e22] w-full py-2.5 rounded-full text-[11px] font-bold tracking-[0.14em] uppercase shadow-sm hover:bg-[#eadecc] transition-all duration-300 active:scale-95 cursor-pointer"
+                        >
+                          <Calendar size={13} className="text-[#3e2e22] shrink-0" />
+                          <span>Simpan ke Kalender</span>
+                        </button>
                       </div>
                     </div>
                   ) : null}
@@ -2080,6 +2124,16 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
           </div>
         </footer>
       </div>
+
+      {/* Calendar Reminder Modal */}
+      {calendarModalEvent && (
+        <CalendarReminderModal
+          isOpen={!!calendarModalEvent}
+          onClose={() => setCalendarModalEvent(null)}
+          event={calendarModalEvent}
+          themeStyle="vintage"
+        />
+      )}
     </div>
   );
 };

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Calendar, MapPin, Gift, CreditCard, Clock, Heart } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
+import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
+import { CalendarEventData } from '../../../utils/calendar';
 
 interface BaseThemeProps {
   invitation: any;
@@ -14,6 +16,7 @@ interface BaseThemeProps {
 
 export const BaseTheme: React.FC<BaseThemeProps> = ({ invitation, couple, events, stories, gallery, gifts }) => {
   const toast = useToast();
+  const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
   // Use theme colors if available, otherwise fallback to elegant defaults
   const colors = invitation.theme?.colors || {
     primary: '#4f46e5',
@@ -118,11 +121,28 @@ export const BaseTheme: React.FC<BaseThemeProps> = ({ invitation, couple, events
                       <div>
                         <p className="font-semibold text-gray-800">{event.location}</p>
                         <p className="text-sm mt-1">{event.address}</p>
-                        {event.maps_url && (
-                          <a href={event.maps_url} target="_blank" rel="noreferrer" className="inline-block mt-3 text-sm px-4 py-1.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors">
-                            Buka Google Maps
-                          </a>
-                        )}
+                        <div className="flex flex-wrap items-center gap-2 mt-3">
+                          {event.maps_url && (
+                            <a href={event.maps_url} target="_blank" rel="noreferrer" className="inline-block text-sm px-4 py-1.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors">
+                              Buka Google Maps
+                            </a>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setCalendarModalEvent({
+                              title: `The Wedding of ${couple?.groom_nickname || couple?.groom_full_name || 'Groom'} & ${couple?.bride_nickname || couple?.bride_full_name || 'Bride'} - ${event.name}`,
+                              description: `Undangan Pernikahan ${couple?.groom_full_name || 'Mempelai Pria'} & ${couple?.bride_full_name || 'Mempelai Wanita'}.`,
+                              location: `${event.location}${event.address ? ' - ' + event.address : ''}`,
+                              eventDate: event.event_date,
+                              startTime: event.start_time,
+                              endTime: event.end_time || 'Selesai',
+                            })}
+                            className="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors cursor-pointer"
+                          >
+                            <Calendar size={14} />
+                            <span>Tambahkan ke Kalender</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -234,6 +254,15 @@ export const BaseTheme: React.FC<BaseThemeProps> = ({ invitation, couple, events
           Powered by WD Group Invitation
         </a>
       </footer>
+
+      {/* Calendar Reminder Modal */}
+      {calendarModalEvent && (
+        <CalendarReminderModal
+          isOpen={!!calendarModalEvent}
+          onClose={() => setCalendarModalEvent(null)}
+          event={calendarModalEvent}
+        />
+      )}
     </div>
   );
 };

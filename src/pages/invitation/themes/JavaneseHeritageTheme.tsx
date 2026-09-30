@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { MapPin, CreditCard, Check, X, Copy, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin, CreditCard, Check, X, Copy, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
+import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
+import { CalendarEventData } from '../../../utils/calendar';
 
 // Self-contained Instagram Icon SVG
 const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
@@ -709,6 +711,7 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
   const [wishName, setWishName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [wishAttendance, setWishAttendance] = useState('Hadir');
   const [wishText, setWishText] = useState('');
+  const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
 
   // Closing section photo slideshow state (cycles through 3 photos)
   const [closingPhotoIndex, setClosingPhotoIndex] = useState<number>(0);
@@ -1503,9 +1506,9 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
           <BatikKawungCluster className="absolute -bottom-3 -left-3 w-36 h-36 sm:w-48 sm:h-48 pointer-events-none opacity-55" />
           <BatikKawungCluster className="absolute -bottom-4 -right-4 w-32 h-32 pointer-events-none opacity-45" />
 
-          {/* Quick Jump Buttons for Akad Nikah & Resepsi */}
+          {/* Quick Jump Buttons for Akad Nikah, Resepsi & Pengingat Kalender */}
           <ScrollReveal animation="fade-up" delay={80}>
-            <div className="relative z-20 flex items-center justify-center gap-2 mb-8">
+            <div className="relative z-20 flex flex-wrap items-center justify-center gap-2 mb-8">
               {displayEvents.map((evt, idx) => (
                 <button
                   key={evt.id || idx}
@@ -1519,6 +1522,24 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                   {idx === 0 ? 'Akad Nikah' : 'Resepsi'}
                 </button>
               ))}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCalendarModalEvent({
+                    title: `The Wedding of ${groomNick} & ${brideNick}`,
+                    description: `Undangan Pernikahan ${groomNick} & ${brideNick}. Mohon doa restu atas pernikahan kami.`,
+                    location: displayEvents?.[0]?.location || 'Lokasi Acara',
+                    eventDate: targetDateStr,
+                    startTime: displayEvents?.[0]?.start_time || '10:00',
+                    endTime: displayEvents?.[0]?.end_time || 'Selesai',
+                  });
+                }}
+                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-[11px] sm:text-xs font-serif uppercase tracking-[0.16em] bg-gradient-to-r from-[#d4af37] via-[#f5e2a3] to-[#c59e30] text-[#4e0e16] font-bold border border-[#fff2cf] transition-all duration-300 cursor-pointer shadow-md hover:scale-105 active:scale-95"
+              >
+                <Calendar className="w-3.5 h-3.5 text-[#5c131c]" />
+                <span>Pengingat Kalender</span>
+              </button>
             </div>
           </ScrollReveal>
 
@@ -1682,6 +1703,27 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
                           </a>
                         </ScrollReveal>
                       )}
+
+                      {/* Simpan ke Kalender Button */}
+                      <ScrollReveal animation="zoom-in" delay={600}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCalendarModalEvent({
+                              title: `The Wedding of ${groomNick} & ${brideNick} - ${title}`,
+                              description: `Undangan Pernikahan ${groomNick} & ${brideNick} (${title}). Mohon doa restu atas pernikahan kami.`,
+                              location: `${location}${address ? ' - ' + address : ''}`,
+                              eventDate: evt?.event_date || targetDateStr,
+                              startTime: evt?.start_time || '10:00',
+                              endTime: evt?.end_time || 'Selesai',
+                            });
+                          }}
+                          className="group relative inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-[#fbf7f0] hover:bg-[#f4e8d3] text-[#5c131c] font-serif uppercase tracking-[0.16em] text-[11px] font-bold transition-all duration-300 shadow-sm hover:scale-105 active:scale-95 cursor-pointer mt-2 z-20 border border-[#8c2d38]/30"
+                        >
+                          <Calendar className="w-3.5 h-3.5 text-[#8c2d38]" />
+                          <span>Simpan ke Kalender</span>
+                        </button>
+                      </ScrollReveal>
 
                     </div>
 
@@ -2278,6 +2320,16 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
         </section>
 
       </div>
+
+      {/* Calendar Reminder Modal */}
+      {calendarModalEvent && (
+        <CalendarReminderModal
+          isOpen={!!calendarModalEvent}
+          onClose={() => setCalendarModalEvent(null)}
+          event={calendarModalEvent}
+          themeStyle="gold"
+        />
+      )}
     </div>
   );
 };

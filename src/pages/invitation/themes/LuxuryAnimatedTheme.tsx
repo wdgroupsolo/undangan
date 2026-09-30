@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Calendar, MapPin, Gift, CreditCard, Clock, Sparkles } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
+import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
+import { CalendarEventData } from '../../../utils/calendar';
 
 interface LuxuryAnimatedThemeProps {
   invitation: any;
@@ -15,6 +17,7 @@ interface LuxuryAnimatedThemeProps {
 export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invitation, couple, events, gallery, gifts }) => {
   const toast = useToast();
   const [_scrollY, setScrollY] = useState(0);
+  const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -183,11 +186,28 @@ export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invita
                       <div>
                         <p className="text-lg">{event.location}</p>
                         <p className="text-sm text-gray-500 mt-2 leading-relaxed">{event.address}</p>
-                        {event.maps_url && (
-                          <a href={event.maps_url} target="_blank" rel="noreferrer" className="inline-block mt-6 text-xs uppercase tracking-[0.2em] px-6 py-3 border border-yellow-600/50 text-yellow-500 hover:bg-yellow-600 hover:text-black transition-all duration-300">
-                            View Location
-                          </a>
-                        )}
+                        <div className="flex flex-wrap items-center gap-3 mt-6">
+                          {event.maps_url && (
+                            <a href={event.maps_url} target="_blank" rel="noreferrer" className="inline-block text-xs uppercase tracking-[0.2em] px-6 py-2.5 border border-yellow-600/50 text-yellow-500 hover:bg-yellow-600 hover:text-black transition-all duration-300">
+                              View Location
+                            </a>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setCalendarModalEvent({
+                              title: `The Wedding of ${couple?.groom_nickname || 'Groom'} & ${couple?.bride_nickname || 'Bride'} - ${event.name}`,
+                              description: `Undangan Pernikahan ${couple?.groom_full_name || 'Mempelai Pria'} & ${couple?.bride_full_name || 'Mempelai Wanita'}.`,
+                              location: `${event.location}${event.address ? ' - ' + event.address : ''}`,
+                              eventDate: event.event_date,
+                              startTime: event.start_time,
+                              endTime: event.end_time || 'Selesai',
+                            })}
+                            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] px-6 py-2.5 bg-yellow-600 text-black font-semibold hover:bg-yellow-500 transition-all duration-300 cursor-pointer"
+                          >
+                            <Calendar size={13} />
+                            <span>Simpan Tanggal</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -283,6 +303,16 @@ export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invita
           Powered by WD Group
         </a>
       </footer>
+
+      {/* Calendar Reminder Modal */}
+      {calendarModalEvent && (
+        <CalendarReminderModal
+          isOpen={!!calendarModalEvent}
+          onClose={() => setCalendarModalEvent(null)}
+          event={calendarModalEvent}
+          themeStyle="dark"
+        />
+      )}
     </div>
   );
 };

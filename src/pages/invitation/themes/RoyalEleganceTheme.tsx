@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, MapPin, Gift, CreditCard, Clock, Quote } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
+import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
+import { CalendarEventData } from '../../../utils/calendar';
 
 interface BaseThemeProps {
   invitation: any;
@@ -14,6 +16,7 @@ interface BaseThemeProps {
 
 export const RoyalEleganceTheme: React.FC<BaseThemeProps> = ({ couple, events, gallery, gifts }) => {
   const toast = useToast();
+  const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
 
   useEffect(() => {
     const link = document.createElement('link');
@@ -182,17 +185,36 @@ export const RoyalEleganceTheme: React.FC<BaseThemeProps> = ({ couple, events, g
                       <p className="font-semibold text-lg" style={{ fontFamily: "'Montserrat', sans-serif" }}>{event.location}</p>
                       <p className="text-sm mt-2 opacity-70 leading-relaxed max-w-[250px]">{event.address}</p>
                       
-                      {event.maps_url && (
-                        <a 
-                          href={event.maps_url} 
-                          target="_blank" 
-                          rel="noreferrer" 
-                          className="inline-block mt-8 text-xs tracking-widest px-8 py-3 border border-[#d4af37] text-[#d4af37] uppercase hover:bg-[#d4af37] hover:text-[#110e0c] transition-all duration-300"
+                      <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+                        {event.maps_url && (
+                          <a 
+                            href={event.maps_url} 
+                            target="_blank" 
+                            rel="noreferrer" 
+                            className="inline-block text-xs tracking-widest px-6 py-2.5 border border-[#d4af37] text-[#d4af37] uppercase hover:bg-[#d4af37] hover:text-[#110e0c] transition-all duration-300"
+                            style={{ fontFamily: "'Montserrat', sans-serif" }}
+                          >
+                            Lihat Peta
+                          </a>
+                        )}
+
+                        <button 
+                          type="button"
+                          onClick={() => setCalendarModalEvent({
+                            title: `The Wedding of ${couple?.groom_nickname || 'Groom'} & ${couple?.bride_nickname || 'Bride'} - ${event.name}`,
+                            description: `Undangan Pernikahan ${couple?.groom_full_name || 'Mempelai Pria'} & ${couple?.bride_full_name || 'Mempelai Wanita'}.`,
+                            location: `${event.location}${event.address ? ' - ' + event.address : ''}`,
+                            eventDate: event.event_date,
+                            startTime: event.start_time,
+                            endTime: event.end_time || 'Selesai',
+                          })}
+                          className="inline-flex items-center gap-1.5 text-xs tracking-widest px-6 py-2.5 bg-[#d4af37] text-[#110e0c] uppercase hover:bg-[#f3e5ab] transition-all duration-300 font-semibold cursor-pointer"
                           style={{ fontFamily: "'Montserrat', sans-serif" }}
                         >
-                          Lihat Peta
-                        </a>
-                      )}
+                          <Calendar size={13} />
+                          <span>Simpan Tanggal</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -304,6 +326,16 @@ export const RoyalEleganceTheme: React.FC<BaseThemeProps> = ({ couple, events, g
           </a>
         </div>
       </footer>
+
+      {/* Calendar Reminder Modal */}
+      {calendarModalEvent && (
+        <CalendarReminderModal
+          isOpen={!!calendarModalEvent}
+          onClose={() => setCalendarModalEvent(null)}
+          event={calendarModalEvent}
+          themeStyle="gold"
+        />
+      )}
     </div>
   );
 };

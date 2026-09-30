@@ -5,6 +5,8 @@ import {
   X, FileText, Video, Navigation
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
+import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
+import { CalendarEventData } from '../../../utils/calendar';
 
 const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
   <svg 
@@ -440,6 +442,7 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
   });
 
   const [commentPage, setCommentPage] = useState(1);
+  const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
   const commentsPerPage = 4;
   const totalPages = Math.ceil(wishes.length / commentsPerPage) || 1;
   const paginatedComments = wishes.slice((commentPage - 1) * commentsPerPage, commentPage * commentsPerPage);
@@ -1140,16 +1143,22 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                 </div>
 
                 {/* Tambahkan Ke Kalender Pill Button */}
-                <a 
-                  href={getGoogleCalendarUrl()} 
-                  target="_blank" 
-                  rel="noreferrer"
+                <button 
+                  type="button"
+                  onClick={() => setCalendarModalEvent({
+                    title: `The Wedding of ${coupleNamesCombined}`,
+                    description: `Undangan Pernikahan ${coupleNamesCombined}. Mohon doa restu atas pernikahan kami.`,
+                    location: events[0]?.location_name || events[0]?.location || 'Lokasi Resepsi',
+                    eventDate: targetDateStr,
+                    startTime: events[0]?.time || events[0]?.start_time || '10:00',
+                    endTime: events[0]?.end_time || 'Selesai',
+                  })}
                   className="py-2.5 px-7 sm:px-8 rounded-full text-white text-[11px] sm:text-xs font-bold tracking-wider uppercase shadow-[0_4px_14px_rgba(150,96,110,0.38)] hover:shadow-[0_6px_20px_rgba(150,96,110,0.5)] hover:scale-102 active:scale-95 transition-all duration-300 inline-flex items-center justify-center gap-2 select-none cursor-pointer"
                   style={{ background: 'linear-gradient(135deg, #B97C8B 0%, #98606E 100%)' }}
                 >
                   <Calendar size={14} className="text-white shrink-0" />
                   <span>TAMBAHKAN KE KALENDER</span>
-                </a>
+                </button>
               </div>
             </div>
 
@@ -1290,6 +1299,24 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                             <Navigation size={13} />
                             <span>Buka Google Maps</span>
                           </a>
+
+                          {/* Action Button: Simpan ke Kalender */}
+                          <button 
+                            type="button"
+                            onClick={() => setCalendarModalEvent({
+                              title: `The Wedding of ${coupleNamesCombined} - ${evt.name}`,
+                              description: `Undangan Pernikahan ${coupleNamesCombined} (${evt.name}). Mohon doa restu atas pernikahan kami.`,
+                              location: evt.location || 'Lokasi Acara',
+                              eventDate: evt.event_date || targetDateStr,
+                              startTime: evt.time || evt.start_time || '10:00',
+                              endTime: evt.end_time || 'Selesai',
+                            })}
+                            className="mt-2 w-full py-2 px-4 rounded-full bg-white text-[#784E59] border border-[#885461]/35 text-[11px] font-semibold tracking-wider uppercase shadow-xs hover:bg-[#FAF6F4] active:scale-95 transition-all inline-flex items-center justify-center gap-1.5 cursor-pointer select-none"
+                            style={{ fontFamily: "'Poppins', sans-serif" }}
+                          >
+                            <Calendar size={13} className="text-[#784E59]" />
+                            <span>Simpan ke Kalender</span>
+                          </button>
                         </div>
                       </div>
                     )}
@@ -2076,6 +2103,16 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
             className="max-w-full max-h-[90vh] rounded-2xl object-contain shadow-2xl"
           />
         </div>
+      )}
+
+      {/* Calendar Reminder Modal */}
+      {calendarModalEvent && (
+        <CalendarReminderModal
+          isOpen={!!calendarModalEvent}
+          onClose={() => setCalendarModalEvent(null)}
+          event={calendarModalEvent}
+          themeStyle="rose"
+        />
       )}
 
     </div>
