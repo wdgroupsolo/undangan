@@ -881,6 +881,9 @@ export const Home: React.FC = () => {
                         Hemat 67%
                       </span>
                     </div>
+                    <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-stone-500 mt-1.5">
+                      Start from
+                    </span>
                     <div className="text-3xl sm:text-4xl font-black text-stone-950 font-cinzel mt-0.5">
                       Rp 50.000
                     </div>
@@ -974,6 +977,9 @@ export const Home: React.FC = () => {
                         Hemat 40%
                       </span>
                     </div>
+                    <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-amber-200 mt-1.5">
+                      Start from
+                    </span>
                     <div className="text-3xl sm:text-4xl font-black text-white font-cinzel mt-0.5">
                       Rp 150.000
                     </div>
