@@ -101,10 +101,10 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
             </button>
             <button
               type="button"
-              onClick={() => setMusicData({ music_name: 'Gending Nyawiji (Gamelan Tradisional)', music_url: '/music/javanese-gamelan.mp3', autoplay: true })}
+              onClick={() => setMusicData({ music_name: 'Bergema Sampai Selamanya - Nadhief Basalamah (Piano Karaoke)', music_url: '/music/bergema-sampai-selamanya.mp3', autoplay: true })}
               className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-primary-50 hover:border-primary-300 text-gray-700 transition-colors"
             >
-              🏛️ Javanese Heritage (Gending Nyawiji)
+              🏛️ Javanese Heritage (Bergema Sampai Selamanya)
             </button>
             <button
               type="button"

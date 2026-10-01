@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { themeService, REAL_SPLIT_FLORAL_THEME, DEFAULT_THEMES } from '../../services/themeService';
+import { translations, Lang } from '../../i18n/translations';
 import { 
   Heart, 
   Music, 
@@ -28,33 +29,41 @@ import {
   HelpCircle,
   Bot,
   Send,
-  RotateCcw
+  RotateCcw,
+  Globe
 } from 'lucide-react';
 
 export const Home: React.FC = () => {
+  const [lang, setLang] = useState<Lang>('id');
+  const t = useCallback((key: keyof typeof translations): any => {
+    return translations[key][lang];
+  }, [lang]);
+  const toggleLang = () => setLang(prev => prev === 'id' ? 'en' : 'id');
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Showcase Themes for Hero Phone Mockup Slider
+  const showcaseBadges = t('showcaseBadge') as unknown as string[];
   const showcaseThemes = [
     {
       id: 'javanese-heritage',
       name: 'Javanese Heritage',
       slug: 'javanese-heritage',
-      badge: 'Tema Tradisional Unggulan',
+      badge: showcaseBadges[0],
       couple: 'Habib & Adiba',
       date: 'Sabtu, 24 Oktober 2026',
       preview: '/themes/javanese-heritage-theme-preview.png',
-      musicTitle: 'Gending Jawa Sakral',
-      musicUrl: '/music/javanese-gamelan.mp3',
+      musicTitle: 'Bergema Sampai Selamanya - Nadhief Basalamah (Piano)',
+      musicUrl: '/music/bergema-sampai-selamanya.mp3',
       demoUrl: '/invitation/steven-bunga?theme=javanese-heritage'
     },
     {
       id: 'maroon-gold',
       name: 'Maroon Gold',
       slug: 'maroon-gold',
-      badge: 'Tema Kerajaan & Mewah',
+      badge: showcaseBadges[1],
       couple: 'Faris & Aisyah',
       date: 'Minggu, 15 November 2026',
       preview: '/themes/maroon-gold-theme-preview.png',
@@ -66,7 +75,7 @@ export const Home: React.FC = () => {
       id: 'secret-garden',
       name: 'Secret Garden',
       slug: 'secret-garden',
-      badge: 'Tema Romantis & Botanical',
+      badge: showcaseBadges[2],
       couple: 'Dimas & Nadia',
       date: 'Sabtu, 12 Desember 2026',
       preview: '/themes/secret-garden-theme-preview.png',
@@ -78,7 +87,7 @@ export const Home: React.FC = () => {
       id: 'split-floral',
       name: 'Split Floral',
       slug: 'split-floral',
-      badge: 'Tema Klasik & Modern',
+      badge: showcaseBadges[3],
       couple: 'Steven & Bunga',
       date: 'Minggu, 20 Desember 2026',
       preview: '/themes/split-floral-theme-preview.png',
@@ -93,6 +102,50 @@ export const Home: React.FC = () => {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const mockupAudioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const autoSlideTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const autoSlideResumeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [autoSlidePaused, setAutoSlidePaused] = useState(false);
+
+  // Auto-slide: cycle themes every 5 seconds
+  useEffect(() => {
+    if (autoSlidePaused) {
+      if (autoSlideTimerRef.current) {
+        clearInterval(autoSlideTimerRef.current);
+        autoSlideTimerRef.current = null;
+      }
+      return;
+    }
+
+    autoSlideTimerRef.current = setInterval(() => {
+      setActiveMockupThemeIndex(prev => (prev + 1) % showcaseThemes.length);
+    }, 5000);
+
+    return () => {
+      if (autoSlideTimerRef.current) {
+        clearInterval(autoSlideTimerRef.current);
+      }
+    };
+  }, [autoSlidePaused, showcaseThemes.length]);
+
+  // Pause auto-slide on manual interaction, resume after 8s
+  const pauseAutoSlide = () => {
+    setAutoSlidePaused(true);
+    if (autoSlideResumeRef.current) {
+      clearTimeout(autoSlideResumeRef.current);
+    }
+    autoSlideResumeRef.current = setTimeout(() => {
+      setAutoSlidePaused(false);
+    }, 8000);
+  };
+
+  // Cleanup resume timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (autoSlideResumeRef.current) {
+        clearTimeout(autoSlideResumeRef.current);
+      }
+    };
+  }, []);
 
   // Sync audio source when theme changes if playing
   useEffect(() => {
@@ -120,10 +173,12 @@ export const Home: React.FC = () => {
   };
 
   const handlePrevTheme = () => {
+    pauseAutoSlide();
     setActiveMockupThemeIndex(prev => (prev - 1 + showcaseThemes.length) % showcaseThemes.length);
   };
 
   const handleNextTheme = () => {
+    pauseAutoSlide();
     setActiveMockupThemeIndex(prev => (prev + 1) % showcaseThemes.length);
   };
 
@@ -230,69 +285,31 @@ export const Home: React.FC = () => {
     actionLabel?: string;
   }
 
+  const faqChips = t('faqChips') as unknown as string[];
+  const faqQuestions = t('faqQuestions') as unknown as string[];
+  const faqAnswers = t('faqAnswers') as unknown as string[];
+
   const FAQ_KNOWLEDGE_BASE = [
-    {
-      id: 'proses',
-      chip: '⚡ Berapa lama pengerjaannya?',
-      keywords: ['lama', 'waktu', 'proses', 'cepat', 'berapa lama', 'hari', 'kilat', 'draf', 'selesai'],
-      question: 'Berapa lama waktu pengerjaan undangan digital?',
-      answer: 'Pengerjaan draf awal memakan waktu 1 hingga 2 hari kerja setelah data acara dan foto lengkap. Jika Anda memiliki kebutuhan mendesak, kami menyediakan layanan kilat siap sebar dalam hitungan jam tanpa mengurangi kualitas desain.'
-    },
-    {
-      id: 'musik',
-      chip: '🎵 Bisa pakai lagu sendiri?',
-      keywords: ['musik', 'lagu', 'audio', 'sound', 'backsound', 'request lagu', 'mp3', 'gamelan', 'piano'],
-      question: 'Apakah bisa menggunakan musik atau lagu pilihan sendiri?',
-      answer: 'Tentu saja! Anda dapat memilih dari katalog aransemen instrumen romantis eksklusif kami (piano, akustik, orkestra, gamelan modern), atau menyematkan judul lagu kenangan favorit Anda berdua.'
-    },
-    {
-      id: 'wa-generator',
-      chip: '💬 Cara kirim nama tamu WhatsApp?',
-      keywords: ['wa', 'whatsapp', 'nama tamu', 'tamu', 'generator', 'kirim', 'sebar', 'link', 'tautan'],
-      question: 'Bagaimana cara mengirim undangan dengan nama tamu yang berbeda?',
-      answer: 'Anda mendapatkan akses fitur Generator Nama Tamu WD Group secara gratis. Cukup masukkan daftar nama kerabat, sistem akan otomatis membuatkan tautan khusus (contoh: Kepada Yth. Bapak/Ibu...) beserta draf teks sapaan WhatsApp santun yang siap Anda kirim satu per satu tanpa repot mengetik manual.'
-    },
-    {
-      id: 'kuota',
-      chip: '👥 Batasan kuota tamu & masa aktif?',
-      keywords: ['kuota', 'batas', 'jumlah', 'tamu', 'berapa orang', 'masa aktif', 'aktif', 'kadaluarsa'],
-      question: 'Apakah ada batasan kuota tamu undangan atau masa aktif?',
-      answer: 'Tidak ada batasan kuota sama sekali! Satu tautan undangan dapat dibagikan kepada ratusan hingga ribuan kerabat tanpa biaya tambahan. Masa aktif tautan berlaku penuh hingga acara selesai dan tetap tersimpan sebagai kenang-kenangan.'
-    },
-    {
-      id: 'rsvp',
-      chip: '💌 RSVP & Amplop Digital?',
-      keywords: ['rsvp', 'amplop', 'kado', 'hadiah', 'rekening', 'qris', 'bank', 'kehadiran', 'ucapan'],
-      question: 'Bagaimana tamu mengisi RSVP dan mengirim amplop digital?',
-      answer: 'Tamu cukup mengisi formulir kehadiran langsung di halaman undangan secara real-time. Untuk amplop digital, tersedia tombol satu klik salin nomor rekening bank (BCA, Mandiri, BSI, dll) serta QRIS resmi yang aman dipindai dari m-banking atau e-wallet mana pun.'
-    },
-    {
-      id: 'revisi',
-      chip: '🛡️ Garansi revisi jadwal/lokasi?',
-      keywords: ['revisi', 'garansi', 'ubah', 'ganti', 'jadwal', 'lokasi', 'batal', 'geser', 'waktu'],
-      question: 'Apakah ada garansi jika ada perubahan jadwal atau lokasi acara?',
-      answer: 'Ya, kami memberikan fasilitas jaminan revisi data tanpa biaya tambahan untuk perubahan tanggal, jam acara, maupun titik maps lokasi hingga hari H pernikahan Anda berlangsung.'
-    },
-    {
-      id: 'harga',
-      chip: '💰 Berapa harga paket undangan?',
-      keywords: ['harga', 'biaya', 'paket', 'biaya buat', 'promo', 'murah', 'starter', 'premium', 'custom', 'bayar'],
-      question: 'Berapa harga paket pembuatan undangan digital di WD Group?',
-      answer: 'Paket kami mulai dari Rp 99.000 untuk Paket Starter, Rp 150.000 untuk Paket Premium (fitur lengkap + video gerbang sinematik), dan Paket Custom Bespoke untuk konsep khusus dari nol. Semua sudah termasuk revisi dan generator tamu WhatsApp.'
-    }
+    { id: 'proses', chip: faqChips[0], keywords: ['lama', 'waktu', 'proses', 'cepat', 'berapa lama', 'hari', 'kilat', 'draf', 'selesai', 'how long', 'time', 'fast'], question: faqQuestions[0], answer: faqAnswers[0] },
+    { id: 'musik', chip: faqChips[1], keywords: ['musik', 'lagu', 'audio', 'sound', 'backsound', 'request lagu', 'mp3', 'gamelan', 'piano', 'music', 'song'], question: faqQuestions[1], answer: faqAnswers[1] },
+    { id: 'wa-generator', chip: faqChips[2], keywords: ['wa', 'whatsapp', 'nama tamu', 'tamu', 'generator', 'kirim', 'sebar', 'link', 'tautan', 'guest name', 'send'], question: faqQuestions[2], answer: faqAnswers[2] },
+    { id: 'kuota', chip: faqChips[3], keywords: ['kuota', 'batas', 'jumlah', 'tamu', 'berapa orang', 'masa aktif', 'aktif', 'kadaluarsa', 'limit', 'guest', 'active'], question: faqQuestions[3], answer: faqAnswers[3] },
+    { id: 'rsvp', chip: faqChips[4], keywords: ['rsvp', 'amplop', 'kado', 'hadiah', 'rekening', 'qris', 'bank', 'kehadiran', 'ucapan', 'envelope', 'gift'], question: faqQuestions[4], answer: faqAnswers[4] },
+    { id: 'revisi', chip: faqChips[5], keywords: ['revisi', 'garansi', 'ubah', 'ganti', 'jadwal', 'lokasi', 'batal', 'geser', 'revision', 'guarantee', 'change'], question: faqQuestions[5], answer: faqAnswers[5] },
+    { id: 'harga', chip: faqChips[6], keywords: ['harga', 'biaya', 'paket', 'biaya buat', 'promo', 'murah', 'starter', 'premium', 'custom', 'bayar', 'price', 'cost', 'package'], question: faqQuestions[6], answer: faqAnswers[6] }
   ];
 
   const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
     {
       id: 'bot-init-1',
       sender: 'bot',
-      text: 'Halo kak! 👋 Selamat datang di WD Group. Saya Asisten Virtual yang siap membantu menjawab pertanyaan Anda seputar undangan pernikahan digital secara instan.',
+      text: t('chatInit1') as string,
       time: 'Online'
     },
     {
       id: 'bot-init-2',
       sender: 'bot',
-      text: 'Silakan klik salah satu topik pertanyaan di bawah, atau ketik langsung pertanyaan Anda di kolom pesan:',
+      text: t('chatInit2') as string,
       time: 'Online'
     }
   ];
@@ -333,12 +350,12 @@ export const Home: React.FC = () => {
           f.keywords.some(k => lower.includes(k))
         );
 
-        if (found) {
+         if (found) {
           botResponse = found.answer;
         } else {
-          botResponse = 'Terima kasih atas pertanyaannya! Untuk pertanyaan atau request khusus ini, Anda bisa langsung berdiskusi dengan desainer manusia kami melalui WhatsApp agar dapat disesuaikan langsung:';
+          botResponse = t('faqFallback') as string;
           actionUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(`Halo WD Group, saya ingin konsultasi: "${trimmed}"`)}`;
-          actionLabel = 'Lanjut Tanya via WhatsApp';
+          actionLabel = t('faqWaAction') as string;
         }
       }
 
@@ -346,7 +363,7 @@ export const Home: React.FC = () => {
         id: 'bot-' + Date.now(),
         sender: 'bot',
         text: botResponse,
-        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+        time: new Date().toLocaleTimeString(lang === 'id' ? 'id-ID' : 'en-US', { hour: '2-digit', minute: '2-digit' }),
         actionUrl,
         actionLabel
       };
@@ -366,9 +383,9 @@ export const Home: React.FC = () => {
       
       {/* Top Announcement Bar */}
       <div className="bg-[#1c1917] text-stone-200 text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2 relative z-50">
-        <span>Koleksi tema pernikahan eksklusif siap digunakan untuk hari bahagia Anda.</span>
+        <span>{t('announcementText') as string}</span>
         <a href="#themes" className="underline font-semibold text-amber-300 hover:text-white transition-colors">
-          Lihat Tema &rarr;
+          {t('announcementLink') as string} &rarr;
         </a>
       </div>
 
@@ -386,22 +403,22 @@ export const Home: React.FC = () => {
                 WD GROUP
               </span>
               <span className="text-[10px] tracking-[0.2em] text-stone-500 font-semibold uppercase mt-0.5 block">
-                Undangan Digital
+                {t('brandSubtitle') as string}
               </span>
             </div>
           </Link>
 
           {/* Streamlined Desktop Navigation Links (5 Clean Links) */}
           <nav className="hidden lg:flex items-center space-x-8 text-xs font-bold text-stone-600 tracking-wider uppercase">
-            <a href="#themes" className="hover:text-primary-800 transition-colors">Tema Desain</a>
-            <a href="#keunggulan" className="hover:text-primary-800 transition-colors">Keunggulan</a>
-            <a href="#alur" className="hover:text-primary-800 transition-colors">Alur Pesan</a>
-            <a href="#pricing" className="hover:text-primary-800 transition-colors">Paket Harga</a>
-            <a href="#faq" className="hover:text-primary-800 transition-colors">FAQ</a>
+            <a href="#themes" className="hover:text-primary-800 transition-colors">{t('navThemes') as string}</a>
+            <a href="#keunggulan" className="hover:text-primary-800 transition-colors">{t('navFeatures') as string}</a>
+            <a href="#alur" className="hover:text-primary-800 transition-colors">{t('navWorkflow') as string}</a>
+            <a href="#pricing" className="hover:text-primary-800 transition-colors">{t('navPricing') as string}</a>
+            <a href="#faq" className="hover:text-primary-800 transition-colors">{t('navFaq') as string}</a>
           </nav>
 
           {/* Right Action Button & Mobile Toggle */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <a 
               href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
               target="_blank" 
@@ -409,8 +426,19 @@ export const Home: React.FC = () => {
               className="hidden sm:inline-flex items-center space-x-2 bg-primary-900 hover:bg-primary-950 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs transition-all transform hover:-translate-y-0.5"
             >
               <MessageCircle size={15} className="text-amber-300" />
-              <span>Konsultasi Desain</span>
+              <span>{t('navConsult') as string}</span>
             </a>
+
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLang}
+              className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 text-xs font-bold transition-colors cursor-pointer"
+              aria-label={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+              title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+            >
+              <Globe size={14} />
+              <span className="hidden min-[420px]:inline">{t('langToggle') as string}</span>
+            </button>
 
             {/* Mobile Menu Toggle Button */}
             <button 
@@ -428,11 +456,11 @@ export const Home: React.FC = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-b border-stone-200 px-5 py-6 space-y-4 animate-reveal-up shadow-lg">
             <nav className="flex flex-col space-y-3.5 text-sm font-semibold text-stone-700">
-              <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">Tema Desain</a>
-              <a href="#keunggulan" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">Keunggulan &amp; Fitur</a>
-              <a href="#alur" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">Alur Pemesanan</a>
-              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">Paket Harga</a>
-              <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">Tanya Jawab</a>
+              <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('navThemes') as string}</a>
+              <a href="#keunggulan" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavFeatures') as string}</a>
+              <a href="#alur" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavWorkflow') as string}</a>
+              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('navPricing') as string}</a>
+              <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavFaq') as string}</a>
             </nav>
             <div className="pt-4 border-t border-stone-100 flex flex-col gap-2.5">
               <a 
@@ -441,14 +469,14 @@ export const Home: React.FC = () => {
                 rel="noopener noreferrer"
                 className="w-full text-center py-2.5 text-xs font-bold text-white bg-primary-900 rounded-xl"
               >
-                Konsultasi WhatsApp
+                {t('mobileNavConsultWa') as string}
               </a>
               <Link 
                 to="/admin/login" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full text-center py-2 text-xs font-medium text-stone-500 hover:text-stone-800"
               >
-                Portal Admin &rarr;
+                {t('mobileNavAdmin') as string} &rarr;
               </Link>
             </div>
           </div>
@@ -465,17 +493,17 @@ export const Home: React.FC = () => {
               
               {/* Editorial Category Label */}
               <div className="text-xs font-bold tracking-[0.2em] text-primary-800 uppercase font-serif">
-                Koleksi Undangan Digital Pernikahan
+                {t('heroLabel') as string}
               </div>
 
               {/* Main Headline */}
               <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-stone-900 tracking-tight leading-[1.18]">
-                Abadikan Momen Sakral dengan Undangan Pernikahan yang <span className="font-playfair italic font-normal text-primary-800">Anggun &amp; Berkesan</span>
+                {t('heroHeadline') as string} <span className="font-playfair italic font-normal text-primary-800" style={{ whiteSpace: 'nowrap' }}>{t('heroAccent') as string}</span>
               </h1>
 
               {/* Subheadline */}
               <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                Hadirkan kabar bahagia kepada keluarga dan kerabat melalui undangan web interaktif. Dilengkapi video pintu gerbang sinematik, alunan musik romantis, konfirmasi kehadiran otomatis, dan navigasi lokasi acara presisi.
+                {t('heroSubheadline') as string}
               </p>
 
               {/* Action Buttons */}
@@ -484,7 +512,7 @@ export const Home: React.FC = () => {
                   href="#themes"
                   className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-primary-800 hover:bg-primary-900 active:scale-98 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2"
                 >
-                  <span>Eksplorasi Tema Undangan</span>
+                  <span>{t('heroCta1') as string}</span>
                   <ArrowRight size={16} />
                 </a>
 
@@ -493,7 +521,7 @@ export const Home: React.FC = () => {
                   className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-stone-800 font-bold text-xs sm:text-sm border border-stone-300 hover:bg-stone-50 hover:border-stone-400 transition-all flex items-center justify-center space-x-2"
                 >
                   <Smartphone size={16} className="text-stone-600" />
-                  <span>Katalog Lengkap</span>
+                  <span>{t('heroCta2') as string}</span>
                 </Link>
               </div>
 
@@ -501,15 +529,15 @@ export const Home: React.FC = () => {
               <div className="pt-6 border-t border-stone-200/80 flex flex-wrap items-center justify-center lg:justify-start gap-y-2.5 gap-x-6 text-xs text-stone-600">
                 <div className="flex items-center space-x-2">
                   <Check size={16} className="text-emerald-700 shrink-0" />
-                  <span>Karya orisinal tim desainer</span>
+                  <span>{t('trustOriginal') as string}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Check size={16} className="text-emerald-700 shrink-0" />
-                  <span>Dukungan langsung via WA</span>
+                  <span>{t('trustWa') as string}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Check size={16} className="text-emerald-700 shrink-0" />
-                  <span>Responsif di seluruh ponsel</span>
+                  <span>{t('trustResponsive') as string}</span>
                 </div>
               </div>
 
@@ -544,13 +572,13 @@ export const Home: React.FC = () => {
                       <button 
                         onClick={toggleMockupAudio}
                         className="w-6 h-6 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-700 transition-colors cursor-pointer"
-                        title={isPlayingAudio ? 'Jeda Musik' : 'Putar Musik'}
-                        aria-label={isPlayingAudio ? 'Jeda Musik' : 'Putar Musik'}
+                        title={isPlayingAudio ? t('mockupPause') as string : t('mockupPlay') as string}
+                        aria-label={isPlayingAudio ? t('mockupPause') as string : t('mockupPlay') as string}
                       >
                         {isPlayingAudio ? <Pause size={10} /> : <Play size={10} className="ml-0.5" />}
                       </button>
                       <div className="text-left leading-tight">
-                        <p className="text-[9px] text-amber-200 font-semibold tracking-wider uppercase">Musik Undangan</p>
+                        <p className="text-[9px] text-amber-200 font-semibold tracking-wider uppercase">{t('mockupMusicLabel') as string}</p>
                         <p className="text-[11px] font-medium truncate max-w-[130px] text-stone-100">{currentShowcase.musicTitle}</p>
                       </div>
                     </div>
@@ -615,7 +643,7 @@ export const Home: React.FC = () => {
                     {showcaseThemes.map((th, i) => (
                       <button
                         key={th.id}
-                        onClick={() => setActiveMockupThemeIndex(i)}
+                        onClick={() => { pauseAutoSlide(); setActiveMockupThemeIndex(i); }}
                         className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                           activeMockupThemeIndex === i 
                             ? 'w-5 bg-primary-900' 
@@ -629,24 +657,24 @@ export const Home: React.FC = () => {
                   {/* Live Dynamic Countdown Box */}
                   <div className="p-3.5 bg-white border-b border-stone-100">
                     <p className="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-2">
-                      Hitung Mundur Hari Bahagia
+                      {t('mockupCountdownLabel') as string}
                     </p>
                     <div className="grid grid-cols-4 gap-1.5 text-center">
                       <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
                         <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{countdown.days}</span>
-                        <span className="text-[8px] text-stone-500 uppercase">Hari</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownDays') as string}</span>
                       </div>
                       <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
                         <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.hours).padStart(2, '0')}</span>
-                        <span className="text-[8px] text-stone-500 uppercase">Jam</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownHours') as string}</span>
                       </div>
                       <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
                         <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.minutes).padStart(2, '0')}</span>
-                        <span className="text-[8px] text-stone-500 uppercase">Menit</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownMin') as string}</span>
                       </div>
                       <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
                         <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.seconds).padStart(2, '0')}</span>
-                        <span className="text-[8px] text-stone-500 uppercase">Detik</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownSec') as string}</span>
                       </div>
                     </div>
                   </div>
@@ -659,7 +687,7 @@ export const Home: React.FC = () => {
                       rel="noreferrer"
                       className="w-full bg-primary-800 hover:bg-primary-900 text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 shadow-sm group active:scale-98"
                     >
-                      <span>Buka Undangan Demo ({currentShowcase.name})</span>
+                      <span>{t('mockupDemoBtn') as string} ({currentShowcase.name})</span>
                       <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
                     </a>
                   </div>
@@ -670,26 +698,6 @@ export const Home: React.FC = () => {
                 <div className="w-24 h-1 bg-stone-700 rounded-full mx-auto mt-2.5" />
               </div>
 
-              {/* Theme Switcher Pills under Phone Mockup */}
-              <div className="mt-4 flex items-center justify-center gap-1.5 flex-wrap max-w-xs sm:max-w-sm">
-                {showcaseThemes.map((th, i) => {
-                  const isActive = activeMockupThemeIndex === i;
-                  return (
-                    <button
-                      key={th.id}
-                      onClick={() => setActiveMockupThemeIndex(i)}
-                      className={`px-3 py-1.5 rounded-full text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                        isActive 
-                          ? 'bg-primary-900 text-amber-300 shadow-xs ring-2 ring-primary-900/20' 
-                          : 'bg-white text-stone-600 hover:bg-stone-100 hover:text-stone-900 border border-stone-200'
-                      }`}
-                    >
-                      {isActive && <Sparkles size={11} className="text-amber-300 shrink-0" />}
-                      <span>{th.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
 
             </div>
 
@@ -704,13 +712,13 @@ export const Home: React.FC = () => {
           {/* Section Header */}
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              Nilai &amp; Keunggulan
+              {t('featuresLabel') as string}
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Fitur Lengkap untuk Momen Pernikahan Sempurna
+              {t('featuresTitle') as string}
             </h2>
             <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
-              Dirancang dengan teliti agar setiap detik momen sakral tersampaikan dengan anggun, praktis, dan mudah diakses oleh seluruh tamu undangan.
+              {t('featuresDesc') as string}
             </p>
           </div>
 
@@ -724,20 +732,20 @@ export const Home: React.FC = () => {
                   <Play size={20} />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                  Kesan Pertama Sinematik dengan Video Entrance &amp; Musik Latar
+                  {t('flagship1Title') as string}
                 </h3>
                 <p className="text-sm text-stone-600 leading-relaxed">
-                  Menyambut tamu dengan transisi video pembuka gerbang yang megah, disusul alunan instrumen romantis yang otomatis berputar untuk menciptakan suasana sakral.
+                  {t('flagship1Desc') as string}
                 </p>
               </div>
               <div className="pt-6 border-t border-stone-200/70 mt-6 grid grid-cols-2 gap-3 text-xs text-stone-700">
                 <div className="flex items-center space-x-2">
                   <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>Video gerbang HD</span>
+                  <span>{t('flagship1Check1') as string}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>Kontrol audio mandiri</span>
+                  <span>{t('flagship1Check2') as string}</span>
                 </div>
               </div>
             </div>
@@ -749,20 +757,20 @@ export const Home: React.FC = () => {
                   <CheckCircle2 size={20} />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                  Buku Tamu Digital &amp; Konfirmasi RSVP Real-Time
+                  {t('flagship2Title') as string}
                 </h3>
                 <p className="text-sm text-stone-600 leading-relaxed">
-                  Tamu dapat langsung mengonfirmasi kehadiran serta menuliskan doa restu hangat. Seluruh data terekam rapi dan siap dipantau langsung dari dashboard admin.
+                  {t('flagship2Desc') as string}
                 </p>
               </div>
               <div className="pt-6 border-t border-stone-200/70 mt-6 grid grid-cols-2 gap-3 text-xs text-stone-700">
                 <div className="flex items-center space-x-2">
                   <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>Daftar hadir otomatis</span>
+                  <span>{t('flagship2Check1') as string}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>Buku ucapan doa restu</span>
+                  <span>{t('flagship2Check2') as string}</span>
                 </div>
               </div>
             </div>
@@ -776,9 +784,9 @@ export const Home: React.FC = () => {
               <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
                 <Gift size={18} />
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">Amplop Digital &amp; QRIS</h4>
+              <h4 className="font-bold text-stone-900 text-sm">{t('cap1Title') as string}</h4>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Kemudahan kirim kado pernikahan secara cashless lewat transfer rekening bank dan QRIS dengan tombol salin instan.
+                {t('cap1Desc') as string}
               </p>
             </div>
 
@@ -786,9 +794,9 @@ export const Home: React.FC = () => {
               <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
                 <MapPin size={18} />
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">Navigasi Google Maps</h4>
+              <h4 className="font-bold text-stone-900 text-sm">{t('cap2Title') as string}</h4>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Satu ketukan membuka rute navigasi presisi menuju venue akad dan resepsi agar tamu tidak tersesat di jalan.
+                {t('cap2Desc') as string}
               </p>
             </div>
 
@@ -796,9 +804,9 @@ export const Home: React.FC = () => {
               <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
                 <Users size={18} />
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">Personalisasi Nama Tamu</h4>
+              <h4 className="font-bold text-stone-900 text-sm">{t('cap3Title') as string}</h4>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Buat tautan personal resmi (Kepada Yth. Bapak/Ibu...) agar penerima merasa dihormati secara istimewa.
+                {t('cap3Desc') as string}
               </p>
             </div>
 
@@ -806,9 +814,9 @@ export const Home: React.FC = () => {
               <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
                 <Calendar size={18} />
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">Pengingat Kalender</h4>
+              <h4 className="font-bold text-stone-900 text-sm">{t('cap4Title') as string}</h4>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Fitur simpan tanggal otomatis ke Google Calendar dan hitung mundur interaktif di layar smartphone tamu.
+                {t('cap4Desc') as string}
               </p>
             </div>
 
@@ -823,13 +831,13 @@ export const Home: React.FC = () => {
           
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              Koleksi Tema Pilihan
+              {t('themesLabel') as string}
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Desain Elegan yang Siap Disesuaikan
+              {t('themesTitle') as string}
             </h2>
             <p className="text-sm sm:text-base text-stone-600">
-              Setiap tema dirancang dengan komposisi visual yang matang, estetika tipografi premium, dan fungsionalitas interaktif lengkap.
+              {t('themesDesc') as string}
             </p>
           </div>
 
@@ -933,7 +941,7 @@ export const Home: React.FC = () => {
                           to="/themes"
                           className="w-full sm:flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 transition-colors text-center block"
                         >
-                          Lihat Katalog
+                          {t('themeCatalogBtn') as string}
                         </Link>
                         <a 
                           href={demoUrl}
@@ -941,7 +949,7 @@ export const Home: React.FC = () => {
                           rel="noreferrer"
                           className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 transition-colors text-center block"
                         >
-                          Demo Tema
+                          {t('themeDemoBtn') as string}
                         </a>
                       </div>
                     </div>
@@ -955,9 +963,9 @@ export const Home: React.FC = () => {
           {/* Custom Theme Request Notice */}
           <div className="mt-8 max-w-6xl mx-auto bg-white rounded-2xl border border-stone-200 p-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
             <div>
-              <h3 className="text-sm sm:text-base font-bold text-stone-900">Ingin Desain Khusus Sesuai Konsep Pernikahan Anda?</h3>
+              <h3 className="text-sm sm:text-base font-bold text-stone-900">{t('themeCustomTitle') as string}</h3>
               <p className="text-xs text-stone-600 mt-0.5">
-                Tim desainer kami siap membuat konsep visual baru yang selaras dengan dekorasi acara dan busana pengantin Anda.
+                {t('themeCustomDesc') as string}
               </p>
             </div>
             <a 
@@ -966,7 +974,7 @@ export const Home: React.FC = () => {
               rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-xl bg-stone-900 text-white text-xs font-bold hover:bg-stone-800 transition-colors shrink-0"
             >
-              Konsultasi Desain Khusus
+              {t('themeCustomBtn') as string}
             </a>
           </div>
 
@@ -979,13 +987,13 @@ export const Home: React.FC = () => {
           
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              Alur Kerjasama
+              {t('workflowLabel') as string}
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Bagaimana Undangan Anda Diciptakan
+              {t('workflowTitle') as string}
             </h2>
             <p className="text-sm sm:text-base text-stone-600">
-              Proses kolaboratif yang terarah untuk memastikan setiap detail acara tercantum dengan sempurna sebelum hari bahagia.
+              {t('workflowDesc') as string}
             </p>
           </div>
 
@@ -996,9 +1004,9 @@ export const Home: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
                 01
               </div>
-              <h3 className="font-bold text-stone-900 text-base">Pilih Tema &amp; Konsultasi</h3>
+              <h3 className="font-bold text-stone-900 text-base">{t('step1Title') as string}</h3>
               <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                Pilih konsep desain dari katalog atau diskusikan kebutuhan kustomisasi tema langsung dengan tim desainer kami.
+                {t('step1Desc') as string}
               </p>
             </div>
 
@@ -1007,9 +1015,9 @@ export const Home: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
                 02
               </div>
-              <h3 className="font-bold text-stone-900 text-base">Kirimkan Informasi Acara</h3>
+              <h3 className="font-bold text-stone-900 text-base">{t('step2Title') as string}</h3>
               <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                Isi data mempelai, jadwal akad dan resepsi, titik lokasi Google Maps, foto prewedding kenangan, serta nomor rekening amplop.
+                {t('step2Desc') as string}
               </p>
             </div>
 
@@ -1018,9 +1026,9 @@ export const Home: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
                 03
               </div>
-              <h3 className="font-bold text-stone-900 text-base">Pratinjau Draf &amp; Revisi</h3>
+              <h3 className="font-bold text-stone-900 text-base">{t('step3Title') as string}</h3>
               <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                Kami susun draf online untuk Anda dan pasangan tinjau bersama. Kami lakukan penyesuaian hingga seluruh informasi akurat.
+                {t('step3Desc') as string}
               </p>
             </div>
 
@@ -1029,9 +1037,9 @@ export const Home: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
                 04
               </div>
-              <h3 className="font-bold text-stone-900 text-base">Undangan Siap Disebar</h3>
+              <h3 className="font-bold text-stone-900 text-base">{t('step4Title') as string}</h3>
               <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                Tautan resmi undangan digital Anda aktif dan siap dibagikan ke seluruh tamu via WhatsApp dengan nama khusus tiap penerima.
+                {t('step4Desc') as string}
               </p>
             </div>
 
@@ -1046,13 +1054,13 @@ export const Home: React.FC = () => {
           
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              Investasi &amp; Paket
+              {t('pricingLabel') as string}
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Pilihan Paket Undangan Digital
+              {t('pricingTitle') as string}
             </h2>
             <p className="text-sm sm:text-base text-stone-600">
-              Pilihan paket transparan yang dapat disesuaikan dengan kebutuhan dan skala perayaan pernikahan Anda.
+              {t('pricingDesc') as string}
             </p>
           </div>
 
@@ -1138,7 +1146,7 @@ export const Home: React.FC = () => {
             {/* 2. PREMIUM PLAN */}
             <div className="bg-[#1c1917] text-white rounded-3xl p-6 sm:p-8 border-2 border-amber-400 shadow-2xl flex flex-col justify-between relative ring-1 ring-amber-400/30">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-stone-950 text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                Paling Banyak Dipilih
+                {t('premiumBadge') as string}
               </div>
 
               <div>
@@ -1293,13 +1301,13 @@ export const Home: React.FC = () => {
           
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              Kabar Bahagia
+              {t('testimonialsLabel') as string}
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Cerita Dari Pasangan Pengantin Kami
+              {t('testimonialsTitle') as string}
             </h2>
             <p className="text-sm sm:text-base text-stone-600">
-              Inilah kesan nyata dari para calon mempelai yang mempercayakan kabar pernikahan mereka bersama WD Group.
+              {t('testimonialsDesc') as string}
             </p>
           </div>
 
@@ -1357,13 +1365,13 @@ export const Home: React.FC = () => {
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-200/80 text-stone-800 text-xs font-semibold tracking-wide">
               <Bot size={15} className="text-primary-800" />
-              <span>Asisten Tanya Jawab Pintar</span>
+              <span>{t('faqBotLabel') as string}</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
-              Pertanyaan yang Sering Diajukan
+              {t('faqTitle') as string}
             </h2>
             <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
-              Pilih pertanyaan cepat atau ngobrol interaktif dengan asisten virtual WD Group untuk mendapatkan informasi lengkap secara instan.
+              {t('faqDesc') as string}
             </p>
           </div>
 
@@ -1384,7 +1392,7 @@ export const Home: React.FC = () => {
                     <span>WD Wedding Assistant</span>
                     <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">Bot FAQ</span>
                   </h3>
-                  <p className="text-xs text-stone-400">Online • Menjawab otomatis 24/7</p>
+                  <p className="text-xs text-stone-400">{t('faqBotStatus') as string}</p>
                 </div>
               </div>
 
@@ -1392,7 +1400,7 @@ export const Home: React.FC = () => {
                 <button
                   onClick={handleResetChat}
                   className="px-2.5 py-1.5 rounded-lg bg-stone-800/80 hover:bg-stone-800 text-stone-300 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
-                  title="Mulai Ulang Percakapan"
+                  title={t('faqResetTitle') as string}
                 >
                   <RotateCcw size={13} />
                   <span className="hidden sm:inline">Reset</span>
@@ -1404,7 +1412,7 @@ export const Home: React.FC = () => {
                   className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
                 >
                   <MessageCircle size={13} />
-                  <span className="hidden sm:inline">Chat WA Desainer</span>
+                  <span className="hidden sm:inline">{t('faqChatWa') as string}</span>
                 </a>
               </div>
             </div>
@@ -1413,7 +1421,7 @@ export const Home: React.FC = () => {
             <div className="h-[360px] sm:h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fbf9f6]/80 text-xs sm:text-sm">
               <div className="text-center my-1">
                 <span className="text-[10px] font-medium text-stone-400 bg-stone-100 px-3 py-1 rounded-full">
-                  Percakapan Dimulai Otomatis
+                  {t('faqConvoStart') as string}
                 </span>
               </div>
 
@@ -1464,7 +1472,7 @@ export const Home: React.FC = () => {
 
                     {isUser && (
                       <div className="w-7 h-7 rounded-full bg-stone-300 text-stone-700 flex items-center justify-center shrink-0 text-xs font-bold">
-                        Anda
+                        {t('faqYou') as string}
                       </div>
                     )}
                   </div>
@@ -1492,9 +1500,9 @@ export const Home: React.FC = () => {
               <div className="flex items-center justify-between mb-2 px-1">
                 <span className="text-[11px] font-bold text-stone-600 flex items-center gap-1">
                   <Sparkles size={12} className="text-amber-600" />
-                  <span>Pilihan Pertanyaan Cepat:</span>
+                  <span>{t('faqQuickLabel') as string}</span>
                 </span>
-                <span className="text-[10px] text-stone-400">Klik untuk bertanya</span>
+                <span className="text-[10px] text-stone-400">{t('faqQuickHint') as string}</span>
               </div>
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
                 {FAQ_KNOWLEDGE_BASE.map((item) => (
@@ -1521,15 +1529,15 @@ export const Home: React.FC = () => {
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Ketik pertanyaan seputar undangan, atau klik pilihan di atas..."
+                placeholder={t('faqInputPlaceholder') as string}
                 className="flex-1 px-4 py-2.5 rounded-xl bg-stone-50 border border-stone-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-800/20 focus:border-primary-800 transition-all placeholder:text-stone-400"
               />
               <button
                 type="submit"
                 disabled={!chatInput.trim()}
                 className="w-10 h-10 rounded-xl bg-primary-900 hover:bg-primary-950 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer shrink-0 active:scale-95"
-                title="Kirim Pertanyaan"
-                aria-label="Kirim Pertanyaan"
+                title={t('faqSendTitle') as string}
+                aria-label={t('faqSendTitle') as string}
               >
                 <Send size={16} />
               </button>
@@ -1541,7 +1549,7 @@ export const Home: React.FC = () => {
           <div className="mt-6 p-4 rounded-2xl bg-stone-200/50 border border-stone-300/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div className="flex items-center space-x-2.5 text-xs text-stone-600">
               <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-              <span>Tim customer care &amp; desainer manusia aktif setiap hari <strong>08.00 - 22.00 WIB</strong></span>
+              <span>{t('faqSupportText') as string} <strong>{t('faqSupportHours') as string}</strong></span>
             </div>
             <a
               href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
@@ -1549,7 +1557,7 @@ export const Home: React.FC = () => {
               rel="noopener noreferrer"
               className="text-xs font-bold text-primary-900 hover:text-primary-950 underline flex items-center gap-1"
             >
-              <span>Hubungi Desainer di WhatsApp</span>
+              <span>{t('faqSupportLink') as string}</span>
               <ArrowRight size={13} />
             </a>
           </div>
@@ -1564,10 +1572,10 @@ export const Home: React.FC = () => {
             WD Group Wedding Invitation
           </span>
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-            Rencanakan Undangan Pernikahan Anda Hari Ini
+            {t('ctaTitle') as string}
           </h2>
           <p className="text-sm sm:text-base text-stone-200 max-w-xl mx-auto font-light leading-relaxed">
-            Konsultasikan ide dan konsep acara Anda bersama tim kami. Kami siap membantu menciptakan undangan terbaik untuk momen sekali seumur hidup.
+            {t('ctaDesc') as string}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
@@ -1578,14 +1586,14 @@ export const Home: React.FC = () => {
               className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-amber-300 hover:bg-amber-200 text-stone-950 font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2"
             >
               <MessageCircle size={16} />
-              <span>Hubungi Desainer via WhatsApp</span>
+              <span>{t('ctaBtn1') as string}</span>
             </a>
 
             <Link 
               to="/themes"
               className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all flex items-center justify-center space-x-2"
             >
-              <span>Lihat Katalog Tema</span>
+              <span>{t('ctaBtn2') as string}</span>
               <ArrowRight size={15} />
             </Link>
           </div>
@@ -1606,26 +1614,26 @@ export const Home: React.FC = () => {
                 <span className="text-xl font-bold font-cinzel text-white tracking-wider">WD GROUP</span>
               </div>
               <p className="text-xs text-stone-400 leading-relaxed">
-                Penyedia solusi undangan pernikahan digital berkarakter, modern, dan profesional untuk menciptakan momen sakral pernikahan impian.
+                {t('footerDesc') as string}
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">Navigasi Halaman</h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerNavTitle') as string}</h4>
               <ul className="space-y-2 text-xs">
-                <li><a href="#hero" className="hover:text-white transition-colors">Beranda</a></li>
-                <li><a href="#themes" className="hover:text-white transition-colors">Tema Desain</a></li>
-                <li><a href="#keunggulan" className="hover:text-white transition-colors">Keunggulan &amp; Fitur</a></li>
-                <li><a href="#alur" className="hover:text-white transition-colors">Alur Pemesanan</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors">Paket Harga</a></li>
-                <li><a href="#faq" className="hover:text-white transition-colors">Tanya Jawab</a></li>
+                <li><a href="#hero" className="hover:text-white transition-colors">{t('footerHome') as string}</a></li>
+                <li><a href="#themes" className="hover:text-white transition-colors">{t('footerThemes') as string}</a></li>
+                <li><a href="#keunggulan" className="hover:text-white transition-colors">{t('footerFeaturesLink') as string}</a></li>
+                <li><a href="#alur" className="hover:text-white transition-colors">{t('footerWorkflow') as string}</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors">{t('footerPricing') as string}</a></li>
+                <li><a href="#faq" className="hover:text-white transition-colors">{t('footerFaq') as string}</a></li>
               </ul>
             </div>
 
             {/* Themes */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">Koleksi Desain</h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerDesignTitle') as string}</h4>
               <ul className="space-y-2 text-xs">
                 <li><Link to="/themes" className="hover:text-white transition-colors">Javanese Heritage (Adat)</Link></li>
                 <li><Link to="/themes" className="hover:text-white transition-colors">Maroon Gold (Royal)</Link></li>
@@ -1636,7 +1644,7 @@ export const Home: React.FC = () => {
 
             {/* Contact & Admin */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">Layanan &amp; Kontak</h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerContactTitle') as string}</h4>
               <ul className="space-y-2 text-xs">
                 <li>
                   <a 
@@ -1656,11 +1664,11 @@ export const Home: React.FC = () => {
                     Email: groupcompanywd@gmail.com
                   </a>
                 </li>
-                <li><span>Lokasi: Surakarta, Jawa Tengah</span></li>
-                <li><span>Jam Konsultasi: 08.00 - 22.00 WIB</span></li>
+                <li><span>{t('footerLocation') as string}</span></li>
+                <li><span>{t('footerHours') as string}</span></li>
                 <li className="pt-2">
                   <Link to="/admin/login" className="text-amber-200 hover:underline font-semibold">
-                    Masuk ke Admin Dashboard &rarr;
+                    {t('footerAdminLink') as string} &rarr;
                   </Link>
                 </li>
               </ul>
@@ -1669,11 +1677,11 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-stone-500 gap-4 text-center sm:text-left">
-            <p>&copy; {new Date().getFullYear()} WD Group. Seluruh Hak Cipta Dilindungi.</p>
+            <p>&copy; {new Date().getFullYear()} WD Group. {t('footerCopyright') as string}</p>
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              <Link to="/themes" className="hover:text-stone-300">Katalog Tema</Link>
-              <a href="#faq" className="hover:text-stone-300">Bantuan</a>
-              <Link to="/admin/login" className="hover:text-stone-300">Portal Admin</Link>
+              <Link to="/themes" className="hover:text-stone-300">{t('footerCatalog') as string}</Link>
+              <a href="#faq" className="hover:text-stone-300">{t('footerHelp') as string}</a>
+              <Link to="/admin/login" className="hover:text-stone-300">{t('mobileNavAdmin') as string}</Link>
             </div>
           </div>
         </div>
@@ -1687,10 +1695,10 @@ export const Home: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
           className="pointer-events-auto flex items-center space-x-2 bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95"
-          aria-label="Konsultasi WhatsApp"
+          aria-label={t('floatingConsultWa') as string}
         >
           <MessageCircle size={18} />
-          <span className="text-xs font-bold hidden sm:inline-block pr-1">Tanya Kami di WA</span>
+          <span className="text-xs font-bold hidden sm:inline-block pr-1">{t('floatingWa') as string}</span>
         </a>
 
         {/* Scroll-To-Top Button */}
@@ -1698,8 +1706,8 @@ export const Home: React.FC = () => {
           <button
             onClick={scrollToTop}
             className="pointer-events-auto w-10 h-10 rounded-full bg-white text-stone-700 border border-stone-200 shadow-md hover:bg-stone-900 hover:text-white transition-colors flex items-center justify-center"
-            aria-label="Kembali ke atas"
-            title="Kembali ke Atas"
+            aria-label={t('floatingScrollTop') as string}
+            title={t('floatingScrollTopTitle') as string}
           >
             <ChevronUp size={18} />
           </button>

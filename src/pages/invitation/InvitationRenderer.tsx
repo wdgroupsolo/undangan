@@ -54,7 +54,7 @@ export const InvitationRenderer: React.FC = () => {
       case 'javanese-heritage':
       case 'jawa-klasik':
       case 'borobudur':
-        return '/music/javanese-gamelan.mp3';
+        return '/music/bergema-sampai-selamanya.mp3';
       case 'maroon-gold':
         return '/music/maroon-gold-canon.mp3';
       case 'secret-garden':
