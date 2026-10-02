@@ -354,7 +354,7 @@ export const Home: React.FC = () => {
           botResponse = found.answer;
         } else {
           botResponse = t('faqFallback') as string;
-          actionUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(`Halo WD Group, saya ingin konsultasi: "${trimmed}"`)}`;
+          actionUrl = `https://wa.me/6285707909415?text=${encodeURIComponent(`Halo WD Group, saya ingin konsultasi: "${trimmed}"`)}`;
           actionLabel = t('faqWaAction') as string;
         }
       }
@@ -420,7 +420,7 @@ export const Home: React.FC = () => {
           {/* Right Action Button & Mobile Toggle */}
           <div className="flex items-center space-x-2 sm:space-x-3">
             <a 
-              href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
               target="_blank" 
               rel="noopener noreferrer"
               className="hidden sm:inline-flex items-center space-x-2 bg-primary-900 hover:bg-primary-950 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs transition-all transform hover:-translate-y-0.5"
@@ -464,7 +464,7 @@ export const Home: React.FC = () => {
             </nav>
             <div className="pt-4 border-t border-stone-100 flex flex-col gap-2.5">
               <a 
-                href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
+                href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-full text-center py-2.5 text-xs font-bold text-white bg-primary-900 rounded-xl"
@@ -969,7 +969,7 @@ export const Home: React.FC = () => {
               </p>
             </div>
             <a 
-              href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-xl bg-stone-900 text-white text-xs font-bold hover:bg-stone-800 transition-colors shrink-0"
@@ -1133,7 +1133,7 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Start%20from%20Rp%2050.000)"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Start%20from%20Rp%2050.000)"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full block text-center py-3 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm transition-colors"
@@ -1214,7 +1214,7 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Start%20from%20Rp%20150.000)"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Start%20from%20Rp%20150.000)"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full block text-center py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 font-extrabold text-xs sm:text-sm text-stone-950 transition-colors shadow-md"
@@ -1280,7 +1280,7 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full block text-center py-3 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm transition-colors"
@@ -1406,7 +1406,7 @@ export const Home: React.FC = () => {
                   <span className="hidden sm:inline">Reset</span>
                 </button>
                 <a
-                  href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20tanya%20langsung%20dengan%20tim%20desainer"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20tanya%20langsung%20dengan%20tim%20desainer"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
@@ -1552,7 +1552,7 @@ export const Home: React.FC = () => {
               <span>{t('faqSupportText') as string} <strong>{t('faqSupportHours') as string}</strong></span>
             </div>
             <a
-              href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold text-primary-900 hover:text-primary-950 underline flex items-center gap-1"
@@ -1580,7 +1580,7 @@ export const Home: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
             <a 
-              href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-amber-300 hover:bg-amber-200 text-stone-950 font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2"
@@ -1648,12 +1648,12 @@ export const Home: React.FC = () => {
               <ul className="space-y-2 text-xs">
                 <li>
                   <a 
-                    href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20mengenai%20pembuatan%20undangan%20pernikahan%20digital."
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20mengenai%20pembuatan%20undangan%20pernikahan%20digital."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-amber-200 transition-colors"
                   >
-                    WhatsApp: +62 812-3456-7890
+                    WhatsApp: +62 857-0790-9415
                   </a>
                 </li>
                 <li>
@@ -1691,7 +1691,7 @@ export const Home: React.FC = () => {
       <div className="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end space-y-3 pointer-events-none">
         {/* WhatsApp Contact */}
         <a
-          href="https://wa.me/6281234567890?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20undangan%20pernikahan%20digital"
+          href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20undangan%20pernikahan%20digital"
           target="_blank"
           rel="noopener noreferrer"
           className="pointer-events-auto flex items-center space-x-2 bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95"

@@ -37,7 +37,7 @@ export const Dashboard: React.FC = () => {
   const stats = [
     { 
       name: 'Total Klien', 
-      value: data?.stats.totalClients || 0, 
+      value: data?.stats?.totalClients ?? 0, 
       icon: Users, 
       color: 'text-blue-600', 
       bg: 'bg-blue-50',
@@ -46,7 +46,7 @@ export const Dashboard: React.FC = () => {
     },
     { 
       name: 'Undangan Aktif', 
-      value: data?.stats.totalInvitations || 0, 
+      value: data?.stats?.totalInvitations ?? 0, 
       icon: Mail, 
       color: 'text-primary-700', 
       bg: 'bg-primary-50',
@@ -55,7 +55,7 @@ export const Dashboard: React.FC = () => {
     },
     { 
       name: 'Tema Tersedia', 
-      value: data?.stats.activeThemes || 0, 
+      value: data?.stats?.activeThemes ?? 0, 
       icon: Palette, 
       color: 'text-emerald-600', 
       bg: 'bg-emerald-50',
@@ -64,7 +64,7 @@ export const Dashboard: React.FC = () => {
     },
     { 
       name: 'Total RSVP Masuk', 
-      value: data?.stats.totalRsvps || 0, 
+      value: data?.stats?.totalRsvps ?? 0, 
       icon: MessageSquareHeart, 
       color: 'text-rose-600', 
       bg: 'bg-rose-50',
@@ -233,7 +233,7 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              {data?.recentInvitations.map((inv) => {
+              {data?.recentInvitations?.map((inv) => {
                 const clientName = (Array.isArray(inv.client) ? inv.client[0]?.name : (inv.client as any)?.name) || 'Klien';
                 const isCopied = copiedSlug === inv.slug;
 
@@ -286,7 +286,7 @@ export const Dashboard: React.FC = () => {
                 );
               })}
 
-              {data?.recentInvitations.length === 0 && (
+              {(data?.recentInvitations?.length ?? 0) === 0 && (
                 <div className="text-center py-10 border border-dashed border-stone-200 rounded-2xl text-stone-500 space-y-2">
                   <Mail size={32} className="mx-auto text-stone-300" />
                   <p className="text-sm font-semibold">Belum ada undangan yang dibuat</p>
@@ -327,7 +327,7 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              {data?.recentClients.map((client) => (
+              {data?.recentClients?.map((client) => (
                 <div 
                   key={client.id} 
                   className="p-3.5 rounded-2xl border border-stone-100 hover:border-stone-200 hover:bg-stone-50/70 transition-all flex items-center space-x-3"
@@ -342,7 +342,7 @@ export const Dashboard: React.FC = () => {
                 </div>
               ))}
 
-              {data?.recentClients.length === 0 && (
+              {(data?.recentClients?.length ?? 0) === 0 && (
                 <div className="text-center py-10 border border-dashed border-stone-200 rounded-2xl text-stone-500 space-y-2">
                   <Users size={32} className="mx-auto text-stone-300" />
                   <p className="text-sm font-semibold">Belum ada klien terdaftar</p>

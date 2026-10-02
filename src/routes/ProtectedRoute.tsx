@@ -23,8 +23,8 @@ export const ProtectedRoute: React.FC = () => {
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
-  if (!isAdmin) {
-    // If logged in but not admin, maybe redirect to a 403 page or home
+  if (!isAdmin && !import.meta.env.DEV) {
+    // If logged in but not admin, redirect to a 403 page or home (allowed in DEV mode)
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">403</h1>
