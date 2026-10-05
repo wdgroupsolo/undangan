@@ -887,6 +887,7 @@ export interface RoyalWayangGoldThemeProps {
   gallery?: any[];
   gifts?: any[];
   music?: any;
+  isOpening?: boolean;
 }
 
 export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
@@ -896,8 +897,26 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   stories = [],
   gallery = [],
   gifts = [],
+  isOpening = false,
 }) => {
   const toast = useToast();
+  const isDirectOpened = typeof window !== 'undefined' && (
+    window.location.search.includes('opened=true') ||
+    !window.location.pathname.includes('/invitation/')
+  );
+  const [hasTriggeredEntrance, setHasTriggeredEntrance] = useState(isDirectOpened);
+
+  useEffect(() => {
+    if (isOpening) {
+      setHasTriggeredEntrance(true);
+    } else {
+      const timer = setTimeout(() => {
+        setHasTriggeredEntrance(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpening]);
+
   const [selectedCalendarEvent, setSelectedCalendarEvent] = useState<CalendarEventData | null>(null);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
@@ -1299,6 +1318,54 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         {/* ==================================================== */}
         <header className="relative w-full h-[100dvh] min-h-[600px] flex items-center justify-center overflow-hidden select-none bg-[#0a0705]">
           <style>{`
+            @keyframes royal-frame-fade-in {
+              0% {
+                opacity: 0;
+                transform: scale(0.90) translateY(18px);
+                filter: blur(10px) brightness(1.3);
+              }
+              50% {
+                opacity: 0.85;
+                filter: blur(2px) brightness(1.1);
+              }
+              100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0px) brightness(1);
+              }
+            }
+            @keyframes royal-crown-emerge {
+              0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-22px) scale(0.8);
+                filter: drop-shadow(0 0 0 rgba(212,175,55,0));
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scale(1);
+                filter: drop-shadow(0 4px 18px rgba(212,175,55,0.7));
+              }
+            }
+            @keyframes royal-wayang-in-left {
+              0% {
+                opacity: 0;
+                transform: translateX(-35px) scale(0.92);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+              }
+            }
+            @keyframes royal-wayang-in-right {
+              0% {
+                opacity: 0;
+                transform: translateX(35px) scale(0.92);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+              }
+            }
             @keyframes royal-wayang-sway-left {
               0%, 100% { transform: translateY(0) rotate(0deg); }
               50% { transform: translateY(-5px) rotate(-1.4deg); }
@@ -1348,7 +1415,26 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           </div>
 
           {/* 5. LAYER MAIN BAROQUE FRAME & COUPLE PHOTO & NAMES */}
-          <div className="relative z-10 w-[84%] max-w-[340px] sm:max-w-[390px] aspect-[896/1200] max-h-[72vh] mx-auto flex flex-col items-center justify-center -translate-y-11 sm:-translate-y-14">
+          <div 
+            className="relative z-10 w-[84%] max-w-[340px] sm:max-w-[390px] aspect-[896/1200] max-h-[72vh] mx-auto flex flex-col items-center justify-center -translate-y-11 sm:-translate-y-14"
+            style={hasTriggeredEntrance ? {
+              animation: 'royal-frame-fade-in 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+            } : { opacity: 0 }}
+          >
+            {/* Crown At Top Peak of Baroque Frame */}
+            <div 
+              className="absolute -top-[7.5%] sm:-top-[8.5%] left-1/2 -translate-x-1/2 z-30 pointer-events-none w-22 sm:w-26 drop-shadow-[0_4px_16px_rgba(212,175,55,0.7)]"
+              style={hasTriggeredEntrance ? {
+                animation: 'royal-crown-emerge 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both'
+              } : { opacity: 0 }}
+            >
+              <img 
+                src="/themes/royal-crown-luxury.png" 
+                alt="Mahkota Keraton" 
+                className="w-full h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.7)]" 
+              />
+            </div>
+
             {/* Foto Mempelai dalam Kubah Lengkung (HD Crystal Clear) */}
             <div className="absolute top-[22%] left-[17%] right-[17%] bottom-[14%] rounded-t-[100px] overflow-hidden z-10 bg-[#160f09] shadow-inner">
               <img 
@@ -1366,30 +1452,35 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             />
 
             {/* Kotak Tipografi Mempelai di Bagian Bawah Bingkai */}
-            <div className="absolute bottom-[9%] left-[14%] right-[14%] py-2 sm:py-2.5 px-3 rounded-lg bg-gradient-to-b from-[#25180c]/95 via-[#180f05]/98 to-[#0b0703] border border-[#d4af37]/75 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30">
+            <div className="absolute bottom-[9%] left-[12%] right-[12%] py-2 sm:py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#22150a]/96 via-[#180e06]/98 to-[#0b0603] border border-[#d4af37]/80 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30">
               <h1 
-                className="font-serif text-base sm:text-lg font-bold tracking-[0.18em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] drop-shadow-sm"
+                className="font-serif text-base sm:text-lg font-bold tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] drop-shadow-sm"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
               >
                 {groomName} &amp; {brideName}
               </h1>
               <div className="flex items-center justify-center gap-2 my-0.5 sm:my-1">
-                <div className="w-6 h-px bg-gradient-to-r from-transparent to-[#d4af37]/80" />
+                <div className="w-8 h-px bg-gradient-to-r from-transparent to-[#d4af37]/80" />
                 <span className="text-[#ffd778] text-[8px]">✦</span>
-                <div className="w-6 h-px bg-gradient-to-l from-transparent to-[#d4af37]/80" />
+                <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#d4af37]/80" />
               </div>
               <p 
-                className="text-[8px] sm:text-[9px] font-serif tracking-[0.22em] text-[#f7e6c4] uppercase font-medium drop-shadow-sm"
+                className="text-[8.5px] sm:text-[9.5px] font-serif tracking-[0.24em] text-[#f7e6c4] uppercase font-semibold drop-shadow-sm"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
               >
-                {formatEventDateID(events[0]?.date || '2026-09-30T09:00:00', 'MINGGU, 30 SEPTEMBER 2026')}
+                {formatEventDateID(events[0]?.date || events[0]?.event_date || '2026-09-30T09:00:00', 'RABU, 30 SEPTEMBER 2026')}
               </p>
             </div>
           </div>
 
           {/* 6. LAYER WAYANG KAMAJAYA (Kiri Bawah) */}
-          <div className="absolute bottom-1 sm:bottom-2 -left-3 sm:left-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]">
-            <div style={{ animation: 'royal-wayang-sway-left 6s ease-in-out infinite' }}>
+          <div 
+            className="absolute bottom-1 sm:bottom-2 -left-3 sm:left-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]"
+            style={hasTriggeredEntrance ? {
+              animation: 'royal-wayang-in-left 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both'
+            } : { opacity: 0 }}
+          >
+            <div style={{ animation: 'royal-wayang-sway-left 6s ease-in-out infinite 1.3s' }}>
               <img 
                 src="/themes/royal-kamajaya-luxury.png" 
                 alt="Wayang Raden Kamajaya" 
@@ -1399,8 +1490,13 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           </div>
 
           {/* 7. LAYER WAYANG KAMARATIH (Kanan Bawah) */}
-          <div className="absolute bottom-1 sm:bottom-2 -right-3 sm:right-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]">
-            <div style={{ animation: 'royal-wayang-sway-right 6s ease-in-out infinite' }}>
+          <div 
+            className="absolute bottom-1 sm:bottom-2 -right-3 sm:right-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]"
+            style={hasTriggeredEntrance ? {
+              animation: 'royal-wayang-in-right 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both'
+            } : { opacity: 0 }}
+          >
+            <div style={{ animation: 'royal-wayang-sway-right 6s ease-in-out infinite 1.3s' }}>
               <img 
                 src="/themes/royal-kamaratih-luxury.png" 
                 alt="Wayang Dewi Kamaratih" 

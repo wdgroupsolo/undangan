@@ -275,7 +275,7 @@ export const InvitationRenderer: React.FC = () => {
       setOpeningStage('opened');
       setIsVideoExiting(false);
       setCanSkipVideo(false);
-    }, 700);
+    }, 1000);
   };
 
   // Handle clicking "Buka Undangan": starts audio and triggers entrance animation sequence
@@ -435,6 +435,7 @@ export const InvitationRenderer: React.FC = () => {
               gallery={gallery || []}
               gifts={gifts || []}
               music={music}
+              isOpening={isVideoExiting || openingStage === 'opened'}
             />
           ) : isJavaneseHeritage ? (
             <JavaneseHeritageTheme 
@@ -1309,7 +1310,7 @@ export const InvitationRenderer: React.FC = () => {
           }}
           className={`fixed top-0 right-0 h-full ${
             isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full inset-0'
-          } z-50 bg-[#0e0b08] flex items-center justify-center transition-opacity duration-700 ease-out overflow-hidden select-none ${
+          } z-50 bg-[#0e0b08] flex items-center justify-center transition-opacity duration-1000 ease-out overflow-hidden select-none ${
             isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
           } ${canSkipVideo ? 'cursor-pointer' : ''}`}
         >
