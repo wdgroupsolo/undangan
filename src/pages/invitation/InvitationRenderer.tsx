@@ -286,13 +286,13 @@ export const InvitationRenderer: React.FC = () => {
     }
 
     if (isRoyalWayang) {
-      // Cinematic Zoom & Dissolve: Smooth camera push-in with radiant golden light bloom
+      // Royal Gebyok Portal Zoom-In & Unveil Transition (matching GaleriUndangan style)
       setIsCoverExiting(true);
       if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
       animTimeoutRef.current = setTimeout(() => {
         setOpeningStage('opened');
         setIsCoverExiting(false);
-      }, 1050);
+      }, 1500);
       return;
     }
 
@@ -374,10 +374,10 @@ export const InvitationRenderer: React.FC = () => {
       )}
 
       {/* Main Invitation Content */}
-      <div className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      <div className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.2,0.9,0.35,1)] ${
         isInvitationVisible || isCoverExiting
           ? 'opacity-100 scale-100' 
-          : (isSplitTheme && openingStage === 'arch-video' ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.98] h-0 overflow-hidden')
+          : (isSplitTheme && openingStage === 'arch-video' ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.88] h-0 overflow-hidden')
       }`}>
         {(isInvitationVisible || isCoverExiting || openingStage === 'arch-video') && (
           isRoyalWayang ? (
@@ -477,10 +477,8 @@ export const InvitationRenderer: React.FC = () => {
       {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) with [Buka Undangan] Button */}
       {(openingStage === 'cover' || (isRoyalWayang && isCoverExiting)) && (
         isRoyalWayang ? (
-          /* Royal Wayang Gold Cover - Ultra-Luxurious Authentic Keraton Presentation with Cinematic Push-In */
-          <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#080503] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}>
+          /* Royal Wayang Gold Cover - Galeri Undangan Official Luxury Gebyok Portal with Smooth Fly-Through Zoom */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#060402]">
             <style>{`
               @keyframes royal-pulse-btn {
                 0%, 100% {
@@ -496,6 +494,10 @@ export const InvitationRenderer: React.FC = () => {
                 0%, 100% { transform: translateY(0); }
                 50% { transform: translateY(-4px); }
               }
+              @keyframes royal-ring-glow {
+                0%, 100% { opacity: 0.6; transform: scale(1); }
+                50% { opacity: 0.95; transform: scale(1.05); }
+              }
             `}</style>
 
             {/* Ambient Wide Screen Backdrop */}
@@ -503,178 +505,153 @@ export const InvitationRenderer: React.FC = () => {
               <img 
                 src="/themes/royal-wayang-bg.jpg" 
                 alt="Joglo Ambience" 
-                className="w-full h-full object-cover object-center filter blur-xl brightness-[0.35] contrast-[1.1] scale-110"
+                className="w-full h-full object-cover object-center filter blur-xl brightness-[0.25] contrast-[1.1] scale-110"
               />
-              <div className="absolute inset-0 bg-radial from-transparent via-[#080503]/70 to-[#080503]" />
+              <div className="absolute inset-0 bg-radial from-transparent via-[#060402]/80 to-[#060402]" />
             </div>
 
-            {/* Cinematic Golden Radiant Bloom & Light Burst during Opening */}
-            <div className={`absolute inset-0 pointer-events-none z-30 flex items-center justify-center overflow-hidden transition-all duration-1000 ease-out ${
-              isCoverExiting ? 'opacity-100 scale-125' : 'opacity-0 scale-50'
-            }`}>
-              {/* Central radiant warm gold sunburst */}
-              <div className="w-[600px] h-[600px] sm:w-[800px] sm:h-[800px] rounded-full bg-[radial-gradient(circle_at_center,rgba(255,236,170,0.85)_0%,rgba(212,175,55,0.45)_35%,rgba(107,75,3,0.15)_65%,transparent_75%)] blur-2xl" />
-              {/* Anamorphic horizontal gold lens flare */}
-              <div className="absolute w-full h-32 bg-gradient-to-r from-transparent via-[#ffe58f]/40 to-transparent blur-md" />
+            {/* Intense Golden Portal Sunburst that shines as the camera passes through */}
+            <div 
+              className={`absolute inset-0 pointer-events-none z-30 flex items-center justify-center overflow-hidden transition-all duration-[1300ms] ease-out ${
+                isCoverExiting ? 'opacity-100 scale-150' : 'opacity-0 scale-50'
+              }`}
+            >
+              <div className="w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] rounded-full bg-[radial-gradient(circle_at_center,rgba(255,240,180,0.95)_0%,rgba(212,175,55,0.55)_35%,rgba(107,75,3,0.15)_65%,transparent_75%)] blur-2xl" />
             </div>
 
-            {/* Centered 9:16 Portrait Canvas with Cinematic Camera Push-In */}
-            <div className={`relative z-10 h-full max-h-[100dvh] aspect-[9/16] w-full max-w-[430px] flex flex-col justify-between items-center text-center px-4 py-4 sm:py-5 overflow-hidden sm:rounded-[28px] sm:border-2 sm:border-[#d4af37]/60 sm:ring-1 sm:ring-[#ffe58f]/30 sm:shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_50px_rgba(212,175,55,0.25)] sm:my-auto sm:max-h-[96vh] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isCoverExiting ? 'scale-115 filter blur-[8px] opacity-0' : 'scale-100 filter-none opacity-100'
-            }`}>
-              
-              {/* Background Joglo Pendopo Artwork with Rich Atmospheric Lighting */}
-              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                <img 
-                  src="/themes/royal-wayang-bg.jpg" 
-                  alt="Pendopo Joglo Malam" 
-                  className="w-full h-full object-cover object-top filter brightness-[0.55] contrast-[1.08]"
-                />
-                {/* Deep Rich Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#080503]/85 via-transparent to-[#080503]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#080503] via-[#080503]/80 via-35% to-transparent" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.12)_0%,_transparent_70%)]" />
+            {/* Centered 9:16 Royal Gebyok Portal Canvas (Zooms In smoothly into the circular ring portal) */}
+            <div 
+              className="relative z-10 h-full max-h-[100dvh] aspect-[9/16] w-full max-w-[430px] flex flex-col justify-between items-center text-center overflow-hidden sm:rounded-[28px] sm:border-2 sm:border-[#d4af37]/60 sm:ring-1 sm:ring-[#ffe58f]/30 sm:shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_50px_rgba(212,175,55,0.25)] sm:my-auto sm:max-h-[96vh]"
+              style={{
+                transformOrigin: '50% 47.5%',
+                transform: isCoverExiting ? 'scale(7.5) translateZ(0)' : 'scale(1) translateZ(0)',
+                opacity: isCoverExiting ? 0 : 1,
+                transition: isCoverExiting 
+                  ? 'transform 1.55s cubic-bezier(0.2, 0.9, 0.35, 1), opacity 1.4s cubic-bezier(0.4, 0, 1, 1)' 
+                  : 'none',
+                willChange: 'transform, opacity',
+              }}
+            >
+              {/* Background: The Majestic Golden Gebyok Gate Artwork matching user reference */}
+              <img 
+                src="/themes/royal-gebyok-portal.jpg" 
+                alt="Royal Gebyok Portal" 
+                className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+              />
+
+              {/* Gradient Vignette to ensure pristine readability of upper text */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-transparent via-50% to-black/80 pointer-events-none z-10" />
+
+              {/* Floating Golden Dust Particles */}
+              <div className="absolute inset-0 pointer-events-none z-10">
+                <GoldenSparkleDust />
               </div>
 
-              {/* Ambient Floating Golden Sparkles */}
-              <GoldenSparkleDust />
-
-              {/* Luxury Corner Bronze-Gold Peonies Flourishes */}
-              <div className="absolute top-0 left-0 w-20 sm:w-24 h-auto pointer-events-none z-20 opacity-80 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
-              </div>
-              <div className="absolute top-0 right-0 w-20 sm:w-24 h-auto pointer-events-none z-20 opacity-80 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
-              </div>
-
-              {/* UPPER SECTION: Mahkota Crown & Architectural Royal Arched Medallion Card */}
-              <div className={`relative z-20 w-full flex flex-col items-center pt-2 sm:pt-3 transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isCoverExiting ? '-translate-y-12 opacity-0 scale-95' : 'translate-y-0 opacity-100 scale-100'
-              }`}>
-                {/* Royal Keraton Crown */}
-                <div className="mb-1 pointer-events-none z-30" style={{ animation: 'royal-crown-float 4s ease-in-out infinite' }}>
+              {/* UPPER AREA: Title, Recipient, & Buka Undangan (Positioned above the center circular portal) */}
+              <div 
+                className={`relative z-20 w-full flex flex-col items-center pt-7 sm:pt-9 px-5 transition-all duration-300 ease-out ${
+                  isCoverExiting ? 'opacity-0 scale-90' : 'opacity-100 scale-100'
+                }`}
+              >
+                {/* Small Royal Crown */}
+                <div className="mb-1 pointer-events-none" style={{ animation: 'royal-crown-float 4s ease-in-out infinite' }}>
                   <img 
                     src="/themes/royal-crown-luxury.png" 
-                    alt="Mahkota Keraton" 
-                    className="w-22 sm:w-26 h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.6)]" 
+                    alt="Mahkota" 
+                    className="w-14 sm:w-16 h-auto object-contain filter drop-shadow-[0_2px_10px_rgba(212,175,55,0.7)]" 
                   />
                 </div>
 
-                {/* Arched Medallion Card Container */}
-                <div className="relative w-full max-w-[88%] sm:max-w-[85%] mx-auto rounded-t-[100px] sm:rounded-t-[120px] rounded-b-2xl bg-gradient-to-b from-[#1c120a]/94 via-[#120a06]/96 to-[#090604]/98 backdrop-blur-md border border-[#d4af37]/65 shadow-[0_16px_40px_rgba(0,0,0,0.9),_0_0_25px_rgba(212,175,55,0.18)] p-2.5 sm:p-3 flex flex-col items-center overflow-hidden">
-                  {/* Delicate Inset Gold Hairline Frame */}
-                  <div className="absolute inset-1.5 rounded-t-[92px] sm:rounded-t-[112px] rounded-b-xl border border-[#d4af37]/35 pointer-events-none z-20" />
-
-                  {/* Arched Couple Photo Container */}
-                  <div className="w-full aspect-[4/3] rounded-t-[88px] sm:rounded-t-[108px] rounded-b-lg overflow-hidden border border-[#d4af37]/50 shadow-inner bg-black/50 relative z-10">
-                    <img 
-                      src={coverImage} 
-                      alt={`${groomDisplayName} & ${brideDisplayName}`} 
-                      className="w-full h-full object-cover object-[center_22%] filter brightness-[0.98] contrast-[1.04]"
-                    />
-                    {/* Inner subtle vignette */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#120a06]/70 via-transparent to-transparent pointer-events-none" />
-                  </div>
-
-                  {/* Subtitle: The Wedding Of */}
-                  <p 
-                    className="text-[10px] sm:text-[11px] uppercase tracking-[0.32em] text-[#e6cfab] font-serif font-semibold mt-2.5 mb-1 drop-shadow-sm"
-                    style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
-                  >
-                    THE WEDDING OF
-                  </p>
-
-                  {/* Couple Names in Opulent Gold Foil Gradient */}
-                  <h1 
-                    className="text-xl sm:text-2xl font-serif tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] my-0.5"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  >
-                    {groomDisplayName} <span className="font-light italic text-[#ffd778] mx-0.5">&amp;</span> {brideDisplayName}
-                  </h1>
-
-                  {/* Royal Date Line */}
-                  <div className="flex items-center justify-center gap-2 mt-1 w-full max-w-[210px]">
-                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-                    <span className="text-[10px] sm:text-[10.5px] tracking-[0.16em] text-[#f5dfa8]/90 font-serif font-medium whitespace-nowrap drop-shadow-sm">
-                      {events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Sabtu, 28 November 2026'}
-                    </span>
-                    <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-                  </div>
-                </div>
-              </div>
-
-              {/* MIDDLE SECTION: Luxury Guest Invitation Placard (Kartu Tamu Terhormat) */}
-              <div className={`relative z-20 w-full max-w-[85%] sm:max-w-[82%] mx-auto my-auto py-2.5 px-4 rounded-xl bg-gradient-to-b from-[#1c120a]/92 via-[#140c07]/95 to-[#0b0604]/96 border border-[#d4af37]/55 shadow-[0_10px_28px_rgba(0,0,0,0.9)] backdrop-blur-md overflow-hidden flex flex-col items-center transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isCoverExiting ? 'translate-y-8 opacity-0 scale-95' : 'translate-y-0 opacity-100 scale-100'
-              }`}>
-                {/* Inset Hairline Frame */}
-                <div className="absolute inset-1 rounded-lg border border-[#d4af37]/25 pointer-events-none" />
-
+                {/* THE WEDDING OF */}
                 <p 
-                  className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.24em] text-[#dfca9e] font-serif font-semibold drop-shadow-sm"
+                  className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-[#e6cfab] font-serif font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
                   style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
                 >
-                  Kepada Yth. Bapak/Ibu/Saudara/i:
+                  THE WEDDING OF
                 </p>
 
-                <p 
-                  className="text-base sm:text-lg font-serif font-bold text-white tracking-wide my-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] line-clamp-2"
+                {/* Couple Names */}
+                <h1 
+                  className="text-2xl sm:text-3xl font-serif tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] my-0.5"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  {guestName}
-                </p>
+                  {groomDisplayName} <span className="font-light italic text-[#ffd778] mx-0.5">&amp;</span> {brideDisplayName}
+                </h1>
 
-                <p 
-                  className="text-[10px] sm:text-[11px] text-[#f5dfa8]/80 font-serif italic"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
-                  Di Tempat
-                </p>
-
-                <p className="text-[8.5px] text-[#c9b58c]/60 font-serif italic mt-0.5">
-                  *Mohon maaf apabila ada kesalahan penulisan nama/gelar
-                </p>
-              </div>
-
-              {/* BOTTOM SECTION: Real Luxury Wayang Guardians & Opulent Gold CTA Button */}
-              <div className="relative z-20 w-full flex flex-col items-center pb-2.5 sm:pb-3.5">
-                
-                {/* Authentic Carved Prada Wayang Figures (Realistic High-Definition PNG, NOT Crude SVG) */}
-                <div className={`absolute -bottom-1 sm:bottom-0 left-1 sm:left-2 w-16 sm:w-20 pointer-events-none z-20 drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)] opacity-95 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  isCoverExiting ? '-translate-x-16 opacity-0' : 'translate-x-0 opacity-95'
-                }`}>
-                  <img 
-                    src="/themes/royal-kamajaya-luxury.png" 
-                    alt="Raden Kamajaya" 
-                    className="w-full h-auto object-contain" 
-                  />
-                </div>
-                <div className={`absolute -bottom-1 sm:bottom-0 right-1 sm:right-2 w-16 sm:w-20 pointer-events-none z-20 drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)] opacity-95 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  isCoverExiting ? 'translate-x-16 opacity-0' : 'translate-x-0 opacity-95'
-                }`}>
-                  <img 
-                    src="/themes/royal-kamaratih-luxury.png" 
-                    alt="Dewi Kamaratih" 
-                    className="w-full h-auto object-contain -scale-x-100" 
-                  />
-                </div>
-
-                {/* Opulent Gold "Buka Undangan" Button */}
-                <button
-                  onClick={handleOpen}
-                  className={`group relative flex items-center justify-center gap-2 px-7 sm:px-8 py-2.5 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f7df8f] to-[#d4af37] text-stone-950 font-serif font-bold text-xs tracking-[0.24em] uppercase border border-[#fff4c2] shadow-[0_4px_22px_rgba(212,175,55,0.5)] hover:shadow-[0_6px_30px_rgba(212,175,55,0.75)] hover:scale-105 active:scale-95 transition-all duration-500 cursor-pointer z-30 ${
-                    isCoverExiting ? 'scale-90 opacity-0' : 'scale-100 opacity-100'
-                  }`}
-                  style={{ animation: isCoverExiting ? 'none' : 'royal-pulse-btn 3s ease-in-out infinite' }}
-                >
-                  <Mail className="w-4 h-4 text-stone-950" />
-                  <span 
-                    className="text-xs sm:text-[13px] font-serif font-bold text-stone-950 tracking-[0.24em] uppercase drop-shadow-sm"
+                {/* Guest Recipient Section (Matching GaleriUndangan style) */}
+                <div className="mt-2.5 sm:mt-3 w-full max-w-[280px] rounded-xl bg-black/55 backdrop-blur-md border border-[#d4af37]/45 p-2 sm:p-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
+                  <p 
+                    className="text-[9px] sm:text-[10px] uppercase tracking-[0.22em] text-[#dfca9e] font-serif font-medium drop-shadow-sm"
+                    style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
+                  >
+                    Kepada Bapak/Ibu/Saudara/i:
+                  </p>
+                  <p 
+                    className="text-base sm:text-lg font-serif font-bold text-white tracking-wide my-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] line-clamp-1"
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
-                    Buka Undangan
+                    {guestName}
+                  </p>
+                  <p 
+                    className="text-[10px] text-[#f5dfa8]/90 font-serif italic"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    Di Tempat
+                  </p>
+                </div>
+
+                {/* Buka Undangan Button (Placed right below recipient card, above the circular portal) */}
+                <div className="mt-3">
+                  <button
+                    onClick={handleOpen}
+                    className="group relative flex items-center justify-center gap-2 px-6 sm:px-7 py-2.5 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f7df8f] to-[#d4af37] text-stone-950 font-serif font-bold text-xs tracking-[0.24em] uppercase border border-[#fff4c2] shadow-[0_4px_22px_rgba(212,175,55,0.6)] hover:shadow-[0_6px_30px_rgba(212,175,55,0.85)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer z-30"
+                    style={{ animation: 'royal-pulse-btn 3s ease-in-out infinite' }}
+                  >
+                    <Mail className="w-3.5 h-3.5 text-stone-950" />
+                    <span 
+                      className="text-xs font-serif font-bold text-stone-950 tracking-[0.24em] uppercase drop-shadow-sm"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      Buka Undangan
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              {/* CENTER CIRCULAR RING PORTAL (Visual Monogram Badge in the center of the ring) */}
+              <div 
+                className={`absolute top-[47.5%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none transition-all duration-500 ${
+                  isCoverExiting ? 'opacity-0 scale-50' : 'opacity-100 scale-100'
+                }`}
+              >
+                <div 
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-[#ffe58f]/40 flex items-center justify-center bg-black/30 backdrop-blur-[2px] shadow-[0_0_20px_rgba(212,175,55,0.5)]"
+                  style={{ animation: 'royal-ring-glow 3s ease-in-out infinite' }}
+                >
+                  <span 
+                    className="text-sm sm:text-base font-serif font-bold text-[#ffe58f] tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
+                    style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
+                  >
+                    {`${groom[0] || 'S'}${bride[0] || 'B'}`.toUpperCase()}
                   </span>
-                </button>
+                </div>
+              </div>
+
+              {/* BOTTOM ACCENT: Authentic Raden Kamajaya & Dewi Kamaratih Relief Figures */}
+              <div 
+                className={`relative z-20 w-full flex items-end justify-between px-3 pb-2.5 transition-all duration-400 ${
+                  isCoverExiting ? 'opacity-0 translate-y-6' : 'opacity-90 translate-y-0'
+                }`}
+              >
+                <div className="w-14 sm:w-16 pointer-events-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                  <img src="/themes/royal-kamajaya-luxury.png" alt="Kamajaya" className="w-full h-auto object-contain" />
+                </div>
+                <p className="text-[9px] text-[#e6cfab]/80 font-serif tracking-[0.24em] uppercase mb-1 drop-shadow-sm">
+                  Pawiwahan Ageng
+                </p>
+                <div className="w-14 sm:w-16 pointer-events-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                  <img src="/themes/royal-kamaratih-luxury.png" alt="Kamaratih" className="w-full h-auto object-contain -scale-x-100" />
+                </div>
               </div>
 
             </div>
