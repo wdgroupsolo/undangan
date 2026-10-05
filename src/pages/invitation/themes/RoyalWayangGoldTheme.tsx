@@ -6,6 +6,7 @@ import {
   X, 
   Copy, 
   ChevronDown, 
+  ChevronUp, 
   ChevronLeft, 
   ChevronRight, 
   Calendar as CalendarIcon, 
@@ -908,6 +909,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const [rsvpMessage, setRsvpMessage] = useState('');
   const [rsvpSubmitting, setRsvpSubmitting] = useState(false);
   const [rsvpList, setRsvpList] = useState<any[]>([]);
+  const [showWishes, setShowWishes] = useState(false);
 
   // Curated dignified sample wishes when rsvpList is empty
   const sampleWishes = [
@@ -1114,6 +1116,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         },
         ...prev,
       ]);
+      setShowWishes(true);
       setRsvpName('');
       setRsvpMessage('');
     } catch {
@@ -3244,61 +3247,79 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 </div>
               </form>
 
-              {/* Wishes Feed (Doa & Ucapan) */}
-              <div className="w-full pt-5 mt-3 border-t-2 border-[#d4af37]/35 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#8c671a] flex items-center justify-center shadow-[0_0_10px_rgba(212,175,55,0.5)]">
-                    <MessageCircle size={13} className="text-stone-950 stroke-[2.5]" />
-                  </div>
-                  <span className="text-xs font-serif font-bold tracking-[0.18em] text-[#FFF4D0] uppercase">
-                    Buku Tamu &amp; Doa
-                  </span>
-                </div>
-                <span className="text-[10.5px] px-3 py-1 rounded-full bg-gradient-to-r from-[#d4af37]/25 via-[#ffd778]/30 to-[#d4af37]/25 border border-[#ffd778]/50 text-[#FFF9DF] font-sans font-bold shadow-sm">
-                  {displayWishes.length} Doa Terkirim
-                </span>
-              </div>
-
-              {/* Wishes Feed List */}
-              <div className="w-full space-y-3 max-h-60 overflow-y-auto pr-1 text-left">
-                {displayWishes.map((item, idx) => (
-                  <div 
-                    key={item.id || idx} 
-                    className="p-3.5 rounded-xl bg-gradient-to-b from-[#24170d]/95 via-[#180f08]/95 to-[#100804]/98 border border-[#d4af37]/50 text-xs space-y-2 shadow-[0_4px_16px_rgba(0,0,0,0.7)] hover:border-[#ffd778] transition-all relative overflow-hidden group"
-                  >
-                    {/* Gold Accent Left Bar */}
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#ffd778] via-[#d4af37] to-[#8c671a]" />
-                    
-                    <div className="flex items-center justify-between gap-2 pl-1.5">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#6d4c13] text-stone-950 font-bold flex items-center justify-center text-[10px] shadow-sm shrink-0">
-                          {item.name.charAt(0).toUpperCase()}
-                        </div>
-                        <span className="font-serif font-bold text-[#FFF6D8] truncate text-[12.5px] tracking-wide">
-                          {item.name}
-                        </span>
-                      </div>
-                      
-                      <span className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-serif font-semibold whitespace-nowrap shadow-sm ${
-                        item.attending 
-                          ? 'bg-gradient-to-r from-emerald-950/90 to-emerald-900/90 text-emerald-200 border border-emerald-400/50 shadow-[0_0_8px_rgba(16,185,129,0.3)]' 
-                          : 'bg-gradient-to-r from-amber-950/90 to-amber-900/90 text-amber-200 border border-amber-400/50 shadow-[0_0_8px_rgba(245,158,11,0.3)]'
-                      }`}>
-                        {item.attending ? '✓ Hadir' : 'Berhalangan'}
-                      </span>
+              {/* Wishes Feed (Doa & Ucapan) Toggle Accordion */}
+              <div className="w-full pt-5 mt-3 border-t-2 border-[#d4af37]/35 flex flex-col items-center">
+                {/* Clickable Header Button to Toggle / Tampilkan */}
+                <button
+                  type="button"
+                  onClick={() => setShowWishes(prev => !prev)}
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#26190f]/95 via-[#190f08]/98 to-[#26190f]/95 border border-[#d4af37]/50 hover:border-[#ffd778] active:scale-[0.99] transition-all flex items-center justify-between shadow-[0_4px_14px_rgba(0,0,0,0.6)] cursor-pointer group"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#8c671a] flex items-center justify-center shadow-[0_0_10px_rgba(212,175,55,0.5)]">
+                      <MessageCircle size={13} className="text-stone-950 stroke-[2.5]" />
                     </div>
-                    
-                    <p className="text-[#efe5d5]/95 font-serif italic text-[12px] leading-relaxed pl-1.5 break-words">
-                      &ldquo;{item.message}&rdquo;
-                    </p>
-                    
-                    {item.created_at && (
-                      <p className="text-[9.5px] text-[#ecc460]/75 font-sans text-right pt-0.5 pr-1">
-                        {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                      </p>
+                    <span className="text-xs font-serif font-bold tracking-[0.16em] text-[#FFF4D0] uppercase">
+                      Buku Tamu &amp; Doa
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-gradient-to-r from-[#d4af37]/25 to-[#ffd778]/30 border border-[#ffd778]/40 text-[#FFF9DF] font-sans font-bold">
+                      {displayWishes.length}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-[#ffd778] text-[11px] font-serif font-semibold">
+                    <span>{showWishes ? 'Sembunyikan' : 'Tampilkan'}</span>
+                    {showWishes ? (
+                      <ChevronUp size={15} className="transition-transform text-[#ffd778]" />
+                    ) : (
+                      <ChevronDown size={15} className="transition-transform group-hover:translate-y-0.5 text-[#ffd778]" />
                     )}
                   </div>
-                ))}
+                </button>
+
+                {/* Wishes Feed List (Hanya tampil saat tombol Tampilkan diklik) */}
+                {showWishes && (
+                  <div className="w-full space-y-3 max-h-60 overflow-y-auto pr-1 text-left mt-3.5 pt-1 animate-in fade-in slide-in-from-top-2 duration-300">
+                    {displayWishes.map((item, idx) => (
+                      <div 
+                        key={item.id || idx} 
+                        className="p-3.5 rounded-xl bg-gradient-to-b from-[#24170d]/95 via-[#180f08]/95 to-[#100804]/98 border border-[#d4af37]/50 text-xs space-y-2 shadow-[0_4px_16px_rgba(0,0,0,0.7)] hover:border-[#ffd778] transition-all relative overflow-hidden group"
+                      >
+                        {/* Gold Accent Left Bar */}
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#ffd778] via-[#d4af37] to-[#8c671a]" />
+                        
+                        <div className="flex items-center justify-between gap-2 pl-1.5">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#6d4c13] text-stone-950 font-bold flex items-center justify-center text-[10px] shadow-sm shrink-0">
+                              {item.name.charAt(0).toUpperCase()}
+                            </div>
+                            <span className="font-serif font-bold text-[#FFF6D8] truncate text-[12.5px] tracking-wide">
+                              {item.name}
+                            </span>
+                          </div>
+                          
+                          <span className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-serif font-semibold whitespace-nowrap shadow-sm ${
+                            item.attending 
+                              ? 'bg-gradient-to-r from-emerald-950/90 to-emerald-900/90 text-emerald-200 border border-emerald-400/50 shadow-[0_0_8px_rgba(16,185,129,0.3)]' 
+                              : 'bg-gradient-to-r from-amber-950/90 to-amber-900/90 text-amber-200 border border-amber-400/50 shadow-[0_0_8px_rgba(245,158,11,0.3)]'
+                          }`}>
+                            {item.attending ? '✓ Hadir' : 'Berhalangan'}
+                          </span>
+                        </div>
+                        
+                        <p className="text-[#efe5d5]/95 font-serif italic text-[12px] leading-relaxed pl-1.5 break-words">
+                          &ldquo;{item.message}&rdquo;
+                        </p>
+                        
+                        {item.created_at && (
+                          <p className="text-[9.5px] text-[#ecc460]/75 font-sans text-right pt-0.5 pr-1">
+                            {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
