@@ -14,14 +14,8 @@ import { MaroonGoldTheme, CardCornerFlourish, GoldSparkles, WaxSealBadge } from 
 import { JavaneseHeritageTheme, JavaneseMonogram, JavanesePetals, RoyalGoldCorner, FloatingGoldenDust } from './themes/JavaneseHeritageTheme';
 import { 
   RoyalWayangGoldTheme, 
-  RoyalWayangCrown, 
   RoyalWayangKamajaya, 
-  RoyalWayangKamaratih, 
-  RoyalGoldenBorderFloral, 
-  GoldenSparkleDust,
-  RoyalGoldenArchTassel,
-  FlyingBirdsSilhouettes,
-  RoyalTopCornerFloral
+  RoyalWayangKamaratih 
 } from './themes/RoyalWayangGoldTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 

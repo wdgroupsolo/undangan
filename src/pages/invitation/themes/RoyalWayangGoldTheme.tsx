@@ -1,23 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   MapPin, 
   Gift, 
-  CreditCard, 
   Check, 
   X, 
   Copy, 
   ChevronDown, 
   ChevronLeft, 
   ChevronRight, 
-  Sparkles, 
   Calendar as CalendarIcon, 
   Heart, 
   Clock, 
-  Send, 
-  MessageSquare, 
-  ExternalLink,
-  Users,
-  Compass
+  MessageSquare
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -894,7 +888,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   couple,
   events = [],
   stories = [],
-  gallery = [],
+  gallery: _gallery = [],
   gifts = [],
 }) => {
   const toast = useToast();
@@ -904,7 +898,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
   // RSVP Form State
   const [rsvpName, setRsvpName] = useState('');
-  const [rsvpGuests, setRsvpGuests] = useState('1');
+  const [rsvpGuests, _setRsvpGuests] = useState('1');
   const [rsvpAttendance, setRsvpAttendance] = useState('hadir');
   const [rsvpMessage, setRsvpMessage] = useState('');
   const [rsvpSubmitting, setRsvpSubmitting] = useState(false);
@@ -1109,7 +1103,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
       ]);
       setRsvpName('');
       setRsvpMessage('');
-    } catch (err: any) {
+    } catch {
       toast.error('Gagal mengirim RSVP. Silakan coba lagi.');
     } finally {
       setRsvpSubmitting(false);
@@ -2435,7 +2429,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
         {/* ==================================================== */}
         {/* 7. PHOTOBOOTH KAMI (CLEAN 3-PHOTO SLIDESHOW)         */}
-        {/* Exact Layout Matching Reference royal-photobooth.png */}
         {/* ==================================================== */}
         <section id="photobooth" className="relative w-full h-[100dvh] min-h-[640px] flex flex-col justify-end items-center text-center overflow-hidden bg-[#080503] border-t border-amber-500/20 select-none pb-12 sm:pb-14 px-6">
           
@@ -2462,7 +2455,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               </div>
             ))}
 
-            {/* Seamless Bottom Gradient Shade matching royal-photobooth.png */}
+            {/* Seamless Bottom Gradient Shade */}
             <div className="absolute inset-0 z-15 bg-gradient-to-t from-black/95 via-black/45 to-transparent" />
           </div>
 

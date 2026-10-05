@@ -470,15 +470,6 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
     }, 600);
   };
 
-  // Google Calendar Link generator
-  const getGoogleCalendarUrl = () => {
-    const title = encodeURIComponent(`The Wedding of ${coupleNamesCombined}`);
-    const details = encodeURIComponent(`Undangan Pernikahan ${coupleNamesCombined}. Mohon doa restu atas pernikahan kami.`);
-    const location = encodeURIComponent(events[0]?.location_name || 'Lokasi Resepsi');
-    const startIso = new Date(targetDateStr).toISOString().replace(/-|:|\.\d{3}/g, '');
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startIso}/${startIso}`;
-  };
-
   // Helper for YouTube embed URL
   const getEmbedUrl = (url?: string) => {
     if (!url) return 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?controls=1';
