@@ -10,8 +10,7 @@ import {
   ChevronRight, 
   Calendar as CalendarIcon, 
   Heart, 
-  Clock, 
-  MessageSquare
+  Clock
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -916,25 +915,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     }, 4000);
     return () => clearInterval(slideTimer);
   }, []);
-
-  // Gift Confirm Form State
-  const [giftName, setGiftName] = useState('');
-  const [giftBank, setGiftBank] = useState('');
-  const [giftAmount, setGiftAmount] = useState('');
-  const [giftUcapan, setGiftUcapan] = useState('');
-  const [giftProofFileName, setGiftProofFileName] = useState('');
-
-  const handleGiftConfirm = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!giftName.trim()) {
-      toast.error('Mohon isi nama Anda.');
-      return;
-    }
-    const message = `Halo, saya ${giftName} ingin mengonfirmasi pengiriman tanda kasih/gift pernikahan ${groomName} & ${brideName}.\nBank: ${giftBank || '-'}\nNominal: ${giftAmount || '-'}\nUcapan: ${giftUcapan || '-'}`;
-    const phone = couple?.phone_number || couple?.groom_phone || '6281234567890';
-    window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
-    toast.success('Membuka WhatsApp untuk konfirmasi...');
-  };
 
   // Dynamic Names matching Database (Steven & Bunga)
   const formatTitleCase = (str?: string) => {
@@ -3005,166 +2985,12 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                   )}
                 </button>
               </div>
-
-              {/* Button to Smooth Scroll to Konfirmasi Pengiriman */}
-              <div className="pt-1 w-full">
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('gift-confirm');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="w-full py-2.5 rounded-full border border-[#d4af37] bg-gradient-to-r from-[#d4af37]/30 via-[#ffd778]/20 to-[#d4af37]/30 hover:from-[#d4af37] hover:to-[#ecc460] text-[#FFF4CC] hover:text-stone-950 font-serif text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 shadow-md cursor-pointer hover:scale-102"
-                >
-                  KONFIRMASI PENGIRIMAN
-                </button>
-              </div>
             </div>
           </div>
         </section>
 
         {/* ==================================================== */}
-        {/* 11. GIFT CONFIRM (Royal Wayang Gold Form)            */}
-        {/* ==================================================== */}
-        <section id="gift-confirm" className="relative w-full min-h-[720px] py-14 sm:py-16 px-4 flex flex-col items-center justify-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none">
-          {/* Background Joglo Pendopo Royal Night */}
-          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-            <img 
-              src="/themes/royal-wayang-bg.jpg" 
-              alt="Joglo Pendopo Royal Background" 
-              className="w-full h-full object-cover object-center filter brightness-[0.40] contrast-[1.08]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0c0806] via-[#0c0806]/55 to-[#0c0806]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(212,175,55,0.12)_0%,_transparent_75%)]" />
-          </div>
-
-          <GoldenSparkleDust />
-
-          {/* Top Corner Floral Flourishes */}
-          <div className="absolute top-1 left-1 w-16 sm:w-20 pointer-events-none z-10 opacity-75 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
-            <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
-          </div>
-          <div className="absolute top-1 right-1 w-16 sm:w-20 pointer-events-none z-10 opacity-75 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
-            <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
-          </div>
-
-          {/* Arched Capsule Card */}
-          <div className="relative z-20 w-full max-w-[340px] sm:max-w-[400px] rounded-t-[160px] sm:rounded-t-[180px] rounded-b-[36px] sm:rounded-b-[40px] bg-gradient-to-b from-[#1c120a]/96 via-[#130b07]/98 to-[#0a0604] border-2 border-[#d4af37]/65 shadow-[0_24px_60px_rgba(0,0,0,0.95)] flex flex-col items-center text-center px-5 sm:px-6 pt-16 pb-7 overflow-hidden backdrop-blur-md relative">
-            {/* Top Carved Crest */}
-            <div className="absolute -top-1 left-1/2 -translate-x-1/2 pointer-events-none z-30">
-              <RoyalCapsuleCrestTop className="w-32 sm:w-36 h-10 text-amber-400 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
-            </div>
-
-            {/* Inner Hairline Frame */}
-            <div className="absolute inset-2 sm:inset-2.5 rounded-t-[150px] sm:rounded-t-[170px] rounded-b-[30px] sm:rounded-b-[34px] border border-[#d4af37]/30 pointer-events-none z-10" />
-
-            {/* Content Layer */}
-            <div className="relative z-20 flex flex-col items-center w-full my-auto space-y-3">
-              <h2 className="text-3xl sm:text-4xl text-white">
-                <span 
-                  className="font-serif italic text-3xl sm:text-4xl text-[#FFF4D0] drop-shadow-md"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
-                  Gift
-                </span>{' '}
-                <span 
-                  className="font-cinzel text-2xl sm:text-3xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] via-[#ECC460] to-[#FFEAA0] uppercase drop-shadow-md"
-                >
-                  Confirm
-                </span>
-              </h2>
-
-              <p 
-                className="text-xs text-[#EADFC9]/85 font-serif italic text-center max-w-[260px] mx-auto leading-relaxed drop-shadow-sm"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                ~ Mohon konfirmasi untuk pengiriman gift ~<br/>Terima kasih atas doa dan restunya
-              </p>
-
-              {/* Form Fields */}
-              <form onSubmit={handleGiftConfirm} className="w-full space-y-2.5 text-left pt-2">
-                <div>
-                  <label className="block text-[11px] text-[#e6ca85] font-serif mb-1">Nama Pengirim :</label>
-                  <input
-                    type="text"
-                    required
-                    value={giftName}
-                    onChange={(e) => setGiftName(e.target.value)}
-                    placeholder="Contoh: Bpk. Ahmad & Keluarga"
-                    className="w-full px-3.5 py-2 bg-[#140c07]/90 border border-[#d4af37]/45 focus:border-[#ffd778] text-[#FFF8D6] text-xs rounded-xl shadow-inner focus:outline-none placeholder:text-stone-500 font-serif"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-[#e6ca85] font-serif mb-1">Nama Bank / E-Wallet :</label>
-                  <input
-                    type="text"
-                    value={giftBank}
-                    onChange={(e) => setGiftBank(e.target.value)}
-                    placeholder="Contoh: BCA / Mandiri / GoPay"
-                    className="w-full px-3.5 py-2 bg-[#140c07]/90 border border-[#d4af37]/45 focus:border-[#ffd778] text-[#FFF8D6] text-xs rounded-xl shadow-inner focus:outline-none placeholder:text-stone-500 font-serif"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-[#e6ca85] font-serif mb-1">Nominal :</label>
-                  <input
-                    type="text"
-                    value={giftAmount}
-                    onChange={(e) => setGiftAmount(e.target.value)}
-                    placeholder="Contoh: Rp 500.000"
-                    className="w-full px-3.5 py-2 bg-[#140c07]/90 border border-[#d4af37]/45 focus:border-[#ffd778] text-[#FFF8D6] text-xs rounded-xl shadow-inner focus:outline-none placeholder:text-stone-500 font-serif"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-[#e6ca85] font-serif mb-1">Pesan &amp; Doa Ucapan :</label>
-                  <input
-                    type="text"
-                    value={giftUcapan}
-                    onChange={(e) => setGiftUcapan(e.target.value)}
-                    placeholder="Tuliskan ucapan selamat..."
-                    className="w-full px-3.5 py-2 bg-[#140c07]/90 border border-[#d4af37]/45 focus:border-[#ffd778] text-[#FFF8D6] text-xs rounded-xl shadow-inner focus:outline-none placeholder:text-stone-500 font-serif"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-[#e6ca85] font-serif mb-1">Bukti Transfer (Opsional) :</label>
-                  <div className="flex items-center gap-2">
-                    <label className="px-3.5 py-1.5 rounded-lg bg-[#24170d] border border-[#d4af37]/60 text-[#ffd778] text-xs cursor-pointer hover:bg-[#d4af37] hover:text-stone-950 transition-colors shadow-sm font-serif">
-                      <span>Pilih File</span>
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={(e) => {
-                          if (e.target.files && e.target.files[0]) {
-                            setGiftProofFileName(e.target.files[0].name);
-                          }
-                        }}
-                      />
-                    </label>
-                    <span className="text-[10px] text-stone-300 truncate max-w-[150px] font-serif italic">
-                      {giftProofFileName || 'Tidak ada file dipilih'}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    className="w-full py-2.5 rounded-full border border-[#d4af37] bg-gradient-to-r from-[#d4af37] via-[#ecc460] to-[#d4af37] text-stone-950 font-serif font-bold text-xs tracking-[0.2em] uppercase shadow-[0_4px_16px_rgba(212,175,55,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
-                  >
-                    <MessageSquare size={13} />
-                    <span>KIRIM KONFIRMASI WA</span>
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </section>
-
-        {/* ==================================================== */}
-        {/* 12. RSVP & WISHES (Matching Screenshot 11)           */}
+        {/* 11. RSVP & WISHES (Matching Screenshot 11)           */}
         {/* ==================================================== */}
         <section id="rsvp" className="relative w-full min-h-[760px] py-16 px-4 flex flex-col items-center justify-center overflow-hidden bg-[#18191c] border-t border-amber-500/20 select-none">
           {/* Background Couple Studio Lighting */}
