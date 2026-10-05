@@ -2768,23 +2768,30 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           </div>
 
           {/* Vertical Timeline Container */}
-          <div className="relative z-20 max-w-md mx-auto pl-2 sm:pl-3 pr-1">
-            {/* Glowing Golden Timeline Vertical Track */}
-            <div className="absolute left-[19px] sm:left-[23px] top-6 bottom-8 w-[2px] bg-gradient-to-b from-[#ffd778] via-[#d4af37] to-[#8c671a]/30 shadow-[0_0_10px_rgba(212,175,55,0.5)]" />
-
+          <div className="relative z-20 max-w-md mx-auto pl-1 sm:pl-2 pr-1">
             {/* Story Milestone Items */}
-            <div className="space-y-8 sm:space-y-10">
+            <div className="space-y-8 sm:space-y-10 relative">
+              {/* Glowing Golden Timeline Vertical Track - Exactly aligned with node center */}
+              <div className="absolute left-[19px] sm:left-[21px] top-6 bottom-8 w-[2px] -translate-x-1/2 bg-gradient-to-b from-[#ffd778] via-[#d4af37] to-[#8c671a]/30 shadow-[0_0_10px_rgba(212,175,55,0.5)] pointer-events-none z-0" />
+
               {displayStories.map((story, idx) => (
                 <div key={idx} className="relative flex items-start group">
-                  {/* Timeline Golden Medallion Node */}
-                  <div className="relative z-20 mt-4 w-9 sm:w-10 h-9 sm:h-10 rounded-full bg-gradient-to-br from-[#ffd778] via-[#d4af37] to-[#8c671a] p-[1.5px] shadow-[0_0_16px_rgba(212,175,55,0.8)] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <div className="w-full h-full rounded-full bg-[#120a06] flex items-center justify-center border border-[#ffd778]/50">
-                      <Heart size={14} className="fill-[#ffd778] text-[#ffd778]" />
+                  {/* Timeline Golden Medallion Node Column: width 38px/42px -> Center is exactly at 19px/21px */}
+                  <div className="relative z-20 mt-4 w-[38px] sm:w-[42px] flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-b from-[#ffe699] via-[#d4af37] to-[#8c671a] p-[1.5px] shadow-[0_0_16px_rgba(212,175,55,0.85)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-full h-full rounded-full bg-[#120a06] flex items-center justify-center border border-[#ffd778]/60">
+                        <svg 
+                          viewBox="0 0 24 24" 
+                          className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ffd778] fill-[#ffd778] translate-y-[0.75px] filter drop-shadow-[0_0_4px_rgba(255,215,120,0.6)]"
+                        >
+                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
 
                   {/* Milestone Luxury Royal Card */}
-                  <div className="ml-4 sm:ml-6 flex-1 rounded-[22px] sm:rounded-[26px] bg-gradient-to-b from-[#1c120a]/94 via-[#120a06]/96 to-[#090503]/98 border-2 border-[#d4af37]/55 hover:border-[#ffd778] p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.92)] text-stone-100 backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_24px_rgba(212,175,55,0.4)]">
+                  <div className="ml-3 sm:ml-5 flex-1 rounded-[22px] sm:rounded-[26px] bg-gradient-to-b from-[#1c120a]/94 via-[#120a06]/96 to-[#090503]/98 border-2 border-[#d4af37]/55 hover:border-[#ffd778] p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.92)] text-stone-100 backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_24px_rgba(212,175,55,0.4)]">
                     {/* Inner Hairline */}
                     <div className="absolute inset-1.5 sm:inset-2 rounded-[16px] sm:rounded-[20px] border border-[#d4af37]/30 pointer-events-none z-10" />
 
