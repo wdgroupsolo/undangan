@@ -580,23 +580,23 @@ export const InvitationRenderer: React.FC = () => {
               </div>
 
               {/* UPPER SECTION: Mahkota Crown & Architectural Royal Arched Medallion Card */}
-              <div className="relative z-20 w-full flex flex-col items-center pt-2 sm:pt-3">
+              <div className="relative z-20 w-full flex flex-col items-center pt-1 sm:pt-2">
                 {/* Royal Keraton Crown */}
-                <div className="mb-1 pointer-events-none z-30" style={{ animation: 'royal-crown-float 4s ease-in-out infinite' }}>
+                <div className="mb-0.5 pointer-events-none z-30" style={{ animation: 'royal-crown-float 4s ease-in-out infinite' }}>
                   <img 
                     src="/themes/royal-crown-luxury.png" 
                     alt="Mahkota Keraton" 
-                    className="w-22 sm:w-26 h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.6)]" 
+                    className="w-18 sm:w-22 h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.6)]" 
                   />
                 </div>
 
                 {/* Arched Medallion Card Container */}
-                <div className="relative w-full max-w-[88%] sm:max-w-[85%] mx-auto rounded-t-[100px] sm:rounded-t-[120px] rounded-b-2xl bg-gradient-to-b from-[#1c120a]/94 via-[#120a06]/96 to-[#090604]/98 backdrop-blur-md border border-[#d4af37]/65 shadow-[0_16px_40px_rgba(0,0,0,0.9),_0_0_25px_rgba(212,175,55,0.18)] p-2.5 sm:p-3 flex flex-col items-center overflow-hidden">
+                <div className="relative w-full max-w-[86%] sm:max-w-[84%] mx-auto rounded-t-[90px] sm:rounded-t-[110px] rounded-b-2xl bg-gradient-to-b from-[#1c120a]/94 via-[#120a06]/96 to-[#090604]/98 backdrop-blur-md border border-[#d4af37]/65 shadow-[0_16px_40px_rgba(0,0,0,0.9),_0_0_25px_rgba(212,175,55,0.18)] p-2 sm:p-2.5 flex flex-col items-center overflow-hidden">
                   {/* Delicate Inset Gold Hairline Frame */}
-                  <div className="absolute inset-1.5 rounded-t-[92px] sm:rounded-t-[112px] rounded-b-xl border border-[#d4af37]/35 pointer-events-none z-20" />
+                  <div className="absolute inset-1.5 rounded-t-[84px] sm:rounded-t-[102px] rounded-b-xl border border-[#d4af37]/35 pointer-events-none z-20" />
 
                   {/* Arched Couple Photo Container */}
-                  <div className="w-full aspect-[4/3] rounded-t-[88px] sm:rounded-t-[108px] rounded-b-lg overflow-hidden border border-[#d4af37]/50 shadow-inner bg-black/50 relative z-10">
+                  <div className="w-full aspect-[16/11] rounded-t-[80px] sm:rounded-t-[98px] rounded-b-lg overflow-hidden border border-[#d4af37]/50 shadow-inner bg-black/50 relative z-10">
                     <img 
                       src={coverImage} 
                       alt={`${groomDisplayName} & ${brideDisplayName}`} 
@@ -608,7 +608,7 @@ export const InvitationRenderer: React.FC = () => {
 
                   {/* Subtitle: The Wedding Of */}
                   <p 
-                    className="text-[10px] sm:text-[11px] uppercase tracking-[0.32em] text-[#e6cfab] font-serif font-semibold mt-2.5 mb-1 drop-shadow-sm"
+                    className="text-[9.5px] sm:text-[10.5px] uppercase tracking-[0.3em] text-[#e6cfab] font-serif font-semibold mt-2 mb-0.5 drop-shadow-sm"
                     style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
                   >
                     THE WEDDING OF
@@ -616,16 +616,16 @@ export const InvitationRenderer: React.FC = () => {
 
                   {/* Couple Names in Opulent Gold Foil Gradient */}
                   <h1 
-                    className="text-xl sm:text-2xl font-serif tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] my-0.5"
+                    className="text-lg sm:text-xl font-serif tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] my-0.5"
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
                     {groomDisplayName} <span className="font-light italic text-[#ffd778] mx-0.5">&amp;</span> {brideDisplayName}
                   </h1>
 
                   {/* Royal Date Line */}
-                  <div className="flex items-center justify-center gap-2 mt-1 w-full max-w-[210px]">
+                  <div className="flex items-center justify-center gap-2 mt-0.5 w-full max-w-[200px]">
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-                    <span className="text-[10px] sm:text-[10.5px] tracking-[0.16em] text-[#f5dfa8]/90 font-serif font-medium whitespace-nowrap drop-shadow-sm">
+                    <span className="text-[9.5px] sm:text-[10px] tracking-[0.16em] text-[#f5dfa8]/90 font-serif font-medium whitespace-nowrap drop-shadow-sm">
                       {events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Sabtu, 28 November 2026'}
                     </span>
                     <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
@@ -634,48 +634,48 @@ export const InvitationRenderer: React.FC = () => {
               </div>
 
               {/* MIDDLE SECTION: Luxury Guest Invitation Placard (Kartu Tamu Terhormat) */}
-              <div className="relative z-20 w-full max-w-[85%] sm:max-w-[82%] mx-auto my-auto py-2.5 px-4 rounded-xl bg-gradient-to-b from-[#1c120a]/92 via-[#140c07]/95 to-[#0b0604]/96 border border-[#d4af37]/55 shadow-[0_10px_28px_rgba(0,0,0,0.9)] backdrop-blur-md relative overflow-hidden flex flex-col items-center">
+              <div className="relative z-20 w-full max-w-[84%] sm:max-w-[80%] mx-auto my-auto py-2 px-3.5 sm:py-2.5 sm:px-4 rounded-xl bg-gradient-to-b from-[#1c120a]/92 via-[#140c07]/95 to-[#0b0604]/96 border border-[#d4af37]/55 shadow-[0_10px_28px_rgba(0,0,0,0.9)] backdrop-blur-md relative overflow-hidden flex flex-col items-center">
                 {/* Inset Hairline Frame */}
                 <div className="absolute inset-1 rounded-lg border border-[#d4af37]/25 pointer-events-none" />
 
                 <p 
-                  className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.24em] text-[#dfca9e] font-serif font-semibold drop-shadow-sm"
+                  className="text-[9px] sm:text-[9.5px] uppercase tracking-[0.24em] text-[#dfca9e] font-serif font-semibold drop-shadow-sm"
                   style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
                 >
                   Kepada Yth. Bapak/Ibu/Saudara/i:
                 </p>
 
                 <p 
-                  className="text-base sm:text-lg font-serif font-bold text-white tracking-wide my-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] line-clamp-2"
+                  className="text-sm sm:text-base font-serif font-bold text-white tracking-wide my-0.5 sm:my-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] line-clamp-2"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
                   {guestName}
                 </p>
 
                 <p 
-                  className="text-[10px] sm:text-[11px] text-[#f5dfa8]/80 font-serif italic"
+                  className="text-[9.5px] sm:text-[10px] text-[#f5dfa8]/80 font-serif italic"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
                   Di Tempat
                 </p>
 
-                <p className="text-[8.5px] text-[#c9b58c]/60 font-serif italic mt-0.5">
+                <p className="text-[8px] sm:text-[8.5px] text-[#c9b58c]/60 font-serif italic mt-0.5">
                   *Mohon maaf apabila ada kesalahan penulisan nama/gelar
                 </p>
               </div>
 
               {/* BOTTOM SECTION: Real Luxury Wayang Guardians & Opulent Gold CTA Button */}
-              <div className="relative z-20 w-full flex flex-col items-center pb-2.5 sm:pb-3.5">
+              <div className="relative z-20 w-full flex flex-col items-center mt-2 sm:mt-3 pb-3.5 sm:pb-5">
                 
                 {/* Authentic Carved Prada Wayang Figures */}
-                <div className="absolute -bottom-1 sm:bottom-0 left-1 sm:left-2 w-16 sm:w-20 pointer-events-none z-20 drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)] opacity-95 transition-transform duration-500 hover:scale-105">
+                <div className="absolute -bottom-0.5 sm:bottom-0 left-0 sm:left-1 w-13 sm:w-16 pointer-events-none z-20 drop-shadow-[0_6px_18px_rgba(0,0,0,0.95)] opacity-95 transition-transform duration-500 hover:scale-105">
                   <img 
                     src="/themes/royal-kamajaya-luxury.png" 
                     alt="Raden Kamajaya" 
                     className="w-full h-auto object-contain" 
                   />
                 </div>
-                <div className="absolute -bottom-1 sm:bottom-0 right-1 sm:right-2 w-16 sm:w-20 pointer-events-none z-20 drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)] opacity-95 transition-transform duration-500 hover:scale-105">
+                <div className="absolute -bottom-0.5 sm:bottom-0 right-0 sm:right-1 w-13 sm:w-16 pointer-events-none z-20 drop-shadow-[0_6px_18px_rgba(0,0,0,0.95)] opacity-95 transition-transform duration-500 hover:scale-105">
                   <img 
                     src="/themes/royal-kamaratih-luxury.png" 
                     alt="Dewi Kamaratih" 
@@ -686,12 +686,12 @@ export const InvitationRenderer: React.FC = () => {
                 {/* Opulent Gold "Buka Undangan" Button */}
                 <button
                   onClick={handleOpen}
-                  className="group relative flex items-center justify-center gap-2 px-7 sm:px-8 py-2.5 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f7df8f] to-[#d4af37] text-stone-950 font-serif font-bold text-xs tracking-[0.24em] uppercase border border-[#fff4c2] shadow-[0_4px_22px_rgba(212,175,55,0.5)] hover:shadow-[0_6px_30px_rgba(212,175,55,0.75)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer z-30"
+                  className="group relative flex items-center justify-center gap-2 px-6 sm:px-7 py-2.5 rounded-full bg-gradient-to-r from-[#d4af37] via-[#f7df8f] to-[#d4af37] text-stone-950 font-serif font-bold text-xs tracking-[0.2em] uppercase border border-[#fff4c2] shadow-[0_4px_22px_rgba(212,175,55,0.5)] hover:shadow-[0_6px_30px_rgba(212,175,55,0.75)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer z-30"
                   style={{ animation: 'royal-pulse-btn 3s ease-in-out infinite' }}
                 >
-                  <Mail className="w-4 h-4 text-stone-950" />
+                  <Mail className="w-3.5 h-3.5 text-stone-950" />
                   <span 
-                    className="text-xs sm:text-[13px] font-serif font-bold text-stone-950 tracking-[0.24em] uppercase drop-shadow-sm"
+                    className="text-xs sm:text-[12.5px] font-serif font-bold text-stone-950 tracking-[0.2em] uppercase drop-shadow-sm"
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
                     Buka Undangan
