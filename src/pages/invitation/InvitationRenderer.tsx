@@ -307,10 +307,10 @@ export const InvitationRenderer: React.FC = () => {
       setCanSkipVideo(false);
       setOpeningStage('arch-video');
 
-      // Allow skip after 1.2s delay
+      // Allow skip after 1.5s delay
       setTimeout(() => {
         setCanSkipVideo(true);
-      }, 1200);
+      }, 1500);
 
       // Trigger video playback immediately
       setTimeout(() => {
@@ -329,7 +329,7 @@ export const InvitationRenderer: React.FC = () => {
           }
           return prev;
         });
-      }, 2300);
+      }, 5100);
       return;
     }
 
@@ -546,9 +546,9 @@ export const InvitationRenderer: React.FC = () => {
             <div 
               className="relative z-10 h-full max-h-[100dvh] aspect-[9/16] w-full max-w-[430px] flex flex-col justify-between items-center text-center overflow-hidden sm:rounded-[28px] sm:border-2 sm:border-[#d4af37]/60 sm:ring-1 sm:ring-[#ffe58f]/30 sm:shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_50px_rgba(212,175,55,0.25)] sm:my-auto sm:max-h-[96vh]"
             >
-              {/* Background: Carved Gold Royal Door with Circular Peephole Ring */}
+              {/* Background: Carved Gold Royal Door matching Video Starting Frame */}
               <img 
-                src="/themes/royal-door-portal.jpg" 
+                src="/themes/royal-wayang-portal-poster.jpg" 
                 alt="Royal Carved Door Portal" 
                 className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
               />
@@ -1260,7 +1260,7 @@ export const InvitationRenderer: React.FC = () => {
               muted
               className="w-full h-full object-cover object-center"
               onTimeUpdate={() => {
-                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 2.05) {
+                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 4.8) {
                   handleFinishAnimation();
                 } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
                   handleFinishAnimation();
