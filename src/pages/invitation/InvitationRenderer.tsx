@@ -249,13 +249,15 @@ export const InvitationRenderer: React.FC = () => {
     gallery?.[0]?.image_url || 
     (isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
-  const entranceVideoSrc = isJavaneseHeritage
-    ? '/themes/javanese-heritage-entrance.mp4'
-    : isSecretGarden
-      ? '/themes/secret-garden/assets/video.mp4'
-      : isMaroonGold
-        ? '/maroon-gate-entrance.mp4'
-        : '/video-cover.mp4';
+  const entranceVideoSrc = isRoyalWayang
+    ? '/themes/royal-wayang-portal-zoom.mp4'
+    : isJavaneseHeritage
+      ? '/themes/javanese-heritage-entrance.mp4'
+      : isSecretGarden
+        ? '/themes/secret-garden/assets/video.mp4'
+        : isMaroonGold
+          ? '/maroon-gate-entrance.mp4'
+          : '/video-cover.mp4';
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
@@ -301,13 +303,33 @@ export const InvitationRenderer: React.FC = () => {
     }
 
     if (isRoyalWayang) {
-      // Royal Gebyok Portal Zoom-In & Unveil Transition (matching GaleriUndangan style)
-      setIsCoverExiting(true);
+      // Authentic Royal Portal 3D Zoom entrance video animation matching user's reference
+      setCanSkipVideo(false);
+      setOpeningStage('arch-video');
+
+      // Allow skip after 1.2s delay
+      setTimeout(() => {
+        setCanSkipVideo(true);
+      }, 1200);
+
+      // Trigger video playback immediately
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.currentTime = 0;
+          videoRef.current.play().catch(err => console.warn('Video play error:', err));
+        }
+      }, 40);
+
+      // Fallback timeout in case onTimeUpdate doesn't fire
       if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
       animTimeoutRef.current = setTimeout(() => {
-        setOpeningStage('opened');
-        setIsCoverExiting(false);
-      }, 1600);
+        setOpeningStage((prev) => {
+          if (prev === 'arch-video') {
+            handleFinishAnimation();
+          }
+          return prev;
+        });
+      }, 2300);
       return;
     }
 
@@ -490,13 +512,12 @@ export const InvitationRenderer: React.FC = () => {
       </div>
 
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
-      {(openingStage === 'cover' || (isRoyalWayang && isCoverExiting)) && (
+      {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
+      {openingStage === 'cover' && (
         isRoyalWayang ? (
           /* Royal Wayang Gold Cover - Split Desktop Card (Right 42% on Desktop, 100% on Mobile) */
           <div 
-            className={`fixed top-0 right-0 h-full w-full lg:w-[42%] z-50 flex items-center justify-center overflow-hidden select-none shadow-[-15px_0_50px_rgba(0,0,0,0.85)] border-l border-amber-500/25 transition-all duration-700 ease-out ${
-              isCoverExiting ? 'pointer-events-none bg-transparent' : 'pointer-events-auto bg-[#0e0a08]'
-            }`}
+            className="fixed top-0 right-0 h-full w-full lg:w-[42%] z-50 flex items-center justify-center overflow-hidden select-none shadow-[-15px_0_50px_rgba(0,0,0,0.85)] border-l border-amber-500/25 bg-[#0e0a08]"
           >
             <style>{`
               @keyframes royal-pulse-btn {
@@ -509,13 +530,9 @@ export const InvitationRenderer: React.FC = () => {
                   box-shadow: 0 6px 30px rgba(212, 175, 55, 0.75);
                 }
               }
-              @keyframes royal-crown-float {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-4px); }
-              }
             `}</style>
 
-            {/* Ambient Background Behind Door (Shows the Joglo Pendopo at night through the expanding peephole) */}
+            {/* Ambient Background Behind Door */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
               <img 
                 src="/themes/royal-wayang-bg.jpg" 
@@ -525,27 +542,9 @@ export const InvitationRenderer: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60" />
             </div>
 
-            {/* Radiant Golden Light Burst during Peephole Zoom-In */}
-            <div 
-              className={`absolute inset-0 pointer-events-none z-30 flex items-center justify-center overflow-hidden transition-all duration-[1400ms] ease-out ${
-                isCoverExiting ? 'opacity-100 scale-150' : 'opacity-0 scale-50'
-              }`}
-            >
-              <div className="w-[500px] h-[500px] sm:w-[750px] sm:h-[750px] rounded-full bg-[radial-gradient(circle_at_center,rgba(255,240,180,0.95)_0%,rgba(212,175,55,0.55)_35%,rgba(107,75,3,0.15)_65%,transparent_75%)] blur-2xl" />
-            </div>
-
-            {/* FOREGROUND CARVED ROYAL GOLD DOOR CANVAS (Matches User's Reference Photo Frame 1 -> 2 -> 3) */}
+            {/* FOREGROUND CARVED ROYAL GOLD DOOR CANVAS (1:1 with Reference Frame 1) */}
             <div 
               className="relative z-10 h-full max-h-[100dvh] aspect-[9/16] w-full max-w-[430px] flex flex-col justify-between items-center text-center overflow-hidden sm:rounded-[28px] sm:border-2 sm:border-[#d4af37]/60 sm:ring-1 sm:ring-[#ffe58f]/30 sm:shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_50px_rgba(212,175,55,0.25)] sm:my-auto sm:max-h-[96vh]"
-              style={{
-                transformOrigin: '50% 55.5%',
-                transform: isCoverExiting ? 'scale(9.5) translateZ(0)' : 'scale(1) translateZ(0)',
-                opacity: isCoverExiting ? 0 : 1,
-                transition: isCoverExiting 
-                  ? 'transform 1.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.5s cubic-bezier(0.5, 0, 1, 1)' 
-                  : 'none',
-                willChange: 'transform, opacity',
-              }}
             >
               {/* Background: Carved Gold Royal Door with Circular Peephole Ring */}
               <img 
@@ -560,11 +559,7 @@ export const InvitationRenderer: React.FC = () => {
               </div>
 
               {/* UPPER SECTION: Guest Name & Buka Undangan Button (1:1 with User's Reference Frame 1) */}
-              <div 
-                className={`relative z-20 w-full flex flex-col items-center pt-8 sm:pt-11 px-5 transition-all duration-300 ease-out ${
-                  isCoverExiting ? 'opacity-0 scale-90 -translate-y-8 pointer-events-none' : 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
-                }`}
-              >
+              <div className="relative z-20 w-full flex flex-col items-center pt-8 sm:pt-11 px-5">
                 {/* Kepada Bapak/Ibu/Saudara/i */}
                 <p 
                   className="text-xs sm:text-[13px] text-[#e6cfab] font-serif tracking-[0.14em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)]"
@@ -594,7 +589,7 @@ export const InvitationRenderer: React.FC = () => {
                   <button
                     onClick={handleOpen}
                     className="group relative flex items-center justify-center gap-2 px-6 sm:px-7 py-2 rounded-full border border-[#d4af37]/80 bg-black/45 backdrop-blur-md hover:bg-black/65 text-white transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.6)] z-30"
-                    style={{ animation: isCoverExiting ? 'none' : 'royal-pulse-btn 3s ease-in-out infinite' }}
+                    style={{ animation: 'royal-pulse-btn 3s ease-in-out infinite' }}
                   >
                     <Mail className="w-3.5 h-3.5 text-[#f5dfa8]" />
                     <span 
@@ -1228,13 +1223,15 @@ export const InvitationRenderer: React.FC = () => {
             className="absolute inset-0 bg-cover bg-center pointer-events-none"
             style={{
               backgroundImage: `url(${
-                isJavaneseHeritage
-                  ? '/themes/javanese-heritage-bg.jpg'
-                  : isMaroonGold 
-                    ? '/gate-bg-open.jpg' 
-                    : isSecretGarden 
-                      ? '/themes/secret-garden/assets/inner-cover.jpg' 
-                      : '/arch-clean.png'
+                isRoyalWayang
+                  ? '/themes/royal-wayang-bg.jpg'
+                  : isJavaneseHeritage
+                    ? '/themes/javanese-heritage-bg.jpg'
+                    : isMaroonGold 
+                      ? '/gate-bg-open.jpg' 
+                      : isSecretGarden 
+                        ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                        : '/arch-clean.png'
               })`
             }}
           />
@@ -1248,20 +1245,24 @@ export const InvitationRenderer: React.FC = () => {
               ref={videoRef}
               src={entranceVideoSrc}
               poster={
-                isJavaneseHeritage
-                  ? '/themes/javanese-cover-poster.jpg'
-                  : isMaroonGold 
-                    ? '/gate-bg-open.jpg' 
-                    : isSecretGarden 
-                      ? '/themes/secret-garden/assets/inner-cover.jpg' 
-                      : '/arch-clean.png'
+                isRoyalWayang
+                  ? '/themes/royal-wayang-portal-poster.jpg'
+                  : isJavaneseHeritage
+                    ? '/themes/javanese-cover-poster.jpg'
+                    : isMaroonGold 
+                      ? '/gate-bg-open.jpg' 
+                      : isSecretGarden 
+                        ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                        : '/arch-clean.png'
               }
               autoPlay
               playsInline
               muted
               className="w-full h-full object-cover object-center"
               onTimeUpdate={() => {
-                if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
+                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 2.05) {
+                  handleFinishAnimation();
+                } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
                   handleFinishAnimation();
                 }
               }}
