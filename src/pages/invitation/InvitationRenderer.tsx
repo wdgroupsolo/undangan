@@ -307,10 +307,10 @@ export const InvitationRenderer: React.FC = () => {
       setCanSkipVideo(false);
       setOpeningStage('arch-video');
 
-      // Allow skip after 1.5s delay
+      // Allow skip after 1.2s delay
       setTimeout(() => {
         setCanSkipVideo(true);
-      }, 1500);
+      }, 1200);
 
       // Trigger video playback immediately
       setTimeout(() => {
@@ -329,7 +329,7 @@ export const InvitationRenderer: React.FC = () => {
           }
           return prev;
         });
-      }, 5100);
+      }, 3700);
       return;
     }
 
@@ -1260,7 +1260,7 @@ export const InvitationRenderer: React.FC = () => {
               muted
               className="w-full h-full object-cover object-center"
               onTimeUpdate={() => {
-                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 4.8) {
+                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
                   handleFinishAnimation();
                 } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
                   handleFinishAnimation();

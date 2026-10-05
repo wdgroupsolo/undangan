@@ -1287,16 +1287,16 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               to { opacity: 1; transform: translate(-50%, 0); }
             }
             @keyframes royal-scale-in {
-              from { opacity: 0; transform: scale(0.91); }
+              from { opacity: 0; transform: scale(0.95); }
               to { opacity: 1; transform: scale(1); }
             }
             @keyframes royal-wayang-in-left {
-              from { opacity: 0; transform: translate(-70px, 35px); }
-              to { opacity: 1; transform: translate(0, 0); }
+              from { opacity: 0; }
+              to { opacity: 1; }
             }
             @keyframes royal-wayang-in-right {
-              from { opacity: 0; transform: translate(70px, 35px); }
-              to { opacity: 1; transform: translate(0, 0); }
+              from { opacity: 0; }
+              to { opacity: 1; }
             }
             @keyframes royal-wayang-sway-left {
               0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -1308,7 +1308,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             }
             @keyframes royal-bg-breath {
               0%, 100% { transform: scale(1); }
-              50% { transform: scale(1.04); }
+              50% { transform: scale(1.02); }
             }
             @keyframes royal-glow-breathe {
               0%, 100% { box-shadow: 0 0 15px rgba(212,175,55,0.35), inset 0 0 10px rgba(212,175,55,0.2); transform: scale(1); }
@@ -1325,11 +1325,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             <img 
               src="/themes/royal-wayang-bg.jpg" 
               alt="Rumah Joglo Pendopo Royal Background" 
-              className="w-full h-full object-cover object-center filter brightness-[0.72] contrast-[1.05]"
-              style={{ animation: 'royal-bg-breath 18s ease-in-out infinite' }}
+              className="w-full h-full object-cover object-center filter brightness-[0.88] contrast-[1.02]"
             />
             {/* Ambient Radial Vignette */}
-            <div className="absolute inset-0 bg-radial from-transparent via-[#0a0705]/40 to-[#080503]/85" />
+            <div className="absolute inset-0 bg-radial from-transparent via-[#0a0705]/20 to-[#080503]/75" />
           </div>
 
           {/* 2. LAYER PARTICLES: Floating Golden Sparkles */}
@@ -1357,10 +1356,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             />
           </div>
 
-          {/* 5. LAYER MAIN BAROQUE FRAME & COUPLE PHOTO & NAMES (Animasi Scale-In Megah) */}
+          {/* 5. LAYER MAIN BAROQUE FRAME & COUPLE PHOTO & NAMES (Elegan In-Place Fade) */}
           <div 
             className="relative z-10 w-[84%] max-w-[340px] sm:max-w-[390px] aspect-[896/1200] max-h-[72vh] mx-auto flex flex-col items-center justify-center -translate-y-11 sm:-translate-y-14"
-            style={{ animation: 'royal-scale-in 1.3s cubic-bezier(0.16, 1, 0.3, 1) both' }}
+            style={{ animation: 'royal-fade-in 1.2s ease-out both' }}
           >
             {/* Foto Mempelai dalam Kubah Lengkung (HD Crystal Clear) */}
             <div 
@@ -1384,7 +1383,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             {/* Kotak Tipografi Mempelai di Bagian Bawah Bingkai */}
             <div 
               className="absolute bottom-[9%] left-[14%] right-[14%] py-2 sm:py-2.5 px-3 rounded-lg bg-gradient-to-b from-[#25180c]/95 via-[#180f05]/98 to-[#0b0703] border border-[#d4af37]/75 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30"
-              style={{ animation: 'royal-fade-in 1.7s ease-out both' }}
+              style={{ animation: 'royal-fade-in 1.4s ease-out both' }}
             >
               <h1 
                 className="font-serif text-base sm:text-lg font-bold tracking-[0.18em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] drop-shadow-sm"
@@ -1406,12 +1405,12 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
           </div>
 
-          {/* 6. LAYER WAYANG KAMAJAYA (Kiri Bawah: Animasi Meluncur & Mengayun Lembut) */}
+          {/* 6. LAYER WAYANG KAMAJAYA (Kiri Bawah: In-Place Fade Lembut) */}
           <div 
             className="absolute bottom-1 sm:bottom-2 -left-3 sm:left-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]"
-            style={{ animation: 'royal-wayang-in-left 1.4s cubic-bezier(0.16, 1, 0.3, 1) both' }}
+            style={{ animation: 'royal-fade-in 1.2s ease-out both' }}
           >
-            <div style={{ animation: 'royal-wayang-sway-left 6s ease-in-out infinite 1.4s' }}>
+            <div style={{ animation: 'royal-wayang-sway-left 6s ease-in-out infinite 1.2s' }}>
               <img 
                 src="/themes/royal-kamajaya-luxury.png" 
                 alt="Wayang Raden Kamajaya" 
@@ -1420,12 +1419,12 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
           </div>
 
-          {/* 7. LAYER WAYANG KAMARATIH (Kanan Bawah: Animasi Meluncur & Mengayun Lembut) */}
+          {/* 7. LAYER WAYANG KAMARATIH (Kanan Bawah: In-Place Fade Lembut) */}
           <div 
             className="absolute bottom-1 sm:bottom-2 -right-3 sm:right-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]"
-            style={{ animation: 'royal-wayang-in-right 1.4s cubic-bezier(0.16, 1, 0.3, 1) both' }}
+            style={{ animation: 'royal-fade-in 1.2s ease-out both' }}
           >
-            <div style={{ animation: 'royal-wayang-sway-right 6s ease-in-out infinite 1.4s' }}>
+            <div style={{ animation: 'royal-wayang-sway-right 6s ease-in-out infinite 1.2s' }}>
               <img 
                 src="/themes/royal-kamaratih-luxury.png" 
                 alt="Wayang Dewi Kamaratih" 
