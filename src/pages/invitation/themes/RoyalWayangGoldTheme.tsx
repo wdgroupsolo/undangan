@@ -10,7 +10,9 @@ import {
   ChevronRight, 
   Calendar as CalendarIcon, 
   Heart, 
-  Clock
+  Clock,
+  Send,
+  MessageCircle
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -897,11 +899,38 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
   // RSVP Form State
   const [rsvpName, setRsvpName] = useState('');
-  const [rsvpGuests, _setRsvpGuests] = useState('1');
+  const [rsvpGuests, setRsvpGuests] = useState('1');
   const [rsvpAttendance, setRsvpAttendance] = useState('hadir');
   const [rsvpMessage, setRsvpMessage] = useState('');
   const [rsvpSubmitting, setRsvpSubmitting] = useState(false);
   const [rsvpList, setRsvpList] = useState<any[]>([]);
+
+  // Curated dignified sample wishes when rsvpList is empty
+  const sampleWishes = [
+    {
+      id: 'sample-1',
+      name: 'Keluarga Besar Bpk. H. Bambang Soediro',
+      attending: true,
+      message: 'Nderek mangayubagyo awit keparengipun dhaup suci Steven & Bunga. Mugi tansah pinaringan berkah, sakinah mawaddah warahmah.',
+      created_at: '2026-10-24T14:20:00Z',
+    },
+    {
+      id: 'sample-2',
+      name: 'Anisa & Dimas Pratama',
+      attending: true,
+      message: 'Selamat berbahagia untuk Steven & Bunga! Semoga senantiasa rukun, saling melengkapi, dan cinta kasih mekar abadi hingga kakek nenek.',
+      created_at: '2026-10-24T16:45:00Z',
+    },
+    {
+      id: 'sample-3',
+      name: 'Raden Mas Haryo Wicaksono',
+      attending: false,
+      message: 'Selamat menempuh babak baru sahabatku. Mohon maaf belum bisa hadir langsung, doa terbaik senantiasa menyertai kalian berdua.',
+      created_at: '2026-10-25T08:10:00Z',
+    },
+  ];
+
+  const displayWishes = rsvpList.length > 0 ? rsvpList : sampleWishes;
 
   // Photobooth Modal State
   const [isPhotoboothOpen, setIsPhotoboothOpen] = useState(false);
@@ -2990,113 +3019,225 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         </section>
 
         {/* ==================================================== */}
-        {/* 11. RSVP & WISHES (Matching Screenshot 11)           */}
+        {/* 11. RSVP & WISHES (Royal Wayang Gold Masterpiece)    */}
         {/* ==================================================== */}
-        <section id="rsvp" className="relative w-full min-h-[760px] py-16 px-4 flex flex-col items-center justify-center overflow-hidden bg-[#18191c] border-t border-amber-500/20 select-none">
-          {/* Background Couple Studio Lighting */}
+        <section id="rsvp" className="relative w-full min-h-[780px] py-14 sm:py-16 px-4 flex flex-col items-center justify-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none">
+          {/* Background Joglo Pendopo Royal Night */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img 
-              src="/photos/photo-8.jpg" 
-              alt={`${groomName} & ${brideName}`}
-              className="w-full h-full object-cover object-center opacity-65 filter brightness-[0.75] blur-[1px]"
+              src="/themes/royal-wayang-bg.jpg" 
+              alt="Joglo Pendopo Royal Background" 
+              className="w-full h-full object-cover object-center filter brightness-[0.38] contrast-[1.08]"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#18191c]/70 via-black/40 to-[#18191c]/80" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0c0806] via-[#0c0806]/60 to-[#0c0806]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(212,175,55,0.12)_0%,_transparent_75%)]" />
           </div>
 
-          {/* Frosted Translucent Glass Card */}
-          <div className="relative z-20 w-full max-w-[325px] sm:max-w-[365px] bg-white/[0.10] backdrop-blur-md rounded-[32px] border border-white/30 shadow-[0_8px_32px_rgba(0,0,0,0.5)] p-6 sm:p-7 text-center">
-            {/* Header */}
-            <div className="space-y-2 mb-5">
-              <h2 className="font-cinzel text-xl sm:text-2xl font-bold text-white tracking-[0.15em] uppercase drop-shadow">
-                RSVP &amp; WISHES
-              </h2>
-              <p className="text-[12px] sm:text-[13px] text-stone-200/90 font-serif leading-relaxed max-w-[270px] mx-auto drop-shadow-sm">
-                Please share your sincere wishes and prayers here as we are very excited to start a new journey together.
-              </p>
+          <GoldenSparkleDust />
+
+          {/* Top Corner Floral Flourishes */}
+          <div className="absolute top-1 left-1 w-16 sm:w-20 pointer-events-none z-10 opacity-75 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
+            <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
+          </div>
+          <div className="absolute top-1 right-1 w-16 sm:w-20 pointer-events-none z-10 opacity-75 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
+            <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
+          </div>
+
+          {/* Symmetrical Flanking Wayang Figures */}
+          <div className="absolute bottom-2 left-2 sm:left-4 z-10 pointer-events-none opacity-35 hover:opacity-70 transition-opacity drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+            <img src="/themes/royal-kamajaya-luxury.png" alt="Raden Kamajaya" className="w-16 sm:w-22 h-auto object-contain" />
+          </div>
+          <div className="absolute bottom-2 right-2 sm:right-4 z-10 pointer-events-none opacity-35 hover:opacity-70 transition-opacity drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+            <img src="/themes/royal-kamaratih-luxury.png" alt="Dewi Kamaratih" className="w-16 sm:w-22 h-auto object-contain -scale-x-100" />
+          </div>
+
+          {/* Arched Capsule Card */}
+          <div className="relative z-20 w-full max-w-[340px] sm:max-w-[400px] rounded-t-[160px] sm:rounded-t-[180px] rounded-b-[36px] sm:rounded-b-[40px] bg-gradient-to-b from-[#1c120a]/96 via-[#130b07]/98 to-[#0a0604] border-2 border-[#d4af37]/65 shadow-[0_24px_60px_rgba(0,0,0,0.95)] flex flex-col items-center text-center px-5 sm:px-6 pt-16 pb-7 overflow-hidden backdrop-blur-md">
+            {/* Top Carved Crest */}
+            <div className="absolute -top-1 left-1/2 -translate-x-1/2 pointer-events-none z-30">
+              <RoyalCapsuleCrestTop className="w-32 sm:w-36 h-10 text-amber-400 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" />
             </div>
 
-            {/* Form */}
-            <form onSubmit={handleRsvpSubmit} className="space-y-3.5 text-left">
-              <div>
-                <label className="flex items-center justify-between text-xs sm:text-[13px] font-medium text-white mb-1.5 font-serif">
-                  <span>Nama Lengkap <span className="text-red-400 font-bold">*</span></span>
-                  <span className="text-[10px] text-white/50 font-sans">({rsvpName.length}/100)</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  maxLength={100}
-                  value={rsvpName}
-                  onChange={(e) => setRsvpName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#e6e6e8] text-stone-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 shadow-inner"
-                />
-              </div>
+            {/* Inner Hairline Frame */}
+            <div className="absolute inset-2 sm:inset-2.5 rounded-t-[150px] sm:rounded-t-[170px] rounded-b-[30px] sm:rounded-b-[34px] border border-[#d4af37]/30 pointer-events-none z-10" />
 
-              <div>
-                <label className="block text-xs sm:text-[13px] font-medium text-white mb-1.5 font-serif">
-                  Status Kehadiran <span className="text-red-400 font-bold">*</span>
-                </label>
-                <div className="relative w-full">
-                  <select
-                    value={rsvpAttendance}
-                    onChange={(e) => setRsvpAttendance(e.target.value)}
-                    className="w-full appearance-none px-3.5 py-2.5 rounded-xl bg-[#e6e6e8] text-stone-800 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 shadow-inner pr-10 cursor-pointer"
-                  >
-                    <option value="" disabled>Pilih status kehadiran</option>
-                    <option value="hadir">Hadir</option>
-                    <option value="tidak">Tidak Hadir</option>
-                    <option value="ragu">Ragu-ragu</option>
-                  </select>
-                  <ChevronDown size={17} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-600 pointer-events-none" />
+            {/* Content Layer */}
+            <div className="relative z-20 flex flex-col items-center w-full my-auto space-y-4">
+              {/* Header */}
+              <div className="flex flex-col items-center">
+                <div className="flex items-center justify-center gap-2 mb-1.5">
+                  <div className="w-8 sm:w-12 h-px bg-gradient-to-r from-transparent via-[#d4af37]/70 to-[#d4af37]" />
+                  <span className="text-[#ffd778] text-[9px] filter drop-shadow-[0_0_8px_rgba(212,175,55,0.9)]">✦ ❖ ✦</span>
+                  <div className="w-8 sm:w-12 h-px bg-gradient-to-l from-transparent via-[#d4af37]/70 to-[#d4af37]" />
                 </div>
+
+                <span className="text-[9.5px] font-serif tracking-[0.3em] text-[#e6ca85] uppercase block font-semibold drop-shadow-sm mb-0.5">
+                  KONFIRMASI KEHADIRAN
+                </span>
+
+                <h2 className="text-2xl sm:text-3xl text-center">
+                  <span 
+                    className="font-serif italic text-2xl sm:text-3xl text-[#FFF4D0] drop-shadow-md"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    RSVP &amp;
+                  </span>{' '}
+                  <span className="font-serif font-bold tracking-[0.16em] uppercase text-2xl sm:text-3xl bg-gradient-to-r from-[#FFF8D6] via-[#ECC460] to-[#FFEAA0] bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(212,175,55,0.45)]">
+                    Wishes
+                  </span>
+                </h2>
+
+                <p className="text-[12px] sm:text-[12.5px] text-[#e3dac8]/85 font-serif leading-relaxed max-w-[280px] mx-auto pt-1 italic">
+                  Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu.
+                </p>
               </div>
 
-              <div>
-                <label className="flex items-center justify-between text-xs sm:text-[13px] font-medium text-white mb-1.5 font-serif">
-                  <span>Ucapan/Pesan</span>
-                  <span className="text-[10px] text-white/50 font-sans">({rsvpMessage.length}/500)</span>
-                </label>
-                <textarea
-                  rows={3}
-                  maxLength={500}
-                  value={rsvpMessage}
-                  onChange={(e) => setRsvpMessage(e.target.value)}
-                  placeholder="Tulis ucapan atau pesan Anda..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#e6e6e8] text-stone-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 shadow-inner resize-none placeholder-stone-500/80"
-                />
-              </div>
+              {/* Form */}
+              <form onSubmit={handleRsvpSubmit} className="w-full space-y-3.5 text-left">
+                {/* Nama Lengkap */}
+                <div>
+                  <label className="flex items-center justify-between text-xs font-serif text-[#f5ecd8] mb-1.5 font-medium">
+                    <span className="flex items-center gap-1">
+                      <span>Nama Lengkap</span>
+                      <span className="text-amber-400 font-bold">*</span>
+                    </span>
+                    <span className="text-[10px] text-[#d4af37]/75 font-sans">({rsvpName.length}/100)</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={100}
+                    value={rsvpName}
+                    onChange={(e) => setRsvpName(e.target.value)}
+                    placeholder="Contoh: Bpk. Bambang & Keluarga"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#140c07]/90 border border-[#d4af37]/45 text-[#FFF8D6] text-xs sm:text-sm placeholder-[#bda37d]/50 focus:outline-none focus:border-[#ffd778] focus:ring-1 focus:ring-[#ffd778]/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] transition-all"
+                  />
+                </div>
 
-              {/* Kirim Button (Centered Compact Black Box as in Screenshot) */}
-              <div className="flex justify-center pt-2">
-                <button
-                  type="submit"
-                  disabled={rsvpSubmitting}
-                  className="px-9 py-2 bg-black hover:bg-neutral-900 active:scale-95 text-white font-serif uppercase tracking-widest text-xs font-semibold rounded-sm transition-all cursor-pointer shadow-md disabled:opacity-50"
-                >
-                  {rsvpSubmitting ? 'Mengirim...' : 'Kirim'}
-                </button>
-              </div>
-            </form>
+                {/* Status Kehadiran */}
+                <div>
+                  <label className="block text-xs font-serif text-[#f5ecd8] mb-1.5 font-medium">
+                    Status Kehadiran <span className="text-amber-400 font-bold">*</span>
+                  </label>
+                  <div className="relative w-full">
+                    <select
+                      value={rsvpAttendance}
+                      onChange={(e) => setRsvpAttendance(e.target.value)}
+                      className="w-full appearance-none px-3.5 py-2.5 rounded-xl bg-[#140c07]/90 border border-[#d4af37]/45 text-[#FFF8D6] text-xs sm:text-sm focus:outline-none focus:border-[#ffd778] focus:ring-1 focus:ring-[#ffd778]/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] pr-10 cursor-pointer transition-all"
+                    >
+                      <option value="hadir" className="bg-[#18110b] text-[#FFF8D6]">Hadir</option>
+                      <option value="tidak" className="bg-[#18110b] text-[#FFF8D6]">Berhalangan Hadir</option>
+                      <option value="ragu" className="bg-[#18110b] text-[#FFF8D6]">Masih Ragu-ragu</option>
+                    </select>
+                    <ChevronDown size={16} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#ecc460] pointer-events-none" />
+                  </div>
+                </div>
 
-            {/* Pagination / Count Number (Centered "1" as in Screenshot) */}
-            <div className="pt-3 text-center text-xs text-white/80 font-sans font-medium">
-              <span>{rsvpList.length > 0 ? rsvpList.length : 1}</span>
-            </div>
-
-            {/* Wishes Feed */}
-            {rsvpList.length > 0 && (
-              <div className="space-y-2 max-h-48 overflow-y-auto pr-1 text-left pt-3 mt-3 border-t border-white/15">
-                {rsvpList.map((item, idx) => (
-                  <div key={item.id || idx} className="p-2.5 rounded-xl bg-black/40 border border-white/10 text-xs space-y-0.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-amber-200">{item.name}</span>
-                      <span className="text-[9px] text-stone-400">{item.attending ? 'Hadir' : 'Tidak Hadir'}</span>
+                {/* Jumlah Tamu (Conditional when Hadir) */}
+                {rsvpAttendance === 'hadir' && (
+                  <div>
+                    <label className="block text-xs font-serif text-[#f5ecd8] mb-1.5 font-medium">
+                      Jumlah Kehadiran
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {['1', '2', '3'].map((count) => (
+                        <button
+                          type="button"
+                          key={count}
+                          onClick={() => setRsvpGuests(count)}
+                          className={`py-1.5 px-3 rounded-xl text-xs font-serif font-medium transition-all border ${
+                            rsvpGuests === count
+                              ? 'bg-gradient-to-r from-[#d4af37]/35 via-[#ffd778]/25 to-[#d4af37]/35 border-[#ffd778] text-[#FFF8D6] shadow-[0_0_10px_rgba(212,175,55,0.3)]'
+                              : 'bg-[#140c07]/60 border-[#d4af37]/30 text-stone-300 hover:border-[#d4af37]/60'
+                          }`}
+                        >
+                          {count} Orang
+                        </button>
+                      ))}
                     </div>
-                    <p className="text-stone-300 font-serif text-[11px] leading-relaxed">{item.message}</p>
+                  </div>
+                )}
+
+                {/* Ucapan/Pesan */}
+                <div>
+                  <label className="flex items-center justify-between text-xs font-serif text-[#f5ecd8] mb-1.5 font-medium">
+                    <span>Ucapan &amp; Doa Restu</span>
+                    <span className="text-[10px] text-[#d4af37]/75 font-sans">({rsvpMessage.length}/500)</span>
+                  </label>
+                  <textarea
+                    rows={3}
+                    maxLength={500}
+                    value={rsvpMessage}
+                    onChange={(e) => setRsvpMessage(e.target.value)}
+                    placeholder="Tuliskan ucapan selamat & doa restu Anda..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#140c07]/90 border border-[#d4af37]/45 text-[#FFF8D6] text-xs sm:text-sm placeholder-[#bda37d]/50 focus:outline-none focus:border-[#ffd778] focus:ring-1 focus:ring-[#ffd778]/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] resize-none transition-all leading-relaxed"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <div className="flex justify-center pt-2">
+                  <button
+                    type="submit"
+                    disabled={rsvpSubmitting}
+                    className="relative group overflow-hidden px-8 py-2.5 rounded-full bg-gradient-to-r from-[#b38728] via-[#fbf5b7] to-[#aa771c] hover:brightness-110 active:scale-95 text-[#1b1207] font-serif font-bold uppercase tracking-[0.22em] text-xs shadow-[0_4px_20px_rgba(212,175,55,0.4)] transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    <span className="absolute inset-0 w-full h-full bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out pointer-events-none" />
+                    {rsvpSubmitting ? (
+                      <span>Mengirim Doa...</span>
+                    ) : (
+                      <>
+                        <span>Kirim Konfirmasi</span>
+                        <Send size={13} className="text-[#1b1207]" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+
+              {/* Wishes Feed (Doa & Ucapan) */}
+              <div className="w-full pt-4 mt-1 border-t border-[#d4af37]/25 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <MessageCircle size={14} className="text-[#ecc460]" />
+                  <span className="text-[11px] font-serif font-semibold tracking-wider text-[#ecc460] uppercase">
+                    Doa &amp; Ucapan
+                  </span>
+                </div>
+                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/35 text-[#ffeaa0] font-sans font-medium">
+                  {displayWishes.length} Ucapan
+                </span>
+              </div>
+
+              {/* Wishes Feed List */}
+              <div className="w-full space-y-2.5 max-h-56 overflow-y-auto pr-1 text-left">
+                {displayWishes.map((item, idx) => (
+                  <div 
+                    key={item.id || idx} 
+                    className="p-3 rounded-xl bg-[#140c07]/90 border border-[#d4af37]/30 text-xs space-y-1.5 shadow-sm hover:border-[#d4af37]/50 transition-colors"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-serif font-bold text-[#FFF4D0] truncate text-[12px] sm:text-[12.5px]">
+                        {item.name}
+                      </span>
+                      <span className={`text-[9.5px] px-2 py-0.5 rounded-full font-serif font-medium whitespace-nowrap ${
+                        item.attending 
+                          ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/40' 
+                          : 'bg-amber-950/70 text-amber-300 border border-amber-500/40'
+                      }`}>
+                        {item.attending ? '✓ Hadir' : 'Berhalangan'}
+                      </span>
+                    </div>
+                    <p className="text-[#e2dacb]/90 font-serif italic text-[11.5px] leading-relaxed break-words">
+                      &ldquo;{item.message}&rdquo;
+                    </p>
+                    {item.created_at && (
+                      <p className="text-[9px] text-[#d4af37]/60 font-sans text-right pt-0.5">
+                        {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
-            )}
+            </div>
           </div>
         </section>
 
