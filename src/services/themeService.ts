@@ -17,6 +17,9 @@ export interface Theme {
 }
 
 export const THEME_SCREENSHOT_MAP: Record<string, string> = {
+  'royal-wayang-gold': '/themes/royal-wayang-theme-preview.png',
+  'royal-wayang': '/themes/royal-wayang-theme-preview.png',
+  'joglo-wayang': '/themes/royal-wayang-theme-preview.png',
   'javanese-heritage': '/themes/javanese-heritage-theme-preview.png',
   'jawa-klasik': '/themes/javanese-heritage-theme-preview.png',
   'borobudur': '/themes/javanese-heritage-theme-preview.png',
@@ -36,6 +39,29 @@ export const enhanceThemeWithScreenshot = (theme: any): Theme => {
     };
   }
   return theme as Theme;
+};
+
+// New Masterpiece Theme: Royal Wayang Gold (Keraton Jawa & Pendopo Joglo)
+export const REAL_ROYAL_WAYANG_THEME: Theme = {
+  id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
+  name: 'Royal Wayang Gold',
+  slug: 'royal-wayang-gold',
+  description: 'Tema pernikahan agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, diperkaya siluet wayang Kamajaya & Kamaratih berlapis emas, ornamen floral klasik, serta alunan sakral khas Nusantara.',
+  category: 'Traditional & Heritage',
+  preview_image: '/themes/royal-wayang-theme-preview.png',
+  thumbnail: '/themes/royal-wayang-theme-preview.png',
+  status: 'active',
+  badge: 'Tema Keraton Baru',
+  rating: '5.0',
+  features: ['cover', 'couple', 'countdown', 'events', 'gallery', 'story', 'rsvp', 'guestbook', 'gift', 'music'],
+  theme_config: { 
+    primaryColor: '#d4af37', 
+    secondaryColor: '#1c150c', 
+    style: 'royal-wayang',
+    backgroundImage: '/themes/royal-wayang-bg.jpg',
+    desktopBackground: '/themes/royal-wayang-bg.jpg'
+  },
+  created_at: '2026-10-02T22:00:00.000000+00:00'
 };
 
 // New Masterpiece Theme: Javanese Heritage (Borobudur & Nusantara Royal Floral)
@@ -134,6 +160,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
 };
 
 export const DEFAULT_THEMES: Theme[] = [
+  REAL_ROYAL_WAYANG_THEME,
   REAL_JAVANESE_HERITAGE_THEME,
   REAL_MAROON_GOLD_THEME,
   REAL_SECRET_GARDEN_THEME,
@@ -153,9 +180,38 @@ export const themeService = {
         return DEFAULT_THEMES;
       }
 
-      // Merge database themes with Secret Garden and Maroon Gold if not yet in database
+      // Merge database themes with Royal Wayang, Secret Garden, Maroon Gold, and Javanese Heritage
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
+
+      if (!existingSlugs.has('royal-wayang-gold')) {
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_ROYAL_WAYANG_THEME.id,
+              name: REAL_ROYAL_WAYANG_THEME.name,
+              slug: REAL_ROYAL_WAYANG_THEME.slug,
+              description: REAL_ROYAL_WAYANG_THEME.description,
+              category: REAL_ROYAL_WAYANG_THEME.category,
+              preview_image: REAL_ROYAL_WAYANG_THEME.preview_image,
+              thumbnail: REAL_ROYAL_WAYANG_THEME.thumbnail,
+              status: 'active',
+              features: REAL_ROYAL_WAYANG_THEME.features,
+              theme_config: REAL_ROYAL_WAYANG_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_ROYAL_WAYANG_THEME);
+          }
+        } catch {
+          merged.push(REAL_ROYAL_WAYANG_THEME);
+        }
+      }
 
       if (!existingSlugs.has('secret-garden')) {
         try {
@@ -266,6 +322,35 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
+      if (!existingSlugs.has('royal-wayang-gold')) {
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_ROYAL_WAYANG_THEME.id,
+              name: REAL_ROYAL_WAYANG_THEME.name,
+              slug: REAL_ROYAL_WAYANG_THEME.slug,
+              description: REAL_ROYAL_WAYANG_THEME.description,
+              category: REAL_ROYAL_WAYANG_THEME.category,
+              preview_image: REAL_ROYAL_WAYANG_THEME.preview_image,
+              thumbnail: REAL_ROYAL_WAYANG_THEME.thumbnail,
+              status: 'active',
+              features: REAL_ROYAL_WAYANG_THEME.features,
+              theme_config: REAL_ROYAL_WAYANG_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_ROYAL_WAYANG_THEME);
+          }
+        } catch {
+          merged.push(REAL_ROYAL_WAYANG_THEME);
+        }
+      }
+
       if (!existingSlugs.has('javanese-heritage')) {
         try {
           const { data: inserted, error: insertErr } = await supabase
@@ -360,6 +445,9 @@ export const themeService = {
   },
 
   async getTheme(id: string): Promise<Theme> {
+    if (id === REAL_ROYAL_WAYANG_THEME.id || id === 'royal-wayang-gold' || id === 'royal-wayang' || id === 'joglo-wayang') {
+      return REAL_ROYAL_WAYANG_THEME;
+    }
     if (id === REAL_JAVANESE_HERITAGE_THEME.id || id === 'javanese-heritage' || id === 'jawa-klasik' || id === 'borobudur') {
       return REAL_JAVANESE_HERITAGE_THEME;
     }
@@ -384,10 +472,13 @@ export const themeService = {
       }
     } catch {}
 
-    return REAL_JAVANESE_HERITAGE_THEME;
+    return REAL_ROYAL_WAYANG_THEME;
   },
 
   async getThemeBySlug(slug: string): Promise<Theme> {
+    if (slug === 'royal-wayang-gold' || slug === 'royal-wayang' || slug === 'joglo-wayang') {
+      return REAL_ROYAL_WAYANG_THEME;
+    }
     if (slug === 'javanese-heritage' || slug === 'jawa-klasik' || slug === 'borobudur') {
       return REAL_JAVANESE_HERITAGE_THEME;
     }

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Mail, Disc, Sparkles, MailOpen, Crown } from 'lucide-react';
+import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
 import { editorService } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
@@ -12,6 +12,17 @@ import { SecretGardenTheme } from './themes/SecretGardenTheme';
 import { RoyalEleganceTheme } from './themes/RoyalEleganceTheme';
 import { MaroonGoldTheme, CardCornerFlourish, GoldSparkles, WaxSealBadge } from './themes/MaroonGoldTheme';
 import { JavaneseHeritageTheme, JavaneseMonogram, JavanesePetals, RoyalGoldCorner, FloatingGoldenDust } from './themes/JavaneseHeritageTheme';
+import { 
+  RoyalWayangGoldTheme, 
+  RoyalWayangCrown, 
+  RoyalWayangKamajaya, 
+  RoyalWayangKamaratih, 
+  RoyalGoldenBorderFloral, 
+  GoldenSparkleDust,
+  RoyalGoldenArchTassel,
+  FlyingBirdsSilhouettes,
+  RoyalTopCornerFloral
+} from './themes/RoyalWayangGoldTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 
 export const InvitationRenderer: React.FC = () => {
@@ -26,6 +37,7 @@ export const InvitationRenderer: React.FC = () => {
   const isDirectOpened = searchParams.get('opened') === 'true';
   const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'opened'>(isDirectOpened ? 'opened' : 'cover');
   const [isVideoExiting, setIsVideoExiting] = useState(false);
+  const [isCoverExiting, setIsCoverExiting] = useState(false);
   const [canSkipVideo, setCanSkipVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -47,10 +59,19 @@ export const InvitationRenderer: React.FC = () => {
   const { data: gifts } = useQuery({ queryKey: ['gifts', invId], queryFn: () => editorService.getGifts(invId!), enabled: !!invId });
   const { data: music } = useQuery({ queryKey: ['music', invId], queryFn: () => editorService.getMusic(invId!), enabled: !!invId });
 
-  const activeThemeSlug = requestedTheme || (slug === 'habib-adiba' || slug === 'steven-bunga' ? 'javanese-heritage' : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'split-floral'));
+  const activeThemeSlug = requestedTheme || (
+    (slug === 'benny-indah' || slug === 'steven-bunga')
+      ? 'royal-wayang-gold' 
+      : (slug === 'habib-adiba' 
+        ? 'javanese-heritage' 
+        : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold'))
+  );
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
     switch (themeSlug) {
+      case 'royal-wayang-gold':
+      case 'royal-wayang':
+      case 'joglo-wayang':
       case 'javanese-heritage':
       case 'jawa-klasik':
       case 'borobudur':
@@ -202,20 +223,22 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
+  const isRoyalWayang = activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || slug === 'steven-bunga';
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage;
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang;
 
-  const groomDisplayName = isJavaneseHeritage ? (groom && groom !== 'Bagas' && groom !== 'Habib' ? groom : 'Steven') : (isSecretGarden && (groom === 'Steven' || groom === 'Bagas') ? 'Jessi' : groom);
-  const brideDisplayName = isJavaneseHeritage ? (bride && bride !== 'Siti' && bride !== 'Adiba' ? bride : 'Bunga') : (isSecretGarden && (bride === 'Bunga' || bride === 'Siti') ? 'Maudy' : bride);
+  const groomDisplayName = groom || 'Steven';
+  const brideDisplayName = bride || 'Bunga';
 
   const coverImage = 
     couple?.cover_photo_url || 
+    couple?.cover_photo ||
     invitation?.cover_image_url || 
     gallery?.[0]?.image_url || 
-    (isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
+    (isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isJavaneseHeritage
     ? '/themes/javanese-heritage-entrance.mp4'
@@ -266,6 +289,16 @@ export const InvitationRenderer: React.FC = () => {
             window.addEventListener('touchstart', unlockAudio, { once: true });
           });
       }
+    }
+
+    if (isRoyalWayang) {
+      // Royal Wayang transitions seamlessly into the inner royal theme
+      setIsCoverExiting(true);
+      setTimeout(() => {
+        setOpeningStage('opened');
+        setIsCoverExiting(false);
+      }, 600);
+      return;
     }
 
     // Reset skip guard so initial button click/tap cannot dismiss the video prematurely
@@ -319,28 +352,50 @@ export const InvitationRenderer: React.FC = () => {
         }}
       />
 
-      {/* Vinyl Disc Music Control Button (Stop & Start Audio, Responsive on Mobile & Desktop) */}
-      {(openingStage !== 'cover' || (isJavaneseHeritage && isPlaying)) && (
+      {/* Audio Control Button (Top-Right pause icon for Royal Wayang matching screenshot 2, Vinyl Disc for others) */}
+      {(openingStage !== 'cover' || ((isJavaneseHeritage || isRoyalWayang) && isPlaying)) && (
         <button
           onClick={toggleMusic}
           aria-label="Toggle Background Music"
-          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
+          className={`fixed z-50 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 cursor-pointer ${
+            isRoyalWayang 
+              ? 'top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 bg-white/20 hover:bg-white/35 backdrop-blur-md border border-white/50 text-white hover:scale-110 active:scale-95'
+              : 'bottom-6 right-6 w-12 h-12 bg-black/70 backdrop-blur-md border border-white/20 text-white hover:scale-110 active:scale-95'
+          }`}
         >
-          <Disc 
-            className={`w-6 h-6 text-white group-hover:text-primary-300 transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
-            style={{ animationDuration: '4s' }}
-          />
+          {isRoyalWayang ? (
+            isPlaying ? (
+              <Pause className="w-3.5 h-3.5 text-white fill-white" />
+            ) : (
+              <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5" />
+            )
+          ) : (
+            <Disc 
+              className={`w-6 h-6 text-white group-hover:text-primary-300 transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
+              style={{ animationDuration: '4s' }}
+            />
+          )}
         </button>
       )}
 
       {/* Main Invitation Content */}
       <div className={`transition-opacity duration-1000 ${
-        isInvitationVisible 
+        isInvitationVisible || isCoverExiting
           ? 'opacity-100' 
           : (isSplitTheme && openingStage === 'arch-video' ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden')
       }`}>
-        {(isInvitationVisible || openingStage === 'arch-video') && (
-          isJavaneseHeritage ? (
+        {(isInvitationVisible || isCoverExiting || openingStage === 'arch-video') && (
+          isRoyalWayang ? (
+            <RoyalWayangGoldTheme 
+              invitation={invitation}
+              couple={couple}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+            />
+          ) : isJavaneseHeritage ? (
             <JavaneseHeritageTheme 
               invitation={invitation}
               couple={couple}
@@ -425,8 +480,128 @@ export const InvitationRenderer: React.FC = () => {
       </div>
 
       {/* 1. Initial Front Cover: Fullscreen Cinematic (Desktop & Mobile) with [Buka Undangan] Button */}
-      {openingStage === 'cover' && (
-        isJavaneseHeritage ? (
+      {(openingStage === 'cover' || (isRoyalWayang && isCoverExiting)) && (
+        isRoyalWayang ? (
+          /* Royal Wayang Gold Cover - 1:1 match to reference screenshot media_1790960384758.png */
+          <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0a0705] transition-all duration-700 ease-out ${
+            isCoverExiting ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
+          }`}>
+            <style>{`
+              @keyframes royal-pulse-btn {
+                0%, 100% {
+                  transform: scale(1);
+                  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
+                }
+                50% {
+                  transform: scale(1.03);
+                  box-shadow: 0 0 26px rgba(212, 175, 55, 0.75);
+                }
+              }
+            `}</style>
+
+            {/* Ambient Background on Wide Screens */}
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-30 blur-2xl scale-110">
+              <img 
+                src="/themes/royal-wayang-bg.jpg" 
+                alt="Joglo Ambience" 
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+
+            {/* Centered 9:16 Portrait Invitation Canvas */}
+            <div className="relative z-10 h-full max-h-[100dvh] aspect-[9/16] max-w-full flex flex-col justify-between items-center text-center px-4 py-5 overflow-hidden shadow-2xl">
+              
+              {/* Background Artwork - Perfect matching Screenshot 1 */}
+              <img 
+                src="/themes/royal-wayang-bg.jpg" 
+                alt="Pendopo Joglo Malam" 
+                className="absolute inset-0 w-full h-full object-cover object-top z-0 pointer-events-none"
+              />
+
+              {/* Top Spacer so Floating Card sits below the Mahkota Crown */}
+              <div className="relative z-10 h-[10%] w-full pointer-events-none" />
+
+              {/* UPPER SECTION: Translucent Dark Glassmorphism Card with Real Couple Photo & Names */}
+              <div className="relative z-20 w-full max-w-[88%] mx-auto rounded-2xl bg-[#120e0b]/75 backdrop-blur-md border border-[#d4af37]/45 shadow-[0_12px_36px_rgba(0,0,0,0.85),0_0_20px_rgba(212,175,55,0.2)] p-3 sm:p-3.5 flex flex-col items-center">
+                {/* Couple Photo Container with Delicate Gold Frame */}
+                <div className="w-full aspect-[16/10] rounded-xl overflow-hidden border border-[#d4af37]/60 shadow-[0_4px_16px_rgba(0,0,0,0.6)] bg-black/40 relative">
+                  <img 
+                    src={coverImage} 
+                    alt={`${groomDisplayName} & ${brideDisplayName}`} 
+                    className="w-full h-full object-cover object-center"
+                  />
+                  <div className="absolute inset-0 ring-1 ring-inset ring-white/15 rounded-xl pointer-events-none" />
+                </div>
+
+                {/* Subtitle: The Wedding Of */}
+                <p 
+                  className="text-xs sm:text-sm text-[#e6cfab] tracking-[0.15em] font-serif mt-2.5 mb-0.5 drop-shadow-sm"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  The Wedding Of
+                </p>
+
+                {/* Main Heading: Steven & Bunga */}
+                <h1 
+                  className="text-xl sm:text-2xl text-[#fff8ee] font-serif font-bold tracking-[0.04em] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {groomDisplayName} <span className="font-light italic text-[#e6cfab]">&amp;</span> {brideDisplayName}
+                </h1>
+              </div>
+
+              {/* MIDDLE SECTION: Guest Recipient Plaque against Joglo Background */}
+              <div className="relative z-20 flex flex-col items-center my-auto py-2 text-center w-full max-w-[85%]">
+                <p 
+                  className="text-xs sm:text-[13px] text-[#e8d5b8] font-serif tracking-[0.12em] drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Kepada Bapak/Ibu/Saudara/i
+                </p>
+
+                <p 
+                  className="text-base sm:text-lg font-serif font-bold text-white tracking-wide my-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {guestName}
+                </p>
+
+                <p 
+                  className="text-xs sm:text-[13px] text-[#e8d5b8] font-serif tracking-[0.12em] drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Di Tempat
+                </p>
+              </div>
+
+              {/* BOTTOM SECTION: Buka Undangan Button */}
+              <div className="relative z-20 w-full flex flex-col items-center pb-3 sm:pb-4">
+                <button
+                  onClick={handleOpen}
+                  className="group relative flex items-center justify-center gap-2 px-7 sm:px-8 py-2.5 rounded-full bg-[#161009]/85 backdrop-blur-md border border-[#d4af37] text-white transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                  style={{ animation: 'royal-pulse-btn 3s ease-in-out infinite' }}
+                >
+                  <Mail className="w-4 h-4 text-[#ffe28a]" />
+                  <span 
+                    className="text-xs sm:text-sm font-serif font-medium text-[#fffdfa] tracking-wider drop-shadow-sm"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    Buka Undangan
+                  </span>
+                </button>
+              </div>
+
+              {/* Symmetrical Bottom Wayang Figures on Cover */}
+              <div className="absolute bottom-1 left-2 w-20 sm:w-24 h-auto pointer-events-none z-20 drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
+                <RoyalWayangKamajaya className="w-full h-auto" />
+              </div>
+              <div className="absolute bottom-1 right-2 w-20 sm:w-24 h-auto pointer-events-none z-20 drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
+                <RoyalWayangKamaratih className="w-full h-auto" />
+              </div>
+
+            </div>
+          </div>
+        ) : isJavaneseHeritage ? (
           /* Javanese Heritage Cover matching media_1790532676505.png */
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#24090d]">
             {/* Inline Keyframes for Cover */}
