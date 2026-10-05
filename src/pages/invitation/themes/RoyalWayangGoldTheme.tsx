@@ -3328,20 +3328,65 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         {/* ==================================================== */}
         {/* 13. CLOSING (TERIMA KASIH)                           */}
         {/* ==================================================== */}
-        <section id="closing" className="relative w-full h-[100dvh] min-h-[640px] flex flex-col justify-between items-center text-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none pb-6">
+        <section id="closing" className="relative w-full min-h-[100dvh] py-8 sm:py-10 px-4 flex flex-col justify-between items-center text-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none pb-6">
           {/* Background Joglo Pendopo with Radial Vignette */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img 
               src="/themes/royal-wayang-bg.jpg" 
               alt="Royal Joglo Pendopo Closing" 
-              className="w-full h-full object-cover object-center filter brightness-[0.65] contrast-[1.05]"
+              className="w-full h-full object-cover object-center filter brightness-[0.60] contrast-[1.05]"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0c0806]/80 via-transparent to-[#0c0806]/90" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0c0806]/85 via-transparent to-[#0c0806]/90" />
             <div className="absolute inset-0 bg-radial from-transparent via-[#0a0705]/40 to-[#080503]/85" />
           </div>
 
+          <GoldenSparkleDust />
+
+          {/* Top Corner Floral Flourishes */}
+          <div className="absolute top-1 left-1 w-16 sm:w-20 pointer-events-none z-10 opacity-75 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
+            <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
+          </div>
+          <div className="absolute top-1 right-1 w-16 sm:w-20 pointer-events-none z-10 opacity-75 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
+            <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
+          </div>
+
+          {/* Top Header Above Baroque Frame (Agak besar, rapi, premium, keren) */}
+          <div className="relative z-20 pt-2 sm:pt-4 px-2 flex flex-col items-center text-center max-w-[340px] sm:max-w-[380px] mx-auto space-y-1 mb-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#d4af37]/20 via-[#ffd778]/30 to-[#d4af37]/20 border border-[#ffd778]/50 shadow-[0_2px_12px_rgba(0,0,0,0.6)] mb-1">
+              <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+              <span className="text-[10px] font-serif tracking-[0.3em] text-[#FFF6D8] uppercase font-bold drop-shadow-sm">
+                UNGKAPAN TERIMA KASIH
+              </span>
+              <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl font-serif text-center tracking-wide leading-tight">
+              <span 
+                className="italic text-3xl sm:text-4xl text-[#FFF7DC] drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Matur
+              </span>{' '}
+              <span className="font-cinzel font-extrabold tracking-[0.18em] uppercase text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF2] via-[#FCE38A] via-[#ECC460] to-[#C99126] drop-shadow-[0_4px_18px_rgba(212,175,55,0.6)]">
+                Nuwun
+              </span>
+            </h2>
+
+            <div className="flex items-center justify-center gap-2.5 my-1.5 w-full max-w-[200px] mx-auto">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#ffd778]/80 to-[#d4af37]" />
+              <div className="w-1.5 h-1.5 rotate-45 bg-[#ffd778] shadow-[0_0_8px_#ffd778]" />
+              <span className="text-[#ffd778] text-[11px] filter drop-shadow-[0_0_6px_rgba(255,215,120,0.8)]">❖</span>
+              <div className="w-1.5 h-1.5 rotate-45 bg-[#ffd778] shadow-[0_0_8px_#ffd778]" />
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#ffd778]/80 to-[#d4af37]" />
+            </div>
+
+            <p className="text-[12px] sm:text-[13px] text-[#efe5d5]/95 font-serif italic text-center leading-relaxed drop-shadow-sm">
+              &ldquo;Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran serta doa restu Bapak/Ibu/Saudara/i sekalian.&rdquo;
+            </p>
+          </div>
+
           {/* Center 3D Baroque Frame with Couple Photo */}
-          <div className="relative z-10 w-[78%] max-w-[310px] sm:max-w-[340px] aspect-[896/1200] max-h-[58vh] mx-auto flex flex-col items-center justify-center my-auto">
+          <div className="relative z-10 w-[78%] max-w-[310px] sm:max-w-[340px] aspect-[896/1200] max-h-[52vh] sm:max-h-[55vh] mx-auto flex flex-col items-center justify-center my-auto">
             {/* Foto Mempelai dalam Kubah Lengkung */}
             <div className="absolute top-[22%] left-[17%] right-[17%] bottom-[14%] rounded-t-[90px] overflow-hidden z-10 bg-[#160f09] shadow-inner">
               <img 
@@ -3359,12 +3404,12 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             />
 
             {/* Plaque Terima Kasih & Nama Mempelai */}
-            <div className="absolute bottom-[8%] left-[12%] right-[12%] py-2 sm:py-2.5 px-3 rounded-lg bg-gradient-to-b from-[#25180c]/95 via-[#180f05]/98 to-[#0b0703] border border-[#d4af37]/75 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30">
+            <div className="absolute bottom-[8%] left-[10%] right-[10%] py-2 sm:py-2.5 px-3 rounded-lg bg-gradient-to-b from-[#25180c]/95 via-[#180f05]/98 to-[#0b0703] border border-[#d4af37]/75 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30">
               <p 
                 className="font-serif italic text-xs sm:text-sm text-[#F3DEB0] mb-0.5 drop-shadow-sm"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
               >
-                Matur Nuwun
+                Kami yang Berbahagia
               </p>
               <h3 
                 className="font-serif text-sm sm:text-base font-bold tracking-[0.18em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] drop-shadow-sm"
@@ -3395,7 +3440,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           </div>
 
           {/* Bottom Watermark / Copyright */}
-          <div className="relative z-20 text-[9px] text-stone-400/60 font-mono tracking-widest uppercase">
+          <div className="relative z-20 text-[9px] text-stone-400/60 font-mono tracking-widest uppercase mt-3">
             WD Group &bull; Royal Wayang Gold Edition
           </div>
         </section>
