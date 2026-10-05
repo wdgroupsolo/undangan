@@ -26,11 +26,15 @@ export const InvitationRenderer: React.FC = () => {
 
   // Opening sequence states:
   // 'cover'      -> Initial front cover (split on desktop, fullscreen on mobile) with [Buka Undangan] button
-  // 'arch-video' -> Entrance video animation (on desktop: right 40% only; on mobile: fullscreen)
+  // 'royal-gate' -> 3D Royal Keraton Palace Gate transition (for Royal Wayang theme)
+  // 'arch-video' -> Entrance video animation (for Javanese Heritage, Maroon Gold, etc.)
+  // 'opened'     -> Full interactive wedding invitation
   const isDirectOpened = searchParams.get('opened') === 'true';
-  const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'opened'>(isDirectOpened ? 'opened' : 'cover');
+  const [openingStage, setOpeningStage] = useState<'cover' | 'arch-video' | 'royal-gate' | 'opened'>(isDirectOpened ? 'opened' : 'cover');
   const [isVideoExiting, setIsVideoExiting] = useState(false);
   const [isCoverExiting, setIsCoverExiting] = useState(false);
+  const [isRoyalGateOpen, setIsRoyalGateOpen] = useState(false);
+  const [isRoyalGateExiting, setIsRoyalGateExiting] = useState(false);
   const [canSkipVideo, setCanSkipVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -255,6 +259,21 @@ export const InvitationRenderer: React.FC = () => {
     }, 700);
   };
 
+  // Finish 3D Royal Keraton Gate animation smoothly
+  const handleFinishRoyalGate = () => {
+    if (animTimeoutRef.current) {
+      clearTimeout(animTimeoutRef.current);
+      animTimeoutRef.current = null;
+    }
+    setIsRoyalGateExiting(true);
+    setTimeout(() => {
+      setOpeningStage('opened');
+      setIsRoyalGateExiting(false);
+      setIsRoyalGateOpen(false);
+      setCanSkipVideo(false);
+    }, 500);
+  };
+
   // Handle clicking "Buka Undangan": starts audio and triggers entrance animation sequence
   const handleOpen = (e?: React.MouseEvent) => {
     if (e) {
@@ -285,12 +304,35 @@ export const InvitationRenderer: React.FC = () => {
     }
 
     if (isRoyalWayang) {
-      // Royal Wayang transitions seamlessly into the inner royal theme
-      setIsCoverExiting(true);
+      // Magnificent 3D Royal Keraton Palace Gate transition (Kori Ageng Keraton Emas)
+      setOpeningStage('royal-gate');
+      setIsRoyalGateOpen(false);
+      setIsRoyalGateExiting(false);
+      setCanSkipVideo(false);
+
+      // Trigger 3D door swing on the next animation frames
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          setIsRoyalGateOpen(true);
+        }, 100);
+      });
+
+      // Enable skip after 650ms to prevent accidental immediate dismiss
       setTimeout(() => {
-        setOpeningStage('opened');
-        setIsCoverExiting(false);
-      }, 600);
+        setCanSkipVideo(true);
+      }, 650);
+
+      // Seamlessly crossfade into opened state after royal gates finish opening
+      if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
+      animTimeoutRef.current = setTimeout(() => {
+        setIsRoyalGateExiting(true);
+        setTimeout(() => {
+          setOpeningStage('opened');
+          setIsRoyalGateExiting(false);
+          setIsRoyalGateOpen(false);
+          setCanSkipVideo(false);
+        }, 650);
+      }, 2350);
       return;
     }
 
@@ -324,7 +366,7 @@ export const InvitationRenderer: React.FC = () => {
     }, timeoutDuration);
   };
 
-  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting);
+  const isInvitationVisible = openingStage === 'opened' || (openingStage === 'arch-video' && isVideoExiting) || openingStage === 'royal-gate';
 
   return (
     <div className="relative min-h-screen no-scrollbar overflow-x-clip">
@@ -1248,6 +1290,232 @@ export const InvitationRenderer: React.FC = () => {
             </div>
           </div>
         )
+      )}
+
+      {/* 2. Entrance Animation: 3D Royal Keraton Palace Gate (Kori Ageng Keraton Emas) */}
+      {openingStage === 'royal-gate' && (
+        <div 
+          onClick={() => {
+            if (canSkipVideo) handleFinishRoyalGate();
+          }}
+          className={`fixed inset-0 z-50 overflow-hidden select-none bg-[#090503] flex items-center justify-center transition-opacity duration-700 ease-out ${
+            isRoyalGateExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+          } ${canSkipVideo ? 'cursor-pointer' : ''}`}
+          style={{ perspective: '1400px' }}
+        >
+          {/* Ambient Royal Gold Dust & Light Rays behind the gates */}
+          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center">
+            {/* Center Golden Light Burst that radiates when gates part */}
+            <div 
+              className={`w-[700px] h-[700px] rounded-full transition-all duration-1000 ease-out bg-[radial-gradient(circle_at_center,rgba(255,232,148,0.85)_0%,rgba(212,175,55,0.45)_35%,rgba(107,75,3,0.15)_65%,transparent_75%)] ${
+                isRoyalGateOpen ? 'scale-150 opacity-100' : 'scale-50 opacity-0'
+              }`}
+            />
+            {/* Vertical Golden Column of Divine Light */}
+            <div 
+              className={`absolute inset-y-0 w-36 bg-gradient-to-r from-transparent via-[#ffe894]/35 to-transparent transition-all duration-1000 ease-out ${
+                isRoyalGateOpen ? 'scale-x-150 opacity-100' : 'scale-x-0 opacity-0'
+              }`}
+            />
+            {/* Floating Golden Dust Particles */}
+            <GoldenSparkleDust />
+          </div>
+
+          {/* 3D Gate Wrapper */}
+          <div 
+            className="relative w-full h-full flex items-center justify-center overflow-hidden"
+            style={{ perspective: '1400px', transformStyle: 'preserve-3d' }}
+          >
+            {/* LEFT DOOR LEAF (Pintu Kori Ageng Kiri - Raden Kamajaya) */}
+            <div 
+              className="absolute left-0 top-0 bottom-0 w-1/2 h-full z-10 flex flex-col justify-between items-end overflow-hidden border-r border-[#d4af37]/70 shadow-[15px_0_60px_rgba(0,0,0,0.95)]"
+              style={{
+                transformOrigin: 'left center',
+                transform: isRoyalGateOpen ? 'rotateY(-92deg)' : 'rotateY(0deg)',
+                transition: 'transform 1.9s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 1.9s ease',
+                background: 'linear-gradient(135deg, #120a06 0%, #20130b 35%, #180e08 70%, #0d0704 100%)',
+                backfaceVisibility: 'hidden',
+              }}
+            >
+              {/* Authentic Carved Teak Wood Texture Overlay */}
+              <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#d4af37_0.75px,transparent_0.75px)] [background-size:16px_16px]" />
+              
+              {/* Outer Gilded Inset Border */}
+              <div className="absolute inset-3 sm:inset-5 border-2 border-[#d4af37]/40 rounded-l-sm pointer-events-none">
+                <div className="absolute inset-1.5 border border-[#f3da9f]/20" />
+              </div>
+
+              {/* Top Corner Filigree */}
+              <img 
+                src="/themes/royal-floral-corner-luxury.png" 
+                alt="Ukiran Sudut Kiri" 
+                className="absolute top-4 left-4 w-14 sm:w-24 h-auto opacity-75 pointer-events-none drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
+              />
+
+              {/* Bottom Corner Filigree */}
+              <img 
+                src="/themes/royal-floral-corner-luxury.png" 
+                alt="Ukiran Sudut Bawah Kiri" 
+                className="absolute bottom-4 left-4 w-14 sm:w-24 h-auto opacity-75 pointer-events-none -scale-y-100 drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
+              />
+
+              {/* Center Arch Frame & Raden Kamajaya Gold Relief */}
+              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-2 sm:px-4 py-8">
+                {/* Carved Arch Molding */}
+                <div className="relative flex flex-col items-center justify-center p-2.5 sm:p-4 rounded-t-full border border-[#d4af37]/35 bg-gradient-to-b from-[#2a1a10]/60 via-[#180e08]/40 to-transparent shadow-[inset_0_4px_16px_rgba(0,0,0,0.8)] max-w-[170px] xs:max-w-[200px] sm:max-w-[250px] w-full">
+                  <div className="w-9 sm:w-14 h-auto mb-1.5 opacity-85">
+                    <img 
+                      src="/themes/royal-crown-luxury.png" 
+                      alt="Mahkota" 
+                      className="w-full h-auto drop-shadow-[0_2px_10px_rgba(212,175,55,0.6)]"
+                    />
+                  </div>
+                  {/* Raden Kamajaya Figure */}
+                  <img 
+                    src="/themes/royal-kamajaya-luxury.png" 
+                    alt="Raden Kamajaya" 
+                    className="w-20 xs:w-24 sm:w-36 md:w-44 h-auto object-contain filter drop-shadow-[0_8px_25px_rgba(212,175,55,0.55)] transition-transform duration-700"
+                  />
+                  <span 
+                    className="mt-2 text-[9px] sm:text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#f3da9f] drop-shadow-md text-center"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    KAMAJAYA
+                  </span>
+                </div>
+              </div>
+
+              {/* Antique Royal Brass Gate Ring Handle (Right edge of left door) */}
+              <div className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center pointer-events-none">
+                {/* Gilded Escutcheon Plate */}
+                <div className="w-8 h-12 sm:w-11 sm:h-18 rounded-full bg-gradient-to-b from-[#d4af37] via-[#9e7631] to-[#543c17] p-[1.5px] shadow-[0_4px_16px_rgba(0,0,0,0.8)] flex items-center justify-center">
+                  <div className="w-full h-full rounded-full bg-gradient-to-b from-[#25180f] to-[#120b07] flex flex-col items-center justify-center relative">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#f3da9f] shadow-[0_0_6px_#ffd778]" />
+                    {/* Brass Ring */}
+                    <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-full border-[2px] sm:border-[2.5px] border-[#d4af37] shadow-[0_4px_10px_rgba(0,0,0,0.9),inset_0_1px_2px_rgba(255,255,255,0.5)] mt-1 bg-gradient-to-br from-[#d4af37]/30 to-transparent" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT DOOR LEAF (Pintu Kori Ageng Kanan - Dewi Kamaratih) */}
+            <div 
+              className="absolute right-0 top-0 bottom-0 w-1/2 h-full z-10 flex flex-col justify-between items-start overflow-hidden border-l border-[#d4af37]/70 shadow-[-15px_0_60px_rgba(0,0,0,0.95)]"
+              style={{
+                transformOrigin: 'right center',
+                transform: isRoyalGateOpen ? 'rotateY(92deg)' : 'rotateY(0deg)',
+                transition: 'transform 1.9s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 1.9s ease',
+                background: 'linear-gradient(225deg, #120a06 0%, #20130b 35%, #180e08 70%, #0d0704 100%)',
+                backfaceVisibility: 'hidden',
+              }}
+            >
+              {/* Authentic Carved Teak Wood Texture Overlay */}
+              <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#d4af37_0.75px,transparent_0.75px)] [background-size:16px_16px]" />
+              
+              {/* Outer Gilded Inset Border */}
+              <div className="absolute inset-3 sm:inset-5 border-2 border-[#d4af37]/40 rounded-r-sm pointer-events-none">
+                <div className="absolute inset-1.5 border border-[#f3da9f]/20" />
+              </div>
+
+              {/* Top Corner Filigree */}
+              <img 
+                src="/themes/royal-floral-corner-luxury.png" 
+                alt="Ukiran Sudut Kanan" 
+                className="absolute top-4 right-4 w-14 sm:w-24 h-auto opacity-75 pointer-events-none -scale-x-100 drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
+              />
+
+              {/* Bottom Corner Filigree */}
+              <img 
+                src="/themes/royal-floral-corner-luxury.png" 
+                alt="Ukiran Sudut Bawah Kanan" 
+                className="absolute bottom-4 right-4 w-14 sm:w-24 h-auto opacity-75 pointer-events-none -scale-x-100 -scale-y-100 drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
+              />
+
+              {/* Center Arch Frame & Dewi Kamaratih Gold Relief */}
+              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-2 sm:px-4 py-8">
+                {/* Carved Arch Molding */}
+                <div className="relative flex flex-col items-center justify-center p-2.5 sm:p-4 rounded-t-full border border-[#d4af37]/35 bg-gradient-to-b from-[#2a1a10]/60 via-[#180e08]/40 to-transparent shadow-[inset_0_4px_16px_rgba(0,0,0,0.8)] max-w-[170px] xs:max-w-[200px] sm:max-w-[250px] w-full">
+                  <div className="w-9 sm:w-14 h-auto mb-1.5 opacity-85">
+                    <img 
+                      src="/themes/royal-crown-luxury.png" 
+                      alt="Mahkota" 
+                      className="w-full h-auto drop-shadow-[0_2px_10px_rgba(212,175,55,0.6)]"
+                    />
+                  </div>
+                  {/* Dewi Kamaratih Figure */}
+                  <img 
+                    src="/themes/royal-kamaratih-luxury.png" 
+                    alt="Dewi Kamaratih" 
+                    className="w-20 xs:w-24 sm:w-36 md:w-44 h-auto object-contain filter drop-shadow-[0_8px_25px_rgba(212,175,55,0.55)] transition-transform duration-700 -scale-x-100"
+                  />
+                  <span 
+                    className="mt-2 text-[9px] sm:text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#f3da9f] drop-shadow-md text-center"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    KAMARATIH
+                  </span>
+                </div>
+              </div>
+
+              {/* Antique Royal Brass Gate Ring Handle (Left edge of right door) */}
+              <div className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center pointer-events-none">
+                {/* Gilded Escutcheon Plate */}
+                <div className="w-8 h-12 sm:w-11 sm:h-18 rounded-full bg-gradient-to-b from-[#d4af37] via-[#9e7631] to-[#543c17] p-[1.5px] shadow-[0_4px_16px_rgba(0,0,0,0.8)] flex items-center justify-center">
+                  <div className="w-full h-full rounded-full bg-gradient-to-b from-[#25180f] to-[#120b07] flex flex-col items-center justify-center relative">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#f3da9f] shadow-[0_0_6px_#ffd778]" />
+                    {/* Brass Ring */}
+                    <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-full border-[2px] sm:border-[2.5px] border-[#d4af37] shadow-[0_4px_10px_rgba(0,0,0,0.9),inset_0_1px_2px_rgba(255,255,255,0.5)] mt-1 bg-gradient-to-br from-[#d4af37]/30 to-transparent" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CENTRAL ROYAL SEAL MEDALLION (Segel Keraton Emas "PAWIWAHAN") */}
+            {/* Sits right over the seam, glows, scales up, and dissolves as doors unlatch */}
+            <div 
+              className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none transition-all duration-700 ease-out flex flex-col items-center justify-center ${
+                isRoyalGateOpen ? 'scale-125 opacity-0 filter blur-[4px]' : 'scale-100 opacity-100'
+              }`}
+            >
+              {/* Outer Golden Aura Shockwave */}
+              <div className="absolute -inset-4 rounded-full bg-[#d4af37]/25 blur-xl animate-pulse" />
+
+              {/* 24K Royal Gold Medallion */}
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full p-1 bg-gradient-to-br from-[#ffe58f] via-[#d4af37] to-[#8a6305] shadow-[0_10px_40px_rgba(0,0,0,0.95),_0_0_30px_rgba(212,175,55,0.6)] flex items-center justify-center border-2 border-[#fff3b8]">
+                <div className="w-full h-full rounded-full bg-gradient-to-b from-[#2d1b10] via-[#1a0f08] to-[#100905] flex flex-col items-center justify-center p-2 border border-[#f3da9f]/50">
+                  <Crown className="w-5 h-5 sm:w-7 sm:h-7 text-[#f3da9f] drop-shadow-[0_2px_8px_rgba(212,175,55,0.8)]" />
+                  <span 
+                    className="text-xs sm:text-sm font-serif font-bold text-white tracking-widest mt-0.5"
+                    style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
+                  >
+                    {`${groom[0] || 'S'}${bride[0] || 'B'}`.toUpperCase()}
+                  </span>
+                  <span 
+                    className="text-[8px] sm:text-[9px] font-serif uppercase tracking-[0.2em] text-[#d4af37] mt-0.5 font-bold"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    PAWIWAHAN
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Skip Button Hint */}
+          <div 
+            onClick={(e) => {
+              if (canSkipVideo) {
+                e.stopPropagation();
+                handleFinishRoyalGate();
+              }
+            }}
+            className={`absolute bottom-6 right-6 z-40 px-4 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-[#d4af37]/40 text-[#f3da9f] text-[11px] font-serif tracking-widest uppercase transition-opacity duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.8)] ${
+              canSkipVideo ? 'opacity-100 cursor-pointer hover:bg-black/80 hover:border-[#d4af37]' : 'opacity-40 pointer-events-none'
+            }`}
+          >
+            Lewati →
+          </div>
+        </div>
       )}
 
       {/* 2. Entrance Animation: Gate Entrance Video */}
