@@ -1278,26 +1278,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         {/* ==================================================== */}
         <header className="relative w-full h-[100dvh] min-h-[600px] flex items-center justify-center overflow-hidden select-none bg-[#0a0705]">
           <style>{`
-            @keyframes royal-fade-in {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            @keyframes royal-slide-down {
-              from { opacity: 0; transform: translate(-50%, -35px); }
-              to { opacity: 1; transform: translate(-50%, 0); }
-            }
-            @keyframes royal-scale-in {
-              from { opacity: 0; transform: scale(0.95); }
-              to { opacity: 1; transform: scale(1); }
-            }
-            @keyframes royal-wayang-in-left {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            @keyframes royal-wayang-in-right {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
             @keyframes royal-wayang-sway-left {
               0%, 100% { transform: translateY(0) rotate(0deg); }
               50% { transform: translateY(-5px) rotate(-1.4deg); }
@@ -1305,10 +1285,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             @keyframes royal-wayang-sway-right {
               0%, 100% { transform: translateY(0) rotate(0deg); }
               50% { transform: translateY(-5px) rotate(1.4deg); }
-            }
-            @keyframes royal-bg-breath {
-              0%, 100% { transform: scale(1); }
-              50% { transform: scale(1.02); }
             }
             @keyframes royal-glow-breathe {
               0%, 100% { box-shadow: 0 0 15px rgba(212,175,55,0.35), inset 0 0 10px rgba(212,175,55,0.2); transform: scale(1); }
@@ -1335,20 +1311,14 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           <GoldenSparkleDust />
 
           {/* 3. LAYER TOP FLORAL CORNERS (Luxury Bronze-Gold Peonies & Filigree Leaves) */}
-          <div 
-            className="absolute -top-1 -left-1 z-20 pointer-events-none"
-            style={{ animation: 'royal-fade-in 1.4s ease-out both' }}
-          >
+          <div className="absolute -top-1 -left-1 z-20 pointer-events-none">
             <img 
               src="/themes/royal-floral-corner-luxury.png" 
               alt="Floral Ornamen Kiri" 
               className="w-24 sm:w-36 h-24 sm:h-36 object-contain filter drop-shadow-[0_6px_16px_rgba(0,0,0,0.85)]" 
             />
           </div>
-          <div 
-            className="absolute -top-1 -right-1 z-20 pointer-events-none"
-            style={{ animation: 'royal-fade-in 1.4s ease-out both' }}
-          >
+          <div className="absolute -top-1 -right-1 z-20 pointer-events-none">
             <img 
               src="/themes/royal-floral-corner-luxury.png" 
               alt="Floral Ornamen Kanan" 
@@ -1356,16 +1326,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             />
           </div>
 
-          {/* 5. LAYER MAIN BAROQUE FRAME & COUPLE PHOTO & NAMES (Elegan In-Place Fade) */}
-          <div 
-            className="relative z-10 w-[84%] max-w-[340px] sm:max-w-[390px] aspect-[896/1200] max-h-[72vh] mx-auto flex flex-col items-center justify-center -translate-y-11 sm:-translate-y-14"
-            style={{ animation: 'royal-fade-in 1.2s ease-out both' }}
-          >
+          {/* 5. LAYER MAIN BAROQUE FRAME & COUPLE PHOTO & NAMES */}
+          <div className="relative z-10 w-[84%] max-w-[340px] sm:max-w-[390px] aspect-[896/1200] max-h-[72vh] mx-auto flex flex-col items-center justify-center -translate-y-11 sm:-translate-y-14">
             {/* Foto Mempelai dalam Kubah Lengkung (HD Crystal Clear) */}
-            <div 
-              className="absolute top-[22%] left-[17%] right-[17%] bottom-[14%] rounded-t-[100px] overflow-hidden z-10 bg-[#160f09] shadow-inner"
-              style={{ animation: 'royal-fade-in 1.4s ease-out both' }}
-            >
+            <div className="absolute top-[22%] left-[17%] right-[17%] bottom-[14%] rounded-t-[100px] overflow-hidden z-10 bg-[#160f09] shadow-inner">
               <img 
                 src={couplePhoto} 
                 alt={`${groomName} & ${brideName}`} 
@@ -1381,10 +1345,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             />
 
             {/* Kotak Tipografi Mempelai di Bagian Bawah Bingkai */}
-            <div 
-              className="absolute bottom-[9%] left-[14%] right-[14%] py-2 sm:py-2.5 px-3 rounded-lg bg-gradient-to-b from-[#25180c]/95 via-[#180f05]/98 to-[#0b0703] border border-[#d4af37]/75 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30"
-              style={{ animation: 'royal-fade-in 1.4s ease-out both' }}
-            >
+            <div className="absolute bottom-[9%] left-[14%] right-[14%] py-2 sm:py-2.5 px-3 rounded-lg bg-gradient-to-b from-[#25180c]/95 via-[#180f05]/98 to-[#0b0703] border border-[#d4af37]/75 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30">
               <h1 
                 className="font-serif text-base sm:text-lg font-bold tracking-[0.18em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] drop-shadow-sm"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
@@ -1405,12 +1366,9 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
           </div>
 
-          {/* 6. LAYER WAYANG KAMAJAYA (Kiri Bawah: In-Place Fade Lembut) */}
-          <div 
-            className="absolute bottom-1 sm:bottom-2 -left-3 sm:left-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]"
-            style={{ animation: 'royal-fade-in 1.2s ease-out both' }}
-          >
-            <div style={{ animation: 'royal-wayang-sway-left 6s ease-in-out infinite 1.2s' }}>
+          {/* 6. LAYER WAYANG KAMAJAYA (Kiri Bawah) */}
+          <div className="absolute bottom-1 sm:bottom-2 -left-3 sm:left-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]">
+            <div style={{ animation: 'royal-wayang-sway-left 6s ease-in-out infinite' }}>
               <img 
                 src="/themes/royal-kamajaya-luxury.png" 
                 alt="Wayang Raden Kamajaya" 
@@ -1419,12 +1377,9 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
           </div>
 
-          {/* 7. LAYER WAYANG KAMARATIH (Kanan Bawah: In-Place Fade Lembut) */}
-          <div 
-            className="absolute bottom-1 sm:bottom-2 -right-3 sm:right-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]"
-            style={{ animation: 'royal-fade-in 1.2s ease-out both' }}
-          >
-            <div style={{ animation: 'royal-wayang-sway-right 6s ease-in-out infinite 1.2s' }}>
+          {/* 7. LAYER WAYANG KAMARATIH (Kanan Bawah) */}
+          <div className="absolute bottom-1 sm:bottom-2 -right-3 sm:right-1 z-25 pointer-events-none drop-shadow-[0_10px_28px_rgba(0,0,0,0.95)]">
+            <div style={{ animation: 'royal-wayang-sway-right 6s ease-in-out infinite' }}>
               <img 
                 src="/themes/royal-kamaratih-luxury.png" 
                 alt="Wayang Dewi Kamaratih" 

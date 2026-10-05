@@ -411,12 +411,16 @@ export const InvitationRenderer: React.FC = () => {
       )}
 
       {/* Main Invitation Content */}
-      <div className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.2,0.9,0.35,1)] ${
-        isInvitationVisible || isCoverExiting || (isSplitTheme && openingStage === 'cover')
-          ? 'opacity-100 scale-100' 
-          : 'opacity-0 scale-[0.88] h-0 overflow-hidden'
-      }`}>
-        {(isInvitationVisible || isCoverExiting || openingStage === 'arch-video' || (isSplitTheme && openingStage === 'cover')) && (
+      <div className={
+        isSplitTheme
+          ? 'w-full min-h-screen opacity-100'
+          : `transition-opacity duration-700 ease-out ${
+              isInvitationVisible || isCoverExiting
+                ? 'opacity-100' 
+                : 'opacity-0 pointer-events-none'
+            }`
+      }>
+        {(isSplitTheme || isInvitationVisible || isCoverExiting || openingStage === 'arch-video') && (
           isRoyalWayang ? (
             <RoyalWayangGoldTheme 
               invitation={invitation}
