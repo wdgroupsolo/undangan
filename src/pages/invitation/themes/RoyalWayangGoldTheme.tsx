@@ -2431,13 +2431,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             <img src="/themes/royal-kamaratih-luxury.png" alt="Dewi Kamaratih" className="w-full h-auto object-contain -scale-x-100" />
           </div>
 
-          {/* Bottom Royal Caption Pill Badge (Neatly Centered, No Wayang Collisions) */}
-          <div className="relative z-20 text-center pb-2 pt-1 pointer-events-none">
-            <span className="inline-block px-3 py-1 rounded-full bg-[#120a06]/90 border border-[#d4af37]/40 text-[9px] sm:text-[10px] tracking-[0.28em] font-serif text-[#e5c158] uppercase font-semibold shadow-lg backdrop-blur-sm">
-              PAWIWAHAN AGENG • SIARAN LANGSUNG
-            </span>
-          </div>
-
         </section>
 
         {/* ==================================================== */}
@@ -2703,13 +2696,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               </div>
             ))}
           </div>
-
-          {/* Bottom Royal Caption Pill Badge */}
-          <div className="relative z-20 text-center pt-6 pb-2 pointer-events-none">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-[#120a06]/90 border border-[#d4af37]/40 text-[9px] sm:text-[10px] tracking-[0.28em] font-serif text-[#e5c158] uppercase font-semibold shadow-lg backdrop-blur-sm">
-              PAWIWAHAN AGENG • POTRET KASIH
-            </span>
-          </div>
         </section>
 
         {/* ==================================================== */}
@@ -2842,13 +2828,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Bottom Royal Caption Pill Badge */}
-          <div className="relative z-20 text-center pt-8 pb-2 pointer-events-none">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-[#120a06]/90 border border-[#d4af37]/40 text-[9px] sm:text-[10px] tracking-[0.28em] font-serif text-[#e5c158] uppercase font-semibold shadow-lg backdrop-blur-sm">
-              PAWIWAHAN AGENG • PERJALANAN KASIH
-            </span>
           </div>
         </section>
 
@@ -3047,13 +3026,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 </button>
               </div>
             </div>
-          </div>
-
-          {/* Bottom Royal Caption Pill Badge */}
-          <div className="relative z-20 text-center pt-8 pb-2 pointer-events-none">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-[#120a06]/90 border border-[#d4af37]/40 text-[9px] sm:text-[10px] tracking-[0.28em] font-serif text-[#e5c158] uppercase font-semibold shadow-lg backdrop-blur-sm">
-              PAWIWAHAN AGENG • TANDA KASIH
-            </span>
           </div>
         </section>
 
