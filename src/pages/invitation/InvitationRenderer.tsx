@@ -21,7 +21,7 @@ import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 export const InvitationRenderer: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
-  const guestName = searchParams.get('to') || 'Tamu Undangan';
+  const rawTo = searchParams.get('to');
   const requestedTheme = searchParams.get('theme');
 
   // Opening sequence states:
@@ -242,7 +242,12 @@ export const InvitationRenderer: React.FC = () => {
   const groomDisplayName = groom || 'Steven';
   const brideDisplayName = bride || 'Bunga';
 
+  const guestName = (rawTo && rawTo.trim() !== '') 
+    ? rawTo.trim() 
+    : (invitation?.settings?.default_guest_name?.trim() || 'Tamu Undangan');
+
   const coverImage = 
+    invitation?.settings?.cover_photo ||
     couple?.cover_photo_url || 
     couple?.cover_photo ||
     invitation?.cover_image_url || 

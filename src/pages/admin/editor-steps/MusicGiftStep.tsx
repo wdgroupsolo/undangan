@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editorService } from '../../../services/editorService';
+import { invitationService } from '../../../services/invitationService';
 import { useToast } from '../../../context/ToastContext';
-import { Plus, Trash2, CreditCard, QrCode, Upload, Music, Volume2, Info } from 'lucide-react';
+import { Plus, Trash2, CreditCard, QrCode, Upload, Music, Volume2, Info, Gift, Package, Check } from 'lucide-react';
 
 export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId }) => {
   const queryClient = useQueryClient();
@@ -75,7 +76,52 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
     }
   });
 
-  if (isLoadingMusic || isLoadingGifts) return <div>Memuat...</div>;
+  // -- Physical Gift (Kirim Kado) State & Mutation --
+  const { data: invitation, isLoading: isLoadingInv } = useQuery({
+    queryKey: ['invitation', invitationId],
+    queryFn: () => invitationService.getInvitation(invitationId),
+    enabled: !!invitationId,
+  });
+
+  const [physicalGift, setPhysicalGift] = useState({
+    gift_recipient: '',
+    gift_address: '',
+    gift_phone: '',
+  });
+  const [isSavingPhysical, setIsSavingPhysical] = useState(false);
+
+  useEffect(() => {
+    if (invitation?.settings) {
+      setPhysicalGift({
+        gift_recipient: invitation.settings.gift_recipient || '',
+        gift_address: invitation.settings.gift_address || '',
+        gift_phone: invitation.settings.gift_phone || '',
+      });
+    }
+  }, [invitation]);
+
+  const handleSavePhysicalGift = async () => {
+    setIsSavingPhysical(true);
+    try {
+      await invitationService.updateInvitation(invitationId, {
+        settings: {
+          ...(invitation?.settings || {}),
+          gift_recipient: physicalGift.gift_recipient,
+          gift_address: physicalGift.gift_address,
+          gift_phone: physicalGift.gift_phone,
+        }
+      });
+      queryClient.invalidateQueries({ queryKey: ['invitation', invitationId] });
+      toast.success('Alamat pengiriman kado fisik berhasil disimpan!');
+    } catch (err: any) {
+      console.error(err);
+      toast.error('Gagal menyimpan alamat kado fisik');
+    } finally {
+      setIsSavingPhysical(false);
+    }
+  };
+
+  if (isLoadingMusic || isLoadingGifts || isLoadingInv) return <div>Memuat...</div>;
 
   return (
     <div className="space-y-8">
@@ -347,6 +393,64 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* Physical Gift / Kirim Kado Section */}
+      <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4 shadow-sm">
+        <div className="flex items-center justify-between border-b pb-3">
+          <div className="flex items-center space-x-2">
+            <Gift className="w-5 h-5 text-amber-600" />
+            <h3 className="text-lg font-bold text-gray-900">Alamat Pengiriman Kado Fisik (Kirim Kado)</h3>
+          </div>
+          <span className="text-xs px-2.5 py-1 bg-amber-50 text-amber-800 rounded-full font-medium">Physical Gift</span>
+        </div>
+        <p className="text-xs text-gray-500">
+          Bagian ini akan menampilkan alamat tujuan bagi tamu yang hendak mengirimkan kado atau parcel fisik secara langsung. Dilengkapi tombol salin alamat di tema undangan.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nama Penerima Paket</label>
+            <input 
+              type="text" 
+              value={physicalGift.gift_recipient} 
+              onChange={(e) => setPhysicalGift({ ...physicalGift, gift_recipient: e.target.value })}
+              placeholder="Contoh: Elyana Azkiya Nur / Steven Pratama" 
+              className="w-full px-3 py-2 border rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500" 
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nomor Kontak Penerima (Opsional)</label>
+            <input 
+              type="text" 
+              value={physicalGift.gift_phone} 
+              onChange={(e) => setPhysicalGift({ ...physicalGift, gift_phone: e.target.value })}
+              placeholder="Contoh: 0812-3456-7890" 
+              className="w-full px-3 py-2 border rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500" 
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap Pengiriman</label>
+            <textarea 
+              rows={3}
+              value={physicalGift.gift_address} 
+              onChange={(e) => setPhysicalGift({ ...physicalGift, gift_address: e.target.value })}
+              placeholder="Jalan Raya Bojongsari No.5, RT 02 / RW 04, Gunung Putri, Citeureup, Bogor, Jawa Barat 16810" 
+              className="w-full px-3 py-2 border rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500" 
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end pt-2">
+          <button 
+            type="button"
+            onClick={handleSavePhysicalGift}
+            disabled={isSavingPhysical}
+            className="px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow-sm disabled:opacity-50 flex items-center gap-1.5 cursor-pointer text-sm"
+          >
+            {isSavingPhysical ? 'Menyimpan...' : 'Simpan Alamat Kado'}
+          </button>
         </div>
       </div>
     </div>

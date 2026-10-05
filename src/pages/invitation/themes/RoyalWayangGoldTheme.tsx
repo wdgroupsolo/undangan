@@ -894,7 +894,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   couple,
   events = [],
   stories = [],
-  gallery: _gallery = [],
+  gallery = [],
   gifts = [],
 }) => {
   const toast = useToast();
@@ -979,9 +979,11 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
       : 'Putri dari Bpk. Agus & Ibu Sisi'
   );
 
-  const couplePhoto = (couple?.cover_photo_url && couple.cover_photo_url.trim() !== '') 
-    ? couple.cover_photo_url 
-    : ((couple?.cover_photo && couple.cover_photo.trim() !== '') ? couple.cover_photo : '/photos/photo-3.jpg');
+  const couplePhoto = (invitation?.settings?.cover_photo && invitation.settings.cover_photo.trim() !== '')
+    ? invitation.settings.cover_photo
+    : ((couple?.cover_photo_url && couple.cover_photo_url.trim() !== '') 
+      ? couple.cover_photo_url 
+      : ((couple?.cover_photo && couple.cover_photo.trim() !== '') ? couple.cover_photo : '/photos/photo-3.jpg'));
 
   const groomPhoto = (couple?.groom_photo_url && couple.groom_photo_url.trim() !== '') 
     ? couple.groom_photo_url 
@@ -993,6 +995,20 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
   const groomFullPhoto = groomPhoto;
   const brideFullPhoto = bridePhoto;
+
+  const groomInstagram = invitation?.settings?.groom_instagram || couple?.groom_instagram;
+  const brideInstagram = invitation?.settings?.bride_instagram || couple?.bride_instagram;
+
+  // Helper for YouTube Embed URLs
+  const getEmbedUrl = (url?: string) => {
+    if (!url) return '';
+    if (url.includes('embed/')) return url;
+    const matchWatch = url.match(/[?&]v=([^&]+)/);
+    if (matchWatch) return `https://www.youtube.com/embed/${matchWatch[1]}`;
+    const matchShort = url.match(/youtu\.be\/([^?&]+)/);
+    if (matchShort) return `https://www.youtube.com/embed/${matchShort[1]}`;
+    return url;
+  };
 
   // Love Story Milestones (Database stories or romantic defaults)
   const defaultStories = [
@@ -1045,10 +1061,12 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
   const displayGifts = (gifts && gifts.length > 0) ? gifts : defaultGifts;
   const giftRecipient = couple?.bride_full_name || 'Elyana Azkiya Nur';
-  const giftAddress = couple?.gift_address || 'Jalan Raya Bojongsari No.5, Gunung Putri, Citeureup, Bogor, Jawa Barat';
+  const giftAddress = invitation?.settings?.gift_address || couple?.gift_address || 'Jalan Raya Bojongsari No.5, Gunung Putri, Citeureup, Bogor, Jawa Barat';
 
   // Target Wedding Date (e.g. from first event or defaults to Saturday)
-  const targetDateStr = events[0]?.date || '2026-11-28T09:00:00';
+  const targetDateStr = events[0]?.event_date
+    ? `${events[0].event_date.split('T')[0]}T${events[0].start_time || '09:00:00'}`
+    : (events[0]?.date || invitation?.wedding_date || '2026-11-28T09:00:00');
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -1138,7 +1156,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   };
 
   const searchParams = new URLSearchParams(window.location.search);
-  const guestName = searchParams.get('to') || 'Tamu Undangan';
+  const rawTo = searchParams.get('to');
+  const guestName = (rawTo && rawTo.trim() !== '') 
+    ? rawTo.trim() 
+    : (invitation?.settings?.default_guest_name?.trim() || 'Tamu Undangan');
 
   // Helper to format event date to uppercase Indonesian string matching reference
   const formatEventDateID = (dateStr?: string, fallback = 'SABTU, 25 OKTOBER 2026') => {
@@ -1171,9 +1192,9 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const akadTitle = akadEvt?.name || 'AKAD NIKAH';
   const akadDateFormatted = formatEventDateID(akadEvt?.date || akadEvt?.event_date, 'SABTU, 25 OKTOBER 2026');
   const akadTimeFormatted = formatEventTimeID(akadEvt?.start_time, akadEvt?.end_time, '10.00 WIB - Selesai');
-  const akadVenueTitle = akadEvt?.venue_name || 'KEDIAMAN MEMPELAI WANITA';
-  const akadVenueAddress = akadEvt?.location || 'Jl Harapan Dusun X Tanjung Morawa';
-  const akadMapUrl = akadEvt?.map_url || (akadEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(akadEvt.location)}` : 'https://maps.google.com/?q=Tanjung+Morawa');
+  const akadVenueTitle = akadEvt?.venue_name || akadEvt?.location || 'KEDIAMAN MEMPELAI WANITA';
+  const akadVenueAddress = akadEvt?.address || akadEvt?.location || 'Jl Harapan Dusun X Tanjung Morawa';
+  const akadMapUrl = akadEvt?.maps_url || akadEvt?.map_url || (akadEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(akadEvt.location + ' ' + (akadEvt.address || ''))}` : 'https://maps.google.com/?q=Tanjung+Morawa');
   const akadRawDate = akadEvt?.date ? akadEvt.date.split('T')[0] : (akadEvt?.event_date ? akadEvt.event_date.split('T')[0] : '2026-10-25');
   const akadRawStart = akadEvt?.start_time || '10:00';
   const akadRawEnd = akadEvt?.end_time || '13:00';
@@ -1184,9 +1205,9 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     : [rawResepsiTitle];
   const resepsiDateFormatted = formatEventDateID(resepsiEvt?.date || resepsiEvt?.event_date, 'SABTU, 25 OKTOBER 2026');
   const resepsiTimeFormatted = formatEventTimeID(resepsiEvt?.start_time, resepsiEvt?.end_time, '10.00 WIB - Selesai');
-  const resepsiVenueTitle = resepsiEvt?.venue_name || 'KEDIAMAN MEMPELAI WANITA';
-  const resepsiVenueAddress = resepsiEvt?.location || 'Jl Harapan Dusun X Tanjung Morawa';
-  const resepsiMapUrl = resepsiEvt?.map_url || (resepsiEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(resepsiEvt.location)}` : 'https://maps.google.com/?q=Tanjung+Morawa');
+  const resepsiVenueTitle = resepsiEvt?.venue_name || resepsiEvt?.location || 'KEDIAMAN MEMPELAI WANITA';
+  const resepsiVenueAddress = resepsiEvt?.address || resepsiEvt?.location || 'Jl Harapan Dusun X Tanjung Morawa';
+  const resepsiMapUrl = resepsiEvt?.maps_url || resepsiEvt?.map_url || (resepsiEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(resepsiEvt.location + ' ' + (resepsiEvt.address || ''))}` : 'https://maps.google.com/?q=Tanjung+Morawa');
   const resepsiRawDate = resepsiEvt?.date ? resepsiEvt.date.split('T')[0] : (resepsiEvt?.event_date ? resepsiEvt.event_date.split('T')[0] : '2026-10-25');
   const resepsiRawStart = resepsiEvt?.start_time || '10:00';
   const resepsiRawEnd = resepsiEvt?.end_time || '14:00';
@@ -1551,7 +1572,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
                   {/* Elegant Outlined Instagram Button */}
                   <a
-                    href={couple?.groom_instagram ? `https://instagram.com/${couple.groom_instagram.replace('@', '')}` : "https://instagram.com"}
+                    href={groomInstagram ? (groomInstagram.startsWith('http') ? groomInstagram : `https://instagram.com/${groomInstagram.replace('@', '')}`) : "https://instagram.com"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2.5 px-6 py-2 rounded-full border border-[#d4af37]/70 hover:border-[#ffd778] bg-gradient-to-r from-[#2a1d12]/90 via-[#3a2717]/85 to-[#2a1d12]/90 hover:from-[#d4af37]/30 hover:to-[#ecc460]/20 text-[#f5dfa8] hover:text-white transition-all duration-300 text-[10.5px] tracking-[0.28em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] group cursor-pointer active:scale-95"
@@ -1684,7 +1705,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
                   {/* Elegant Outlined Instagram Button */}
                   <a
-                    href={couple?.bride_instagram ? `https://instagram.com/${couple.bride_instagram.replace('@', '')}` : "https://instagram.com"}
+                    href={brideInstagram ? (brideInstagram.startsWith('http') ? brideInstagram : `https://instagram.com/${brideInstagram.replace('@', '')}`) : "https://instagram.com"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2.5 px-6 py-2 rounded-full border border-[#d4af37]/70 hover:border-[#ffd778] bg-gradient-to-r from-[#2a1d12]/90 via-[#3a2717]/85 to-[#2a1d12]/90 hover:from-[#d4af37]/30 hover:to-[#ecc460]/20 text-[#f5dfa8] hover:text-white transition-all duration-300 text-[10.5px] tracking-[0.28em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] group cursor-pointer active:scale-95"
@@ -1781,12 +1802,12 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 className="text-xs sm:text-[13px] text-[#E0D9CC] font-serif italic leading-relaxed drop-shadow-sm px-1"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
               >
-                &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.&rdquo;
+                &ldquo;{invitation?.settings?.quote || "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."}&rdquo;
               </p>
 
               {/* Surah Reference Pill */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#d4af37]/50 bg-gradient-to-r from-[#d4af37]/20 to-[#ecc460]/10 text-[#ffd778] text-[10px] sm:text-[11px] font-serif tracking-[0.2em] font-semibold mt-3 shadow-sm">
-                <span>✦ QS. AR-RUM : 21 ✦</span>
+                <span>✦ {invitation?.settings?.quote_source || "QS. AR-RUM : 21"} ✦</span>
               </div>
             </div>
 
@@ -2354,7 +2375,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {/* Interactive Luxury Outline Button */}
               <div className="pt-1.5 sm:pt-2 relative z-30 w-full flex justify-center">
                 <a 
-                  href={invitation?.streaming_url || couple?.streaming_url || "https://youtube.com"} 
+                  href={invitation?.settings?.youtube_url || invitation?.settings?.instagram_live_url || invitation?.settings?.tiktok_live_url || invitation?.settings?.zoom_url || invitation?.streaming_url || couple?.streaming_url || "https://youtube.com"} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-md border border-[#d4af37] hover:border-[#ffd778] bg-[#180f07]/90 hover:bg-[#d4af37]/25 text-[#FFF4CC] hover:text-white transition-all duration-300 text-[10px] sm:text-[11px] font-serif font-bold tracking-[0.2em] uppercase shadow-[0_4px_16px_rgba(0,0,0,0.85)] hover:shadow-[0_0_18px_rgba(212,175,55,0.6)] hover:scale-105 active:scale-95 group cursor-pointer relative overflow-hidden"
@@ -2396,6 +2417,55 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           </div>
 
         </section>
+
+        {/* ==================================================== */}
+        {/* PAUGERAN BUSANA / DRESSCODE (Royal Wayang Gold)      */}
+        {/* ==================================================== */}
+        {(invitation?.settings?.dresscode_note || invitation?.settings?.dresscode_colors?.length) && (
+          <section id="dresscode" className="relative w-full py-12 px-4 flex flex-col items-center justify-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none">
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+              <img src="/themes/royal-wayang-bg.jpg" alt="" className="w-full h-full object-cover filter brightness-50" />
+            </div>
+            
+            <div className="relative z-10 w-[92%] max-w-[360px] p-6 rounded-2xl bg-gradient-to-b from-[#24170d]/95 via-[#190f08]/95 to-[#100804] border border-[#d4af37]/60 shadow-[0_12px_32px_rgba(0,0,0,0.85)] text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/40 mb-2.5">
+                <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+                <span className="text-[10px] font-serif tracking-[0.25em] text-[#FFF4CC] uppercase font-bold">
+                  PAUGERAN BUSANA
+                </span>
+                <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+              </div>
+
+              <h3 
+                className="font-serif font-bold text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] tracking-wider uppercase mb-2"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                DRESSCODE
+              </h3>
+
+              <p 
+                className="text-xs sm:text-[13px] text-[#EADFC9]/90 font-serif leading-relaxed italic max-w-xs mx-auto mb-5"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                {invitation?.settings?.dresscode_note || 'Mohon mengenakan pakaian yang senada dengan palet warna berikut:'}
+              </p>
+
+              <div className="flex items-center justify-center gap-3.5 sm:gap-4">
+                {(invitation?.settings?.dresscode_colors?.length === 4
+                  ? invitation.settings.dresscode_colors
+                  : ['#f3e8d2', '#87695e', '#41362e', '#dca15c']
+                ).map((col: string, idx: number) => (
+                  <div 
+                    key={idx}
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-[#d4af37]/80 shadow-[0_4px_14px_rgba(0,0,0,0.6)] transition-transform duration-300 hover:scale-110 cursor-pointer"
+                    style={{ backgroundColor: col }}
+                    title={col}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ==================================================== */}
         {/* 7. PHOTOBOOTH KAMI (CLEAN 3-PHOTO SLIDESHOW)         */}
@@ -2554,111 +2624,151 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </p>
           </div>
 
-          {/* Row 1: 3 Portrait Photos (Groom, Couple, Bride) */}
-          <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
-            <div 
-              onClick={() => setSelectedPhoto(groomFullPhoto)} 
-              className="group relative aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
-            >
-              <img src={groomFullPhoto} alt="Groom Portrait" className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
-              <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
-              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
-                <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                </div>
-              </div>
+          {/* Embedded YouTube Video Player (if video_url is set in admin) */}
+          {invitation?.settings?.video_url && (
+            <div className="relative z-20 w-full max-w-md mx-auto aspect-video rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/60 shadow-[0_10px_30px_rgba(0,0,0,0.8)] mb-5 bg-black/60">
+              <iframe
+                className="w-full h-full"
+                src={getEmbedUrl(invitation.settings.video_url)}
+                title="Wedding Video Gallery"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
             </div>
-            <div 
-              onClick={() => setSelectedPhoto(couplePhoto)} 
-              className="group relative aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
-            >
-              <img src={couplePhoto} alt="Couple Portrait" className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
-              <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
-              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
-                <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                </div>
-              </div>
-            </div>
-            <div 
-              onClick={() => setSelectedPhoto(brideFullPhoto)} 
-              className="group relative aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
-            >
-              <img src={brideFullPhoto} alt="Bride Portrait" className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
-              <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
-              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
-                <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
 
-          {/* Row 2: 2 Highlight Moments */}
-          <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
-            <div 
-              onClick={() => setSelectedPhoto('/photos/photo-1.jpg')} 
-              className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
-            >
-              <img src="/photos/photo-1.jpg" alt="Moment 1" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
-              <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
-              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
-                <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                </div>
-              </div>
+          {/* Gallery Photos Grid: Uploaded Photos or Curated Royal Showcase */}
+          {gallery && gallery.length > 0 ? (
+            <div className="relative z-20 grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto">
+              {gallery.map((g: any, idx: number) => {
+                const photoSrc = typeof g === 'string' ? g : (g.image_url || '');
+                if (!photoSrc) return null;
+                return (
+                  <div 
+                    key={idx}
+                    onClick={() => setSelectedPhoto(photoSrc)} 
+                    className="group relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                  >
+                    <img src={photoSrc} alt={`Galeri ${idx + 1}`} className="w-full h-full object-cover object-center filter brightness-[0.94] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                    <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
+                    <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div 
-              onClick={() => setSelectedPhoto('/photos/photo-4.jpg')} 
-              className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
-            >
-              <img src="/photos/photo-4.jpg" alt="Moment 2" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
-              <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
-              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
-                <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          ) : (
+            <>
+              {/* Row 1: 3 Portrait Photos (Groom, Couple, Bride) */}
+              <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
+                <div 
+                  onClick={() => setSelectedPhoto(groomFullPhoto)} 
+                  className="group relative aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                >
+                  <img src={groomFullPhoto} alt="Groom Portrait" className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
+                  <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                    <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Row 3: 3 Candid Moments */}
-          <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
-            {['/photos/photo-5.jpg', '/photos/photo-6.jpg', '/photos/photo-7.jpg'].map((photoSrc, idx) => (
-              <div 
-                key={idx}
-                onClick={() => setSelectedPhoto(photoSrc)} 
-                className="group relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
-              >
-                <img src={photoSrc} alt={`Moment ${idx + 3}`} className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
-                <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
-                <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                <div 
+                  onClick={() => setSelectedPhoto(couplePhoto)} 
+                  className="group relative aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                >
+                  <img src={couplePhoto} alt="Couple Portrait" className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
+                  <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                    <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
+                  </div>
+                </div>
+                <div 
+                  onClick={() => setSelectedPhoto(brideFullPhoto)} 
+                  className="group relative aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                >
+                  <img src={brideFullPhoto} alt="Bride Portrait" className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
+                  <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                    <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
 
-          {/* Row 4: 2 Romantic Moments */}
-          <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
-            {['/photos/photo-8.jpg', '/photos/photo-9.jpg'].map((photoSrc, idx) => (
-              <div 
-                key={idx}
-                onClick={() => setSelectedPhoto(photoSrc)} 
-                className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
-              >
-                <img src={photoSrc} alt={`Moment ${idx + 6}`} className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
-                <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
-                <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              {/* Row 2: 2 Highlight Moments */}
+              <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
+                <div 
+                  onClick={() => setSelectedPhoto('/photos/photo-1.jpg')} 
+                  className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                >
+                  <img src="/photos/photo-1.jpg" alt="Moment 1" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
+                  <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                    <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
+                  </div>
+                </div>
+                <div 
+                  onClick={() => setSelectedPhoto('/photos/photo-4.jpg')} 
+                  className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                >
+                  <img src="/photos/photo-4.jpg" alt="Moment 2" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
+                  <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                    <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Row 3: 3 Candid Moments */}
+              <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
+                {['/photos/photo-5.jpg', '/photos/photo-6.jpg', '/photos/photo-7.jpg'].map((photoSrc, idx) => (
+                  <div 
+                    key={idx}
+                    onClick={() => setSelectedPhoto(photoSrc)} 
+                    className="group relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                  >
+                    <img src={photoSrc} alt={`Moment ${idx + 3}`} className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                    <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
+                    <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Row 4: 2 Romantic Moments */}
+              <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
+                {['/photos/photo-8.jpg', '/photos/photo-9.jpg'].map((photoSrc, idx) => (
+                  <div 
+                    key={idx}
+                    onClick={() => setSelectedPhoto(photoSrc)} 
+                    className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                  >
+                    <img src={photoSrc} alt={`Moment ${idx + 6}`} className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                    <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
+                    <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                      <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </section>
 
         {/* ==================================================== */}
@@ -3287,6 +3397,43 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         </section>
 
         {/* ==================================================== */}
+        {/* TURUT MENGUNDANG (Royal Wayang Gold)                 */}
+        {/* ==================================================== */}
+        {invitation?.settings?.turut_mengundang && invitation.settings.turut_mengundang.length > 0 && (
+          <section id="turut-mengundang" className="relative w-full py-10 px-4 flex flex-col items-center justify-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none">
+            <div className="relative z-10 w-[92%] max-w-[360px] p-6 rounded-2xl bg-gradient-to-b from-[#24170d]/95 via-[#190f08]/95 to-[#100804] border border-[#d4af37]/60 shadow-[0_12px_32px_rgba(0,0,0,0.85)] text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/40 mb-2.5">
+                <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+                <span className="text-[10px] font-serif tracking-[0.25em] text-[#FFF4CC] uppercase font-bold">
+                  KELUARGA BESAR
+                </span>
+                <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+              </div>
+
+              <h3 
+                className="font-serif font-bold text-lg sm:text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] tracking-wider uppercase mb-3.5"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                TURUT MENGUNDANG
+              </h3>
+
+              <div className="space-y-2.5 flex flex-col items-center">
+                {invitation.settings.turut_mengundang.map((name: string, idx: number) => (
+                  <p 
+                    key={idx} 
+                    className="text-xs sm:text-sm text-[#EADFC9] font-serif flex items-center justify-center gap-2"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    <span className="text-[#ffd778] font-bold text-xs">ꕥ</span>
+                    <span>{name}</span>
+                  </p>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ==================================================== */}
         {/* 13. CLOSING (TERIMA KASIH)                           */}
         {/* ==================================================== */}
         <section id="closing" className="relative w-full min-h-[100dvh] py-8 sm:py-10 px-4 flex flex-col justify-between items-center text-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none pb-6">
@@ -3342,7 +3489,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
 
             <p className="text-[12px] sm:text-[13px] text-[#efe5d5]/95 font-serif italic text-center leading-relaxed drop-shadow-sm">
-              &ldquo;Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran serta doa restu Bapak/Ibu/Saudara/i sekalian.&rdquo;
+              &ldquo;{invitation?.settings?.closing_greeting || "Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran serta doa restu Bapak/Ibu/Saudara/i sekalian."}&rdquo;
             </p>
           </div>
 
@@ -3376,7 +3523,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 className="font-serif text-sm sm:text-base font-bold tracking-[0.18em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] drop-shadow-sm"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
               >
-                {groomName} &amp; {brideName}
+                {invitation?.settings?.closing_couple_name || `${groomName} & ${brideName}`}
               </h3>
               <p className="text-[7.5px] sm:text-[8px] text-stone-300/80 font-serif tracking-widest uppercase mt-0.5">
                 Beserta Keluarga Besar
@@ -3402,7 +3549,13 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
           {/* Bottom Watermark / Copyright */}
           <div className="relative z-20 text-[9px] text-stone-400/60 font-mono tracking-widest uppercase mt-3">
-            WD Group &bull; Royal Wayang Gold Edition
+            {invitation?.settings?.powered_by_url ? (
+              <a href={invitation.settings.powered_by_url} target="_blank" rel="noopener noreferrer" className="hover:text-[#ffd778] transition-colors">
+                {invitation?.settings?.powered_by || "WD Group • Royal Wayang Gold Edition"}
+              </a>
+            ) : (
+              <span>{invitation?.settings?.powered_by || "WD Group • Royal Wayang Gold Edition"}</span>
+            )}
           </div>
         </section>
 

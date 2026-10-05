@@ -19,6 +19,7 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
   });
 
   const [formData, setFormData] = useState({
+    default_guest_name: 'Tamu Undangan',
     quote: '',
     quote_source: '',
     video_url: '',
@@ -47,6 +48,7 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
       const s = invitation.settings;
       setFormData(prev => ({
         ...prev,
+        default_guest_name: s.default_guest_name !== undefined ? s.default_guest_name : prev.default_guest_name,
         quote: s.quote !== undefined ? s.quote : prev.quote,
         quote_source: s.quote_source !== undefined ? s.quote_source : prev.quote_source,
         video_url: s.video_url !== undefined ? s.video_url : prev.video_url,
@@ -138,6 +140,27 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
           <span>Pengaturan tema berhasil disimpan! Perubahan langsung tampil di halaman undangan.</span>
         </div>
       )}
+
+      {/* 0. Default Nama Tamu Undangan */}
+      <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4 shadow-sm">
+        <div className="flex items-center gap-2 text-gray-900 font-bold text-base border-b pb-3">
+          <Users className="w-5 h-5 text-[#625445]" />
+          <h4>Default Nama Tamu Undangan (Sampul Depan)</h4>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nama Tamu Bawaan (Default)</label>
+          <input
+            type="text"
+            value={formData.default_guest_name}
+            onChange={(e) => setFormData({ ...formData, default_guest_name: e.target.value })}
+            placeholder="Tamu Undangan"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#625445]/20 focus:border-[#625445]"
+          />
+          <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
+            Nama ini yang otomatis tampil pada kartu sampul depan (di bawah "Kepada Yth. Bapak/Ibu/Saudara/i") jika link undangan dibuka langsung tanpa parameter <code>?to=NamaTamu</code>. Default bawaan sistem: <strong>Tamu Undangan</strong>.
+          </p>
+        </div>
+      </div>
 
       {/* 1. Kutipan / Doa Pembuka */}
       <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4 shadow-sm">
