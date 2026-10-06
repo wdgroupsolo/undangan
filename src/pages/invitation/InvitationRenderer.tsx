@@ -616,7 +616,7 @@ export const InvitationRenderer: React.FC = () => {
                     <img 
                       src={coverImage} 
                       alt={`${groomDisplayName} & ${brideDisplayName}`} 
-                      className="w-full h-full object-cover object-[center_22%] filter brightness-[0.98] contrast-[1.04]"
+                      className="w-full h-full object-cover object-[center_top] filter brightness-[0.98] contrast-[1.04]"
                     />
                     {/* Inner subtle vignette */}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#120a06]/70 via-transparent to-transparent pointer-events-none" />
