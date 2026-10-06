@@ -1648,13 +1648,13 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     
                     {/* Crown resting directly on top of the arch apex (flush against the curve) */}
                     <div 
-                      className="absolute -top-5 sm:-top-5.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center"
+                      className="absolute -top-11 sm:-top-13 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center"
                       style={{ animation: 'royal-crown-shimmer 3s ease-in-out infinite' }}
                     >
                       <img 
                         src="/themes/royal-crown-luxury.png" 
                         alt="Royal Crown" 
-                        className="w-22 sm:w-26 h-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,175,55,0.7)]" 
+                        className="w-20 sm:w-24 h-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,175,55,0.7)]" 
                       />
                       {/* Delicate Gold Crown Mount Bar resting along arch apex */}
                       <div className="w-14 sm:w-16 h-1 -mt-1 rounded-full bg-gradient-to-r from-transparent via-[#ffd778] to-transparent shadow-[0_0_8px_rgba(255,215,120,0.85)]" />
@@ -1665,7 +1665,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                       <img 
                         src={groomFullPhoto} 
                         alt={groomFullName} 
-                        className="w-full h-full object-cover object-[center_20%] filter brightness-[1.02] contrast-[1.03]"
+                        className="w-full h-full object-cover object-[center_32%] filter brightness-[1.02] contrast-[1.03]"
                       />
                       {/* Inner Arch Hairline Border for Depth */}
                       <div className="absolute inset-1.5 rounded-t-[129px] sm:rounded-t-[144px] rounded-b-xl border border-[#ffd778]/35 pointer-events-none" />
@@ -1781,13 +1781,13 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     
                     {/* Royal Bridal Tiara resting gracefully on top of the arch apex */}
                     <div 
-                      className="absolute -top-5 sm:-top-5.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center"
+                      className="absolute -top-11 sm:-top-13 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center"
                       style={{ animation: 'royal-crown-shimmer 3s ease-in-out infinite' }}
                     >
                       <img 
                         src="/themes/royal-bridal-tiara-luxury.png" 
                         alt="Royal Bridal Tiara" 
-                        className="w-24 sm:w-28 h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.75)]" 
+                        className="w-22 sm:w-26 h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.75)]" 
                       />
                       {/* Delicate Gold Crown Mount Bar resting along arch apex */}
                       <div className="w-16 sm:w-18 h-1 -mt-1 rounded-full bg-gradient-to-r from-transparent via-[#ffd778] to-transparent shadow-[0_0_8px_rgba(255,215,120,0.85)]" />
@@ -1798,7 +1798,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                       <img 
                         src={brideFullPhoto} 
                         alt={brideFullName} 
-                        className="w-full h-full object-cover object-[center_20%] filter brightness-[1.02] contrast-[1.03]"
+                        className="w-full h-full object-cover object-[center_32%] filter brightness-[1.02] contrast-[1.03]"
                       />
                       {/* Inner Arch Hairline Border for Depth */}
                       <div className="absolute inset-1.5 rounded-t-[129px] sm:rounded-t-[144px] rounded-b-xl border border-[#ffd778]/35 pointer-events-none" />
@@ -3007,15 +3007,23 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     {story.photo && (
                       <div 
                         onClick={() => setSelectedPhoto(story.photo)}
-                        className="relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden mb-3.5 border border-[#d4af37]/50 shadow-[0_8px_20px_rgba(0,0,0,0.8)] cursor-pointer group/photo"
+                        className={`relative ${
+                          (story.photo?.includes('retro') || story.photo?.includes('angkot'))
+                            ? 'aspect-[16/10]'
+                            : 'aspect-[4/5]'
+                        } rounded-xl sm:rounded-2xl overflow-hidden mb-3.5 border border-[#d4af37]/50 shadow-[0_8px_20px_rgba(0,0,0,0.8)] cursor-pointer group/photo`}
                       >
                         <img 
                           src={story.photo} 
                           alt={story.title} 
-                          className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover/photo:brightness-105 group-hover/photo:scale-105 transition-all duration-700 ease-out"
+                          className={`w-full h-full object-cover ${
+                            (story.photo?.includes('main') || story.photo?.includes('couple-main'))
+                              ? 'object-top'
+                              : 'object-center'
+                          } filter brightness-[0.92] group-hover/photo:brightness-105 group-hover/photo:scale-105 transition-all duration-700 ease-out`}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                        <div className="absolute inset-0 bg-black/25 opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                        <div className="absolute inset-0 bg-black/25 opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300 hidden sm:flex items-center justify-center pointer-events-none">
                           <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                           </div>
