@@ -2787,7 +2787,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     onClick={() => setSelectedPhoto(photoSrc)} 
                     className="group relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
                   >
-                    <img src={photoSrc} alt={`Galeri ${idx + 1}`} className="w-full h-full object-cover object-center filter brightness-[0.94] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                    <img src={photoSrc} alt={`Galeri ${idx + 1}`} className="w-full h-full object-cover object-[center_top] filter brightness-[0.94] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
                     <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
                     <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                       <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -2871,7 +2871,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {/* Row 3: 3 Candid Moments */}
               <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
                 {(isAgni 
-                  ? ['/themes/agni-putri/couple-artistic.jpg', '/themes/agni-putri/couple-main.jpg', '/themes/agni-putri/couple-arch.jpg'] 
+                  ? ['/themes/agni-putri/couple-artistic.jpg', '/themes/agni-putri/couple-outdoor.jpg', '/themes/agni-putri/couple-arch.jpg'] 
                   : ['/photos/photo-5.jpg', '/photos/photo-6.jpg', '/photos/photo-7.jpg']
                 ).map((photoSrc, idx) => (
                   <div 
@@ -2879,7 +2879,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     onClick={() => setSelectedPhoto(photoSrc)} 
                     className="group relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
                   >
-                    <img src={photoSrc} alt={`Moment ${idx + 3}`} className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                    <img src={photoSrc} alt={`Moment ${idx + 3}`} className="w-full h-full object-cover object-[center_top] filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
                     <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
                     <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                       <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
