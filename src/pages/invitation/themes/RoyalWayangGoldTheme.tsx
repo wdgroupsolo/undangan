@@ -1665,7 +1665,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                       <img 
                         src={groomFullPhoto} 
                         alt={groomFullName} 
-                        className="w-full h-full object-cover object-[center_32%] filter brightness-[1.02] contrast-[1.03]"
+                        className="w-full h-full object-cover object-[center_top] filter brightness-[1.02] contrast-[1.03]"
                       />
                       {/* Inner Arch Hairline Border for Depth */}
                       <div className="absolute inset-1.5 rounded-t-[129px] sm:rounded-t-[144px] rounded-b-xl border border-[#ffd778]/35 pointer-events-none" />
@@ -1798,7 +1798,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                       <img 
                         src={brideFullPhoto} 
                         alt={brideFullName} 
-                        className="w-full h-full object-cover object-[center_32%] filter brightness-[1.02] contrast-[1.03]"
+                        className="w-full h-full object-cover object-[center_top] filter brightness-[1.02] contrast-[1.03]"
                       />
                       {/* Inner Arch Hairline Border for Depth */}
                       <div className="absolute inset-1.5 rounded-t-[129px] sm:rounded-t-[144px] rounded-b-xl border border-[#ffd778]/35 pointer-events-none" />
