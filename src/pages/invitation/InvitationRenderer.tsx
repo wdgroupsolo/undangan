@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
-import { editorService } from '../../services/editorService';
+import { editorService, COUPLE_AGNI_PUTRI } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
 import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
@@ -53,12 +53,17 @@ export const InvitationRenderer: React.FC = () => {
   const { data: gifts } = useQuery({ queryKey: ['gifts', invId], queryFn: () => editorService.getGifts(invId!), enabled: !!invId });
   const { data: music } = useQuery({ queryKey: ['music', invId], queryFn: () => editorService.getMusic(invId!), enabled: !!invId });
 
+  const rawSlug = decodeURIComponent(slug || '').toLowerCase().trim();
+  const isAgniSlug = rawSlug.includes('agni') || rawSlug.includes('kribo');
+
   const activeThemeSlug = requestedTheme || (
-    (slug === 'benny-indah' || slug === 'steven-bunga')
-      ? 'royal-wayang-gold' 
-      : (slug === 'habib-adiba' 
-        ? 'javanese-heritage' 
-        : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold'))
+    isAgniSlug
+      ? 'royal-wayang-gold'
+      : ((slug === 'benny-indah' || slug === 'steven-bunga')
+        ? 'royal-wayang-gold' 
+        : (slug === 'habib-adiba' 
+          ? 'javanese-heritage' 
+          : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold')))
   );
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
@@ -127,19 +132,23 @@ export const InvitationRenderer: React.FC = () => {
     }
   }, [couple, slug]);
 
-  const activeCouple = couple || cachedCouple;
+  const activeCouple = couple || cachedCouple || (isAgniSlug ? COUPLE_AGNI_PUTRI : null);
 
   const rawGroomNick = activeCouple?.groom_nickname?.trim();
   const rawGroomFull = activeCouple?.groom_full_name?.trim();
-  const groom = (rawGroomNick && (!rawGroomFull || (rawGroomNick.toLowerCase() !== 'bagas' || rawGroomFull.toLowerCase() === 'bagas')))
-    ? formatName(rawGroomNick)
-    : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : (rawGroomNick && rawGroomNick.toLowerCase() !== 'bagas' ? formatName(rawGroomNick) : 'Steven'));
+  const groom = isAgniSlug ? 'Agni' : (
+    (rawGroomNick && (!rawGroomFull || (rawGroomNick.toLowerCase() !== 'bagas' || rawGroomFull.toLowerCase() === 'bagas')))
+      ? formatName(rawGroomNick)
+      : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : (rawGroomNick && rawGroomNick.toLowerCase() !== 'bagas' ? formatName(rawGroomNick) : 'Steven'))
+  );
 
   const rawBrideNick = activeCouple?.bride_nickname?.trim();
   const rawBrideFull = activeCouple?.bride_full_name?.trim();
-  const bride = (rawBrideNick && (!rawBrideFull || (rawBrideNick.toLowerCase() !== 'siti' || rawBrideFull.toLowerCase() === 'siti')))
-    ? formatName(rawBrideNick)
-    : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : (rawBrideNick && rawBrideNick.toLowerCase() !== 'siti' ? formatName(rawBrideNick) : 'Bunga'));
+  const bride = isAgniSlug ? 'Putri' : (
+    (rawBrideNick && (!rawBrideFull || (rawBrideNick.toLowerCase() !== 'siti' || rawBrideFull.toLowerCase() === 'siti')))
+      ? formatName(rawBrideNick)
+      : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : (rawBrideNick && rawBrideNick.toLowerCase() !== 'siti' ? formatName(rawBrideNick) : 'Bunga'))
+  );
 
   // Dynamically set page title in browser tab (Called unconditionally before any early returns)
   useEffect(() => {
@@ -232,15 +241,15 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  const isRoyalWayang = activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || slug === 'steven-bunga';
+  const isRoyalWayang = activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || slug === 'steven-bunga' || isAgniSlug;
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
   const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang;
 
-  const groomDisplayName = groom || 'Steven';
-  const brideDisplayName = bride || 'Bunga';
+  const groomDisplayName = isAgniSlug ? 'Agni' : (groom || 'Steven');
+  const brideDisplayName = isAgniSlug ? 'Putri' : (bride || 'Bunga');
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 

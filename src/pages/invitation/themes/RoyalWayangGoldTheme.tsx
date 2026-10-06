@@ -970,32 +970,42 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     return () => clearInterval(slideTimer);
   }, []);
 
-  // Dynamic Names matching Database (Steven & Bunga)
+  // Dynamic Names matching Database
   const formatTitleCase = (str?: string) => {
     if (!str) return '';
     return str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
   };
 
-  const groomName = (couple?.groom_full_name ? formatTitleCase(couple.groom_full_name.split(/\s+/)[0]) : '') ||
-                    (couple?.groom_nickname && couple.groom_nickname.toLowerCase() !== 'bagas' ? formatTitleCase(couple.groom_nickname) : '') ||
-                    couple?.groom_name || 'Steven';
+  const isAgni = typeof window !== 'undefined' && (
+    window.location.pathname.toLowerCase().includes('agni') ||
+    window.location.pathname.toLowerCase().includes('kribo') ||
+    (invitation?.slug && (invitation.slug.toLowerCase().includes('agni') || invitation.slug.toLowerCase().includes('kribo')))
+  );
 
-  const brideName = (couple?.bride_full_name ? formatTitleCase(couple.bride_full_name.split(/\s+/)[0]) : '') ||
-                    (couple?.bride_nickname && couple.bride_nickname.toLowerCase() !== 'siti' ? formatTitleCase(couple.bride_nickname) : '') ||
-                    couple?.bride_name || 'Bunga';
+  const groomName = isAgni ? 'Agni' : (
+    (couple?.groom_full_name ? formatTitleCase(couple.groom_full_name.split(/\s+/)[0]) : '') ||
+    (couple?.groom_nickname && couple.groom_nickname.toLowerCase() !== 'bagas' ? formatTitleCase(couple.groom_nickname) : '') ||
+    couple?.groom_name || 'Steven'
+  );
 
-  const groomFullName = couple?.groom_full_name || couple?.groom_name || couple?.groom_nickname || 'Steven';
-  const brideFullName = couple?.bride_full_name || couple?.bride_name || couple?.bride_nickname || 'Bunga';
+  const brideName = isAgni ? 'Putri' : (
+    (couple?.bride_full_name ? formatTitleCase(couple.bride_full_name.split(/\s+/)[0]) : '') ||
+    (couple?.bride_nickname && couple.bride_nickname.toLowerCase() !== 'siti' ? formatTitleCase(couple.bride_nickname) : '') ||
+    couple?.bride_name || 'Bunga'
+  );
+
+  const groomFullName = couple?.groom_full_name || couple?.groom_name || couple?.groom_nickname || (isAgni ? 'AGNI KAHURIPAN (KRIBO)' : 'Steven');
+  const brideFullName = couple?.bride_full_name || couple?.bride_name || couple?.bride_nickname || (isAgni ? 'PUTRI ANNISA' : 'Bunga');
 
   const groomParents = couple?.groom_parents || (
     couple?.groom_father_name && couple?.groom_mother_name
       ? `Putra dari Bpk. ${formatTitleCase(couple.groom_father_name)} & Ibu ${formatTitleCase(couple.groom_mother_name)}`
-      : 'Putra dari Bpk. Bagus & Ibu Sasa'
+      : (isAgni ? 'Putra ke-2 dari Bpk. Sofyan & Ibu Warsilah' : 'Putra dari Bpk. Bagus & Ibu Sasa')
   );
   const brideParents = couple?.bride_parents || (
     couple?.bride_father_name && couple?.bride_mother_name
       ? `Putri dari Bpk. ${formatTitleCase(couple.bride_father_name)} & Ibu ${formatTitleCase(couple.bride_mother_name)}`
-      : 'Putri dari Bpk. Agus & Ibu Sisi'
+      : (isAgni ? 'Putri ke-3 dari Bpk. Syahrudin & Ibu Eliyana' : 'Putri dari Bpk. Agus & Ibu Sisi')
   );
 
   const couplePhoto = (invitation?.settings?.cover_photo && invitation.settings.cover_photo.trim() !== '')
@@ -1015,8 +1025,8 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const groomFullPhoto = groomPhoto;
   const brideFullPhoto = bridePhoto;
 
-  const groomInstagram = invitation?.settings?.groom_instagram || couple?.groom_instagram;
-  const brideInstagram = invitation?.settings?.bride_instagram || couple?.bride_instagram;
+  const groomInstagram = invitation?.settings?.groom_instagram || couple?.groom_instagram || (isAgni ? '@agnikahuripan' : undefined);
+  const brideInstagram = invitation?.settings?.bride_instagram || couple?.bride_instagram || (isAgni ? '@_putrikahuripan' : undefined);
 
   // Helper for YouTube Embed URLs
   const getEmbedUrl = (url?: string) => {
@@ -1079,8 +1089,8 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   ];
 
   const displayGifts = (gifts && gifts.length > 0) ? gifts : defaultGifts;
-  const giftRecipient = couple?.bride_full_name || 'Elyana Azkiya Nur';
-  const giftAddress = invitation?.settings?.gift_address || couple?.gift_address || 'Jalan Raya Bojongsari No.5, Gunung Putri, Citeureup, Bogor, Jawa Barat';
+  const giftRecipient = invitation?.settings?.gift_recipient || couple?.gift_recipient || (isAgni ? 'AGNI KAHURIPAN' : (couple?.bride_full_name || 'Elyana Azkiya Nur'));
+  const giftAddress = invitation?.settings?.gift_address || couple?.gift_address || (isAgni ? 'Dk. Talang, Lemah Putih, RT 05, RW 01, Selotinatah, Ngariboyo, Magetan, Jawa Timur (No. HP: 0895 3401 92500)' : 'Jalan Raya Bojongsari No.5, Gunung Putri, Citeureup, Bogor, Jawa Barat');
 
   // Target Wedding Date (e.g. from first event or defaults to Saturday)
   const targetDateStr = events[0]?.event_date
@@ -2133,6 +2143,11 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 <p className="text-xs sm:text-[13px] text-[#D8D2C6] font-serif leading-relaxed italic">
                   {akadVenueAddress}
                 </p>
+                {akadEvt?.description && (
+                  <div className="mt-2.5 px-3 py-1.5 rounded-xl border border-[#d4af37]/35 bg-[#25170d]/85 text-[#ffd778] text-[11px] font-serif tracking-wide shadow-sm">
+                    {akadEvt.description}
+                  </div>
+                )}
               </div>
 
               {/* Dual Action Buttons (Google Maps & Calendar) */}
@@ -2259,6 +2274,11 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 <p className="text-xs sm:text-[13px] text-[#D8D2C6] font-serif leading-relaxed italic">
                   {resepsiVenueAddress}
                 </p>
+                {resepsiEvt?.description && (
+                  <div className="mt-2.5 px-3 py-1.5 rounded-xl border border-[#d4af37]/40 bg-[#25170d]/90 text-[#ffd778] text-[11px] sm:text-xs font-serif tracking-wide shadow-sm">
+                    {resepsiEvt.description}
+                  </div>
+                )}
               </div>
 
               {/* Dual Action Buttons (Google Maps & Calendar) */}
