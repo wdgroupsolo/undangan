@@ -596,35 +596,43 @@ export const InvitationRenderer: React.FC = () => {
               </div>
 
               {/* UPPER SECTION: Mahkota Crown & Architectural Royal Arched Medallion Card */}
-              <div className="relative z-20 w-full flex flex-col items-center pt-1 sm:pt-2">
-                {/* Royal Keraton Crown */}
-                <div className="mb-0.5 pointer-events-none z-30" style={{ animation: 'royal-crown-float 4s ease-in-out infinite' }}>
-                  <img 
-                    src="/themes/royal-crown-luxury.png" 
-                    alt="Mahkota Keraton" 
-                    className="w-18 sm:w-22 h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.6)]" 
-                  />
-                </div>
-
+              <div className="relative z-20 w-full flex flex-col items-center pt-5 sm:pt-6">
                 {/* Arched Medallion Card Container */}
-                <div className="relative w-full max-w-[86%] sm:max-w-[84%] mx-auto rounded-t-[90px] sm:rounded-t-[110px] rounded-b-2xl bg-gradient-to-b from-[#1c120a]/94 via-[#120a06]/96 to-[#090604]/98 backdrop-blur-md border border-[#d4af37]/65 shadow-[0_16px_40px_rgba(0,0,0,0.9),_0_0_25px_rgba(212,175,55,0.18)] p-2 sm:p-2.5 flex flex-col items-center overflow-hidden">
+                <div className="relative w-full max-w-[86%] sm:max-w-[84%] mx-auto rounded-t-[96px] sm:rounded-t-[115px] rounded-b-2xl bg-gradient-to-b from-[#1c120a]/94 via-[#120a06]/96 to-[#090604]/98 backdrop-blur-md border border-[#d4af37]/65 shadow-[0_16px_40px_rgba(0,0,0,0.9),_0_0_25px_rgba(212,175,55,0.18)] p-2 sm:p-2.5 flex flex-col items-center">
+                  
+                  {/* Royal Keraton Crown resting directly on top of the arch apex */}
+                  <div 
+                    className="absolute -top-7 sm:-top-8.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center"
+                    style={{ animation: 'royal-crown-float 4s ease-in-out infinite' }}
+                  >
+                    <img 
+                      src="/themes/royal-crown-luxury.png" 
+                      alt="Mahkota Keraton" 
+                      className="w-18 sm:w-22 h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.7)]" 
+                    />
+                    {/* Delicate Gold Crown Mount Bar resting along arch apex */}
+                    <div className="w-12 sm:w-14 h-1 -mt-0.5 rounded-full bg-gradient-to-r from-transparent via-[#ffd778] to-transparent shadow-[0_0_8px_rgba(255,215,120,0.85)]" />
+                  </div>
+
                   {/* Delicate Inset Gold Hairline Frame */}
-                  <div className="absolute inset-1.5 rounded-t-[84px] sm:rounded-t-[102px] rounded-b-xl border border-[#d4af37]/35 pointer-events-none z-20" />
+                  <div className="absolute inset-1.5 rounded-t-[90px] sm:rounded-t-[108px] rounded-b-xl border border-[#d4af37]/35 pointer-events-none z-20" />
 
                   {/* Arched Couple Photo Container */}
-                  <div className="w-full aspect-[16/11] rounded-t-[80px] sm:rounded-t-[98px] rounded-b-lg overflow-hidden border border-[#d4af37]/50 shadow-inner bg-black/50 relative z-10">
+                  <div className="w-full aspect-[5/4] rounded-t-[86px] sm:rounded-t-[104px] rounded-b-lg overflow-hidden border border-[#d4af37]/50 shadow-inner bg-black/50 relative z-10">
                     <img 
                       src={coverImage} 
                       alt={`${groomDisplayName} & ${brideDisplayName}`} 
-                      className="w-full h-full object-cover object-[center_top] filter brightness-[0.98] contrast-[1.04]"
+                      className="w-full h-full object-cover object-[center_top] filter brightness-[1.01] contrast-[1.03]"
                     />
+                    {/* Delicate Inset Bevel inside photo */}
+                    <div className="absolute inset-1 rounded-t-[82px] sm:rounded-t-[98px] rounded-b-md border border-[#ffd778]/25 pointer-events-none" />
                     {/* Inner subtle vignette */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#120a06]/70 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#120a06]/75 via-transparent to-transparent pointer-events-none" />
                   </div>
 
                   {/* Subtitle: The Wedding Of */}
                   <p 
-                    className="text-[9.5px] sm:text-[10.5px] uppercase tracking-[0.3em] text-[#e6cfab] font-serif font-semibold mt-2 mb-0.5 drop-shadow-sm"
+                    className="text-[9.5px] sm:text-[10.5px] uppercase tracking-[0.32em] text-[#dfca9e] font-serif font-semibold mt-2.5 mb-0.5 drop-shadow-sm"
                     style={{ fontFamily: "'Cinzel', 'Playfair Display', serif" }}
                   >
                     THE WEDDING OF
@@ -639,10 +647,12 @@ export const InvitationRenderer: React.FC = () => {
                   </h1>
 
                   {/* Royal Date Line */}
-                  <div className="flex items-center justify-center gap-2 mt-0.5 w-full max-w-[200px]">
+                  <div className="flex items-center justify-center gap-2 mt-0.5 w-full max-w-[210px]">
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
                     <span className="text-[9.5px] sm:text-[10px] tracking-[0.16em] text-[#f5dfa8]/90 font-serif font-medium whitespace-nowrap drop-shadow-sm">
-                      {events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Sabtu, 28 November 2026'}
+                      {events?.[0]?.event_date 
+                        ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                        : 'Minggu, 25 Oktober 2026'}
                     </span>
                     <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
                   </div>
