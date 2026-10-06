@@ -256,6 +256,7 @@ export const InvitationRenderer: React.FC = () => {
     : (invitation?.settings?.default_guest_name?.trim() || 'Tamu Undangan');
 
   const coverImage = 
+    (isAgniSlug ? '/themes/agni-putri/couple-arch.jpg' : null) ||
     invitation?.settings?.cover_photo ||
     couple?.cover_photo_url || 
     couple?.cover_photo ||

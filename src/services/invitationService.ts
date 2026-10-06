@@ -24,7 +24,7 @@ export const INVITATION_AGNI_PUTRI: Invitation & { theme?: any; client?: any } =
     theme_slug: 'royal-wayang-gold',
     default_guest_name: 'Tamu Undangan',
     cover_title: 'AGNI & PUTRI',
-    cover_photo: '/themes/royal-couple-showcase.jpg',
+    cover_photo: '/themes/agni-putri/couple-arch.jpg',
     groom_instagram: '@agnikahuripan',
     bride_instagram: '@_putrikahuripan',
     gift_recipient: 'AGNI KAHURIPAN',

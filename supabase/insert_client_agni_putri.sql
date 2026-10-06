@@ -59,7 +59,7 @@ BEGIN
       'theme_slug', 'royal-wayang-gold',
       'default_guest_name', 'Tamu Undangan',
       'cover_title', 'AGNI & PUTRI',
-      'cover_photo', '/themes/royal-couple-showcase.jpg',
+      'cover_photo', '/themes/agni-putri/couple-arch.jpg',
       'groom_instagram', '@agnikahuripan',
       'bride_instagram', '@_putrikahuripan',
       'gift_recipient', 'AGNI KAHURIPAN',
@@ -100,12 +100,12 @@ BEGIN
     'Agni',
     'SOFYAN',
     'WARSILAH',
-    '/themes/benny-groom.jpg',
+    '/themes/agni-putri/groom-agni.jpg',
     'PUTRI ANNISA',
     'Putri',
     'SYAHRUDIN',
     'ELIYANA',
-    '/themes/indah-bride.jpg'
+    '/themes/agni-putri/bride-putri.jpg'
   )
   ON CONFLICT (invitation_id) DO UPDATE SET
     groom_full_name = EXCLUDED.groom_full_name,
@@ -204,5 +204,62 @@ BEGIN
     music_url = EXCLUDED.music_url,
     autoplay = EXCLUDED.autoplay,
     loop = EXCLUDED.loop;
+
+  -- 7. Insert Stories
+  DELETE FROM stories WHERE invitation_id = v_invitation_id;
+
+  INSERT INTO stories (
+    id,
+    invitation_id,
+    title,
+    date,
+    content,
+    photo_url,
+    sort_order
+  ) VALUES 
+  (
+    '88000000-0000-0000-0000-000000000001',
+    v_invitation_id,
+    'Awal Bertemu',
+    '2020',
+    'Sebuah pertemuan sederhana yang berawal dari percakapan hangat dan canda tawa, menumbuhkan benih rasa yang kian bermakna.',
+    '/themes/agni-putri/couple-retro.jpg',
+    1
+  ),
+  (
+    '88000000-0000-0000-0000-000000000002',
+    v_invitation_id,
+    'Menjalin Kasih',
+    '2023',
+    'Melewati lika-liku hari bersama, saling mengisi dan meyakinkan hati untuk terus bergandengan tangan menatap masa depan.',
+    '/themes/agni-putri/couple-outdoor.jpg',
+    2
+  ),
+  (
+    '88000000-0000-0000-0000-000000000003',
+    v_invitation_id,
+    'Menuju Pelaminan',
+    '2026',
+    'Dengan penuh rasa syukur dan doa restu kedua orang tua, kami mengikat janji suci pernikahan untuk melangkah bersama selamanya.',
+    '/themes/agni-putri/couple-main.jpg',
+    3
+  );
+
+  -- 8. Insert Gallery
+  DELETE FROM gallery WHERE invitation_id = v_invitation_id;
+
+  INSERT INTO gallery (
+    id,
+    invitation_id,
+    image_url,
+    sort_order
+  ) VALUES 
+  ('99000000-0000-0000-0000-000000000001', v_invitation_id, '/themes/agni-putri/couple-main.jpg', 1),
+  ('99000000-0000-0000-0000-000000000002', v_invitation_id, '/themes/agni-putri/couple-arch.jpg', 2),
+  ('99000000-0000-0000-0000-000000000003', v_invitation_id, '/themes/agni-putri/couple-outdoor.jpg', 3),
+  ('99000000-0000-0000-0000-000000000004', v_invitation_id, '/themes/agni-putri/couple-retro.jpg', 4),
+  ('99000000-0000-0000-0000-000000000005', v_invitation_id, '/themes/agni-putri/couple-artistic.jpg', 5),
+  ('99000000-0000-0000-0000-000000000006', v_invitation_id, '/themes/agni-putri/groom-agni.jpg', 6),
+  ('99000000-0000-0000-0000-000000000007', v_invitation_id, '/themes/agni-putri/bride-putri.jpg', 7);
 
 END $$;

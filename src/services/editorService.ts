@@ -8,18 +8,18 @@ export const COUPLE_AGNI_PUTRI = {
   groom_father_name: 'SOFYAN',
   groom_mother_name: 'WARSILAH',
   groom_parents: 'Putra ke-2 dari Bpk. Sofyan & Ibu Warsilah',
-  groom_photo: '/themes/benny-groom.jpg',
-  groom_photo_url: '/themes/benny-groom.jpg',
+  groom_photo: '/themes/agni-putri/groom-agni.jpg',
+  groom_photo_url: '/themes/agni-putri/groom-agni.jpg',
   groom_instagram: '@agnikahuripan',
   bride_full_name: 'PUTRI ANNISA',
   bride_nickname: 'Putri',
   bride_father_name: 'SYAHRUDIN',
   bride_mother_name: 'ELIYANA',
   bride_parents: 'Putri ke-3 dari Bpk. Syahrudin & Ibu Eliyana',
-  bride_photo: '/themes/indah-bride.jpg',
-  bride_photo_url: '/themes/indah-bride.jpg',
+  bride_photo: '/themes/agni-putri/bride-putri.jpg',
+  bride_photo_url: '/themes/agni-putri/bride-putri.jpg',
   bride_instagram: '@_putrikahuripan',
-  cover_photo_url: '/themes/royal-couple-showcase.jpg',
+  cover_photo_url: '/themes/agni-putri/couple-arch.jpg',
   gift_address: 'Dk. Talang, Lemah Putih, RT 05, RW 01, Selotinatah, Ngariboyo, Magetan, Jawa Timur (No. HP: 0895 3401 92500)'
 };
 
@@ -76,6 +76,52 @@ export const MUSIC_AGNI_PUTRI = {
   autoplay: true,
   loop: true
 };
+
+export const STORIES_AGNI_PUTRI = [
+  {
+    id: '88000000-0000-0000-0000-000000000001',
+    invitation_id: 'e2000000-0000-0000-0000-000000000002',
+    chapter: 'BABAK I',
+    date: '2020',
+    title: 'Awal Bertemu',
+    photo: '/themes/agni-putri/couple-retro.jpg',
+    photo_url: '/themes/agni-putri/couple-retro.jpg',
+    description: 'Sebuah pertemuan sederhana yang berawal dari percakapan hangat dan canda tawa, menumbuhkan benih rasa yang kian bermakna.',
+    sort_order: 1
+  },
+  {
+    id: '88000000-0000-0000-0000-000000000002',
+    invitation_id: 'e2000000-0000-0000-0000-000000000002',
+    chapter: 'BABAK II',
+    date: '2023',
+    title: 'Menjalin Kasih',
+    photo: '/themes/agni-putri/couple-outdoor.jpg',
+    photo_url: '/themes/agni-putri/couple-outdoor.jpg',
+    description: 'Melewati lika-liku hari bersama, saling mengisi dan meyakinkan hati untuk terus bergandengan tangan menatap masa depan.',
+    sort_order: 2
+  },
+  {
+    id: '88000000-0000-0000-0000-000000000003',
+    invitation_id: 'e2000000-0000-0000-0000-000000000002',
+    chapter: 'BABAK III',
+    date: '2026',
+    title: 'Menuju Pelaminan',
+    photo: '/themes/agni-putri/couple-main.jpg',
+    photo_url: '/themes/agni-putri/couple-main.jpg',
+    description: 'Dengan penuh rasa syukur dan doa restu kedua orang tua, kami mengikat janji suci pernikahan untuk melangkah bersama selamanya.',
+    sort_order: 3
+  }
+];
+
+export const GALLERY_AGNI_PUTRI = [
+  { id: '99000000-0000-0000-0000-000000000001', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-main.jpg', sort_order: 1 },
+  { id: '99000000-0000-0000-0000-000000000002', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-arch.jpg', sort_order: 2 },
+  { id: '99000000-0000-0000-0000-000000000003', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-outdoor.jpg', sort_order: 3 },
+  { id: '99000000-0000-0000-0000-000000000004', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-retro.jpg', sort_order: 4 },
+  { id: '99000000-0000-0000-0000-000000000005', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-artistic.jpg', sort_order: 5 },
+  { id: '99000000-0000-0000-0000-000000000006', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/groom-agni.jpg', sort_order: 6 },
+  { id: '99000000-0000-0000-0000-000000000007', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/bride-putri.jpg', sort_order: 7 }
+];
 
 export const editorService = {
   // Couple Info
@@ -135,9 +181,17 @@ export const editorService = {
 
   // Stories
   async getStories(invitationId: string) {
-    const { data, error } = await supabase.from('stories').select('*').eq('invitation_id', invitationId).order('sort_order');
-    if (error) throw error;
-    return data;
+    try {
+      const { data, error } = await supabase.from('stories').select('*').eq('invitation_id', invitationId).order('sort_order');
+      if (!error && data && data.length > 0) return data;
+    } catch {}
+    const isAgniId = invitationId === 'e2000000-0000-0000-0000-000000000002' || 
+      invitationId === 'inv-agni-putri' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('agni') || invitationId.toLowerCase().includes('kribo')));
+    if (isAgniId) {
+      return STORIES_AGNI_PUTRI;
+    }
+    return [];
   },
   async saveStory(invitationId: string, storyData: any) {
     if (storyData.id) {
@@ -155,9 +209,17 @@ export const editorService = {
 
   // Gallery
   async getGallery(invitationId: string) {
-    const { data, error } = await supabase.from('gallery').select('*').eq('invitation_id', invitationId).order('sort_order');
-    if (error) throw error;
-    return data;
+    try {
+      const { data, error } = await supabase.from('gallery').select('*').eq('invitation_id', invitationId).order('sort_order');
+      if (!error && data && data.length > 0) return data;
+    } catch {}
+    const isAgniId = invitationId === 'e2000000-0000-0000-0000-000000000002' || 
+      invitationId === 'inv-agni-putri' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('agni') || invitationId.toLowerCase().includes('kribo')));
+    if (isAgniId) {
+      return GALLERY_AGNI_PUTRI;
+    }
+    return [];
   },
   async saveGalleryImage(invitationId: string, imageUrl: string) {
     const { data, error } = await supabase.from('gallery').insert({ invitation_id: invitationId, image_url: imageUrl }).select().single();

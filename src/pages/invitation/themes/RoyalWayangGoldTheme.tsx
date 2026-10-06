@@ -1012,15 +1012,15 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     ? invitation.settings.cover_photo
     : ((couple?.cover_photo_url && couple.cover_photo_url.trim() !== '') 
       ? couple.cover_photo_url 
-      : ((couple?.cover_photo && couple.cover_photo.trim() !== '') ? couple.cover_photo : '/photos/photo-3.jpg'));
+      : ((couple?.cover_photo && couple.cover_photo.trim() !== '') ? couple.cover_photo : (isAgni ? '/themes/agni-putri/couple-arch.jpg' : '/photos/photo-3.jpg')));
 
   const groomPhoto = (couple?.groom_photo_url && couple.groom_photo_url.trim() !== '') 
     ? couple.groom_photo_url 
-    : ((couple?.groom_photo && couple.groom_photo.trim() !== '') ? couple.groom_photo : '/groom-default.png');
+    : ((couple?.groom_photo && couple.groom_photo.trim() !== '') ? couple.groom_photo : (isAgni ? '/themes/agni-putri/groom-agni.jpg' : '/groom-default.png'));
 
   const bridePhoto = (couple?.bride_photo_url && couple.bride_photo_url.trim() !== '') 
     ? couple.bride_photo_url 
-    : ((couple?.bride_photo && couple.bride_photo.trim() !== '') ? couple.bride_photo : '/bride-default.png');
+    : ((couple?.bride_photo && couple.bride_photo.trim() !== '') ? couple.bride_photo : (isAgni ? '/themes/agni-putri/bride-putri.jpg' : '/bride-default.png'));
 
   const groomFullPhoto = groomPhoto;
   const brideFullPhoto = bridePhoto;
@@ -1040,7 +1040,29 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   };
 
   // Love Story Milestones (Database stories or romantic defaults)
-  const defaultStories = [
+  const defaultStories = isAgni ? [
+    {
+      chapter: 'BABAK I',
+      date: '2020',
+      title: 'Awal Bertemu',
+      photo: '/themes/agni-putri/couple-retro.jpg',
+      description: 'Sebuah pertemuan sederhana yang berawal dari percakapan hangat dan canda tawa, menumbuhkan benih rasa yang kian bermakna.'
+    },
+    {
+      chapter: 'BABAK II',
+      date: '2023',
+      title: 'Menjalin Kasih',
+      photo: '/themes/agni-putri/couple-outdoor.jpg',
+      description: 'Melewati lika-liku hari bersama, saling mengisi dan meyakinkan hati untuk terus bergandengan tangan menatap masa depan.'
+    },
+    {
+      chapter: 'BABAK III',
+      date: '2026',
+      title: 'Menuju Pelaminan',
+      photo: '/themes/agni-putri/couple-main.jpg',
+      description: 'Dengan penuh rasa syukur dan doa restu kedua orang tua, kami mengikat janji suci pernikahan untuk melangkah bersama selamanya.'
+    }
+  ] : [
     {
       chapter: 'BABAK I',
       date: '2019',
@@ -1844,7 +1866,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             {/* Cinematic Background Image with Dark Royal Vignette */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
               <img 
-                src={couplePhoto || "/photos/photo-1.jpg"} 
+                src={(isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : couplePhoto) || "/photos/photo-1.jpg"} 
                 alt={`Save The Date - ${groomName} & ${brideName}`} 
                 className="w-full h-full object-cover object-[center_30%] filter brightness-[0.42] contrast-[1.08] scale-105"
               />
@@ -2591,9 +2613,9 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           {/* 3-Photo Background Slideshow Track with Smooth Crossfade */}
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             {[
-              couple?.cover_photo_url || "/photos/photo-7.jpg",
-              "/photos/photo-3.jpg",
-              "/photos/photo-1.jpg"
+              isAgni ? '/themes/agni-putri/couple-main.jpg' : (couple?.cover_photo_url || "/photos/photo-7.jpg"),
+              isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : "/photos/photo-3.jpg",
+              isAgni ? '/themes/agni-putri/couple-retro.jpg' : "/photos/photo-1.jpg"
             ].map((photoUrl, idx) => (
               <div 
                 key={idx}
@@ -2821,10 +2843,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {/* Row 2: 2 Highlight Moments */}
               <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
                 <div 
-                  onClick={() => setSelectedPhoto('/photos/photo-1.jpg')} 
+                  onClick={() => setSelectedPhoto(isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : '/photos/photo-1.jpg')} 
                   className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <img src="/photos/photo-1.jpg" alt="Moment 1" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <img src={isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : '/photos/photo-1.jpg'} alt="Moment 1" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
                   <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
                   <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                     <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -2833,10 +2855,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                   </div>
                 </div>
                 <div 
-                  onClick={() => setSelectedPhoto('/photos/photo-4.jpg')} 
+                  onClick={() => setSelectedPhoto(isAgni ? '/themes/agni-putri/couple-retro.jpg' : '/photos/photo-4.jpg')} 
                   className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <img src="/photos/photo-4.jpg" alt="Moment 2" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <img src={isAgni ? '/themes/agni-putri/couple-retro.jpg' : '/photos/photo-4.jpg'} alt="Moment 2" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
                   <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
                   <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                     <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -2848,7 +2870,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
               {/* Row 3: 3 Candid Moments */}
               <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
-                {['/photos/photo-5.jpg', '/photos/photo-6.jpg', '/photos/photo-7.jpg'].map((photoSrc, idx) => (
+                {(isAgni 
+                  ? ['/themes/agni-putri/couple-artistic.jpg', '/themes/agni-putri/couple-main.jpg', '/themes/agni-putri/couple-arch.jpg'] 
+                  : ['/photos/photo-5.jpg', '/photos/photo-6.jpg', '/photos/photo-7.jpg']
+                ).map((photoSrc, idx) => (
                   <div 
                     key={idx}
                     onClick={() => setSelectedPhoto(photoSrc)} 
@@ -2867,7 +2892,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
               {/* Row 4: 2 Romantic Moments */}
               <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
-                {['/photos/photo-8.jpg', '/photos/photo-9.jpg'].map((photoSrc, idx) => (
+                {(isAgni 
+                  ? ['/themes/agni-putri/groom-agni.jpg', '/themes/agni-putri/bride-putri.jpg'] 
+                  : ['/photos/photo-8.jpg', '/photos/photo-9.jpg']
+                ).map((photoSrc, idx) => (
                   <div 
                     key={idx}
                     onClick={() => setSelectedPhoto(photoSrc)} 
@@ -3727,7 +3755,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </h3>
 
             <div className="aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#d4af37]/50 relative shadow-2xl">
-              <img src="/photos/photo-8.jpg" alt="Photobooth Frame" className="w-full h-full object-cover object-center" />
+              <img src={isAgni ? '/themes/agni-putri/couple-arch.jpg' : '/photos/photo-8.jpg'} alt="Photobooth Frame" className="w-full h-full object-cover object-center" />
               <div className="absolute inset-0 border-2 border-[#d4af37]/40 rounded-2xl pointer-events-none" />
               <div className="absolute bottom-0 inset-x-0 text-center pointer-events-none bg-gradient-to-t from-black/90 via-black/60 to-transparent py-2.5">
                 <p 
