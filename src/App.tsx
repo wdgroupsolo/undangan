@@ -7,6 +7,8 @@ import { AppRoutes } from './routes/AppRoutes';
 import { queryClient } from './lib/queryClient';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
+import { ScrollToTop } from './components/ScrollToTop';
+
 function App() {
   return (
     <ErrorBoundary>
@@ -14,6 +16,7 @@ function App() {
         <AuthProvider>
           <ToastProvider>
             <BrowserRouter>
+              <ScrollToTop />
               <AppRoutes />
             </BrowserRouter>
           </ToastProvider>

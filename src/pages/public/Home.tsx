@@ -272,6 +272,10 @@ export const Home: React.FC = () => {
     };
   }, [displayThemes]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -317,10 +321,20 @@ export const Home: React.FC = () => {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);
   const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const chatMessagesEndRef = useRef<HTMLDivElement | null>(null);
+  const isInitialChatMount = useRef(true);
+  const chatMessagesContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isInitialChatMount.current) {
+      isInitialChatMount.current = false;
+      return;
+    }
+    if (chatMessagesContainerRef.current) {
+      chatMessagesContainerRef.current.scrollTo({
+        top: chatMessagesContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [chatMessages, isTyping]);
 
   const handleAskQuestion = (questionText: string, customAnswer?: string) => {
@@ -1418,7 +1432,10 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Chat Messages Log Area */}
-            <div className="h-[360px] sm:h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fbf9f6]/80 text-xs sm:text-sm">
+            <div
+              ref={chatMessagesContainerRef}
+              className="h-[360px] sm:h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fbf9f6]/80 text-xs sm:text-sm"
+            >
               <div className="text-center my-1">
                 <span className="text-[10px] font-medium text-stone-400 bg-stone-100 px-3 py-1 rounded-full">
                   {t('faqConvoStart') as string}
@@ -1492,7 +1509,7 @@ export const Home: React.FC = () => {
                 </div>
               )}
 
-              <div ref={chatMessagesEndRef} />
+              <div />
             </div>
 
             {/* Quick Questions Chips Bar */}
