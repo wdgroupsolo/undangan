@@ -1382,18 +1382,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 filter: blur(0px) brightness(1);
               }
             }
-            @keyframes royal-crown-emerge {
-              0% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-22px) scale(0.8);
-                filter: drop-shadow(0 0 0 rgba(212,175,55,0));
-              }
-              100% {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0) scale(1);
-                filter: drop-shadow(0 4px 18px rgba(212,175,55,0.7));
-              }
-            }
             @keyframes royal-wayang-in-left {
               0% {
                 opacity: 0;
@@ -1469,20 +1457,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               animation: 'royal-frame-fade-in 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards'
             } : { opacity: 0 }}
           >
-            {/* Crown At Top Peak of Baroque Frame */}
-            <div 
-              className="absolute -top-[7.5%] sm:-top-[8.5%] left-1/2 -translate-x-1/2 z-30 pointer-events-none w-22 sm:w-26 drop-shadow-[0_4px_16px_rgba(212,175,55,0.7)]"
-              style={hasTriggeredEntrance ? {
-                animation: 'royal-crown-emerge 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both'
-              } : { opacity: 0 }}
-            >
-              <img 
-                src="/themes/royal-crown-luxury.png" 
-                alt="Mahkota Keraton" 
-                className="w-full h-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,175,55,0.7)]" 
-              />
-            </div>
-
             {/* Foto Mempelai dalam Kubah Lengkung (HD Crystal Clear) */}
             <div className="absolute top-[22%] left-[17%] right-[17%] bottom-[14%] rounded-t-[100px] overflow-hidden z-10 bg-[#160f09] shadow-inner">
               <img 
