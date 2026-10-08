@@ -1237,8 +1237,15 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     return `${cleanStart} WIB - ${cleanEnd}`;
   };
 
-  const akadEvt = events && events.length > 0 ? events[0] : null;
-  const resepsiEvt = events && events.length > 1 ? events[1] : null;
+  // Determine available events and visibility
+  const explicitAkad = events?.find((e: any) => e.name?.toLowerCase().includes('akad'));
+  const explicitResepsi = events?.find((e: any) => e.name?.toLowerCase().includes('resepsi'));
+
+  const showAkad = invitation?.settings?.show_akad !== false && (isAgni ? false : (!!explicitAkad || (events && events.length > 1)));
+  const showResepsi = invitation?.settings?.show_resepsi !== false;
+
+  const akadEvt = showAkad ? (explicitAkad || (events && events.length > 0 ? events[0] : null)) : null;
+  const resepsiEvt = explicitResepsi || (events && events.length === 1 && !explicitAkad ? events[0] : (events && events.length > 1 ? events[1] : null)) || events?.[0];
 
   const akadTitle = akadEvt?.name || 'AKAD NIKAH';
   const akadDateFormatted = formatEventDateID(akadEvt?.date || akadEvt?.event_date, 'SABTU, 25 OKTOBER 2026');
@@ -1254,14 +1261,19 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const resepsiTitleLines = rawResepsiTitle.toLowerCase().includes('resepsi') && rawResepsiTitle.toLowerCase().includes('pernikahan')
     ? ['RESEPSI', 'PERNIKAHAN']
     : [rawResepsiTitle];
-  const resepsiDateFormatted = formatEventDateID(resepsiEvt?.date || resepsiEvt?.event_date, 'SABTU, 25 OKTOBER 2026');
-  const resepsiTimeFormatted = formatEventTimeID(resepsiEvt?.start_time, resepsiEvt?.end_time, '10.00 WIB - Selesai');
-  const resepsiVenueTitle = resepsiEvt?.venue_name || resepsiEvt?.location || 'KEDIAMAN MEMPELAI WANITA';
-  const resepsiVenueAddress = resepsiEvt?.address || resepsiEvt?.location || 'Jl Harapan Dusun X Tanjung Morawa';
-  const resepsiMapUrl = resepsiEvt?.maps_url || resepsiEvt?.map_url || (resepsiEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(resepsiEvt.location + ' ' + (resepsiEvt.address || ''))}` : 'https://maps.google.com/?q=Tanjung+Morawa');
+  const resepsiDateFormatted = formatEventDateID(resepsiEvt?.date || resepsiEvt?.event_date, 'MINGGU, 25 OKTOBER 2026');
+  const resepsiTimeFormatted = formatEventTimeID(resepsiEvt?.start_time, resepsiEvt?.end_time, '10.00 WIB - 20.00 WIB');
+  const resepsiVenueTitle = resepsiEvt?.venue_name || resepsiEvt?.location || (isAgni ? 'RUMAH MEMPELAI LAKI-LAKI' : 'KEDIAMAN MEMPELAI WANITA');
+  const resepsiVenueAddress = resepsiEvt?.address || resepsiEvt?.location || (isAgni ? 'Dk. Talang, RT 03, RW 01, Selotinatah, Ngariboyo, Magetan, Jawa Timur' : 'Jl Harapan Dusun X Tanjung Morawa');
+  const resepsiMapUrl = resepsiEvt?.maps_url || resepsiEvt?.map_url || (resepsiEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(resepsiEvt.location + ' ' + (resepsiEvt.address || ''))}` : 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic');
   const resepsiRawDate = resepsiEvt?.date ? resepsiEvt.date.split('T')[0] : (resepsiEvt?.event_date ? resepsiEvt.event_date.split('T')[0] : '2026-10-25');
   const resepsiRawStart = resepsiEvt?.start_time || '10:00';
-  const resepsiRawEnd = resepsiEvt?.end_time || '14:00';
+  const resepsiRawEnd = resepsiEvt?.end_time || '20:00';
+
+  // Section visibility controls
+  const showLiveStreaming = invitation?.settings?.show_live_streaming !== false && !isAgni;
+  const showLoveStory = invitation?.settings?.show_love_story !== false && !isAgni;
+
 
   return (
     <div className="relative min-h-screen bg-[#100d0b] text-[#FBF7F0] font-sans overflow-x-hidden selection:bg-amber-400 selection:text-stone-950">
@@ -1307,7 +1319,11 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           <p 
             className="text-xl xl:text-2xl text-[#f3da9f] font-serif font-light drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-6"
           >
-            Sabtu, 28 November 2026
+            {isAgni 
+              ? 'Minggu, 25 Oktober 2026'
+              : (events?.[0]?.event_date 
+                ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                : 'Sabtu, 28 November 2026')}
           </p>
 
           <p className="text-xs xl:text-sm text-stone-300/90 max-w-md mb-8 leading-relaxed font-serif italic">
@@ -2092,251 +2108,258 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           <div className="relative z-10 w-full flex flex-col items-center px-3 sm:px-4 space-y-6 sm:space-y-8">
             
             {/* Card 1: Akad Nikah */}
-            <div className="relative w-full max-w-[390px] sm:max-w-[420px] rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#221811]/98 via-[#150f0a]/98 to-[#0a0704] border-2 border-[#d4af37]/50 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex flex-col items-center text-center backdrop-blur-md relative overflow-hidden group">
-              {/* Inner Royal Hairline Border */}
-              <div className="absolute inset-2 sm:inset-2.5 rounded-[22px] sm:rounded-[26px] border border-[#d4af37]/30 pointer-events-none z-10" />
+            {showAkad && akadEvt && (
+              <div className="relative w-full max-w-[390px] sm:max-w-[420px] rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#221811]/98 via-[#150f0a]/98 to-[#0a0704] border-2 border-[#d4af37]/50 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex flex-col items-center text-center backdrop-blur-md relative overflow-hidden group">
+                {/* Inner Royal Hairline Border */}
+                <div className="absolute inset-2 sm:inset-2.5 rounded-[22px] sm:rounded-[26px] border border-[#d4af37]/30 pointer-events-none z-10" />
 
-              {/* Corner Filigrees */}
-              <div className="absolute top-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
-              </div>
-              <div className="absolute top-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
-              </div>
-              <div className="absolute bottom-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-y-100" />
-              </div>
-              <div className="absolute bottom-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100 -scale-y-100" />
-              </div>
+                {/* Corner Filigrees */}
+                <div className="absolute top-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                  <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
+                </div>
+                <div className="absolute top-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                  <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
+                </div>
+                <div className="absolute bottom-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                  <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-y-100" />
+                </div>
+                <div className="absolute bottom-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                  <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100 -scale-y-100" />
+                </div>
 
-              {/* Top Accent Divider */}
-              <div className="flex items-center gap-2 mb-2 relative z-20">
-                <div className="w-10 h-px bg-gradient-to-r from-transparent to-[#d4af37]/80" />
-                <span className="text-[#ffd778] text-xs filter drop-shadow-[0_0_6px_rgba(212,175,55,0.8)]">❦</span>
-                <div className="w-10 h-px bg-gradient-to-l from-transparent to-[#d4af37]/80" />
-              </div>
+                {/* Top Accent Divider */}
+                <div className="flex items-center gap-2 mb-2 relative z-20">
+                  <div className="w-10 h-px bg-gradient-to-r from-transparent to-[#d4af37]/80" />
+                  <span className="text-[#ffd778] text-xs filter drop-shadow-[0_0_6px_rgba(212,175,55,0.8)]">❦</span>
+                  <div className="w-10 h-px bg-gradient-to-l from-transparent to-[#d4af37]/80" />
+                </div>
 
-              {/* Title: AKAD NIKAH */}
-              <h3 
-                className="font-serif text-2xl sm:text-3xl font-bold tracking-[0.15em] text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7CE] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_12px_rgba(212,175,55,0.45)] mb-1 relative z-20 uppercase"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {akadTitle}
-              </h3>
+                {/* Title: AKAD NIKAH */}
+                <h3 
+                  className="font-serif text-2xl sm:text-3xl font-bold tracking-[0.15em] text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7CE] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_12px_rgba(212,175,55,0.45)] mb-1 relative z-20 uppercase"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {akadTitle}
+                </h3>
 
-              {/* Keraton Diamond Divider */}
-              <div className="flex items-center justify-center gap-2.5 w-full max-w-[180px] my-2 relative z-20">
-                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-                <span className="text-[#ffd778] text-[9px] filter drop-shadow-[0_0_8px_rgba(212,175,55,0.9)]">✦ ❖ ✦</span>
-                <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-              </div>
+                {/* Keraton Diamond Divider */}
+                <div className="flex items-center justify-center gap-2.5 w-full max-w-[180px] my-2 relative z-20">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                  <span className="text-[#ffd778] text-[9px] filter drop-shadow-[0_0_8px_rgba(212,175,55,0.9)]">✦ ❖ ✦</span>
+                  <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                </div>
 
-              {/* Date & Time Box */}
-              <div className="w-full py-3 px-4 rounded-2xl border border-[#d4af37]/45 bg-gradient-to-b from-[#2a1d12]/75 via-[#1b1209]/80 to-[#100b06]/90 flex flex-col items-center my-3 shadow-[0_4px_16px_rgba(0,0,0,0.5)] relative z-20">
-                <div className="flex items-center gap-2 mb-1">
-                  <CalendarIcon className="w-4 h-4 text-[#ffd778]" />
-                  <span 
-                    className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase"
+                {/* Date & Time Box */}
+                <div className="w-full py-3 px-4 rounded-2xl border border-[#d4af37]/45 bg-gradient-to-b from-[#2a1d12]/75 via-[#1b1209]/80 to-[#100b06]/90 flex flex-col items-center my-3 shadow-[0_4px_16px_rgba(0,0,0,0.5)] relative z-20">
+                  <div className="flex items-center gap-2 mb-1">
+                    <CalendarIcon className="w-4 h-4 text-[#ffd778]" />
+                    <span 
+                      className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {akadDateFormatted}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-[#ffd778]/80" />
+                    <span className="text-xs sm:text-[13px] font-serif text-[#D8D2C6] tracking-wide">
+                      {akadTimeFormatted}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Venue Information */}
+                <div className="space-y-1.5 max-w-[280px] mx-auto my-2 text-center relative z-20">
+                  <div className="w-10 h-10 rounded-full border border-[#d4af37]/60 bg-gradient-to-b from-[#3a2514] via-[#22160c] to-[#120c07] flex items-center justify-center mx-auto mb-2 shadow-[0_0_14px_rgba(212,175,55,0.45)]">
+                    <MapPin className="w-4 h-4 text-[#ffd778]" />
+                  </div>
+                  <h4 
+                    className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase leading-tight" 
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
-                    {akadDateFormatted}
-                  </span>
+                    {akadVenueTitle}
+                  </h4>
+                  <p className="text-xs sm:text-[13px] text-[#D8D2C6] font-serif leading-relaxed italic">
+                    {akadVenueAddress}
+                  </p>
+                  {akadEvt?.description && (
+                    <div className="mt-2.5 px-3 py-1.5 rounded-xl border border-[#d4af37]/35 bg-[#25170d]/85 text-[#ffd778] text-[11px] font-serif tracking-wide shadow-sm">
+                      {akadEvt.description}
+                    </div>
+                  )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5 text-[#ffd778]/80" />
-                  <span className="text-xs sm:text-[13px] font-serif text-[#D8D2C6] tracking-wide">
-                    {akadTimeFormatted}
-                  </span>
+
+                {/* Dual Action Buttons (Google Maps & Calendar) */}
+                <div className="w-full flex items-center justify-center gap-3 pt-3 relative z-20">
+                  <a
+                    href={akadMapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 max-w-[170px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/75 hover:border-[#ffd778] bg-gradient-to-r from-[#2a1d12]/95 via-[#3a2717]/95 to-[#2a1d12]/95 hover:from-[#d4af37]/30 hover:to-[#ecc460]/20 text-[#f5dfa8] hover:text-white transition-all duration-300 text-[11px] tracking-[0.2em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] group cursor-pointer active:scale-95"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    <MapPin className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
+                    <span className="font-semibold tracking-[0.18em]">GOOGLE MAPS</span>
+                  </a>
+
+                  <button
+                    onClick={() => {
+                      setSelectedCalendarEvent({
+                        title: `Akad Nikah ${groomName} & ${brideName}`,
+                        description: `Pernikahan suci ${groomFullName} dan ${brideFullName}.`,
+                        location: akadVenueAddress,
+                        eventDate: akadRawDate,
+                        startTime: akadRawStart,
+                        endTime: akadRawEnd,
+                      });
+                      setIsCalendarModalOpen(true);
+                    }}
+                    className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/50 hover:border-[#ffd778] bg-gradient-to-r from-[#1f1610] to-[#120c07] hover:bg-[#d4af37]/20 text-[#D8D2C6] hover:text-white transition-all duration-300 text-[11px] tracking-[0.18em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] cursor-pointer active:scale-95 group"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    title="Simpan Kalender"
+                  >
+                    <CalendarIcon className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
+                    <span className="font-semibold tracking-[0.15em]">KALENDER</span>
+                  </button>
                 </div>
               </div>
-
-              {/* Venue Information */}
-              <div className="space-y-1.5 max-w-[280px] mx-auto my-2 text-center relative z-20">
-                <div className="w-10 h-10 rounded-full border border-[#d4af37]/60 bg-gradient-to-b from-[#3a2514] via-[#22160c] to-[#120c07] flex items-center justify-center mx-auto mb-2 shadow-[0_0_14px_rgba(212,175,55,0.45)]">
-                  <MapPin className="w-4 h-4 text-[#ffd778]" />
-                </div>
-                <h4 
-                  className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase leading-tight" 
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
-                  {akadVenueTitle}
-                </h4>
-                <p className="text-xs sm:text-[13px] text-[#D8D2C6] font-serif leading-relaxed italic">
-                  {akadVenueAddress}
-                </p>
-                {akadEvt?.description && (
-                  <div className="mt-2.5 px-3 py-1.5 rounded-xl border border-[#d4af37]/35 bg-[#25170d]/85 text-[#ffd778] text-[11px] font-serif tracking-wide shadow-sm">
-                    {akadEvt.description}
-                  </div>
-                )}
-              </div>
-
-              {/* Dual Action Buttons (Google Maps & Calendar) */}
-              <div className="w-full flex items-center justify-center gap-3 pt-3 relative z-20">
-                <a
-                  href={akadMapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 max-w-[170px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/75 hover:border-[#ffd778] bg-gradient-to-r from-[#2a1d12]/95 via-[#3a2717]/95 to-[#2a1d12]/95 hover:from-[#d4af37]/30 hover:to-[#ecc460]/20 text-[#f5dfa8] hover:text-white transition-all duration-300 text-[11px] tracking-[0.2em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] group cursor-pointer active:scale-95"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
-                  <MapPin className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
-                  <span className="font-semibold tracking-[0.18em]">GOOGLE MAPS</span>
-                </a>
-
-                <button
-                  onClick={() => {
-                    setSelectedCalendarEvent({
-                      title: `Akad Nikah ${groomName} & ${brideName}`,
-                      description: `Pernikahan suci ${groomFullName} dan ${brideFullName}.`,
-                      location: akadVenueAddress,
-                      eventDate: akadRawDate,
-                      startTime: akadRawStart,
-                      endTime: akadRawEnd,
-                    });
-                    setIsCalendarModalOpen(true);
-                  }}
-                  className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/50 hover:border-[#ffd778] bg-gradient-to-r from-[#1f1610] to-[#120c07] hover:bg-[#d4af37]/20 text-[#D8D2C6] hover:text-white transition-all duration-300 text-[11px] tracking-[0.18em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] cursor-pointer active:scale-95 group"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  title="Simpan Kalender"
-                >
-                  <CalendarIcon className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
-                  <span className="font-semibold tracking-[0.15em]">KALENDER</span>
-                </button>
-              </div>
-            </div>
+            )}
 
             {/* Sacred Royal Connector Medallion */}
-            <div className="flex items-center justify-center gap-3.5 my-2 relative z-10">
-              <div className="w-16 sm:w-28 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-              <div className="w-12 h-12 rounded-full bg-gradient-to-b from-[#3a2514] via-[#1a1108] to-[#0c0804] border-2 border-[#d4af37] flex items-center justify-center relative shadow-[0_0_20px_rgba(212,175,55,0.45)]">
-                <span className="font-serif italic text-lg text-transparent bg-clip-text bg-gradient-to-b from-[#FFF5C2] to-[#ECC460]">❖</span>
+            {showAkad && akadEvt && showResepsi && resepsiEvt && (
+              <div className="flex items-center justify-center gap-3.5 my-2 relative z-10">
+                <div className="w-16 sm:w-28 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-b from-[#3a2514] via-[#1a1108] to-[#0c0804] border-2 border-[#d4af37] flex items-center justify-center relative shadow-[0_0_20px_rgba(212,175,55,0.45)]">
+                  <span className="font-serif italic text-lg text-transparent bg-clip-text bg-gradient-to-b from-[#FFF5C2] to-[#ECC460]">❖</span>
+                </div>
+                <div className="w-16 sm:w-28 h-px bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
               </div>
-              <div className="w-16 sm:w-28 h-px bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-            </div>
+            )}
 
             {/* Card 2: Resepsi Pernikahan */}
-            <div className="relative w-full max-w-[390px] sm:max-w-[420px] rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#221811]/98 via-[#150f0a]/98 to-[#0a0704] border-2 border-[#d4af37]/50 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex flex-col items-center text-center backdrop-blur-md relative overflow-hidden group">
-              {/* Inner Royal Hairline Border */}
-              <div className="absolute inset-2 sm:inset-2.5 rounded-[22px] sm:rounded-[26px] border border-[#d4af37]/30 pointer-events-none z-10" />
+            {showResepsi && resepsiEvt && (
+              <div className="relative w-full max-w-[390px] sm:max-w-[420px] rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#221811]/98 via-[#150f0a]/98 to-[#0a0704] border-2 border-[#d4af37]/50 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex flex-col items-center text-center backdrop-blur-md relative overflow-hidden group">
+                {/* Inner Royal Hairline Border */}
+                <div className="absolute inset-2 sm:inset-2.5 rounded-[22px] sm:rounded-[26px] border border-[#d4af37]/30 pointer-events-none z-10" />
 
-              {/* Corner Filigrees */}
-              <div className="absolute top-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
-              </div>
-              <div className="absolute top-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
-              </div>
-              <div className="absolute bottom-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-y-100" />
-              </div>
-              <div className="absolute bottom-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100 -scale-y-100" />
-              </div>
+                {/* Corner Filigrees */}
+                <div className="absolute top-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                  <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
+                </div>
+                <div className="absolute top-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                  <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
+                </div>
+                <div className="absolute bottom-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                  <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-y-100" />
+                </div>
+                <div className="absolute bottom-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                  <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100 -scale-y-100" />
+                </div>
 
-              {/* Top Accent Divider */}
-              <div className="flex items-center gap-2 mb-2 relative z-20">
-                <div className="w-10 h-px bg-gradient-to-r from-transparent to-[#d4af37]/80" />
-                <span className="text-[#ffd778] text-xs filter drop-shadow-[0_0_6px_rgba(212,175,55,0.8)]">❦</span>
-                <div className="w-10 h-px bg-gradient-to-l from-transparent to-[#d4af37]/80" />
-              </div>
+                {/* Top Accent Divider */}
+                <div className="flex items-center gap-2 mb-2 relative z-20">
+                  <div className="w-10 h-px bg-gradient-to-r from-transparent to-[#d4af37]/80" />
+                  <span className="text-[#ffd778] text-xs filter drop-shadow-[0_0_6px_rgba(212,175,55,0.8)]">❦</span>
+                  <div className="w-10 h-px bg-gradient-to-l from-transparent to-[#d4af37]/80" />
+                </div>
 
-              {/* Title: RESEPSI PERNIKAHAN */}
-              <h3 
-                className="font-serif text-2xl sm:text-3xl font-bold tracking-[0.15em] text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7CE] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_12px_rgba(212,175,55,0.45)] mb-1 relative z-20 uppercase"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {resepsiTitleLines[0]}
-                {resepsiTitleLines[1] && (
-                  <>
-                    <br />
-                    {resepsiTitleLines[1]}
-                  </>
-                )}
-              </h3>
+                {/* Title: RESEPSI PERNIKAHAN */}
+                <h3 
+                  className="font-serif text-2xl sm:text-3xl font-bold tracking-[0.15em] text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7CE] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_12px_rgba(212,175,55,0.45)] mb-1 relative z-20 uppercase"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {resepsiTitleLines[0]}
+                  {resepsiTitleLines[1] && (
+                    <>
+                      <br />
+                      {resepsiTitleLines[1]}
+                    </>
+                  )}
+                </h3>
 
-              {/* Keraton Diamond Divider */}
-              <div className="flex items-center justify-center gap-2.5 w-full max-w-[180px] my-2 relative z-20">
-                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-                <span className="text-[#ffd778] text-[9px] filter drop-shadow-[0_0_8px_rgba(212,175,55,0.9)]">✦ ❖ ✦</span>
-                <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
-              </div>
+                {/* Keraton Diamond Divider */}
+                <div className="flex items-center justify-center gap-2.5 w-full max-w-[180px] my-2 relative z-20">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                  <span className="text-[#ffd778] text-[9px] filter drop-shadow-[0_0_8px_rgba(212,175,55,0.9)]">✦ ❖ ✦</span>
+                  <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                </div>
 
-              {/* Date & Time Box */}
-              <div className="w-full py-3 px-4 rounded-2xl border border-[#d4af37]/45 bg-gradient-to-b from-[#2a1d12]/75 via-[#1b1209]/80 to-[#100b06]/90 flex flex-col items-center my-3 shadow-[0_4px_16px_rgba(0,0,0,0.5)] relative z-20">
-                <div className="flex items-center gap-2 mb-1">
-                  <CalendarIcon className="w-4 h-4 text-[#ffd778]" />
-                  <span 
-                    className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase"
+                {/* Date & Time Box */}
+                <div className="w-full py-3 px-4 rounded-2xl border border-[#d4af37]/45 bg-gradient-to-b from-[#2a1d12]/75 via-[#1b1209]/80 to-[#100b06]/90 flex flex-col items-center my-3 shadow-[0_4px_16px_rgba(0,0,0,0.5)] relative z-20">
+                  <div className="flex items-center gap-2 mb-1">
+                    <CalendarIcon className="w-4 h-4 text-[#ffd778]" />
+                    <span 
+                      className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {resepsiDateFormatted}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-[#ffd778]/80" />
+                    <span className="text-xs sm:text-[13px] font-serif text-[#D8D2C6] tracking-wide">
+                      {resepsiTimeFormatted}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Venue Information */}
+                <div className="space-y-1.5 max-w-[280px] mx-auto my-2 text-center relative z-20">
+                  <div className="w-10 h-10 rounded-full border border-[#d4af37]/60 bg-gradient-to-b from-[#3a2514] via-[#22160c] to-[#120c07] flex items-center justify-center mx-auto mb-2 shadow-[0_0_14px_rgba(212,175,55,0.45)]">
+                    <MapPin className="w-4 h-4 text-[#ffd778]" />
+                  </div>
+                  <h4 
+                    className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase leading-tight" 
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
-                    {resepsiDateFormatted}
-                  </span>
+                    {resepsiVenueTitle}
+                  </h4>
+                  <p className="text-xs sm:text-[13px] text-[#D8D2C6] font-serif leading-relaxed italic">
+                    {resepsiVenueAddress}
+                  </p>
+                  {resepsiEvt?.description && (
+                    <div className="mt-2.5 px-3 py-1.5 rounded-xl border border-[#d4af37]/40 bg-[#25170d]/90 text-[#ffd778] text-[11px] sm:text-xs font-serif tracking-wide shadow-sm">
+                      {resepsiEvt.description}
+                    </div>
+                  )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5 text-[#ffd778]/80" />
-                  <span className="text-xs sm:text-[13px] font-serif text-[#D8D2C6] tracking-wide">
-                    {resepsiTimeFormatted}
-                  </span>
+
+                {/* Dual Action Buttons (Google Maps & Calendar) */}
+                <div className="w-full flex items-center justify-center gap-3 pt-3 relative z-20">
+                  <a
+                    href={resepsiMapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 max-w-[170px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/75 hover:border-[#ffd778] bg-gradient-to-r from-[#2a1d12]/95 via-[#3a2717]/95 to-[#2a1d12]/95 hover:from-[#d4af37]/30 hover:to-[#ecc460]/20 text-[#f5dfa8] hover:text-white transition-all duration-300 text-[11px] tracking-[0.2em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] group cursor-pointer active:scale-95"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    <MapPin className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
+                    <span className="font-semibold tracking-[0.18em]">GOOGLE MAPS</span>
+                  </a>
+
+                  <button
+                    onClick={() => {
+                      setSelectedCalendarEvent({
+                        title: `Resepsi Pernikahan ${groomName} & ${brideName}`,
+                        description: `Resepsi pernikahan ${groomFullName} dan ${brideFullName}.`,
+                        location: resepsiVenueAddress,
+                        eventDate: resepsiRawDate,
+                        startTime: resepsiRawStart,
+                        endTime: resepsiRawEnd,
+                      });
+                      setIsCalendarModalOpen(true);
+                    }}
+                    className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/50 hover:border-[#ffd778] bg-gradient-to-r from-[#1f1610] to-[#120c07] hover:bg-[#d4af37]/20 text-[#D8D2C6] hover:text-white transition-all duration-300 text-[11px] tracking-[0.18em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] cursor-pointer active:scale-95 group"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    title="Simpan Kalender"
+                  >
+                    <CalendarIcon className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
+                    <span className="font-semibold tracking-[0.15em]">KALENDER</span>
+                  </button>
                 </div>
               </div>
+            )}
 
-              {/* Venue Information */}
-              <div className="space-y-1.5 max-w-[280px] mx-auto my-2 text-center relative z-20">
-                <div className="w-10 h-10 rounded-full border border-[#d4af37]/60 bg-gradient-to-b from-[#3a2514] via-[#22160c] to-[#120c07] flex items-center justify-center mx-auto mb-2 shadow-[0_0_14px_rgba(212,175,55,0.45)]">
-                  <MapPin className="w-4 h-4 text-[#ffd778]" />
-                </div>
-                <h4 
-                  className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase leading-tight" 
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
-                  {resepsiVenueTitle}
-                </h4>
-                <p className="text-xs sm:text-[13px] text-[#D8D2C6] font-serif leading-relaxed italic">
-                  {resepsiVenueAddress}
-                </p>
-                {resepsiEvt?.description && (
-                  <div className="mt-2.5 px-3 py-1.5 rounded-xl border border-[#d4af37]/40 bg-[#25170d]/90 text-[#ffd778] text-[11px] sm:text-xs font-serif tracking-wide shadow-sm">
-                    {resepsiEvt.description}
-                  </div>
-                )}
-              </div>
-
-              {/* Dual Action Buttons (Google Maps & Calendar) */}
-              <div className="w-full flex items-center justify-center gap-3 pt-3 relative z-20">
-                <a
-                  href={resepsiMapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 max-w-[170px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/75 hover:border-[#ffd778] bg-gradient-to-r from-[#2a1d12]/95 via-[#3a2717]/95 to-[#2a1d12]/95 hover:from-[#d4af37]/30 hover:to-[#ecc460]/20 text-[#f5dfa8] hover:text-white transition-all duration-300 text-[11px] tracking-[0.2em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] group cursor-pointer active:scale-95"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
-                  <MapPin className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
-                  <span className="font-semibold tracking-[0.18em]">GOOGLE MAPS</span>
-                </a>
-
-                <button
-                  onClick={() => {
-                    setSelectedCalendarEvent({
-                      title: `Resepsi Pernikahan ${groomName} & ${brideName}`,
-                      description: `Resepsi pernikahan ${groomFullName} dan ${brideFullName}.`,
-                      location: resepsiVenueAddress,
-                      eventDate: resepsiRawDate,
-                      startTime: resepsiRawStart,
-                      endTime: resepsiRawEnd,
-                    });
-                    setIsCalendarModalOpen(true);
-                  }}
-                  className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/50 hover:border-[#ffd778] bg-gradient-to-r from-[#1f1610] to-[#120c07] hover:bg-[#d4af37]/20 text-[#D8D2C6] hover:text-white transition-all duration-300 text-[11px] tracking-[0.18em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] cursor-pointer active:scale-95 group"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  title="Simpan Kalender"
-                >
-                  <CalendarIcon className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
-                  <span className="font-semibold tracking-[0.15em]">KALENDER</span>
-                </button>
-              </div>
-            </div>
 
             {/* Extra Events (if any) */}
             {events.length > 2 && events.slice(2).map((evt: any, idx: number) => {
@@ -2421,140 +2444,142 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         {/* 6. LIVE STREAMING (ROYAL PALACE BROADCAST SHOWCASE)  */}
         {/* Pixel-Perfect Proportions & Safe-Zone Alignment      */}
         {/* ==================================================== */}
-        <section id="live-streaming" className="relative w-full h-[100dvh] min-h-[640px] flex flex-col justify-between items-center overflow-hidden bg-[#080503] select-none border-t border-amber-500/20 px-4 py-3 sm:py-5">
-          
-          {/* Ambient Royal Twilight Pendopo Texture & Lighting */}
-          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-            <img 
-              src="/themes/royal-wayang-bg.jpg" 
-              alt="Royal Background" 
-              className="w-full h-full object-cover object-center filter brightness-[0.32] contrast-[1.15] blur-[0.5px] scale-105"
-            />
-            {/* Deep Vignette with Golden Horizon Ambient Light */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(212,175,55,0.20)_0%,_rgba(8,5,3,0.88)_55%,_#040302_100%)]" />
-          </div>
-
-          <GoldenSparkleDust />
-
-          {/* Outer Royal Screen Framing Hairline */}
-          <div className="absolute inset-3 sm:inset-5 rounded-[28px] sm:rounded-[32px] border border-[#d4af37]/35 pointer-events-none z-15" />
-
-          {/* Top Corner Peony Bouquets (Compact, Clear of Music Disc Button) */}
-          <div className="absolute top-1 left-1 w-16 sm:w-20 pointer-events-none z-20 opacity-80 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
-            <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
-          </div>
-          <div className="absolute top-1 right-1 w-16 sm:w-20 pointer-events-none z-20 opacity-80 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
-            <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
-          </div>
-
-          {/* Top Clearance Spacer */}
-          <div className="w-full h-3 sm:h-5 pointer-events-none" />
-
-          {/* ========================================================= */}
-          {/* Central Baroque Arched Mirror Frame & Virtual Showcase    */}
-          {/* ========================================================= */}
-          <div className="relative w-[min(88vw,375px)] aspect-[896/1200] max-h-[70vh] flex items-center justify-center z-20 my-auto">
+        {showLiveStreaming && (
+          <section id="live-streaming" className="relative w-full h-[100dvh] min-h-[640px] flex flex-col justify-between items-center overflow-hidden bg-[#080503] select-none border-t border-amber-500/20 px-4 py-3 sm:py-5">
             
-            {/* 1. Inner Arched Glass Window (Calibrated strictly inside the mirror opening) */}
-            <div className="absolute inset-x-[18.5%] top-[25.5%] bottom-[16.5%] rounded-t-[80px] sm:rounded-t-[100px] rounded-b-[14px] bg-gradient-to-b from-[#22140b]/94 via-[#130b06]/96 to-[#080503]/98 border border-[#d4af37]/35 shadow-[inset_0_4px_24px_rgba(0,0,0,0.9)] backdrop-blur-md flex flex-col items-center justify-center text-center px-4 sm:px-5 pt-4 pb-3 z-10 overflow-hidden">
-              
-              {/* Subtle Joglo Pavilion Reflection in Mirror Glass */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25 mix-blend-screen">
-                <img 
-                  src="/themes/royal-wayang-bg.jpg" 
-                  alt="" 
-                  className="w-full h-full object-cover object-[center_35%] filter brightness-[0.9] contrast-[1.3]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#180f08]/75 via-[#0e0804]/85 to-[#060402]/95" />
-              </div>
-
-              {/* Inner Fine Gold Hairline Tracing */}
-              <div className="absolute inset-1 rounded-t-[76px] sm:rounded-t-[96px] rounded-b-[10px] border border-[#d4af37]/25 pointer-events-none" />
-
-              {/* Ambient Golden Radial Light from Crown */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#d4af37]/25 via-transparent to-transparent pointer-events-none" />
-
-              {/* Top Royal Monogram Divider */}
-              <div className="flex items-center justify-center gap-1.5 mb-1.5 opacity-90 relative z-20">
-                <span className="text-[#ffd778] text-[8px] filter drop-shadow-[0_0_6px_rgba(212,175,55,0.8)]">✦ ❖ ✦</span>
-              </div>
-
-              {/* Main Heading: LIVE STREAMING (Sized to fit comfortably within the arch) */}
-              <h3 
-                className="font-serif text-[12px] sm:text-[14px] font-bold tracking-[0.24em] text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9DC] via-[#ECC460] to-[#FFEAA0] uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] leading-tight whitespace-nowrap relative z-20"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                LIVE STREAMING
-              </h3>
-
-              {/* Elegant Calligraphic Script: Live Streaming */}
-              <div 
-                className="font-serif italic text-lg sm:text-xl md:text-2xl text-[#ffe39c] font-normal tracking-wide drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] mt-0.5 mb-1 relative z-20 whitespace-nowrap"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Live Streaming
-              </div>
-
-              {/* Middle Diamond Divider */}
-              <div className="flex items-center justify-center gap-2 my-0.5 relative z-20 opacity-75">
-                <div className="w-6 h-px bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
-                <span className="text-[#ffd778] text-[7px]">❦</span>
-                <div className="w-6 h-px bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
-              </div>
-
-              {/* Invitation Subtext (Constrained width so it NEVER clips against the frame) */}
-              <p 
-                className="text-[10px] sm:text-[11px] text-[#E8DEC7] font-serif leading-relaxed italic max-w-[165px] sm:max-w-[185px] mx-auto my-1 sm:my-1.5 drop-shadow-sm relative z-20"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Pernikahan kami dapat disaksikan secara langsung melalui live streaming di bawah ini.
-              </p>
-
-              {/* Interactive Luxury Outline Button */}
-              <div className="pt-1.5 sm:pt-2 relative z-30 w-full flex justify-center">
-                <a 
-                  href={invitation?.settings?.youtube_url || invitation?.settings?.instagram_live_url || invitation?.settings?.tiktok_live_url || invitation?.settings?.zoom_url || invitation?.streaming_url || couple?.streaming_url || "https://youtube.com"} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-md border border-[#d4af37] hover:border-[#ffd778] bg-[#180f07]/90 hover:bg-[#d4af37]/25 text-[#FFF4CC] hover:text-white transition-all duration-300 text-[10px] sm:text-[11px] font-serif font-bold tracking-[0.2em] uppercase shadow-[0_4px_16px_rgba(0,0,0,0.85)] hover:shadow-[0_0_18px_rgba(212,175,55,0.6)] hover:scale-105 active:scale-95 group cursor-pointer relative overflow-hidden"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
-                  {/* Subtle Light Sweep Effect on Hover */}
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full duration-1000 bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none transition-transform" />
-                  
-                  {/* YouTube Video Play Icon */}
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-red-500 group-hover:scale-110 transition-transform">
-                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                  </svg>
-                  <span className="tracking-[0.2em] font-semibold">JOIN LIVE</span>
-                </a>
-              </div>
+            {/* Ambient Royal Twilight Pendopo Texture & Lighting */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+              <img 
+                src="/themes/royal-wayang-bg.jpg" 
+                alt="Royal Background" 
+                className="w-full h-full object-cover object-center filter brightness-[0.32] contrast-[1.15] blur-[0.5px] scale-105"
+              />
+              {/* Deep Vignette with Golden Horizon Ambient Light */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(212,175,55,0.20)_0%,_rgba(8,5,3,0.88)_55%,_#040302_100%)]" />
             </div>
 
-            {/* 2. Outer Carved Baroque Golden Mirror Frame (Overlays Window) */}
-            <img 
-              src="/themes/royal-baroque-frame-luxury.png" 
-              alt="Royal Baroque Golden Frame" 
-              className="absolute inset-0 w-full h-full object-contain pointer-events-none z-20 drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)]" 
-            />
-          </div>
+            <GoldenSparkleDust />
 
-          {/* Bottom Flanking Wayang Figures (Kamajaya & Kamaratih - Positioned Gracefully) */}
-          <div 
-            className="absolute bottom-1 -left-2 sm:left-4 w-20 sm:w-28 pointer-events-none z-15 opacity-75 drop-shadow-[0_6px_20px_rgba(0,0,0,0.9)]"
-            style={{ animation: 'royal-wayang-sway-left 6s ease-in-out infinite' }}
-          >
-            <img src="/themes/royal-kamajaya-luxury.png" alt="Raden Kamajaya" className="w-full h-auto object-contain" />
-          </div>
+            {/* Outer Royal Screen Framing Hairline */}
+            <div className="absolute inset-3 sm:inset-5 rounded-[28px] sm:rounded-[32px] border border-[#d4af37]/35 pointer-events-none z-15" />
 
-          <div 
-            className="absolute bottom-1 -right-2 sm:right-4 w-20 sm:w-28 pointer-events-none z-15 opacity-75 drop-shadow-[0_6px_20px_rgba(0,0,0,0.9)]"
-            style={{ animation: 'royal-wayang-sway-right 6s ease-in-out infinite' }}
-          >
-            <img src="/themes/royal-kamaratih-luxury.png" alt="Dewi Kamaratih" className="w-full h-auto object-contain -scale-x-100" />
-          </div>
+            {/* Top Corner Peony Bouquets (Compact, Clear of Music Disc Button) */}
+            <div className="absolute top-1 left-1 w-16 sm:w-20 pointer-events-none z-20 opacity-80 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
+              <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
+            </div>
+            <div className="absolute top-1 right-1 w-16 sm:w-20 pointer-events-none z-20 opacity-80 drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
+              <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
+            </div>
 
-        </section>
+            {/* Top Clearance Spacer */}
+            <div className="w-full h-3 sm:h-5 pointer-events-none" />
+
+            {/* ========================================================= */}
+            {/* Central Baroque Arched Mirror Frame & Virtual Showcase    */}
+            {/* ========================================================= */}
+            <div className="relative w-[min(88vw,375px)] aspect-[896/1200] max-h-[70vh] flex items-center justify-center z-20 my-auto">
+              
+              {/* 1. Inner Arched Glass Window (Calibrated strictly inside the mirror opening) */}
+              <div className="absolute inset-x-[18.5%] top-[25.5%] bottom-[16.5%] rounded-t-[80px] sm:rounded-t-[100px] rounded-b-[14px] bg-gradient-to-b from-[#22140b]/94 via-[#130b06]/96 to-[#080503]/98 border border-[#d4af37]/35 shadow-[inset_0_4px_24px_rgba(0,0,0,0.9)] backdrop-blur-md flex flex-col items-center justify-center text-center px-4 sm:px-5 pt-4 pb-3 z-10 overflow-hidden">
+                
+                {/* Subtle Joglo Pavilion Reflection in Mirror Glass */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25 mix-blend-screen">
+                  <img 
+                    src="/themes/royal-wayang-bg.jpg" 
+                    alt="" 
+                    className="w-full h-full object-cover object-[center_35%] filter brightness-[0.9] contrast-[1.3]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#180f08]/75 via-[#0e0804]/85 to-[#060402]/95" />
+                </div>
+
+                {/* Inner Fine Gold Hairline Tracing */}
+                <div className="absolute inset-1 rounded-t-[76px] sm:rounded-t-[96px] rounded-b-[10px] border border-[#d4af37]/25 pointer-events-none" />
+
+                {/* Ambient Golden Radial Light from Crown */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#d4af37]/25 via-transparent to-transparent pointer-events-none" />
+
+                {/* Top Royal Monogram Divider */}
+                <div className="flex items-center justify-center gap-1.5 mb-1.5 opacity-90 relative z-20">
+                  <span className="text-[#ffd778] text-[8px] filter drop-shadow-[0_0_6px_rgba(212,175,55,0.8)]">✦ ❖ ✦</span>
+                </div>
+
+                {/* Main Heading: LIVE STREAMING (Sized to fit comfortably within the arch) */}
+                <h3 
+                  className="font-serif text-[12px] sm:text-[14px] font-bold tracking-[0.24em] text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9DC] via-[#ECC460] to-[#FFEAA0] uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] leading-tight whitespace-nowrap relative z-20"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  LIVE STREAMING
+                </h3>
+
+                {/* Elegant Calligraphic Script: Live Streaming */}
+                <div 
+                  className="font-serif italic text-lg sm:text-xl md:text-2xl text-[#ffe39c] font-normal tracking-wide drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] mt-0.5 mb-1 relative z-20 whitespace-nowrap"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Live Streaming
+                </div>
+
+                {/* Middle Diamond Divider */}
+                <div className="flex items-center justify-center gap-2 my-0.5 relative z-20 opacity-75">
+                  <div className="w-6 h-px bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
+                  <span className="text-[#ffd778] text-[7px]">❦</span>
+                  <div className="w-6 h-px bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
+                </div>
+
+                {/* Invitation Subtext (Constrained width so it NEVER clips against the frame) */}
+                <p 
+                  className="text-[10px] sm:text-[11px] text-[#E8DEC7] font-serif leading-relaxed italic max-w-[165px] sm:max-w-[185px] mx-auto my-1 sm:my-1.5 drop-shadow-sm relative z-20"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Pernikahan kami dapat disaksikan secara langsung melalui live streaming di bawah ini.
+                </p>
+
+                {/* Interactive Luxury Outline Button */}
+                <div className="pt-1.5 sm:pt-2 relative z-30 w-full flex justify-center">
+                  <a 
+                    href={invitation?.settings?.youtube_url || invitation?.settings?.instagram_live_url || invitation?.settings?.tiktok_live_url || invitation?.settings?.zoom_url || invitation?.streaming_url || couple?.streaming_url || "https://youtube.com"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-md border border-[#d4af37] hover:border-[#ffd778] bg-[#180f07]/90 hover:bg-[#d4af37]/25 text-[#FFF4CC] hover:text-white transition-all duration-300 text-[10px] sm:text-[11px] font-serif font-bold tracking-[0.2em] uppercase shadow-[0_4px_16px_rgba(0,0,0,0.85)] hover:shadow-[0_0_18px_rgba(212,175,55,0.6)] hover:scale-105 active:scale-95 group cursor-pointer relative overflow-hidden"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {/* Subtle Light Sweep Effect on Hover */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full duration-1000 bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none transition-transform" />
+                    
+                    {/* YouTube Video Play Icon */}
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-red-500 group-hover:scale-110 transition-transform">
+                      <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                    </svg>
+                    <span className="tracking-[0.2em] font-semibold">JOIN LIVE</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* 2. Outer Carved Baroque Golden Mirror Frame (Overlays Window) */}
+              <img 
+                src="/themes/royal-baroque-frame-luxury.png" 
+                alt="Royal Baroque Golden Frame" 
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none z-20 drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)]" 
+              />
+            </div>
+
+            {/* Bottom Flanking Wayang Figures (Kamajaya & Kamaratih - Positioned Gracefully) */}
+            <div 
+              className="absolute bottom-1 -left-2 sm:left-4 w-20 sm:w-28 pointer-events-none z-15 opacity-75 drop-shadow-[0_6px_20px_rgba(0,0,0,0.9)]"
+              style={{ animation: 'royal-wayang-sway-left 6s ease-in-out infinite' }}
+            >
+              <img src="/themes/royal-kamajaya-luxury.png" alt="Raden Kamajaya" className="w-full h-auto object-contain" />
+            </div>
+
+            <div 
+              className="absolute bottom-1 -right-2 sm:right-4 w-20 sm:w-28 pointer-events-none z-15 opacity-75 drop-shadow-[0_6px_20px_rgba(0,0,0,0.9)]"
+              style={{ animation: 'royal-wayang-sway-right 6s ease-in-out infinite' }}
+            >
+              <img src="/themes/royal-kamaratih-luxury.png" alt="Dewi Kamaratih" className="w-full h-auto object-contain -scale-x-100" />
+            </div>
+
+          </section>
+        )}
 
         {/* ==================================================== */}
         {/* PAUGERAN BUSANA / DRESSCODE (Royal Wayang Gold)      */}
@@ -2916,9 +2941,8 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         </section>
 
         {/* ==================================================== */}
-        {/* 9. LOVE STORY (Royal Wayang Gold Masterpiece)         */}
-        {/* ==================================================== */}
-        <section id="love-story" className="relative w-full min-h-[720px] py-14 sm:py-16 px-4 sm:px-6 overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none">
+        {showLoveStory && displayStories.length > 0 && (
+          <section id="love-story" className="relative w-full min-h-[720px] py-14 sm:py-16 px-4 sm:px-6 overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none">
           {/* Background Joglo Pendopo Royal Night */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img 
@@ -3062,6 +3086,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
           </div>
         </section>
+        )}
 
         {/* ==================================================== */}
         {/* 10. WEDDING GIFT (Royal Wayang Gold Masterpiece)     */}

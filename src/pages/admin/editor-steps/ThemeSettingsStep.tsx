@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { invitationService } from '../../../services/invitationService';
-import { Plus, Trash2, Video, Palette, Share2, Users, ShieldAlert, QrCode, MessageSquare, Check, Sparkles } from 'lucide-react';
+import { Plus, Trash2, Video, Palette, Share2, Users, ShieldAlert, QrCode, MessageSquare, Check, Sparkles, Eye } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 
 interface ThemeSettingsStepProps {
@@ -38,6 +38,10 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
     countdown_date: '',
     powered_by: 'WD Group',
     powered_by_url: 'https://www.instagram.com/wdgroupcompany',
+    show_akad: true,
+    show_resepsi: true,
+    show_love_story: true,
+    show_live_streaming: true,
   });
 
   const [newInviter, setNewInviter] = useState('');
@@ -67,6 +71,10 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
         countdown_date: s.countdown_date !== undefined ? s.countdown_date : prev.countdown_date,
         powered_by: s.powered_by !== undefined ? s.powered_by : prev.powered_by,
         powered_by_url: s.powered_by_url !== undefined ? s.powered_by_url : prev.powered_by_url,
+        show_akad: s.show_akad !== undefined ? s.show_akad : prev.show_akad,
+        show_resepsi: s.show_resepsi !== undefined ? s.show_resepsi : prev.show_resepsi,
+        show_love_story: s.show_love_story !== undefined ? s.show_love_story : prev.show_love_story,
+        show_live_streaming: s.show_live_streaming !== undefined ? s.show_live_streaming : prev.show_live_streaming,
       }));
     }
   }, [invitation]);
@@ -140,6 +148,70 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
           <span>Pengaturan tema berhasil disimpan! Perubahan langsung tampil di halaman undangan.</span>
         </div>
       )}
+
+      {/* Visibilitas Bagian Undangan (Section Toggles) */}
+      <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4 shadow-sm">
+        <div className="flex items-center gap-2 text-gray-900 font-bold text-base border-b pb-3">
+          <Eye className="w-5 h-5 text-[#625445]" />
+          <h4>Visibilitas Bagian Undangan (Tampilkan / Sembunyikan)</h4>
+        </div>
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Aktifkan atau nonaktifkan bagian tertentu pada undangan sesuai kebutuhan mempelai.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+            <input
+              type="checkbox"
+              checked={formData.show_akad}
+              onChange={(e) => setFormData({ ...formData, show_akad: e.target.checked })}
+              className="w-4 h-4 text-[#625445] rounded focus:ring-[#625445]"
+            />
+            <div>
+              <div className="text-sm font-semibold text-gray-800">Akad Nikah</div>
+              <div className="text-xs text-gray-500">Tampilkan kartu acara Akad Nikah</div>
+            </div>
+          </label>
+
+          <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+            <input
+              type="checkbox"
+              checked={formData.show_resepsi}
+              onChange={(e) => setFormData({ ...formData, show_resepsi: e.target.checked })}
+              className="w-4 h-4 text-[#625445] rounded focus:ring-[#625445]"
+            />
+            <div>
+              <div className="text-sm font-semibold text-gray-800">Resepsi Pernikahan</div>
+              <div className="text-xs text-gray-500">Tampilkan kartu acara Resepsi</div>
+            </div>
+          </label>
+
+          <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+            <input
+              type="checkbox"
+              checked={formData.show_love_story}
+              onChange={(e) => setFormData({ ...formData, show_love_story: e.target.checked })}
+              className="w-4 h-4 text-[#625445] rounded focus:ring-[#625445]"
+            />
+            <div>
+              <div className="text-sm font-semibold text-gray-800">Love Story (Cerita Cinta)</div>
+              <div className="text-xs text-gray-500">Tampilkan linimasa perjalanan kisah</div>
+            </div>
+          </label>
+
+          <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+            <input
+              type="checkbox"
+              checked={formData.show_live_streaming}
+              onChange={(e) => setFormData({ ...formData, show_live_streaming: e.target.checked })}
+              className="w-4 h-4 text-[#625445] rounded focus:ring-[#625445]"
+            />
+            <div>
+              <div className="text-sm font-semibold text-gray-800">Live Streaming</div>
+              <div className="text-xs text-gray-500">Tampilkan siaran langsung online</div>
+            </div>
+          </label>
+        </div>
+      </div>
 
       {/* 0. Default Nama Tamu Undangan */}
       <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4 shadow-sm">

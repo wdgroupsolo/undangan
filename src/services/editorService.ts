@@ -25,21 +25,6 @@ export const COUPLE_AGNI_PUTRI = {
 
 export const EVENTS_AGNI_PUTRI = [
   {
-    id: '44000000-0000-0000-0000-000000000004',
-    invitation_id: 'e2000000-0000-0000-0000-000000000002',
-    name: 'AKAD NIKAH',
-    event_date: '2026-10-25',
-    date: '2026-10-25',
-    start_time: '09:00',
-    end_time: '10:00',
-    location: 'RUMAH MEMPELAI LAKI-LAKI',
-    venue_name: 'RUMAH MEMPELAI LAKI-LAKI',
-    address: 'Dk. Talang, RT 03, RW 01, Selotinatah, Ngariboyo, Magetan, Jawa Timur',
-    maps_url: 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic',
-    description: 'Akad Nikah Khidmat & Doa Restu',
-    sort_order: 1
-  },
-  {
     id: '55000000-0000-0000-0000-000000000005',
     invitation_id: 'e2000000-0000-0000-0000-000000000002',
     name: 'RESEPSI PERNIKAHAN',
@@ -52,7 +37,7 @@ export const EVENTS_AGNI_PUTRI = [
     address: 'Dk. Talang, RT 03, RW 01, Selotinatah, Ngariboyo, Magetan, Jawa Timur',
     maps_url: 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic',
     description: 'Hiburan Siang: Campursari | Hiburan Malam: Wayang Kulit',
-    sort_order: 2
+    sort_order: 1
   }
 ];
 
@@ -77,41 +62,8 @@ export const MUSIC_AGNI_PUTRI = {
   loop: true
 };
 
-export const STORIES_AGNI_PUTRI = [
-  {
-    id: '88000000-0000-0000-0000-000000000001',
-    invitation_id: 'e2000000-0000-0000-0000-000000000002',
-    chapter: 'BABAK I',
-    date: '2020',
-    title: 'Awal Bertemu',
-    photo: '/themes/agni-putri/couple-retro.jpg',
-    photo_url: '/themes/agni-putri/couple-retro.jpg',
-    description: 'Sebuah pertemuan sederhana yang berawal dari percakapan hangat dan canda tawa, menumbuhkan benih rasa yang kian bermakna.',
-    sort_order: 1
-  },
-  {
-    id: '88000000-0000-0000-0000-000000000002',
-    invitation_id: 'e2000000-0000-0000-0000-000000000002',
-    chapter: 'BABAK II',
-    date: '2023',
-    title: 'Menjalin Kasih',
-    photo: '/themes/agni-putri/couple-outdoor.jpg',
-    photo_url: '/themes/agni-putri/couple-outdoor.jpg',
-    description: 'Melewati lika-liku hari bersama, saling mengisi dan meyakinkan hati untuk terus bergandengan tangan menatap masa depan.',
-    sort_order: 2
-  },
-  {
-    id: '88000000-0000-0000-0000-000000000003',
-    invitation_id: 'e2000000-0000-0000-0000-000000000002',
-    chapter: 'BABAK III',
-    date: '2026',
-    title: 'Menuju Pelaminan',
-    photo: '/themes/agni-putri/couple-main.jpg',
-    photo_url: '/themes/agni-putri/couple-main.jpg',
-    description: 'Dengan penuh rasa syukur dan doa restu kedua orang tua, kami mengikat janji suci pernikahan untuk melangkah bersama selamanya.',
-    sort_order: 3
-  }
-];
+export const STORIES_AGNI_PUTRI: any[] = [];
+
 
 export const GALLERY_AGNI_PUTRI = [
   { id: '99000000-0000-0000-0000-000000000002', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-arch.jpg', sort_order: 1 },

@@ -17,9 +17,9 @@ export const INVITATION_AGNI_PUTRI: Invitation & { theme?: any; client?: any } =
   client_id: 'c1000000-0000-0000-0000-000000000001',
   theme_id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
   title: 'The Wedding of Agni & Putri',
-  slug: 'agni-putri',
+  slug: 'agni-kahuripan',
   status: 'published',
-  wedding_date: '2026-10-25T09:00:00+07:00',
+  wedding_date: '2026-10-25T10:00:00+07:00',
   settings: {
     theme_slug: 'royal-wayang-gold',
     default_guest_name: 'Tamu Undangan',
@@ -32,7 +32,11 @@ export const INVITATION_AGNI_PUTRI: Invitation & { theme?: any; client?: any } =
     entertainment_day: 'Campursari',
     entertainment_night: 'Wayang Kulit',
     color_concept: 'Hitam & Emas (Royal Wayang Gold)',
-    music_title: 'Landon Pigg - Falling In Love At A Coffee Shop'
+    music_title: 'Landon Pigg - Falling In Love At A Coffee Shop',
+    show_akad: false,
+    show_resepsi: true,
+    show_love_story: false,
+    show_live_streaming: false
   },
   theme: {
     id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
@@ -54,7 +58,7 @@ export const invitationService = {
         .order('created_at', { ascending: false });
       
       if (!error && data && data.length > 0) {
-        const hasAgni = data.some(inv => inv.slug === 'agni-putri');
+        const hasAgni = data.some(inv => inv.slug === 'agni-putri' || inv.slug === 'agni-kahuripan');
         return hasAgni ? data : [INVITATION_AGNI_PUTRI, ...data];
       }
     } catch (e) {

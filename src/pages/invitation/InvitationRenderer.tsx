@@ -37,6 +37,7 @@ export const InvitationRenderer: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const animTimeoutRef = useRef<any>(null);
+  const isVideoExitingRef = useRef(false);
 
   const { data: invitation, isLoading: isLoadingInv } = useQuery({
     queryKey: ['invitation', slug],
@@ -265,7 +266,7 @@ export const InvitationRenderer: React.FC = () => {
     (isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isRoyalWayang
-    ? '/themes/royal-wayang-portal-zoom.mp4'
+    ? '/themes/gemini_generated_video_c1b7dd32.mp4'
     : isJavaneseHeritage
       ? '/themes/javanese-heritage-entrance.mp4'
       : isSecretGarden
@@ -276,6 +277,8 @@ export const InvitationRenderer: React.FC = () => {
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
+    if (isVideoExitingRef.current) return;
+    isVideoExitingRef.current = true;
     if (animTimeoutRef.current) {
       clearTimeout(animTimeoutRef.current);
       animTimeoutRef.current = null;
@@ -285,6 +288,7 @@ export const InvitationRenderer: React.FC = () => {
       setOpeningStage('opened');
       setIsVideoExiting(false);
       setCanSkipVideo(false);
+      isVideoExitingRef.current = false;
     }, 1000);
   };
 
@@ -330,21 +334,18 @@ export const InvitationRenderer: React.FC = () => {
       // Trigger video playback immediately
       setTimeout(() => {
         if (videoRef.current) {
+          videoRef.current.defaultMuted = true;
+          videoRef.current.muted = true;
           videoRef.current.currentTime = 0;
           videoRef.current.play().catch(err => console.warn('Video play error:', err));
         }
-      }, 40);
+      }, 50);
 
       // Fallback timeout in case onTimeUpdate doesn't fire
       if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
       animTimeoutRef.current = setTimeout(() => {
-        setOpeningStage((prev) => {
-          if (prev === 'arch-video') {
-            handleFinishAnimation();
-          }
-          return prev;
-        });
-      }, 3700);
+        handleFinishAnimation();
+      }, 5200);
       return;
     }
 
@@ -369,12 +370,7 @@ export const InvitationRenderer: React.FC = () => {
     const timeoutDuration = isJavaneseHeritage ? 18200 : isMaroonGold ? 10200 : 5200;
     if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
     animTimeoutRef.current = setTimeout(() => {
-      setOpeningStage((prev) => {
-        if (prev === 'arch-video') {
-          handleFinishAnimation();
-        }
-        return prev;
-      });
+      handleFinishAnimation();
     }, timeoutDuration);
   };
 
@@ -1358,7 +1354,15 @@ export const InvitationRenderer: React.FC = () => {
           {/* Video Container */}
           <div className="relative w-full h-full flex items-center justify-center p-0">
             <video
-              ref={videoRef}
+              ref={(node) => {
+                videoRef.current = node;
+                if (node) {
+                  node.muted = true;
+                  node.defaultMuted = true;
+                  node.playsInline = true;
+                  node.play().catch(() => {});
+                }
+              }}
               src={entranceVideoSrc}
               poster={
                 isRoyalWayang
@@ -1376,7 +1380,7 @@ export const InvitationRenderer: React.FC = () => {
               muted
               className="w-full h-full object-cover object-center"
               onTimeUpdate={() => {
-                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
+                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 4.8) {
                   handleFinishAnimation();
                 } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
                   handleFinishAnimation();

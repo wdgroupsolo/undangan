@@ -31,7 +31,8 @@ export const clientService = {
         .order('created_at', { ascending: false });
       
       if (!error && data && data.length > 0) {
-        return data as Client[];
+        const hasAgni = data.some(c => c.name.toLowerCase().includes('agni'));
+        return hasAgni ? (data as Client[]) : [CLIENT_AGNI_PUTRI, ...(data as Client[])];
       }
     } catch (e) {
       console.warn('Error fetching clients from Supabase:', e);
