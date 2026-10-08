@@ -29,6 +29,9 @@ resources/raw-media/
 *.mp4
 !public/themes/*.mp4
 !public/*.mp4
+*.mp3
+!public/music/*.mp3
+!public/*.mp3
 bisa_buatkan_animasi_masuk_ger.mp4
 gemini_generated_video_c0cc839c.mp4
 oxlint-report.txt
