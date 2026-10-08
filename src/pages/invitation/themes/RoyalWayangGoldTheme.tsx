@@ -2870,7 +2870,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {/* Row 3: 3 Candid Moments */}
               <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
                 {(isAgni 
-                  ? ['/themes/agni-putri/couple-artistic.jpg', '/themes/agni-putri/couple-outdoor.jpg', '/themes/agni-putri/couple-arch.jpg'] 
+                  ? ['/themes/agni-putri/couple-intimate.jpg', '/themes/agni-putri/couple-artistic.jpg', '/themes/agni-putri/couple-arch.jpg'] 
                   : ['/photos/photo-5.jpg', '/photos/photo-6.jpg', '/photos/photo-7.jpg']
                 ).map((photoSrc, idx) => (
                   <div 
