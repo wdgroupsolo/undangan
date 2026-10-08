@@ -33,6 +33,7 @@ export const INVITATION_AGNI_PUTRI: Invitation & { theme?: any; client?: any } =
     entertainment_night: 'Wayang Kulit',
     color_concept: 'Hitam & Emas (Royal Wayang Gold)',
     music_title: 'Landon Pigg - Falling In Love At A Coffee Shop',
+    music_url: '/music/landon-pigg-falling-in-love.mp3',
     show_akad: false,
     show_resepsi: true,
     show_love_story: false,

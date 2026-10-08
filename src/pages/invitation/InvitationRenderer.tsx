@@ -68,6 +68,9 @@ export const InvitationRenderer: React.FC = () => {
   );
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
+    if (isAgniSlug) {
+      return '/music/landon-pigg-falling-in-love.mp3';
+    }
     switch (themeSlug) {
       case 'royal-wayang-gold':
       case 'royal-wayang':

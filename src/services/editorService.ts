@@ -57,7 +57,7 @@ export const MUSIC_AGNI_PUTRI = {
   id: '77000000-0000-0000-0000-000000000007',
   invitation_id: 'e2000000-0000-0000-0000-000000000002',
   music_name: 'Landon Pigg - Falling In Love At A Coffee Shop',
-  music_url: '/music/bergema-sampai-selamanya.mp3',
+  music_url: '/music/landon-pigg-falling-in-love.mp3',
   autoplay: true,
   loop: true
 };
