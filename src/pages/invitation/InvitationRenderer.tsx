@@ -269,7 +269,7 @@ export const InvitationRenderer: React.FC = () => {
     (isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isRoyalWayang
-    ? '/themes/gemini_generated_video_c1b7dd32.mp4'
+    ? '/themes/royal-wayang-portal-zoom.mp4'
     : isJavaneseHeritage
       ? '/themes/javanese-heritage-entrance.mp4'
       : isSecretGarden
@@ -348,7 +348,7 @@ export const InvitationRenderer: React.FC = () => {
       if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
       animTimeoutRef.current = setTimeout(() => {
         handleFinishAnimation();
-      }, 5200);
+      }, 3700);
       return;
     }
 
@@ -1383,7 +1383,7 @@ export const InvitationRenderer: React.FC = () => {
               muted
               className="w-full h-full object-cover object-center"
               onTimeUpdate={() => {
-                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 4.8) {
+                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
                   handleFinishAnimation();
                 } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
                   handleFinishAnimation();
