@@ -311,8 +311,11 @@ CREATE POLICY "Public can read active gift accounts of published invitations" ON
   is_active = true AND EXISTS (SELECT 1 FROM invitations WHERE id = gift_accounts.invitation_id AND status = 'published')
 );
 
--- RSVPs: Public can insert
+-- RSVPs: Public can insert and read rsvps of published invitations
 CREATE POLICY "Public can insert rsvps" ON rsvps FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public can read rsvps of published invitations" ON rsvps FOR SELECT USING (
+  EXISTS (SELECT 1 FROM invitations WHERE id = rsvps.invitation_id AND status = 'published')
+);
 
 -- Comments: Public can insert, and read approved comments
 CREATE POLICY "Public can insert comments" ON comments FOR INSERT WITH CHECK (true);

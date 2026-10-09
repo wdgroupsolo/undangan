@@ -258,8 +258,7 @@ BEGIN
   ('99000000-0000-0000-0000-000000000002', v_invitation_id, '/themes/agni-putri/couple-arch.jpg', 2),
   ('99000000-0000-0000-0000-000000000003', v_invitation_id, '/themes/agni-putri/couple-outdoor.jpg', 3),
   ('99000000-0000-0000-0000-000000000004', v_invitation_id, '/themes/agni-putri/couple-retro.jpg', 4),
-  ('99000000-0000-0000-0000-000000000005', v_invitation_id, '/themes/agni-putri/couple-artistic.jpg', 5),
-  ('99000000-0000-0000-0000-000000000006', v_invitation_id, '/themes/agni-putri/groom-agni.jpg', 6),
-  ('99000000-0000-0000-0000-000000000007', v_invitation_id, '/themes/agni-putri/bride-putri.jpg', 7);
+  ('99000000-0000-0000-0000-000000000008', v_invitation_id, '/themes/agni-putri/couple-intimate.jpg', 5),
+  ('99000000-0000-0000-0000-000000000005', v_invitation_id, '/themes/agni-putri/couple-artistic.jpg', 6);
 
 END $$;

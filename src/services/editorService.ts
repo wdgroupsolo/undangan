@@ -70,9 +70,7 @@ export const GALLERY_AGNI_PUTRI = [
   { id: '99000000-0000-0000-0000-000000000003', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-outdoor.jpg', sort_order: 2 },
   { id: '99000000-0000-0000-0000-000000000004', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-retro.jpg', sort_order: 3 },
   { id: '99000000-0000-0000-0000-000000000008', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-intimate.jpg', sort_order: 4 },
-  { id: '99000000-0000-0000-0000-000000000005', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-artistic.jpg', sort_order: 5 },
-  { id: '99000000-0000-0000-0000-000000000006', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/groom-agni.jpg', sort_order: 6 },
-  { id: '99000000-0000-0000-0000-000000000007', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/bride-putri.jpg', sort_order: 7 }
+  { id: '99000000-0000-0000-0000-000000000005', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-artistic.jpg', sort_order: 5 }
 ];
 
 export const editorService = {

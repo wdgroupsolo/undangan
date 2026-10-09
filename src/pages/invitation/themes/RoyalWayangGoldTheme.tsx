@@ -23,6 +23,7 @@ import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
 import { supabase } from '../../../lib/supabase';
+import { rsvpService, RSVPItem } from '../../../services/rsvpService';
 
 // ==========================================
 // 1. ROYAL JAVANESE SVG VECTOR ORNAMENTS
@@ -927,35 +928,11 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const [rsvpAttendance, setRsvpAttendance] = useState('hadir');
   const [rsvpMessage, setRsvpMessage] = useState('');
   const [rsvpSubmitting, setRsvpSubmitting] = useState(false);
-  const [rsvpList, setRsvpList] = useState<any[]>([]);
+  const [rsvpList, setRsvpList] = useState<RSVPItem[]>([]);
   const [showWishes, setShowWishes] = useState(false);
 
-  // Curated dignified sample wishes when rsvpList is empty
-  const sampleWishes = [
-    {
-      id: 'sample-1',
-      name: 'Keluarga Besar Bpk. H. Bambang Soediro',
-      attending: true,
-      message: 'Nderek mangayubagyo awit keparengipun dhaup suci Steven & Bunga. Mugi tansah pinaringan berkah, sakinah mawaddah warahmah.',
-      created_at: '2026-10-24T14:20:00Z',
-    },
-    {
-      id: 'sample-2',
-      name: 'Anisa & Dimas Pratama',
-      attending: true,
-      message: 'Selamat berbahagia untuk Steven & Bunga! Semoga senantiasa rukun, saling melengkapi, dan cinta kasih mekar abadi hingga kakek nenek.',
-      created_at: '2026-10-24T16:45:00Z',
-    },
-    {
-      id: 'sample-3',
-      name: 'Raden Mas Haryo Wicaksono',
-      attending: false,
-      message: 'Selamat menempuh babak baru sahabatku. Mohon maaf belum bisa hadir langsung, doa terbaik senantiasa menyertai kalian berdua.',
-      created_at: '2026-10-25T08:10:00Z',
-    },
-  ];
-
-  const displayWishes = rsvpList.length > 0 ? rsvpList : sampleWishes;
+  // Read real RSVP wishes list
+  const displayWishes = rsvpList;
 
   // Photobooth Modal State
   const [isPhotoboothOpen, setIsPhotoboothOpen] = useState(false);
@@ -1137,20 +1114,17 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     return () => clearInterval(interval);
   }, [targetDateStr]);
 
-  // Load RSVP List from Supabase
+  const activeInvitationId = invitation?.id || (isAgni ? 'e2000000-0000-0000-0000-000000000002' : undefined);
+
+  // Load real RSVP List
   useEffect(() => {
-    if (!invitation?.id) return;
+    if (!activeInvitationId) return;
     const fetchRsvps = async () => {
-      const { data } = await supabase
-        .from('rsvps')
-        .select('*')
-        .eq('invitation_id', invitation.id)
-        .order('created_at', { ascending: false })
-        .limit(20);
+      const data = await rsvpService.getRsvpsByInvitation(activeInvitationId);
       if (data) setRsvpList(data);
     };
     fetchRsvps();
-  }, [invitation?.id]);
+  }, [activeInvitationId]);
 
   // Submit RSVP
   const handleRsvpSubmit = async (e: React.FormEvent) => {
@@ -1162,29 +1136,19 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
     setRsvpSubmitting(true);
     try {
-      if (invitation?.id) {
-        const { error } = await supabase.from('rsvps').insert({
-          invitation_id: invitation.id,
-          name: rsvpName.trim(),
-          attending: rsvpAttendance === 'hadir',
-          guests_count: parseInt(rsvpGuests) || 1,
-          message: rsvpMessage.trim() || 'Selamat berbahagia untuk kedua mempelai.',
-        });
-        if (error) throw error;
-      }
+      const targetInvId = activeInvitationId || 'e2000000-0000-0000-0000-000000000002';
+      const saved = await rsvpService.submitRsvp({
+        invitation_id: targetInvId,
+        name: rsvpName.trim(),
+        attendance: rsvpAttendance === 'hadir' ? 'attending' : 'not_attending',
+        number_of_guests: parseInt(rsvpGuests, 10) || 1,
+        message: rsvpMessage.trim() || 'Selamat berbahagia untuk kedua mempelai.',
+        invitation_title: invitation?.title || (isAgni ? 'The Wedding of Agni & Putri' : undefined),
+        client_name: isAgni ? 'AGNI KAHURIPAN' : undefined,
+      });
 
       toast.success('Konfirmasi kehadiran & doa berhasil dikirim!');
-      setRsvpList(prev => [
-        {
-          id: 'temp-' + Date.now(),
-          name: rsvpName.trim(),
-          attending: rsvpAttendance === 'hadir',
-          guests_count: parseInt(rsvpGuests) || 1,
-          message: rsvpMessage.trim() || 'Selamat berbahagia untuk kedua mempelai.',
-          created_at: new Date().toISOString(),
-        },
-        ...prev,
-      ]);
+      setRsvpList(prev => [saved, ...prev.filter(item => item.id !== saved.id)]);
       setShowWishes(true);
       setRsvpName('');
       setRsvpMessage('');
@@ -2777,7 +2741,12 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           {/* Gallery Photos Grid: Uploaded Photos or Curated Royal Showcase */}
           {gallery && gallery.length > 0 ? (
             <div className="relative z-20 grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto">
-              {gallery.map((g: any, idx: number) => {
+              {gallery
+                .filter((g: any) => {
+                  const photoSrc = typeof g === 'string' ? g : (g.image_url || '');
+                  return !photoSrc.includes('groom-agni') && !photoSrc.includes('bride-putri');
+                })
+                .map((g: any, idx: number) => {
                 const photoSrc = typeof g === 'string' ? g : (g.image_url || '');
                 if (!photoSrc) return null;
                 return (
@@ -2802,10 +2771,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {/* Row 1: 3 Portrait Photos (Groom, Couple, Bride) */}
               <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
                 <div 
-                  onClick={() => setSelectedPhoto(groomFullPhoto)} 
+                  onClick={() => setSelectedPhoto(isAgni ? '/themes/agni-putri/couple-main.jpg' : groomFullPhoto)} 
                   className="group relative aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <img src={groomFullPhoto} alt="Groom Portrait" className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <img src={isAgni ? '/themes/agni-putri/couple-main.jpg' : groomFullPhoto} alt={isAgni ? "Couple Portrait" : "Groom Portrait"} className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
                   <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
                   <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                     <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -2826,10 +2795,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                   </div>
                 </div>
                 <div 
-                  onClick={() => setSelectedPhoto(brideFullPhoto)} 
+                  onClick={() => setSelectedPhoto(isAgni ? '/themes/agni-putri/couple-intimate.jpg' : brideFullPhoto)} 
                   className="group relative aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <img src={brideFullPhoto} alt="Bride Portrait" className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <img src={isAgni ? '/themes/agni-putri/couple-intimate.jpg' : brideFullPhoto} alt={isAgni ? "Couple Portrait" : "Bride Portrait"} className="w-full h-full object-cover object-top filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
                   <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
                   <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                     <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -2892,7 +2861,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {/* Row 4: 2 Romantic Moments */}
               <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
                 {(isAgni 
-                  ? ['/themes/agni-putri/groom-agni.jpg', '/themes/agni-putri/bride-putri.jpg'] 
+                  ? ['/themes/agni-putri/couple-intimate.jpg', '/themes/agni-putri/couple-main.jpg'] 
                   : ['/photos/photo-8.jpg', '/photos/photo-9.jpg']
                 ).map((photoSrc, idx) => (
                   <div 
@@ -3502,44 +3471,61 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 {/* Wishes Feed List (Hanya tampil saat tombol Tampilkan diklik) */}
                 {showWishes && (
                   <div className="w-full space-y-3 max-h-60 overflow-y-auto pr-1 text-left mt-3.5 pt-1 animate-in fade-in slide-in-from-top-2 duration-300">
-                    {displayWishes.map((item, idx) => (
-                      <div 
-                        key={item.id || idx} 
-                        className="p-3.5 rounded-xl bg-gradient-to-b from-[#24170d]/95 via-[#180f08]/95 to-[#100804]/98 border border-[#d4af37]/50 text-xs space-y-2 shadow-[0_4px_16px_rgba(0,0,0,0.7)] hover:border-[#ffd778] transition-all relative overflow-hidden group"
-                      >
-                        {/* Gold Accent Left Bar */}
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#ffd778] via-[#d4af37] to-[#8c671a]" />
-                        
-                        <div className="flex items-center justify-between gap-2 pl-1.5">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#6d4c13] text-stone-950 font-bold flex items-center justify-center text-[10px] shadow-sm shrink-0">
-                              {item.name.charAt(0).toUpperCase()}
-                            </div>
-                            <span className="font-serif font-bold text-[#FFF6D8] truncate text-[12.5px] tracking-wide">
-                              {item.name}
-                            </span>
-                          </div>
-                          
-                          <span className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-serif font-semibold whitespace-nowrap shadow-sm ${
-                            item.attending 
-                              ? 'bg-gradient-to-r from-emerald-950/90 to-emerald-900/90 text-emerald-200 border border-emerald-400/50 shadow-[0_0_8px_rgba(16,185,129,0.3)]' 
-                              : 'bg-gradient-to-r from-amber-950/90 to-amber-900/90 text-amber-200 border border-amber-400/50 shadow-[0_0_8px_rgba(245,158,11,0.3)]'
-                          }`}>
-                            {item.attending ? '✓ Hadir' : 'Berhalangan'}
-                          </span>
-                        </div>
-                        
-                        <p className="text-[#efe5d5]/95 font-serif italic text-[12px] leading-relaxed pl-1.5 break-words">
-                          &ldquo;{item.message}&rdquo;
+                    {displayWishes.length === 0 ? (
+                      <div className="p-4 rounded-xl bg-[#1a110a]/80 border border-[#d4af37]/30 text-center space-y-1 my-1">
+                        <p className="font-serif italic text-xs text-[#EADFC9]/90">
+                          Belum ada ucapan doa yang dikirimkan.
                         </p>
-                        
-                        {item.created_at && (
-                          <p className="text-[9.5px] text-[#ecc460]/75 font-sans text-right pt-0.5 pr-1">
-                            {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                          </p>
-                        )}
+                        <p className="text-[11px] text-[#ffd778]/80 font-sans">
+                          Jadilah yang pertama menuliskan doa dan ucapan restu untuk kedua mempelai!
+                        </p>
                       </div>
-                    ))}
+                    ) : (
+                      displayWishes.map((item, idx) => {
+                        const isAttending = item.attendance === 'attending' || (item as any).attending === true;
+                        const guestCount = item.number_of_guests || (item as any).guests_count || 1;
+                        return (
+                          <div 
+                            key={item.id || idx} 
+                            className="p-3.5 rounded-xl bg-gradient-to-b from-[#24170d]/95 via-[#180f08]/95 to-[#100804]/98 border border-[#d4af37]/50 text-xs space-y-2 shadow-[0_4px_16px_rgba(0,0,0,0.7)] hover:border-[#ffd778] transition-all relative overflow-hidden group"
+                          >
+                            {/* Gold Accent Left Bar */}
+                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#ffd778] via-[#d4af37] to-[#8c671a]" />
+                            
+                            <div className="flex items-center justify-between gap-2 pl-1.5">
+                              <div className="flex items-center gap-2 min-w-0">
+                                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#6d4c13] text-stone-950 font-bold flex items-center justify-center text-[10px] shadow-sm shrink-0">
+                                  {item.name ? item.name.charAt(0).toUpperCase() : 'T'}
+                                </div>
+                                <span className="font-serif font-bold text-[#FFF6D8] truncate text-[12.5px] tracking-wide">
+                                  {item.name}
+                                </span>
+                              </div>
+                              
+                              <span className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-serif font-semibold whitespace-nowrap shadow-sm ${
+                                isAttending 
+                                  ? 'bg-gradient-to-r from-emerald-950/90 to-emerald-900/90 text-emerald-200 border border-emerald-400/50 shadow-[0_0_8px_rgba(16,185,129,0.3)]' 
+                                  : 'bg-gradient-to-r from-amber-950/90 to-amber-900/90 text-amber-200 border border-amber-400/50 shadow-[0_0_8px_rgba(245,158,11,0.3)]'
+                              }`}>
+                                {isAttending ? (guestCount > 1 ? `✓ Hadir (${guestCount} Orang)` : '✓ Hadir') : 'Berhalangan'}
+                              </span>
+                            </div>
+                            
+                            {item.message && (
+                              <p className="text-[#efe5d5]/95 font-serif italic text-[12px] leading-relaxed pl-1.5 break-words">
+                                &ldquo;{item.message}&rdquo;
+                              </p>
+                            )}
+                            
+                            {item.created_at && (
+                              <p className="text-[9.5px] text-[#ecc460]/75 font-sans text-right pt-0.5 pr-1">
+                                {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
                 )}
               </div>
