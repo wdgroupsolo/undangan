@@ -2861,7 +2861,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {/* Row 4: 2 Romantic Moments */}
               <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
                 {(isAgni 
-                  ? ['/themes/agni-putri/couple-intimate.jpg', '/themes/agni-putri/couple-main.jpg'] 
+                  ? ['/themes/agni-putri/couple-fern.jpg', '/themes/agni-putri/couple-main.jpg'] 
                   : ['/photos/photo-8.jpg', '/photos/photo-9.jpg']
                 ).map((photoSrc, idx) => (
                   <div 

@@ -6,11 +6,33 @@ export interface Invitation {
   theme_id: string | null;
   title: string | null;
   slug: string;
-  status: 'draft' | 'published' | 'archived';
+  status: 'draft' | 'published' | 'paused' | 'archived';
   wedding_date: string | null;
   settings: any;
   created_at: string;
+  client?: any;
+  theme?: any;
 }
+
+const getSavedStatus = (idOrSlug: string): 'draft' | 'published' | 'paused' | 'archived' | null => {
+  try {
+    return (localStorage.getItem(`wd_inv_status_${idOrSlug}`) as any) || null;
+  } catch {
+    return null;
+  }
+};
+
+const setSavedStatus = (id: string, slug?: string, status?: string) => {
+  if (!status) return;
+  try {
+    localStorage.setItem(`wd_inv_status_${id}`, status);
+    if (slug) {
+      localStorage.setItem(`wd_inv_status_${slug}`, status);
+    }
+    // Also broadcast custom event so other components or tabs update immediately
+    window.dispatchEvent(new CustomEvent('wedding:status-changed', { detail: { id, slug, status } }));
+  } catch {}
+};
 
 export const INVITATION_AGNI_PUTRI: Invitation & { theme?: any; client?: any } = {
   id: 'e2000000-0000-0000-0000-000000000002',
@@ -52,6 +74,7 @@ export const INVITATION_AGNI_PUTRI: Invitation & { theme?: any; client?: any } =
 
 export const invitationService = {
   async getInvitations() {
+    let result: any[] = [];
     try {
       const { data, error } = await supabase
         .from('invitations')
@@ -60,16 +83,27 @@ export const invitationService = {
       
       if (!error && data && data.length > 0) {
         const hasAgni = data.some(inv => inv.slug === 'agni-putri' || inv.slug === 'agni-kahuripan');
-        return hasAgni ? data : [INVITATION_AGNI_PUTRI, ...data];
+        result = hasAgni ? data : [INVITATION_AGNI_PUTRI, ...data];
+      } else {
+        result = [INVITATION_AGNI_PUTRI];
       }
     } catch (e) {
       console.warn('Error fetching invitations from Supabase:', e);
+      result = [INVITATION_AGNI_PUTRI];
     }
-    return [INVITATION_AGNI_PUTRI];
+
+    // Apply any locally cached status updates (e.g., 'paused')
+    return result.map(inv => {
+      const cached = getSavedStatus(inv.id) || getSavedStatus(inv.slug);
+      return cached ? { ...inv, status: cached } : inv;
+    });
   },
 
   async getInvitation(id: string) {
-    if (id === INVITATION_AGNI_PUTRI.id) return INVITATION_AGNI_PUTRI;
+    const cachedStatus = getSavedStatus(id);
+    if (id === INVITATION_AGNI_PUTRI.id) {
+      return cachedStatus ? { ...INVITATION_AGNI_PUTRI, status: cachedStatus } : INVITATION_AGNI_PUTRI;
+    }
     try {
       const { data, error } = await supabase
         .from('invitations')
@@ -77,30 +111,42 @@ export const invitationService = {
         .eq('id', id)
         .single();
       
-      if (!error && data) return (data as unknown) as Invitation;
+      if (!error && data) {
+        return (cachedStatus ? { ...data, status: cachedStatus } : data) as Invitation;
+      }
     } catch (e) {
       console.warn('Error fetching invitation by id:', e);
     }
-    return INVITATION_AGNI_PUTRI;
+    return cachedStatus ? { ...INVITATION_AGNI_PUTRI, status: cachedStatus } : INVITATION_AGNI_PUTRI;
   },
 
   async getInvitationBySlug(slug: string) {
     const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim();
     const isAgni = cleanSlug.includes('agni') || cleanSlug.includes('kribo');
 
+    // Check if status is paused or overridden in localStorage
+    const cachedStatus = getSavedStatus(slug) || 
+      getSavedStatus(cleanSlug) || 
+      (isAgni ? (getSavedStatus('e2000000-0000-0000-0000-000000000002') || getSavedStatus('agni-putri') || getSavedStatus('agni-kahuripan')) : null);
+
     if (isAgni) {
       try {
         const { data, error } = await supabase
           .from('invitations')
           .select('*, theme:themes(*)')
-          .eq('slug', slug)
-          .eq('status', 'published')
+          .or(`slug.eq.${slug},slug.eq.agni-putri,slug.eq.agni-kahuripan`)
           .maybeSingle();
-        if (!error && data) return data;
+        if (!error && data) {
+          return {
+            ...data,
+            status: cachedStatus || data.status || 'published'
+          };
+        }
       } catch {}
       return {
         ...INVITATION_AGNI_PUTRI,
-        slug: slug
+        slug: slug,
+        status: cachedStatus || INVITATION_AGNI_PUTRI.status || 'published'
       };
     }
 
@@ -110,11 +156,13 @@ export const invitationService = {
         .from('invitations')
         .select('*, theme:themes(*)')
         .eq('slug', targetSlug)
-        .eq('status', 'published')
-        .single();
+        .maybeSingle();
       
       if (!error && data) {
-        return data;
+        return {
+          ...data,
+          status: cachedStatus || data.status || 'published'
+        };
       }
       
       if (targetSlug !== 'steven-bunga') {
@@ -122,9 +170,13 @@ export const invitationService = {
           .from('invitations')
           .select('*, theme:themes(*)')
           .eq('slug', 'steven-bunga')
-          .eq('status', 'published')
-          .single();
-        if (fallbackData) return fallbackData;
+          .maybeSingle();
+        if (fallbackData) {
+          return {
+            ...fallbackData,
+            status: cachedStatus || fallbackData.status || 'published'
+          };
+        }
       }
     } catch {}
 
@@ -133,7 +185,7 @@ export const invitationService = {
       id: 'demo-invitation-id',
       slug: targetSlug,
       title: slug === 'habib-adiba' ? 'The Wedding of Habib & Adiba' : 'The Wedding of Steven & Bunga',
-      status: 'published',
+      status: cachedStatus || 'published',
       wedding_date: '2026-10-12',
       settings: {
         theme_slug: slug === 'habib-adiba' ? 'javanese-heritage' : 'maroon-gold'
@@ -157,18 +209,41 @@ export const invitationService = {
   },
 
   async updateInvitation(id: string, invitation: Partial<Invitation>) {
-    const { data, error } = await supabase
-      .from('invitations')
-      .update(invitation)
-      .eq('id', id)
-      .select()
-      .single();
-      
-    if (error) throw error;
-    return (data as unknown) as Invitation;
+    if (invitation.status) {
+      setSavedStatus(id, invitation.slug, invitation.status);
+      if (id === INVITATION_AGNI_PUTRI.id) {
+        INVITATION_AGNI_PUTRI.status = invitation.status as any;
+        setSavedStatus(id, 'agni-putri', invitation.status);
+        setSavedStatus(id, 'agni-kahuripan', invitation.status);
+      }
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('invitations')
+        .update(invitation)
+        .eq('id', id)
+        .select()
+        .single();
+        
+      if (!error && data) {
+        return (data as unknown) as Invitation;
+      }
+    } catch (err) {
+      console.warn('Update invitation in Supabase fallback to local:', err);
+    }
+
+    return {
+      ...INVITATION_AGNI_PUTRI,
+      id,
+      ...invitation
+    } as Invitation;
   },
 
   async deleteInvitation(id: string) {
+    try {
+      localStorage.removeItem(`wd_inv_status_${id}`);
+    } catch {}
     const { error } = await supabase
       .from('invitations')
       .delete()

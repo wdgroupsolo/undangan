@@ -15,13 +15,14 @@ import { Settings } from '../pages/admin/Settings';
 import { Home } from '../pages/public/Home';
 import { ThemeCatalog } from '../pages/public/ThemeCatalog';
 import { InvitationRenderer } from '../pages/invitation/InvitationRenderer';
+import { WebClientGuard } from '../components/WebClientGuard';
 
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<Home />} />
-      <Route path="/themes" element={<ThemeCatalog />} />
+      {/* Public Routes with Maintenance/Pause Guard */}
+      <Route path="/" element={<WebClientGuard><Home /></WebClientGuard>} />
+      <Route path="/themes" element={<WebClientGuard><ThemeCatalog /></WebClientGuard>} />
       
       {/* Admin Auth Route */}
       <Route path="/admin/login" element={<Login />} />

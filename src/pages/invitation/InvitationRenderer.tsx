@@ -17,6 +17,7 @@ import {
   GoldenSparkleDust 
 } from './themes/RoyalWayangGoldTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
+import { InvitationPausedScreen } from '../../components/InvitationPausedScreen';
 
 export const InvitationRenderer: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -154,12 +155,29 @@ export const InvitationRenderer: React.FC = () => {
       : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : (rawBrideNick && rawBrideNick.toLowerCase() !== 'siti' ? formatName(rawBrideNick) : 'Bunga'))
   );
 
-  // Dynamically set page title in browser tab (Called unconditionally before any early returns)
+  // Dynamically set page title and Open Graph meta tags in browser tab (Called unconditionally)
   useEffect(() => {
-    if (couple) {
-      document.title = `The Wedding of ${groom} & ${bride}`;
-    }
-  }, [groom, bride, couple]);
+    const pageTitle = `The Wedding of ${groom} & ${bride}`;
+    document.title = pageTitle;
+
+    const setMetaTag = (attr: string, key: string, content: string) => {
+      let el = document.querySelector(`meta[${attr}="${key}"]`);
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+
+    setMetaTag('property', 'og:title', pageTitle);
+    setMetaTag('name', 'twitter:title', pageTitle);
+    const domain = typeof window !== 'undefined' ? window.location.origin : 'https://rsvp.wdgroupcompany.biz.id';
+    const previewImg = `${domain}/og-agni-kahuripan.jpg`;
+    setMetaTag('property', 'og:image', previewImg);
+    setMetaTag('property', 'og:image:secure_url', previewImg);
+    setMetaTag('name', 'twitter:image', previewImg);
+  }, [groom, bride]);
 
   // Completely hide browser scrollbar on invitation view while preserving smooth scrolling
   useEffect(() => {
@@ -245,15 +263,27 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
+  const groomDisplayName = isAgniSlug ? 'Agni' : (groom || 'Steven');
+  const brideDisplayName = isAgniSlug ? 'Putri' : (bride || 'Bunga');
+
+  // Automatic paused screen when invitation status is 'paused'
+  if (invitation?.status === 'paused') {
+    return (
+      <InvitationPausedScreen 
+        groomName={groomDisplayName} 
+        brideName={brideDisplayName}
+        weddingTitle={invitation.title || `The Wedding of ${groomDisplayName} & ${brideDisplayName}`}
+        contactPhone={invitation?.client?.phone || '6285707909415'}
+      />
+    );
+  }
+
   const isRoyalWayang = activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || slug === 'steven-bunga' || isAgniSlug;
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
   const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang;
-
-  const groomDisplayName = isAgniSlug ? 'Agni' : (groom || 'Steven');
-  const brideDisplayName = isAgniSlug ? 'Putri' : (bride || 'Bunga');
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 
