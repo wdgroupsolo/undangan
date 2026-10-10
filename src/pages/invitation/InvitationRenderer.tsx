@@ -18,6 +18,7 @@ import {
 } from './themes/RoyalWayangGoldTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 import { InvitationPausedScreen } from '../../components/InvitationPausedScreen';
+import { analyticsService } from '../../services/analyticsService';
 
 export const InvitationRenderer: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -178,6 +179,13 @@ export const InvitationRenderer: React.FC = () => {
     setMetaTag('property', 'og:image:secure_url', previewImg);
     setMetaTag('name', 'twitter:image', previewImg);
   }, [groom, bride]);
+
+  // Track invitation view in analytics
+  useEffect(() => {
+    if (slug) {
+      analyticsService.recordView(invId || 'e2000000-0000-0000-0000-000000000002', slug, rawTo);
+    }
+  }, [slug, invId, rawTo]);
 
   // Completely hide browser scrollbar on invitation view while preserving smooth scrolling
   useEffect(() => {

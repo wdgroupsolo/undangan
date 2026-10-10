@@ -148,6 +148,20 @@ export const translations = {
   themeCustomBtn: { id: 'Konsultasi Desain Khusus', en: 'Custom Design Consultation' },
 
   // Theme features
+  royalWayangFeatures: {
+    id: [
+      'Kemegahan Pendopo Joglo & Siluet Wayang Emas',
+      'Nuansa Hitam Emas Keraton & Paugeran Busana',
+      'Split Screen Desktop & Full Mobile Interaktif',
+      'Amplop Digital (BCA/BRI/Mandiri), QRIS & RSVP Online'
+    ],
+    en: [
+      'Joglo Pavilion Grandeur & Golden Wayang Silhouette',
+      'Royal Black-Gold Palette & Javanese Dresscode Guide',
+      'Split Screen Desktop & Full Interactive Mobile',
+      'Digital Envelope (BCA/BRI/Mandiri), QRIS & Online RSVP'
+    ]
+  },
   javaneseFeatures: {
     id: [
       'Ilustrasi Candi Borobudur & Batik Truntum',
@@ -220,6 +234,10 @@ export const translations = {
   },
 
   // Theme descriptions
+  royalWayangDesc: {
+    id: 'Tema agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, siluet wayang Kamajaya & Kamaratih berbalut emas, serta alunan gending sakral nusantara.',
+    en: 'A royal wedding theme inspired by nocturnal Javanese palaces & Joglo pavilion, golden Kamajaya-Kamaratih wayang silhouettes, and sacred gamelan melodies.'
+  },
   javaneseDesc: {
     id: 'Tema bernuansa kemegahan Candi Borobudur, ornamen batik klasik, paduan warna terracotta & merah marun, serta rangkaian anggrek vintage.',
     en: 'A theme inspired by the grandeur of Borobudur Temple, classic batik ornaments, terracotta & maroon color palette, and vintage orchid arrangements.'

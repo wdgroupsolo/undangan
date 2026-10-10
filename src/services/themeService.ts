@@ -53,7 +53,12 @@ export const REAL_ROYAL_WAYANG_THEME: Theme = {
   status: 'active',
   badge: 'Tema Keraton Baru',
   rating: '5.0',
-  features: ['cover', 'couple', 'countdown', 'events', 'gallery', 'story', 'rsvp', 'guestbook', 'gift', 'music'],
+  features: [
+    'Kemegahan Pendopo Joglo & Siluet Wayang Emas',
+    'Nuansa Hitam Emas Keraton & Paugeran Busana',
+    'Split Screen Desktop & Full Mobile Interaktif',
+    'Amplop Digital (BCA/BRI/Mandiri), QRIS & RSVP Online'
+  ],
   theme_config: { 
     primaryColor: '#d4af37', 
     secondaryColor: '#1c150c', 

@@ -858,22 +858,32 @@ export const Home: React.FC = () => {
           {/* Theme Cards Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {displayThemes.map((theme) => {
+              const isRoyalWayang = theme.slug === 'royal-wayang-gold' || theme.slug === 'royal-wayang';
               const isGarden = theme.slug === 'secret-garden';
               const isJavanese = theme.slug === 'javanese-heritage' || theme.slug === 'jawa-klasik' || theme.slug === 'borobudur';
               const isMaroon = theme.slug === 'maroon-gold';
               const isSplit = theme.slug === 'split-floral';
 
-              const previewImg = theme.preview_image || theme.thumbnail || (isGarden 
-                ? '/themes/secret-garden-theme-preview.png'
-                : (isSplit 
-                    ? '/themes/split-floral-theme-preview.png' 
-                    : '/themes/javanese-heritage-theme-preview.png'));
+              const previewImg = theme.preview_image || theme.thumbnail || (isRoyalWayang
+                ? '/themes/royal-wayang-theme-preview.png'
+                : (isGarden 
+                    ? '/themes/secret-garden-theme-preview.png'
+                    : (isSplit 
+                        ? '/themes/split-floral-theme-preview.png' 
+                        : '/themes/javanese-heritage-theme-preview.png')));
 
-              const demoUrl = isJavanese 
-                ? '/invitation/steven-bunga?theme=javanese-heritage' 
-                : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}` : '/themes');
+              const demoUrl = isRoyalWayang
+                ? '/invitation/steven-bunga?theme=royal-wayang-gold'
+                : (isJavanese 
+                    ? '/invitation/steven-bunga?theme=javanese-heritage' 
+                    : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}` : '/themes'));
 
-              const featuresList = isJavanese ? [
+              const featuresList = isRoyalWayang ? [
+                'Kemegahan Pendopo Joglo & Siluet Wayang Emas',
+                'Nuansa Hitam Emas Keraton & Paugeran Busana',
+                'Split Screen Desktop & Full Mobile Interaktif',
+                'Amplop Digital (BCA/BRI/Mandiri), QRIS & RSVP Online'
+              ] : isJavanese ? [
                 'Ilustrasi Candi Borobudur & Batik Truntum',
                 'Ornamen Anggrek Marun & Nuansa Terracotta',
                 'Split Screen Desktop & Full Mobile Interaktif',
@@ -920,7 +930,7 @@ export const Home: React.FC = () => {
                       />
                       <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                         <span className="bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-md">
-                          {theme.category || (isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
+                          {theme.category || (isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
                         </span>
                       </div>
                     </div>
@@ -929,15 +939,17 @@ export const Home: React.FC = () => {
                     <div className="sm:col-span-7 p-6 flex flex-col justify-between space-y-4">
                       <div>
                         <div className="text-xs font-bold uppercase tracking-wider text-primary-800 mb-1">
-                          {isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
+                          {isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
                         </div>
                         <h3 className="font-bold text-xl sm:text-2xl text-stone-900">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3">
-                          {theme.description || (isJavanese
-                            ? 'Tema bernuansa kemegahan Candi Borobudur, ornamen batik klasik, paduan warna terracotta & merah marun, serta rangkaian anggrek vintage.'
-                            : isGarden 
-                            ? 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance sinematik, dan ornamen bunga melayang.'
-                            : 'Tema split screen klasik dengan ornamen floral melengkung vintage, entrance video arch, dan alunan saxophone romantis.')}
+                          {isRoyalWayang
+                            ? 'Tema pernikahan agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, diperkaya siluet wayang Kamajaya & Kamaratih berlapis emas, ornamen floral klasik, serta alunan sakral khas Nusantara.'
+                            : (theme.description || (isJavanese
+                              ? 'Tema bernuansa kemegahan Candi Borobudur, ornamen batik klasik, paduan warna terracotta & merah marun, serta rangkaian anggrek vintage.'
+                              : isGarden 
+                              ? 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance sinematik, dan ornamen bunga melayang.'
+                              : 'Tema split screen klasik dengan ornamen floral melengkung vintage, entrance video arch, dan alunan saxophone romantis.'))}
                         </p>
 
                         <div className="mt-4 space-y-1.5 text-xs text-stone-700">
