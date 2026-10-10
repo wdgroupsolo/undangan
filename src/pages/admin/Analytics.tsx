@@ -283,7 +283,11 @@ export const Analytics: React.FC = () => {
             <div className="text-3xl font-black text-stone-900">{analytics.totalViews.toLocaleString('id-ID')}</div>
             <div className="flex items-center space-x-1.5 mt-1.5 text-[11px] text-emerald-600 font-semibold">
               <TrendingUp size={13} />
-              <span>+{Math.round(analytics.totalViews * 0.18)} pembaca baru minggu ini</span>
+              <span>
+                {analytics.totalViews > 0 
+                  ? `${analytics.totalViews} kunjungan tercatat real-time` 
+                  : 'Pelacakan otomatis aktif'}
+              </span>
             </div>
           </div>
         </div>
@@ -299,7 +303,11 @@ export const Analytics: React.FC = () => {
           <div className="mt-4">
             <div className="text-3xl font-black text-stone-900">{analytics.uniqueVisitors.toLocaleString('id-ID')}</div>
             <div className="flex items-center space-x-1.5 mt-1.5 text-[11px] text-stone-500 font-medium">
-              <span>Rasio pembaca ~{Math.round((analytics.uniqueVisitors / analytics.totalGuests) * 100)}% dari daftar tamu</span>
+              <span>
+                {analytics.uniqueVisitors > 0
+                  ? `Rasio pembaca ~${Math.round((analytics.uniqueVisitors / analytics.totalGuests) * 100)}% dari daftar tamu`
+                  : `Dari total ${analytics.totalGuests} tamu undangan`}
+              </span>
             </div>
           </div>
         </div>
@@ -315,7 +323,11 @@ export const Analytics: React.FC = () => {
           <div className="mt-4">
             <div className="text-3xl font-black text-stone-900">{analytics.responseRate}%</div>
             <div className="flex items-center space-x-1.5 mt-1.5 text-[11px] text-emerald-700 font-medium">
-              <span>{analytics.rsvpResponseCount} dari {analytics.totalGuests} tamu terkonfirmasi</span>
+              <span>
+                {analytics.rsvpResponseCount > 0
+                  ? `${analytics.rsvpResponseCount} dari ${analytics.totalGuests} tamu terkonfirmasi`
+                  : `0 dari ${analytics.totalGuests} tamu terkonfirmasi`}
+              </span>
             </div>
           </div>
         </div>
@@ -329,9 +341,15 @@ export const Analytics: React.FC = () => {
             </div>
           </div>
           <div className="mt-4">
-            <div className="text-3xl font-black text-stone-900">{analytics.estimatedPax} <span className="text-sm font-semibold text-stone-500">Porsi</span></div>
+            <div className="text-3xl font-black text-stone-900">
+              {analytics.estimatedPax} <span className="text-sm font-semibold text-stone-500">Porsi</span>
+            </div>
             <div className="flex items-center space-x-1.5 mt-1.5 text-[11px] text-stone-500 font-medium">
-              <span>Berdasarkan {analytics.attendingCount} konfirmasi hadir + pendamping</span>
+              <span>
+                {analytics.attendingCount > 0
+                  ? `Berdasarkan ${analytics.attendingCount} konfirmasi hadir + pendamping`
+                  : 'Menunggu konfirmasi kehadiran tamu'}
+              </span>
             </div>
           </div>
         </div>
@@ -753,32 +771,38 @@ export const Analytics: React.FC = () => {
           </span>
         </div>
 
-        <div className="divide-y divide-stone-100">
-          {analytics.recentActivities.map((act) => (
-            <div key={act.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
-              <div className="flex items-center space-x-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
-                  act.type === 'rsvp_attending' ? 'bg-emerald-100 text-emerald-800' :
-                  act.type === 'rsvp_not_attending' ? 'bg-rose-100 text-rose-800' :
-                  act.type === 'rsvp_maybe' ? 'bg-amber-100 text-amber-800' :
-                  'bg-stone-100 text-stone-700'
-                }`}>
-                  {act.guestName.charAt(0)}
-                </div>
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xs font-bold text-stone-900">{act.guestName}</span>
-                    <span className="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-md">
-                      {act.action}
-                    </span>
+        {analytics.recentActivities.length > 0 ? (
+          <div className="divide-y divide-stone-100">
+            {analytics.recentActivities.map((act) => (
+              <div key={act.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
+                    act.type === 'rsvp_attending' ? 'bg-emerald-100 text-emerald-800' :
+                    act.type === 'rsvp_not_attending' ? 'bg-rose-100 text-rose-800' :
+                    act.type === 'rsvp_maybe' ? 'bg-amber-100 text-amber-800' :
+                    'bg-stone-100 text-stone-700'
+                  }`}>
+                    {act.guestName.charAt(0)}
                   </div>
-                  <span className="text-[10px] text-stone-400">{analytics.invitationTitle}</span>
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs font-bold text-stone-900">{act.guestName}</span>
+                      <span className="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-md">
+                        {act.action}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-stone-400">{analytics.invitationTitle}</span>
+                  </div>
                 </div>
+                <span className="text-[11px] font-medium text-stone-400">{act.time}</span>
               </div>
-              <span className="text-[11px] font-medium text-stone-400">{act.time}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="py-8 text-center text-xs text-stone-500">
+            Belum ada aktivitas baru dari tamu. Riwayat akan muncul otomatis saat tamu membuka link undangan atau mengisi RSVP online.
+          </div>
+        )}
       </div>
 
     </div>
