@@ -16,6 +16,10 @@ import {
   RoyalWayangGoldTheme, 
   GoldenSparkleDust 
 } from './themes/RoyalWayangGoldTheme';
+import { 
+  JogloMaroonHeritageTheme, 
+  JogloButterflies 
+} from './themes/JogloMaroonHeritageTheme';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 import { InvitationPausedScreen } from '../../components/InvitationPausedScreen';
 import { analyticsService } from '../../services/analyticsService';
@@ -74,6 +78,11 @@ export const InvitationRenderer: React.FC = () => {
       return '/music/landon-pigg-falling-in-love.mp3';
     }
     switch (themeSlug) {
+      case 'joglo-maroon-heritage':
+      case 'joglo-maroon':
+      case 'joglo-bloom':
+      case 'pendopo-maroon':
+        return '/music/joglo-maroon-heritage.mp3';
       case 'royal-wayang-gold':
       case 'royal-wayang':
       case 'joglo-wayang':
@@ -286,12 +295,13 @@ export const InvitationRenderer: React.FC = () => {
     );
   }
 
+  const isJogloMaroon = activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon';
   const isRoyalWayang = activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || slug === 'steven-bunga' || isAgniSlug;
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang;
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon;
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 
@@ -304,17 +314,19 @@ export const InvitationRenderer: React.FC = () => {
     couple?.cover_photo ||
     invitation?.cover_image_url || 
     gallery?.[0]?.image_url || 
-    (isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
+    (isJogloMaroon ? '/photos/photo-3.jpg' : isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
-  const entranceVideoSrc = isRoyalWayang
-    ? '/themes/royal-wayang-portal-zoom.mp4'
-    : isJavaneseHeritage
-      ? '/themes/javanese-heritage-entrance.mp4'
-      : isSecretGarden
-        ? '/themes/secret-garden/assets/video.mp4'
-        : isMaroonGold
-          ? '/maroon-gate-entrance.mp4'
-          : '/video-cover.mp4';
+  const entranceVideoSrc = isJogloMaroon
+    ? '/themes/joglo-maroon-entrance.mp4'
+    : isRoyalWayang
+      ? '/themes/royal-wayang-portal-zoom.mp4'
+      : isJavaneseHeritage
+        ? '/themes/javanese-heritage-entrance.mp4'
+        : isSecretGarden
+          ? '/themes/secret-garden/assets/video.mp4'
+          : isMaroonGold
+            ? '/maroon-gate-entrance.mp4'
+            : '/video-cover.mp4';
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
@@ -362,8 +374,8 @@ export const InvitationRenderer: React.FC = () => {
       }
     }
 
-    if (isRoyalWayang) {
-      // Authentic Royal Portal 3D Zoom entrance video animation matching user's reference
+    if (isJogloMaroon || isRoyalWayang) {
+      // Authentic Royal Portal / Joglo Zoom entrance video animation matching user's reference
       setCanSkipVideo(false);
       setOpeningStage('arch-video');
 
@@ -386,7 +398,7 @@ export const InvitationRenderer: React.FC = () => {
       if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
       animTimeoutRef.current = setTimeout(() => {
         handleFinishAnimation();
-      }, 3700);
+      }, isJogloMaroon ? 3000 : 3700);
       return;
     }
 
@@ -473,7 +485,18 @@ export const InvitationRenderer: React.FC = () => {
             }`
       }>
         {(isSplitTheme || isInvitationVisible || isCoverExiting || openingStage === 'arch-video') && (
-          isRoyalWayang ? (
+          isJogloMaroon ? (
+            <JogloMaroonHeritageTheme 
+              invitation={invitation}
+              couple={couple}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+              isOpening={isVideoExiting || openingStage === 'opened'}
+            />
+          ) : isRoyalWayang ? (
             <RoyalWayangGoldTheme 
               invitation={invitation}
               couple={couple}
@@ -571,7 +594,82 @@ export const InvitationRenderer: React.FC = () => {
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {openingStage === 'cover' && (
-        isRoyalWayang ? (
+        isJogloMaroon ? (
+          /* Joglo Maroon Heritage Cover - Exact replica of the user reference video */
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#140e0b]">
+            {/* Desktop Scenic Background */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              <img 
+                src="/themes/joglo-maroon-bg-clean.jpg" 
+                alt="Rumah Adat Bolon Batak Heritage" 
+                className="w-full h-full object-cover object-center scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-black/75" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#140e0b]/85 via-transparent to-black/50" />
+            </div>
+
+            {/* Courtyard Butterflies */}
+            <JogloButterflies />
+
+            {/* Centered Mobile/Portrait Invitation Card */}
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:max-h-[94vh] sm:rounded-3xl overflow-hidden flex flex-col justify-between items-center text-center bg-[#fbf8f2] shadow-[0_25px_70px_rgba(0,0,0,0.8),_0_0_40px_rgba(126,34,49,0.35)] sm:border-2 sm:border-[#7e2231]/40">
+              {/* Top Burgundy Banner */}
+              <div className="w-full bg-[#7e2231] text-white py-2 px-4 shadow-sm border-b border-[#c9982e]/30">
+                <p className="text-xs font-serif font-semibold tracking-[0.25em] uppercase text-[#fff5ea]">
+                  {invitation?.title ? invitation.title.toUpperCase() : `${groomDisplayName.toUpperCase()} & ${brideDisplayName.toUpperCase()}`}
+                </p>
+              </div>
+
+              {/* Middle Card Content */}
+              <div className="flex-1 w-full flex flex-col items-center justify-center px-6 py-5 overflow-y-auto">
+                {/* Arched Photo Frame */}
+                <div className="relative mx-auto w-44 h-52 rounded-t-[88px] rounded-b-xl overflow-hidden border-2 border-[#7e2231]/40 shadow-md mb-4 group">
+                  <img 
+                    src={coverImage} 
+                    alt={`${groomDisplayName} & ${brideDisplayName}`} 
+                    className="w-full h-full object-cover object-center"
+                  />
+                  <div className="absolute inset-0 ring-1 ring-inset ring-[#c9982e]/40 rounded-t-[88px] rounded-b-xl" />
+                </div>
+
+                <p className="text-xs uppercase tracking-[0.3em] text-[#7e2231] font-serif font-medium mb-1">
+                  The Wedding Of
+                </p>
+
+                <h1 className="text-3xl sm:text-4xl font-serif font-medium text-[#7e2231] mb-4 tracking-wide">
+                  {groomDisplayName} <span className="font-light italic text-[#c9982e]">&amp;</span> {brideDisplayName}
+                </h1>
+
+                {/* Guest VIP Box */}
+                <div className="w-full max-w-xs bg-white/95 border border-[#7e2231]/25 rounded-xl p-3.5 shadow-sm mb-5">
+                  <p className="text-[11px] text-[#6d4d42] font-serif uppercase tracking-wider mb-0.5">
+                    Kepada Bapak/Ibu/Saudara/i
+                  </p>
+                  <p className="text-lg font-serif font-bold text-[#7e2231]">
+                    {guestName}
+                  </p>
+                  <p className="text-xs text-[#8c6b5e] italic mt-0.5 font-serif">
+                    Di Tempat
+                  </p>
+                </div>
+
+                {/* Buka Undangan Button */}
+                <button
+                  onClick={handleOpen}
+                  className="inline-flex items-center justify-center gap-2 w-full max-w-xs py-3 px-6 rounded-full bg-[#7e2231] hover:bg-[#651722] text-white font-serif text-xs tracking-widest uppercase transition-all duration-300 shadow-[0_6px_20px_rgba(126,34,49,0.4)] hover:shadow-[0_8px_25px_rgba(126,34,49,0.6)] active:scale-95"
+                >
+                  <MailOpen className="w-4 h-4 text-[#edd59e]" />
+                  <span>Buka Undangan</span>
+                </button>
+              </div>
+
+              {/* Bottom Footer Note */}
+              <div className="w-full py-2 bg-[#f4ece0] border-t border-[#7e2231]/15 text-[11px] text-[#7a5b51] font-serif">
+                Mohon maaf apabila ada kesalahan penulisan nama/gelar
+              </div>
+            </div>
+          </div>
+        ) : isRoyalWayang ? (
           /* Royal Wayang Gold Cover - Split Desktop Card (Right 42% on Desktop, 100% on Mobile) */
           <div 
             className="fixed top-0 right-0 h-full w-full lg:w-[42%] z-50 flex items-center justify-center overflow-hidden select-none shadow-[-15px_0_50px_rgba(0,0,0,0.85)] border-l border-amber-500/25 bg-[#0e0a08]"
@@ -1376,15 +1474,17 @@ export const InvitationRenderer: React.FC = () => {
             className="absolute inset-0 bg-cover bg-center pointer-events-none"
             style={{
               backgroundImage: `url(${
-                isRoyalWayang
-                  ? '/themes/royal-wayang-bg.jpg'
-                  : isJavaneseHeritage
-                    ? '/themes/javanese-heritage-bg.jpg'
-                    : isMaroonGold 
-                      ? '/gate-bg-open.jpg' 
-                      : isSecretGarden 
-                        ? '/themes/secret-garden/assets/inner-cover.jpg' 
-                        : '/arch-clean.png'
+                isJogloMaroon
+                  ? '/themes/joglo-maroon-bg-clean.jpg'
+                  : isRoyalWayang
+                    ? '/themes/royal-wayang-bg.jpg'
+                    : isJavaneseHeritage
+                      ? '/themes/javanese-heritage-bg.jpg'
+                      : isMaroonGold 
+                        ? '/gate-bg-open.jpg' 
+                        : isSecretGarden 
+                          ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                          : '/arch-clean.png'
               })`
             }}
           />
@@ -1406,22 +1506,27 @@ export const InvitationRenderer: React.FC = () => {
               }}
               src={entranceVideoSrc}
               poster={
-                isRoyalWayang
-                  ? '/themes/royal-wayang-portal-poster.jpg'
-                  : isJavaneseHeritage
-                    ? '/themes/javanese-cover-poster.jpg'
-                    : isMaroonGold 
-                      ? '/gate-bg-open.jpg' 
-                      : isSecretGarden 
-                        ? '/themes/secret-garden/assets/inner-cover.jpg' 
-                        : '/arch-clean.png'
+                isJogloMaroon
+                  ? '/themes/joglo-maroon-portal-poster.jpg'
+                  : isRoyalWayang
+                    ? '/themes/royal-wayang-portal-poster.jpg'
+                    : isJavaneseHeritage
+                      ? '/themes/javanese-cover-poster.jpg'
+                      : isMaroonGold 
+                        ? '/gate-bg-open.jpg' 
+                        : isSecretGarden 
+                          ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                          : '/arch-clean.png'
               }
               autoPlay
               playsInline
               muted
               className="w-full h-full object-cover object-center"
+              onError={handleFinishAnimation}
               onTimeUpdate={() => {
-                if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
+                if (isJogloMaroon && videoRef.current && videoRef.current.currentTime >= 2.7) {
+                  handleFinishAnimation();
+                } else if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
                   handleFinishAnimation();
                 } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
                   handleFinishAnimation();

@@ -17,6 +17,10 @@ export interface Theme {
 }
 
 export const THEME_SCREENSHOT_MAP: Record<string, string> = {
+  'joglo-maroon-heritage': '/themes/joglo-maroon-theme-preview.png',
+  'joglo-maroon': '/themes/joglo-maroon-theme-preview.png',
+  'joglo-bloom': '/themes/joglo-maroon-theme-preview.png',
+  'pendopo-maroon': '/themes/joglo-maroon-theme-preview.png',
   'royal-wayang-gold': '/themes/royal-wayang-theme-preview.png',
   'royal-wayang': '/themes/royal-wayang-theme-preview.png',
   'joglo-wayang': '/themes/royal-wayang-theme-preview.png',
@@ -39,6 +43,36 @@ export const enhanceThemeWithScreenshot = (theme: any): Theme => {
     };
   }
   return theme as Theme;
+};
+
+// Masterpiece Theme: Batak Maroon Heritage (Rumah Bolon, Ukiran Gorga & Ulos, Burgundy Peonies)
+export const REAL_JOGLO_MAROON_THEME: Theme = {
+  id: 'a1b2c3d4-5678-4901-b234-5cdef6789012',
+  name: 'Batak Maroon Heritage',
+  slug: 'joglo-maroon-heritage',
+  description: 'Tema pernikahan adat Batak bernuansa Rumah Adat Bolon megah berhias ukiran Gorga dan hamparan bunga merah marun, diperkaya aksen tenun Ulos, kupu-kupu beterbangan, dan suasana sakral penuh kehormatan.',
+  category: 'Traditional & Heritage',
+  preview_image: '/themes/joglo-maroon-theme-preview.png',
+  thumbnail: '/themes/joglo-maroon-theme-preview.png',
+  status: 'active',
+  badge: 'Tema Baru Populer',
+  rating: '5.0',
+  features: [
+    'Kemegahan Rumah Adat Batak (Rumah Bolon)',
+    'Ornamen Ukiran Gorga & Tenun Ulos Marun',
+    'Bingkai Foto Lengkung & Hamparan Bunga Marun',
+    'Amplop Digital, Salin Rekening & RSVP Online'
+  ],
+  theme_config: { 
+    primaryColor: '#7e2231', 
+    secondaryColor: '#fbf8f2', 
+    accentColor: '#c9982e',
+    style: 'joglo-maroon-heritage',
+    backgroundImage: '/themes/joglo-maroon-bg-clean.jpg',
+    desktopBackground: '/themes/joglo-maroon-bg-clean.jpg',
+    entranceVideo: '/themes/joglo-maroon-entrance.mp4',
+  },
+  created_at: '2026-10-10T12:00:00.000000+00:00'
 };
 
 // New Masterpiece Theme: Royal Wayang Gold (Keraton Jawa & Pendopo Joglo)
@@ -165,6 +199,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
 };
 
 export const DEFAULT_THEMES: Theme[] = [
+  REAL_JOGLO_MAROON_THEME,
   REAL_ROYAL_WAYANG_THEME,
   REAL_JAVANESE_HERITAGE_THEME,
   REAL_MAROON_GOLD_THEME,
@@ -185,9 +220,38 @@ export const themeService = {
         return DEFAULT_THEMES;
       }
 
-      // Merge database themes with Royal Wayang, Secret Garden, Maroon Gold, and Javanese Heritage
+      // Merge database themes with Joglo Maroon, Royal Wayang, Secret Garden, Maroon Gold, and Javanese Heritage
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
+
+      if (!existingSlugs.has('joglo-maroon-heritage')) {
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('themes')
+            .insert({
+              id: REAL_JOGLO_MAROON_THEME.id,
+              name: REAL_JOGLO_MAROON_THEME.name,
+              slug: REAL_JOGLO_MAROON_THEME.slug,
+              description: REAL_JOGLO_MAROON_THEME.description,
+              category: REAL_JOGLO_MAROON_THEME.category,
+              preview_image: REAL_JOGLO_MAROON_THEME.preview_image,
+              thumbnail: REAL_JOGLO_MAROON_THEME.thumbnail,
+              status: 'active',
+              features: REAL_JOGLO_MAROON_THEME.features,
+              theme_config: REAL_JOGLO_MAROON_THEME.theme_config
+            })
+            .select()
+            .single();
+
+          if (!insertErr && inserted) {
+            merged.push(inserted as Theme);
+          } else {
+            merged.push(REAL_JOGLO_MAROON_THEME);
+          }
+        } catch {
+          merged.push(REAL_JOGLO_MAROON_THEME);
+        }
+      }
 
       if (!existingSlugs.has('royal-wayang-gold')) {
         try {
