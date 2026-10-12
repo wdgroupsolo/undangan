@@ -225,32 +225,7 @@ export const themeService = {
       const merged = [...data];
 
       if (!existingSlugs.has('joglo-maroon-heritage')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_JOGLO_MAROON_THEME.id,
-              name: REAL_JOGLO_MAROON_THEME.name,
-              slug: REAL_JOGLO_MAROON_THEME.slug,
-              description: REAL_JOGLO_MAROON_THEME.description,
-              category: REAL_JOGLO_MAROON_THEME.category,
-              preview_image: REAL_JOGLO_MAROON_THEME.preview_image,
-              thumbnail: REAL_JOGLO_MAROON_THEME.thumbnail,
-              status: 'active',
-              features: REAL_JOGLO_MAROON_THEME.features,
-              theme_config: REAL_JOGLO_MAROON_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_JOGLO_MAROON_THEME);
-          }
-        } catch {
-          merged.push(REAL_JOGLO_MAROON_THEME);
-        }
+        merged.unshift(REAL_JOGLO_MAROON_THEME);
       }
 
       if (!existingSlugs.has('royal-wayang-gold')) {
@@ -391,6 +366,10 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
+      if (!existingSlugs.has('joglo-maroon-heritage')) {
+        merged.unshift(REAL_JOGLO_MAROON_THEME);
+      }
+
       if (!existingSlugs.has('royal-wayang-gold')) {
         try {
           const { data: inserted, error: insertErr } = await supabase
@@ -514,6 +493,9 @@ export const themeService = {
   },
 
   async getTheme(id: string): Promise<Theme> {
+    if (id === REAL_JOGLO_MAROON_THEME.id || id === 'joglo-maroon-heritage' || id === 'joglo-maroon' || id === 'joglo-bloom' || id === 'pendopo-maroon') {
+      return REAL_JOGLO_MAROON_THEME;
+    }
     if (id === REAL_ROYAL_WAYANG_THEME.id || id === 'royal-wayang-gold' || id === 'royal-wayang' || id === 'joglo-wayang') {
       return REAL_ROYAL_WAYANG_THEME;
     }
@@ -541,10 +523,13 @@ export const themeService = {
       }
     } catch {}
 
-    return REAL_ROYAL_WAYANG_THEME;
+    return REAL_JOGLO_MAROON_THEME;
   },
 
   async getThemeBySlug(slug: string): Promise<Theme> {
+    if (slug === 'joglo-maroon-heritage' || slug === 'joglo-maroon' || slug === 'joglo-bloom' || slug === 'pendopo-maroon') {
+      return REAL_JOGLO_MAROON_THEME;
+    }
     if (slug === 'royal-wayang-gold' || slug === 'royal-wayang' || slug === 'joglo-wayang') {
       return REAL_ROYAL_WAYANG_THEME;
     }

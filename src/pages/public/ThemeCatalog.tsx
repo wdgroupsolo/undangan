@@ -181,12 +181,12 @@ export const ThemeCatalog: React.FC = () => {
                     <div className="sm:col-span-7 p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
                       <div>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-2.5 py-1 rounded-md">
-                          {isJogloMaroon ? 'Joglo Maroon Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Trending Masterpiece' : isMaroon ? 'Royal Classic' : isSplit ? 'Masterpiece Edition' : (theme.category || 'Special Edition')}
+                          {isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Trending Masterpiece' : isMaroon ? 'Royal Classic' : isSplit ? 'Masterpiece Edition' : (theme.category || 'Special Edition')}
                         </span>
                         <h3 className="text-xl sm:text-2xl font-bold text-stone-900 mt-2">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-3 sm:line-clamp-none">
                           {isJogloMaroon
-                            ? 'Tema pernikahan Jawa klasik bernuansa Pendopo Joglo dan taman bunga merah marun, diperkaya siluet wayang Kamajaya & Dewi Ratih, kupu-kupu beterbangan, bingkai lengkung elegan, dan alunan tembang romantis Nusantara.'
+                            ? 'Tema pernikahan adat Batak bernuansa Rumah Adat Bolon megah berhias ukiran Gorga dan hamparan bunga merah marun, diperkaya aksen tenun Ulos, kupu-kupu beterbangan, dan suasana sakral penuh kehormatan.'
                             : isRoyalWayang
                               ? 'Tema pernikahan agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, diperkaya siluet wayang Kamajaya & Kamaratih berlapis emas, ornamen floral klasik, serta alunan sakral khas Nusantara.'
                               : theme.description || (isJavanese
@@ -199,9 +199,9 @@ export const ThemeCatalog: React.FC = () => {
 
                         <div className="mt-4 pt-3 border-t border-stone-100 space-y-1.5 text-xs text-stone-600">
                           {(isJogloMaroon ? [
-                            'Kemegahan Pendopo Joglo & Kupu-Kupu Melayang',
-                            'Siluet Wayang Kamajaya & Dewi Ratih Elegan',
-                            'Bingkai Lengkung Klasik & Rangkaian Bunga Marun',
+                            'Kemegahan Rumah Adat Batak (Rumah Bolon)',
+                            'Ornamen Ukiran Gorga & Aksen Tenun Ulos',
+                            'Bingkai Foto Lengkung & Hamparan Bunga Marun',
                             'Amplop Digital (BCA/Mandiri), Salin Rekening & RSVP'
                           ] : isRoyalWayang ? [
                             'Kemegahan Pendopo Joglo & Siluet Wayang Emas',

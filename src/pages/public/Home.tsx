@@ -48,6 +48,30 @@ export const Home: React.FC = () => {
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
   const showcaseThemes = [
     {
+      id: 'joglo-maroon-heritage',
+      name: 'Batak Maroon Heritage',
+      slug: 'joglo-maroon-heritage',
+      badge: 'Tema Baru Populer',
+      couple: 'Steven & Bunga',
+      date: 'Minggu, 12 April 2026',
+      preview: '/themes/joglo-maroon-theme-preview.png',
+      musicTitle: 'Pesta Adat Batak Heritage',
+      musicUrl: '/music/joglo-maroon-heritage.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=joglo-maroon-heritage'
+    },
+    {
+      id: 'royal-wayang-gold',
+      name: 'Royal Wayang Gold',
+      slug: 'royal-wayang-gold',
+      badge: showcaseBadges[0] || 'Tema Keraton',
+      couple: 'Agni & Putri',
+      date: 'Minggu, 28 Desember 2025',
+      preview: '/themes/royal-wayang-theme-preview.png',
+      musicTitle: 'Ladrang Wilujeng Keraton',
+      musicUrl: '/music/royal-wayang-heritage.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=royal-wayang-gold'
+    },
+    {
       id: 'javanese-heritage',
       name: 'Javanese Heritage',
       slug: 'javanese-heritage',
@@ -884,9 +908,9 @@ export const Home: React.FC = () => {
                       : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}` : '/themes')));
 
               const featuresList = isJogloMaroon ? [
-                'Kemegahan Pendopo Joglo & Kupu-Kupu Melayang',
-                'Siluet Wayang Kamajaya & Dewi Ratih Elegan',
-                'Bingkai Lengkung Klasik & Rangkaian Bunga Marun',
+                'Kemegahan Rumah Adat Batak (Rumah Bolon)',
+                'Ornamen Ukiran Gorga & Aksen Tenun Ulos',
+                'Bingkai Foto Lengkung & Hamparan Bunga Marun',
                 'Amplop Digital (BCA/Mandiri), Salin Rekening & RSVP'
               ] : isRoyalWayang ? [
                 'Kemegahan Pendopo Joglo & Siluet Wayang Emas',
@@ -949,12 +973,12 @@ export const Home: React.FC = () => {
                     <div className="sm:col-span-7 p-6 flex flex-col justify-between space-y-4">
                       <div>
                         <div className="text-xs font-bold uppercase tracking-wider text-primary-800 mb-1">
-                          {isJogloMaroon ? 'Joglo Maroon Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
+                          {isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
                         </div>
                         <h3 className="font-bold text-xl sm:text-2xl text-stone-900">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3">
                           {isJogloMaroon
-                            ? 'Tema pernikahan Jawa klasik bernuansa Pendopo Joglo dan taman bunga merah marun, diperkaya siluet wayang Kamajaya & Dewi Ratih, kupu-kupu beterbangan, bingkai lengkung elegan, dan alunan tembang romantis Nusantara.'
+                            ? 'Tema pernikahan adat Batak bernuansa Rumah Adat Bolon megah berhias ukiran Gorga dan hamparan bunga merah marun, diperkaya aksen tenun Ulos, kupu-kupu beterbangan, dan suasana sakral penuh kehormatan.'
                             : isRoyalWayang
                               ? 'Tema pernikahan agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, diperkaya siluet wayang Kamajaya & Kamaratih berlapis emas, ornamen floral klasik, serta alunan sakral khas Nusantara.'
                               : theme.description || (isJavanese
