@@ -18,7 +18,8 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  QrCode
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -709,6 +710,22 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [copiedAddress, setCopiedAddress] = useState(false);
 
+  // Saved RSVP check-in pass state (persisted per invitation)
+  const [submittedRsvp, setSubmittedRsvp] = useState<{
+    name: string;
+    attendance: 'attending' | 'not_attending' | 'maybe';
+    guests: number;
+    code: string;
+    timestamp: string;
+  } | null>(() => {
+    try {
+      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'joglo'}`);
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
 
 
   // Guest list & pagination
@@ -865,6 +882,17 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
 
       if (newItem) {
         setRsvps(prev => [newItem, ...prev]);
+        const passData = {
+          name: rsvpName.trim(),
+          attendance: rsvpAttendance,
+          guests: parseInt(rsvpGuests) || 1,
+          code: `WD-${(invitation?.id || 'JOGLO').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
+          timestamp: new Date().toISOString(),
+        };
+        try {
+          localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'joglo'}`, JSON.stringify(passData));
+        } catch {}
+        setSubmittedRsvp(passData);
         setRsvpName('');
         setRsvpMessage('');
         setRsvpGuests('1');
@@ -1043,7 +1071,26 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
           <JogloRoyalDust />
 
           {/* Open Sky Centered Typography with Royal Crest, VIP Card & Umpasa */}
-          <div className="absolute top-[7%] sm:top-[8%] inset-x-0 mx-auto z-10 w-full max-w-[320px] sm:max-w-md px-4 flex flex-col items-center">
+          <div 
+            className="absolute top-[7%] sm:top-[8%] inset-x-0 mx-auto z-10 w-full max-w-[320px] sm:max-w-md px-4 flex flex-col items-center will-change-transform"
+            style={{
+              animation: 'hero-luxury-glide 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            }}
+          >
+            <style>{`
+              @keyframes hero-luxury-glide {
+                0% {
+                  opacity: 0;
+                  transform: translateY(28px) scale(0.97);
+                  filter: blur(5px);
+                }
+                100% {
+                  opacity: 1;
+                  transform: translateY(0) scale(1);
+                  filter: blur(0px);
+                }
+              }
+            `}</style>
             
             {/* Top Royal Batak Heritage Badge */}
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#7e2231]/8 border border-[#c9982e]/40 backdrop-blur-sm mb-1.5 shadow-sm">
@@ -2123,26 +2170,35 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
           <JogloFallingPetals />
 
           <div className="relative z-10 max-w-md mx-auto">
-            {/* Arched Dome Vault Card with Prewedding Couple Background */}
-            <div className="relative w-full max-w-[340px] sm:max-w-[370px] mx-auto rounded-t-[175px] sm:rounded-t-[195px] rounded-b-[36px] sm:rounded-b-[44px] border-[2.5px] border-[#8a1c2e] shadow-[0_25px_60px_rgba(0,0,0,0.65),0_0_25px_rgba(138,28,46,0.22)] overflow-hidden pt-16 sm:pt-20 px-6 sm:px-7 pb-8 sm:pb-10 text-center">
+            {/* Arched Dome Vault Card - Elegant Royal Velvet Maroon & Floral Frame */}
+            <div className="relative w-full max-w-[340px] sm:max-w-[370px] mx-auto rounded-t-[175px] sm:rounded-t-[195px] rounded-b-[36px] sm:rounded-b-[44px] border-[2px] border-[#c9982e]/60 ring-1 ring-inset ring-[#edd59e]/30 shadow-[0_25px_60px_rgba(0,0,0,0.7),0_0_30px_rgba(138,28,46,0.25)] overflow-hidden pt-16 sm:pt-20 px-6 sm:px-7 pb-8 sm:pb-10 text-center bg-[#1a0408]">
               
-              {/* Prewedding Couple Portrait Background */}
+              {/* Clean Heritage Architectural Backdrop (No people or signs) */}
               <img 
-                src={coupleCoverPhoto || '/photos/photo-3.jpg'} 
-                alt="Couple Prewedding" 
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+                src="/themes/joglo-maroon-bg-clean.jpg" 
+                alt="Heritage Texture" 
+                className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none opacity-25 mix-blend-luminosity"
               />
 
-              {/* Dark Warm Vignette Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/65 to-black/85 pointer-events-none" />
+              {/* Opulent Royal Velvet Maroon Vignette Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#2e050d]/95 via-[#1a0308]/92 to-[#0f0103]/98 pointer-events-none" />
+              <div className="absolute inset-0 bg-radial from-[#7e2231]/25 via-transparent to-black/60 pointer-events-none" />
 
               {/* Arch Floral Garland at Top Dome Rim */}
-              <div className="absolute top-0 left-0 right-0 h-40 overflow-hidden pointer-events-none select-none z-0 [mask-image:linear-gradient(to_bottom,black_30%,transparent_95%)]">
+              <div className="absolute top-0 left-0 right-0 h-44 overflow-hidden pointer-events-none select-none z-0 [mask-image:linear-gradient(to_bottom,black_40%,transparent_98%)]">
                 <img 
                   src="/themes/joglo-portrait-crescent-hd.png" 
                   alt="Floral Arch Garland" 
-                  className="w-[124%] max-w-none -translate-x-[10%] -translate-y-5 opacity-40 mix-blend-screen"
+                  className="w-[124%] max-w-none -translate-x-[10%] -translate-y-4 opacity-55 filter contrast-110 brightness-105"
                 />
+              </div>
+
+              {/* Antique Royal Gold Corner Filigrees at bottom corners */}
+              <div className="absolute bottom-3 left-3 z-5 pointer-events-none opacity-70">
+                <RoyalCornerFiligree className="w-8 h-8" position="bl" />
+              </div>
+              <div className="absolute bottom-3 right-3 z-5 pointer-events-none opacity-70">
+                <RoyalCornerFiligree className="w-8 h-8" position="br" />
               </div>
 
               {/* Content Container */}
@@ -2157,154 +2213,137 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
                   Berikan Harapan dan doa tulus anda disini karena kami sangat bersemangat untuk memulai perjalanan baru bersama.
                 </p>
 
-                {/* Form */}
-                <form onSubmit={handleRsvpSubmit} className="space-y-3.5 mb-8 text-left">
-                  {/* Nama Lengkap */}
-                  <div>
-                    <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                      Nama Lengkap
-                    </label>
-                    <input
-                      type="text"
-                      value={rsvpName}
-                      onChange={(e) => setRsvpName(e.target.value)}
-                      placeholder=""
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif text-[#2d1b16] outline-none focus:ring-2 focus:ring-[#8a1c2e] shadow-sm transition-all"
-                    />
-                  </div>
+                {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
+                {submittedRsvp ? (
+                  <div className="pt-2 text-center animate-in fade-in zoom-in-95 duration-500">
+                    <div className="bg-gradient-to-b from-[#fffefc] via-[#fffdfa] to-[#fbf7ee] rounded-2xl p-5 border-2 border-[#c9982e]/70 shadow-[0_15px_35px_rgba(0,0,0,0.55),0_0_20px_rgba(201,152,46,0.2)] text-[#2d1b16] relative overflow-hidden">
+                      {/* Top Header Badge */}
+                      <div className="flex items-center justify-center gap-1.5 mb-1 text-[#8a1c2e]">
+                        <QrCode className="w-4 h-4 text-[#8a1c2e]" />
+                        <span className="text-[11px] font-serif font-bold tracking-[0.2em] uppercase">
+                          Barcode &amp; QR Presensi Tamu
+                        </span>
+                      </div>
+                      
+                      <p className="text-base sm:text-[17px] font-serif font-bold text-[#6d1925] tracking-wide mt-1">
+                        {submittedRsvp.name}
+                      </p>
 
-                  {/* Status Kehadiran */}
-                  <div>
-                    <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                      Status Kehadiran
-                    </label>
-                    <div className="relative">
-                      <select
-                        value={rsvpAttendance}
-                        onChange={(e: any) => setRsvpAttendance(e.target.value)}
-                        className={`w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif ${!rsvpAttendance ? 'text-stone-400' : 'text-[#2d1b16]'} outline-none focus:ring-2 focus:ring-[#8a1c2e] appearance-none shadow-sm cursor-pointer pr-10`}
-                      >
-                        <option value="" disabled hidden>Pilih status kehadiran</option>
-                        <option value="attending" className="text-[#2d1b16]">Hadir</option>
-                        <option value="not_attending" className="text-[#2d1b16]">Tidak Hadir</option>
-                        <option value="maybe" className="text-[#2d1b16]">Masih Ragu</option>
-                      </select>
-                      <ChevronDown className="w-4 h-4 text-stone-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-                  </div>
-
-                  {/* Ucapan / Pesan */}
-                  <div>
-                    <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                      Ucapan/Pesan
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={rsvpMessage}
-                      onChange={(e) => setRsvpMessage(e.target.value)}
-                      placeholder="Tulis ucapan atau pesan Anda..."
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif text-[#2d1b16] placeholder:text-stone-400 outline-none focus:ring-2 focus:ring-[#8a1c2e] resize-none shadow-sm transition-all"
-                    />
-                  </div>
-
-                  {/* Centered Kirim Button */}
-                  <div className="text-center pt-2">
-                    <button
-                      type="submit"
-                      disabled={rsvpSubmitting}
-                      className="inline-flex items-center justify-center px-10 py-2.5 rounded-md bg-[#9e2a3b] hover:bg-[#831e2d] text-white text-xs sm:text-[13px] font-sans font-bold tracking-wider shadow-md transition-all active:scale-95 disabled:opacity-50"
-                    >
-                      {rsvpSubmitting ? 'Mengirim...' : 'Kirim'}
-                    </button>
-                  </div>
-                </form>
-
-                {/* List of Wishes / Komentar Doa */}
-                <div className="space-y-3 text-left pt-2 border-t border-white/20">
-                  <div className="text-center mb-4">
-                    <span className="text-[11px] font-serif uppercase tracking-widest text-white/80">
-                      Doa &amp; Ucapan ({rsvps.length > 0 ? rsvps.length : 1})
-                    </span>
-                  </div>
-
-                  {(rsvps.length > 0 ? displayedRsvps : [
-                    {
-                      id: 'demo-1',
-                      name: 'Tes',
-                      attendance: 'attending',
-                      message: 'Selamat berbahagia untuk kedua mempelai!',
-                      created_at: new Date().toISOString()
-                    }
-                  ]).map((item: any) => (
-                    <div 
-                      key={item.id} 
-                      className="bg-black/45 backdrop-blur-sm border border-white/15 rounded-xl p-3.5 shadow-sm text-left transition-all hover:bg-black/55"
-                    >
-                      <div className="flex items-start justify-between gap-2 mb-1.5">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          {/* Circular Initial Avatar */}
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#edd59e] to-[#c9982e] text-[#4a101b] font-serif font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
-                            {(item.name || 'T')[0].toUpperCase()}
-                          </div>
-                          
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="font-serif font-bold text-xs sm:text-[13px] text-white truncate">
-                                {item.name}
-                              </span>
-                              <span className={`text-[9.5px] font-sans font-semibold px-2 py-0.5 rounded ${
-                                item.attendance === 'attending' 
-                                  ? 'bg-emerald-500 text-white' 
-                                  : item.attendance === 'maybe' 
-                                    ? 'bg-amber-500 text-white' 
-                                    : 'bg-rose-500 text-white'
-                              }`}>
-                                {item.attendance === 'attending' ? 'Hadir' : item.attendance === 'maybe' ? 'Ragu' : 'Tidak Hadir'}
-                              </span>
-                            </div>
-                            <span className="text-[10px] text-stone-300 font-sans block mt-0.5">
-                              {new Date(item.created_at).toLocaleDateString('id-ID', {
-                                day: 'numeric',
-                                month: 'long',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              }).replace('pukul', 'pukul ')}
-                            </span>
-                          </div>
-                        </div>
+                      <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
+                        <span>✓</span>
+                        <span>
+                          {submittedRsvp.attendance === 'attending' 
+                            ? `Terkonfirmasi Hadir (${submittedRsvp.guests} Tamu)` 
+                            : submittedRsvp.attendance === 'maybe' 
+                              ? 'Status: Masih Ragu' 
+                              : 'Status: Berhalangan Hadir'}
+                        </span>
                       </div>
 
-                      {item.message && (
-                        <p className="text-xs text-stone-100 font-serif leading-relaxed mt-1.5 pl-9">
-                          {item.message}
-                        </p>
-                      )}
-                    </div>
-                  ))}
+                      {/* QR Code Frame */}
+                      <div className="w-40 h-40 mx-auto bg-white p-2.5 rounded-xl border border-stone-200 shadow-md flex items-center justify-center my-2.5">
+                        <img 
+                          src={invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'WD'}|GUEST:${submittedRsvp.name}|ATT:${submittedRsvp.attendance}|CODE:${submittedRsvp.code}`)}`}
+                          alt="QR Code Presensi"
+                          className="w-full h-full object-contain"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src = '/qr-code.png';
+                          }}
+                        />
+                      </div>
 
-                  {/* Pagination Controls */}
-                  {totalPages > 1 && (
-                    <div className="flex items-center justify-center gap-3 pt-3">
+                      {/* Authentic Barcode Graphic & Code */}
+                      <div className="my-2 px-3 py-2 bg-white rounded-lg border border-stone-200 flex flex-col items-center shadow-xs">
+                        <svg viewBox="0 0 160 32" className="w-full max-w-[190px] h-9 text-[#1a0a0d]" preserveAspectRatio="none">
+                          {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
+                            idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
+                          ))}
+                        </svg>
+                        <span className="font-mono font-bold text-[11px] tracking-[0.25em] text-[#4a121d] mt-1">
+                          {submittedRsvp.code}
+                        </span>
+                      </div>
+
+                      <p className="text-[10px] sm:text-[10.5px] font-serif text-stone-600 italic leading-snug mt-2 max-w-[270px] mx-auto">
+                        Tunjukkan Barcode atau QR Code ini kepada panitia penerima tamu saat tiba di lokasi acara.
+                      </p>
+
                       <button
-                        disabled={currentPage <= 1}
-                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                        className="p-1.5 rounded-full border border-white/30 text-white disabled:opacity-30 hover:bg-white/10 transition-colors"
+                        type="button"
+                        onClick={() => {
+                          setSubmittedRsvp(null);
+                          try {
+                            localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'joglo'}`);
+                          } catch {}
+                        }}
+                        className="mt-3.5 inline-block text-[11px] font-serif text-[#8a1c2e] hover:underline font-semibold cursor-pointer transition-colors"
                       >
-                        <ChevronLeft className="w-4 h-4" />
-                      </button>
-                      <span className="text-xs font-serif text-white/90">
-                        {currentPage} / {totalPages}
-                      </span>
-                      <button
-                        disabled={currentPage >= totalPages}
-                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                        className="p-1.5 rounded-full border border-white/30 text-white disabled:opacity-30 hover:bg-white/10 transition-colors"
-                      >
-                        <ChevronRight className="w-4 h-4" />
+                        ← Ubah Konfirmasi Kehadiran
                       </button>
                     </div>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleRsvpSubmit} className="space-y-3.5 mb-2 text-left">
+                    {/* Nama Lengkap */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                        Nama Lengkap
+                      </label>
+                      <input
+                        type="text"
+                        value={rsvpName}
+                        onChange={(e) => setRsvpName(e.target.value)}
+                        placeholder=""
+                        className="w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif text-[#2d1b16] outline-none focus:ring-2 focus:ring-[#8a1c2e] shadow-sm transition-all"
+                      />
+                    </div>
+
+                    {/* Status Kehadiran */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                        Status Kehadiran
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={rsvpAttendance}
+                          onChange={(e: any) => setRsvpAttendance(e.target.value)}
+                          className={`w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif ${!rsvpAttendance ? 'text-stone-400' : 'text-[#2d1b16]'} outline-none focus:ring-2 focus:ring-[#8a1c2e] appearance-none shadow-sm cursor-pointer pr-10`}
+                        >
+                          <option value="" disabled hidden>Pilih status kehadiran</option>
+                          <option value="attending" className="text-[#2d1b16]">Hadir</option>
+                          <option value="not_attending" className="text-[#2d1b16]">Tidak Hadir</option>
+                          <option value="maybe" className="text-[#2d1b16]">Masih Ragu</option>
+                        </select>
+                        <ChevronDown className="w-4 h-4 text-stone-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+
+                    {/* Ucapan / Pesan */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                        Ucapan/Pesan
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={rsvpMessage}
+                        onChange={(e) => setRsvpMessage(e.target.value)}
+                        placeholder="Tulis ucapan atau pesan Anda..."
+                        className="w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif text-[#2d1b16] placeholder:text-stone-400 outline-none focus:ring-2 focus:ring-[#8a1c2e] resize-none shadow-sm transition-all"
+                      />
+                    </div>
+
+                    {/* Centered Kirim Button */}
+                    <div className="text-center pt-2">
+                      <button
+                        type="submit"
+                        disabled={rsvpSubmitting}
+                        className="inline-flex items-center justify-center px-10 py-2.5 rounded-md bg-[#9e2a3b] hover:bg-[#831e2d] text-white text-xs sm:text-[13px] font-sans font-bold tracking-wider shadow-md transition-all active:scale-95 disabled:opacity-50"
+                      >
+                        {rsvpSubmitting ? 'Mengirim...' : 'Kirim'}
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
 
             </div>
@@ -2328,7 +2367,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
 
           <div className="relative z-10 max-w-md mx-auto">
             {/* Grand Outer Arch Dome Card */}
-            <div className="relative w-full max-w-[340px] sm:max-w-[370px] mx-auto rounded-t-[175px] sm:rounded-t-[195px] rounded-b-[40px] sm:rounded-b-[48px] border-[2.5px] border-[#c9982e]/60 bg-[#fffdfa]/95 backdrop-blur-md shadow-[0_25px_60px_rgba(0,0,0,0.65),0_0_25px_rgba(201,152,46,0.18)] overflow-hidden pt-12 sm:pt-14 px-5 sm:px-6 pb-24 sm:pb-28 text-center">
+            <div className="relative w-full max-w-[340px] sm:max-w-[370px] mx-auto rounded-t-[175px] sm:rounded-t-[195px] rounded-b-[40px] sm:rounded-b-[48px] border-[2.5px] border-[#c9982e]/60 bg-[#fffdfa]/95 backdrop-blur-md shadow-[0_25px_60px_rgba(0,0,0,0.65),0_0_25px_rgba(201,152,46,0.18)] overflow-hidden pt-12 sm:pt-14 px-5 sm:px-6 pb-20 sm:pb-24 text-center">
               
               {/* Subtle Joglo Pavilion Watermark inside card */}
               <img 
@@ -2365,7 +2404,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
               {/* Content Container */}
               <div className="relative z-10">
                 {/* Inner Arch Photo Frame */}
-                <div className="relative w-full max-w-[245px] sm:max-w-[265px] mx-auto rounded-t-[130px] sm:rounded-t-[145px] rounded-b-[10px] border-[2px] border-[#8a1c2e] overflow-hidden shadow-md aspect-[3/4] mb-4 group">
+                <div className="relative w-full max-w-[230px] sm:max-w-[250px] mx-auto rounded-t-[125px] sm:rounded-t-[140px] rounded-b-[10px] border-[2px] border-[#8a1c2e] overflow-hidden shadow-md aspect-[3/4] mb-3.5 group ring-1 ring-[#c9982e]/40">
                   <img 
                     src={coupleCoverPhoto || '/photos/photo-3.jpg'} 
                     alt="Couple Portrait" 
@@ -2375,14 +2414,33 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
                   <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                 </div>
 
-                {/* Closing Typography */}
-                <div className="relative z-20 mb-8 sm:mb-10">
+                {/* Batak Gorga Divider */}
+                <BatakGorgaFlourish className="w-24 sm:w-28 h-3 mx-auto mb-2.5 text-[#c9982e] opacity-80" />
+
+                {/* Closing Typography & Concise Gratitude Prose */}
+                <div className="relative z-20 max-w-[270px] sm:max-w-[290px] mx-auto">
                   <p className="text-xs sm:text-[13px] font-serif italic text-[#7e2231] tracking-wide mb-1 font-medium">
                     Terima Kasih
                   </p>
-                  <h3 className="font-serif font-bold text-base sm:text-lg text-[#8a1c2e] tracking-[0.2em] sm:tracking-[0.25em] uppercase">
-                    {groomName} &amp; {brideName}
-                  </h3>
+
+                  <p className="text-[11px] sm:text-[11.5px] font-serif text-[#5c3e38] leading-relaxed font-normal mb-3 text-center">
+                    {invitation?.settings?.closing_greeting || (
+                      "Ungkapan terima kasih yang tulus atas kehadiran dan doa restu Bapak/Ibu/Saudara/i sekalian."
+                    )}
+                  </p>
+
+                  {/* Couple & Family Sign-off */}
+                  <div className="mt-2 mb-1">
+                    <p className="text-[10px] sm:text-[10.5px] font-serif italic text-[#7e2231]/80 mb-0.5">
+                      Kami yang berbahagia,
+                    </p>
+                    <h3 className="font-serif font-bold text-base sm:text-lg text-[#8a1c2e] tracking-[0.2em] sm:tracking-[0.25em] uppercase drop-shadow-sm">
+                      {invitation?.settings?.closing_couple_name || `${groomName} & ${brideName}`}
+                    </h3>
+                    <p className="text-[9.5px] sm:text-[10px] font-serif text-[#6d4c41] tracking-wider mt-0.5 font-medium">
+                      Keluarga Besar Kedua Mempelai
+                    </p>
+                  </div>
                 </div>
               </div>
 

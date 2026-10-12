@@ -93,7 +93,11 @@ export const Clients: React.FC = () => {
               ) : (
                 filteredClients?.map(client => (
                   <tr key={client.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-900">{client.name}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-semibold text-gray-900">{client.name}</span>
+                      </div>
+                    </td>
                     <td className="px-6 py-4">
                       <div>{client.email || '-'}</div>
                       <div className="text-gray-400 text-xs mt-1">{client.phone || '-'}</div>

@@ -22,8 +22,22 @@ export const CLIENT_AGNI_PUTRI: Client = {
   created_at: '2026-10-06T13:30:00Z',
 };
 
+export const CLIENT_BIMA_RATNA: Client = {
+  id: 'c2000000-0000-0000-0000-000000000002',
+  name: 'BIMA & RATNA',
+  phone: '0812-3456-7890',
+  email: 'bima.ratna@wdgroup.com',
+  address: 'Solo, Jawa Tengah',
+  notes: 'Klien Contoh WD Group. Konsep Elegan Royal Wayang Gold.',
+  status: 'active',
+  created_at: '2026-10-10T10:00:00Z',
+};
+
+export const CLIENT_DEMO_TESTIMONI = CLIENT_BIMA_RATNA;
+
 export const clientService = {
   async getClients() {
+    let list: Client[] = [];
     try {
       const { data, error } = await supabase
         .from('clients')
@@ -31,17 +45,26 @@ export const clientService = {
         .order('created_at', { ascending: false });
       
       if (!error && data && data.length > 0) {
-        const hasAgni = data.some(c => c.name.toLowerCase().includes('agni'));
-        return hasAgni ? (data as Client[]) : [CLIENT_AGNI_PUTRI, ...(data as Client[])];
+        list = data as Client[];
       }
     } catch (e) {
       console.warn('Error fetching clients from Supabase:', e);
     }
-    return [CLIENT_AGNI_PUTRI];
+
+    // Ensure Agni Putri and Demo Testimoni clients are present
+    const hasAgni = list.some(c => c.name.toLowerCase().includes('agni'));
+    const hasDemo = list.some(c => c.id === CLIENT_DEMO_TESTIMONI.id || c.name.toLowerCase().includes('demo'));
+
+    const result = [...list];
+    if (!hasDemo) result.unshift(CLIENT_DEMO_TESTIMONI);
+    if (!hasAgni) result.unshift(CLIENT_AGNI_PUTRI);
+
+    return result;
   },
 
   async getClient(id: string) {
     if (id === CLIENT_AGNI_PUTRI.id) return CLIENT_AGNI_PUTRI;
+    if (id === CLIENT_DEMO_TESTIMONI.id || id === 'demo-client') return CLIENT_DEMO_TESTIMONI;
     try {
       const { data, error } = await supabase
         .from('clients')

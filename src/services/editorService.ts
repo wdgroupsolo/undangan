@@ -73,6 +73,102 @@ export const GALLERY_AGNI_PUTRI = [
   { id: '99000000-0000-0000-0000-000000000005', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-artistic.jpg', sort_order: 5 }
 ];
 
+export const COUPLE_DEMO_TESTIMONI = {
+  id: '34000000-0000-0000-0000-000000000004',
+  invitation_id: 'e3000000-0000-0000-0000-000000000003',
+  groom_full_name: 'BIMA ARDIANSYAH, S.T.',
+  groom_nickname: 'Bima',
+  groom_father_name: 'BAMBANG WIJAYA',
+  groom_mother_name: 'SRI WAHYUNI',
+  groom_parents: 'Putra pertama dari Bpk. Bambang Wijaya & Ibu Sri Wahyuni',
+  groom_photo: '/themes/agni-putri/groom-agni.jpg',
+  groom_photo_url: '/themes/agni-putri/groom-agni.jpg',
+  groom_instagram: '@bima_ardiansyah',
+  bride_full_name: 'RATNA KUSUMA DEWI, S.Ked.',
+  bride_nickname: 'Ratna',
+  bride_father_name: 'H. SURYONO',
+  bride_mother_name: 'HJ. SITI AMINAH',
+  bride_parents: 'Putri kedua dari Bpk. H. Suryono & Ibu Hj. Siti Aminah',
+  bride_photo: '/themes/agni-putri/bride-putri.jpg',
+  bride_photo_url: '/themes/agni-putri/bride-putri.jpg',
+  bride_instagram: '@ratnakusuma',
+  cover_photo_url: '/themes/agni-putri/couple-outdoor.jpg',
+  gift_address: 'Jl. Slamet Riyadi No. 120, Solo, Jawa Tengah (Portofolio Testimoni WD Group)'
+};
+
+export const EVENTS_DEMO_TESTIMONI = [
+  {
+    id: '56000000-0000-0000-0000-000000000006',
+    invitation_id: 'e3000000-0000-0000-0000-000000000003',
+    name: 'AKAD NIKAH',
+    event_date: '2026-12-12',
+    date: '2026-12-12',
+    start_time: '08:00',
+    end_time: '10:00',
+    location: 'MASJID RAYA SHEIKH ZAYED',
+    venue_name: 'Masjid Raya Sheikh Zayed Surakarta',
+    address: 'Jl. Ahmad Yani No. 128, Gilingan, Banjarsari, Surakarta, Jawa Tengah',
+    maps_url: 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic',
+    description: 'Prosesi Akad Nikah & Ijab Qabul dengan Khidmat',
+    sort_order: 1
+  },
+  {
+    id: '57000000-0000-0000-0000-000000000007',
+    invitation_id: 'e3000000-0000-0000-0000-000000000003',
+    name: 'RESEPSI PERNIKAHAN',
+    event_date: '2026-12-12',
+    date: '2026-12-12',
+    start_time: '11:00',
+    end_time: '14:00',
+    location: 'GRAHA SABA BUANA SOLO',
+    venue_name: 'Graha Saba Buana Surakarta',
+    address: 'Jl. Letjen Suprapto No. 80B, Sumber, Banjarsari, Surakarta, Jawa Tengah',
+    maps_url: 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic',
+    description: 'Resepsi Tradisi Jawa Royal Wedding & Hiburan Campursari',
+    sort_order: 2
+  }
+];
+
+export const GIFTS_DEMO_TESTIMONI = [
+  {
+    id: '67000000-0000-0000-0000-000000000007',
+    invitation_id: 'e3000000-0000-0000-0000-000000000003',
+    type: 'bank',
+    provider: 'BCA',
+    account_number: '1234 5678 90',
+    account_name: 'BIMA ARDIANSYAH (DEMO REK)',
+    is_active: true
+  },
+  {
+    id: '68000000-0000-0000-0000-000000000008',
+    invitation_id: 'e3000000-0000-0000-0000-000000000003',
+    type: 'bank',
+    provider: 'MANDIRI',
+    account_number: '987 6543 2100',
+    account_name: 'RATNA KUSUMA DEWI (DEMO REK)',
+    is_active: true
+  }
+];
+
+export const STORIES_DEMO_TESTIMONI = [
+  {
+    id: 'st-01',
+    invitation_id: 'e3000000-0000-0000-0000-000000000003',
+    title: 'Pertemuan Pertama',
+    date: '12 Januari 2023',
+    content: 'Berawal dari perkenalan di sebuah seminar nasional di Solo, obrolan santai membuka jalan menuju kedekatan yang penuh arti.',
+    sort_order: 1
+  },
+  {
+    id: 'st-02',
+    invitation_id: 'e3000000-0000-0000-0000-000000000003',
+    title: 'Momen Lamaran',
+    date: '15 Agustus 2025',
+    content: 'Dengan restu kedua orang tua dan keluarga besar, kami memantapkan niat suci untuk melangkah ke jenjang pernikahan.',
+    sort_order: 2
+  }
+];
+
 export const editorService = {
   // Couple Info
   async getCouple(invitationId: string) {
@@ -80,6 +176,11 @@ export const editorService = {
       const { data, error } = await supabase.from('couples').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
+    if (isDemoId) {
+      return COUPLE_DEMO_TESTIMONI;
+    }
     const isAgniId = invitationId === 'e2000000-0000-0000-0000-000000000002' || 
       invitationId === 'inv-agni-putri' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('agni') || invitationId.toLowerCase().includes('kribo')));
@@ -107,6 +208,11 @@ export const editorService = {
       const { data, error } = await supabase.from('events').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
+    if (isDemoId) {
+      return EVENTS_DEMO_TESTIMONI;
+    }
     const isAgniId = invitationId === 'e2000000-0000-0000-0000-000000000002' || 
       invitationId === 'inv-agni-putri' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('agni') || invitationId.toLowerCase().includes('kribo')));
@@ -135,6 +241,11 @@ export const editorService = {
       const { data, error } = await supabase.from('stories').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
+    if (isDemoId) {
+      return STORIES_DEMO_TESTIMONI;
+    }
     const isAgniId = invitationId === 'e2000000-0000-0000-0000-000000000002' || 
       invitationId === 'inv-agni-putri' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('agni') || invitationId.toLowerCase().includes('kribo')));
@@ -163,6 +274,11 @@ export const editorService = {
       const { data, error } = await supabase.from('gallery').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
+    if (isDemoId) {
+      return GALLERY_AGNI_PUTRI;
+    }
     const isAgniId = invitationId === 'e2000000-0000-0000-0000-000000000002' || 
       invitationId === 'inv-agni-putri' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('agni') || invitationId.toLowerCase().includes('kribo')));
@@ -186,6 +302,11 @@ export const editorService = {
       const { data, error } = await supabase.from('music').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
+    if (isDemoId) {
+      return MUSIC_AGNI_PUTRI;
+    }
     const isAgniId = invitationId === 'e2000000-0000-0000-0000-000000000002' || 
       invitationId === 'inv-agni-putri' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('agni') || invitationId.toLowerCase().includes('kribo')));
@@ -235,6 +356,12 @@ export const editorService = {
       }
     } catch (e) {
       console.warn('Could not fetch gifts from settings:', e);
+    }
+
+    const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
+    if (isDemoId) {
+      return GIFTS_DEMO_TESTIMONI;
     }
 
     const isAgniId = invitationId === 'e2000000-0000-0000-0000-000000000002' || 

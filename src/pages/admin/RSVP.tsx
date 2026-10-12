@@ -11,17 +11,20 @@ import {
   XCircle, 
   Filter,
   MessageSquare,
-  Building2
+  Building2,
+  QrCode
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 import { useToast } from '../../context/ToastContext';
+import { RsvpScannerModal } from '../../components/RsvpScannerModal';
 
 export const RSVP: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedInvitationId, setSelectedInvitationId] = useState<string>('');
   const [selectedAttendance, setSelectedAttendance] = useState<string>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -148,14 +151,24 @@ export const RSVP: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={handleExportCSV}
-          disabled={!filteredRsvps || filteredRsvps.length === 0}
-          className="flex items-center space-x-2 bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-        >
-          <Download size={18} className="text-gray-500" />
-          <span>Ekspor CSV</span>
-        </button>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button
+            onClick={() => setIsScannerOpen(true)}
+            className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2.5 rounded-lg transition-all font-medium shadow-sm hover:shadow-md cursor-pointer"
+          >
+            <QrCode size={18} className="text-white" />
+            <span>Scan Barcode / QR</span>
+          </button>
+
+          <button
+            onClick={handleExportCSV}
+            disabled={!filteredRsvps || filteredRsvps.length === 0}
+            className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            <Download size={18} className="text-gray-500" />
+            <span>Ekspor CSV</span>
+          </button>
+        </div>
       </div>
 
       {/* Summary Stat Cards */}
@@ -362,6 +375,17 @@ export const RSVP: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* Barcode & QR Code Attendance Scanner Modal */}
+      <RsvpScannerModal
+        isOpen={isScannerOpen}
+        onClose={() => setIsScannerOpen(false)}
+        invitations={invitations}
+        selectedInvitationId={selectedInvitationId}
+        onCheckInSuccess={() => {
+          queryClient.invalidateQueries({ queryKey: ['rsvps'] });
+        }}
+      />
     </div>
   );
 };

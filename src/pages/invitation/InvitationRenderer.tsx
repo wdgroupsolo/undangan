@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
-import { editorService, COUPLE_AGNI_PUTRI } from '../../services/editorService';
+import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
 import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
@@ -148,23 +148,24 @@ export const InvitationRenderer: React.FC = () => {
     }
   }, [couple, slug]);
 
-  const activeCouple = couple || cachedCouple || (isAgniSlug ? COUPLE_AGNI_PUTRI : null);
+  const isBimaSlug = rawSlug === 'bima-ratna' || rawSlug.includes('bima') || rawSlug.includes('demo') || rawSlug.includes('testimoni');
+  const activeCouple = couple || cachedCouple || (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : null));
 
   const rawGroomNick = activeCouple?.groom_nickname?.trim();
   const rawGroomFull = activeCouple?.groom_full_name?.trim();
-  const groom = isAgniSlug ? 'Agni' : (
+  const groom = isBimaSlug ? 'Bima' : (isAgniSlug ? 'Agni' : (
     (rawGroomNick && (!rawGroomFull || (rawGroomNick.toLowerCase() !== 'bagas' || rawGroomFull.toLowerCase() === 'bagas')))
       ? formatName(rawGroomNick)
       : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : (rawGroomNick && rawGroomNick.toLowerCase() !== 'bagas' ? formatName(rawGroomNick) : 'Steven'))
-  );
+  ));
 
   const rawBrideNick = activeCouple?.bride_nickname?.trim();
   const rawBrideFull = activeCouple?.bride_full_name?.trim();
-  const bride = isAgniSlug ? 'Putri' : (
+  const bride = isBimaSlug ? 'Ratna' : (isAgniSlug ? 'Putri' : (
     (rawBrideNick && (!rawBrideFull || (rawBrideNick.toLowerCase() !== 'siti' || rawBrideFull.toLowerCase() === 'siti')))
       ? formatName(rawBrideNick)
       : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : (rawBrideNick && rawBrideNick.toLowerCase() !== 'siti' ? formatName(rawBrideNick) : 'Bunga'))
-  );
+  ));
 
   // Dynamically set page title and Open Graph meta tags in browser tab (Called unconditionally)
   useEffect(() => {

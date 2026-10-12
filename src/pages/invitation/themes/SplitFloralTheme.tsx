@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Gift, Copy, Check, X, Calendar } from 'lucide-react';
+import { Gift, Copy, Check, X, Calendar, QrCode } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
@@ -274,6 +274,16 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const [rsvpNote, setRsvpNote] = useState('');
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
 
+  // Saved RSVP / Wish check-in pass state (persisted per invitation)
+  const [submittedPass, setSubmittedPass] = useState<{ name: string; code: string; status?: string } | null>(() => {
+    try {
+      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'split-floral'}`);
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const storageKey = `wedding_wishes_${invitation?.slug || invitation?.id || 'wdgroup'}`;
 
   const defaultWishes = [
@@ -407,6 +417,15 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
       }
     }
 
+    const passData = {
+      name: wishName.trim(),
+      code: `SF-${(invitation?.id || 'FLORAL').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
+    };
+    try {
+      localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'split-floral'}`, JSON.stringify(passData));
+    } catch {}
+    setSubmittedPass(passData);
+
     setWishMessage('');
     setWishSuccess(true);
     setTimeout(() => setWishSuccess(false), 3000);
@@ -430,7 +449,13 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
       }
     }
 
+    const passData = {
+      name: rsvpName.trim(),
+      code: `SF-${(invitation?.id || 'FLORAL').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      status: rsvpStatus,
+    };
     try {
+      localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'split-floral'}`, JSON.stringify(passData));
       localStorage.setItem(`rsvp_${invitation?.id || 'assa'}`, JSON.stringify({
         name: rsvpName,
         status: rsvpStatus,
@@ -439,6 +464,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
       }));
     } catch {}
 
+    setSubmittedPass(passData);
     setRsvpSubmitted(true);
   };
 
@@ -1807,83 +1833,125 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               UCAPAN &amp; DOA
             </h2>
 
-            {/* Form */}
-            <form onSubmit={handleAddWish} className="space-y-4 mb-6 text-left">
-              <div>
-                <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  Nama
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={wishName}
-                  onChange={(e) => setWishName(e.target.value)}
-                  placeholder="Nama Anda"
-                  className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  Sosial Media
-                </label>
-                <input
-                  type="text"
-                  value={wishSocial}
-                  onChange={(e) => setWishSocial(e.target.value)}
-                  placeholder="@username"
-                  className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  Ucapan &amp; Doa
-                </label>
-                <textarea
-                  required
-                  rows={3}
-                  value={wishMessage}
-                  onChange={(e) => setWishMessage(e.target.value)}
-                  placeholder="Tuliskan ucapan & doa restu..."
-                  className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px] min-h-[90px] resize-none"
-                />
-              </div>
-
-              {wishSuccess && (
-                <p className="text-xs font-semibold text-emerald-800 bg-emerald-100/90 py-2 px-3 rounded-lg text-center animate-in fade-in">
-                  ✓ Ucapan & doa Anda berhasil dikirim!
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className="w-full bg-[#5c4e41] hover:bg-[#43372c] text-white py-3 px-4 rounded-lg font-bold text-xs tracking-wider uppercase shadow-md transition-all active:scale-[0.98] cursor-pointer"
-              >
-                Kirimkan Ucapan
-              </button>
-            </form>
-
-            {/* Wishes Feed */}
-            <div className="space-y-3 max-h-[380px] overflow-y-auto pr-0.5">
-              {wishes.map((item, idx) => (
-                <div key={idx} className="bg-white/95 rounded-lg p-3.5 shadow-sm border border-white/80 text-left transition-all hover:shadow-md">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-bold text-xs sm:text-[13px] text-[#2c1d13]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                      {item.name}
+            {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
+            {submittedPass ? (
+              <div className="pt-2 text-center animate-in fade-in zoom-in-95 duration-500">
+                <div className="bg-white rounded-2xl p-5 border border-[#8c6f4b]/30 shadow-lg text-[#2c1d13] relative overflow-hidden">
+                  <div className="flex items-center justify-center gap-1.5 mb-1 text-[#8c6f4b]">
+                    <QrCode className="w-4 h-4" />
+                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                      Barcode &amp; QR Presensi Tamu
                     </span>
-                    {item.socialMedia && (
-                      <span className="text-[10.5px] text-[#7a6b5c] font-medium">
-                        {item.socialMedia}
-                      </span>
-                    )}
                   </div>
-                  <p className="text-xs text-[#5c4e41] leading-relaxed font-normal" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    {item.message}
+
+                  <p className="text-base font-bold text-[#2c1d13] tracking-wide mt-1" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    {submittedPass.name}
                   </p>
+
+                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-bold my-2 bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    <span>✓</span>
+                    <span>Konfirmasi Kehadiran Diterima</span>
+                  </div>
+
+                  {/* QR Code */}
+                  <div className="w-36 h-36 mx-auto bg-white p-2.5 rounded-xl border border-stone-200 shadow-inner flex items-center justify-center my-2">
+                    <img 
+                      src={invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'FLORAL'}|GUEST:${submittedPass.name}|CODE:${submittedPass.code}`)}`}
+                      alt="QR Code Presensi"
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = '/qr-code.png';
+                      }}
+                    />
+                  </div>
+
+                  {/* Authentic Barcode Graphic */}
+                  <div className="my-2 px-3 py-1.5 bg-stone-50 rounded-lg border border-stone-200 flex flex-col items-center">
+                    <svg viewBox="0 0 160 32" className="w-full max-w-[180px] h-9 text-[#2c1d13]" preserveAspectRatio="none">
+                      {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
+                        idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
+                      ))}
+                    </svg>
+                    <span className="font-mono font-bold text-[10.5px] tracking-[0.25em] text-[#5c4e41] mt-0.5">
+                      {submittedPass.code}
+                    </span>
+                  </div>
+
+                  <p className="text-[10px] sm:text-[10.5px] text-[#7a6b5c] italic leading-snug mt-2 max-w-[260px] mx-auto">
+                    Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi acara.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSubmittedPass(null);
+                      try {
+                        localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'split-floral'}`);
+                      } catch {}
+                    }}
+                    className="mt-3 inline-block text-[11px] text-[#8c6f4b] hover:underline font-semibold cursor-pointer"
+                  >
+                    ← Ubah Data Konfirmasi
+                  </button>
                 </div>
-              ))}
-            </div>
+              </div>
+            ) : (
+              <form onSubmit={handleAddWish} className="space-y-4 mb-2 text-left">
+                <div>
+                  <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    Nama
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={wishName}
+                    onChange={(e) => setWishName(e.target.value)}
+                    placeholder="Nama Anda"
+                    className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    Sosial Media
+                  </label>
+                  <input
+                    type="text"
+                    value={wishSocial}
+                    onChange={(e) => setWishSocial(e.target.value)}
+                    placeholder="@username"
+                    className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    Ucapan &amp; Doa
+                  </label>
+                  <textarea
+                    required
+                    rows={3}
+                    value={wishMessage}
+                    onChange={(e) => setWishMessage(e.target.value)}
+                    placeholder="Tuliskan ucapan & doa restu..."
+                    className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px] min-h-[90px] resize-none"
+                  />
+                </div>
+
+                {wishSuccess && (
+                  <p className="text-xs font-semibold text-emerald-800 bg-emerald-100/90 py-2 px-3 rounded-lg text-center animate-in fade-in">
+                    ✓ Ucapan & doa Anda berhasil dikirim!
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#5c4e41] hover:bg-[#43372c] text-white py-3 px-4 rounded-lg font-bold text-xs tracking-wider uppercase shadow-md transition-all active:scale-[0.98] cursor-pointer"
+                >
+                  Kirimkan Ucapan
+                </button>
+              </form>
+            )}
           </div>
         </section>
 

@@ -72,6 +72,47 @@ export const INVITATION_AGNI_PUTRI: Invitation & { theme?: any; client?: any } =
   created_at: '2026-10-06T13:30:00Z'
 };
 
+export const INVITATION_BIMA_RATNA: Invitation & { theme?: any; client?: any } = {
+  id: 'e3000000-0000-0000-0000-000000000003',
+  client_id: 'c2000000-0000-0000-0000-000000000002',
+  theme_id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
+  title: 'The Wedding of Bima & Ratna',
+  slug: 'bima-ratna',
+  status: 'published',
+  wedding_date: '2026-12-12T10:00:00+07:00',
+  settings: {
+    theme_slug: 'royal-wayang-gold',
+    default_guest_name: 'Bapak/Ibu Tamu Undangan',
+    cover_title: 'BIMA & RATNA',
+    cover_photo: '/themes/agni-putri/couple-outdoor.jpg',
+    groom_instagram: '@bima_ardiansyah',
+    bride_instagram: '@ratnakusuma',
+    gift_recipient: 'BIMA ARDIANSYAH',
+    gift_address: 'Jl. Slamet Riyadi No. 120, Solo, Jawa Tengah',
+    entertainment_day: 'Live Campursari & Akustik Klasik',
+    entertainment_night: 'Resepsi Elegan & Ramah Tamah',
+    color_concept: 'Hitam & Emas (Royal Wayang Gold)',
+    music_title: 'Landon Pigg - Falling In Love At A Coffee Shop',
+    music_url: '/music/landon-pigg-falling-in-love.mp3',
+    show_akad: true,
+    show_resepsi: true,
+    show_love_story: true,
+    show_live_streaming: false
+  },
+  theme: {
+    id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
+    name: 'Royal Wayang Gold',
+    slug: 'royal-wayang-gold'
+  },
+  client: {
+    id: 'c2000000-0000-0000-0000-000000000002',
+    name: 'BIMA & RATNA'
+  },
+  created_at: '2026-10-10T10:00:00Z'
+};
+
+export const INVITATION_DEMO_TESTIMONI = INVITATION_BIMA_RATNA;
+
 export const invitationService = {
   async getInvitations() {
     let result: any[] = [];
@@ -82,15 +123,17 @@ export const invitationService = {
         .order('created_at', { ascending: false });
       
       if (!error && data && data.length > 0) {
-        const hasAgni = data.some(inv => inv.slug === 'agni-putri' || inv.slug === 'agni-kahuripan');
-        result = hasAgni ? data : [INVITATION_AGNI_PUTRI, ...data];
-      } else {
-        result = [INVITATION_AGNI_PUTRI];
+        result = [...data];
       }
     } catch (e) {
       console.warn('Error fetching invitations from Supabase:', e);
-      result = [INVITATION_AGNI_PUTRI];
     }
+
+    const hasAgni = result.some(inv => inv.slug === 'agni-putri' || inv.slug === 'agni-kahuripan');
+    const hasBima = result.some(inv => inv.id === INVITATION_BIMA_RATNA.id || inv.slug === 'bima-ratna');
+
+    if (!hasBima) result.unshift(INVITATION_BIMA_RATNA);
+    if (!hasAgni) result.unshift(INVITATION_AGNI_PUTRI);
 
     // Apply any locally cached status updates (e.g., 'paused')
     return result.map(inv => {
@@ -103,6 +146,9 @@ export const invitationService = {
     const cachedStatus = getSavedStatus(id);
     if (id === INVITATION_AGNI_PUTRI.id) {
       return cachedStatus ? { ...INVITATION_AGNI_PUTRI, status: cachedStatus } : INVITATION_AGNI_PUTRI;
+    }
+    if (id === INVITATION_BIMA_RATNA.id) {
+      return cachedStatus ? { ...INVITATION_BIMA_RATNA, status: cachedStatus } : INVITATION_BIMA_RATNA;
     }
     try {
       const { data, error } = await supabase
@@ -123,11 +169,21 @@ export const invitationService = {
   async getInvitationBySlug(slug: string) {
     const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim();
     const isAgni = cleanSlug.includes('agni') || cleanSlug.includes('kribo');
+    const isBima = cleanSlug === 'bima-ratna' || cleanSlug === 'demo-testimoni' || cleanSlug === 'demo-undangan' || cleanSlug.includes('bima');
 
     // Check if status is paused or overridden in localStorage
     const cachedStatus = getSavedStatus(slug) || 
       getSavedStatus(cleanSlug) || 
-      (isAgni ? (getSavedStatus('e2000000-0000-0000-0000-000000000002') || getSavedStatus('agni-putri') || getSavedStatus('agni-kahuripan')) : null);
+      (isAgni ? (getSavedStatus('e2000000-0000-0000-0000-000000000002') || getSavedStatus('agni-putri') || getSavedStatus('agni-kahuripan')) : null) ||
+      (isBima ? getSavedStatus('e3000000-0000-0000-0000-000000000003') : null);
+
+    if (isBima) {
+      return {
+        ...INVITATION_BIMA_RATNA,
+        slug: slug,
+        status: cachedStatus || INVITATION_BIMA_RATNA.status || 'published'
+      };
+    }
 
     if (isAgni) {
       try {
@@ -180,14 +236,15 @@ export const invitationService = {
       }
     } catch {}
 
-    // Resilient fallback for demo routes so invitation preview never fails
+    // Resilient fallback for demo theme routes (Demo Tema di foto kedua)
     return {
-      id: 'demo-invitation-id',
+      id: 'demo-theme-invitation',
       slug: targetSlug,
       title: slug === 'habib-adiba' ? 'The Wedding of Habib & Adiba' : 'The Wedding of Steven & Bunga',
       status: cachedStatus || 'published',
       wedding_date: '2026-10-12',
       settings: {
+        is_theme_demo: true,
         theme_slug: slug === 'habib-adiba' ? 'javanese-heritage' : 'maroon-gold'
       },
       theme: {

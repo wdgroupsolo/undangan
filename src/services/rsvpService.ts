@@ -186,4 +186,89 @@ export const rsvpService = {
       console.warn('Gagal menghapus dari Supabase:', err);
     }
   },
+
+  // Check-in / Presensi Kehadiran via Scan Barcode atau QR Code
+  async checkInRsvp(payload: {
+    invitation_id?: string;
+    name: string;
+    attendance?: 'attending' | 'not_attending' | 'maybe';
+    number_of_guests?: number;
+    code?: string;
+    invitation_title?: string;
+    client_name?: string;
+  }): Promise<{ rsvp: RSVPItem; isNew: boolean }> {
+    const rawCheck = `${payload.code || ''} ${payload.name || ''} ${payload.invitation_id || ''}`.toUpperCase();
+    if (rawCheck.includes('DEMO-TESTIMONIAL') || rawCheck.includes('WD-DEMO-SAMPLE') || rawCheck.includes('WD-DEMO-TESTIMONI') || rawCheck.includes('DO-NOT-SCAN')) {
+      const err = new Error('DEMO_BARCODE_BLOCKED: Barcode ini adalah versi demo tema portofolio dan tidak dapat digunakan untuk konfirmasi presensi resmi.');
+      (err as any).isDemoBlocked = true;
+      throw err;
+    }
+
+    const all = await rsvpService.getAllRsvps(payload.invitation_id);
+    const normalizedName = payload.name.trim().toLowerCase();
+
+    // Check if RSVP exists by code or by name
+    const existing = all.find(item => {
+      const matchName = item.name.trim().toLowerCase() === normalizedName;
+      const matchInv = !payload.invitation_id || item.invitation_id === payload.invitation_id;
+      return matchName && matchInv;
+    });
+
+    if (existing) {
+      const updatedAttendance = payload.attendance || 'attending';
+      const updatedGuests = payload.number_of_guests || existing.number_of_guests || 1;
+
+      // Update in local storage
+      const locals = getLocalRsvps().map(item => {
+        if (item.id === existing.id) {
+          return {
+            ...item,
+            attendance: updatedAttendance,
+            number_of_guests: updatedGuests,
+          };
+        }
+        return item;
+      });
+      saveLocalRsvps(locals);
+
+      // Update in Supabase
+      try {
+        await supabase
+          .from('rsvps')
+          .update({
+            attendance: updatedAttendance,
+            number_of_guests: updatedGuests,
+          })
+          .eq('id', existing.id);
+      } catch (err) {
+        console.warn('Gagal update check-in di Supabase:', err);
+      }
+
+      return {
+        rsvp: {
+          ...existing,
+          attendance: updatedAttendance,
+          number_of_guests: updatedGuests,
+        },
+        isNew: false,
+      };
+    }
+
+    // Otherwise create a new check-in record
+    const targetInvId = payload.invitation_id || 'e2000000-0000-0000-0000-000000000002';
+    const newRecord = await rsvpService.submitRsvp({
+      invitation_id: targetInvId,
+      name: payload.name.trim(),
+      attendance: payload.attendance || 'attending',
+      number_of_guests: payload.number_of_guests || 1,
+      message: 'Presensi check-in langsung via scan barcode di meja penerima tamu',
+      invitation_title: payload.invitation_title,
+      client_name: payload.client_name,
+    });
+
+    return {
+      rsvp: newRecord,
+      isNew: true,
+    };
+  },
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Calendar, MapPin, Copy, Check, ExternalLink, 
   ChevronLeft, ChevronRight, Gift,
-  X, FileText, Video, Navigation
+  X, FileText, Video, Navigation, QrCode
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -409,43 +409,21 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
   const [rsvpSosmed, setRsvpSosmed] = useState('');
   const [isRsvpSubmitting, setIsRsvpSubmitting] = useState(false);
 
-  // Wishes List & Pagination
-  const storageKey = `sg_wishes_${invitation?.slug || 'secret-garden'}`;
-  const initialWishes = [
-    {
-      name: 'Dimas & Anisa',
-      sosmed: '@dimas_anisa',
-      message: `Selamat menempuh hidup baru ${coupleNamesCombined}! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin!`,
-      date: 'Baru saja'
-    },
-    {
-      name: 'Rian Pratama',
-      sosmed: '@rian.pratama',
-      message: 'Happy wedding brother! Wishing you both a lifetime of happiness, peace, and endless joy.',
-      date: '1 jam yang lalu'
-    },
-    {
-      name: 'WD Group Team',
-      sosmed: '@wdgroupcompany',
-      message: 'Selamat dan sukses atas pernikahannya. Semoga cinta kalian terus bersemi dan abadi selamanya.',
-      date: '3 jam yang lalu'
-    }
-  ];
-
-  const [wishes, setWishes] = useState<any[]>(() => {
+  // Saved RSVP check-in pass state (persisted per invitation)
+  const [submittedRsvp, setSubmittedRsvp] = useState<{
+    name: string;
+    sosmed?: string;
+    code: string;
+  } | null>(() => {
     try {
-      const saved = localStorage.getItem(storageKey);
-      return saved ? JSON.parse(saved) : initialWishes;
+      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'secret-garden'}`);
+      return saved ? JSON.parse(saved) : null;
     } catch {
-      return initialWishes;
+      return null;
     }
   });
 
-  const [commentPage, setCommentPage] = useState(1);
   const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
-  const commentsPerPage = 4;
-  const totalPages = Math.ceil(wishes.length / commentsPerPage) || 1;
-  const paginatedComments = wishes.slice((commentPage - 1) * commentsPerPage, commentPage * commentsPerPage);
 
   const handleRsvpSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -453,20 +431,18 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
     setIsRsvpSubmitting(true);
 
     setTimeout(() => {
-      const newWish = {
+      const passData = {
         name: rsvpName.trim(),
-        sosmed: rsvpSosmed.trim() ? (rsvpSosmed.startsWith('@') ? rsvpSosmed.trim() : `@${rsvpSosmed.trim()}`) : '@tamu_undangan',
-        message: rsvpWishes.trim(),
-        date: 'Baru saja'
+        sosmed: rsvpSosmed.trim(),
+        code: `SG-${(invitation?.id || 'GARDEN').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
       };
-      const updated = [newWish, ...wishes];
-      setWishes(updated);
       try {
-        localStorage.setItem(storageKey, JSON.stringify(updated));
+        localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'secret-garden'}`, JSON.stringify(passData));
       } catch {}
+      setSubmittedRsvp(passData);
       setRsvpWishes('');
       setIsRsvpSubmitting(false);
-      toast.success('Ucapan dan doa restu berhasil dikirimkan!');
+      toast.success('Konfirmasi kehadiran dan ucapan berhasil dikirimkan!');
     }, 600);
   };
 
@@ -1882,109 +1858,122 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                 Ucapan &amp; Doa
               </h2>
 
-              {/* Form matching user screenshot */}
-              <form id="ucapan-form" onSubmit={handleRsvpSubmit} className="max-w-[360px] sm:max-w-[380px] w-full mx-auto text-left space-y-4 mb-10">
-                <div>
-                  <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    Nama
-                  </label>
-                  <input 
-                    type="text" 
-                    required
-                    value={rsvpName}
-                    onChange={(e) => setRsvpName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    Sosial Media
-                  </label>
-                  <input 
-                    type="text" 
-                    value={rsvpSosmed}
-                    onChange={(e) => setRsvpSosmed(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    Ucapan &amp; Doa
-                  </label>
-                  <textarea 
-                    rows={5}
-                    required
-                    value={rsvpWishes}
-                    onChange={(e) => setRsvpWishes(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] resize-none transition-colors"
-                  />
-                </div>
-
-                <div className="pt-1 text-left">
-                  <button 
-                    type="submit" 
-                    disabled={isRsvpSubmitting}
-                    className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-[5px] text-white text-[13.5px] sm:text-sm font-semibold tracking-wide shadow hover:opacity-95 active:scale-95 transition-all cursor-pointer"
-                    style={{ 
-                      background: 'linear-gradient(to right, #693C47 0%, #AF7C89 100%)', 
-                      fontFamily: "'Poppins', sans-serif" 
-                    }}
-                  >
-                    {isRsvpSubmitting ? 'Mengirim...' : 'Kirimkan Ucapan'}
-                  </button>
-                </div>
-              </form>
-
-              {/* Wishes List & Pagination */}
-              <div className="space-y-3.5 text-left max-w-[360px] mx-auto">
-                {paginatedComments.map((item, idx) => (
-                  <div 
-                    key={idx}
-                    className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 border border-[#9A6E76]/15 shadow-sm space-y-1"
-                  >
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-bold text-[#774B53]" style={{ fontFamily: "'Lora', serif" }}>
-                        {item.name}
-                      </h4>
-                      {item.date && (
-                        <span className="text-[10px] text-stone-400 font-sans">{item.date}</span>
-                      )}
+              {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
+              {submittedRsvp ? (
+                <div className="pt-2 text-center animate-in fade-in zoom-in-95 duration-500 max-w-[360px] mx-auto">
+                  <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#9A6E76]/30 shadow-xl text-[#2E2227] relative overflow-hidden">
+                    <div className="flex items-center justify-center gap-1.5 mb-1 text-[#784E59]">
+                      <QrCode className="w-4 h-4 text-[#784E59]" />
+                      <span className="text-[11px] font-bold tracking-[0.2em] uppercase" style={{ fontFamily: "'Lora', serif" }}>
+                        Barcode &amp; QR Presensi Tamu
+                      </span>
                     </div>
-                    {item.sosmed && (
-                      <p className="text-[11px] text-stone-500 font-mono">{item.sosmed}</p>
-                    )}
-                    <p className="text-xs text-stone-700 leading-relaxed pt-1" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                      {item.message}
-                    </p>
-                  </div>
-                ))}
-              </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-3 mt-6">
-                  <button 
-                    onClick={() => setCommentPage(p => Math.max(1, p - 1))}
-                    disabled={commentPage <= 1}
-                    className="w-8 h-8 rounded-full text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed shadow transition-opacity cursor-pointer"
-                    style={{ background: 'linear-gradient(135deg, #784E59 0%, #BA8995 100%)' }}
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <span className="text-xs font-semibold text-stone-700 font-sans">
-                    {commentPage} / {totalPages}
-                  </span>
-                  <button 
-                    onClick={() => setCommentPage(p => Math.min(totalPages, p + 1))}
-                    disabled={commentPage >= totalPages}
-                    className="w-8 h-8 rounded-full text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed shadow transition-opacity cursor-pointer"
-                    style={{ background: 'linear-gradient(135deg, #784E59 0%, #BA8995 100%)' }}
-                  >
-                    <ChevronRight size={16} />
-                  </button>
+                    <p className="text-base font-bold text-[#774B53] tracking-wide mt-1" style={{ fontFamily: "'Lora', serif" }}>
+                      {submittedRsvp.name}
+                    </p>
+
+                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
+                      <span>✓</span>
+                      <span>Konfirmasi Kehadiran Diterima</span>
+                    </div>
+
+                    {/* QR Code */}
+                    <div className="w-40 h-40 mx-auto bg-white p-2.5 rounded-xl border border-stone-200 shadow-md flex items-center justify-center my-2.5">
+                      <img 
+                        src={invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'GARDEN'}|GUEST:${submittedRsvp.name}|CODE:${submittedRsvp.code}`)}`}
+                        alt="QR Code Presensi"
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = '/qr-code.png';
+                        }}
+                      />
+                    </div>
+
+                    {/* Authentic Barcode Graphic */}
+                    <div className="my-2 px-3 py-2 bg-stone-50 rounded-lg border border-stone-200 flex flex-col items-center shadow-xs">
+                      <svg viewBox="0 0 160 32" className="w-full max-w-[190px] h-9 text-[#2E2227]" preserveAspectRatio="none">
+                        {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
+                          idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
+                        ))}
+                      </svg>
+                      <span className="font-mono font-bold text-[11px] tracking-[0.25em] text-[#784E59] mt-1">
+                        {submittedRsvp.code}
+                      </span>
+                    </div>
+
+                    <p className="text-[10.5px] text-stone-600 italic leading-snug mt-2 max-w-[270px] mx-auto font-sans">
+                      Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi acara.
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSubmittedRsvp(null);
+                        try {
+                          localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'secret-garden'}`);
+                        } catch {}
+                      }}
+                      className="mt-3.5 inline-block text-[11px] text-[#784E59] hover:underline font-semibold cursor-pointer"
+                    >
+                      ← Ubah Konfirmasi Kehadiran
+                    </button>
+                  </div>
                 </div>
+              ) : (
+                <form id="ucapan-form" onSubmit={handleRsvpSubmit} className="max-w-[360px] sm:max-w-[380px] w-full mx-auto text-left space-y-4 mb-2">
+                  <div>
+                    <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                      Nama
+                    </label>
+                    <input 
+                      type="text" 
+                      required
+                      value={rsvpName}
+                      onChange={(e) => setRsvpName(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                      Sosial Media
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvpSosmed}
+                      onChange={(e) => setRsvpSosmed(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                      Ucapan &amp; Doa
+                    </label>
+                    <textarea 
+                      rows={5}
+                      required
+                      value={rsvpWishes}
+                      onChange={(e) => setRsvpWishes(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] resize-none transition-colors"
+                    />
+                  </div>
+
+                  <div className="pt-1 text-left">
+                    <button 
+                      type="submit" 
+                      disabled={isRsvpSubmitting}
+                      className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-[5px] text-white text-[13.5px] sm:text-sm font-semibold tracking-wide shadow hover:opacity-95 active:scale-95 transition-all cursor-pointer"
+                      style={{ 
+                        background: 'linear-gradient(to right, #693C47 0%, #AF7C89 100%)', 
+                        fontFamily: "'Poppins', sans-serif" 
+                      }}
+                    >
+                      {isRsvpSubmitting ? 'Mengirim...' : 'Kirimkan Ucapan'}
+                    </button>
+                  </div>
+                </form>
               )}
             </div>
           </section>

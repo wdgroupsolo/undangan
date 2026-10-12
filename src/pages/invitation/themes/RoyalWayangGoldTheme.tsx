@@ -17,7 +17,8 @@ import {
   User,
   CheckCircle2,
   Sparkles,
-  Users
+  Users,
+  QrCode
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -931,6 +932,29 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const [rsvpList, setRsvpList] = useState<RSVPItem[]>([]);
   const [showWishes, setShowWishes] = useState(false);
 
+  // Only true when explicitly opened via "Demo Tema" button from landing page/catalog (?demo=true)
+  // Real client invitations and invitations in admin list are NOT demos.
+  const isDemo = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('demo') === 'true' ||
+    (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
+  );
+
+  // Saved RSVP check-in pass state (persisted per invitation)
+  const [submittedRsvp, setSubmittedRsvp] = useState<{
+    name: string;
+    attendance: string;
+    guests: number;
+    code: string;
+  } | null>(() => {
+    try {
+      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'royal'}`);
+      if (saved) return JSON.parse(saved);
+      return null;
+    } catch {
+      return null;
+    }
+  });
+
   // Read real RSVP wishes list
   const displayWishes = rsvpList;
 
@@ -1147,9 +1171,17 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         client_name: isAgni ? 'AGNI KAHURIPAN' : undefined,
       });
 
-      toast.success('Konfirmasi kehadiran & doa berhasil dikirim!');
-      setRsvpList(prev => [saved, ...prev.filter(item => item.id !== saved.id)]);
-      setShowWishes(true);
+      toast.success('Konfirmasi kehadiran berhasil dikirim!');
+      const passData = {
+        name: rsvpName.trim(),
+        attendance: rsvpAttendance,
+        guests: parseInt(rsvpGuests, 10) || 1,
+        code: `RWG-${(targetInvId || 'ROYAL').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      };
+      try {
+        localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'royal'}`, JSON.stringify(passData));
+      } catch {}
+      setSubmittedRsvp(passData);
       setRsvpName('');
       setRsvpMessage('');
     } catch {
@@ -3301,234 +3333,259 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 </p>
               </div>
 
-              {/* Form */}
-              <form onSubmit={handleRsvpSubmit} className="w-full space-y-3.5 text-left">
-                {/* Nama Lengkap */}
-                <div>
-                  <label className="flex items-center justify-between text-[12px] font-serif text-[#FBF5D8] mb-1.5 font-medium tracking-wide">
-                    <span className="flex items-center gap-1.5">
-                      <span className="text-[#ffd778] text-xs">✦</span>
-                      <span>Nama Lengkap</span>
-                      <span className="text-amber-400 font-bold">*</span>
-                    </span>
-                    <span className="text-[10px] text-[#ecc460]/90 font-sans tracking-wider px-2 py-0.5 rounded-full bg-[#d4af37]/20 border border-[#d4af37]/40">
-                      {rsvpName.length}/100
-                    </span>
-                  </label>
-                  <div className="relative w-full flex items-center rounded-xl bg-gradient-to-b from-[#26190f]/95 via-[#1b1008]/95 to-[#120a05]/98 border border-[#d4af37]/55 shadow-[inset_0_2px_6px_rgba(0,0,0,0.85),_0_2px_8px_rgba(0,0,0,0.6)] focus-within:border-[#ffd778] focus-within:shadow-[0_0_16px_rgba(212,175,55,0.4),_inset_0_2px_4px_rgba(0,0,0,0.8)] transition-all overflow-hidden">
-                    <div className="pl-3.5 pr-2.5 py-3 flex items-center justify-center text-[#e5c158] border-r border-[#d4af37]/25 shrink-0">
-                      <User size={15} className="filter drop-shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
-                    </div>
-                    <input
-                      type="text"
-                      required
-                      maxLength={100}
-                      value={rsvpName}
-                      onChange={(e) => setRsvpName(e.target.value)}
-                      placeholder="Contoh: Bpk. Bambang & Keluarga"
-                      className="w-full px-3 py-2.5 bg-transparent text-[#FFF8D6] text-xs sm:text-sm placeholder-[#c5a880]/50 focus:outline-none font-serif tracking-wide"
-                    />
-                  </div>
-                </div>
+              {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
+              {submittedRsvp ? (
+                <div className="w-full flex flex-col items-center animate-in fade-in zoom-in-95 duration-500">
+                  <div className="w-full bg-gradient-to-b from-[#24170d]/95 via-[#190f08]/98 to-[#120a05]/98 rounded-2xl p-5 border-2 border-[#d4af37]/75 shadow-[0_15px_35px_rgba(0,0,0,0.8),0_0_25px_rgba(212,175,55,0.25)] text-center relative overflow-hidden">
+                    {/* Top Golden Crest Badge */}
+                    {isDemo ? (
+                      <div className="flex items-center justify-center gap-1.5 mb-1.5 text-amber-400">
+                        <QrCode className="w-4 h-4 text-amber-400" />
+                        <span className="text-[11px] font-serif font-bold tracking-[0.2em] uppercase text-amber-200">
+                          CONTOH TIKET &amp; BARCODE DEMO (PORTOFOLIO)
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center gap-1.5 mb-1.5 text-[#ffd778]">
+                        <QrCode className="w-4 h-4 text-[#ffd778]" />
+                        <span className="text-[11px] font-serif font-bold tracking-[0.2em] uppercase text-[#FFF4D0]">
+                          VIP PASS &amp; BARCODE PRESENSI
+                        </span>
+                      </div>
+                    )}
 
-                {/* Status Kehadiran */}
-                <div>
-                  <label className="flex items-center gap-1.5 text-[12px] font-serif text-[#FBF5D8] mb-1.5 font-medium tracking-wide">
-                    <span className="text-[#ffd778] text-xs">✦</span>
-                    <span>Status Kehadiran</span>
-                    <span className="text-amber-400 font-bold">*</span>
-                  </label>
-                  <div className="relative w-full flex items-center rounded-xl bg-gradient-to-b from-[#26190f]/95 via-[#1b1008]/95 to-[#120a05]/98 border border-[#d4af37]/55 shadow-[inset_0_2px_6px_rgba(0,0,0,0.85),_0_2px_8px_rgba(0,0,0,0.6)] focus-within:border-[#ffd778] focus-within:shadow-[0_0_16px_rgba(212,175,55,0.4)] transition-all overflow-hidden">
-                    <div className="pl-3.5 pr-2.5 py-3 flex items-center justify-center text-[#e5c158] border-r border-[#d4af37]/25 shrink-0">
-                      <CheckCircle2 size={15} className="filter drop-shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
-                    </div>
-                    <select
-                      value={rsvpAttendance}
-                      onChange={(e) => setRsvpAttendance(e.target.value)}
-                      className="w-full appearance-none px-3 py-2.5 bg-transparent text-[#FFF8D6] text-xs sm:text-sm focus:outline-none pr-10 cursor-pointer font-serif tracking-wide"
-                    >
-                      <option value="hadir" className="bg-[#1c120a] text-[#FFF8D6] py-2">✓ Hadir Memenuhi Undangan</option>
-                      <option value="tidak" className="bg-[#1c120a] text-[#FFF8D6] py-2">✕ Berhalangan Hadir</option>
-                      <option value="ragu" className="bg-[#1c120a] text-[#FFF8D6] py-2">? Masih Ragu-ragu</option>
-                    </select>
-                    <ChevronDown size={16} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#ecc460] pointer-events-none filter drop-shadow" />
-                  </div>
-                </div>
+                    <p className="text-base sm:text-lg font-serif font-bold text-[#FFF8D6] tracking-wide mt-1">
+                      {submittedRsvp.name}
+                    </p>
 
-                {/* Jumlah Tamu (Conditional when Hadir) */}
-                {rsvpAttendance === 'hadir' && (
-                  <div>
-                    <label className="flex items-center gap-1.5 text-[12px] font-serif text-[#FBF5D8] mb-1.5 font-medium tracking-wide">
-                      <Users size={13} className="text-[#ffd778]" />
-                      <span>Jumlah Tamu yang Hadir</span>
-                    </label>
-                    <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
-                      {[
-                        { val: '1', label: '1 Orang' },
-                        { val: '2', label: '2 Orang' },
-                        { val: '3', label: '3+ Orang' },
-                      ].map((opt) => {
-                        const isSelected = rsvpGuests === opt.val;
-                        return (
-                          <button
-                            type="button"
-                            key={opt.val}
-                            onClick={() => setRsvpGuests(opt.val)}
-                            className={`py-2 px-3 rounded-xl text-xs font-serif font-bold transition-all flex items-center justify-center gap-1.5 relative overflow-hidden cursor-pointer ${
-                              isSelected
-                                ? 'bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] via-[#B38728] to-[#AA771C] text-stone-950 shadow-[0_4px_16px_rgba(212,175,55,0.6),_inset_0_1px_1px_rgba(255,255,255,0.9)] border border-[#FFF6D8] scale-[1.02]'
-                                : 'bg-gradient-to-b from-[#24170d]/90 to-[#140b06]/95 border border-[#d4af37]/45 text-[#e5d8c3] hover:border-[#ffd778] hover:text-[#FFF8D6] shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]'
-                            }`}
-                          >
-                            {isSelected && <span className="text-[10px]">✓</span>}
-                            <span>{opt.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
+                    {isDemo ? (
+                      <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-gradient-to-r from-amber-950/90 to-red-950/90 text-amber-200 border border-amber-400/50 shadow-sm">
+                        <span>🔒</span>
+                        <span>Status: Terkunci (Mode Demo Testimoni)</span>
+                      </div>
+                    ) : (
+                      <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-gradient-to-r from-emerald-950/90 to-emerald-900/90 text-emerald-200 border border-emerald-400/50 shadow-sm">
+                        <span>✓</span>
+                        <span>
+                          {submittedRsvp.attendance === 'hadir' || submittedRsvp.attendance === 'attending'
+                            ? `Terkonfirmasi Hadir (${submittedRsvp.guests} Tamu)`
+                            : 'Status: Berhalangan Hadir'}
+                        </span>
+                      </div>
+                    )}
 
-                {/* Ucapan/Pesan */}
-                <div>
-                  <label className="flex items-center justify-between text-[12px] font-serif text-[#FBF5D8] mb-1.5 font-medium tracking-wide">
-                    <span className="flex items-center gap-1.5">
-                      <span className="text-[#ffd778] text-xs">✦</span>
-                      <span>Ucapan &amp; Doa Restu</span>
-                    </span>
-                    <span className="text-[10px] text-[#ecc460]/90 font-sans tracking-wider px-2 py-0.5 rounded-full bg-[#d4af37]/20 border border-[#d4af37]/40">
-                      {rsvpMessage.length}/500
-                    </span>
-                  </label>
-                  <div className="relative w-full flex rounded-xl bg-gradient-to-b from-[#26190f]/95 via-[#1b1008]/95 to-[#120a05]/98 border border-[#d4af37]/55 shadow-[inset_0_2px_6px_rgba(0,0,0,0.85),_0_2px_8px_rgba(0,0,0,0.6)] focus-within:border-[#ffd778] focus-within:shadow-[0_0_16px_rgba(212,175,55,0.4),_inset_0_2px_4px_rgba(0,0,0,0.8)] transition-all overflow-hidden">
-                    <div className="pt-3 pl-3.5 pr-2.5 flex items-start justify-center text-[#e5c158] border-r border-[#d4af37]/25 shrink-0">
-                      <Sparkles size={15} className="filter drop-shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
+                    {/* QR Code Frame with Demo Watermark when in Demo Mode */}
+                    <div className="relative w-44 h-44 mx-auto bg-white p-2.5 rounded-xl border border-[#d4af37]/60 shadow-[0_4px_16px_rgba(0,0,0,0.4)] flex items-center justify-center my-2.5 overflow-hidden">
+                      <img 
+                        src={
+                          isDemo 
+                            ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('DEMO-TESTIMONIAL-PORTOFOLIO-LOCKED|DO-NOT-SCAN|CODE:WD-DEMO-TESTIMONI-88')}`
+                            : (invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'ROYAL'}|GUEST:${submittedRsvp.name}|ATT:${submittedRsvp.attendance}|CODE:${submittedRsvp.code}`)}`)
+                        }
+                        alt="QR Code Presensi"
+                        className="w-full h-full object-contain filter"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = '/qr-code.png';
+                        }}
+                      />
+                      {isDemo && (
+                        <div className="absolute inset-0 bg-red-950/45 backdrop-blur-[0.5px] flex flex-col items-center justify-center p-2 border-2 border-dashed border-red-500/80 rounded-lg m-1 select-none pointer-events-none">
+                          <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded shadow-lg -rotate-12 border border-white/60 text-center leading-tight">
+                            DEMO ONLY<br/><span className="text-[8.5px] font-bold">TIDAK BISA DI-SCAN</span>
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <textarea
-                      rows={3}
-                      maxLength={500}
-                      value={rsvpMessage}
-                      onChange={(e) => setRsvpMessage(e.target.value)}
-                      placeholder="Tuliskan ucapan selamat & doa restu tulus Anda untuk kedua mempelai..."
-                      className="w-full px-3 py-2.5 bg-transparent text-[#FFF8D6] text-xs sm:text-sm placeholder-[#c5a880]/50 focus:outline-none resize-none leading-relaxed font-serif tracking-wide"
-                    />
-                  </div>
-                </div>
 
-                {/* 24K Prada Gold Bar Submit Button */}
-                <div className="flex justify-center pt-2">
-                  <button
-                    type="submit"
-                    disabled={rsvpSubmitting}
-                    className="relative group overflow-hidden w-full max-w-[290px] py-3.5 px-8 rounded-full bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] via-[#B38728] via-[#FBF5B7] to-[#AA771C] hover:brightness-110 active:scale-95 text-[#181005] font-serif font-black uppercase tracking-[0.22em] text-xs shadow-[0_8px_30px_rgba(212,175,55,0.6),_inset_0_1px_2px_rgba(255,255,255,0.95),_inset_0_-2px_4px_rgba(100,60,10,0.6)] transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2.5 mx-auto border-2 border-[#FFF2B8]"
-                  >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
-                    {rsvpSubmitting ? (
-                      <span className="flex items-center gap-2">
-                        <span className="inline-block w-3.5 h-3.5 border-2 border-stone-900 border-t-transparent rounded-full animate-spin" />
-                        <span>Mengirimkan Doa...</span>
+                    {/* Authentic Barcode Graphic & Code with Demo Badge */}
+                    <div className="relative my-2 px-3 py-2 bg-white rounded-lg border border-[#d4af37]/40 flex flex-col items-center shadow-sm overflow-hidden">
+                      <svg viewBox="0 0 160 32" className="w-full max-w-[190px] h-9 text-[#1a0a0d]" preserveAspectRatio="none">
+                        {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
+                          idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
+                        ))}
+                      </svg>
+                      <span className={`font-mono font-bold text-[11px] tracking-[0.25em] ${isDemo ? 'text-red-700 line-through' : 'text-[#1a1006]'} mt-1`}>
+                        {submittedRsvp.code}
                       </span>
-                    ) : (
-                      <>
-                        <span className="drop-shadow-sm font-bold tracking-[0.22em]">KIRIM KONFIRMASI</span>
-                        <Send size={14} className="text-[#181005] stroke-[2.5]" />
-                      </>
-                    )}
-                  </button>
-                </div>
-              </form>
-
-              {/* Wishes Feed (Doa & Ucapan) Toggle Accordion */}
-              <div className="w-full pt-5 mt-3 border-t-2 border-[#d4af37]/35 flex flex-col items-center">
-                {/* Clickable Header Button to Toggle / Tampilkan */}
-                <button
-                  type="button"
-                  onClick={() => setShowWishes(prev => !prev)}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#26190f]/95 via-[#190f08]/98 to-[#26190f]/95 border border-[#d4af37]/50 hover:border-[#ffd778] active:scale-[0.99] transition-all flex items-center justify-between shadow-[0_4px_14px_rgba(0,0,0,0.6)] cursor-pointer group"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#8c671a] flex items-center justify-center shadow-[0_0_10px_rgba(212,175,55,0.5)]">
-                      <MessageCircle size={13} className="text-stone-950 stroke-[2.5]" />
+                      {isDemo && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
+                          <span className="bg-amber-600/90 text-white font-bold text-[9px] px-2 py-0.5 rounded tracking-widest uppercase shadow">
+                            BARCODE DEMO (TERKUNCI)
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <span className="text-xs font-serif font-bold tracking-[0.16em] text-[#FFF4D0] uppercase">
-                      Buku Tamu &amp; Doa
-                    </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-gradient-to-r from-[#d4af37]/25 to-[#ffd778]/30 border border-[#ffd778]/40 text-[#FFF9DF] font-sans font-bold">
-                      {displayWishes.length}
-                    </span>
-                  </div>
 
-                  <div className="flex items-center gap-1.5 text-[#ffd778] text-[11px] font-serif font-semibold">
-                    <span>{showWishes ? 'Sembunyikan' : 'Tampilkan'}</span>
-                    {showWishes ? (
-                      <ChevronUp size={15} className="transition-transform text-[#ffd778]" />
-                    ) : (
-                      <ChevronDown size={15} className="transition-transform group-hover:translate-y-0.5 text-[#ffd778]" />
-                    )}
-                  </div>
-                </button>
-
-                {/* Wishes Feed List (Hanya tampil saat tombol Tampilkan diklik) */}
-                {showWishes && (
-                  <div className="w-full space-y-3 max-h-60 overflow-y-auto pr-1 text-left mt-3.5 pt-1 animate-in fade-in slide-in-from-top-2 duration-300">
-                    {displayWishes.length === 0 ? (
-                      <div className="p-4 rounded-xl bg-[#1a110a]/80 border border-[#d4af37]/30 text-center space-y-1 my-1">
-                        <p className="font-serif italic text-xs text-[#EADFC9]/90">
-                          Belum ada ucapan doa yang dikirimkan.
+                    {isDemo ? (
+                      <div className="bg-amber-950/80 border border-amber-500/40 rounded-xl p-3 mt-2.5 text-center max-w-[310px] mx-auto shadow-inner">
+                        <p className="text-[11px] font-serif text-amber-200 font-semibold leading-relaxed flex items-center justify-center gap-1.5">
+                          <span>🔒</span>
+                          <span>Barcode Versi Demo / Testimoni Klien</span>
                         </p>
-                        <p className="text-[11px] text-[#ffd778]/80 font-sans">
-                          Jadilah yang pertama menuliskan doa dan ucapan restu untuk kedua mempelai!
+                        <p className="text-[10px] text-amber-100/85 leading-normal mt-1">
+                          Barcode &amp; QR ini dirancang khusus untuk portofolio dan demo testimoni. Sistem secara otomatis <strong>mengunci barcode</strong> sehingga tidak dapat dipindai untuk presensi tamu sungguhan.
                         </p>
                       </div>
                     ) : (
-                      displayWishes.map((item, idx) => {
-                        const isAttending = item.attendance === 'attending' || (item as any).attending === true;
-                        const guestCount = item.number_of_guests || (item as any).guests_count || 1;
-                        return (
-                          <div 
-                            key={item.id || idx} 
-                            className="p-3.5 rounded-xl bg-gradient-to-b from-[#24170d]/95 via-[#180f08]/95 to-[#100804]/98 border border-[#d4af37]/50 text-xs space-y-2 shadow-[0_4px_16px_rgba(0,0,0,0.7)] hover:border-[#ffd778] transition-all relative overflow-hidden group"
-                          >
-                            {/* Gold Accent Left Bar */}
-                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#ffd778] via-[#d4af37] to-[#8c671a]" />
-                            
-                            <div className="flex items-center justify-between gap-2 pl-1.5">
-                              <div className="flex items-center gap-2 min-w-0">
-                                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#6d4c13] text-stone-950 font-bold flex items-center justify-center text-[10px] shadow-sm shrink-0">
-                                  {item.name ? item.name.charAt(0).toUpperCase() : 'T'}
-                                </div>
-                                <span className="font-serif font-bold text-[#FFF6D8] truncate text-[12.5px] tracking-wide">
-                                  {item.name}
-                                </span>
-                              </div>
-                              
-                              <span className={`text-[9.5px] px-2.5 py-0.5 rounded-full font-serif font-semibold whitespace-nowrap shadow-sm ${
-                                isAttending 
-                                  ? 'bg-gradient-to-r from-emerald-950/90 to-emerald-900/90 text-emerald-200 border border-emerald-400/50 shadow-[0_0_8px_rgba(16,185,129,0.3)]' 
-                                  : 'bg-gradient-to-r from-amber-950/90 to-amber-900/90 text-amber-200 border border-amber-400/50 shadow-[0_0_8px_rgba(245,158,11,0.3)]'
-                              }`}>
-                                {isAttending ? (guestCount > 1 ? `✓ Hadir (${guestCount} Orang)` : '✓ Hadir') : 'Berhalangan'}
-                              </span>
-                            </div>
-                            
-                            {item.message && (
-                              <p className="text-[#efe5d5]/95 font-serif italic text-[12px] leading-relaxed pl-1.5 break-words">
-                                &ldquo;{item.message}&rdquo;
-                              </p>
-                            )}
-                            
-                            {item.created_at && (
-                              <p className="text-[9.5px] text-[#ecc460]/75 font-sans text-right pt-0.5 pr-1">
-                                {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                              </p>
-                            )}
-                          </div>
-                        );
-                      })
+                      <p className="text-[10px] sm:text-[10.5px] font-serif text-[#EADFC9]/85 italic leading-snug mt-2 max-w-[270px] mx-auto">
+                        Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi perhelatan.
+                      </p>
                     )}
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSubmittedRsvp(null);
+                        try {
+                          localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'royal'}`);
+                        } catch {}
+                      }}
+                      className="mt-3.5 inline-block text-[11px] font-serif text-[#ffd778] hover:underline font-semibold cursor-pointer transition-colors"
+                    >
+                      ← Ubah Konfirmasi Kehadiran
+                    </button>
                   </div>
-                )}
-              </div>
+                </div>
+              ) : (
+                <div className="w-full">
+                  {/* Form */}
+                  <form onSubmit={handleRsvpSubmit} className="w-full space-y-3.5 text-left">
+                    {/* Nama Lengkap */}
+                    <div>
+                      <label className="flex items-center justify-between text-[12px] font-serif text-[#FBF5D8] mb-1.5 font-medium tracking-wide">
+                        <span className="flex items-center gap-1.5">
+                          <span className="text-[#ffd778] text-xs">✦</span>
+                          <span>Nama Lengkap</span>
+                          <span className="text-amber-400 font-bold">*</span>
+                        </span>
+                        <span className="text-[10px] text-[#ecc460]/90 font-sans tracking-wider px-2 py-0.5 rounded-full bg-[#d4af37]/20 border border-[#d4af37]/40">
+                          {rsvpName.length}/100
+                        </span>
+                      </label>
+                      <div className="relative w-full flex items-center rounded-xl bg-gradient-to-b from-[#26190f]/95 via-[#1b1008]/95 to-[#120a05]/98 border border-[#d4af37]/55 shadow-[inset_0_2px_6px_rgba(0,0,0,0.85),_0_2px_8px_rgba(0,0,0,0.6)] focus-within:border-[#ffd778] focus-within:shadow-[0_0_16px_rgba(212,175,55,0.4),_inset_0_2px_4px_rgba(0,0,0,0.8)] transition-all overflow-hidden">
+                        <div className="pl-3.5 pr-2.5 py-3 flex items-center justify-center text-[#e5c158] border-r border-[#d4af37]/25 shrink-0">
+                          <User size={15} className="filter drop-shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
+                        </div>
+                        <input
+                          type="text"
+                          required
+                          maxLength={100}
+                          value={rsvpName}
+                          onChange={(e) => setRsvpName(e.target.value)}
+                          placeholder="Contoh: Bpk. Bambang & Keluarga"
+                          className="w-full px-3 py-2.5 bg-transparent text-[#FFF8D6] text-xs sm:text-sm placeholder-[#c5a880]/50 focus:outline-none font-serif tracking-wide"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Status Kehadiran */}
+                    <div>
+                      <label className="flex items-center gap-1.5 text-[12px] font-serif text-[#FBF5D8] mb-1.5 font-medium tracking-wide">
+                        <span className="text-[#ffd778] text-xs">✦</span>
+                        <span>Status Kehadiran</span>
+                        <span className="text-amber-400 font-bold">*</span>
+                      </label>
+                      <div className="relative w-full flex items-center rounded-xl bg-gradient-to-b from-[#26190f]/95 via-[#1b1008]/95 to-[#120a05]/98 border border-[#d4af37]/55 shadow-[inset_0_2px_6px_rgba(0,0,0,0.85),_0_2px_8px_rgba(0,0,0,0.6)] focus-within:border-[#ffd778] focus-within:shadow-[0_0_16px_rgba(212,175,55,0.4)] transition-all overflow-hidden">
+                        <div className="pl-3.5 pr-2.5 py-3 flex items-center justify-center text-[#e5c158] border-r border-[#d4af37]/25 shrink-0">
+                          <CheckCircle2 size={15} className="filter drop-shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
+                        </div>
+                        <select
+                          value={rsvpAttendance}
+                          onChange={(e) => setRsvpAttendance(e.target.value)}
+                          className="w-full appearance-none px-3 py-2.5 bg-transparent text-[#FFF8D6] text-xs sm:text-sm focus:outline-none pr-10 cursor-pointer font-serif tracking-wide"
+                        >
+                          <option value="hadir" className="bg-[#1c120a] text-[#FFF8D6] py-2">✓ Hadir Memenuhi Undangan</option>
+                          <option value="tidak" className="bg-[#1c120a] text-[#FFF8D6] py-2">✕ Berhalangan Hadir</option>
+                          <option value="ragu" className="bg-[#1c120a] text-[#FFF8D6] py-2">? Masih Ragu-ragu</option>
+                        </select>
+                        <ChevronDown size={16} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#ecc460] pointer-events-none filter drop-shadow" />
+                      </div>
+                    </div>
+
+                    {/* Jumlah Tamu (Conditional when Hadir) */}
+                    {rsvpAttendance === 'hadir' && (
+                      <div>
+                        <label className="flex items-center gap-1.5 text-[12px] font-serif text-[#FBF5D8] mb-1.5 font-medium tracking-wide">
+                          <Users size={13} className="text-[#ffd778]" />
+                          <span>Jumlah Tamu yang Hadir</span>
+                        </label>
+                        <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+                          {[
+                            { val: '1', label: '1 Orang' },
+                            { val: '2', label: '2 Orang' },
+                            { val: '3', label: '3+ Orang' },
+                          ].map((opt) => {
+                            const isSelected = rsvpGuests === opt.val;
+                            return (
+                              <button
+                                type="button"
+                                key={opt.val}
+                                onClick={() => setRsvpGuests(opt.val)}
+                                className={`py-2 px-3 rounded-xl text-xs font-serif font-bold transition-all flex items-center justify-center gap-1.5 relative overflow-hidden cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] via-[#B38728] to-[#AA771C] text-stone-950 shadow-[0_4px_16px_rgba(212,175,55,0.6),_inset_0_1px_1px_rgba(255,255,255,0.9)] border border-[#FFF6D8] scale-[1.02]'
+                                    : 'bg-gradient-to-b from-[#24170d]/90 to-[#140b06]/95 border border-[#d4af37]/45 text-[#e5d8c3] hover:border-[#ffd778] hover:text-[#FFF8D6] shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]'
+                                }`}
+                              >
+                                {isSelected && <span className="text-[10px]">✓</span>}
+                                <span>{opt.label}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Ucapan/Pesan */}
+                    <div>
+                      <label className="flex items-center justify-between text-[12px] font-serif text-[#FBF5D8] mb-1.5 font-medium tracking-wide">
+                        <span className="flex items-center gap-1.5">
+                          <span className="text-[#ffd778] text-xs">✦</span>
+                          <span>Ucapan &amp; Doa Restu</span>
+                        </span>
+                        <span className="text-[10px] text-[#ecc460]/90 font-sans tracking-wider px-2 py-0.5 rounded-full bg-[#d4af37]/20 border border-[#d4af37]/40">
+                          {rsvpMessage.length}/500
+                        </span>
+                      </label>
+                      <div className="relative w-full flex rounded-xl bg-gradient-to-b from-[#26190f]/95 via-[#1b1008]/95 to-[#120a05]/98 border border-[#d4af37]/55 shadow-[inset_0_2px_6px_rgba(0,0,0,0.85),_0_2px_8px_rgba(0,0,0,0.6)] focus-within:border-[#ffd778] focus-within:shadow-[0_0_16px_rgba(212,175,55,0.4),_inset_0_2px_4px_rgba(0,0,0,0.8)] transition-all overflow-hidden">
+                        <div className="pt-3 pl-3.5 pr-2.5 flex items-start justify-center text-[#e5c158] border-r border-[#d4af37]/25 shrink-0">
+                          <Sparkles size={15} className="filter drop-shadow-[0_0_6px_rgba(212,175,55,0.6)]" />
+                        </div>
+                        <textarea
+                          rows={3}
+                          maxLength={500}
+                          value={rsvpMessage}
+                          onChange={(e) => setRsvpMessage(e.target.value)}
+                          placeholder="Tuliskan ucapan selamat & doa restu tulus Anda untuk kedua mempelai..."
+                          className="w-full px-3 py-2.5 bg-transparent text-[#FFF8D6] text-xs sm:text-sm placeholder-[#c5a880]/50 focus:outline-none resize-none leading-relaxed font-serif tracking-wide"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 24K Prada Gold Bar Submit Button */}
+                    <div className="flex justify-center pt-2">
+                      <button
+                        type="submit"
+                        disabled={rsvpSubmitting}
+                        className="relative group overflow-hidden w-full max-w-[290px] py-3.5 px-8 rounded-full bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] via-[#B38728] via-[#FBF5B7] to-[#AA771C] hover:brightness-110 active:scale-95 text-[#181005] font-serif font-black uppercase tracking-[0.22em] text-xs shadow-[0_8px_30px_rgba(212,175,55,0.6),_inset_0_1px_2px_rgba(255,255,255,0.95),_inset_0_-2px_4px_rgba(100,60,10,0.6)] transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2.5 mx-auto border-2 border-[#FFF2B8]"
+                      >
+                        <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
+                        {rsvpSubmitting ? (
+                          <span className="flex items-center gap-2">
+                            <span className="inline-block w-3.5 h-3.5 border-2 border-stone-900 border-t-transparent rounded-full animate-spin" />
+                            <span>Mengirimkan Doa...</span>
+                          </span>
+                        ) : (
+                          <>
+                            <span className="drop-shadow-sm font-bold tracking-[0.22em]">KIRIM KONFIRMASI</span>
+                            <Send size={14} className="text-[#181005] stroke-[2.5]" />
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
             </div>
           </div>
         </section>

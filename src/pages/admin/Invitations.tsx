@@ -101,7 +101,9 @@ export const Invitations: React.FC = () => {
                   return (
                     <tr key={invitation.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="font-semibold text-gray-900">{invitation.title || 'Untitled'}</div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-semibold text-gray-900">{invitation.title || 'Untitled'}</span>
+                        </div>
                         <div className="text-gray-400 text-xs mt-0.5 font-mono">/{invitation.slug}</div>
                       </td>
                       <td className="px-6 py-4">{invitation.client?.name || '-'}</td>

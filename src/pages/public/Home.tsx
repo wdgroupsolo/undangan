@@ -57,7 +57,7 @@ export const Home: React.FC = () => {
       preview: '/themes/joglo-maroon-theme-preview.png',
       musicTitle: 'Pesta Adat Batak Heritage',
       musicUrl: '/music/joglo-maroon-heritage.mp3',
-      demoUrl: '/invitation/steven-bunga?theme=joglo-maroon-heritage'
+      demoUrl: '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
     },
     {
       id: 'royal-wayang-gold',
@@ -69,7 +69,7 @@ export const Home: React.FC = () => {
       preview: '/themes/royal-wayang-theme-preview.png',
       musicTitle: 'Ladrang Wilujeng Keraton',
       musicUrl: '/music/royal-wayang-heritage.mp3',
-      demoUrl: '/invitation/steven-bunga?theme=royal-wayang-gold'
+      demoUrl: '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
     },
     {
       id: 'javanese-heritage',
@@ -81,7 +81,7 @@ export const Home: React.FC = () => {
       preview: '/themes/javanese-heritage-theme-preview.png',
       musicTitle: 'Bergema Sampai Selamanya - Nadhief Basalamah (Piano)',
       musicUrl: '/music/bergema-sampai-selamanya.mp3',
-      demoUrl: '/invitation/steven-bunga?theme=javanese-heritage'
+      demoUrl: '/invitation/steven-bunga?theme=javanese-heritage&demo=true'
     },
     {
       id: 'maroon-gold',
@@ -93,7 +93,7 @@ export const Home: React.FC = () => {
       preview: '/themes/maroon-gold-theme-preview.png',
       musicTitle: 'Canon in D (Royal Strings)',
       musicUrl: '/music/maroon-gold-canon.mp3',
-      demoUrl: '/invitation/steven-bunga?theme=maroon-gold'
+      demoUrl: '/invitation/steven-bunga?theme=maroon-gold&demo=true'
     },
     {
       id: 'secret-garden',
@@ -105,7 +105,7 @@ export const Home: React.FC = () => {
       preview: '/themes/secret-garden-theme-preview.png',
       musicTitle: 'A Thousand Years (Piano)',
       musicUrl: '/music/secret-garden.mp3',
-      demoUrl: '/invitation/steven-bunga?theme=secret-garden'
+      demoUrl: '/invitation/steven-bunga?theme=secret-garden&demo=true'
     },
     {
       id: 'split-floral',
@@ -117,7 +117,7 @@ export const Home: React.FC = () => {
       preview: '/themes/split-floral-theme-preview.png',
       musicTitle: 'Beautiful In White',
       musicUrl: '/beautiful-in-white.mp3',
-      demoUrl: '/invitation/steven-bunga?theme=split-floral'
+      demoUrl: '/invitation/steven-bunga?theme=split-floral&demo=true'
     }
   ];
 
@@ -900,12 +900,12 @@ export const Home: React.FC = () => {
                           : '/themes/javanese-heritage-theme-preview.png'))));
 
               const demoUrl = isJogloMaroon
-                ? '/invitation/steven-bunga?theme=joglo-maroon-heritage'
+                ? '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
                 : (isRoyalWayang
-                  ? '/invitation/steven-bunga?theme=royal-wayang-gold'
+                  ? '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
                   : (isJavanese 
-                      ? '/invitation/steven-bunga?theme=javanese-heritage' 
-                      : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}` : '/themes')));
+                      ? '/invitation/steven-bunga?theme=javanese-heritage&demo=true' 
+                      : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}&demo=true` : '/themes')));
 
               const featuresList = isJogloMaroon ? [
                 'Kemegahan Rumah Adat Batak (Rumah Bolon)',

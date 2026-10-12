@@ -128,12 +128,12 @@ export const ThemeCatalog: React.FC = () => {
                           : '/themes/javanese-heritage-theme-preview.png'))));
 
               const demoUrl = isJogloMaroon
-                ? '/invitation/steven-bunga?theme=joglo-maroon-heritage'
+                ? '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
                 : (isRoyalWayang
-                  ? '/invitation/steven-bunga?theme=royal-wayang-gold'
+                  ? '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
                   : (isJavanese 
-                      ? '/invitation/steven-bunga?theme=javanese-heritage' 
-                      : `/invitation/steven-bunga?theme=${theme.slug}`));
+                      ? '/invitation/steven-bunga?theme=javanese-heritage&demo=true' 
+                      : `/invitation/steven-bunga?theme=${theme.slug}&demo=true`));
 
               return (
                 <div 
