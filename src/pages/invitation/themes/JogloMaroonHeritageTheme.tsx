@@ -766,13 +766,13 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
     return 'Tamu Undangan';
   })();
 
-  // Couple names & nicknames
-  const groomName = couple?.groom_nickname || couple?.groom_full_name || 'Robert';
-  const brideName = couple?.bride_nickname || couple?.bride_full_name || 'Cristine';
-  const groomFullName = couple?.groom_full_name || 'Robert Saputra';
-  const brideFullName = couple?.bride_full_name || 'Cristine Azkiya';
-  const groomParents = couple?.groom_parents || 'Putra dari Bapak Nasrudin Hatta & Ibu Elma Muna';
-  const brideParents = couple?.bride_parents || 'Putri dari Bapak Nasrudin Hatta & Ibu Elma Muna';
+  // Couple names & nicknames (Default to Steven & Bunga)
+  const groomName = couple?.groom_nickname || couple?.groom_full_name || 'Steven';
+  const brideName = couple?.bride_nickname || couple?.bride_full_name || 'Bunga';
+  const groomFullName = couple?.groom_full_name || 'Steven Pratama, S.Kom.';
+  const brideFullName = couple?.bride_full_name || 'Bunga Citra Lestari, S.E.';
+  const groomParents = couple?.groom_parents || 'Putra dari Bapak Bambang Pratama & Ibu Siti Rahayu';
+  const brideParents = couple?.bride_parents || 'Putri dari Bapak Hendra Gunawan & Ibu Ratna Dewi';
 
   // Target event for countdown & hero display
   const mainEvent = events?.[0] || {
@@ -811,14 +811,15 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
 
   const heroHashtag = couple?.hashtag || `#${groomName.replace(/\s+/g, '')}Dan${brideName.replace(/\s+/g, '')}`;
 
-  // Couple photo
+  // Couple photo (Steven & Bunga as canonical default)
   const coupleCoverPhoto = 
     invitation?.cover_image_url || 
+    couple?.cover_photo_url || 
     gallery?.[0]?.image_url || 
     '/photos/photo-3.jpg';
 
-  const groomPhoto = couple?.groom_photo_url || gallery?.[1]?.image_url || '/photos/photo-1.jpg';
-  const bridePhoto = couple?.bride_photo_url || gallery?.[2]?.image_url || '/photos/photo-2.jpg';
+  const groomPhoto = couple?.groom_photo_url || couple?.groom_photo || '/groom-default.png';
+  const bridePhoto = couple?.bride_photo_url || couple?.bride_photo || '/bride-default.png';
 
   // Load RSVPs
   useEffect(() => {
@@ -934,21 +935,21 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
       title: 'Awal Bertemu',
       year: '2021',
       content: 'Di dunia yang luas ini, kami percaya bahwa tidak ada pertemuan yang benar-benar kebetulan. Tuhan mempertemukan dua hati pada waktu yang tepat dengan cara yang sederhana tapi bermakna.',
-      image_url: '/themes/joglo-gallery-featured-hero.jpg'
+      image_url: '/story-1.jpg'
     },
     {
       id: 'story-2',
       title: 'Lamaran',
       year: 'Mei 2025',
       content: 'Atas kehendak-Nya, kami melangkah ke tahap yang lebih serius dengan melangsungkan lamaran pada bulan spesial kami yaitu bulan kelahiran kami berdua yaitu pada Mei 2025.',
-      image_url: '/themes/joglo-gallery-1.jpg'
+      image_url: '/story-2.jpg'
     },
     {
       id: 'story-3',
       title: 'Hari Bahagia',
       year: 'April 2026',
       content: 'Kini kami menyempurnakan ibadah kami, melangkah bersama dalam ikatan suci pernikahan untuk mengarungi bahtera rumah tangga yang sakinah, mawaddah, warahmah.',
-      image_url: '/themes/joglo-gallery-3.jpg'
+      image_url: '/story-3.jpg'
     }
   ];
 
@@ -1168,7 +1169,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
           {/* Full-Bleed Master Pre-wedding Background Photo */}
           <div className="absolute inset-0 z-0">
             <img 
-              src={coupleCoverPhoto && coupleCoverPhoto !== '/photos/photo-3.jpg' ? coupleCoverPhoto : '/themes/joglo-maroon-prewed-quote.jpg'} 
+              src={coupleCoverPhoto || '/photos/photo-3.jpg'} 
               alt={`${groomName} & ${brideName}`} 
               className="w-full h-full object-cover object-top sm:object-center brightness-[0.95]"
             />
@@ -1306,7 +1307,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
           <JogloRoyalDust />
 
           {/* Central Royal Invitation Card */}
-          <div className="max-w-[365px] sm:max-w-md mx-auto bg-[#fffdfa]/95 backdrop-blur-md border-2 border-[#7e2231]/85 rounded-[32px] sm:rounded-[38px] p-6 sm:p-8 pb-12 sm:pb-14 shadow-[0_20px_50px_rgba(110,25,37,0.18)] relative z-10 overflow-hidden">
+          <div className="max-w-[365px] sm:max-w-md mx-auto bg-[#fffdfa]/95 backdrop-blur-md border-2 border-[#7e2231]/85 rounded-[32px] sm:rounded-[38px] p-6 sm:p-8 pb-10 sm:pb-12 shadow-[0_20px_50px_rgba(110,25,37,0.18)] relative z-10 overflow-hidden">
             
             {/* Antique Royal Gold Corner Filigrees (Prada Emas Keraton) */}
             <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)]">
@@ -1321,32 +1322,6 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
             <div className="absolute bottom-3.5 right-3.5 z-20 pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)]">
               <RoyalCornerFiligree className="w-7 h-7 sm:w-8 sm:h-8" position="br" />
             </div>
-
-            {/* Ultra-HD Lush Botanical Watercolor Corner Bouquets */}
-            <img 
-              src="/themes/joglo-floral-hd-corner.png" 
-              alt="" 
-              className="absolute -top-5 -left-5 w-32 sm:w-36 h-32 sm:h-36 object-contain pointer-events-none drop-shadow-md z-0 select-none filter contrast-105" 
-              style={{ animation: 'floralBreathe 8s ease-in-out infinite' }}
-            />
-            <img 
-              src="/themes/joglo-floral-hd-corner.png" 
-              alt="" 
-              className="absolute -top-5 -right-5 w-32 sm:w-36 h-32 sm:h-36 object-contain pointer-events-none drop-shadow-md z-0 select-none filter contrast-105" 
-              style={{ transform: 'scaleX(-1)', animation: 'floralBreatheReverse 8s ease-in-out infinite 2s' }}
-            />
-            <img 
-              src="/themes/joglo-floral-hd-corner.png" 
-              alt="" 
-              className="absolute -bottom-5 -left-5 w-32 sm:w-36 h-32 sm:h-36 object-contain pointer-events-none drop-shadow-md z-0 select-none filter contrast-105" 
-              style={{ transform: 'scaleY(-1)', animation: 'floralBreathe 8s ease-in-out infinite 4s' }}
-            />
-            <img 
-              src="/themes/joglo-floral-hd-corner.png" 
-              alt="" 
-              className="absolute -bottom-5 -right-5 w-32 sm:w-36 h-32 sm:h-36 object-contain pointer-events-none drop-shadow-md z-0 select-none filter contrast-105" 
-              style={{ transform: 'scale(-1, -1)', animation: 'floralBreatheReverse 8s ease-in-out infinite 6s' }}
-            />
 
             {/* Royal Gold Foil Light Shimmer Sweep */}
             <div 
@@ -1377,7 +1352,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
             <div className="flex flex-col items-center relative z-10">
               
               {/* Outer Wrapper for Arch Portrait with Unclipped Botanical Accents */}
-              <div className="relative mx-auto mb-7">
+              <div className="relative mx-auto mb-14 sm:mb-16">
                 {/* Golden Crown Crest atop the arch */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
                   <BatakGorgaCrest className="w-6 h-8 mx-auto drop-shadow-[0_2px_4px_rgba(138,99,16,0.4)]" />
@@ -1385,19 +1360,19 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
 
                 {/* Arched Oval Portrait Frame with Pulsing Golden Halo */}
                 <div 
-                  className="relative w-44 h-64 sm:w-48 sm:h-72 mx-auto rounded-t-full rounded-b-full overflow-hidden border-2 border-[#7e2231]/85 shadow-md group ring-2 ring-[#edd59e]/50"
+                  className="relative w-[185px] h-[280px] sm:w-[205px] sm:h-[305px] mx-auto rounded-t-full rounded-b-[70px] sm:rounded-b-[80px] overflow-hidden border-2 border-[#7e2231]/85 shadow-md group ring-2 ring-[#edd59e]/50"
                   style={{ animation: 'portraitGlowPulse 6s ease-in-out infinite' }}
                 >
                   <img 
-                    src={groomPhoto && groomPhoto !== '/photos/photo-1.jpg' ? groomPhoto : '/themes/joglo-maroon-groom-portrait.jpg'} 
+                    src={groomPhoto || '/groom-default.png'} 
                     alt={groomFullName} 
-                    className="w-full h-full object-cover object-top sm:object-center transform group-hover:scale-105 transition-transform duration-700" 
+                    className="w-full h-full object-cover object-[center_20%] sm:object-center transform group-hover:scale-105 transition-transform duration-700" 
                   />
                 </div>
 
                 {/* Ultra-HD Botanical Crescent Floral Garland hugging the oval base */}
                 <div 
-                  className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[265px] sm:w-[285px] z-20 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
+                  className="absolute -bottom-14 sm:-bottom-16 left-1/2 -translate-x-1/2 w-[305px] sm:w-[330px] z-20 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.32)]"
                   style={{ animation: 'floralBreathe 7s ease-in-out infinite' }}
                 >
                   <img 
@@ -1422,7 +1397,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
               </h3>
 
               {/* Groom Parents */}
-              <p className="text-xs sm:text-[13px] text-[#553b34] font-serif leading-relaxed mb-4 max-w-xs mx-auto">
+              <p className="text-xs sm:text-[13px] text-[#553b34] font-serif leading-relaxed mb-6 sm:mb-7 max-w-xs mx-auto">
                 {groomParents}
               </p>
 
@@ -1456,7 +1431,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
             <div className="flex flex-col items-center relative z-10">
               
               {/* Outer Wrapper for Arch Portrait with Unclipped Botanical Accents */}
-              <div className="relative mx-auto mb-7">
+              <div className="relative mx-auto mb-14 sm:mb-16">
                 {/* Golden Crown Crest atop the arch */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
                   <BatakGorgaCrest className="w-6 h-8 mx-auto drop-shadow-[0_2px_4px_rgba(138,99,16,0.4)]" />
@@ -1464,19 +1439,19 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
 
                 {/* Arched Oval Portrait Frame with Pulsing Golden Halo */}
                 <div 
-                  className="relative w-44 h-64 sm:w-48 sm:h-72 mx-auto rounded-t-full rounded-b-full overflow-hidden border-2 border-[#7e2231]/85 shadow-md group ring-2 ring-[#edd59e]/50"
+                  className="relative w-[185px] h-[280px] sm:w-[205px] sm:h-[305px] mx-auto rounded-t-full rounded-b-[70px] sm:rounded-b-[80px] overflow-hidden border-2 border-[#7e2231]/85 shadow-md group ring-2 ring-[#edd59e]/50"
                   style={{ animation: 'portraitGlowPulse 6s ease-in-out infinite' }}
                 >
                   <img 
-                    src={bridePhoto && bridePhoto !== '/photos/photo-2.jpg' ? bridePhoto : '/themes/joglo-maroon-bride-portrait.jpg'} 
+                    src={bridePhoto || '/bride-default.png'} 
                     alt={brideFullName} 
-                    className="w-full h-full object-cover object-top sm:object-center transform group-hover:scale-105 transition-transform duration-700" 
+                    className="w-full h-full object-cover object-[center_30%] sm:object-center transform group-hover:scale-105 transition-transform duration-700" 
                   />
                 </div>
 
                 {/* Ultra-HD Botanical Crescent Floral Garland hugging the oval base */}
                 <div 
-                  className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[265px] sm:w-[285px] z-20 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
+                  className="absolute -bottom-14 sm:-bottom-16 left-1/2 -translate-x-1/2 w-[305px] sm:w-[330px] z-20 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.32)]"
                   style={{ animation: 'floralBreathe 7s ease-in-out infinite' }}
                 >
                   <img 
@@ -1501,7 +1476,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
               </h3>
 
               {/* Bride Parents */}
-              <p className="text-xs sm:text-[13px] text-[#553b34] font-serif leading-relaxed mb-4 max-w-xs mx-auto">
+              <p className="text-xs sm:text-[13px] text-[#553b34] font-serif leading-relaxed mb-8 sm:mb-9 max-w-xs mx-auto">
                 {brideParents}
               </p>
 
@@ -1545,7 +1520,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
           {/* Full-Bleed Master Pre-wedding Background Photo */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <img 
-              src={coupleCoverPhoto && coupleCoverPhoto !== '/photos/photo-3.jpg' ? coupleCoverPhoto : '/themes/joglo-maroon-prewed-quote.jpg'} 
+              src={coupleCoverPhoto || '/photos/photo-3.jpg'} 
               alt="Wedding Event Background" 
               className="w-full h-full object-cover object-top sm:object-center brightness-[0.75]"
             />
@@ -1812,7 +1787,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
             
             {/* High-Resolution Traditional Royal Couple Portrait Background */}
             <img 
-              src={invitation?.live_streaming_image || (coupleCoverPhoto && coupleCoverPhoto !== '/photos/photo-3.jpg' ? coupleCoverPhoto : '/themes/joglo-maroon-live-stream.jpg')} 
+              src={invitation?.live_streaming_image || coupleCoverPhoto || '/photos/photo-3.jpg'} 
               alt="Live Streaming" 
               className="absolute inset-0 w-full h-full object-cover object-top filter brightness-[0.98] contrast-105 group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none select-none" 
             />
@@ -1903,17 +1878,17 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
                   <video 
                     src={invitation.video_url} 
                     controls 
-                    poster="/themes/joglo-gallery-featured-hero.jpg" 
+                    poster="/photos/photo-3.jpg" 
                     className="w-full h-full object-cover" 
                   />
                 )
               ) : (
                 <div 
-                  onClick={() => setSelectedPhoto('/themes/joglo-gallery-featured-hero.jpg')}
+                  onClick={() => setSelectedPhoto('/photos/photo-3.jpg')}
                   className="w-full h-full relative"
                 >
                   <img 
-                    src="/themes/joglo-gallery-featured-hero.jpg" 
+                    src="/photos/photo-3.jpg" 
                     alt="Featured Prewedding" 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
@@ -1929,15 +1904,15 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
             {/* 3-Column Prewedding Portrait Grid */}
             <div className="grid grid-cols-3 gap-2 sm:gap-2.5 max-w-[340px] sm:max-w-[365px] mx-auto">
               {(gallery && gallery.length > 0 ? gallery : [
-                { image_url: '/themes/joglo-gallery-1.jpg', id: '1' },
-                { image_url: '/themes/joglo-gallery-2.jpg', id: '2' },
-                { image_url: '/themes/joglo-gallery-3.jpg', id: '3' },
-                { image_url: '/themes/joglo-maroon-live-stream.jpg', id: '4' },
-                { image_url: '/themes/joglo-maroon-prewed-quote.jpg', id: '5' },
-                { image_url: '/themes/joglo-maroon-groom-portrait.jpg', id: '6' },
-                { image_url: '/themes/joglo-maroon-bride-portrait.jpg', id: '7' },
-                { image_url: '/photos/photo-3.jpg', id: '8' },
-                { image_url: '/photos/photo-1.jpg', id: '9' },
+                { image_url: '/photos/photo-1.jpg', id: '1' },
+                { image_url: '/photos/photo-3.jpg', id: '2' },
+                { image_url: '/photos/photo-4.jpg', id: '3' },
+                { image_url: '/photos/photo-5.jpg', id: '4' },
+                { image_url: '/photos/photo-6.jpg', id: '5' },
+                { image_url: '/photos/photo-7.jpg', id: '6' },
+                { image_url: '/photos/photo-8.jpg', id: '7' },
+                { image_url: '/photos/photo-9.jpg', id: '8' },
+                { image_url: '/groom-default.png', id: '9' },
               ]).map((item: any, idx: number) => (
                 <div 
                   key={item.id || idx}
@@ -2349,7 +2324,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
               
               {/* Prewedding Couple Portrait Background */}
               <img 
-                src={coupleCoverPhoto && coupleCoverPhoto !== '/photos/photo-3.jpg' ? coupleCoverPhoto : '/themes/joglo-maroon-prewed-quote.jpg'} 
+                src={coupleCoverPhoto || '/photos/photo-3.jpg'} 
                 alt="Couple Prewedding" 
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
               />
@@ -2588,7 +2563,7 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
                 {/* Inner Arch Photo Frame */}
                 <div className="relative w-full max-w-[245px] sm:max-w-[265px] mx-auto rounded-t-[130px] sm:rounded-t-[145px] rounded-b-[10px] border-[2px] border-[#8a1c2e] overflow-hidden shadow-md aspect-[3/4] mb-4 group">
                   <img 
-                    src={coupleCoverPhoto && coupleCoverPhoto !== '/photos/photo-3.jpg' ? coupleCoverPhoto : '/themes/joglo-gallery-2.jpg'} 
+                    src={coupleCoverPhoto || '/photos/photo-3.jpg'} 
                     alt="Couple Portrait" 
                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   />
