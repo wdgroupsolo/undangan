@@ -42,6 +42,7 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
     show_resepsi: true,
     show_love_story: true,
     show_live_streaming: true,
+    use_barcode: false,
   });
 
   const [newInviter, setNewInviter] = useState('');
@@ -75,6 +76,7 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
         show_resepsi: s.show_resepsi !== undefined ? s.show_resepsi : prev.show_resepsi,
         show_love_story: s.show_love_story !== undefined ? s.show_love_story : prev.show_love_story,
         show_live_streaming: s.show_live_streaming !== undefined ? s.show_live_streaming : prev.show_live_streaming,
+        use_barcode: s.use_barcode !== undefined ? !!s.use_barcode : false,
       }));
     }
   }, [invitation]);
@@ -208,6 +210,35 @@ export const ThemeSettingsStep: React.FC<ThemeSettingsStepProps> = ({ invitation
             <div>
               <div className="text-sm font-semibold text-gray-800">Live Streaming</div>
               <div className="text-xs text-gray-500">Tampilkan siaran langsung online</div>
+            </div>
+          </label>
+
+          {/* Fitur Barcode VIP Pass Presensi */}
+          <label className={`flex items-start gap-3 p-3.5 rounded-xl border transition-all cursor-pointer sm:col-span-2 ${
+            formData.use_barcode 
+              ? 'bg-amber-50/80 border-amber-300 ring-2 ring-amber-400/20' 
+              : 'bg-gray-50/80 border-gray-200 hover:bg-gray-100'
+          }`}>
+            <input
+              type="checkbox"
+              checked={formData.use_barcode}
+              onChange={(e) => setFormData({ ...formData, use_barcode: e.target.checked })}
+              className="w-4 h-4 mt-0.5 text-amber-600 rounded focus:ring-amber-500 cursor-pointer"
+            />
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <QrCode className="w-4 h-4 text-amber-700" />
+                <span className="text-sm font-bold text-gray-900">Pakai Fitur Barcode VIP Pass Presensi</span>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                  formData.use_barcode ? 'bg-amber-200 text-amber-900' : 'bg-gray-200 text-gray-700'
+                }`}>
+                  {formData.use_barcode ? 'AKTIF (VIP BARCODE)' : 'NONAKTIF (STANDAR)'}
+                </span>
+              </div>
+              <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                <strong>Jika Dicentang:</strong> Tamu yang mengisi form RSVP akan mendapatkan tiket Barcode &amp; QR VIP yang dapat dipindai panitia saat resepsi.<br />
+                <strong>Jika Tidak Dicentang:</strong> Mode standar. Konfirmasi RSVP tersimpan di database dan otomatis langsung memunculkan daftar ucapan &amp; doa restu tepat di bawah form RSVP.
+              </p>
             </div>
           </label>
         </div>

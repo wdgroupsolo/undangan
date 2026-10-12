@@ -3,6 +3,8 @@ import { MapPin, Gift, CreditCard, Check, X, Copy, ChevronDown, ChevronLeft, Che
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
+import { rsvpService, RSVPItem } from '../../../services/rsvpService';
+import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode, clearBarcodePass } from '../../../utils/barcodePass';
 
 // Self-contained Instagram Icon SVG (safe across all lucide versions)
 const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
@@ -364,20 +366,34 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
     (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
   );
 
-  // Saved RSVP check-in pass state (persisted per invitation)
+  const useBarcode = invitation?.settings?.use_barcode === true || isDemo;
+
+  const [wishesList, setWishesList] = useState<RSVPItem[]>([]);
+
+  useEffect(() => {
+    if (!invitation?.id) return;
+    rsvpService.getRsvpsByInvitation(invitation.id).then(data => {
+      if (data) setWishesList(data);
+    });
+  }, [invitation?.id]);
+
+  // Saved RSVP check-in pass state (persisted per invitation, never lost across browser closes)
   const [submittedRsvp, setSubmittedRsvp] = useState<{
     name: string;
     attendance: string;
     code: string;
   } | null>(() => {
-    try {
-      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'maroon-gold'}`);
-      if (saved) return JSON.parse(saved);
-      return null;
-    } catch {
-      return null;
-    }
+    return (loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'maroon-gold') as any) || null;
   });
+
+  // Ensure barcode pass is immediately synced and loaded as soon as invitation or guest loads
+  useEffect(() => {
+    if (!useBarcode) return;
+    const existing = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'maroon-gold');
+    if (existing) {
+      setSubmittedRsvp(existing as any);
+    }
+  }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
 
   // Default events fallback when events prop is empty
   const defaultEvents = [
@@ -538,22 +554,45 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
     setTimeout(() => setCopiedIndex(null), 2500);
   };
 
-  const handleAddWish = (e: React.FormEvent) => {
+  const handleAddWish = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!wishName.trim() || !wishText.trim()) return;
 
-    const passData = {
-      name: wishName.trim(),
-      attendance: wishAttendance || 'Hadir',
-      code: `MG-${(invitation?.id || 'MAROON').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-    };
     try {
-      localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'maroon-gold'}`, JSON.stringify(passData));
-    } catch {}
-    setSubmittedRsvp(passData);
-    setWishName('');
-    setWishText('');
-    toast.success('Konfirmasi kehadiran berhasil dikirim!');
+      const saved = await rsvpService.submitRsvp({
+        invitation_id: invitation?.id || 'maroon-gold',
+        name: wishName.trim(),
+        attendance: wishAttendance === 'Hadir' ? 'attending' : 'not_attending',
+        number_of_guests: 1,
+        message: wishText.trim(),
+        invitation_title: invitation?.title || 'The Wedding of Steven & Bunga',
+        client_name: 'Steven & Bunga',
+      });
+
+      if (saved) {
+        setWishesList(prev => [saved, ...prev]);
+      }
+
+      if (useBarcode) {
+        const stableCode = generateStableBarcodeCode('MG', invitation?.id || invitation?.slug || 'MAROON', wishName.trim(), submittedRsvp?.code);
+        const passData = {
+          name: wishName.trim(),
+          attendance: wishAttendance || 'Hadir',
+          code: stableCode,
+          timestamp: new Date().toISOString(),
+        };
+        saveBarcodePass(passData, invitation?.id, invitation?.slug, 'maroon-gold');
+        setSubmittedRsvp(passData);
+      } else {
+        setSubmittedRsvp(null);
+      }
+
+      setWishName('');
+      setWishText('');
+      toast.success('Konfirmasi kehadiran & ucapan berhasil dikirim!');
+    } catch {
+      toast.error('Gagal mengirim konfirmasi kehadiran.');
+    }
   };
 
   const groomNick = (() => {
@@ -2056,8 +2095,8 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
               </p>
             </div>
 
-            {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
-            {submittedRsvp ? (
+            {/* Conditional: Tampilkan Barcode jika pakai barcode & sudah diisi, atau Form */}
+            {useBarcode && submittedRsvp ? (
               <div className="pt-2 text-center animate-in fade-in zoom-in-95 duration-500 max-w-[340px] mx-auto">
                 <div className="bg-white rounded-2xl p-5 border border-[#f1c40f]/60 shadow-xl text-stone-900 relative overflow-hidden">
                   {isDemo ? (
@@ -2153,9 +2192,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
                     type="button"
                     onClick={() => {
                       setSubmittedRsvp(null);
-                      try {
-                        localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'maroon-gold'}`);
-                      } catch {}
+                      clearBarcodePass(invitation?.id, invitation?.slug, submittedRsvp?.name || guestName, 'maroon-gold');
                     }}
                     className="mt-3.5 inline-block text-[11px] text-[#8a1c2e] hover:underline font-semibold cursor-pointer"
                   >
@@ -2164,54 +2201,119 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleAddWish} className="space-y-3 pt-2">
-                <div>
-                  <input
-                    type="text"
-                    value={wishName}
-                    onChange={(e) => setWishName(e.target.value)}
-                    placeholder="Nama"
-                    required
-                    className="w-full bg-white rounded-md px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] border-0 shadow-xs"
-                  />
-                </div>
-
-                <div>
-                  <textarea
-                    value={wishText}
-                    onChange={(e) => setWishText(e.target.value)}
-                    placeholder="Ucapan"
-                    rows={3}
-                    required
-                    className="w-full bg-white rounded-md px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] border-0 resize-none shadow-xs"
-                  />
-                </div>
-
-                <div className="relative">
-                  <select
-                    value={wishAttendance}
-                    onChange={(e) => setWishAttendance(e.target.value)}
-                    required
-                    className="w-full bg-white rounded-md px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] border-0 appearance-none cursor-pointer pr-10 shadow-xs"
-                  >
-                    <option value="" disabled>Konfirmasi Kehadiran</option>
-                    <option value="Hadir">Hadir</option>
-                    <option value="Tidak Hadir">Tidak Hadir</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                      <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+              <>
+                <form onSubmit={handleAddWish} className="space-y-3 pt-2">
+                  <div>
+                    <input
+                      type="text"
+                      value={wishName}
+                      onChange={(e) => setWishName(e.target.value)}
+                      placeholder="Nama"
+                      required
+                      className="w-full bg-white rounded-md px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] border-0 shadow-xs"
+                    />
                   </div>
-                </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-2.5 rounded-md font-medium text-xs sm:text-sm text-[#2b2b2b] bg-[#f1c40f] hover:bg-[#e6b800] active:scale-98 transition-all shadow-md cursor-pointer tracking-wide font-bold"
-                >
-                  Kirim Konfirmasi
-                </button>
-              </form>
+                  <div>
+                    <textarea
+                      value={wishText}
+                      onChange={(e) => setWishText(e.target.value)}
+                      placeholder="Ucapan"
+                      rows={3}
+                      required
+                      className="w-full bg-white rounded-md px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] border-0 resize-none shadow-xs"
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <select
+                      value={wishAttendance}
+                      onChange={(e) => setWishAttendance(e.target.value)}
+                      required
+                      className="w-full bg-white rounded-md px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] border-0 appearance-none cursor-pointer pr-10 shadow-xs"
+                    >
+                      <option value="" disabled>Konfirmasi Kehadiran</option>
+                      <option value="Hadir">Hadir</option>
+                      <option value="Tidak Hadir">Tidak Hadir</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 rounded-md font-medium text-xs sm:text-sm text-[#2b2b2b] bg-[#f1c40f] hover:bg-[#e6b800] active:scale-98 transition-all shadow-md cursor-pointer tracking-wide font-bold"
+                  >
+                    Kirim Konfirmasi
+                  </button>
+                </form>
+
+                {/* Feed Doa & Ucapan Restu Tamu di bawah Form jika tidak memakai Barcode */}
+                {!useBarcode && (
+                  <div className="mt-8 pt-6 border-t border-[#f1c40f]/30 w-full text-left">
+                    <div className="flex items-center justify-between mb-3.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#f1c40f] text-sm">💬</span>
+                        <h3 
+                          className="font-serif font-bold text-xs sm:text-sm text-[#f4efe8] tracking-wide"
+                          style={{ fontFamily: "'Playfair Display', serif" }}
+                        >
+                          Ucapan &amp; Doa Restu
+                        </h3>
+                        <span className="px-2 py-0.5 rounded-full bg-[#f1c40f]/20 text-[#f1c40f] text-[10px] font-sans font-bold border border-[#f1c40f]/40">
+                          {wishesList.length}
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-serif text-[#f4efe8]/70 italic">
+                        Tersimpan di Database
+                      </span>
+                    </div>
+
+                    <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                      {wishesList.length === 0 ? (
+                        <div className="p-4 text-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-[#f4efe8]/80 text-xs font-serif italic">
+                          Belum ada ucapan. Jadilah yang pertama memberikan doa restu untuk kedua mempelai di atas!
+                        </div>
+                      ) : (
+                        wishesList.map((item) => (
+                          <div 
+                            key={item.id} 
+                            className="p-3.5 rounded-xl bg-white/95 backdrop-blur-sm border border-stone-200 shadow-sm space-y-1.5 transition-all text-stone-900"
+                          >
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 rounded-full bg-[#8a1c2e] text-[#f1c40f] font-black font-serif text-[10px] flex items-center justify-center shrink-0">
+                                  {item.name.charAt(0).toUpperCase()}
+                                </div>
+                                <span className="font-serif font-bold text-xs text-[#8a1c2e] truncate max-w-[170px]">
+                                  {item.name}
+                                </span>
+                              </div>
+                              <span className={`px-2 py-0.5 rounded-full text-[9px] font-sans font-bold border shrink-0 ${
+                                item.attendance === 'attending'
+                                  ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                                  : item.attendance === 'maybe'
+                                    ? 'bg-amber-100 text-amber-800 border-amber-300'
+                                    : 'bg-red-100 text-red-800 border-red-300'
+                              }`}>
+                                {item.attendance === 'attending' ? '✓ Hadir' : item.attendance === 'maybe' ? 'Ragu' : 'Berhalangan'}
+                              </span>
+                            </div>
+                            {item.message && (
+                              <p className="text-xs text-stone-700 font-serif leading-relaxed pl-8">
+                                &ldquo;{item.message}&rdquo;
+                              </p>
+                            )}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
 
           </div>

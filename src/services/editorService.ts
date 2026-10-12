@@ -169,6 +169,102 @@ export const STORIES_DEMO_TESTIMONI = [
   }
 ];
 
+export const COUPLE_DIMAS_ANISA = {
+  id: '35000000-0000-0000-0000-000000000005',
+  invitation_id: 'e4000000-0000-0000-0000-000000000004',
+  groom_full_name: 'DIMAS PRATAMA, S.Kom.',
+  groom_nickname: 'Dimas',
+  groom_father_name: 'Drs. H. PURNOMO',
+  groom_mother_name: 'Hj. ENDANG SUSILOWATI',
+  groom_parents: 'Putra pertama dari Bpk. Drs. H. Purnomo & Ibu Hj. Endang Susilowati',
+  groom_photo: '/themes/agni-putri/groom-agni.jpg',
+  groom_photo_url: '/themes/agni-putri/groom-agni.jpg',
+  groom_instagram: '@dimas_pratama',
+  bride_full_name: 'ANISA WARDANI, S.M.',
+  bride_nickname: 'Anisa',
+  bride_father_name: 'H. SUDARMANTO',
+  bride_mother_name: 'Hj. NUR HAYATI',
+  bride_parents: 'Putri bungsu dari Bpk. H. Sudarmanto & Ibu Hj. Nur Hayati',
+  bride_photo: '/themes/agni-putri/bride-putri.jpg',
+  bride_photo_url: '/themes/agni-putri/bride-putri.jpg',
+  bride_instagram: '@anisa_wardani',
+  cover_photo_url: '/themes/agni-putri/couple-outdoor.jpg',
+  gift_address: 'Jl. Malioboro No. 45, Danurejan, Yogyakarta (Klien Testimoni WD Group - Model Standar Tanpa Barcode)'
+};
+
+export const EVENTS_DIMAS_ANISA = [
+  {
+    id: '58000000-0000-0000-0000-000000000008',
+    invitation_id: 'e4000000-0000-0000-0000-000000000004',
+    name: 'AKAD NIKAH',
+    event_date: '2026-11-20',
+    date: '2026-11-20',
+    start_time: '08:00',
+    end_time: '10:00',
+    location: 'MASJID GEDHE KAUMAN YOGYAKARTA',
+    venue_name: 'Masjid Gedhe Kauman Kraton Yogyakarta',
+    address: 'Alun-Alun Keraton, Ngupasan, Gondomanan, Kota Yogyakarta, D.I. Yogyakarta',
+    maps_url: 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic',
+    description: 'Prosesi Ijab Qabul dengan Khidmat dan Doa Restu Keluarga',
+    sort_order: 1
+  },
+  {
+    id: '59000000-0000-0000-0000-000000000009',
+    invitation_id: 'e4000000-0000-0000-0000-000000000004',
+    name: 'RESEPSI PERNIKAHAN',
+    event_date: '2026-11-20',
+    date: '2026-11-20',
+    start_time: '11:00',
+    end_time: '14:00',
+    location: 'JOGJA EXPO CENTER (JEC)',
+    venue_name: 'Bima Hall - Jogja Expo Center',
+    address: 'Jl. Raya Janti Jl. Wonocatur, Wonocatur, Banguntapan, Bantul, D.I. Yogyakarta',
+    maps_url: 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic',
+    description: 'Resepsi Kebersamaan, Santap Siang & Hiburan Akustik',
+    sort_order: 2
+  }
+];
+
+export const GIFTS_DIMAS_ANISA = [
+  {
+    id: '69000000-0000-0000-0000-000000000009',
+    invitation_id: 'e4000000-0000-0000-0000-000000000004',
+    type: 'bank',
+    provider: 'BSI',
+    account_number: '7123 4567 89',
+    account_name: 'DIMAS PRATAMA',
+    is_active: true
+  },
+  {
+    id: '70000000-0000-0000-0000-000000000010',
+    invitation_id: 'e4000000-0000-0000-0000-000000000004',
+    type: 'bank',
+    provider: 'BRI',
+    account_number: '5432 0100 9876 501',
+    account_name: 'ANISA WARDANI',
+    is_active: true
+  }
+];
+
+export const STORIES_DIMAS_ANISA = [
+  {
+    id: 'st-da-01',
+    invitation_id: 'e4000000-0000-0000-0000-000000000004',
+    title: 'Awal Bertemu',
+    date: '10 Mei 2022',
+    content: 'Bertemu di Yogyakarta saat sama-sama menempuh pendidikan sarjana, berbagi impian dan saling mendukung perjalanan satu sama lain.',
+    sort_order: 1
+  },
+  {
+    id: 'st-da-02',
+    invitation_id: 'e4000000-0000-0000-0000-000000000004',
+    title: 'Menuju Hari Bahagia',
+    date: '20 September 2025',
+    content: 'Setelah perjalanan penuh tawa dan kebersamaan, kami memutuskan untuk mengikat janji suci pernikahan di hadapan keluarga tercinta.',
+    sort_order: 2
+  }
+];
+
 export const editorService = {
   // Couple Info
   async getCouple(invitationId: string) {
@@ -176,6 +272,11 @@ export const editorService = {
       const { data, error } = await supabase.from('couples').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
+      (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
+    if (isDimasId) {
+      return COUPLE_DIMAS_ANISA;
+    }
     const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
     if (isDemoId) {
@@ -208,6 +309,11 @@ export const editorService = {
       const { data, error } = await supabase.from('events').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
+      (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
+    if (isDimasId) {
+      return EVENTS_DIMAS_ANISA;
+    }
     const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
     if (isDemoId) {
@@ -241,6 +347,11 @@ export const editorService = {
       const { data, error } = await supabase.from('stories').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
+      (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
+    if (isDimasId) {
+      return STORIES_DIMAS_ANISA;
+    }
     const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
     if (isDemoId) {
@@ -274,6 +385,11 @@ export const editorService = {
       const { data, error } = await supabase.from('gallery').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
+      (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
+    if (isDimasId) {
+      return GALLERY_AGNI_PUTRI;
+    }
     const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
     if (isDemoId) {
@@ -302,6 +418,11 @@ export const editorService = {
       const { data, error } = await supabase.from('music').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
+      (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
+    if (isDimasId) {
+      return MUSIC_AGNI_PUTRI;
+    }
     const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
     if (isDemoId) {
@@ -356,6 +477,12 @@ export const editorService = {
       }
     } catch (e) {
       console.warn('Could not fetch gifts from settings:', e);
+    }
+
+    const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
+      (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
+    if (isDimasId) {
+      return GIFTS_DIMAS_ANISA;
     }
 
     const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 

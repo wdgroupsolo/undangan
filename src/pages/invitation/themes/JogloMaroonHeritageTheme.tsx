@@ -25,6 +25,7 @@ import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
 import { rsvpService, RSVPItem } from '../../../services/rsvpService';
+import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode, clearBarcodePass } from '../../../utils/barcodePass';
 
 // ==========================================
 // 1. SVG ORNAMENTS & THEME VISUAL ASSETS
@@ -710,28 +711,13 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [copiedAddress, setCopiedAddress] = useState(false);
 
-  // Saved RSVP check-in pass state (persisted per invitation)
-  const [submittedRsvp, setSubmittedRsvp] = useState<{
-    name: string;
-    attendance: 'attending' | 'not_attending' | 'maybe';
-    guests: number;
-    code: string;
-    timestamp: string;
-  } | null>(() => {
-    try {
-      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'joglo'}`);
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
+  // Only true when explicitly opened via "Demo Tema" button from landing page/catalog (?demo=true)
+  const isDemo = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('demo') === 'true' ||
+    (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
+  );
 
-
-
-  // Guest list & pagination
-  const [rsvps, setRsvps] = useState<RSVPItem[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const useBarcode = invitation?.settings?.use_barcode === true || isDemo;
 
   // Guest Name from URL parameter (?to=...)
   const guestName = (() => {
@@ -744,6 +730,38 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
     }
     return 'Tamu Undangan';
   })();
+
+  // Saved RSVP check-in pass state (persisted per invitation, never lost across browser closes)
+  const [submittedRsvp, setSubmittedRsvp] = useState<{
+    name: string;
+    attendance: 'attending' | 'not_attending' | 'maybe';
+    guests: number;
+    code: string;
+    timestamp: string;
+  } | null>(() => {
+    return (loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'joglo') as any) || null;
+  });
+
+  // Ensure barcode pass is immediately synced and loaded as soon as invitation or guest loads
+  useEffect(() => {
+    if (!useBarcode) return;
+    const existing = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'joglo');
+    if (existing) {
+      setSubmittedRsvp(existing as any);
+    }
+  }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
+
+  // Guest list & pagination
+  const [rsvps, setRsvps] = useState<RSVPItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
+  useEffect(() => {
+    if (!invitation?.id) return;
+    rsvpService.getRsvpsByInvitation(invitation.id).then(data => {
+      if (data) setRsvps(data);
+    });
+  }, [invitation?.id]);
 
   // Couple names & nicknames (Default to Steven & Bunga)
   const groomName = couple?.groom_nickname || couple?.groom_full_name || 'Steven';
@@ -882,21 +900,26 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
 
       if (newItem) {
         setRsvps(prev => [newItem, ...prev]);
-        const passData = {
-          name: rsvpName.trim(),
-          attendance: rsvpAttendance,
-          guests: parseInt(rsvpGuests) || 1,
-          code: `WD-${(invitation?.id || 'JOGLO').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-          timestamp: new Date().toISOString(),
-        };
-        try {
-          localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'joglo'}`, JSON.stringify(passData));
-        } catch {}
-        setSubmittedRsvp(passData);
+
+        if (useBarcode) {
+          const stableCode = generateStableBarcodeCode('WD', invitation?.id || invitation?.slug || 'JOGLO', rsvpName.trim(), submittedRsvp?.code);
+          const passData = {
+            name: rsvpName.trim(),
+            attendance: rsvpAttendance,
+            guests: parseInt(rsvpGuests) || 1,
+            code: stableCode,
+            timestamp: new Date().toISOString(),
+          };
+          saveBarcodePass(passData, invitation?.id, invitation?.slug, 'joglo');
+          setSubmittedRsvp(passData);
+        } else {
+          setSubmittedRsvp(null);
+        }
+
         setRsvpName('');
         setRsvpMessage('');
         setRsvpGuests('1');
-        toast.success('Terima kasih, konfirmasi kehadiran berhasil dikirim!');
+        toast.success('Terima kasih, doa restu & konfirmasi kehadiran berhasil dikirim!');
       }
     } catch {
       toast.error('Gagal mengirim RSVP. Silakan coba beberapa saat lagi.');
@@ -2213,68 +2236,111 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
                   Berikan Harapan dan doa tulus anda disini karena kami sangat bersemangat untuk memulai perjalanan baru bersama.
                 </p>
 
-                {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
-                {submittedRsvp ? (
+                {/* Conditional: Tampilkan Barcode jika pakai barcode & sudah diisi, atau Form */}
+                {useBarcode && submittedRsvp ? (
                   <div className="pt-2 text-center animate-in fade-in zoom-in-95 duration-500">
                     <div className="bg-gradient-to-b from-[#fffefc] via-[#fffdfa] to-[#fbf7ee] rounded-2xl p-5 border-2 border-[#c9982e]/70 shadow-[0_15px_35px_rgba(0,0,0,0.55),0_0_20px_rgba(201,152,46,0.2)] text-[#2d1b16] relative overflow-hidden">
                       {/* Top Header Badge */}
-                      <div className="flex items-center justify-center gap-1.5 mb-1 text-[#8a1c2e]">
-                        <QrCode className="w-4 h-4 text-[#8a1c2e]" />
-                        <span className="text-[11px] font-serif font-bold tracking-[0.2em] uppercase">
-                          Barcode &amp; QR Presensi Tamu
-                        </span>
-                      </div>
+                      {isDemo ? (
+                        <div className="flex items-center justify-center gap-1.5 mb-1 text-amber-700">
+                          <QrCode className="w-4 h-4 text-amber-700" />
+                          <span className="text-[11px] font-serif font-bold tracking-[0.2em] uppercase text-amber-800">
+                            CONTOH TIKET &amp; BARCODE DEMO
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center gap-1.5 mb-1 text-[#8a1c2e]">
+                          <QrCode className="w-4 h-4 text-[#8a1c2e]" />
+                          <span className="text-[11px] font-serif font-bold tracking-[0.2em] uppercase">
+                            Barcode &amp; QR Presensi Tamu
+                          </span>
+                        </div>
+                      )}
                       
                       <p className="text-base sm:text-[17px] font-serif font-bold text-[#6d1925] tracking-wide mt-1">
                         {submittedRsvp.name}
                       </p>
 
-                      <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
-                        <span>✓</span>
-                        <span>
-                          {submittedRsvp.attendance === 'attending' 
-                            ? `Terkonfirmasi Hadir (${submittedRsvp.guests} Tamu)` 
-                            : submittedRsvp.attendance === 'maybe' 
-                              ? 'Status: Masih Ragu' 
-                              : 'Status: Berhalangan Hadir'}
-                        </span>
-                      </div>
+                      {isDemo ? (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-amber-100 text-amber-800 border border-amber-300 shadow-xs">
+                          <span>🔒</span>
+                          <span>Status: Terkunci (Mode Demo Testimoni)</span>
+                        </div>
+                      ) : (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
+                          <span>✓</span>
+                          <span>
+                            {submittedRsvp.attendance === 'attending' 
+                              ? `Terkonfirmasi Hadir (${submittedRsvp.guests} Tamu)` 
+                              : submittedRsvp.attendance === 'maybe' 
+                                ? 'Status: Masih Ragu' 
+                                : 'Status: Berhalangan Hadir'}
+                          </span>
+                        </div>
+                      )}
 
                       {/* QR Code Frame */}
-                      <div className="w-40 h-40 mx-auto bg-white p-2.5 rounded-xl border border-stone-200 shadow-md flex items-center justify-center my-2.5">
+                      <div className="relative w-40 h-40 mx-auto bg-white p-2.5 rounded-xl border border-stone-200 shadow-md flex items-center justify-center my-2.5 overflow-hidden">
                         <img 
-                          src={invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'WD'}|GUEST:${submittedRsvp.name}|ATT:${submittedRsvp.attendance}|CODE:${submittedRsvp.code}`)}`}
+                          src={
+                            isDemo
+                              ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('DEMO-TESTIMONIAL-PORTOFOLIO-LOCKED|DO-NOT-SCAN|CODE:WD-DEMO-TESTIMONI-88')}`
+                              : (invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'WD'}|GUEST:${submittedRsvp.name}|ATT:${submittedRsvp.attendance}|CODE:${submittedRsvp.code}`)}`)
+                          }
                           alt="QR Code Presensi"
                           className="w-full h-full object-contain"
                           onError={(e) => {
                             (e.currentTarget as HTMLImageElement).src = '/qr-code.png';
                           }}
                         />
+                        {isDemo && (
+                          <div className="absolute inset-0 bg-red-950/45 backdrop-blur-[0.5px] flex flex-col items-center justify-center p-2 border-2 border-dashed border-red-500/80 rounded-lg m-1 select-none pointer-events-none">
+                            <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded shadow-lg -rotate-12 border border-white/60 text-center leading-tight">
+                              DEMO ONLY<br/><span className="text-[8.5px] font-bold">TIDAK BISA DI-SCAN</span>
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       {/* Authentic Barcode Graphic & Code */}
-                      <div className="my-2 px-3 py-2 bg-white rounded-lg border border-stone-200 flex flex-col items-center shadow-xs">
+                      <div className="relative my-2 px-3 py-2 bg-white rounded-lg border border-stone-200 flex flex-col items-center shadow-xs overflow-hidden">
                         <svg viewBox="0 0 160 32" className="w-full max-w-[190px] h-9 text-[#1a0a0d]" preserveAspectRatio="none">
                           {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
                             idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
                           ))}
                         </svg>
-                        <span className="font-mono font-bold text-[11px] tracking-[0.25em] text-[#4a121d] mt-1">
+                        <span className={`font-mono font-bold text-[11px] tracking-[0.25em] ${isDemo ? 'text-red-700 line-through' : 'text-[#4a121d]'} mt-1`}>
                           {submittedRsvp.code}
                         </span>
+                        {isDemo && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
+                            <span className="bg-amber-600/90 text-white font-bold text-[9px] px-2 py-0.5 rounded tracking-widest uppercase shadow">
+                              BARCODE DEMO (TERKUNCI)
+                            </span>
+                          </div>
+                        )}
                       </div>
 
-                      <p className="text-[10px] sm:text-[10.5px] font-serif text-stone-600 italic leading-snug mt-2 max-w-[270px] mx-auto">
-                        Tunjukkan Barcode atau QR Code ini kepada panitia penerima tamu saat tiba di lokasi acara.
-                      </p>
+                      {isDemo ? (
+                        <div className="bg-amber-50 border border-amber-300 rounded-xl p-2.5 mt-2 text-center text-stone-800">
+                          <p className="text-[11px] font-serif font-bold text-amber-900">
+                            🔒 Barcode Demo Portofolio (Terkunci)
+                          </p>
+                          <p className="text-[10px] text-stone-600 mt-0.5 leading-normal">
+                            Barcode ini sengaja dikunci untuk keperluan portofolio/demo testimoni dan tidak dapat di-scan untuk presensi tamu sungguhan.
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="text-[10px] sm:text-[10.5px] font-serif text-stone-600 italic leading-snug mt-2 max-w-[270px] mx-auto">
+                          Tunjukkan Barcode atau QR Code ini kepada panitia penerima tamu saat tiba di lokasi acara.
+                        </p>
+                      )}
 
                       <button
                         type="button"
                         onClick={() => {
                           setSubmittedRsvp(null);
-                          try {
-                            localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'joglo'}`);
-                          } catch {}
+                          clearBarcodePass(invitation?.id, invitation?.slug, submittedRsvp?.name || guestName, 'joglo');
                         }}
                         className="mt-3.5 inline-block text-[11px] font-serif text-[#8a1c2e] hover:underline font-semibold cursor-pointer transition-colors"
                       >
@@ -2283,66 +2349,128 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
                     </div>
                   </div>
                 ) : (
-                  <form onSubmit={handleRsvpSubmit} className="space-y-3.5 mb-2 text-left">
-                    {/* Nama Lengkap */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                        Nama Lengkap
-                      </label>
-                      <input
-                        type="text"
-                        value={rsvpName}
-                        onChange={(e) => setRsvpName(e.target.value)}
-                        placeholder=""
-                        className="w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif text-[#2d1b16] outline-none focus:ring-2 focus:ring-[#8a1c2e] shadow-sm transition-all"
-                      />
-                    </div>
-
-                    {/* Status Kehadiran */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                        Status Kehadiran
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={rsvpAttendance}
-                          onChange={(e: any) => setRsvpAttendance(e.target.value)}
-                          className={`w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif ${!rsvpAttendance ? 'text-stone-400' : 'text-[#2d1b16]'} outline-none focus:ring-2 focus:ring-[#8a1c2e] appearance-none shadow-sm cursor-pointer pr-10`}
-                        >
-                          <option value="" disabled hidden>Pilih status kehadiran</option>
-                          <option value="attending" className="text-[#2d1b16]">Hadir</option>
-                          <option value="not_attending" className="text-[#2d1b16]">Tidak Hadir</option>
-                          <option value="maybe" className="text-[#2d1b16]">Masih Ragu</option>
-                        </select>
-                        <ChevronDown className="w-4 h-4 text-stone-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <div>
+                    <form onSubmit={handleRsvpSubmit} className="space-y-3.5 mb-2 text-left">
+                      {/* Nama Lengkap */}
+                      <div>
+                        <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                          Nama Lengkap
+                        </label>
+                        <input
+                          type="text"
+                          value={rsvpName}
+                          onChange={(e) => setRsvpName(e.target.value)}
+                          placeholder=""
+                          className="w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif text-[#2d1b16] outline-none focus:ring-2 focus:ring-[#8a1c2e] shadow-sm transition-all"
+                        />
                       </div>
-                    </div>
 
-                    {/* Ucapan / Pesan */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                        Ucapan/Pesan
-                      </label>
-                      <textarea
-                        rows={3}
-                        value={rsvpMessage}
-                        onChange={(e) => setRsvpMessage(e.target.value)}
-                        placeholder="Tulis ucapan atau pesan Anda..."
-                        className="w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif text-[#2d1b16] placeholder:text-stone-400 outline-none focus:ring-2 focus:ring-[#8a1c2e] resize-none shadow-sm transition-all"
-                      />
-                    </div>
+                      {/* Status Kehadiran */}
+                      <div>
+                        <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                          Status Kehadiran
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={rsvpAttendance}
+                            onChange={(e: any) => setRsvpAttendance(e.target.value)}
+                            className={`w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif ${!rsvpAttendance ? 'text-stone-400' : 'text-[#2d1b16]'} outline-none focus:ring-2 focus:ring-[#8a1c2e] appearance-none shadow-sm cursor-pointer pr-10`}
+                          >
+                            <option value="" disabled hidden>Pilih status kehadiran</option>
+                            <option value="attending" className="text-[#2d1b16]">Hadir</option>
+                            <option value="not_attending" className="text-[#2d1b16]">Tidak Hadir</option>
+                            <option value="maybe" className="text-[#2d1b16]">Masih Ragu</option>
+                          </select>
+                          <ChevronDown className="w-4 h-4 text-stone-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        </div>
+                      </div>
 
-                    {/* Centered Kirim Button */}
-                    <div className="text-center pt-2">
-                      <button
-                        type="submit"
-                        disabled={rsvpSubmitting}
-                        className="inline-flex items-center justify-center px-10 py-2.5 rounded-md bg-[#9e2a3b] hover:bg-[#831e2d] text-white text-xs sm:text-[13px] font-sans font-bold tracking-wider shadow-md transition-all active:scale-95 disabled:opacity-50"
-                      >
-                        {rsvpSubmitting ? 'Mengirim...' : 'Kirim'}
-                      </button>
-                    </div>
-                  </form>
+                      {/* Ucapan / Pesan */}
+                      <div>
+                        <label className="block text-xs sm:text-[13px] font-sans font-bold text-white mb-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                          Ucapan/Pesan
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={rsvpMessage}
+                          onChange={(e) => setRsvpMessage(e.target.value)}
+                          placeholder="Tulis ucapan atau pesan Anda..."
+                          className="w-full px-3.5 py-2.5 rounded-lg bg-white text-xs font-serif text-[#2d1b16] placeholder:text-stone-400 outline-none focus:ring-2 focus:ring-[#8a1c2e] resize-none shadow-sm transition-all"
+                        />
+                      </div>
+
+                      {/* Centered Kirim Button */}
+                      <div className="text-center pt-2">
+                        <button
+                          type="submit"
+                          disabled={rsvpSubmitting}
+                          className="inline-flex items-center justify-center px-10 py-2.5 rounded-md bg-[#9e2a3b] hover:bg-[#831e2d] text-white text-xs sm:text-[13px] font-sans font-bold tracking-wider shadow-md transition-all active:scale-95 disabled:opacity-50"
+                        >
+                          {rsvpSubmitting ? 'Mengirim...' : 'Kirim'}
+                        </button>
+                      </div>
+                    </form>
+
+                    {/* Feed Doa & Ucapan Restu Tamu di bawah Form jika tidak memakai Barcode */}
+                    {!useBarcode && (
+                      <div className="mt-8 pt-6 border-t border-white/20 w-full text-left">
+                        <div className="flex items-center justify-between mb-3.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-white text-sm">💬</span>
+                            <h3 className="font-serif font-bold text-xs sm:text-sm text-white tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                              Doa &amp; Ucapan Restu Tamu
+                            </h3>
+                            <span className="px-2 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-sans font-bold border border-white/30">
+                              {rsvps.length}
+                            </span>
+                          </div>
+                          <span className="text-[10px] font-serif text-white/80 italic drop-shadow-sm">
+                            Tersimpan di Database
+                          </span>
+                        </div>
+
+                        <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                          {rsvps.length === 0 ? (
+                            <div className="p-4 text-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white/80 text-xs font-serif italic">
+                              Belum ada ucapan. Jadilah yang pertama memberikan doa restu untuk kedua mempelai di atas!
+                            </div>
+                          ) : (
+                            rsvps.map((item) => (
+                              <div 
+                                key={item.id} 
+                                className="p-3.5 rounded-xl bg-white/95 backdrop-blur-sm border border-stone-200 shadow-sm space-y-1.5 transition-all text-[#2d1b16]"
+                              >
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 rounded-full bg-[#8a1c2e] text-white font-black font-serif text-[10px] flex items-center justify-center shrink-0">
+                                      {item.name.charAt(0).toUpperCase()}
+                                    </div>
+                                    <span className="font-serif font-bold text-xs text-[#591420] truncate max-w-[170px]">
+                                      {item.name}
+                                    </span>
+                                  </div>
+                                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-sans font-bold border shrink-0 ${
+                                    item.attendance === 'attending'
+                                      ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                                      : item.attendance === 'maybe'
+                                        ? 'bg-amber-100 text-amber-800 border-amber-300'
+                                        : 'bg-red-100 text-red-800 border-red-300'
+                                  }`}>
+                                    {item.attendance === 'attending' ? '✓ Hadir' : item.attendance === 'maybe' ? 'Ragu' : 'Berhalangan'}
+                                  </span>
+                                </div>
+                                {item.message && (
+                                  <p className="text-xs text-stone-700 font-serif leading-relaxed pl-8">
+                                    &ldquo;{item.message}&rdquo;
+                                  </p>
+                                )}
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
 

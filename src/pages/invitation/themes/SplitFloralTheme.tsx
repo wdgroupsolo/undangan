@@ -3,6 +3,7 @@ import { Gift, Copy, Check, X, Calendar, QrCode } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
+import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode, clearBarcodePass } from '../../../utils/barcodePass';
 
 // Gallery Slideshow Component with Continuous Auto-Slide & Touch/Mouse Swipe
 const GallerySlideshow: React.FC<{ gallery: any[] }> = ({ gallery }) => {
@@ -274,15 +275,27 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const [rsvpNote, setRsvpNote] = useState('');
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
 
-  // Saved RSVP / Wish check-in pass state (persisted per invitation)
+  // Only true when explicitly opened via "Demo Tema" button from landing page/catalog (?demo=true)
+  const isDemo = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('demo') === 'true' ||
+    (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
+  );
+
+  const useBarcode = invitation?.settings?.use_barcode === true || isDemo;
+
+  // Saved RSVP / Wish check-in pass state (persisted per invitation, never lost across browser closes)
   const [submittedPass, setSubmittedPass] = useState<{ name: string; code: string; status?: string } | null>(() => {
-    try {
-      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'split-floral'}`);
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
+    return (loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'split-floral') as any) || null;
   });
+
+  // Ensure barcode pass is immediately synced and loaded as soon as invitation or guest loads
+  useEffect(() => {
+    if (!useBarcode) return;
+    const existing = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'split-floral');
+    if (existing) {
+      setSubmittedPass(existing as any);
+    }
+  }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
 
   const storageKey = `wedding_wishes_${invitation?.slug || invitation?.id || 'wdgroup'}`;
 
@@ -417,14 +430,18 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
       }
     }
 
-    const passData = {
-      name: wishName.trim(),
-      code: `SF-${(invitation?.id || 'FLORAL').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-    };
-    try {
-      localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'split-floral'}`, JSON.stringify(passData));
-    } catch {}
-    setSubmittedPass(passData);
+    if (useBarcode) {
+      const stableCode = generateStableBarcodeCode('SF', invitation?.id || invitation?.slug || 'FLORAL', wishName.trim(), submittedPass?.code);
+      const passData = {
+        name: wishName.trim(),
+        code: stableCode,
+        timestamp: new Date().toISOString(),
+      };
+      saveBarcodePass(passData, invitation?.id, invitation?.slug, 'split-floral');
+      setSubmittedPass(passData);
+    } else {
+      setSubmittedPass(null);
+    }
 
     setWishMessage('');
     setWishSuccess(true);
@@ -449,13 +466,21 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
       }
     }
 
-    const passData = {
-      name: rsvpName.trim(),
-      code: `SF-${(invitation?.id || 'FLORAL').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      status: rsvpStatus,
-    };
+    if (useBarcode) {
+      const stableCode = generateStableBarcodeCode('SF', invitation?.id || invitation?.slug || 'FLORAL', rsvpName.trim(), submittedPass?.code);
+      const passData = {
+        name: rsvpName.trim(),
+        code: stableCode,
+        status: rsvpStatus,
+        timestamp: new Date().toISOString(),
+      };
+      saveBarcodePass(passData, invitation?.id, invitation?.slug, 'split-floral');
+      setSubmittedPass(passData);
+    } else {
+      setSubmittedPass(null);
+    }
+
     try {
-      localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'split-floral'}`, JSON.stringify(passData));
       localStorage.setItem(`rsvp_${invitation?.id || 'assa'}`, JSON.stringify({
         name: rsvpName,
         status: rsvpStatus,
@@ -464,7 +489,6 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
       }));
     } catch {}
 
-    setSubmittedPass(passData);
     setRsvpSubmitted(true);
   };
 
@@ -1833,8 +1857,8 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
               UCAPAN &amp; DOA
             </h2>
 
-            {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
-            {submittedPass ? (
+            {/* Conditional: Tampilkan Barcode setelah diisi (hanya jika useBarcode), atau Form + Daftar Ucapan */}
+            {useBarcode && submittedPass ? (
               <div className="pt-2 text-center animate-in fade-in zoom-in-95 duration-500">
                 <div className="bg-white rounded-2xl p-5 border border-[#8c6f4b]/30 shadow-lg text-[#2c1d13] relative overflow-hidden">
                   <div className="flex items-center justify-center gap-1.5 mb-1 text-[#8c6f4b]">
@@ -1885,9 +1909,7 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                     type="button"
                     onClick={() => {
                       setSubmittedPass(null);
-                      try {
-                        localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'split-floral'}`);
-                      } catch {}
+                      clearBarcodePass(invitation?.id, invitation?.slug, submittedPass?.name || guestName, 'split-floral');
                     }}
                     className="mt-3 inline-block text-[11px] text-[#8c6f4b] hover:underline font-semibold cursor-pointer"
                   >
@@ -1896,61 +1918,97 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleAddWish} className="space-y-4 mb-2 text-left">
-                <div>
-                  <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    Nama
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={wishName}
-                    onChange={(e) => setWishName(e.target.value)}
-                    placeholder="Nama Anda"
-                    className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px]"
-                  />
-                </div>
+              <div>
+                <form onSubmit={handleAddWish} className="space-y-4 mb-2 text-left">
+                  <div>
+                    <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                      Nama
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={wishName}
+                      onChange={(e) => setWishName(e.target.value)}
+                      placeholder="Nama Anda"
+                      className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px]"
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    Sosial Media
-                  </label>
-                  <input
-                    type="text"
-                    value={wishSocial}
-                    onChange={(e) => setWishSocial(e.target.value)}
-                    placeholder="@username"
-                    className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px]"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                      Sosial Media
+                    </label>
+                    <input
+                      type="text"
+                      value={wishSocial}
+                      onChange={(e) => setWishSocial(e.target.value)}
+                      placeholder="@username"
+                      className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px]"
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    Ucapan &amp; Doa
-                  </label>
-                  <textarea
-                    required
-                    rows={3}
-                    value={wishMessage}
-                    onChange={(e) => setWishMessage(e.target.value)}
-                    placeholder="Tuliskan ucapan & doa restu..."
-                    className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px] min-h-[90px] resize-none"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-[13px] font-medium text-[#2c1d13] mb-1.5" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                      Ucapan &amp; Doa
+                    </label>
+                    <textarea
+                      required
+                      rows={3}
+                      value={wishMessage}
+                      onChange={(e) => setWishMessage(e.target.value)}
+                      placeholder="Tuliskan ucapan & doa restu..."
+                      className="w-full bg-white text-[#2c1d13] px-3.5 py-2.5 rounded-lg border border-white/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4e41]/30 transition-all text-xs sm:text-[13px] min-h-[90px] resize-none"
+                    />
+                  </div>
 
-                {wishSuccess && (
-                  <p className="text-xs font-semibold text-emerald-800 bg-emerald-100/90 py-2 px-3 rounded-lg text-center animate-in fade-in">
-                    ✓ Ucapan & doa Anda berhasil dikirim!
-                  </p>
+                  {wishSuccess && (
+                    <p className="text-xs font-semibold text-emerald-800 bg-emerald-100/90 py-2 px-3 rounded-lg text-center animate-in fade-in">
+                      ✓ Ucapan & doa Anda berhasil dikirim!
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    className="w-full bg-[#5c4e41] hover:bg-[#43372c] text-white py-3 px-4 rounded-lg font-bold text-xs tracking-wider uppercase shadow-md transition-all active:scale-[0.98] cursor-pointer"
+                  >
+                    Kirimkan Ucapan
+                  </button>
+                </form>
+
+                {/* Daftar Ucapan & Doa Terbaru (otomatis muncul di bawahnya dan tersimpan di database) */}
+                {wishes && wishes.length > 0 && (
+                  <div className="mt-8 space-y-3 text-left">
+                    <div className="flex items-center justify-between border-b border-[#8c6f4b]/20 pb-2 mb-3">
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#5c4e41]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                        Doa &amp; Ucapan Restu ({wishes.length})
+                      </span>
+                      <span className="text-[11px] text-[#8c6f4b]">Terbaru</span>
+                    </div>
+                    <div className="max-h-[360px] overflow-y-auto space-y-3 pr-1 scrollbar-thin">
+                      {wishes.map((item, idx) => (
+                        <div key={idx} className="bg-white/90 backdrop-blur-sm p-3.5 rounded-xl border border-stone-200/80 shadow-sm">
+                          <div className="flex items-baseline justify-between gap-2 mb-1">
+                            <span className="font-semibold text-xs text-[#2c1d13] truncate" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                              {item.name}
+                            </span>
+                            <span className="text-[10px] text-stone-500 shrink-0">
+                              {item.date || 'Baru saja'}
+                            </span>
+                          </div>
+                          {item.socialMedia && item.socialMedia !== '@Guest' && (
+                            <span className="text-[10.5px] text-[#8c6f4b] block mb-1">
+                              {item.socialMedia}
+                            </span>
+                          )}
+                          <p className="text-xs text-[#4a3b2c] leading-relaxed break-words">
+                            {item.message}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 )}
-
-                <button
-                  type="submit"
-                  className="w-full bg-[#5c4e41] hover:bg-[#43372c] text-white py-3 px-4 rounded-lg font-bold text-xs tracking-wider uppercase shadow-md transition-all active:scale-[0.98] cursor-pointer"
-                >
-                  Kirimkan Ucapan
-                </button>
-              </form>
+              </div>
             )}
           </div>
         </section>

@@ -39,6 +39,7 @@ export const InvitationEditor: React.FC = () => {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [selectedThemeId, setSelectedThemeId] = useState('');
+  const [useBarcode, setUseBarcode] = useState(false);
 
   const { data: themes } = useQuery({
     queryKey: ['themes'],
@@ -55,6 +56,7 @@ export const InvitationEditor: React.FC = () => {
     if (currentInvitation) {
       setTitle(currentInvitation.title || '');
       setSlug(currentInvitation.slug || '');
+      setUseBarcode(currentInvitation.settings?.use_barcode === true);
       const themeSlugInSettings = currentInvitation.settings?.theme_slug;
       if (themeSlugInSettings && themes) {
         const matched = themes.find(t => t.slug === themeSlugInSettings);
@@ -147,7 +149,8 @@ export const InvitationEditor: React.FC = () => {
       slug,
       status: 'draft',
       settings: {
-        theme_slug: selectedThemeSlug
+        theme_slug: selectedThemeSlug,
+        use_barcode: useBarcode,
       }
     });
   };
@@ -230,6 +233,31 @@ export const InvitationEditor: React.FC = () => {
                   </div>
                 </div>
 
+                <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-4">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={useBarcode} 
+                      onChange={(e) => setUseBarcode(e.target.checked)} 
+                      className="w-4 h-4 mt-0.5 text-amber-600 rounded focus:ring-amber-500 border-amber-300 cursor-pointer"
+                    />
+                    <div className="flex-1">
+                      <div className="text-sm font-bold text-stone-900 flex items-center gap-2">
+                        <span>Pakai Fitur Barcode VIP Pass Presensi</span>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          useBarcode ? 'bg-amber-200 text-amber-900' : 'bg-stone-200 text-stone-700'
+                        }`}>
+                          {useBarcode ? 'AKTIF (VIP BARCODE)' : 'NONAKTIF (STANDAR)'}
+                        </span>
+                      </div>
+                      <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                        <strong>Dicentang:</strong> Tamu mendapat tiket Barcode &amp; QR VIP eksklusif setelah mengisi RSVP untuk dipindai saat tiba di lokasi.<br />
+                        <strong>Tidak dicentang:</strong> Menggunakan form RSVP standar. Doa dan ucapan tamu otomatis tersimpan di database dan langsung muncul di bawah form.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">Select Theme *</label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -283,6 +311,31 @@ export const InvitationEditor: React.FC = () => {
                       />
                     </div>
                   </div>
+                </div>
+
+                <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-4">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={useBarcode} 
+                      onChange={(e) => setUseBarcode(e.target.checked)} 
+                      className="w-4 h-4 mt-0.5 text-amber-600 rounded focus:ring-amber-500 border-amber-300 cursor-pointer"
+                    />
+                    <div className="flex-1">
+                      <div className="text-sm font-bold text-stone-900 flex items-center gap-2">
+                        <span>Pakai Fitur Barcode VIP Pass Presensi</span>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          useBarcode ? 'bg-amber-200 text-amber-900' : 'bg-stone-200 text-stone-700'
+                        }`}>
+                          {useBarcode ? 'AKTIF (VIP BARCODE)' : 'NONAKTIF (STANDAR)'}
+                        </span>
+                      </div>
+                      <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                        <strong>Dicentang:</strong> Tamu mendapat tiket Barcode &amp; QR VIP eksklusif setelah mengisi RSVP untuk dipindai saat tiba di lokasi.<br />
+                        <strong>Tidak dicentang:</strong> Menggunakan form RSVP standar. Doa dan ucapan tamu otomatis tersimpan di database dan langsung muncul di bawah form.
+                      </p>
+                    </div>
+                  </label>
                 </div>
 
                 <div>
@@ -340,7 +393,8 @@ export const InvitationEditor: React.FC = () => {
                         theme_id: validThemeId,
                         settings: {
                           ...(currentInvitation?.settings || {}),
-                          theme_slug: selectedThemeSlug
+                          theme_slug: selectedThemeSlug,
+                          use_barcode: useBarcode,
                         }
                       })
                         .then(() => {

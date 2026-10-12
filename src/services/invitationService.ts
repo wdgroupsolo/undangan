@@ -81,6 +81,7 @@ export const INVITATION_BIMA_RATNA: Invitation & { theme?: any; client?: any } =
   status: 'published',
   wedding_date: '2026-12-12T10:00:00+07:00',
   settings: {
+    use_barcode: true, // Klien Testimoni DENGAN Barcode VIP Pass Presensi
     theme_slug: 'royal-wayang-gold',
     default_guest_name: 'Bapak/Ibu Tamu Undangan',
     cover_title: 'BIMA & RATNA',
@@ -111,6 +112,46 @@ export const INVITATION_BIMA_RATNA: Invitation & { theme?: any; client?: any } =
   created_at: '2026-10-10T10:00:00Z'
 };
 
+export const INVITATION_DIMAS_ANISA: Invitation & { theme?: any; client?: any } = {
+  id: 'e4000000-0000-0000-0000-000000000004',
+  client_id: 'c3000000-0000-0000-0000-000000000003',
+  theme_id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
+  title: 'The Wedding of Dimas & Anisa',
+  slug: 'dimas-anisa',
+  status: 'published',
+  wedding_date: '2026-11-20T09:00:00+07:00',
+  settings: {
+    use_barcode: false, // Klien Testimoni TANPA Barcode (Standard RSVP Langsung Muncul di Bawah Form)
+    theme_slug: 'royal-wayang-gold',
+    default_guest_name: 'Bapak/Ibu Tamu Undangan',
+    cover_title: 'DIMAS & ANISA',
+    cover_photo: '/themes/agni-putri/couple-outdoor.jpg',
+    groom_instagram: '@dimas_pratama',
+    bride_instagram: '@anisa_wardani',
+    gift_recipient: 'DIMAS PRATAMA',
+    gift_address: 'Jl. Malioboro No. 45, Danurejan, Yogyakarta',
+    entertainment_day: 'Akustik & Musik Romantis',
+    entertainment_night: 'Ramah Tamah & Doa Bersama',
+    color_concept: 'Hitam & Emas (Royal Wayang Gold)',
+    music_title: 'Landon Pigg - Falling In Love At A Coffee Shop',
+    music_url: '/music/landon-pigg-falling-in-love.mp3',
+    show_akad: true,
+    show_resepsi: true,
+    show_love_story: true,
+    show_live_streaming: false
+  },
+  theme: {
+    id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
+    name: 'Royal Wayang Gold',
+    slug: 'royal-wayang-gold'
+  },
+  client: {
+    id: 'c3000000-0000-0000-0000-000000000003',
+    name: 'DIMAS & ANISA'
+  },
+  created_at: '2026-10-11T09:00:00Z'
+};
+
 export const INVITATION_DEMO_TESTIMONI = INVITATION_BIMA_RATNA;
 
 export const invitationService = {
@@ -131,7 +172,9 @@ export const invitationService = {
 
     const hasAgni = result.some(inv => inv.slug === 'agni-putri' || inv.slug === 'agni-kahuripan');
     const hasBima = result.some(inv => inv.id === INVITATION_BIMA_RATNA.id || inv.slug === 'bima-ratna');
+    const hasDimas = result.some(inv => inv.id === INVITATION_DIMAS_ANISA.id || inv.slug === 'dimas-anisa');
 
+    if (!hasDimas) result.unshift(INVITATION_DIMAS_ANISA);
     if (!hasBima) result.unshift(INVITATION_BIMA_RATNA);
     if (!hasAgni) result.unshift(INVITATION_AGNI_PUTRI);
 
@@ -149,6 +192,9 @@ export const invitationService = {
     }
     if (id === INVITATION_BIMA_RATNA.id) {
       return cachedStatus ? { ...INVITATION_BIMA_RATNA, status: cachedStatus } : INVITATION_BIMA_RATNA;
+    }
+    if (id === INVITATION_DIMAS_ANISA.id) {
+      return cachedStatus ? { ...INVITATION_DIMAS_ANISA, status: cachedStatus } : INVITATION_DIMAS_ANISA;
     }
     try {
       const { data, error } = await supabase
@@ -170,18 +216,28 @@ export const invitationService = {
     const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim();
     const isAgni = cleanSlug.includes('agni') || cleanSlug.includes('kribo');
     const isBima = cleanSlug === 'bima-ratna' || cleanSlug === 'demo-testimoni' || cleanSlug === 'demo-undangan' || cleanSlug.includes('bima');
+    const isDimas = cleanSlug === 'dimas-anisa' || cleanSlug.includes('dimas');
 
     // Check if status is paused or overridden in localStorage
     const cachedStatus = getSavedStatus(slug) || 
       getSavedStatus(cleanSlug) || 
       (isAgni ? (getSavedStatus('e2000000-0000-0000-0000-000000000002') || getSavedStatus('agni-putri') || getSavedStatus('agni-kahuripan')) : null) ||
-      (isBima ? getSavedStatus('e3000000-0000-0000-0000-000000000003') : null);
+      (isBima ? getSavedStatus('e3000000-0000-0000-0000-000000000003') : null) ||
+      (isDimas ? getSavedStatus('e4000000-0000-0000-0000-000000000004') : null);
 
     if (isBima) {
       return {
         ...INVITATION_BIMA_RATNA,
         slug: slug,
         status: cachedStatus || INVITATION_BIMA_RATNA.status || 'published'
+      };
+    }
+
+    if (isDimas) {
+      return {
+        ...INVITATION_DIMAS_ANISA,
+        slug: slug,
+        status: cachedStatus || INVITATION_DIMAS_ANISA.status || 'published'
       };
     }
 

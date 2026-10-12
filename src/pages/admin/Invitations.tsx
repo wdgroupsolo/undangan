@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { invitationService } from '../../services/invitationService';
-import { Plus, Search, Edit2, Trash2, ExternalLink, PauseCircle, PlayCircle } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, ExternalLink, PauseCircle, PlayCircle, QrCode } from 'lucide-react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { useToast } from '../../context/ToastContext';
@@ -38,6 +38,22 @@ export const Invitations: React.FC = () => {
       }
     },
     onError: () => toast.error('Gagal mengubah status undangan.')
+  });
+
+  const toggleBarcodeMutation = useMutation({
+    mutationFn: ({ id, slug, currentSettings }: { id: string; slug: string; currentSettings: any }) =>
+      invitationService.updateInvitation(id, {
+        settings: {
+          ...(currentSettings || {}),
+          use_barcode: !currentSettings?.use_barcode,
+        },
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['invitations'] });
+      queryClient.invalidateQueries({ queryKey: ['invitation', variables.slug] });
+      toast.success('Pengaturan Barcode VIP berhasil diperbarui!');
+    },
+    onError: () => toast.error('Gagal mengubah pengaturan barcode.')
   });
 
   const filteredInvitations = invitations?.filter(inv => 
@@ -103,6 +119,16 @@ export const Invitations: React.FC = () => {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-semibold text-gray-900">{invitation.title || 'Untitled'}</span>
+                          {invitation.settings?.use_barcode ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
+                              <QrCode size={11} />
+                              <span>VIP Barcode</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                              <span>Standard RSVP</span>
+                            </span>
+                          )}
                         </div>
                         <div className="text-gray-400 text-xs mt-0.5 font-mono">/{invitation.slug}</div>
                       </td>
@@ -124,7 +150,30 @@ export const Invitations: React.FC = () => {
                       <td className="px-6 py-4 text-gray-500">
                         {invitation.wedding_date ? format(new Date(invitation.wedding_date), 'dd MMM yyyy') : '-'}
                       </td>
-                      <td className="px-6 py-4 text-right space-x-2">
+                      <td className="px-6 py-4 text-right space-x-1.5">
+                        {/* 0. Toggle Barcode Feature */}
+                        <button
+                          onClick={() => {
+                            toggleBarcodeMutation.mutate({
+                              id: invitation.id,
+                              slug: invitation.slug,
+                              currentSettings: invitation.settings,
+                            });
+                          }}
+                          className={`p-1.5 rounded-lg inline-block transition-colors cursor-pointer ${
+                            invitation.settings?.use_barcode
+                              ? 'text-amber-700 bg-amber-50 hover:bg-amber-100 ring-1 ring-amber-300'
+                              : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
+                          }`}
+                          title={
+                            invitation.settings?.use_barcode
+                              ? 'Fitur Barcode VIP Aktif (Klik untuk ubah ke Standar RSVP)'
+                              : 'Fitur Barcode VIP Nonaktif / Standar RSVP (Klik untuk aktifkan Barcode VIP)'
+                          }
+                        >
+                          <QrCode size={18} />
+                        </button>
+
                         {/* 1. Pause / Resume Action Toggle */}
                         {isPublished ? (
                           <button

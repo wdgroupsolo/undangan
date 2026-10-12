@@ -28,9 +28,20 @@ export const CLIENT_BIMA_RATNA: Client = {
   phone: '0812-3456-7890',
   email: 'bima.ratna@wdgroup.com',
   address: 'Solo, Jawa Tengah',
-  notes: 'Klien Contoh WD Group. Konsep Elegan Royal Wayang Gold.',
+  notes: 'Klien Testimoni WD Group (Pakai Barcode VIP Pass Presensi). Konsep Elegan Royal Wayang Gold.',
   status: 'active',
   created_at: '2026-10-10T10:00:00Z',
+};
+
+export const CLIENT_DIMAS_ANISA: Client = {
+  id: 'c3000000-0000-0000-0000-000000000003',
+  name: 'DIMAS & ANISA',
+  phone: '0821-9876-5432',
+  email: 'dimas.anisa@wdgroup.com',
+  address: 'Yogyakarta, D.I. Yogyakarta',
+  notes: 'Klien Testimoni WD Group (Tanpa Barcode). Model RSVP standar langsung masuk ke database dan tampil di bawah form ucapan.',
+  status: 'active',
+  created_at: '2026-10-11T09:00:00Z',
 };
 
 export const CLIENT_DEMO_TESTIMONI = CLIENT_BIMA_RATNA;
@@ -51,12 +62,14 @@ export const clientService = {
       console.warn('Error fetching clients from Supabase:', e);
     }
 
-    // Ensure Agni Putri and Demo Testimoni clients are present
+    // Ensure Agni Putri, Bima Ratna (Testi Barcode), and Dimas Anisa (Testi Tanpa Barcode) clients are present
     const hasAgni = list.some(c => c.name.toLowerCase().includes('agni'));
-    const hasDemo = list.some(c => c.id === CLIENT_DEMO_TESTIMONI.id || c.name.toLowerCase().includes('demo'));
+    const hasBima = list.some(c => c.id === CLIENT_BIMA_RATNA.id || c.name.toLowerCase().includes('bima'));
+    const hasDimas = list.some(c => c.id === CLIENT_DIMAS_ANISA.id || c.name.toLowerCase().includes('dimas'));
 
     const result = [...list];
-    if (!hasDemo) result.unshift(CLIENT_DEMO_TESTIMONI);
+    if (!hasDimas) result.unshift(CLIENT_DIMAS_ANISA);
+    if (!hasBima) result.unshift(CLIENT_BIMA_RATNA);
     if (!hasAgni) result.unshift(CLIENT_AGNI_PUTRI);
 
     return result;
@@ -64,7 +77,8 @@ export const clientService = {
 
   async getClient(id: string) {
     if (id === CLIENT_AGNI_PUTRI.id) return CLIENT_AGNI_PUTRI;
-    if (id === CLIENT_DEMO_TESTIMONI.id || id === 'demo-client') return CLIENT_DEMO_TESTIMONI;
+    if (id === CLIENT_BIMA_RATNA.id || id === 'demo-client') return CLIENT_BIMA_RATNA;
+    if (id === CLIENT_DIMAS_ANISA.id) return CLIENT_DIMAS_ANISA;
     try {
       const { data, error } = await supabase
         .from('clients')

@@ -7,6 +7,8 @@ import {
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
+import { rsvpService, RSVPItem } from '../../../services/rsvpService';
+import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode, clearBarcodePass } from '../../../utils/barcodePass';
 
 const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
   <svg 
@@ -409,41 +411,84 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
   const [rsvpSosmed, setRsvpSosmed] = useState('');
   const [isRsvpSubmitting, setIsRsvpSubmitting] = useState(false);
 
-  // Saved RSVP check-in pass state (persisted per invitation)
+  // Only true when explicitly opened via "Demo Tema" button from landing page/catalog (?demo=true)
+  const isDemo = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('demo') === 'true' ||
+    (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
+  );
+
+  const useBarcode = invitation?.settings?.use_barcode === true || isDemo;
+
+  const [wishesList, setWishesList] = useState<RSVPItem[]>([]);
+
+  useEffect(() => {
+    if (!invitation?.id) return;
+    rsvpService.getRsvpsByInvitation(invitation.id).then(data => {
+      if (data) setWishesList(data);
+    });
+  }, [invitation?.id]);
+
+  // Saved RSVP check-in pass state (persisted per invitation, never lost across browser closes)
   const [submittedRsvp, setSubmittedRsvp] = useState<{
     name: string;
     sosmed?: string;
     code: string;
   } | null>(() => {
-    try {
-      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'secret-garden'}`);
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
+    return (loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'secret-garden') as any) || null;
   });
+
+  // Ensure barcode pass is immediately synced and loaded as soon as invitation or guest loads
+  useEffect(() => {
+    if (!useBarcode) return;
+    const existing = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'secret-garden');
+    if (existing) {
+      setSubmittedRsvp(existing as any);
+    }
+  }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
 
   const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
 
-  const handleRsvpSubmit = (e: React.FormEvent) => {
+  const handleRsvpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!rsvpName.trim() || !rsvpWishes.trim()) return;
     setIsRsvpSubmitting(true);
 
-    setTimeout(() => {
-      const passData = {
+    try {
+      const saved = await rsvpService.submitRsvp({
+        invitation_id: invitation?.id || 'secret-garden',
         name: rsvpName.trim(),
-        sosmed: rsvpSosmed.trim(),
-        code: `SG-${(invitation?.id || 'GARDEN').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      };
-      try {
-        localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'secret-garden'}`, JSON.stringify(passData));
-      } catch {}
-      setSubmittedRsvp(passData);
+        attendance: 'attending',
+        number_of_guests: 1,
+        message: rsvpWishes.trim(),
+        invitation_title: invitation?.title || 'The Wedding of Kevin & Vania',
+        client_name: 'Kevin & Vania',
+      });
+
+      if (saved) {
+        setWishesList(prev => [saved, ...prev]);
+      }
+
+      if (useBarcode) {
+        const stableCode = generateStableBarcodeCode('SG', invitation?.id || invitation?.slug || 'GARDEN', rsvpName.trim(), submittedRsvp?.code);
+        const passData = {
+          name: rsvpName.trim(),
+          sosmed: rsvpSosmed.trim(),
+          code: stableCode,
+          timestamp: new Date().toISOString(),
+        };
+        saveBarcodePass(passData, invitation?.id, invitation?.slug, 'secret-garden');
+        setSubmittedRsvp(passData);
+      } else {
+        setSubmittedRsvp(null);
+      }
+
       setRsvpWishes('');
+      toast.success('Konfirmasi kehadiran & doa restu berhasil dikirimkan!');
+    } catch {
+      toast.error('Gagal mengirimkan ucapan & konfirmasi.');
+    } finally {
       setIsRsvpSubmitting(false);
-      toast.success('Konfirmasi kehadiran dan ucapan berhasil dikirimkan!');
-    }, 600);
+    }
   };
 
   // Helper for YouTube embed URL
@@ -1858,61 +1903,104 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                 Ucapan &amp; Doa
               </h2>
 
-              {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
-              {submittedRsvp ? (
+              {/* Conditional: Tampilkan Barcode jika pakai barcode & sudah diisi, atau Form */}
+              {useBarcode && submittedRsvp ? (
                 <div className="pt-2 text-center animate-in fade-in zoom-in-95 duration-500 max-w-[360px] mx-auto">
                   <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#9A6E76]/30 shadow-xl text-[#2E2227] relative overflow-hidden">
-                    <div className="flex items-center justify-center gap-1.5 mb-1 text-[#784E59]">
-                      <QrCode className="w-4 h-4 text-[#784E59]" />
-                      <span className="text-[11px] font-bold tracking-[0.2em] uppercase" style={{ fontFamily: "'Lora', serif" }}>
-                        Barcode &amp; QR Presensi Tamu
-                      </span>
-                    </div>
+                    {isDemo ? (
+                      <div className="flex items-center justify-center gap-1.5 mb-1 text-amber-700">
+                        <QrCode className="w-4 h-4 text-amber-700" />
+                        <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-amber-800" style={{ fontFamily: "'Lora', serif" }}>
+                          CONTOH TIKET &amp; BARCODE DEMO
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center gap-1.5 mb-1 text-[#784E59]">
+                        <QrCode className="w-4 h-4 text-[#784E59]" />
+                        <span className="text-[11px] font-bold tracking-[0.2em] uppercase" style={{ fontFamily: "'Lora', serif" }}>
+                          Barcode &amp; QR Presensi Tamu
+                        </span>
+                      </div>
+                    )}
 
                     <p className="text-base font-bold text-[#774B53] tracking-wide mt-1" style={{ fontFamily: "'Lora', serif" }}>
                       {submittedRsvp.name}
                     </p>
 
-                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
-                      <span>✓</span>
-                      <span>Konfirmasi Kehadiran Diterima</span>
-                    </div>
+                    {isDemo ? (
+                      <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-amber-100 text-amber-800 border border-amber-300 shadow-xs">
+                        <span>🔒</span>
+                        <span>Status: Terkunci (Mode Demo Testimoni)</span>
+                      </div>
+                    ) : (
+                      <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
+                        <span>✓</span>
+                        <span>Konfirmasi Kehadiran Diterima</span>
+                      </div>
+                    )}
 
                     {/* QR Code */}
-                    <div className="w-40 h-40 mx-auto bg-white p-2.5 rounded-xl border border-stone-200 shadow-md flex items-center justify-center my-2.5">
+                    <div className="relative w-40 h-40 mx-auto bg-white p-2.5 rounded-xl border border-stone-200 shadow-md flex items-center justify-center my-2.5 overflow-hidden">
                       <img 
-                        src={invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'GARDEN'}|GUEST:${submittedRsvp.name}|CODE:${submittedRsvp.code}`)}`}
+                        src={
+                          isDemo
+                            ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('DEMO-TESTIMONIAL-PORTOFOLIO-LOCKED|DO-NOT-SCAN|CODE:WD-DEMO-TESTIMONI-88')}`
+                            : (invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'GARDEN'}|GUEST:${submittedRsvp.name}|CODE:${submittedRsvp.code}`)}`)
+                        }
                         alt="QR Code Presensi"
                         className="w-full h-full object-contain"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = '/qr-code.png';
                         }}
                       />
+                      {isDemo && (
+                        <div className="absolute inset-0 bg-red-950/45 backdrop-blur-[0.5px] flex flex-col items-center justify-center p-2 border-2 border-dashed border-red-500/80 rounded-lg m-1 select-none pointer-events-none">
+                          <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded shadow-lg -rotate-12 border border-white/60 text-center leading-tight">
+                            DEMO ONLY<br/><span className="text-[8.5px] font-bold">TIDAK BISA DI-SCAN</span>
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Authentic Barcode Graphic */}
-                    <div className="my-2 px-3 py-2 bg-stone-50 rounded-lg border border-stone-200 flex flex-col items-center shadow-xs">
+                    <div className="relative my-2 px-3 py-2 bg-stone-50 rounded-lg border border-stone-200 flex flex-col items-center shadow-xs overflow-hidden">
                       <svg viewBox="0 0 160 32" className="w-full max-w-[190px] h-9 text-[#2E2227]" preserveAspectRatio="none">
                         {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
                           idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
                         ))}
                       </svg>
-                      <span className="font-mono font-bold text-[11px] tracking-[0.25em] text-[#784E59] mt-1">
+                      <span className={`font-mono font-bold text-[11px] tracking-[0.25em] ${isDemo ? 'text-red-700 line-through' : 'text-[#784E59]'} mt-1`}>
                         {submittedRsvp.code}
                       </span>
+                      {isDemo && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
+                          <span className="bg-amber-600/90 text-white font-bold text-[9px] px-2 py-0.5 rounded tracking-widest uppercase shadow">
+                            BARCODE DEMO (TERKUNCI)
+                          </span>
+                        </div>
+                      )}
                     </div>
 
-                    <p className="text-[10.5px] text-stone-600 italic leading-snug mt-2 max-w-[270px] mx-auto font-sans">
-                      Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi acara.
-                    </p>
+                    {isDemo ? (
+                      <div className="bg-amber-50 border border-amber-300 rounded-xl p-2.5 mt-2 text-center text-stone-800">
+                        <p className="text-[11px] font-serif font-bold text-amber-900">
+                          🔒 Barcode Demo Portofolio (Terkunci)
+                        </p>
+                        <p className="text-[10px] text-stone-600 mt-0.5 leading-normal">
+                          Barcode ini sengaja dikunci untuk portofolio/demo dan tidak dapat di-scan untuk presensi tamu sungguhan.
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-[10.5px] text-stone-600 italic leading-snug mt-2 max-w-[270px] mx-auto font-sans">
+                        Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi acara.
+                      </p>
+                    )}
 
                     <button
                       type="button"
                       onClick={() => {
                         setSubmittedRsvp(null);
-                        try {
-                          localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'secret-garden'}`);
-                        } catch {}
+                        clearBarcodePass(invitation?.id, invitation?.slug, submittedRsvp?.name || guestName, 'secret-garden');
                       }}
                       className="mt-3.5 inline-block text-[11px] text-[#784E59] hover:underline font-semibold cursor-pointer"
                     >
@@ -1921,59 +2009,118 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
                   </div>
                 </div>
               ) : (
-                <form id="ucapan-form" onSubmit={handleRsvpSubmit} className="max-w-[360px] sm:max-w-[380px] w-full mx-auto text-left space-y-4 mb-2">
-                  <div>
-                    <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                      Nama
-                    </label>
-                    <input 
-                      type="text" 
-                      required
-                      value={rsvpName}
-                      onChange={(e) => setRsvpName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] transition-colors"
-                    />
-                  </div>
+                <div>
+                  <form id="ucapan-form" onSubmit={handleRsvpSubmit} className="max-w-[360px] sm:max-w-[380px] w-full mx-auto text-left space-y-4 mb-2">
+                    <div>
+                      <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                        Nama
+                      </label>
+                      <input 
+                        type="text" 
+                        required
+                        value={rsvpName}
+                        onChange={(e) => setRsvpName(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] transition-colors"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                      Sosial Media
-                    </label>
-                    <input 
-                      type="text" 
-                      value={rsvpSosmed}
-                      onChange={(e) => setRsvpSosmed(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] transition-colors"
-                    />
-                  </div>
+                    <div>
+                      <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                        Sosial Media
+                      </label>
+                      <input 
+                        type="text" 
+                        value={rsvpSosmed}
+                        onChange={(e) => setRsvpSosmed(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] transition-colors"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                      Ucapan &amp; Doa
-                    </label>
-                    <textarea 
-                      rows={5}
-                      required
-                      value={rsvpWishes}
-                      onChange={(e) => setRsvpWishes(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] resize-none transition-colors"
-                    />
-                  </div>
+                    <div>
+                      <label className="block text-[14px] font-medium text-[#2E2227] mb-1.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                        Ucapan &amp; Doa
+                      </label>
+                      <textarea 
+                        rows={4}
+                        required
+                        value={rsvpWishes}
+                        onChange={(e) => setRsvpWishes(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-[5px] border border-[#B0A2AA] bg-white text-stone-800 text-sm focus:outline-none focus:border-[#7B4B57] resize-none transition-colors"
+                      />
+                    </div>
 
-                  <div className="pt-1 text-left">
-                    <button 
-                      type="submit" 
-                      disabled={isRsvpSubmitting}
-                      className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-[5px] text-white text-[13.5px] sm:text-sm font-semibold tracking-wide shadow hover:opacity-95 active:scale-95 transition-all cursor-pointer"
-                      style={{ 
-                        background: 'linear-gradient(to right, #693C47 0%, #AF7C89 100%)', 
-                        fontFamily: "'Poppins', sans-serif" 
-                      }}
-                    >
-                      {isRsvpSubmitting ? 'Mengirim...' : 'Kirimkan Ucapan'}
-                    </button>
-                  </div>
-                </form>
+                    <div className="pt-1 text-left">
+                      <button 
+                        type="submit" 
+                        disabled={isRsvpSubmitting}
+                        className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-[5px] text-white text-[13.5px] sm:text-sm font-semibold tracking-wide shadow hover:opacity-95 active:scale-95 transition-all cursor-pointer"
+                        style={{ 
+                          background: 'linear-gradient(to right, #693C47 0%, #AF7C89 100%)', 
+                          fontFamily: "'Poppins', sans-serif" 
+                        }}
+                      >
+                        {isRsvpSubmitting ? 'Mengirim...' : 'Kirimkan Ucapan'}
+                      </button>
+                    </div>
+                  </form>
+
+                  {/* Feed Doa & Ucapan Restu Tamu di bawah Form jika tidak memakai Barcode */}
+                  {!useBarcode && (
+                    <div className="mt-8 pt-6 border-t border-[#9A6E76]/30 max-w-[360px] sm:max-w-[380px] mx-auto w-full text-left">
+                      <div className="flex items-center justify-between mb-3.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[#7B4B57] text-sm">💬</span>
+                          <h3 
+                            className="font-bold text-xs sm:text-sm text-[#7B4B57] tracking-wide"
+                            style={{ fontFamily: "'Poppins', sans-serif" }}
+                          >
+                            Ucapan &amp; Doa Restu
+                          </h3>
+                          <span className="px-2 py-0.5 rounded-full bg-[#7B4B57]/15 text-[#7B4B57] text-[10px] font-sans font-bold border border-[#7B4B57]/30">
+                            {wishesList.length}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-stone-500 italic">
+                          Tersimpan di Database
+                        </span>
+                      </div>
+
+                      <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                        {wishesList.length === 0 ? (
+                          <div className="p-4 text-center rounded-xl bg-white/70 backdrop-blur-sm border border-[#9A6E76]/20 text-[#7B4B57]/80 text-xs italic">
+                            Belum ada ucapan. Jadilah yang pertama memberikan doa restu untuk kedua mempelai di atas!
+                          </div>
+                        ) : (
+                          wishesList.map((item) => (
+                            <div 
+                              key={item.id} 
+                              className="p-3.5 rounded-xl bg-white/95 backdrop-blur-sm border border-[#9A6E76]/25 shadow-xs space-y-1.5 transition-all text-[#2E2227]"
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-6 h-6 rounded-full bg-[#7B4B57] text-white font-black text-[10px] flex items-center justify-center shrink-0">
+                                    {item.name.charAt(0).toUpperCase()}
+                                  </div>
+                                  <span className="font-bold text-xs text-[#7B4B57] truncate max-w-[170px]" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                                    {item.name}
+                                  </span>
+                                </div>
+                                <span className="px-2 py-0.5 rounded-full text-[9px] font-sans font-bold border shrink-0 bg-emerald-50 text-emerald-800 border-emerald-300">
+                                  ✓ Hadir
+                                </span>
+                              </div>
+                              {item.message && (
+                                <p className="text-xs text-stone-700 leading-relaxed pl-8 font-normal" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                                  &ldquo;{item.message}&rdquo;
+                                </p>
+                              )}
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </section>

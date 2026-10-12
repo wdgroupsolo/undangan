@@ -25,6 +25,7 @@ import { CalendarReminderModal } from '../../../components/CalendarReminderModal
 import { CalendarEventData } from '../../../utils/calendar';
 import { supabase } from '../../../lib/supabase';
 import { rsvpService, RSVPItem } from '../../../services/rsvpService';
+import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode, clearBarcodePass } from '../../../utils/barcodePass';
 
 // ==========================================
 // 1. ROYAL JAVANESE SVG VECTOR ORNAMENTS
@@ -923,8 +924,20 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
+  // Guest Name from URL parameter (?to=...)
+  const guestName = (() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const to = urlParams.get('to');
+      if (to && to.trim()) {
+        return decodeURIComponent(to.replace(/\+/g, ' ')).trim();
+      }
+    }
+    return invitation?.settings?.default_guest_name || 'Tamu Undangan';
+  })();
+
   // RSVP Form State
-  const [rsvpName, setRsvpName] = useState('');
+  const [rsvpName, setRsvpName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [rsvpGuests, setRsvpGuests] = useState('1');
   const [rsvpAttendance, setRsvpAttendance] = useState('hadir');
   const [rsvpMessage, setRsvpMessage] = useState('');
@@ -939,21 +952,26 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
   );
 
-  // Saved RSVP check-in pass state (persisted per invitation)
+  const useBarcode = invitation?.settings?.use_barcode === true || isDemo;
+
+  // Saved RSVP check-in pass state (persisted per invitation, never lost across browser closes)
   const [submittedRsvp, setSubmittedRsvp] = useState<{
     name: string;
     attendance: string;
     guests: number;
     code: string;
   } | null>(() => {
-    try {
-      const saved = localStorage.getItem(`wd_rsvp_pass_${invitation?.id || 'royal'}`);
-      if (saved) return JSON.parse(saved);
-      return null;
-    } catch {
-      return null;
-    }
+    return (loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'royal') as any) || null;
   });
+
+  // Ensure barcode pass is immediately synced and loaded as soon as invitation or guest loads
+  useEffect(() => {
+    if (!useBarcode) return;
+    const existing = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'royal');
+    if (existing) {
+      setSubmittedRsvp(existing as any);
+    }
+  }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
 
   // Read real RSVP wishes list
   const displayWishes = rsvpList;
@@ -1171,17 +1189,26 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         client_name: isAgni ? 'AGNI KAHURIPAN' : undefined,
       });
 
-      toast.success('Konfirmasi kehadiran berhasil dikirim!');
-      const passData = {
-        name: rsvpName.trim(),
-        attendance: rsvpAttendance,
-        guests: parseInt(rsvpGuests, 10) || 1,
-        code: `RWG-${(targetInvId || 'ROYAL').slice(0, 4).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      };
-      try {
-        localStorage.setItem(`wd_rsvp_pass_${invitation?.id || 'royal'}`, JSON.stringify(passData));
-      } catch {}
-      setSubmittedRsvp(passData);
+      toast.success('Konfirmasi kehadiran & doa restu berhasil dikirim!');
+      if (saved) {
+        setRsvpList(prev => [saved, ...prev]);
+      }
+
+      if (useBarcode) {
+        const stableCode = generateStableBarcodeCode('RWG', targetInvId || invitation?.slug || 'ROYAL', rsvpName.trim(), submittedRsvp?.code);
+        const passData = {
+          name: rsvpName.trim(),
+          attendance: rsvpAttendance,
+          guests: parseInt(rsvpGuests, 10) || 1,
+          code: stableCode,
+          timestamp: new Date().toISOString(),
+        };
+        saveBarcodePass(passData, targetInvId, invitation?.slug, 'royal');
+        setSubmittedRsvp(passData);
+      } else {
+        setSubmittedRsvp(null);
+      }
+
       setRsvpName('');
       setRsvpMessage('');
     } catch {
@@ -1201,12 +1228,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     }
     toast.success(`${label} berhasil disalin!`);
   };
-
-  const searchParams = new URLSearchParams(window.location.search);
-  const rawTo = searchParams.get('to');
-  const guestName = (rawTo && rawTo.trim() !== '') 
-    ? rawTo.trim() 
-    : (invitation?.settings?.default_guest_name?.trim() || 'Tamu Undangan');
 
   // Helper to format event date to uppercase Indonesian string matching reference
   const formatEventDateID = (dateStr?: string, fallback = 'SABTU, 25 OKTOBER 2026') => {
@@ -3333,8 +3354,8 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 </p>
               </div>
 
-              {/* Conditional: Tampilkan Barcode setelah diisi, atau Form sebelum diisi */}
-              {submittedRsvp ? (
+              {/* Conditional: Tampilkan Barcode jika pakai barcode & sudah diisi, atau Form */}
+              {useBarcode && submittedRsvp ? (
                 <div className="w-full flex flex-col items-center animate-in fade-in zoom-in-95 duration-500">
                   <div className="w-full bg-gradient-to-b from-[#24170d]/95 via-[#190f08]/98 to-[#120a05]/98 rounded-2xl p-5 border-2 border-[#d4af37]/75 shadow-[0_15px_35px_rgba(0,0,0,0.8),0_0_25px_rgba(212,175,55,0.25)] text-center relative overflow-hidden">
                     {/* Top Golden Crest Badge */}
@@ -3436,9 +3457,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                       type="button"
                       onClick={() => {
                         setSubmittedRsvp(null);
-                        try {
-                          localStorage.removeItem(`wd_rsvp_pass_${invitation?.id || 'royal'}`);
-                        } catch {}
+                        clearBarcodePass(invitation?.id, invitation?.slug, submittedRsvp?.name || guestName, 'royal');
                       }}
                       className="mt-3.5 inline-block text-[11px] font-serif text-[#ffd778] hover:underline font-semibold cursor-pointer transition-colors"
                     >
@@ -3584,6 +3603,66 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                       </button>
                     </div>
                   </form>
+
+                  {/* Feed Doa & Ucapan Restu Tamu di bawah Form jika tidak memakai Barcode */}
+                  {!useBarcode && (
+                    <div className="mt-8 pt-6 border-t border-[#d4af37]/35 w-full text-left">
+                      <div className="flex items-center justify-between mb-3.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[#ffd778] text-sm">💬</span>
+                          <h3 className="font-serif font-bold text-xs sm:text-sm text-[#FFF8D6] tracking-wide">
+                            Doa &amp; Ucapan Restu
+                          </h3>
+                          <span className="px-2 py-0.5 rounded-full bg-[#d4af37]/20 text-[#ffd778] text-[10px] font-sans font-bold border border-[#d4af37]/40">
+                            {rsvpList.length}
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-serif text-[#ebdcc6]/70 italic">
+                          Real-time Database
+                        </span>
+                      </div>
+
+                      <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                        {rsvpList.length === 0 ? (
+                          <div className="p-4 text-center rounded-xl bg-[#190f08]/85 border border-[#d4af37]/25 text-[#ebdcc6]/70 text-xs font-serif italic">
+                            Belum ada ucapan. Jadilah yang pertama memberikan doa restu untuk kedua mempelai di atas!
+                          </div>
+                        ) : (
+                          rsvpList.map((item) => (
+                            <div 
+                              key={item.id} 
+                              className="p-3 rounded-xl bg-gradient-to-b from-[#22160d]/90 to-[#140b06]/95 border border-[#d4af37]/35 shadow-sm space-y-1.5 transition-all"
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d4af37] to-[#8a6a1a] text-[#120a05] font-black font-serif text-[10px] flex items-center justify-center shrink-0">
+                                    {item.name.charAt(0).toUpperCase()}
+                                  </div>
+                                  <span className="font-serif font-bold text-xs text-[#FFF8D6] truncate max-w-[170px]">
+                                    {item.name}
+                                  </span>
+                                </div>
+                                <span className={`px-2 py-0.5 rounded-full text-[9px] font-sans font-bold border shrink-0 ${
+                                  item.attendance === 'attending'
+                                    ? 'bg-emerald-950/80 text-emerald-200 border-emerald-400/50'
+                                    : item.attendance === 'maybe'
+                                      ? 'bg-amber-950/80 text-amber-200 border-amber-400/50'
+                                      : 'bg-red-950/80 text-red-200 border-red-400/50'
+                                }`}>
+                                  {item.attendance === 'attending' ? '✓ Hadir' : item.attendance === 'maybe' ? 'Ragu' : 'Berhalangan'}
+                                </span>
+                              </div>
+                              {item.message && (
+                                <p className="text-xs text-[#ebdcc6]/90 font-serif leading-relaxed pl-8">
+                                  &ldquo;{item.message}&rdquo;
+                                </p>
+                              )}
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
