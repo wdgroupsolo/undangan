@@ -20,6 +20,7 @@ import {
   JogloMaroonHeritageTheme, 
   JogloButterflies 
 } from './themes/JogloMaroonHeritageTheme';
+import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 import { InvitationPausedScreen } from '../../components/InvitationPausedScreen';
 import { analyticsService } from '../../services/analyticsService';
@@ -296,7 +297,7 @@ export const InvitationRenderer: React.FC = () => {
   }
 
   const isJogloMaroon = activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon';
-  const isRoyalWayang = activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || slug === 'steven-bunga' || isAgniSlug;
+  const isRoyalWayang = !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
@@ -374,7 +375,13 @@ export const InvitationRenderer: React.FC = () => {
       }
     }
 
-    if (isJogloMaroon || isRoyalWayang) {
+    if (isJogloMaroon) {
+      // Elegant 3D Batak Heritage Entrance Portal
+      setOpeningStage('arch-video');
+      return;
+    }
+
+    if (isRoyalWayang) {
       // Authentic Royal Portal / Joglo Zoom entrance video animation matching user's reference
       setCanSkipVideo(false);
       setOpeningStage('arch-video');
@@ -398,7 +405,7 @@ export const InvitationRenderer: React.FC = () => {
       if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
       animTimeoutRef.current = setTimeout(() => {
         handleFinishAnimation();
-      }, isJogloMaroon ? 3000 : 3700);
+      }, 3700);
       return;
     }
 
@@ -655,8 +662,9 @@ export const InvitationRenderer: React.FC = () => {
 
                 {/* Buka Undangan Button */}
                 <button
+                  id="open-invitation-btn"
                   onClick={handleOpen}
-                  className="inline-flex items-center justify-center gap-2 w-full max-w-xs py-3 px-6 rounded-full bg-[#7e2231] hover:bg-[#651722] text-white font-serif text-xs tracking-widest uppercase transition-all duration-300 shadow-[0_6px_20px_rgba(126,34,49,0.4)] hover:shadow-[0_8px_25px_rgba(126,34,49,0.6)] active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 w-full max-w-xs py-3 px-6 rounded-full bg-[#7e2231] hover:bg-[#651722] text-white font-serif text-xs tracking-widest uppercase transition-all duration-300 shadow-[0_6px_20px_rgba(126,34,49,0.4)] hover:shadow-[0_8px_25px_rgba(126,34,49,0.6)] active:scale-95 cursor-pointer"
                 >
                   <MailOpen className="w-4 h-4 text-[#edd59e]" />
                   <span>Buka Undangan</span>
@@ -1457,26 +1465,32 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Gate Entrance Video */}
+      {/* 2. Entrance Animation: Gate Entrance Video or Batak Heritage 3D Portal */}
       {openingStage === 'arch-video' && (
-        <div 
-          onClick={() => {
-            if (canSkipVideo) handleFinishAnimation();
-          }}
-          className={`fixed top-0 right-0 h-full ${
-            isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full inset-0'
-          } z-50 bg-[#0e0b08] flex items-center justify-center transition-opacity duration-1000 ease-out overflow-hidden select-none ${
-            isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
-          } ${canSkipVideo ? 'cursor-pointer' : ''}`}
-        >
-          {/* Background image matching video final frame for seamless zero-gap crossfade */}
+        isJogloMaroon ? (
+          <BatakHeritageEntrancePortal
+            onComplete={handleFinishAnimation}
+            guestName={guestName}
+            groomName={groomDisplayName}
+            brideName={brideDisplayName}
+          />
+        ) : (
           <div 
-            className="absolute inset-0 bg-cover bg-center pointer-events-none"
-            style={{
-              backgroundImage: `url(${
-                isJogloMaroon
-                  ? '/themes/joglo-maroon-bg-clean.jpg'
-                  : isRoyalWayang
+            onClick={() => {
+              if (canSkipVideo) handleFinishAnimation();
+            }}
+            className={`fixed top-0 right-0 h-full ${
+              isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full inset-0'
+            } z-50 bg-[#0e0b08] flex items-center justify-center transition-opacity duration-1000 ease-out overflow-hidden select-none ${
+              isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+            } ${canSkipVideo ? 'cursor-pointer' : ''}`}
+          >
+            {/* Background image matching video final frame for seamless zero-gap crossfade */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center pointer-events-none"
+              style={{
+                backgroundImage: `url(${
+                  isRoyalWayang
                     ? '/themes/royal-wayang-bg.jpg'
                     : isJavaneseHeritage
                       ? '/themes/javanese-heritage-bg.jpg'
@@ -1485,30 +1499,28 @@ export const InvitationRenderer: React.FC = () => {
                         : isSecretGarden 
                           ? '/themes/secret-garden/assets/inner-cover.jpg' 
                           : '/arch-clean.png'
-              })`
-            }}
-          />
-
-          {/* Ambient subtle paper noise pattern */}
-          <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#8c7b6c_1px,transparent_1px)] [background-size:20px_20px]" />
-
-          {/* Video Container */}
-          <div className="relative w-full h-full flex items-center justify-center p-0">
-            <video
-              ref={(node) => {
-                videoRef.current = node;
-                if (node) {
-                  node.muted = true;
-                  node.defaultMuted = true;
-                  node.playsInline = true;
-                  node.play().catch(() => {});
-                }
+                })`
               }}
-              src={entranceVideoSrc}
-              poster={
-                isJogloMaroon
-                  ? '/themes/joglo-maroon-portal-poster.jpg'
-                  : isRoyalWayang
+            />
+
+            {/* Ambient subtle paper noise pattern */}
+            <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#8c7b6c_1px,transparent_1px)] [background-size:20px_20px]" />
+
+            {/* Video Container */}
+            <div className="relative w-full h-full flex items-center justify-center p-0">
+              <video
+                ref={(node) => {
+                  videoRef.current = node;
+                  if (node) {
+                    node.muted = true;
+                    node.defaultMuted = true;
+                    node.playsInline = true;
+                    node.play().catch(() => {});
+                  }
+                }}
+                src={entranceVideoSrc}
+                poster={
+                  isRoyalWayang
                     ? '/themes/royal-wayang-portal-poster.jpg'
                     : isJavaneseHeritage
                       ? '/themes/javanese-cover-poster.jpg'
@@ -1517,40 +1529,39 @@ export const InvitationRenderer: React.FC = () => {
                         : isSecretGarden 
                           ? '/themes/secret-garden/assets/inner-cover.jpg' 
                           : '/arch-clean.png'
-              }
-              autoPlay
-              playsInline
-              muted
-              className="w-full h-full object-cover object-center"
-              onError={handleFinishAnimation}
-              onTimeUpdate={() => {
-                if (isJogloMaroon && videoRef.current && videoRef.current.currentTime >= 2.7) {
-                  handleFinishAnimation();
-                } else if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
-                  handleFinishAnimation();
-                } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
+                }
+                autoPlay
+                playsInline
+                muted
+                className="w-full h-full object-cover object-center"
+                onError={handleFinishAnimation}
+                onTimeUpdate={() => {
+                  if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
+                    handleFinishAnimation();
+                  } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
+                    handleFinishAnimation();
+                  }
+                }}
+                onEnded={handleFinishAnimation}
+              />
+            </div>
+
+            {/* Skip hint */}
+            <div 
+              onClick={(e) => {
+                if (canSkipVideo) {
+                  e.stopPropagation();
                   handleFinishAnimation();
                 }
               }}
-              onEnded={handleFinishAnimation}
-            />
+              className={`absolute bottom-6 right-6 z-10 px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-sm text-white/80 text-[11px] font-sans tracking-wider uppercase transition-opacity duration-300 ${
+                canSkipVideo ? 'opacity-100 cursor-pointer hover:bg-black/70' : 'opacity-60 pointer-events-none'
+              }`}
+            >
+              Ketuk untuk lewati
+            </div>
           </div>
-
-          {/* Skip hint */}
-          <div 
-            onClick={(e) => {
-              if (canSkipVideo) {
-                e.stopPropagation();
-                handleFinishAnimation();
-              }
-            }}
-            className={`absolute bottom-6 right-6 z-10 px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-sm text-white/80 text-[11px] font-sans tracking-wider uppercase transition-opacity duration-300 ${
-              canSkipVideo ? 'opacity-100 cursor-pointer hover:bg-black/70' : 'opacity-60 pointer-events-none'
-            }`}
-          >
-            Ketuk untuk lewati
-          </div>
-        </div>
+        )
       )}
     </div>
   );
