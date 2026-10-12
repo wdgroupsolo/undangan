@@ -64,7 +64,7 @@ export const Home: React.FC = () => {
       name: 'Royal Wayang Gold',
       slug: 'royal-wayang-gold',
       badge: showcaseBadges[0] || 'Tema Keraton',
-      couple: 'Agni & Putri',
+      couple: 'Steven & Bunga',
       date: 'Minggu, 28 Desember 2025',
       preview: '/themes/royal-wayang-theme-preview.png',
       musicTitle: 'Ladrang Wilujeng Keraton',
