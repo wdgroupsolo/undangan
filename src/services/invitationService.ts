@@ -262,7 +262,7 @@ export const invitationService = {
       };
     }
 
-    const targetSlug = (slug === 'bagas-siti' || slug === 'habib-adiba') ? 'steven-bunga' : slug;
+    const targetSlug = (slug === 'bagas-siti' || slug === 'habib-adiba' || slug === 'bunga-steven' || slug === 'nirwana-sarangan') ? 'steven-bunga' : slug;
     try {
       const { data, error } = await supabase
         .from('invitations')

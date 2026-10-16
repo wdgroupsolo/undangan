@@ -73,6 +73,11 @@ export const rsvpService = {
     return localItems;
   },
 
+  // Backward compatibility alias for getRsvpsByInvitation
+  async getByInvitationId(invitationId: string): Promise<RSVPItem[]> {
+    return this.getRsvpsByInvitation(invitationId);
+  },
+
   // Get all RSVPs with invitation & client information (used on Admin RSVP page)
   async getAllRsvps(filterInvitationId?: string): Promise<RSVPItem[]> {
     const localItems = getLocalRsvps();

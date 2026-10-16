@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
-import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI } from '../../services/editorService';
+import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI, COUPLE_STEVEN_BUNGA, GALLERY_STEVEN_BUNGA } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
 import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
@@ -20,6 +20,7 @@ import {
   JogloMaroonHeritageTheme, 
   JogloButterflies 
 } from './themes/JogloMaroonHeritageTheme';
+import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSaranganTheme';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 import { InvitationPausedScreen } from '../../components/InvitationPausedScreen';
@@ -148,24 +149,25 @@ export const InvitationRenderer: React.FC = () => {
     }
   }, [couple, slug]);
 
-  const isBimaSlug = rawSlug === 'bima-ratna' || rawSlug.includes('bima') || rawSlug.includes('demo') || rawSlug.includes('testimoni');
-  const activeCouple = couple || cachedCouple || (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : null));
+  const isStevenBungaSlug = rawSlug.includes('steven') || rawSlug.includes('bunga') || rawSlug === 'nirwana-sarangan';
+  const isBimaSlug = !isStevenBungaSlug && (rawSlug === 'bima-ratna' || rawSlug.includes('bima') || rawSlug.includes('testimoni'));
+  const activeCouple = (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : null) || couple || cachedCouple || (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA));
 
   const rawGroomNick = activeCouple?.groom_nickname?.trim();
   const rawGroomFull = activeCouple?.groom_full_name?.trim();
-  const groom = isBimaSlug ? 'Bima' : (isAgniSlug ? 'Agni' : (
+  const groom = isStevenBungaSlug ? 'Steven' : (isBimaSlug ? 'Bima' : (isAgniSlug ? 'Agni' : (
     (rawGroomNick && (!rawGroomFull || (rawGroomNick.toLowerCase() !== 'bagas' || rawGroomFull.toLowerCase() === 'bagas')))
       ? formatName(rawGroomNick)
       : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : (rawGroomNick && rawGroomNick.toLowerCase() !== 'bagas' ? formatName(rawGroomNick) : 'Steven'))
-  ));
+  )));
 
   const rawBrideNick = activeCouple?.bride_nickname?.trim();
   const rawBrideFull = activeCouple?.bride_full_name?.trim();
-  const bride = isBimaSlug ? 'Ratna' : (isAgniSlug ? 'Putri' : (
+  const bride = isStevenBungaSlug ? 'Bunga' : (isBimaSlug ? 'Ratna' : (isAgniSlug ? 'Putri' : (
     (rawBrideNick && (!rawBrideFull || (rawBrideNick.toLowerCase() !== 'siti' || rawBrideFull.toLowerCase() === 'siti')))
       ? formatName(rawBrideNick)
       : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : (rawBrideNick && rawBrideNick.toLowerCase() !== 'siti' ? formatName(rawBrideNick) : 'Bunga'))
-  ));
+  )));
 
   // Dynamically set page title and Open Graph meta tags in browser tab (Called unconditionally)
   useEffect(() => {
@@ -297,13 +299,14 @@ export const InvitationRenderer: React.FC = () => {
     );
   }
 
-  const isJogloMaroon = activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon';
-  const isRoyalWayang = !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
+  const isNirwanaSarangan = activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan';
+  const isJogloMaroon = !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
+  const isRoyalWayang = !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon;
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan;
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 
@@ -316,7 +319,7 @@ export const InvitationRenderer: React.FC = () => {
     couple?.cover_photo ||
     invitation?.cover_image_url || 
     gallery?.[0]?.image_url || 
-    (isJogloMaroon ? '/photos/photo-3.jpg' : isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
+    (isNirwanaSarangan ? '/themes/nirwana-sarangan/couple-cover.jpg' : isJogloMaroon ? '/photos/photo-3.jpg' : isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isJogloMaroon
     ? '/themes/joglo-maroon-entrance.mp4'
@@ -374,6 +377,15 @@ export const InvitationRenderer: React.FC = () => {
             window.addEventListener('touchstart', unlockAudio, { once: true });
           });
       }
+    }
+
+    if (isNirwanaSarangan) {
+      setIsCoverExiting(true);
+      setTimeout(() => {
+        setOpeningStage('opened');
+        setIsCoverExiting(false);
+      }, 700);
+      return;
     }
 
     if (isJogloMaroon) {
@@ -464,7 +476,9 @@ export const InvitationRenderer: React.FC = () => {
           className={`fixed z-50 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 cursor-pointer ${
             isRoyalWayang 
               ? 'top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 bg-white/20 hover:bg-white/35 backdrop-blur-md border border-white/50 text-white hover:scale-110 active:scale-95'
-              : 'bottom-6 right-6 w-12 h-12 bg-black/70 backdrop-blur-md border border-white/20 text-white hover:scale-110 active:scale-95'
+              : isNirwanaSarangan
+                ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#0C241B]/90 hover:bg-[#163D2E] backdrop-blur-md border border-[#C5A059] text-[#E8D5A3] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(197,160,89,0.4)]'
+                : 'bottom-6 right-6 w-12 h-12 bg-black/70 backdrop-blur-md border border-white/20 text-white hover:scale-110 active:scale-95'
           }`}
         >
           {isRoyalWayang ? (
@@ -473,6 +487,11 @@ export const InvitationRenderer: React.FC = () => {
             ) : (
               <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5" />
             )
+          ) : isNirwanaSarangan ? (
+            <Disc 
+              className={`w-5 h-5 sm:w-6 sm:h-6 text-[#E8D5A3] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
+              style={{ animationDuration: '4s' }}
+            />
           ) : (
             <Disc 
               className={`w-6 h-6 text-white group-hover:text-primary-300 transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
@@ -493,7 +512,18 @@ export const InvitationRenderer: React.FC = () => {
             }`
       }>
         {(isSplitTheme || isInvitationVisible || isCoverExiting || openingStage === 'arch-video') && (
-          isJogloMaroon ? (
+          isNirwanaSarangan ? (
+            <NirwanaSaranganTheme 
+              invitation={invitation}
+              couple={couple || activeCouple}
+              events={events || []}
+              stories={stories || []}
+              gallery={(gallery && gallery.length > 0 && !gallery[0]?.image_url?.includes('agni-putri')) ? gallery : (isStevenBungaSlug ? GALLERY_STEVEN_BUNGA : (gallery || []))}
+              gifts={gifts || []}
+              music={music}
+              isOpening={isVideoExiting || openingStage === 'opened'}
+            />
+          ) : isJogloMaroon ? (
             <JogloMaroonHeritageTheme 
               invitation={invitation}
               couple={couple}
@@ -602,7 +632,91 @@ export const InvitationRenderer: React.FC = () => {
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {openingStage === 'cover' && (
-        isJogloMaroon ? (
+        isNirwanaSarangan ? (
+          /* Hotel Nirwana Sarangan Resort & Lakeview Cover */
+          <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0D2018] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            {/* Desktop Scenic Background - Lakeview Panorama */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              <img 
+                src="/themes/nirwana-sarangan/lakeview-panorama.jpg" 
+                alt="Pemandangan Telaga Sarangan & Gunung Lawu" 
+                className="w-full h-full object-cover object-center scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D2018]/90 via-transparent to-black/50" />
+            </div>
+
+            {/* Floating Lake Mist */}
+            <FloatingLakeMist />
+
+            {/* Centered Mobile/Portrait Invitation Card */}
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:max-h-[94vh] sm:rounded-3xl overflow-hidden flex flex-col justify-between items-center text-center bg-[#F8FAF9] shadow-[0_25px_70px_rgba(0,0,0,0.85),_0_0_40px_rgba(22,56,44,0.35)] sm:border-2 sm:border-[#16382C]/30">
+              {/* Top Pine & Gold Banner */}
+              <div className="w-full bg-[#16382C] text-white py-2.5 px-4 shadow-sm border-b border-[#C5A059]/40 flex items-center justify-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse" />
+                <p className="text-[11px] font-serif font-semibold tracking-[0.25em] uppercase text-[#E2C792]">
+                  HOTEL NIRWANA • TELAGA SARANGAN
+                </p>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse" />
+              </div>
+
+              {/* Middle Card Content */}
+              <div className="flex-1 w-full flex flex-col items-center justify-center px-6 py-5 overflow-y-auto">
+                {/* Arched Photo Frame */}
+                <div className="relative mx-auto w-44 h-52 rounded-t-[88px] rounded-b-xl overflow-hidden border-2 border-[#16382C]/50 shadow-lg mb-4 group">
+                  <img 
+                    src={coverImage} 
+                    alt={`${groomDisplayName} & ${brideDisplayName}`} 
+                    className="w-full h-full object-cover object-center"
+                  />
+                  <div className="absolute inset-0 ring-1 ring-inset ring-[#C5A059]/40 rounded-t-[88px] rounded-b-xl" />
+                </div>
+
+                <p className="text-xs uppercase tracking-[0.3em] text-[#16382C] font-serif font-medium mb-1">
+                  The Wedding Of
+                </p>
+
+                <h1 className="text-3xl sm:text-4xl font-serif font-medium text-[#16382C] mb-3 tracking-wide">
+                  {groomDisplayName} <span className="font-light italic text-[#C5A059]">&amp;</span> {brideDisplayName}
+                </h1>
+
+                {/* Event Date Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#16382C]/10 text-[#16382C] text-xs font-serif font-medium mb-4">
+                  <span>
+                    {events?.[0]?.event_date 
+                      ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                      : 'Minggu, 20 November 2026'}
+                  </span>
+                </div>
+
+                {/* Guest Invitation Box */}
+                <div className="w-full bg-[#EBF2EE] p-3.5 rounded-2xl border border-[#16382C]/15 mb-4 shadow-inner">
+                  <p className="text-[11px] text-[#476054] uppercase tracking-wider mb-1 font-medium">
+                    Kepada Yth. Bapak/Ibu/Saudara/i:
+                  </p>
+                  <p className="font-serif text-base sm:text-lg font-bold text-[#16382C] line-clamp-1">
+                    {guestName}
+                  </p>
+                  <p className="text-[10px] text-[#476054] italic mt-0.5">
+                    *Mohon maaf apabila ada kesalahan penulisan nama/gelar
+                  </p>
+                </div>
+              </div>
+
+              {/* Bottom "Buka Undangan" Button */}
+              <div className="w-full p-4 bg-gradient-to-t from-white via-white/95 to-transparent">
+                <button
+                  type="button"
+                  onClick={handleOpen}
+                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#16382C] via-[#2A5241] to-[#122E24] text-[#E2C792] font-serif text-sm font-semibold tracking-widest uppercase shadow-lg shadow-[#16382C]/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 border border-[#C5A059]/40 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <MailOpen className="w-4 h-4 text-[#C5A059]" />
+                  <span>Buka Undangan</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : isJogloMaroon ? (
           /* Joglo Maroon Heritage Cover - Exact replica of the user reference video */
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#140e0b]">
             {/* Desktop Scenic Background */}

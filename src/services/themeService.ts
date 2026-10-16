@@ -31,6 +31,8 @@ export const THEME_SCREENSHOT_MAP: Record<string, string> = {
   'secret-garden': '/themes/secret-garden-theme-preview.png',
   'maroon-gold': '/themes/maroon-gold-theme-preview.png',
   'royal-elegance': '/themes/royal-elegance-theme-preview.png',
+  'nirwana-sarangan': '/themes/nirwana-sarangan/theme-preview.jpg',
+  'hotel-nirwana': '/themes/nirwana-sarangan/theme-preview.jpg',
 };
 
 export const enhanceThemeWithScreenshot = (theme: any): Theme => {
@@ -43,6 +45,36 @@ export const enhanceThemeWithScreenshot = (theme: any): Theme => {
     };
   }
   return theme as Theme;
+};
+
+// Masterpiece Theme: Nirwana Sarangan Resort (Telaga Sarangan & Hotel Nirwana)
+export const REAL_NIRWANA_SARANGAN_THEME: Theme = {
+  id: 'b2c3d4e5-6789-4012-c345-6def78901234',
+  name: 'Nirwana Sarangan Resort',
+  slug: 'nirwana-sarangan',
+  description: 'Tema pernikahan eksklusif bernuansa pemandangan Telaga Sarangan yang sejuk dan menenangkan di lereng Gunung Lawu, berlatar kemegahan Hotel Nirwana Sarangan, riak air danau, kabut pegunungan, dan sentuhan intimate wedding & wisata.',
+  category: 'Resort & Nature',
+  preview_image: '/themes/nirwana-sarangan/theme-preview.jpg',
+  thumbnail: '/themes/nirwana-sarangan/theme-preview.jpg',
+  status: 'active',
+  badge: 'Tema Resor Eksklusif',
+  rating: '5.0',
+  features: [
+    'Kemegahan Hotel Nirwana & Panorama Telaga Sarangan',
+    'Nuansa Hijau Pinus Lereng Lawu & Kabut Danau Romantis',
+    'Resor Venue Peta Langsung & Lobi Nirwana Sarangan',
+    'Amplop Digital, Salin Rekening & RSVP Online'
+  ],
+  theme_config: { 
+    primaryColor: '#16382C', 
+    secondaryColor: '#F5F8F6', 
+    accentColor: '#C5A059',
+    style: 'nirwana-sarangan',
+    backgroundImage: '/themes/nirwana-sarangan/lakeview-panorama.jpg',
+    desktopBackground: '/themes/nirwana-sarangan/lakeview-panorama.jpg',
+    mobileBackground: '/themes/nirwana-sarangan/lakeview-mobile.jpg',
+  },
+  created_at: '2026-10-16T12:00:00.000000+00:00'
 };
 
 // Masterpiece Theme: Batak Maroon Heritage (Rumah Bolon, Ukiran Gorga & Ulos, Burgundy Peonies)
@@ -199,6 +231,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
 };
 
 export const DEFAULT_THEMES: Theme[] = [
+  REAL_NIRWANA_SARANGAN_THEME,
   REAL_JOGLO_MAROON_THEME,
   REAL_ROYAL_WAYANG_THEME,
   REAL_JAVANESE_HERITAGE_THEME,
@@ -220,9 +253,13 @@ export const themeService = {
         return DEFAULT_THEMES;
       }
 
-      // Merge database themes with Joglo Maroon, Royal Wayang, Secret Garden, Maroon Gold, and Javanese Heritage
+      // Merge database themes with Nirwana Sarangan, Joglo Maroon, Royal Wayang, Secret Garden, Maroon Gold, and Javanese Heritage
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
+
+      if (!existingSlugs.has('nirwana-sarangan')) {
+        merged.unshift(REAL_NIRWANA_SARANGAN_THEME);
+      }
 
       if (!existingSlugs.has('joglo-maroon-heritage')) {
         merged.unshift(REAL_JOGLO_MAROON_THEME);

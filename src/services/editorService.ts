@@ -73,6 +73,40 @@ export const GALLERY_AGNI_PUTRI = [
   { id: '99000000-0000-0000-0000-000000000005', invitation_id: 'e2000000-0000-0000-0000-000000000002', image_url: '/themes/agni-putri/couple-artistic.jpg', sort_order: 5 }
 ];
 
+export const COUPLE_STEVEN_BUNGA = {
+  id: '36000000-0000-0000-0000-000000000006',
+  invitation_id: 'demo-theme-invitation',
+  groom_full_name: 'Steven Pratama, S.Kom.',
+  groom_nickname: 'Steven',
+  groom_father_name: 'Bpk. Bambang Pratama',
+  groom_mother_name: 'Ibu Siti Rahayu',
+  groom_parents: 'Putra pertama dari Bpk. Bambang Pratama & Ibu Siti Rahayu',
+  groom_photo: '/photos/photo-7.jpg',
+  groom_photo_url: '/photos/photo-7.jpg',
+  groom_instagram: '@steven_pratama',
+  bride_full_name: 'Bunga Citra Lestari, S.E.',
+  bride_nickname: 'Bunga',
+  bride_father_name: 'Bpk. Hendra Gunawan',
+  bride_mother_name: 'Ibu Ratna Dewi',
+  bride_parents: 'Putri kedua dari Bpk. Hendra Gunawan & Ibu Ratna Dewi',
+  bride_photo: '/photos/photo-4.jpg',
+  bride_photo_url: '/photos/photo-4.jpg',
+  bride_instagram: '@bunga_lestari',
+  cover_photo_url: '/photos/photo-3.jpg',
+  gift_address: 'Jl. Slamet Riyadi No. 120, Solo, Jawa Tengah'
+};
+
+export const GALLERY_STEVEN_BUNGA = [
+  { id: 'sb-gal-1', image_url: '/photos/photo-1.jpg', caption: 'Kebersamaan & Tawa Bahagia', sort_order: 1 },
+  { id: 'sb-gal-2', image_url: '/photos/photo-3.jpg', caption: 'Romansa Kasih Steven & Bunga', sort_order: 2 },
+  { id: 'sb-gal-3', image_url: '/photos/photo-4.jpg', caption: 'Pesona Anggun Mempelai Putri', sort_order: 3 },
+  { id: 'sb-gal-4', image_url: '/photos/photo-5.jpg', caption: 'Genggaman Menuju Masa Depan', sort_order: 4 },
+  { id: 'sb-gal-5', image_url: '/photos/photo-6.jpg', caption: 'Senyum Bahagia Hari Sakral', sort_order: 5 },
+  { id: 'sb-gal-6', image_url: '/photos/photo-7.jpg', caption: 'Ketulusan Hati Mempelai Pria', sort_order: 6 },
+  { id: 'sb-gal-7', image_url: '/photos/photo-8.jpg', caption: 'Langkah Menuju Janji Suci', sort_order: 7 },
+  { id: 'sb-gal-8', image_url: '/photos/photo-9.jpg', caption: 'Menuju Pelaminan Bahagia', sort_order: 8 },
+];
+
 export const COUPLE_DEMO_TESTIMONI = {
   id: '34000000-0000-0000-0000-000000000004',
   invitation_id: 'e3000000-0000-0000-0000-000000000003',
@@ -272,13 +306,18 @@ export const editorService = {
       const { data, error } = await supabase.from('couples').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isStevenBungaId = invitationId === 'demo-theme-invitation' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('steven') || invitationId.toLowerCase().includes('bunga')));
+    if (isStevenBungaId) {
+      return COUPLE_STEVEN_BUNGA;
+    }
     const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
       (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
     if (isDimasId) {
       return COUPLE_DIMAS_ANISA;
     }
     const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
-      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('bima') || invitationId.toLowerCase().includes('testimoni')));
     if (isDemoId) {
       return COUPLE_DEMO_TESTIMONI;
     }
@@ -385,13 +424,18 @@ export const editorService = {
       const { data, error } = await supabase.from('gallery').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isStevenBungaId = invitationId === 'demo-theme-invitation' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('steven') || invitationId.toLowerCase().includes('bunga')));
+    if (isStevenBungaId) {
+      return GALLERY_STEVEN_BUNGA;
+    }
     const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
       (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
     if (isDimasId) {
       return GALLERY_AGNI_PUTRI;
     }
     const isDemoId = invitationId === 'e3000000-0000-0000-0000-000000000003' || 
-      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('demo') || invitationId.toLowerCase().includes('testimoni')));
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('bima') || invitationId.toLowerCase().includes('testimoni')));
     if (isDemoId) {
       return GALLERY_AGNI_PUTRI;
     }

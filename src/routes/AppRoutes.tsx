@@ -43,8 +43,9 @@ export const AppRoutes: React.FC = () => {
         </Route>
       </Route>
 
-      {/* Public Invitation Route */}
+      {/* Public Invitation Routes */}
       <Route path="/invitation/:slug" element={<InvitationRenderer />} />
+      <Route path="/:slug" element={<InvitationRenderer />} />
 
       {/* 404 Catch All */}
       <Route path="*" element={<div className="p-8 text-center font-bold text-2xl">404 Not Found</div>} />
