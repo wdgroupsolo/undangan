@@ -245,14 +245,22 @@ export const BaseTheme: React.FC<BaseThemeProps> = ({ invitation, couple, events
         <p className="mt-8 font-serif text-2xl text-white">
           {couple?.groom_nickname || 'R'} &amp; {couple?.bride_nickname || 'A'}
         </p>
-        <a
-          href="https://www.instagram.com/wdgroupcompany"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-12 inline-block text-xs opacity-50 hover:opacity-100 transition-opacity cursor-pointer text-gray-400 hover:text-white"
-        >
-          Powered by WD Group Invitation
-        </a>
+        {/* ROYAL COPYRIGHT FOOTER */}
+        <div className="mt-12 pt-3 pb-8 text-center relative z-20 border-t border-gray-800">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-gray-700" />
+            <div className="w-1 h-1 rotate-45 bg-gray-500" />
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-gray-700" />
+          </div>
+          <a 
+            href="https://www.instagram.com/wdgroupcompany" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-[10px] sm:text-[11px] text-gray-500 hover:text-white tracking-wider font-light transition-colors inline-block cursor-pointer"
+          >
+            &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+          </a>
+        </div>
       </footer>
 
       {/* Calendar Reminder Modal */}

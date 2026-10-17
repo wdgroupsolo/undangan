@@ -22,6 +22,7 @@ import {
 } from './themes/JogloMaroonHeritageTheme';
 import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSaranganTheme';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
+import { NirwanaSaranganEntrancePortal } from './components/NirwanaSaranganEntrancePortal';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 import { InvitationPausedScreen } from '../../components/InvitationPausedScreen';
 import { analyticsService } from '../../services/analyticsService';
@@ -85,6 +86,9 @@ export const InvitationRenderer: React.FC = () => {
       case 'joglo-bloom':
       case 'pendopo-maroon':
         return '/music/joglo-maroon-heritage.mp3';
+      case 'nirwana-sarangan':
+      case 'hotel-nirwana':
+      case 'telaga-sarangan':
       case 'royal-wayang-gold':
       case 'royal-wayang':
       case 'joglo-wayang':
@@ -149,25 +153,32 @@ export const InvitationRenderer: React.FC = () => {
     }
   }, [couple, slug]);
 
-  const isStevenBungaSlug = rawSlug.includes('steven') || rawSlug.includes('bunga') || rawSlug === 'nirwana-sarangan';
-  const isBimaSlug = !isStevenBungaSlug && (rawSlug === 'bima-ratna' || rawSlug.includes('bima') || rawSlug.includes('testimoni'));
-  const activeCouple = (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : null) || couple || cachedCouple || (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA));
+  const isStevenBungaSlug = (rawSlug === 'steven-bunga' || rawSlug === 'bunga-steven' || (!slug && !couple));
+  const isBimaSlug = !isStevenBungaSlug && (rawSlug === 'bima-ratna' || rawSlug.includes('testimoni'));
+
+  // Prioritize real database/props couple data over demo presets
+  const hasRealCoupleData = couple && (
+    (couple.groom_nickname && couple.groom_nickname.trim() !== '') ||
+    (couple.groom_full_name && couple.groom_full_name.trim() !== '') ||
+    (couple.bride_nickname && couple.bride_nickname.trim() !== '') ||
+    (couple.bride_full_name && couple.bride_full_name.trim() !== '')
+  );
+
+  const activeCouple = hasRealCoupleData
+    ? couple
+    : (cachedCouple || (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA))));
 
   const rawGroomNick = activeCouple?.groom_nickname?.trim();
   const rawGroomFull = activeCouple?.groom_full_name?.trim();
-  const groom = isStevenBungaSlug ? 'Steven' : (isBimaSlug ? 'Bima' : (isAgniSlug ? 'Agni' : (
-    (rawGroomNick && (!rawGroomFull || (rawGroomNick.toLowerCase() !== 'bagas' || rawGroomFull.toLowerCase() === 'bagas')))
-      ? formatName(rawGroomNick)
-      : (rawGroomFull ? formatName(rawGroomFull.split(/\s+/)[0]) : (rawGroomNick && rawGroomNick.toLowerCase() !== 'bagas' ? formatName(rawGroomNick) : 'Steven'))
-  )));
+  const groom = rawGroomNick
+    ? formatName(rawGroomNick)
+    : (rawGroomFull ? formatName(rawGroomFull.split(/[\s,]+/)[0]) : (isAgniSlug ? 'Agni' : (isBimaSlug ? 'Bima' : 'Steven')));
 
   const rawBrideNick = activeCouple?.bride_nickname?.trim();
   const rawBrideFull = activeCouple?.bride_full_name?.trim();
-  const bride = isStevenBungaSlug ? 'Bunga' : (isBimaSlug ? 'Ratna' : (isAgniSlug ? 'Putri' : (
-    (rawBrideNick && (!rawBrideFull || (rawBrideNick.toLowerCase() !== 'siti' || rawBrideFull.toLowerCase() === 'siti')))
-      ? formatName(rawBrideNick)
-      : (rawBrideFull ? formatName(rawBrideFull.split(/\s+/)[0]) : (rawBrideNick && rawBrideNick.toLowerCase() !== 'siti' ? formatName(rawBrideNick) : 'Bunga'))
-  )));
+  const bride = rawBrideNick
+    ? formatName(rawBrideNick)
+    : (rawBrideFull ? formatName(rawBrideFull.split(/[\s,]+/)[0]) : (isAgniSlug ? 'Putri' : (isBimaSlug ? 'Ratna' : 'Bunga')));
 
   // Dynamically set page title and Open Graph meta tags in browser tab (Called unconditionally)
   useEffect(() => {
@@ -321,17 +332,19 @@ export const InvitationRenderer: React.FC = () => {
     gallery?.[0]?.image_url || 
     (isNirwanaSarangan ? '/themes/nirwana-sarangan/couple-cover.jpg' : isJogloMaroon ? '/photos/photo-3.jpg' : isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
-  const entranceVideoSrc = isJogloMaroon
-    ? '/themes/joglo-maroon-entrance.mp4'
-    : isRoyalWayang
-      ? '/themes/royal-wayang-portal-zoom.mp4'
-      : isJavaneseHeritage
-        ? '/themes/javanese-heritage-entrance.mp4'
-        : isSecretGarden
-          ? '/themes/secret-garden/assets/video.mp4'
-          : isMaroonGold
-            ? '/maroon-gate-entrance.mp4'
-            : '/video-cover.mp4';
+  const entranceVideoSrc = isNirwanaSarangan
+    ? '/gemini_generated_video_55ad2241.mp4'
+    : isJogloMaroon
+      ? '/themes/joglo-maroon-entrance.mp4'
+      : isRoyalWayang
+        ? '/themes/royal-wayang-portal-zoom.mp4'
+        : isJavaneseHeritage
+          ? '/themes/javanese-heritage-entrance.mp4'
+          : isSecretGarden
+            ? '/themes/secret-garden/assets/video.mp4'
+            : isMaroonGold
+              ? '/maroon-gate-entrance.mp4'
+              : '/video-cover.mp4';
 
   // Finish animation and go directly into the opened invitation
   const handleFinishAnimation = () => {
@@ -380,11 +393,8 @@ export const InvitationRenderer: React.FC = () => {
     }
 
     if (isNirwanaSarangan) {
-      setIsCoverExiting(true);
-      setTimeout(() => {
-        setOpeningStage('opened');
-        setIsCoverExiting(false);
-      }, 700);
+      // Elegant 3D Nirwana Sarangan Resort & Lake Entrance Portal
+      setOpeningStage('arch-video');
       return;
     }
 
@@ -1580,9 +1590,18 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Gate Entrance Video or Batak Heritage 3D Portal */}
+      {/* 2. Entrance Animation: Nirwana Sarangan Portal, Batak Heritage Portal, or Gate Video */}
       {openingStage === 'arch-video' && (
-        isJogloMaroon ? (
+        isNirwanaSarangan ? (
+          <NirwanaSaranganEntrancePortal
+            onComplete={handleFinishAnimation}
+            guestName={guestName}
+            groomName={groomDisplayName}
+            brideName={brideDisplayName}
+            coverImage={coverImage}
+            weddingDate={events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'Sabtu, 24 Oktober 2026'}
+          />
+        ) : isJogloMaroon ? (
           <BatakHeritageEntrancePortal
             onComplete={handleFinishAnimation}
             guestName={guestName}
@@ -1595,8 +1614,10 @@ export const InvitationRenderer: React.FC = () => {
               if (canSkipVideo) handleFinishAnimation();
             }}
             className={`fixed top-0 right-0 h-full ${
-              isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full inset-0'
-            } z-50 bg-[#0e0b08] flex items-center justify-center transition-opacity duration-1000 ease-out overflow-hidden select-none ${
+              isNirwanaSarangan
+                ? 'w-full lg:w-7/12 xl:w-1/2'
+                : (isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full inset-0')
+            } z-50 bg-[#071712] flex items-center justify-center transition-opacity duration-1000 ease-out overflow-hidden select-none ${
               isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
             } ${canSkipVideo ? 'cursor-pointer' : ''}`}
           >
@@ -1605,15 +1626,17 @@ export const InvitationRenderer: React.FC = () => {
               className="absolute inset-0 bg-cover bg-center pointer-events-none"
               style={{
                 backgroundImage: `url(${
-                  isRoyalWayang
-                    ? '/themes/royal-wayang-bg.jpg'
-                    : isJavaneseHeritage
-                      ? '/themes/javanese-heritage-bg.jpg'
-                      : isMaroonGold 
-                        ? '/gate-bg-open.jpg' 
-                        : isSecretGarden 
-                          ? '/themes/secret-garden/assets/inner-cover.jpg' 
-                          : '/arch-clean.png'
+                  isNirwanaSarangan
+                    ? '/themes/nirwana-sarangan/lakeview-panorama.jpg'
+                    : isRoyalWayang
+                      ? '/themes/royal-wayang-bg.jpg'
+                      : isJavaneseHeritage
+                        ? '/themes/javanese-heritage-bg.jpg'
+                        : isMaroonGold 
+                          ? '/gate-bg-open.jpg' 
+                          : isSecretGarden 
+                            ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                            : '/arch-clean.png'
                 })`
               }}
             />
@@ -1635,15 +1658,17 @@ export const InvitationRenderer: React.FC = () => {
                 }}
                 src={entranceVideoSrc}
                 poster={
-                  isRoyalWayang
-                    ? '/themes/royal-wayang-portal-poster.jpg'
-                    : isJavaneseHeritage
-                      ? '/themes/javanese-cover-poster.jpg'
-                      : isMaroonGold 
-                        ? '/gate-bg-open.jpg' 
-                        : isSecretGarden 
-                          ? '/themes/secret-garden/assets/inner-cover.jpg' 
-                          : '/arch-clean.png'
+                  isNirwanaSarangan
+                    ? '/themes/nirwana-sarangan/lakeview-panorama.jpg'
+                    : isRoyalWayang
+                      ? '/themes/royal-wayang-portal-poster.jpg'
+                      : isJavaneseHeritage
+                        ? '/themes/javanese-cover-poster.jpg'
+                        : isMaroonGold 
+                          ? '/gate-bg-open.jpg' 
+                          : isSecretGarden 
+                            ? '/themes/secret-garden/assets/inner-cover.jpg' 
+                            : '/arch-clean.png'
                 }
                 autoPlay
                 playsInline
@@ -1651,7 +1676,9 @@ export const InvitationRenderer: React.FC = () => {
                 className="w-full h-full object-cover object-center"
                 onError={handleFinishAnimation}
                 onTimeUpdate={() => {
-                  if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
+                  if (isNirwanaSarangan && videoRef.current && videoRef.current.currentTime >= 9.8) {
+                    handleFinishAnimation();
+                  } else if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
                     handleFinishAnimation();
                   } else if (isJavaneseHeritage && videoRef.current && videoRef.current.currentTime >= 18.0) {
                     handleFinishAnimation();

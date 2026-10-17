@@ -3820,16 +3820,22 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             />
           </div>
 
-          {/* Bottom Watermark / Copyright */}
-          <div className="relative z-20 text-[9px] text-stone-400/60 font-mono tracking-widest uppercase mt-3">
-            {invitation?.settings?.powered_by_url ? (
-              <a href={invitation.settings.powered_by_url} target="_blank" rel="noopener noreferrer" className="hover:text-[#ffd778] transition-colors">
-                {invitation?.settings?.powered_by || "WD Group • Royal Wayang Gold Edition"}
-              </a>
-            ) : (
-              <span>{invitation?.settings?.powered_by || "WD Group • Royal Wayang Gold Edition"}</span>
-            )}
-          </div>
+          {/* ROYAL COPYRIGHT FOOTER */}
+          <footer className="pt-4 pb-24 sm:pb-28 px-4 bg-gradient-to-b from-[#140b05] via-[#0a0502] to-[#040201] border-t border-[#d4af37]/20 text-center relative z-20 mt-4">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#d4af37]/40" />
+              <div className="w-1 h-1 rotate-45 bg-[#ffd778]/70" />
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#d4af37]/40" />
+            </div>
+            <a 
+              href="https://www.instagram.com/wdgroupcompany" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[10px] sm:text-[11px] text-white/40 hover:text-[#ffd778] tracking-wider font-light transition-colors inline-block cursor-pointer"
+            >
+              &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+            </a>
+          </footer>
         </section>
 
       </div>

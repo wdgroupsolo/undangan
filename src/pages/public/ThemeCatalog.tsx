@@ -110,6 +110,7 @@ export const ThemeCatalog: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             
             {filteredThemes?.map((theme) => {
+              const isNirwana = theme.slug === 'nirwana-sarangan' || theme.slug === 'hotel-nirwana' || theme.slug === 'telaga-sarangan';
               const isJogloMaroon = theme.slug === 'joglo-maroon-heritage' || theme.slug === 'joglo-maroon' || theme.slug === 'joglo-bloom';
               const isRoyalWayang = theme.slug === 'royal-wayang-gold' || theme.slug === 'royal-wayang';
               const isGarden = theme.slug === 'secret-garden';
@@ -117,23 +118,27 @@ export const ThemeCatalog: React.FC = () => {
               const isMaroon = theme.slug === 'maroon-gold';
               const isSplit = theme.slug === 'split-floral';
 
-              const imageSrc = theme.preview_image || theme.thumbnail || (isJogloMaroon
-                ? '/themes/joglo-maroon-theme-preview.png'
-                : (isRoyalWayang
-                  ? '/themes/royal-wayang-theme-preview.png'
-                  : (isGarden 
-                      ? '/themes/secret-garden-theme-preview.png' 
-                      : (isSplit 
-                          ? '/themes/split-floral-theme-preview.png' 
-                          : '/themes/javanese-heritage-theme-preview.png'))));
+              const imageSrc = theme.preview_image || theme.thumbnail || (isNirwana
+                ? '/themes/nirwana-sarangan/theme-preview.jpg'
+                : (isJogloMaroon
+                  ? '/themes/joglo-maroon-theme-preview.png'
+                  : (isRoyalWayang
+                    ? '/themes/royal-wayang-theme-preview.png'
+                    : (isGarden 
+                        ? '/themes/secret-garden-theme-preview.png' 
+                        : (isSplit 
+                            ? '/themes/split-floral-theme-preview.png' 
+                            : '/themes/javanese-heritage-theme-preview.png')))));
 
-              const demoUrl = isJogloMaroon
-                ? '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
-                : (isRoyalWayang
-                  ? '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
-                  : (isJavanese 
-                      ? '/invitation/steven-bunga?theme=javanese-heritage&demo=true' 
-                      : `/invitation/steven-bunga?theme=${theme.slug}&demo=true`));
+              const demoUrl = isNirwana
+                ? '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true'
+                : (isJogloMaroon
+                  ? '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
+                  : (isRoyalWayang
+                    ? '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
+                    : (isJavanese 
+                        ? '/invitation/steven-bunga?theme=javanese-heritage&demo=true' 
+                        : `/invitation/steven-bunga?theme=${theme.slug}&demo=true`)));
 
               return (
                 <div 
@@ -153,10 +158,10 @@ export const ThemeCatalog: React.FC = () => {
                       {/* Top Badges */}
                       <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10">
                         <span className="bg-primary-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
-                          {theme.category || (isJogloMaroon ? 'Traditional & Heritage' : isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
+                          {theme.category || (isNirwana ? 'Resort & Nature' : isJogloMaroon ? 'Traditional & Heritage' : isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
                         </span>
                         <span className="bg-amber-400 text-stone-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow w-fit">
-                          {theme.badge || 'Tema Aktif'}
+                          {theme.badge || (isNirwana ? 'Tema Resor Eksklusif' : 'Tema Aktif')}
                         </span>
                       </div>
 
@@ -181,11 +186,13 @@ export const ThemeCatalog: React.FC = () => {
                     <div className="sm:col-span-7 p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
                       <div>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-2.5 py-1 rounded-md">
-                          {isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Trending Masterpiece' : isMaroon ? 'Royal Classic' : isSplit ? 'Masterpiece Edition' : (theme.category || 'Special Edition')}
+                          {isNirwana ? 'Resor Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Trending Masterpiece' : isMaroon ? 'Royal Classic' : isSplit ? 'Masterpiece Edition' : (theme.category || 'Special Edition')}
                         </span>
                         <h3 className="text-xl sm:text-2xl font-bold text-stone-900 mt-2">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-3 sm:line-clamp-none">
-                          {isJogloMaroon
+                          {isNirwana
+                            ? 'Tema pernikahan eksklusif bernuansa pemandangan Telaga Sarangan yang sejuk dan menenangkan di lereng Gunung Lawu, berlatar kemegahan Hotel Nirwana Sarangan, riak air danau, kabut pegunungan, dan sentuhan intimate wedding & wisata.'
+                            : isJogloMaroon
                             ? 'Tema pernikahan adat Batak bernuansa Rumah Adat Bolon megah berhias ukiran Gorga dan hamparan bunga merah marun, diperkaya aksen tenun Ulos, kupu-kupu beterbangan, dan suasana sakral penuh kehormatan.'
                             : isRoyalWayang
                               ? 'Tema pernikahan agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, diperkaya siluet wayang Kamajaya & Kamaratih berlapis emas, ornamen floral klasik, serta alunan sakral khas Nusantara.'
@@ -198,7 +205,12 @@ export const ThemeCatalog: React.FC = () => {
                         </p>
 
                         <div className="mt-4 pt-3 border-t border-stone-100 space-y-1.5 text-xs text-stone-600">
-                          {(isJogloMaroon ? [
+                          {(isNirwana ? [
+                            'Kemegahan Hotel Nirwana & Panorama Telaga Sarangan',
+                            'Nuansa Hijau Pinus Lereng Lawu & Kabut Danau Romantis',
+                            'Resor Venue Peta Langsung & Lobi Nirwana Sarangan',
+                            'Amplop Digital, Salin Rekening & RSVP Online'
+                          ] : isJogloMaroon ? [
                             'Kemegahan Rumah Adat Batak (Rumah Bolon)',
                             'Ornamen Ukiran Gorga & Aksen Tenun Ulos',
                             'Bingkai Foto Lengkung & Hamparan Bunga Marun',
@@ -348,14 +360,14 @@ export const ThemeCatalog: React.FC = () => {
                   {/* Cover */}
                   <div className="relative h-56">
                     <img 
-                      src={previewTheme.preview_image || '/bg-floral.jpg'} 
+                      src={previewTheme.preview_image || previewTheme.thumbnail || (previewTheme.slug === 'nirwana-sarangan' ? '/themes/nirwana-sarangan/theme-preview.jpg' : '/bg-floral.jpg')} 
                       alt="Cover" 
                       className="w-full h-full object-cover" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 text-white">
                       <p className="text-[10px] uppercase tracking-widest text-amber-200">The Wedding Of</p>
-                      <h4 className="font-cinzel text-xl font-bold tracking-wide">Kevin &amp; Jessica</h4>
-                      <p className="text-[10px] text-stone-300 mt-0.5">Sabtu, 24 Oktober 2026</p>
+                      <h4 className="font-cinzel text-xl font-bold tracking-wide">Steven &amp; Bunga</h4>
+                      <p className="text-[10px] text-stone-300 mt-0.5">Minggu, 18 Oktober 2026</p>
                     </div>
                   </div>
 
@@ -392,6 +404,21 @@ export const ThemeCatalog: React.FC = () => {
             {/* Modal Actions */}
             <div className="pt-4 border-t border-stone-800 flex flex-col sm:flex-row gap-2">
               <a 
+                href={previewTheme.slug === 'nirwana-sarangan' 
+                  ? '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true'
+                  : (previewTheme.slug === 'joglo-maroon-heritage'
+                    ? '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
+                    : (previewTheme.slug === 'royal-wayang-gold'
+                      ? '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
+                      : `/invitation/steven-bunga?theme=${previewTheme.slug}&demo=true`))}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 py-3 rounded-xl bg-primary-800 hover:bg-primary-700 font-bold text-xs text-white text-center transition-colors flex items-center justify-center space-x-2"
+              >
+                <Eye size={16} />
+                <span>Buka Demo Lengkap</span>
+              </a>
+              <a 
                 href={`https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20tertarik%20dengan%20tema%20${encodeURIComponent(previewTheme.name)}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -404,7 +431,7 @@ export const ThemeCatalog: React.FC = () => {
                 to="/admin/invitations/create"
                 className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 text-stone-950 font-extrabold text-xs text-center transition-colors flex items-center justify-center space-x-2"
               >
-                <span>Buat Undangan Sekarang</span>
+                <span>Buat Undangan</span>
                 <ArrowRight size={16} />
               </Link>
             </div>

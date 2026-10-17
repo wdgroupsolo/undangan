@@ -31,6 +31,18 @@ const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size =
   </svg>
 );
 
+const WhatsAppIcon: React.FC<{ size?: number; className?: string }> = ({ size = 14, className = '' }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="currentColor"
+    className={className}
+  >
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+  </svg>
+);
+
 // Victorian Royal Gilded Acanthus Corner Ornaments for High-End Folios
 export const NirwanaGoldCorner: React.FC<{ color?: string; size?: number; className?: string }> = ({ 
   color = '#C5A059', 
@@ -747,35 +759,26 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
   // Barcode / Check-in Pass
   const [savedPass, setSavedPass] = useState<any>(null);
 
-  // Dynamic names & defaults (Steven & Bunga canonical demo)
-  const isStevenBunga = !couple || 
-    couple?.groom_nickname === 'Steven' || 
-    couple?.groom_full_name?.includes('Steven') ||
-    couple?.groom_nickname === 'Bagus' ||
-    couple?.groom_full_name === 'Bagus Pratama, S.T.' ||
-    invitation?.slug === 'steven-bunga' ||
-    invitation?.slug === 'bunga-steven' ||
-    invitation?.slug === 'nirwana-sarangan';
+  // Dynamic names & defaults: always prioritize real client data from props/database
+  const groomName = couple?.groom_nickname || (couple?.groom_full_name ? couple.groom_full_name.split(/[\s,]+/)[0] : '') || 'Steven';
+  const brideName = couple?.bride_nickname || (couple?.bride_full_name ? couple.bride_full_name.split(/[\s,]+/)[0] : '') || 'Bunga';
+  const groomFullName = couple?.groom_full_name || couple?.groom_name || (groomName ? `${groomName} Pratama, S.Kom.` : 'Steven Pratama, S.Kom.');
+  const brideFullName = couple?.bride_full_name || couple?.bride_name || (brideName ? `${brideName} Citra Lestari, S.E.` : 'Bunga Citra Lestari, S.E.');
+  const groomFather = couple?.groom_father || couple?.groom_father_name || 'Bpk. Bambang Pratama';
+  const groomMother = couple?.groom_mother || couple?.groom_mother_name || 'Ibu Siti Rahayu';
+  const brideFather = couple?.bride_father || couple?.bride_father_name || 'Bpk. Hendra Gunawan';
+  const brideMother = couple?.bride_mother || couple?.bride_mother_name || 'Ibu Ratna Dewi';
+  const groomInstagram = couple?.groom_instagram || '@steven_pratama';
+  const brideInstagram = couple?.bride_instagram || '@bunga_lestari';
 
-  const groomName = isStevenBunga ? 'Steven' : (couple?.groom_nickname || couple?.groom_name || couple?.groom_full_name || 'Steven');
-  const brideName = isStevenBunga ? 'Bunga' : (couple?.bride_nickname || couple?.bride_name || couple?.bride_full_name || 'Bunga');
-  const groomFullName = isStevenBunga ? 'Steven Pratama, S.Kom.' : (couple?.groom_full_name || 'Steven Pratama, S.Kom.');
-  const brideFullName = isStevenBunga ? 'Bunga Citra Lestari, S.E.' : (couple?.bride_full_name || 'Bunga Citra Lestari, S.E.');
-  const groomFather = isStevenBunga ? 'Bpk. Bambang Pratama' : (couple?.groom_father || couple?.groom_father_name || 'Bpk. Bambang Pratama');
-  const groomMother = isStevenBunga ? 'Ibu Siti Rahayu' : (couple?.groom_mother || couple?.groom_mother_name || 'Ibu Siti Rahayu');
-  const brideFather = isStevenBunga ? 'Bpk. Hendra Gunawan' : (couple?.bride_father || couple?.bride_father_name || 'Bpk. Hendra Gunawan');
-  const brideMother = isStevenBunga ? 'Ibu Ratna Dewi' : (couple?.bride_mother || couple?.bride_mother_name || 'Ibu Ratna Dewi');
-  const groomInstagram = isStevenBunga ? '@steven_pratama' : (couple?.groom_instagram || '@steven_pratama');
-  const brideInstagram = isStevenBunga ? '@bunga_lestari' : (couple?.bride_instagram || '@bunga_lestari');
-
-  // Key Images (Canonical demo wedding photos & Hotel Nirwana Sarangan backdrop)
+  // Key Images (Prioritize uploaded couple photos, fallback to beautiful demos if none uploaded)
   const hotelExteriorImg = '/themes/nirwana-sarangan/hotel-exterior.jpg';
   const hotelLobbyImg = '/themes/nirwana-sarangan/hotel-lobby.jpg';
   const lakePanoramaImg = '/themes/nirwana-sarangan/lakeview-panorama.jpg';
   const lakeMobileImg = '/themes/nirwana-sarangan/lakeview-mobile.jpg';
-  const coupleCoverImg = isStevenBunga ? '/photos/photo-3.jpg' : (couple?.cover_photo_url || '/photos/photo-3.jpg');
-  const groomPhotoImg = isStevenBunga ? '/photos/photo-7.jpg' : (couple?.groom_photo_url || '/photos/photo-7.jpg');
-  const bridePhotoImg = isStevenBunga ? '/photos/photo-4.jpg' : (couple?.bride_photo_url || '/photos/photo-4.jpg');
+  const coupleCoverImg = couple?.cover_photo_url || couple?.cover_photo || '/photos/photo-3.jpg';
+  const groomPhotoImg = couple?.groom_photo_url || couple?.groom_photo || '/photos/photo-7.jpg';
+  const bridePhotoImg = couple?.bride_photo_url || couple?.bride_photo || '/photos/photo-4.jpg';
 
   // Countdown timer calculation
   const targetDateStr = events[0]?.event_date || invitation?.settings?.countdown_date || '2026-11-20T09:00:00';
@@ -892,7 +895,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
   // Canonical prewedding demo photos (photo-1 through photo-9)
   const DEMO_GALLERY_PHOTOS = [
     { id: '1', image_url: '/photos/photo-1.jpg', caption: 'Kebersamaan & Tawa Bahagia' },
-    { id: '2', image_url: '/photos/photo-3.jpg', caption: 'Romansa Kasih Steven & Bunga' },
+    { id: '2', image_url: '/photos/photo-3.jpg', caption: `Romansa Kasih ${groomName} & ${brideName}` },
     { id: '3', image_url: '/photos/photo-4.jpg', caption: 'Pesona Anggun Mempelai Putri' },
     { id: '4', image_url: '/photos/photo-5.jpg', caption: 'Genggaman Menuju Masa Depan' },
     { id: '5', image_url: '/photos/photo-6.jpg', caption: 'Senyum Bahagia Hari Sakral' },
@@ -954,7 +957,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#F5F8F6] text-[#1E3329] font-sans antialiased overflow-x-hidden selection:bg-[#2A5949] selection:text-white">
+    <div className="relative min-h-screen bg-[#071712] text-[#1E3329] font-sans antialiased overflow-x-hidden selection:bg-[#2A5949] selection:text-white">
       {/* Floating Lake Mist Effect */}
       <FloatingLakeMist />
 
@@ -1040,7 +1043,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
         </aside>
 
         {/* RIGHT SIDE: SCROLLABLE MAIN INVITATION CONTENT */}
-        <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen bg-[#F5F8F6] relative z-10 pb-28">
+        <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen bg-[#071712] relative z-10">
 
           {/* SECTION 1: COVER / HERO SECTION */}
           <section id="cover" className="relative min-h-screen flex flex-col items-center justify-start text-center px-4 sm:px-6 pt-12 pb-36 sm:pt-16 sm:pb-40 overflow-hidden bg-[#0A1F18]">
@@ -1701,14 +1704,29 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                           <Sparkles className="w-3 h-3 text-[#C5A059] animate-pulse" />
                         </div>
 
-                        {/* 3D Emerald & Gold Royal Heraldic Seal */}
-                        <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0C241B] via-[#163D2E] to-[#081712] text-[#E8D5A3] flex items-center justify-center mx-auto mb-4 border-2 border-[#C5A059] shadow-[0_10px_25px_rgba(12,36,27,0.45),inset_0_1px_2px_rgba(255,255,255,0.3)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                          <div className="absolute inset-1 rounded-xl border border-[#C5A059]/40 pointer-events-none" />
-                          {idx === 0 ? (
-                            <Crown className="w-8 h-8 text-[#E2C792] drop-shadow-[0_2px_8px_rgba(197,160,89,0.5)]" />
-                          ) : (
-                            <Sparkles className="w-8 h-8 text-[#E2C792] drop-shadow-[0_2px_8px_rgba(197,160,89,0.5)]" />
-                          )}
+                        {/* Luxury Bespoke Wedding Floral Medallion */}
+                        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-1 bg-gradient-to-br from-[#FFF2D6] via-[#C5A059] to-[#8C6D2B] shadow-[0_12px_32px_rgba(10,31,24,0.4),0_0_20px_rgba(197,160,89,0.3)] mx-auto mb-4 group-hover:scale-105 group-hover:-translate-y-1 transition-all duration-500 overflow-hidden border border-[#C5A059]/60">
+                          <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#0A1F18]">
+                            <img 
+                              src={idx === 0 
+                                ? '/themes/nirwana-sarangan/event-flower-akad.jpg' 
+                                : '/themes/nirwana-sarangan/event-flower-resepsi.jpg'
+                              }
+                              alt={idx === 0 ? 'Bunga Akad Nikah' : 'Bunga Resepsi Pernikahan'}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                            />
+                            {/* Inner Gold Hairline Frame */}
+                            <div className="absolute inset-1 rounded-lg border border-[#E2C792]/40 pointer-events-none" />
+                            {/* Subtle Ambient Vignette & Glint */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-white/10 pointer-events-none" />
+                            {/* Shimmer Light Sweep on Hover */}
+                            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
+                              <div 
+                                className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none -translate-x-full"
+                                style={{ animation: `goldShimmerSweep 4.5s ease-in-out infinite ${idx * 0.7}s` }}
+                              />
+                            </div>
+                          </div>
                         </div>
                         
                         {/* Event Title with Rich Gold-Emerald Gradient */}
@@ -1925,7 +1943,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                 const safeIdx = totalPhotos > 0 ? ((activeGalleryIdx % totalPhotos) + totalPhotos) % totalPhotos : 0;
                 const currentPhoto = displayGallery[safeIdx] || displayGallery[0] || {
                   image_url: '/photos/photo-3.jpg',
-                  caption: 'Romansa Kasih Steven & Bunga'
+                  caption: `Romansa Kasih ${groomName} & ${brideName}`
                 };
 
                 return (
@@ -2004,7 +2022,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                         {/* Bottom Caption Overlay Strip */}
                         <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#081510] via-[#081510]/85 to-transparent pt-8 pb-3.5 px-4 text-center pointer-events-none">
                           <p className="font-serif text-sm sm:text-base text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] drop-shadow-sm font-medium">
-                            ✦ {currentPhoto.caption || 'Romansa Kasih Steven & Bunga'} ✦
+                            ✦ {currentPhoto.caption || `Romansa Kasih ${groomName} & ${brideName}`} ✦
                           </p>
                           <p className="text-[10px] text-white/50 tracking-wider uppercase font-sans mt-0.5">
                             Ketuk foto untuk melihat layar penuh
@@ -2276,7 +2294,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                       <div>
                         <span className="text-[10px] uppercase tracking-wider text-[#E2C792]/80 block font-sans">Alamat Tujuan Pengiriman</span>
                         <p className="text-white/90 leading-relaxed font-light mt-0.5">
-                          Hotel Nirwana Sarangan (Front Desk / Panitia Resepsi Steven &amp; Bunga)<br />
+                          Hotel Nirwana Sarangan (Front Desk / Panitia Resepsi {groomName} &amp; {brideName})<br />
                           Jl. Raya Telaga Sarangan No. 187, Ngluweng, Plaosan,<br />
                           Kabupaten Magetan, Jawa Timur 63361
                         </p>
@@ -2296,7 +2314,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   <div className="flex flex-col sm:flex-row items-center gap-3 relative z-10">
                     <button
                       type="button"
-                      onClick={() => handleCopy('Hotel Nirwana Sarangan (Front Desk / Resepsi Steven & Bunga), Jl. Raya Telaga Sarangan No. 187, Ngluweng, Plaosan, Kabupaten Magetan, Jawa Timur 63361 (Telp: 0812-3456-7890)', 'gift-physical-addr')}
+                      onClick={() => handleCopy(`Hotel Nirwana Sarangan (Front Desk / Resepsi ${groomName} & ${brideName}), Jl. Raya Telaga Sarangan No. 187, Ngluweng, Plaosan, Kabupaten Magetan, Jawa Timur 63361 (Telp: 0812-3456-7890)`, 'gift-physical-addr')}
                       className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-[#C5A059] via-[#E2C792] to-[#B38F46] hover:from-[#E2C792] hover:to-[#C5A059] text-[#0D241C] text-xs sm:text-sm font-bold font-serif uppercase tracking-wider shadow-lg hover:shadow-[0_0_18px_rgba(197,160,89,0.5)] hover:scale-102 active:scale-98 transition-all cursor-pointer"
                     >
                       {isCopied === 'gift-physical-addr' ? (
@@ -2313,7 +2331,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                     </button>
 
                     <a
-                      href={`https://wa.me/6281234567890?text=${encodeURIComponent('Halo Steven & Bunga, saya ingin mengonfirmasi bahwa saya telah mengirimkan kado pernikahan / tanda kasih ke alamat Hotel Nirwana Sarangan. Terima kasih!')}`}
+                      href={`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo ${groomName} & ${brideName}, saya ingin mengonfirmasi bahwa saya telah mengirimkan kado pernikahan / tanda kasih ke alamat Hotel Nirwana Sarangan. Terima kasih!`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/60 text-[#25D366] text-xs sm:text-sm font-serif font-bold tracking-wider hover:scale-102 active:scale-98 transition-all cursor-pointer"
@@ -2526,7 +2544,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
           </section>
 
           {/* SECTION 9: CLOSING */}
-          <section className="pt-24 pb-44 px-6 sm:px-12 bg-gradient-to-b from-[#102F23] via-[#0C2219] to-[#05110D] text-white text-center relative overflow-hidden">
+          <section className="pt-16 pb-12 sm:pt-20 sm:pb-14 px-6 sm:px-12 bg-gradient-to-b from-[#102F23] via-[#0C2219] to-[#05110D] text-white text-center relative overflow-hidden">
             {/* Romantic Couple Backdrop with Cinematic Vignette */}
             <div 
               className="absolute inset-0 bg-cover bg-center sm:bg-[center_30%] opacity-35 scale-105 transition-transform duration-1000 ease-out"
@@ -2603,6 +2621,23 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             </div>
           </section>
 
+          {/* ROYAL COPYRIGHT FOOTER */}
+          <footer className="pt-3 pb-24 sm:pb-28 px-4 bg-gradient-to-b from-[#05110D] via-[#030B08] to-[#020604] border-t border-[#C5A059]/15 text-center relative z-20">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#C5A059]/30" />
+              <div className="w-1 h-1 rotate-45 bg-[#E2C792]/70" />
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#C5A059]/30" />
+            </div>
+            <a 
+              href="https://www.instagram.com/wdgroupcompany" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[10px] sm:text-[11px] text-white/40 hover:text-[#E2C792] tracking-wider font-light transition-colors inline-block cursor-pointer"
+            >
+              &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+            </a>
+          </footer>
+
           {/* LIGHTBOX MODAL */}
           {selectedImage && (
             <div 
@@ -2639,14 +2674,14 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
       </div>
 
       {/* FLOATING BOTTOM NAVIGATION BAR (Centered on mobile screen, centered within right invitation pane on desktop) */}
-      <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 bg-gradient-to-r from-[#0C241B]/95 via-[#163D2E]/95 to-[#0C241B]/95 backdrop-blur-xl px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#C5A059] shadow-[0_12px_35px_rgba(0,0,0,0.5),0_0_20px_rgba(197,160,89,0.35)] flex items-center gap-1 sm:gap-2 max-w-[92vw] overflow-x-auto no-scrollbar">
+      <nav className="fixed bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 bg-gradient-to-r from-[#0C241B]/95 via-[#163D2E]/95 to-[#0C241B]/95 backdrop-blur-xl px-1.5 min-[370px]:px-2 sm:px-4 py-1 sm:py-1.5 rounded-full border border-[#C5A059]/80 shadow-[0_12px_35px_rgba(0,0,0,0.5),0_0_20px_rgba(197,160,89,0.3)] flex items-center justify-center gap-0.5 min-[370px]:gap-1 sm:gap-2 max-w-[96vw] sm:max-w-max overflow-x-auto no-scrollbar">
         <a 
           href="#cover"
           onClick={(e) => handleNavClick(e, 'cover')}
-          className={`px-3 py-1.5 rounded-full text-xs font-serif font-medium transition-all ${
+          className={`px-1.5 min-[370px]:px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10.5px] min-[370px]:text-[11.5px] sm:text-xs font-serif font-medium whitespace-nowrap transition-all duration-200 ${
             activeSection === 'cover' 
-              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md scale-105' 
-              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5'
+              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md' 
+              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5 active:bg-white/10'
           }`}
         >
           Cover
@@ -2654,10 +2689,10 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
         <a 
           href="#couple"
           onClick={(e) => handleNavClick(e, 'couple')}
-          className={`px-3 py-1.5 rounded-full text-xs font-serif font-medium transition-all ${
+          className={`px-1.5 min-[370px]:px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10.5px] min-[370px]:text-[11.5px] sm:text-xs font-serif font-medium whitespace-nowrap transition-all duration-200 ${
             activeSection === 'couple' 
-              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md scale-105' 
-              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5'
+              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md' 
+              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5 active:bg-white/10'
           }`}
         >
           Mempelai
@@ -2665,10 +2700,10 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
         <a 
           href="#event"
           onClick={(e) => handleNavClick(e, 'event')}
-          className={`px-3 py-1.5 rounded-full text-xs font-serif font-medium transition-all ${
+          className={`px-1.5 min-[370px]:px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10.5px] min-[370px]:text-[11.5px] sm:text-xs font-serif font-medium whitespace-nowrap transition-all duration-200 ${
             activeSection === 'event' 
-              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md scale-105' 
-              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5'
+              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md' 
+              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5 active:bg-white/10'
           }`}
         >
           Acara
@@ -2676,10 +2711,10 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
         <a 
           href="#story"
           onClick={(e) => handleNavClick(e, 'story')}
-          className={`px-3 py-1.5 rounded-full text-xs font-serif font-medium transition-all ${
+          className={`px-1.5 min-[370px]:px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10.5px] min-[370px]:text-[11.5px] sm:text-xs font-serif font-medium whitespace-nowrap transition-all duration-200 ${
             activeSection === 'story' 
-              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md scale-105' 
-              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5'
+              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md' 
+              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5 active:bg-white/10'
           }`}
         >
           Cerita
@@ -2687,10 +2722,10 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
         <a 
           href="#gallery"
           onClick={(e) => handleNavClick(e, 'gallery')}
-          className={`px-3 py-1.5 rounded-full text-xs font-serif font-medium transition-all ${
+          className={`px-1.5 min-[370px]:px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10.5px] min-[370px]:text-[11.5px] sm:text-xs font-serif font-medium whitespace-nowrap transition-all duration-200 ${
             activeSection === 'gallery' 
-              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md scale-105' 
-              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5'
+              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md' 
+              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5 active:bg-white/10'
           }`}
         >
           Galeri
@@ -2698,10 +2733,10 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
         <a 
           href="#rsvp"
           onClick={(e) => handleNavClick(e, 'rsvp')}
-          className={`px-3 py-1.5 rounded-full text-xs font-serif font-medium transition-all ${
+          className={`px-1.5 min-[370px]:px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10.5px] min-[370px]:text-[11.5px] sm:text-xs font-serif font-medium whitespace-nowrap transition-all duration-200 ${
             activeSection === 'rsvp' 
-              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md scale-105' 
-              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5'
+              ? 'bg-gradient-to-r from-[#C5A059] to-[#E2C792] text-[#122E24] font-bold shadow-md' 
+              : 'text-[#E2C792]/80 hover:text-white hover:bg-white/5 active:bg-white/10'
           }`}
         >
           RSVP

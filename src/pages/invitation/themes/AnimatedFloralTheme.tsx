@@ -209,14 +209,22 @@ export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ couple
         <h2 className="text-3xl font-serif text-[#6b5c46] mb-4">
           {couple?.groom_nickname || couple?.groom_full_name || 'Groom'} & {couple?.bride_nickname || couple?.bride_full_name || 'Bride'}
         </h2>
-        <a
-          href="https://www.instagram.com/wdgroupcompany"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-16 inline-block text-xs uppercase tracking-[0.3em] text-[#a39178] hover:text-[#5c4f3d] opacity-70 hover:opacity-100 transition-all cursor-pointer"
-        >
-          Powered by WD Group
-        </a>
+        {/* ROYAL COPYRIGHT FOOTER */}
+        <div className="mt-12 pt-3 pb-8 text-center relative z-20 border-t border-[#a39178]/20">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#a39178]/40" />
+            <div className="w-1 h-1 rotate-45 bg-[#a39178]/70" />
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#a39178]/40" />
+          </div>
+          <a 
+            href="https://www.instagram.com/wdgroupcompany" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-[10px] sm:text-[11px] text-[#6b5c46]/60 hover:text-[#5c4f3d] tracking-wider font-light transition-colors inline-block cursor-pointer"
+          >
+            &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+          </a>
+        </div>
       </footer>
 
       {/* Calendar Reminder Modal */}

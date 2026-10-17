@@ -2216,36 +2216,19 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
           </div>
 
           {/* Bottom Dark Mocha Bar */}
-          <div className="bg-[#524538] py-6 px-4 text-center text-white">
-            <a
-              href={brandUrl}
-              target="_blank"
+          <div className="bg-[#433527] pt-4 pb-24 sm:pb-28 px-4 text-center text-white border-t border-[#6d5b4a]/40">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#d4af37]/40" />
+              <div className="w-1 h-1 rotate-45 bg-[#f3da9f]/70" />
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#d4af37]/40" />
+            </div>
+            <a 
+              href="https://www.instagram.com/wdgroupcompany" 
+              target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex flex-col items-center group cursor-pointer transition-opacity hover:opacity-90"
-              aria-label={`Instagram ${brandName}`}
+              className="text-[10px] sm:text-[11px] text-white/50 hover:text-[#f3da9f] tracking-wider font-light transition-colors inline-block cursor-pointer"
             >
-              <p 
-                className="text-xs sm:text-[12px] text-[#f4ede2]/90 font-normal tracking-wide group-hover:text-white transition-colors"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
-              >
-                Powered by {brandName}
-              </p>
-
-              <div className="mt-2 text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                <svg 
-                  className="w-5 h-5 mx-auto" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
-              </div>
+              &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
             </a>
           </div>
         </footer>

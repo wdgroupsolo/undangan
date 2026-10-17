@@ -2576,6 +2576,23 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
           </div>
         </section>
 
+        {/* ROYAL COPYRIGHT FOOTER */}
+        <footer className="pt-3 pb-24 sm:pb-28 px-4 bg-gradient-to-b from-[#1a070a] via-[#100305] to-[#080203] border-t border-[#8a1c2e]/25 text-center relative z-20">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#d4af37]/30" />
+            <div className="w-1 h-1 rotate-45 bg-[#f3da9f]/70" />
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#d4af37]/30" />
+          </div>
+          <a 
+            href="https://www.instagram.com/wdgroupcompany" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-[10px] sm:text-[11px] text-white/40 hover:text-[#f3da9f] tracking-wider font-light transition-colors inline-block cursor-pointer"
+          >
+            &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+          </a>
+        </footer>
+
       </div>
 
       {/* ========================================================================= */}

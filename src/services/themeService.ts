@@ -259,10 +259,16 @@ export const themeService = {
 
       if (!existingSlugs.has('nirwana-sarangan')) {
         merged.unshift(REAL_NIRWANA_SARANGAN_THEME);
+      } else {
+        const idx = merged.findIndex((t: any) => t.slug === 'nirwana-sarangan');
+        if (idx > 0) {
+          const [nirwana] = merged.splice(idx, 1);
+          merged.unshift(nirwana);
+        }
       }
 
       if (!existingSlugs.has('joglo-maroon-heritage')) {
-        merged.unshift(REAL_JOGLO_MAROON_THEME);
+        merged.splice(1, 0, REAL_JOGLO_MAROON_THEME);
       }
 
       if (!existingSlugs.has('royal-wayang-gold')) {
@@ -403,8 +409,18 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
+      if (!existingSlugs.has('nirwana-sarangan')) {
+        merged.unshift(REAL_NIRWANA_SARANGAN_THEME);
+      } else {
+        const idx = merged.findIndex((t: any) => t.slug === 'nirwana-sarangan');
+        if (idx > 0) {
+          const [nirwana] = merged.splice(idx, 1);
+          merged.unshift(nirwana);
+        }
+      }
+
       if (!existingSlugs.has('joglo-maroon-heritage')) {
-        merged.unshift(REAL_JOGLO_MAROON_THEME);
+        merged.splice(1, 0, REAL_JOGLO_MAROON_THEME);
       }
 
       if (!existingSlugs.has('royal-wayang-gold')) {
@@ -530,6 +546,9 @@ export const themeService = {
   },
 
   async getTheme(id: string): Promise<Theme> {
+    if (id === REAL_NIRWANA_SARANGAN_THEME.id || id === 'nirwana-sarangan' || id === 'hotel-nirwana' || id === 'telaga-sarangan') {
+      return REAL_NIRWANA_SARANGAN_THEME;
+    }
     if (id === REAL_JOGLO_MAROON_THEME.id || id === 'joglo-maroon-heritage' || id === 'joglo-maroon' || id === 'joglo-bloom' || id === 'pendopo-maroon') {
       return REAL_JOGLO_MAROON_THEME;
     }
@@ -560,10 +579,13 @@ export const themeService = {
       }
     } catch {}
 
-    return REAL_JOGLO_MAROON_THEME;
+    return REAL_NIRWANA_SARANGAN_THEME;
   },
 
   async getThemeBySlug(slug: string): Promise<Theme> {
+    if (slug === 'nirwana-sarangan' || slug === 'hotel-nirwana' || slug === 'telaga-sarangan') {
+      return REAL_NIRWANA_SARANGAN_THEME;
+    }
     if (slug === 'joglo-maroon-heritage' || slug === 'joglo-maroon' || slug === 'joglo-bloom' || slug === 'pendopo-maroon') {
       return REAL_JOGLO_MAROON_THEME;
     }
@@ -595,7 +617,7 @@ export const themeService = {
       }
     } catch {}
 
-    return slug === 'secret-garden' ? REAL_SECRET_GARDEN_THEME : REAL_SPLIT_FLORAL_THEME;
+    return slug === 'secret-garden' ? REAL_SECRET_GARDEN_THEME : (slug === 'nirwana-sarangan' ? REAL_NIRWANA_SARANGAN_THEME : REAL_SPLIT_FLORAL_THEME);
   },
 
   async createTheme(theme: Partial<Theme>) {

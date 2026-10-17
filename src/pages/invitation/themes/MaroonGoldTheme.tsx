@@ -2367,15 +2367,20 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
             </div>
           </div>
 
-          {/* Powered by WD Group */}
-          <div className="pt-2 pb-6 text-center relative z-20">
-            <a
-              href="https://www.instagram.com/wdgroupcompany"
-              target="_blank"
+          {/* ROYAL COPYRIGHT FOOTER */}
+          <div className="pt-3 pb-24 sm:pb-28 px-4 text-center relative z-20 border-t border-[#4a262b]/15">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#8a1c2e]/40" />
+              <div className="w-1 h-1 rotate-45 bg-[#8a1c2e]/70" />
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#8a1c2e]/40" />
+            </div>
+            <a 
+              href="https://www.instagram.com/wdgroupcompany" 
+              target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block text-[10px] font-sans tracking-[0.3em] text-[#59272d]/70 hover:text-[#59272d] transition-colors uppercase cursor-pointer"
+              className="text-[10px] sm:text-[11px] text-[#4a262b]/60 hover:text-[#8a1c2e] tracking-wider font-light transition-colors inline-block cursor-pointer"
             >
-              Powered by WD Group
+              &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
             </a>
           </div>
         </footer>

@@ -294,14 +294,22 @@ export const LuxuryAnimatedTheme: React.FC<LuxuryAnimatedThemeProps> = ({ invita
         <p className="mt-12 font-serif text-4xl text-yellow-500 drop-shadow-lg">
           {couple?.groom_nickname || 'R'} &amp; {couple?.bride_nickname || 'A'}
         </p>
-        <a
-          href="https://www.instagram.com/wdgroupcompany"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-24 inline-block text-xs font-sans tracking-[0.3em] text-gray-500 hover:text-yellow-500/80 transition-colors uppercase cursor-pointer"
-        >
-          Powered by WD Group
-        </a>
+        {/* ROYAL COPYRIGHT FOOTER */}
+        <div className="mt-16 pt-3 pb-8 text-center relative z-20 border-t border-white/5">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-yellow-500/30" />
+            <div className="w-1 h-1 rotate-45 bg-yellow-500/70" />
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-yellow-500/30" />
+          </div>
+          <a 
+            href="https://www.instagram.com/wdgroupcompany" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-[10px] sm:text-[11px] text-white/40 hover:text-yellow-500/80 tracking-wider font-light transition-colors inline-block cursor-pointer"
+          >
+            &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+          </a>
+        </div>
       </footer>
 
       {/* Calendar Reminder Modal */}

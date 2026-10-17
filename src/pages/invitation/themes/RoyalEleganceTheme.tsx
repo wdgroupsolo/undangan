@@ -315,15 +315,22 @@ export const RoyalEleganceTheme: React.FC<BaseThemeProps> = ({ couple, events, g
           <h2 className="text-4xl italic mb-12" style={{ fontFamily: "'Playfair Display', serif", ...textGold }}>
             {couple?.groom_nickname || 'R'} &amp; {couple?.bride_nickname || 'A'}
           </h2>
-          <a
-            href="https://www.instagram.com/wdgroupcompany"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-xs uppercase tracking-widest text-[#d4af37]/50 hover:text-[#d4af37] transition-colors"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
-          >
-            Powered by WD Group Invitation
-          </a>
+          {/* ROYAL COPYRIGHT FOOTER */}
+          <div className="pt-3 pb-8 text-center relative z-20 border-t border-[#d4af37]/15">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#d4af37]/30" />
+              <div className="w-1 h-1 rotate-45 bg-[#d4af37]/70" />
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#d4af37]/30" />
+            </div>
+            <a 
+              href="https://www.instagram.com/wdgroupcompany" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[10px] sm:text-[11px] text-white/40 hover:text-[#d4af37] tracking-wider font-light transition-colors inline-block cursor-pointer"
+            >
+              &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+            </a>
+          </div>
         </div>
       </footer>
 

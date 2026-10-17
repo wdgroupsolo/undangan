@@ -2319,6 +2319,23 @@ export const JavaneseHeritageTheme: React.FC<JavaneseHeritageThemeProps> = ({
 
         </section>
 
+        {/* ROYAL COPYRIGHT FOOTER */}
+        <footer className="pt-3 pb-24 sm:pb-28 px-4 bg-gradient-to-b from-[#1f070b] via-[#120306] to-[#0a0204] border-t border-[#8c2d38]/25 text-center relative z-20">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#d4af37]/30" />
+            <div className="w-1 h-1 rotate-45 bg-[#f3da9f]/70" />
+            <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#d4af37]/30" />
+          </div>
+          <a 
+            href="https://www.instagram.com/wdgroupcompany" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-[10px] sm:text-[11px] text-white/40 hover:text-[#f3da9f] tracking-wider font-light transition-colors inline-block cursor-pointer"
+          >
+            &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+          </a>
+        </footer>
+
       </div>
 
       {/* Calendar Reminder Modal */}

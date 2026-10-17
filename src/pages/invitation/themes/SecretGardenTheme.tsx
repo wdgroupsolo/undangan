@@ -2194,7 +2194,7 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
           </section>
 
           {/* FOOTER WITH INTEGRATED WHITE LACE PATTERN */}
-          <footer className="relative w-full pt-2 pb-6 text-center text-white bg-[#82515E]">
+          <footer className="relative w-full pt-2 pb-24 sm:pb-28 text-center text-white bg-[#82515E]">
             {/* Lace Pattern with white filter */}
             <div className="w-full leading-none overflow-hidden mb-3">
               <img 
@@ -2205,9 +2205,19 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
               />
             </div>
 
-            <p className="text-xs tracking-wide text-white/95 font-normal" style={{ fontFamily: "'Poppins', sans-serif" }}>
-              Powered by {(invitation?.settings as any)?.footer_brand || 'WD Group'}
-            </p>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-white/40" />
+              <div className="w-1 h-1 rotate-45 bg-white/70" />
+              <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-white/40" />
+            </div>
+            <a 
+              href="https://www.instagram.com/wdgroupcompany" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[10px] sm:text-[11px] text-white/75 hover:text-white tracking-wider font-light transition-colors inline-block cursor-pointer"
+            >
+              &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
+            </a>
           </footer>
 
         </div>

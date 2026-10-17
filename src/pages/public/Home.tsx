@@ -48,6 +48,18 @@ export const Home: React.FC = () => {
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
   const showcaseThemes = [
     {
+      id: 'nirwana-sarangan',
+      name: 'Nirwana Sarangan Resort',
+      slug: 'nirwana-sarangan',
+      badge: 'Tema Resor Eksklusif',
+      couple: 'Steven & Bunga',
+      date: 'Minggu, 18 Oktober 2026',
+      preview: '/themes/nirwana-sarangan/theme-preview.jpg',
+      musicTitle: 'Bergema Sampai Selamanya - Nadhief Basalamah (Piano)',
+      musicUrl: '/music/bergema-sampai-selamanya.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true'
+    },
+    {
       id: 'joglo-maroon-heritage',
       name: 'Batak Maroon Heritage',
       slug: 'joglo-maroon-heritage',
@@ -882,6 +894,7 @@ export const Home: React.FC = () => {
           {/* Theme Cards Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {displayThemes.map((theme) => {
+              const isNirwana = theme.slug === 'nirwana-sarangan' || theme.slug === 'hotel-nirwana' || theme.slug === 'telaga-sarangan';
               const isJogloMaroon = theme.slug === 'joglo-maroon-heritage' || theme.slug === 'joglo-maroon' || theme.slug === 'joglo-bloom';
               const isRoyalWayang = theme.slug === 'royal-wayang-gold' || theme.slug === 'royal-wayang';
               const isGarden = theme.slug === 'secret-garden';
@@ -889,25 +902,34 @@ export const Home: React.FC = () => {
               const isMaroon = theme.slug === 'maroon-gold';
               const isSplit = theme.slug === 'split-floral';
 
-              const previewImg = theme.preview_image || theme.thumbnail || (isJogloMaroon
-                ? '/themes/joglo-maroon-theme-preview.png'
-                : (isRoyalWayang
-                  ? '/themes/royal-wayang-theme-preview.png'
-                  : (isGarden 
-                      ? '/themes/secret-garden-theme-preview.png'
-                      : (isSplit 
-                          ? '/themes/split-floral-theme-preview.png' 
-                          : '/themes/javanese-heritage-theme-preview.png'))));
+              const previewImg = theme.preview_image || theme.thumbnail || (isNirwana
+                ? '/themes/nirwana-sarangan/theme-preview.jpg'
+                : (isJogloMaroon
+                  ? '/themes/joglo-maroon-theme-preview.png'
+                  : (isRoyalWayang
+                    ? '/themes/royal-wayang-theme-preview.png'
+                    : (isGarden 
+                        ? '/themes/secret-garden-theme-preview.png'
+                        : (isSplit 
+                            ? '/themes/split-floral-theme-preview.png' 
+                            : '/themes/javanese-heritage-theme-preview.png')))));
 
-              const demoUrl = isJogloMaroon
-                ? '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
-                : (isRoyalWayang
-                  ? '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
-                  : (isJavanese 
-                      ? '/invitation/steven-bunga?theme=javanese-heritage&demo=true' 
-                      : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}&demo=true` : '/themes')));
+              const demoUrl = isNirwana
+                ? '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true'
+                : (isJogloMaroon
+                  ? '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
+                  : (isRoyalWayang
+                    ? '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
+                    : (isJavanese 
+                        ? '/invitation/steven-bunga?theme=javanese-heritage&demo=true' 
+                        : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}&demo=true` : '/themes'))));
 
-              const featuresList = isJogloMaroon ? [
+              const featuresList = isNirwana ? [
+                'Kemegahan Hotel Nirwana & Panorama Telaga Sarangan',
+                'Nuansa Hijau Pinus Lereng Lawu & Kabut Danau Romantis',
+                'Resor Venue Peta Langsung & Lobi Nirwana Sarangan',
+                'Amplop Digital, Salin Rekening & RSVP Online'
+              ] : isJogloMaroon ? [
                 'Kemegahan Rumah Adat Batak (Rumah Bolon)',
                 'Ornamen Ukiran Gorga & Aksen Tenun Ulos',
                 'Bingkai Foto Lengkung & Hamparan Bunga Marun',
@@ -964,7 +986,7 @@ export const Home: React.FC = () => {
                       />
                       <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                         <span className="bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-md">
-                          {theme.category || (isJogloMaroon ? 'Traditional & Heritage' : isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
+                          {theme.category || (isNirwana ? 'Resort & Nature' : isJogloMaroon ? 'Traditional & Heritage' : isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
                         </span>
                       </div>
                     </div>
@@ -973,11 +995,13 @@ export const Home: React.FC = () => {
                     <div className="sm:col-span-7 p-6 flex flex-col justify-between space-y-4">
                       <div>
                         <div className="text-xs font-bold uppercase tracking-wider text-primary-800 mb-1">
-                          {isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
+                          {isNirwana ? 'Resor Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
                         </div>
                         <h3 className="font-bold text-xl sm:text-2xl text-stone-900">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3">
-                          {isJogloMaroon
+                          {isNirwana
+                            ? 'Tema pernikahan eksklusif bernuansa pemandangan Telaga Sarangan yang sejuk dan menenangkan di lereng Gunung Lawu, berlatar kemegahan Hotel Nirwana Sarangan, riak air danau, kabut pegunungan, dan sentuhan intimate wedding & wisata.'
+                            : isJogloMaroon
                             ? 'Tema pernikahan adat Batak bernuansa Rumah Adat Bolon megah berhias ukiran Gorga dan hamparan bunga merah marun, diperkaya aksen tenun Ulos, kupu-kupu beterbangan, dan suasana sakral penuh kehormatan.'
                             : isRoyalWayang
                               ? 'Tema pernikahan agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, diperkaya siluet wayang Kamajaya & Kamaratih berlapis emas, ornamen floral klasik, serta alunan sakral khas Nusantara.'
