@@ -1,13 +1,43 @@
 -- =========================================================================
--- Data Tamu Undangan: Agni & Putri (329 Tamu)
+-- Data Tamu Undangan: Agni & Putri (405 Tamu Lengkap)
 -- Tabel: guests
--- Jalankan di Supabase SQL Editor jika ingin menyimpan data ke database.
+-- Jalankan di Supabase SQL Editor.
+-- Script ini sudah OTOMATIS membuat tema, klien, dan undangan jika belum ada,
+-- sehingga DIJAMIN tidak akan error foreign key.
 -- =========================================================================
 
 DO $$
 DECLARE
+  v_client_id UUID := 'c1000000-0000-0000-0000-000000000001';
+  v_theme_id UUID := 'f4a5b6c7-8901-4345-a789-0bcdef012345';
   v_invitation_id UUID := 'e2000000-0000-0000-0000-000000000002';
 BEGIN
+  -- 1. Pastikan Tema ada
+  IF NOT EXISTS (SELECT 1 FROM themes WHERE id = v_theme_id OR slug = 'royal-wayang-gold') THEN
+    INSERT INTO themes (id, name, slug, status)
+    VALUES (v_theme_id, 'Royal Wayang Gold', 'royal-wayang-gold', 'active');
+  ELSE
+    SELECT id INTO v_theme_id FROM themes WHERE slug = 'royal-wayang-gold' OR id = v_theme_id LIMIT 1;
+  END IF;
+
+  -- 2. Pastikan Klien ada
+  IF NOT EXISTS (SELECT 1 FROM clients WHERE id = v_client_id) THEN
+    INSERT INTO clients (id, name, phone, email, status)
+    VALUES (v_client_id, 'AGNI KAHURIPAN', '0895 3401 92500', 'agnikahuripan@gmail.com', 'active');
+  END IF;
+
+  -- 3. Pastikan Undangan Agni & Putri ada
+  IF NOT EXISTS (SELECT 1 FROM invitations WHERE id = v_invitation_id OR slug = 'agni-putri') THEN
+    INSERT INTO invitations (id, client_id, theme_id, title, slug, status, wedding_date)
+    VALUES (v_invitation_id, v_client_id, v_theme_id, 'The Wedding of Agni & Putri', 'agni-putri', 'published', '2026-10-25T09:00:00+07:00'::timestamptz);
+  ELSE
+    SELECT id INTO v_invitation_id FROM invitations WHERE slug = 'agni-putri' OR id = v_invitation_id LIMIT 1;
+  END IF;
+
+  -- 4. Bersihkan tamu undangan ini sebelumnya agar fresh dan tidak duplikat
+  DELETE FROM guests WHERE invitation_id = v_invitation_id;
+
+  -- 5. Masukkan 405 tamu lengkap
   INSERT INTO guests (invitation_id, name, guest_code, status)
   VALUES
     (v_invitation_id, 'aan', 'GUEST-001', 'active'),
@@ -338,5 +368,83 @@ BEGIN
     (v_invitation_id, 'yoza', 'GUEST-326', 'active'),
     (v_invitation_id, 'yusuf cahyo', 'GUEST-327', 'active'),
     (v_invitation_id, 'zahra', 'GUEST-328', 'active'),
-    (v_invitation_id, 'zhella', 'GUEST-329', 'active');
+    (v_invitation_id, 'zhella', 'GUEST-329', 'active'),
+    (v_invitation_id, 'azar', 'GUEST-330', 'active'),
+    (v_invitation_id, 'Azary', 'GUEST-331', 'active'),
+    (v_invitation_id, 'Bagus', 'GUEST-332', 'active'),
+    (v_invitation_id, 'Baron', 'GUEST-333', 'active'),
+    (v_invitation_id, 'Wachidun', 'GUEST-334', 'active'),
+    (v_invitation_id, 'Bekti', 'GUEST-335', 'active'),
+    (v_invitation_id, 'Bonding', 'GUEST-336', 'active'),
+    (v_invitation_id, 'Bory', 'GUEST-337', 'active'),
+    (v_invitation_id, 'Treza', 'GUEST-338', 'active'),
+    (v_invitation_id, 'Viaga', 'GUEST-339', 'active'),
+    (v_invitation_id, 'Wawa', 'GUEST-340', 'active'),
+    (v_invitation_id, 'Hendyto', 'GUEST-341', 'active'),
+    (v_invitation_id, 'Kevin', 'GUEST-342', 'active'),
+    (v_invitation_id, 'Irfan madit', 'GUEST-343', 'active'),
+    (v_invitation_id, 'Jonet', 'GUEST-344', 'active'),
+    (v_invitation_id, 'Lucky', 'GUEST-345', 'active'),
+    (v_invitation_id, 'Ino', 'GUEST-346', 'active'),
+    (v_invitation_id, 'Agung “kala”', 'GUEST-347', 'active'),
+    (v_invitation_id, 'Indra', 'GUEST-348', 'active'),
+    (v_invitation_id, 'Sandra tobing', 'GUEST-349', 'active'),
+    (v_invitation_id, 'Sakti', 'GUEST-350', 'active'),
+    (v_invitation_id, 'Segi', 'GUEST-351', 'active'),
+    (v_invitation_id, 'Sandy syena', 'GUEST-352', 'active'),
+    (v_invitation_id, 'Agung', 'GUEST-353', 'active'),
+    (v_invitation_id, 'Alfian', 'GUEST-354', 'active'),
+    (v_invitation_id, 'Aziz', 'GUEST-355', 'active'),
+    (v_invitation_id, 'Azwin', 'GUEST-356', 'active'),
+    (v_invitation_id, 'Fauziarinanda', 'GUEST-357', 'active'),
+    (v_invitation_id, 'Kiky', 'GUEST-358', 'active'),
+    (v_invitation_id, 'Abdu', 'GUEST-359', 'active'),
+    (v_invitation_id, 'Desi', 'GUEST-360', 'active'),
+    (v_invitation_id, 'Zuhud', 'GUEST-361', 'active'),
+    (v_invitation_id, 'Dandy', 'GUEST-362', 'active'),
+    (v_invitation_id, 'Risto', 'GUEST-363', 'active'),
+    (v_invitation_id, 'Dea', 'GUEST-364', 'active'),
+    (v_invitation_id, 'Nemo', 'GUEST-365', 'active'),
+    (v_invitation_id, 'Udin', 'GUEST-366', 'active'),
+    (v_invitation_id, 'Oscar', 'GUEST-367', 'active'),
+    (v_invitation_id, 'Reyan tepu', 'GUEST-368', 'active'),
+    (v_invitation_id, 'Wahyu jojo', 'GUEST-369', 'active'),
+    (v_invitation_id, 'Wahyu ucil', 'GUEST-370', 'active'),
+    (v_invitation_id, 'Nia isnaini', 'GUEST-371', 'active'),
+    (v_invitation_id, 'Fajri', 'GUEST-372', 'active'),
+    (v_invitation_id, 'Fajar asmi', 'GUEST-373', 'active'),
+    (v_invitation_id, 'Firman', 'GUEST-374', 'active'),
+    (v_invitation_id, 'Galuh', 'GUEST-375', 'active'),
+    (v_invitation_id, 'Fredy', 'GUEST-376', 'active'),
+    (v_invitation_id, 'Prasdian', 'GUEST-377', 'active'),
+    (v_invitation_id, 'Benny', 'GUEST-378', 'active'),
+    (v_invitation_id, 'Adindy', 'GUEST-379', 'active'),
+    (v_invitation_id, 'Nanda', 'GUEST-380', 'active'),
+    (v_invitation_id, 'Andi yogi', 'GUEST-381', 'active'),
+    (v_invitation_id, 'Angga', 'GUEST-382', 'active'),
+    (v_invitation_id, 'Adi', 'GUEST-383', 'active'),
+    (v_invitation_id, 'Adim', 'GUEST-384', 'active'),
+    (v_invitation_id, 'Adio', 'GUEST-385', 'active'),
+    (v_invitation_id, 'Afel', 'GUEST-386', 'active'),
+    (v_invitation_id, 'Aldy jidun', 'GUEST-387', 'active'),
+    (v_invitation_id, 'Agnes', 'GUEST-388', 'active'),
+    (v_invitation_id, 'Aiyu', 'GUEST-389', 'active'),
+    (v_invitation_id, 'Ridlo', 'GUEST-390', 'active'),
+    (v_invitation_id, 'Rico patok', 'GUEST-391', 'active'),
+    (v_invitation_id, 'Aryak', 'GUEST-392', 'active'),
+    (v_invitation_id, 'Guswan', 'GUEST-393', 'active'),
+    (v_invitation_id, 'Mas kris', 'GUEST-394', 'active'),
+    (v_invitation_id, 'Tri tera', 'GUEST-395', 'active'),
+    (v_invitation_id, 'Maulana Dani Pratama', 'GUEST-396', 'active'),
+    (v_invitation_id, 'Mega rizky agustin', 'GUEST-397', 'active'),
+    (v_invitation_id, 'Vanny', 'GUEST-398', 'active'),
+    (v_invitation_id, 'Angelina mayang', 'GUEST-399', 'active'),
+    (v_invitation_id, 'Tata yunita', 'GUEST-400', 'active'),
+    (v_invitation_id, 'Shilvi', 'GUEST-401', 'active'),
+    (v_invitation_id, 'Mentari sekar', 'GUEST-402', 'active'),
+    (v_invitation_id, 'Mbak Pipip', 'GUEST-403', 'active'),
+    (v_invitation_id, 'Fatim', 'GUEST-404', 'active'),
+    (v_invitation_id, 'Budhe ndut sekeluarga', 'GUEST-405', 'active');
+
+  RAISE NOTICE 'Berhasil menambahkan % tamu untuk Agni & Putri!', 405;
 END $$;

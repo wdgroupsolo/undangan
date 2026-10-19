@@ -56,7 +56,20 @@ export const INITIAL_AGNI_GUESTS: string[] = [
   "triaditha", "tyas kartika", "ukiabrori", "ully", "usrok", "uwx", "vandripw", "vendy yustian",
   "veyradinda", "victy", "vina", "vionacandra", "virga", "viya", "wah22yudi", "wahyu cuyek",
   "wahyu mony", "wahyu tantra", "wakhid", "wejang", "widha wisnu", "widi bagong", "winda devi", "wisnupratama",
-  "yanuar", "yanuarf", "yasin", "yass dinda", "yola", "yoza", "yusuf cahyo", "zahra", "zhella"
+  "yanuar", "yanuarf", "yasin", "yass dinda", "yola", "yoza", "yusuf cahyo", "zahra", "zhella",
+  // Batch tambahan tamu baru untuk Agni & Putri
+  "azar", "Azary", "Bagus", "Baron", "Wachidun", "Bekti", "Bonding", "Bory",
+  "Treza", "Viaga", "Wawa", "Hendyto", "Kevin", "Irfan madit", "Jonet", "Lucky",
+  "Ino", "Agung “kala”", "Indra", "Sandra tobing", "Sakti", "Segi", "Sandy syena",
+  "Agung", "Alfian", "Aziz", "Azwin", "Fauziarinanda", "Kiky", "Abdu",
+  "Desi", "Zuhud", "Dandy", "Risto", "Dea", "Nemo", "Udin", "Oscar",
+  "Reyan tepu", "Wahyu jojo", "Wahyu ucil", "Nia isnaini", "Fajri", "Fajar asmi",
+  "Firman", "Galuh", "Fredy", "Prasdian", "Benny", "Adindy", "Nanda", "Andi yogi",
+  "Angga", "Adi", "Adim", "Adio", "Afel", "Aldy jidun", "Agnes", "Aiyu",
+  "Ridlo", "Rico patok", "Aryak", "Guswan", "Mas kris", "Tri tera",
+  // Batch 3 tambahan tamu
+  "Maulana Dani Pratama", "Mega rizky agustin", "Vanny", "Angelina mayang", "Tata yunita",
+  "Shilvi", "Mentari sekar", "Mbak Pipip", "Fatim", "Budhe ndut sekeluarga"
 ];
 
 const DEFAULT_INVITATION_ID = 'e2000000-0000-0000-0000-000000000002';
@@ -65,7 +78,32 @@ const getLocalGuests = (): Guest[] => {
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (raw) {
-      return JSON.parse(raw);
+      const parsed: Guest[] = JSON.parse(raw);
+      // Auto-sync missing guest seeds
+      const existingNameSet = new Set(parsed.map(g => (g.name || '').trim().toLowerCase()));
+      const missingSeeds: Guest[] = [];
+
+      INITIAL_AGNI_GUESTS.forEach((name, idx) => {
+        if (!existingNameSet.has(name.trim().toLowerCase())) {
+          existingNameSet.add(name.trim().toLowerCase());
+          missingSeeds.push({
+            id: `seed-guest-${parsed.length + missingSeeds.length + 1}`,
+            invitation_id: DEFAULT_INVITATION_ID,
+            name,
+            guest_code: `GUEST-${String(parsed.length + missingSeeds.length + 1).padStart(3, '0')}`,
+            status: 'active',
+            created_at: new Date(Date.now() - (INITIAL_AGNI_GUESTS.length - idx) * 1000).toISOString()
+          });
+        }
+      });
+
+      if (missingSeeds.length > 0) {
+        const merged = [...parsed, ...missingSeeds];
+        saveLocalGuests(merged);
+        return merged;
+      }
+
+      return parsed;
     }
   } catch (err) {
     console.warn('Gagal membaca data tamu dari localStorage:', err);
@@ -113,19 +151,20 @@ export const guestService = {
         query = query.eq('invitation_id', invitationId);
       }
 
-      const { data, error } = await query;
+      const { data, error } = await query.limit(5000);
 
       if (!error && data && data.length > 0) {
-        // Merge Supabase with local items
-        const dbMap = new Map(data.map((item: any) => [item.id, item]));
-        const combined = [...data];
+        // Supabase adalah sumber data utama (source of truth).
+        const dbNameSet = new Set(data.map((item: any) => (item.name || '').trim().toLowerCase()));
+        
+        // Pertahankan hanya tamu manual lokal yang belum tersimpan di database (abaikan seed-guest bawaan)
+        const offlineAdded = filteredLocal.filter(loc => 
+          loc.id && !loc.id.startsWith('seed-guest-') && !dbNameSet.has((loc.name || '').trim().toLowerCase())
+        );
 
-        for (const loc of filteredLocal) {
-          if (!dbMap.has(loc.id)) {
-            combined.push(loc);
-          }
-        }
-        return combined as Guest[];
+        const finalGuests = [...data, ...offlineAdded] as Guest[];
+        saveLocalGuests(finalGuests);
+        return finalGuests;
       }
     } catch (err) {
       console.warn('Menggunakan data tamu lokal:', err);
