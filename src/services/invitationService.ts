@@ -152,6 +152,40 @@ export const INVITATION_DIMAS_ANISA: Invitation & { theme?: any; client?: any } 
   created_at: '2026-10-11T09:00:00Z'
 };
 
+export const INVITATION_HAFIZ_SYAFIKA: Invitation & { theme?: any; client?: any } = {
+  id: 'e5000000-0000-0000-0000-000000000005',
+  client_id: 'c4000000-0000-0000-0000-000000000004',
+  theme_id: 'c3d4e5f6-7890-4123-d456-7ef890123456',
+  title: 'The Wedding of Hafiz & Syafika',
+  slug: 'hafiz-syafika',
+  status: 'published',
+  wedding_date: '2026-11-28T10:00:00+08:00',
+  settings: {
+    theme_slug: 'kuala-lumpur-heritage',
+    default_guest_name: 'Tuan/Puan/Saudara/Saudari',
+    cover_title: 'HAFIZ & SYAFIKA',
+    cover_photo: '/themes/kuala-lumpur-heritage/couple-portrait.jpg',
+    music_title: 'Bergema Sampai Selamanya',
+    music_url: '/music/bergema-sampai-selamanya.mp3',
+    gift_recipient: 'HAFIZ & SYAFIKA',
+    gift_address: 'No. 28, Jalan Ampang Hilir, Taman U-Thant, 55000 Kuala Lumpur, Malaysia',
+    color_concept: 'Royal Songket & Rose Malay Heritage',
+    show_akad: true,
+    show_resepsi: true,
+    show_love_story: true,
+    show_live_streaming: false
+  },
+  theme: {
+    id: 'c3d4e5f6-7890-4123-d456-7ef890123456',
+    name: 'Kuala Lumpur Heritage',
+    slug: 'kuala-lumpur-heritage'
+  },
+  client: {
+    name: 'HAFIZ & SYAFIKA'
+  },
+  created_at: '2026-10-30T10:00:00Z'
+};
+
 export const INVITATION_DEMO_TESTIMONI = INVITATION_BIMA_RATNA;
 
 export const invitationService = {
@@ -214,6 +248,7 @@ export const invitationService = {
 
   async getInvitationBySlug(slug: string) {
     const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim();
+    const isHafiz = cleanSlug === 'hafiz-syafika' || cleanSlug.includes('hafiz') || cleanSlug.includes('syafika') || cleanSlug === 'kuala-lumpur-heritage';
     const isAgni = cleanSlug.includes('agni') || cleanSlug.includes('kribo');
     const isBima = cleanSlug === 'bima-ratna' || cleanSlug === 'demo-testimoni' || cleanSlug === 'demo-undangan' || cleanSlug.includes('bima');
     const isDimas = cleanSlug === 'dimas-anisa' || cleanSlug.includes('dimas');
@@ -221,9 +256,18 @@ export const invitationService = {
     // Check if status is paused or overridden in localStorage
     const cachedStatus = getSavedStatus(slug) || 
       getSavedStatus(cleanSlug) || 
+      (isHafiz ? (getSavedStatus('e5000000-0000-0000-0000-000000000005') || getSavedStatus('hafiz-syafika')) : null) ||
       (isAgni ? (getSavedStatus('e2000000-0000-0000-0000-000000000002') || getSavedStatus('agni-putri') || getSavedStatus('agni-kahuripan')) : null) ||
       (isBima ? getSavedStatus('e3000000-0000-0000-0000-000000000003') : null) ||
       (isDimas ? getSavedStatus('e4000000-0000-0000-0000-000000000004') : null);
+
+    if (isHafiz) {
+      return {
+        ...INVITATION_HAFIZ_SYAFIKA,
+        slug: slug,
+        status: cachedStatus || INVITATION_HAFIZ_SYAFIKA.status || 'published'
+      };
+    }
 
     if (isBima) {
       return {

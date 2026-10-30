@@ -33,6 +33,9 @@ export const THEME_SCREENSHOT_MAP: Record<string, string> = {
   'royal-elegance': '/themes/royal-elegance-theme-preview.png',
   'nirwana-sarangan': '/themes/nirwana-sarangan/theme-preview.jpg',
   'hotel-nirwana': '/themes/nirwana-sarangan/theme-preview.jpg',
+  'kuala-lumpur-heritage': '/themes/kuala-lumpur-heritage/theme-preview.jpg',
+  'kuala-lumpur': '/themes/kuala-lumpur-heritage/theme-preview.jpg',
+  'hafiz-syafika': '/themes/kuala-lumpur-heritage/theme-preview.jpg',
 };
 
 export const enhanceThemeWithScreenshot = (theme: any): Theme => {
@@ -45,6 +48,36 @@ export const enhanceThemeWithScreenshot = (theme: any): Theme => {
     };
   }
   return theme as Theme;
+};
+
+// Masterpiece Theme: Kuala Lumpur Heritage (Walimatulurus Modern Melayu)
+export const REAL_KUALA_LUMPUR_HERITAGE_THEME: Theme = {
+  id: 'c3d4e5f6-7890-4123-d456-7ef890123456',
+  name: 'Kuala Lumpur Heritage',
+  slug: 'kuala-lumpur-heritage',
+  description: 'Tema pernikahan eksklusif bernuansa Modern Malay Heritage / Walimatulurus berlatar kemegahan arsitektur Kuala Lumpur (Menara Kembar Petronas & Bangunan Sultan Abdul Samad), gerbang ukiran Songket emas, dan keanggunan Bunga Raya.',
+  category: 'Modern & Cultural',
+  preview_image: '/themes/kuala-lumpur-heritage/theme-preview.jpg',
+  thumbnail: '/themes/kuala-lumpur-heritage/theme-preview.jpg',
+  status: 'active',
+  badge: 'Tema Baru Malaysia',
+  rating: '5.0',
+  features: [
+    'Kemegahan Menara Petronas & Bangunan Sultan Abdul Samad',
+    'Gerbang Ukiran Songket Emas & Ornamen Bunga Raya',
+    'Bottom Navigation Bar Praktis & Floating Music Button',
+    'Salam Kaut, Lokasi Waze/Maps, Countdown & RSVP Digital'
+  ],
+  theme_config: { 
+    primaryColor: '#7A243D', 
+    secondaryColor: '#FFF8FA', 
+    accentColor: '#D4AF37',
+    style: 'kuala-lumpur-heritage',
+    backgroundImage: '/themes/kuala-lumpur-heritage/cover-skyline.jpg',
+    desktopBackground: '/themes/kuala-lumpur-heritage/cover-skyline.jpg',
+    mobileBackground: '/themes/kuala-lumpur-heritage/cover-skyline.jpg',
+  },
+  created_at: '2026-10-30T12:00:00.000000+00:00'
 };
 
 // Masterpiece Theme: Nirwana Sarangan Resort (Telaga Sarangan & Hotel Nirwana)
@@ -231,6 +264,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
 };
 
 export const DEFAULT_THEMES: Theme[] = [
+  REAL_KUALA_LUMPUR_HERITAGE_THEME,
   REAL_NIRWANA_SARANGAN_THEME,
   REAL_JOGLO_MAROON_THEME,
   REAL_ROYAL_WAYANG_THEME,
@@ -253,17 +287,21 @@ export const themeService = {
         return DEFAULT_THEMES;
       }
 
-      // Merge database themes with Nirwana Sarangan, Joglo Maroon, Royal Wayang, Secret Garden, Maroon Gold, and Javanese Heritage
+      // Merge database themes with Kuala Lumpur Heritage, Nirwana Sarangan, Joglo Maroon, etc.
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
+      if (!existingSlugs.has('kuala-lumpur-heritage')) {
+        merged.unshift(REAL_KUALA_LUMPUR_HERITAGE_THEME);
+      }
+
       if (!existingSlugs.has('nirwana-sarangan')) {
-        merged.unshift(REAL_NIRWANA_SARANGAN_THEME);
+        merged.splice(1, 0, REAL_NIRWANA_SARANGAN_THEME);
       } else {
         const idx = merged.findIndex((t: any) => t.slug === 'nirwana-sarangan');
-        if (idx > 0) {
+        if (idx > 1) {
           const [nirwana] = merged.splice(idx, 1);
-          merged.unshift(nirwana);
+          merged.splice(1, 0, nirwana);
         }
       }
 
@@ -546,6 +584,9 @@ export const themeService = {
   },
 
   async getTheme(id: string): Promise<Theme> {
+    if (id === REAL_KUALA_LUMPUR_HERITAGE_THEME.id || id === 'kuala-lumpur-heritage' || id === 'kuala-lumpur' || id === 'hafiz-syafika') {
+      return REAL_KUALA_LUMPUR_HERITAGE_THEME;
+    }
     if (id === REAL_NIRWANA_SARANGAN_THEME.id || id === 'nirwana-sarangan' || id === 'hotel-nirwana' || id === 'telaga-sarangan') {
       return REAL_NIRWANA_SARANGAN_THEME;
     }
@@ -579,10 +620,13 @@ export const themeService = {
       }
     } catch {}
 
-    return REAL_NIRWANA_SARANGAN_THEME;
+    return REAL_KUALA_LUMPUR_HERITAGE_THEME;
   },
 
   async getThemeBySlug(slug: string): Promise<Theme> {
+    if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika') {
+      return REAL_KUALA_LUMPUR_HERITAGE_THEME;
+    }
     if (slug === 'nirwana-sarangan' || slug === 'hotel-nirwana' || slug === 'telaga-sarangan') {
       return REAL_NIRWANA_SARANGAN_THEME;
     }

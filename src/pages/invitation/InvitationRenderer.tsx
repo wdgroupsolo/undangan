@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
-import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI, COUPLE_STEVEN_BUNGA, GALLERY_STEVEN_BUNGA } from '../../services/editorService';
+import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI, COUPLE_STEVEN_BUNGA, GALLERY_STEVEN_BUNGA, COUPLE_HAFIZ_SYAFIKA } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
 import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
@@ -21,6 +21,7 @@ import {
   JogloButterflies 
 } from './themes/JogloMaroonHeritageTheme';
 import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSaranganTheme';
+import { KualaLumpurHeritageTheme } from './themes/KualaLumpurHeritageTheme';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
 import { NirwanaSaranganEntrancePortal } from './components/NirwanaSaranganEntrancePortal';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
@@ -65,15 +66,18 @@ export const InvitationRenderer: React.FC = () => {
 
   const rawSlug = decodeURIComponent(slug || '').toLowerCase().trim();
   const isAgniSlug = rawSlug.includes('agni') || rawSlug.includes('kribo');
+  const isHafizSlug = rawSlug.includes('hafiz') || rawSlug.includes('syafika') || rawSlug === 'kuala-lumpur-heritage';
 
   const activeThemeSlug = requestedTheme || (
-    isAgniSlug
-      ? 'royal-wayang-gold'
-      : ((slug === 'benny-indah' || slug === 'steven-bunga')
-        ? 'royal-wayang-gold' 
-        : (slug === 'habib-adiba' 
-          ? 'javanese-heritage' 
-          : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold')))
+    isHafizSlug
+      ? 'kuala-lumpur-heritage'
+      : (isAgniSlug
+        ? 'royal-wayang-gold'
+        : ((slug === 'benny-indah' || slug === 'steven-bunga')
+          ? 'royal-wayang-gold' 
+          : (slug === 'habib-adiba' 
+            ? 'javanese-heritage' 
+            : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold'))))
   );
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
@@ -81,6 +85,10 @@ export const InvitationRenderer: React.FC = () => {
       return '/music/landon-pigg-falling-in-love.mp3';
     }
     switch (themeSlug) {
+      case 'kuala-lumpur-heritage':
+      case 'kuala-lumpur':
+      case 'hafiz-syafika':
+        return '/music/bergema-sampai-selamanya.mp3';
       case 'joglo-maroon-heritage':
       case 'joglo-maroon':
       case 'joglo-bloom':
@@ -295,8 +303,8 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  const groomDisplayName = isAgniSlug ? 'Agni' : (groom || 'Steven');
-  const brideDisplayName = isAgniSlug ? 'Putri' : (bride || 'Bunga');
+  const groomDisplayName = isHafizSlug ? 'Hafiz' : (isAgniSlug ? 'Agni' : (groom || 'Steven'));
+  const brideDisplayName = isHafizSlug ? 'Syafika' : (isAgniSlug ? 'Putri' : (bride || 'Bunga'));
 
   // Automatic paused screen when invitation status is 'paused'
   if (invitation?.status === 'paused') {
@@ -310,20 +318,22 @@ export const InvitationRenderer: React.FC = () => {
     );
   }
 
-  const isNirwanaSarangan = activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan';
-  const isJogloMaroon = !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
-  const isRoyalWayang = !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
+  const isKualaLumpur = activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug;
+  const isNirwanaSarangan = !isKualaLumpur && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
+  const isJogloMaroon = !isKualaLumpur && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
+  const isRoyalWayang = !isKualaLumpur && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan;
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan || isKualaLumpur;
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 
-    : (invitation?.settings?.default_guest_name?.trim() || 'Tamu Undangan');
+    : (invitation?.settings?.default_guest_name?.trim() || (isKualaLumpur ? 'Tuan/Puan/Saudara/Saudari' : 'Tamu Undangan'));
 
   const coverImage = 
+    (isKualaLumpur ? '/themes/kuala-lumpur-heritage/cover-skyline.jpg' : null) ||
     (isAgniSlug ? '/themes/agni-putri/couple-arch.jpg' : null) ||
     invitation?.settings?.cover_photo ||
     couple?.cover_photo_url || 
@@ -390,6 +400,15 @@ export const InvitationRenderer: React.FC = () => {
             window.addEventListener('touchstart', unlockAudio, { once: true });
           });
       }
+    }
+
+    if (isKualaLumpur) {
+      setIsCoverExiting(true);
+      setTimeout(() => {
+        setOpeningStage('opened');
+        setIsCoverExiting(false);
+      }, 750);
+      return;
     }
 
     if (isNirwanaSarangan) {
@@ -522,7 +541,19 @@ export const InvitationRenderer: React.FC = () => {
             }`
       }>
         {(isSplitTheme || isInvitationVisible || isCoverExiting || openingStage === 'arch-video') && (
-          isNirwanaSarangan ? (
+          isKualaLumpur ? (
+            <KualaLumpurHeritageTheme 
+              invitation={invitation}
+              couple={couple || COUPLE_HAFIZ_SYAFIKA}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+              guestName={guestName}
+              isOpening={isVideoExiting || openingStage === 'opened'}
+            />
+          ) : isNirwanaSarangan ? (
             <NirwanaSaranganTheme 
               invitation={invitation}
               couple={couple || activeCouple}
@@ -642,7 +673,91 @@ export const InvitationRenderer: React.FC = () => {
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {openingStage === 'cover' && (
-        isNirwanaSarangan ? (
+        isKualaLumpur ? (
+          /* Kuala Lumpur Heritage Royal Songket Cover (Split on Desktop, Fullscreen on Mobile - Matches Screenshot 1) */
+          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none bg-[#FDF8F7] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-[-20px_0_60px_rgba(180,90,110,0.22)] border-l border-[#E8BAC5]/50`}>
+            
+            {/* Ambient Scenic Background */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              <img 
+                src="/themes/kuala-lumpur-heritage/cover-skyline.jpg" 
+                alt="Kuala Lumpur Skyline Watercolor" 
+                className="w-full h-full object-cover object-center filter blur-[4px] scale-105 opacity-50"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#FDF8F7]/85 via-[#FFF2F5]/90 to-[#FDF8F7]/95" />
+            </div>
+
+            {/* Centered Mobile/Portrait Cover Frame matching Screenshot 1 */}
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[700px] sm:max-h-[95vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-7 shadow-[0_25px_80px_rgba(180,90,110,0.3)] sm:border-[2px] sm:border-[#E8B5BE] bg-white">
+              
+              {/* Cover Art Image Background */}
+              <div className="absolute inset-0 z-0 pointer-events-none">
+                <img 
+                  src="/themes/kuala-lumpur-heritage/cover-skyline.jpg" 
+                  alt="Kuala Lumpur Skyline & Royal Songket Arch" 
+                  className="w-full h-full object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent" />
+              </div>
+
+              {/* TOP: "THE WEDDING OF" */}
+              <div className="relative z-20 flex flex-col items-center pt-8 sm:pt-10">
+                <p 
+                  className="text-xs sm:text-[13px] tracking-[0.25em] uppercase text-[#6B2F3D] font-serif font-bold drop-shadow-sm"
+                  style={{ fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif" }}
+                >
+                  THE WEDDING OF
+                </p>
+              </div>
+
+              {/* CENTER: Couple Names "Hafiz" & "Syafika" in Editorial High-Contrast Serif */}
+              <div className="relative z-20 flex flex-col items-center my-auto py-2 w-full max-w-[320px]">
+                <h1 
+                  className="text-5xl sm:text-6xl text-[#6D2637] font-normal tracking-tight leading-[1.05] drop-shadow-sm"
+                  style={{ fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {groomDisplayName}
+                </h1>
+                <h1 
+                  className="text-5xl sm:text-6xl text-[#6D2637] font-normal tracking-tight leading-[1.05] drop-shadow-sm mt-1"
+                  style={{ fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {brideDisplayName}
+                </h1>
+              </div>
+
+              {/* BOTTOM: "KEPADA", Guest Name & "OPEN INVITATION" Button */}
+              <div className="relative z-20 flex flex-col items-center w-full max-w-[320px] gap-3 pb-8 sm:pb-10">
+                {/* Kepada Label */}
+                <p className="text-[11px] tracking-[0.3em] uppercase text-[#7A3648] font-serif font-semibold">
+                  KEPADA
+                </p>
+
+                {/* Recipient Guest Name */}
+                <p className="text-sm sm:text-base font-serif font-bold text-[#4A1A26] tracking-wide line-clamp-1 drop-shadow-sm mb-1">
+                  {guestName}
+                </p>
+
+                {/* OPEN INVITATION Button (Screenshot 1 Match: Plum/Berry Pill with Soft Glow & Light Sweep) */}
+                <button
+                  onClick={handleOpen}
+                  className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-[0_10px_30px_rgba(148,59,78,0.45)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#943B4E] via-[#853042] to-[#6A2434] border border-[#F0CDD4]"
+                >
+                  <div 
+                    className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+                  />
+                  <div className="relative flex items-center justify-center gap-2">
+                    <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-white drop-shadow-sm">
+                      OPEN INVITATION
+                    </span>
+                    <Sparkles className="w-3.5 h-3.5 text-[#FFDF80] animate-pulse" />
+                  </div>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        ) : isNirwanaSarangan ? (
           /* Hotel Nirwana Sarangan Resort & Lakeview Cover */
           <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0D2018] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             {/* Desktop Scenic Background - Lakeview Panorama */}

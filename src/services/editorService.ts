@@ -299,6 +299,29 @@ export const STORIES_DIMAS_ANISA = [
   }
 ];
 
+export const COUPLE_HAFIZ_SYAFIKA = {
+  id: '36000000-0000-0000-0000-000000000006',
+  invitation_id: 'e5000000-0000-0000-0000-000000000005',
+  groom_full_name: 'Muhammad Hafiz Bin Razak',
+  groom_nickname: 'Hafiz',
+  groom_father_name: 'Tn. Hj. Razak Bin Mansor',
+  groom_mother_name: 'Pn. Hjh. Mariam Binti Ahmad',
+  groom_parents: 'Putra sulung dari Tn. Hj. Razak & Pn. Hjh. Mariam',
+  groom_photo: '/themes/kuala-lumpur-heritage/couple-portrait.jpg',
+  groom_photo_url: '/themes/kuala-lumpur-heritage/couple-portrait.jpg',
+  groom_instagram: '@hafiz_razak',
+  bride_full_name: 'Nur Syafika Binti Zulkifli',
+  bride_nickname: 'Syafika',
+  bride_father_name: 'Dato\' Zulkifli Bin Othman',
+  bride_mother_name: 'Datin Salmah Binti Hashim',
+  bride_parents: 'Putri kedua dari Dato\' Zulkifli & Datin Salmah',
+  bride_photo: '/themes/kuala-lumpur-heritage/couple-portrait.jpg',
+  bride_photo_url: '/themes/kuala-lumpur-heritage/couple-portrait.jpg',
+  bride_instagram: '@syafika_zul',
+  cover_photo_url: '/themes/kuala-lumpur-heritage/couple-portrait.jpg',
+  gift_address: 'No. 28, Jalan Ampang Hilir, Taman U-Thant, 55000 Kuala Lumpur, Malaysia'
+};
+
 export const editorService = {
   // Couple Info
   async getCouple(invitationId: string) {
@@ -306,6 +329,11 @@ export const editorService = {
       const { data, error } = await supabase.from('couples').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isHafizId = invitationId === 'e5000000-0000-0000-0000-000000000005' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('hafiz') || invitationId.toLowerCase().includes('syafika') || invitationId.toLowerCase().includes('kuala-lumpur')));
+    if (isHafizId) {
+      return COUPLE_HAFIZ_SYAFIKA;
+    }
     const isStevenBungaId = invitationId === 'demo-theme-invitation' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('steven') || invitationId.toLowerCase().includes('bunga')));
     if (isStevenBungaId) {
