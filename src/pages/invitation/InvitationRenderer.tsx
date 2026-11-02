@@ -23,7 +23,6 @@ import {
 import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSaranganTheme';
 import { KualaLumpurHeritageTheme } from './themes/KualaLumpurHeritageTheme';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
-import { NirwanaSaranganEntrancePortal } from './components/NirwanaSaranganEntrancePortal';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 import { InvitationPausedScreen } from '../../components/InvitationPausedScreen';
 import { analyticsService } from '../../services/analyticsService';
@@ -343,7 +342,7 @@ export const InvitationRenderer: React.FC = () => {
     (isNirwanaSarangan ? '/themes/nirwana-sarangan/couple-cover.jpg' : isJogloMaroon ? '/photos/photo-3.jpg' : isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isNirwanaSarangan
-    ? '/gemini_generated_video_55ad2241.mp4'
+    ? '/themes/nirwana-entrance-gate.mp4'
     : isJogloMaroon
       ? '/themes/joglo-maroon-entrance.mp4'
       : isRoyalWayang
@@ -412,8 +411,12 @@ export const InvitationRenderer: React.FC = () => {
     }
 
     if (isNirwanaSarangan) {
-      // Elegant 3D Nirwana Sarangan Resort & Lake Entrance Portal
+      // Cinematic 3D Royal Gate Video Entrance
+      setCanSkipVideo(false);
       setOpeningStage('arch-video');
+      setTimeout(() => {
+        setCanSkipVideo(true);
+      }, 500);
       return;
     }
 
@@ -1705,18 +1708,9 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Nirwana Sarangan Portal, Batak Heritage Portal, or Gate Video */}
+      {/* 2. Entrance Animation: Batak Heritage Portal, or Gate Video (Nirwana, Wayang, Maroon, etc.) */}
       {openingStage === 'arch-video' && (
-        isNirwanaSarangan ? (
-          <NirwanaSaranganEntrancePortal
-            onComplete={handleFinishAnimation}
-            guestName={guestName}
-            groomName={groomDisplayName}
-            brideName={brideDisplayName}
-            coverImage={coverImage}
-            weddingDate={events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'Sabtu, 24 Oktober 2026'}
-          />
-        ) : isJogloMaroon ? (
+        isJogloMaroon ? (
           <BatakHeritageEntrancePortal
             onComplete={handleFinishAnimation}
             guestName={guestName}
@@ -1728,10 +1722,10 @@ export const InvitationRenderer: React.FC = () => {
             onClick={() => {
               if (canSkipVideo) handleFinishAnimation();
             }}
-            className={`fixed top-0 right-0 h-full ${
+            className={`fixed inset-0 h-full ${
               isNirwanaSarangan
-                ? 'w-full lg:w-7/12 xl:w-1/2'
-                : (isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full inset-0')
+                ? 'w-full'
+                : (isSplitTheme ? 'w-full lg:w-[42%] lg:right-0 lg:left-auto' : 'w-full')
             } z-50 bg-[#071712] flex items-center justify-center transition-opacity duration-1000 ease-out overflow-hidden select-none ${
               isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
             } ${canSkipVideo ? 'cursor-pointer' : ''}`}
@@ -1742,7 +1736,7 @@ export const InvitationRenderer: React.FC = () => {
               style={{
                 backgroundImage: `url(${
                   isNirwanaSarangan
-                    ? '/themes/nirwana-sarangan/lakeview-panorama.jpg'
+                    ? '/themes/nirwana-sarangan/gate-terrace.jpg'
                     : isRoyalWayang
                       ? '/themes/royal-wayang-bg.jpg'
                       : isJavaneseHeritage
@@ -1774,7 +1768,7 @@ export const InvitationRenderer: React.FC = () => {
                 src={entranceVideoSrc}
                 poster={
                   isNirwanaSarangan
-                    ? '/themes/nirwana-sarangan/lakeview-panorama.jpg'
+                    ? '/themes/nirwana-sarangan/gate-closed.jpg'
                     : isRoyalWayang
                       ? '/themes/royal-wayang-portal-poster.jpg'
                       : isJavaneseHeritage
@@ -1791,7 +1785,7 @@ export const InvitationRenderer: React.FC = () => {
                 className="w-full h-full object-cover object-center"
                 onError={handleFinishAnimation}
                 onTimeUpdate={() => {
-                  if (isNirwanaSarangan && videoRef.current && videoRef.current.currentTime >= 9.8) {
+                  if (isNirwanaSarangan && videoRef.current && videoRef.current.currentTime >= 3.4) {
                     handleFinishAnimation();
                   } else if (isRoyalWayang && videoRef.current && videoRef.current.currentTime >= 3.35) {
                     handleFinishAnimation();
