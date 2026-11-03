@@ -13,6 +13,7 @@ interface NirwanaSaranganEntrancePortalProps {
   brideName?: string;
   coverImage?: string;
   weddingDate?: string;
+  themeSlug?: string;
 }
 
 export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePortalProps> = ({
@@ -21,16 +22,19 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
   groomName = 'Steven',
   brideName = 'Bunga',
   coverImage = '/themes/nirwana-sarangan/couple-cover.jpg',
-  weddingDate = 'Jumat, 20 November 2026'
+  weddingDate = 'Jumat, 20 November 2026',
+  themeSlug = 'nirwana-sarangan'
 }) => {
   // Animation stages: 'intro' -> 'unlocking' -> 'opening' -> 'gliding' -> 'exiting'
   const [stage, setStage] = useState<'intro' | 'unlocking' | 'opening' | 'gliding' | 'exiting'>('intro');
   const [canSkip, setCanSkip] = useState(false);
   const isFinishedRef = useRef(false);
 
-  // Compute initials for the wax seal: e.g. "S & B"
-  const groomInitial = groomName ? groomName.trim().charAt(0).toUpperCase() : 'S';
-  const brideInitial = brideName ? brideName.trim().charAt(0).toUpperCase() : 'B';
+  const isRoyalWayang = themeSlug === 'royal-wayang-gold' || themeSlug === 'royal-wayang' || themeSlug === 'joglo-wayang';
+
+  // Compute initials for the wax seal: e.g. "S & B", "Y & F", "A & O"
+  const groomInitial = groomName ? groomName.trim().charAt(0).toUpperCase() : (isRoyalWayang ? 'A' : 'S');
+  const brideInitial = brideName ? brideName.trim().charAt(0).toUpperCase() : (isRoyalWayang ? 'O' : 'B');
 
   const handleFinish = () => {
     if (isFinishedRef.current) return;
@@ -42,30 +46,30 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
   };
 
   useEffect(() => {
-    // 0.35s: Enable skip button
+    // 0.6s: Enable skip button
     const tSkip = setTimeout(() => {
       setCanSkip(true);
-    }, 350);
+    }, 600);
 
     // Stage 1: Unlocking - Golden seal resonates with 24K radiant flare (0.45s)
     const tUnlock = setTimeout(() => {
       if (!isFinishedRef.current) setStage('unlocking');
     }, 450);
 
-    // Stage 2: Opening - 3D Emerald velvet folio gates swing open with realistic depth (0.95s)
+    // Stage 2: Opening - 3D Emerald velvet folio gates swing open with realistic depth (1.05s)
     const tOpen = setTimeout(() => {
       if (!isFinishedRef.current) setStage('opening');
-    }, 950);
+    }, 1050);
 
-    // Stage 3: Gliding - Smooth cinematic glide through the opened gates directly into the invitation (1.85s)
+    // Stage 3: Gliding - Smooth cinematic glide through the opened gates directly into the invitation (2.2s)
     const tGlide = setTimeout(() => {
       if (!isFinishedRef.current) setStage('gliding');
-    }, 1850);
+    }, 2200);
 
-    // Stage 4: Seamless transition handoff directly into invitation (2.65s)
+    // Stage 4: Seamless transition handoff directly into invitation (3.2s)
     const tExit = setTimeout(() => {
       handleFinish();
-    }, 2650);
+    }, 3200);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -90,12 +94,11 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
 
   return (
     <div 
-      onClick={() => {
-        if (canSkip) handleFinish();
-      }}
-      className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#C5A059]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#041610] transition-all duration-600 ease-out ${
+      className={`fixed top-0 right-0 h-full ${
+        isRoyalWayang ? 'w-full lg:w-[42%]' : 'w-full lg:w-7/12 xl:w-1/2'
+      } z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#C5A059]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#041610] transition-all duration-600 ease-out ${
         isExiting ? 'opacity-0 pointer-events-none scale-105' : 'opacity-100 pointer-events-auto scale-100'
-      } ${canSkip ? 'cursor-pointer' : ''}`}
+      }`}
     >
       <style>{`
         @keyframes nirwana-seal-pulse {
@@ -137,7 +140,7 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
       `}</style>
 
       {/* ========================================================================= */}
-      {/* 1. SCENIC TELAGA SARANGAN & HOTEL NIRWANA DRONE VIDEO BACKDROP           */}
+      {/* 1. SCENIC TELAGA SARANGAN / ROYAL WAYANG BACKDROP                         */}
       {/* ========================================================================= */}
       <div 
         className="absolute inset-0 z-0 overflow-hidden pointer-events-none transition-transform duration-1000 ease-out will-change-transform"
@@ -145,29 +148,44 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
           transform: isGliding ? 'scale(1.2)' : 'scale(1)'
         }}
       >
-        {/* Scenic lake image background fallback */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(/themes/nirwana-sarangan/lakeview-panorama.jpg)' }}
-        />
-        <video 
-          src="/gemini_generated_video_55ad2241.mp4" 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="w-full h-full object-cover object-center brightness-[0.78] contrast-[1.08] saturate-[1.1] relative z-1"
-        />
-        {/* Soft luxury emerald vignette overlays */}
-        <div className="absolute inset-0 z-2 bg-radial from-transparent via-[#03150F]/65 to-[#020D0A]/95" />
-        <div className="absolute inset-0 z-2 bg-gradient-to-t from-[#020D0A] via-transparent to-[#020D0A]/85" />
+        {isRoyalWayang ? (
+          <>
+            {/* Royal Wayang Gold backdrop */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: 'url(/themes/royal-wayang-bg.jpg)' }}
+            />
+            {/* Soft luxury dark gold & charcoal vignette overlays */}
+            <div className="absolute inset-0 z-2 bg-radial from-transparent via-[#0f0c05]/75 to-[#000000]/95" />
+            <div className="absolute inset-0 z-2 bg-gradient-to-t from-[#0a0705] via-transparent to-[#0a0705]/90" />
+          </>
+        ) : (
+          <>
+            {/* Scenic lake image background fallback */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: 'url(/themes/nirwana-sarangan/lakeview-panorama.jpg)' }}
+            />
+            <video 
+              src="/gemini_generated_video_55ad2241.mp4" 
+              autoPlay 
+              loop 
+              muted 
+              playsInline
+              className="w-full h-full object-cover object-center brightness-[0.78] contrast-[1.08] saturate-[1.1] relative z-1"
+            />
+            {/* Soft luxury emerald vignette overlays */}
+            <div className="absolute inset-0 z-2 bg-radial from-transparent via-[#03150F]/65 to-[#020D0A]/95" />
+            <div className="absolute inset-0 z-2 bg-gradient-to-t from-[#020D0A] via-transparent to-[#020D0A]/85" />
+          </>
+        )}
       </div>
 
-      {/* Billowing Mountain Lake Mist */}
-      <FloatingLakeMist />
+      {/* Billowing Mountain Lake Mist (Nirwana) */}
+      {!isRoyalWayang && <FloatingLakeMist />}
 
       {/* Shimmering Golden Dust Particles */}
-      <FloatingGoldenDust count={12} />
+      <FloatingGoldenDust count={isRoyalWayang ? 16 : 12} />
 
       {/* Falling 24K Gold Foil Flakes & Starlight Diamonds */}
       <FallingPineParticles count={10} className="z-25 opacity-70" />
@@ -432,7 +450,7 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
             <div className="px-4 py-2 rounded-full bg-[#020D0A]/85 backdrop-blur-md border border-[#C5A059]/60 shadow-[0_6px_25px_rgba(0,0,0,0.7)] flex items-center justify-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-[#E2C792] animate-pulse" />
               <span className="text-[10px] sm:text-[11px] font-serif tracking-[0.26em] uppercase text-[#F3E5AB] font-semibold drop-shadow-sm truncate">
-                HOTEL NIRWANA SARANGAN
+                {isRoyalWayang ? 'ROYAL WAYANG GOLD • THE SACRED WEDDING' : 'HOTEL NIRWANA SARANGAN'}
               </span>
               <Sparkles className="w-3.5 h-3.5 text-[#E2C792] animate-pulse" />
             </div>

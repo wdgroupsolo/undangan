@@ -421,47 +421,19 @@ export const InvitationRenderer: React.FC = () => {
       return;
     }
 
-    if (isNirwanaSarangan) {
-      // Cinematic 3D Royal Gate Video Entrance
+    if (isNirwanaSarangan || isRoyalWayang) {
+      // Cinematic 3D Royal Gate Entrance Portal
       setCanSkipVideo(false);
       setOpeningStage('arch-video');
       setTimeout(() => {
         setCanSkipVideo(true);
-      }, 500);
+      }, 600);
       return;
     }
 
     if (isJogloMaroon) {
       // Elegant 3D Batak Heritage Entrance Portal
       setOpeningStage('arch-video');
-      return;
-    }
-
-    if (isRoyalWayang) {
-      // Authentic Royal Portal / Joglo Zoom entrance video animation matching user's reference
-      setCanSkipVideo(false);
-      setOpeningStage('arch-video');
-
-      // Allow skip after 1.2s delay
-      setTimeout(() => {
-        setCanSkipVideo(true);
-      }, 1200);
-
-      // Trigger video playback immediately
-      setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.defaultMuted = true;
-          videoRef.current.muted = true;
-          videoRef.current.currentTime = 0;
-          videoRef.current.play().catch(err => console.warn('Video play error:', err));
-        }
-      }, 50);
-
-      // Fallback timeout in case onTimeUpdate doesn't fire
-      if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current);
-      animTimeoutRef.current = setTimeout(() => {
-        handleFinishAnimation();
-      }, 3700);
       return;
     }
 
@@ -1726,14 +1698,15 @@ export const InvitationRenderer: React.FC = () => {
 
       {/* 2. Entrance Animation: Nirwana Sarangan Portal, Batak Heritage Portal, or Gate Video */}
       {openingStage === 'arch-video' && (
-        isNirwanaSarangan ? (
+        (isNirwanaSarangan || isRoyalWayang) ? (
           <NirwanaSaranganEntrancePortal
             onComplete={handleFinishAnimation}
             guestName={guestName}
             groomName={groomDisplayName}
             brideName={brideDisplayName}
             coverImage={coverImage}
-            weddingDate={events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : (isYogaFatmaSlug ? 'Jumat, 26 Maret 2027' : 'Jumat, 20 November 2026')}
+            weddingDate={events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : (isYogaFatmaSlug ? "Jum'at, 26 Maret 2027" : (isAudiOvyolaSlug ? 'Sabtu, 9 Januari 2027' : 'Jumat, 20 November 2026'))}
+            themeSlug={activeThemeSlug}
           />
         ) : isJogloMaroon ? (
           <BatakHeritageEntrancePortal

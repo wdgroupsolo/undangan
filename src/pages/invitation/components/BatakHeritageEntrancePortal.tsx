@@ -70,12 +70,9 @@ export const BatakHeritageEntrancePortal: React.FC<BatakHeritageEntrancePortalPr
 
   return (
     <div 
-      onClick={() => {
-        if (canSkip) handleFinish();
-      }}
       className={`fixed top-0 right-0 h-full w-full lg:w-[42%] z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#7e2231]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.85)] transition-opacity duration-600 ease-out ${
         isExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
-      } ${canSkip ? 'cursor-pointer' : ''}`}
+      }`}
     >
       <style>{`
         @keyframes seal-divine-pulse {
