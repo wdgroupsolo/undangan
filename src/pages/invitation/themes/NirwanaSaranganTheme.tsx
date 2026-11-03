@@ -613,6 +613,70 @@ export const MountainPineHeritageCrest: React.FC<{ className?: string }> = ({ cl
   </div>
 );
 
+// Premium On-Scroll Reveal Component (Replays smoothly on scroll, tailored for Nirwana Sarangan Resort)
+export const ScrollReveal: React.FC<{
+  children: React.ReactNode;
+  animation?: 'fade-up' | 'fade-down' | 'zoom-in' | 'slide-left' | 'slide-right' | 'arch-reveal' | 'fade-in';
+  delay?: number;
+  duration?: number;
+  className?: string;
+}> = ({ children, animation = 'fade-up', delay = 0, duration = 850, className = '' }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -25px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const getAnimClass = () => {
+    if (!isVisible) {
+      switch (animation) {
+        case 'fade-up':
+          return 'opacity-0 translate-y-12 scale-[0.98]';
+        case 'fade-down':
+          return 'opacity-0 -translate-y-10 scale-[0.98]';
+        case 'zoom-in':
+          return 'opacity-0 scale-[0.9]';
+        case 'slide-left':
+          return 'opacity-0 -translate-x-12';
+        case 'slide-right':
+          return 'opacity-0 translate-x-12';
+        case 'arch-reveal':
+          return 'opacity-0 translate-y-14 scale-[0.94] blur-[1px]';
+        case 'fade-in':
+        default:
+          return 'opacity-0';
+      }
+    }
+    return 'opacity-100 translate-y-0 translate-x-0 scale-100 blur-0';
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all will-change-transform ${getAnimClass()} ${className}`}
+      style={{
+        transitionDuration: `${duration}ms`,
+        transitionDelay: isVisible ? `${delay}ms` : '0ms',
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
 // Ambient Floating Golden Dust Particles (Glittering Lake Sparkles)
 export const FloatingGoldenDust: React.FC<{ count?: number; className?: string }> = ({ count = 14, className = '' }) => {
   const particles = [
@@ -1060,7 +1124,8 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             <FloatingGoldenDust count={16} />
 
             {/* BESPOKE ROYAL WEDDING STATIONERY FOLIO CARD (Warm Ivory & Gold Velvet) */}
-            <div className="relative z-10 max-w-md sm:max-w-lg w-full mx-auto flex flex-col items-center bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] rounded-3xl p-6 sm:p-9 border-2 border-[#C5A059] shadow-[0_30px_90px_rgba(10,31,24,0.5),0_0_45px_rgba(197,160,89,0.25),inset_0_1px_3px_rgba(255,255,255,0.9)] overflow-hidden">
+            <ScrollReveal animation="arch-reveal" duration={1000} className="w-full flex justify-center">
+              <div className="relative z-10 max-w-md sm:max-w-lg w-full mx-auto flex flex-col items-center bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] rounded-3xl p-6 sm:p-9 border-2 border-[#C5A059] shadow-[0_30px_90px_rgba(10,31,24,0.5),0_0_45px_rgba(197,160,89,0.25),inset_0_1px_3px_rgba(255,255,255,0.9)] overflow-hidden">
               
               {/* Tactile Banknote Guilloché Watermark Texture */}
               <GuillocheParchmentWatermark />
@@ -1238,6 +1303,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                 </div>
               </div>
             </div>
+            </ScrollReveal>
           </section>
 
           {/* SECTION 2: BISMILLAH & AYAT SUCI (Royal Illuminated Manuscript Folio) */}
@@ -1257,7 +1323,8 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
             <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
-            <div className="max-w-2xl mx-auto relative p-8 sm:p-14 rounded-[36px] bg-gradient-to-b from-[#FFFDF9] via-[#FAF5EA] to-[#F2E8D7] border-2 border-[#C5A059] shadow-[0_30px_70px_rgba(0,0,0,0.5),0_0_45px_rgba(197,160,89,0.25)] overflow-hidden">
+            <ScrollReveal animation="fade-up" duration={900}>
+              <div className="max-w-2xl mx-auto relative p-8 sm:p-14 rounded-[36px] bg-gradient-to-b from-[#FFFDF9] via-[#FAF5EA] to-[#F2E8D7] border-2 border-[#C5A059] shadow-[0_30px_70px_rgba(0,0,0,0.5),0_0_45px_rgba(197,160,89,0.25)] overflow-hidden">
               {/* Banknote Lacework Guilloche Watermark */}
               <GuillocheParchmentWatermark opacity={0.07} />
 
@@ -1326,6 +1393,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                 <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
               </div>
             </div>
+            </ScrollReveal>
           </section>
 
           {/* SECTION 3: MEMPELAI (BRIDE & GROOM) */}
@@ -1346,27 +1414,30 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
             <div className="max-w-2xl mx-auto text-center relative z-10">
-              {/* Royal Small-Caps Pill Header Badge */}
-              <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
-                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
-                <span>Mahakarya Cinta • Pasangan Mempelai</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
-              </div>
+              <ScrollReveal animation="fade-up" duration={850}>
+                {/* Royal Small-Caps Pill Header Badge */}
+                <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                  <span>Mahakarya Cinta • Pasangan Mempelai</span>
+                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                </div>
 
-              <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
-                Mempelai Bahagia
-              </h2>
-              
-              <RoyalCalligraphicDivider className="my-2.5 max-w-[260px] mx-auto" />
-              <MountainPineHeritageCrest className="mb-4" />
-              
-              <p className="text-xs sm:text-sm text-white/85 mb-12 max-w-lg mx-auto leading-relaxed font-light">
-                Dengan penuh rasa syukur dan memohon ridho Allah SWT, kami menyatukan dua hati dan cinta dalam ikatan suci pernikahan.
-              </p>
+                <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
+                  Mempelai Bahagia
+                </h2>
+                
+                <RoyalCalligraphicDivider className="my-2.5 max-w-[260px] mx-auto" />
+                <MountainPineHeritageCrest className="mb-4" />
+                
+                <p className="text-xs sm:text-sm text-white/85 mb-12 max-w-lg mx-auto leading-relaxed font-light">
+                  Dengan penuh rasa syukur dan memohon ridho Allah SWT, kami menyatukan dua hati dan cinta dalam ikatan suci pernikahan.
+                </p>
+              </ScrollReveal>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch">
                 {/* Mempelai Pria */}
-                <div className="flex flex-col items-center bg-gradient-to-b from-[#FFFDF9] via-[#FAF5EA] to-[#F2E8D7] text-[#123326] p-7 sm:p-9 rounded-[36px] shadow-[0_25px_60px_rgba(0,0,0,0.45),0_0_35px_rgba(197,160,89,0.25)] border-2 border-[#C5A059] relative overflow-hidden group hover:border-[#E2C792] hover:-translate-y-2 hover:shadow-[0_35px_80px_rgba(197,160,89,0.35)] transition-all duration-500">
+                <ScrollReveal animation="slide-left" delay={120} duration={900} className="h-full">
+                  <div className="flex flex-col items-center bg-gradient-to-b from-[#FFFDF9] via-[#FAF5EA] to-[#F2E8D7] text-[#123326] p-7 sm:p-9 rounded-[36px] shadow-[0_25px_60px_rgba(0,0,0,0.45),0_0_35px_rgba(197,160,89,0.25)] border-2 border-[#C5A059] relative overflow-hidden group hover:border-[#E2C792] hover:-translate-y-2 hover:shadow-[0_35px_80px_rgba(197,160,89,0.35)] transition-all duration-500 h-full justify-between">
                   <GuillocheParchmentWatermark opacity={0.06} />
                   <div className="absolute inset-3 rounded-[28px] border-2 border-dashed border-[#C5A059]/45 pointer-events-none" />
                   <div className="absolute inset-5 rounded-[22px] border border-[#C5A059]/25 pointer-events-none" />
@@ -1438,9 +1509,11 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                     </a>
                   )}
                 </div>
+                </ScrollReveal>
 
                 {/* Mempelai Wanita */}
-                <div className="flex flex-col items-center bg-gradient-to-b from-[#FFFDF9] via-[#FAF5EA] to-[#F2E8D7] text-[#123326] p-7 sm:p-9 rounded-[36px] shadow-[0_25px_60px_rgba(0,0,0,0.45),0_0_35px_rgba(197,160,89,0.25)] border-2 border-[#C5A059] relative overflow-hidden group hover:border-[#E2C792] hover:-translate-y-2 hover:shadow-[0_35px_80px_rgba(197,160,89,0.35)] transition-all duration-500">
+                <ScrollReveal animation="slide-right" delay={240} duration={900} className="h-full">
+                  <div className="flex flex-col items-center bg-gradient-to-b from-[#FFFDF9] via-[#FAF5EA] to-[#F2E8D7] text-[#123326] p-7 sm:p-9 rounded-[36px] shadow-[0_25px_60px_rgba(0,0,0,0.45),0_0_35px_rgba(197,160,89,0.25)] border-2 border-[#C5A059] relative overflow-hidden group hover:border-[#E2C792] hover:-translate-y-2 hover:shadow-[0_35px_80px_rgba(197,160,89,0.35)] transition-all duration-500 h-full justify-between">
                   <GuillocheParchmentWatermark opacity={0.06} />
                   <div className="absolute inset-3 rounded-[28px] border-2 border-dashed border-[#C5A059]/45 pointer-events-none" />
                   <div className="absolute inset-5 rounded-[22px] border border-[#C5A059]/25 pointer-events-none" />
@@ -1512,6 +1585,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                     </a>
                   )}
                 </div>
+                </ScrollReveal>
               </div>
             </div>
           </section>
@@ -1534,24 +1608,27 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
             <div className="max-w-2xl mx-auto relative z-10">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
-                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
-                  <span>Rangkaian Acara • Wedding Schedule</span>
-                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+              <ScrollReveal animation="fade-up" duration={850}>
+                <div className="text-center mb-12">
+                  <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                    <span>Rangkaian Acara • Wedding Schedule</span>
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                  </div>
+                  <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
+                    Waktu &amp; Tempat Pelaksanaan
+                  </h2>
+                  <RoyalCalligraphicDivider className="my-2.5 max-w-[260px] mx-auto" />
+                  <MountainPineHeritageCrest className="mb-4" />
+                  <p className="text-xs sm:text-sm text-white/85 max-w-lg mx-auto leading-relaxed font-light">
+                    Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.
+                  </p>
                 </div>
-                <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
-                  Waktu &amp; Tempat Pelaksanaan
-                </h2>
-                <RoyalCalligraphicDivider className="my-2.5 max-w-[260px] mx-auto" />
-                <MountainPineHeritageCrest className="mb-4" />
-                <p className="text-xs sm:text-sm text-white/85 max-w-lg mx-auto leading-relaxed font-light">
-                  Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.
-                </p>
-              </div>
+              </ScrollReveal>
 
               {/* HOTEL NIRWANA VENUE HIGHLIGHT CARD - 5-Star Luxury Resort Showcase */}
-              <div className="relative bg-[#122E24] text-white rounded-3xl overflow-hidden shadow-2xl mb-14 border-2 border-[#C5A059]/60 group">
+              <ScrollReveal animation="fade-up" delay={120} duration={900}>
+                <div className="relative bg-[#122E24] text-white rounded-3xl overflow-hidden shadow-2xl mb-14 border-2 border-[#C5A059]/60 group">
                 <div className="absolute inset-2 rounded-2xl border border-[#C5A059]/20 pointer-events-none z-20" />
                 <NirwanaGoldCorner size={32} color="#E2C792" />
 
@@ -1644,6 +1721,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   </div>
                 </div>
               </div>
+              </ScrollReveal>
 
               {/* EVENT CARDS - Royal Stationery Folios (Ultra-Luxury Bespoke Layout) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1678,10 +1756,16 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                     : 'Sabtu, 12 Desember 2026';
 
                   return (
-                    <div 
+                    <ScrollReveal
                       key={evt.id || idx}
-                      className="relative bg-gradient-to-b from-[#FFFDF9] via-[#FAF5EA] to-[#F2E8D7] text-[#123326] p-8 sm:p-9 rounded-[36px] border-2 border-[#C5A059] text-center flex flex-col justify-between hover:border-[#E2C792] hover:shadow-[0_30px_70px_rgba(197,160,89,0.35)] hover:-translate-y-1.5 transition-all duration-500 shadow-[0_20px_50px_rgba(10,31,24,0.35)] overflow-hidden group"
+                      animation={idx % 2 === 0 ? 'slide-left' : 'slide-right'}
+                      delay={idx * 160}
+                      duration={900}
+                      className="h-full"
                     >
+                      <div 
+                        className="relative bg-gradient-to-b from-[#FFFDF9] via-[#FAF5EA] to-[#F2E8D7] text-[#123326] p-8 sm:p-9 rounded-[36px] border-2 border-[#C5A059] text-center flex flex-col justify-between hover:border-[#E2C792] hover:shadow-[0_30px_70px_rgba(197,160,89,0.35)] hover:-translate-y-1.5 transition-all duration-500 shadow-[0_20px_50px_rgba(10,31,24,0.35)] overflow-hidden group h-full"
+                      >
                       {/* Tactile Guilloché Banknote Watermark */}
                       <GuillocheParchmentWatermark opacity={0.07} />
                       <div className="absolute inset-3 rounded-[28px] border-2 border-dashed border-[#C5A059]/45 pointer-events-none" />
@@ -1803,6 +1887,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                         </button>
                       </div>
                     </div>
+                    </ScrollReveal>
                   );
                 })}
               </div>
@@ -1827,28 +1912,36 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
             <div className="max-w-2xl mx-auto relative z-10">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
-                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
-                  <span>Kisah Kasih • Love Journey</span>
-                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+              <ScrollReveal animation="fade-up" duration={850}>
+                <div className="text-center mb-12">
+                  <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                    <span>Kisah Kasih • Love Journey</span>
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                  </div>
+                  <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
+                    Cerita Cinta Kami
+                  </h2>
+                  <RoyalCalligraphicDivider className="my-2.5 max-w-[260px] mx-auto" />
+                  <MountainPineHeritageCrest className="mb-4" />
+                  <p className="text-xs sm:text-sm text-white/80 max-w-lg mx-auto leading-relaxed font-light">
+                    Sebuah perjalanan indah yang bersemi dan berlabuh di pelukan suci pernikahan.
+                  </p>
                 </div>
-                <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
-                  Cerita Cinta Kami
-                </h2>
-                <RoyalCalligraphicDivider className="my-2.5 max-w-[260px] mx-auto" />
-                <MountainPineHeritageCrest className="mb-4" />
-                <p className="text-xs sm:text-sm text-white/80 max-w-lg mx-auto leading-relaxed">
-                  Sebuah perjalanan indah yang bersemi dan berlabuh di pelukan suci pernikahan.
-                </p>
-              </div>
+              </ScrollReveal>
 
               <div className="relative pl-8 sm:pl-10 space-y-12 before:absolute before:left-3 sm:before:left-4 before:top-2 before:bottom-2 before:w-[2px] before:bg-gradient-to-b before:from-[#C5A059] before:via-[#E2C792] before:to-[#8C6D2B]">
                 {displayStories.map((story, i) => {
                   const storyContent = (story as any).content || (story as any).story || (story as any).description || 'Sebuah kisah cinta penuh makna yang membawa kami berdua menuju pelaminan suci.';
                   
                   return (
-                    <div key={story.id || i} className="relative group">
+                    <ScrollReveal
+                      key={story.id || i}
+                      animation="fade-up"
+                      delay={i * 140}
+                      duration={850}
+                    >
+                      <div className="relative group">
                       {/* 24K Gold 3D Timeline Heraldic Node */}
                       <div className="absolute -left-[38px] sm:-left-[46px] top-1.5 w-7 h-7 rounded-lg rotate-45 bg-gradient-to-br from-[#0C241B] via-[#163D2E] to-[#071712] border-2 border-[#C5A059] shadow-[0_4px_12px_rgba(0,0,0,0.6),0_0_8px_rgba(197,160,89,0.5)] flex items-center justify-center group-hover:scale-125 group-hover:border-[#FFE5A3] transition-all duration-300">
                         <Sparkles className="w-3.5 h-3.5 text-[#E2C792] -rotate-45" />
@@ -1897,6 +1990,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                         </div>
                       </div>
                     </div>
+                    </ScrollReveal>
                   );
                 })}
               </div>
@@ -1921,21 +2015,23 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
             <div className="max-w-3xl mx-auto relative z-10">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
-                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
-                  <span>Dokumentasi Bahagia • Gallery</span>
-                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+              <ScrollReveal animation="fade-up" duration={850}>
+                <div className="text-center mb-12">
+                  <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                    <span>Dokumentasi Bahagia • Gallery</span>
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                  </div>
+                  <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
+                    Galeri Romansa
+                  </h2>
+                  <RoyalCalligraphicDivider className="my-2.5 max-w-[240px] mx-auto" />
+                  <MountainPineHeritageCrest className="mb-4" />
+                  <p className="text-xs sm:text-sm text-white/85 max-w-lg mx-auto leading-relaxed font-light">
+                    Momen-momen bahagia yang terabadikan dalam kehangatan cinta berlatar keindahan Telaga Sarangan.
+                  </p>
                 </div>
-                <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
-                  Galeri Romansa
-                </h2>
-                <RoyalCalligraphicDivider className="my-2.5 max-w-[240px] mx-auto" />
-                <MountainPineHeritageCrest className="mb-4" />
-                <p className="text-xs sm:text-sm text-white/85 max-w-lg mx-auto leading-relaxed font-light">
-                  Momen-momen bahagia yang terabadikan dalam kehangatan cinta berlatar keindahan Telaga Sarangan.
-                </p>
-              </div>
+              </ScrollReveal>
 
               {/* Royal Carousel & Featured Showcase */}
               {(() => {
@@ -1947,7 +2043,8 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                 };
 
                 return (
-                  <div className="relative max-w-2xl mx-auto">
+                  <ScrollReveal animation="zoom-in" delay={120} duration={900}>
+                    <div className="relative max-w-2xl mx-auto">
                     {/* Outer Gilded Royal Frame */}
                     <div className="relative p-2 sm:p-2.5 rounded-3xl sm:rounded-[32px] bg-gradient-to-b from-[#E2C792]/40 via-[#C5A059]/25 to-[#8C6D2B]/40 border border-[#C5A059]/70 shadow-[0_25px_60px_rgba(0,0,0,0.6),0_0_35px_rgba(197,160,89,0.25)]">
                       
@@ -2064,6 +2161,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                       </div>
                     </div>
                   </div>
+                  </ScrollReveal>
                 );
               })()}
             </div>
@@ -2087,22 +2185,23 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
             <div className="max-w-xl mx-auto text-center relative z-10">
-              <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
-                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
-                <span>Tanda Kasih • Wedding Gift</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
-              </div>
-              <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
-                Amplop Digital &amp; Kado
-              </h2>
-              <RoyalCalligraphicDivider className="my-2.5 max-w-[240px] mx-auto" />
-              <MountainPineHeritageCrest className="mb-4" />
-              <p className="text-xs sm:text-sm text-white/85 leading-relaxed mb-10 font-light">
-                Doa restu Anda merupakan karunia terindah bagi kami. Namun apabila ingin memberikan tanda kasih berupa kado pernikahan, dapat disalurkan melalui:
-              </p>
+              <ScrollReveal animation="fade-up" duration={850}>
+                <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                  <span>Tanda Kasih • Wedding Gift</span>
+                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                </div>
+                <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
+                  Amplop Digital &amp; Kado
+                </h2>
+                <RoyalCalligraphicDivider className="my-2.5 max-w-[240px] mx-auto" />
+                <MountainPineHeritageCrest className="mb-4" />
+                <p className="text-xs sm:text-sm text-white/85 leading-relaxed mb-10 font-light">
+                  Doa restu Anda merupakan karunia terindah bagi kami. Namun apabila ingin memberikan tanda kasih berupa kado pernikahan, dapat disalurkan melalui:
+                </p>
 
-              {/* Royal Segmented Tab Switcher */}
-              <div className="inline-flex p-1.5 rounded-2xl bg-[#081711]/90 backdrop-blur-md border border-[#C5A059]/60 shadow-xl mb-8">
+                {/* Royal Segmented Tab Switcher */}
+                <div className="inline-flex p-1.5 rounded-2xl bg-[#081711]/90 backdrop-blur-md border border-[#C5A059]/60 shadow-xl mb-8">
                 <button
                   type="button"
                   onClick={() => setGiftTab('transfer')}
@@ -2128,6 +2227,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   <span>Kirim Kado Fisik</span>
                 </button>
               </div>
+              </ScrollReveal>
 
               {/* TAB 1: ROYAL VIP METAL CARDS */}
               {giftTab === 'transfer' && (
@@ -2167,10 +2267,15 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                       const isMandiri = gift.bank_code === 'MANDIRI' || gift.bank_name?.includes('MANDIRI');
 
                       return (
-                        <div 
+                        <ScrollReveal
                           key={gift.id || idx}
-                          className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-6 sm:p-7 rounded-3xl border-2 border-[#C5A059]/75 shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_25px_rgba(197,160,89,0.22)] text-left overflow-hidden group transition-all duration-300 hover:border-[#E2C792]"
+                          animation="fade-up"
+                          delay={idx * 140}
+                          duration={850}
                         >
+                          <div 
+                            className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-6 sm:p-7 rounded-3xl border-2 border-[#C5A059]/75 shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_25px_rgba(197,160,89,0.22)] text-left overflow-hidden group transition-all duration-300 hover:border-[#E2C792]"
+                          >
                           {/* High-End Metallic Diagonal Highlights */}
                           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#C5A059]/10 to-white/5 pointer-events-none" />
                           <div className="absolute inset-1.5 rounded-2xl border border-[#C5A059]/30 pointer-events-none" />
@@ -2251,6 +2356,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                             </button>
                           </div>
                         </div>
+                        </ScrollReveal>
                       );
                     });
                   })()}
@@ -2259,7 +2365,8 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
 
               {/* TAB 2: KIRIM KADO FISIK / PARCEL */}
               {giftTab === 'physical' && (
-                <div className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-6 sm:p-8 rounded-3xl border-2 border-[#C5A059]/75 shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_25px_rgba(197,160,89,0.22)] text-left overflow-hidden">
+                <ScrollReveal animation="fade-up" delay={120} duration={850}>
+                  <div className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-6 sm:p-8 rounded-3xl border-2 border-[#C5A059]/75 shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_25px_rgba(197,160,89,0.22)] text-left overflow-hidden">
                   <div className="absolute inset-1.5 rounded-2xl border border-[#C5A059]/30 pointer-events-none" />
                   <NirwanaGoldCorner size={28} color="#E2C792" />
 
@@ -2341,6 +2448,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                     </a>
                   </div>
                 </div>
+                </ScrollReveal>
               )}
             </div>
           </section>
@@ -2363,24 +2471,27 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
             <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
             <div className="max-w-xl mx-auto relative z-10">
-              <div className="text-center mb-10">
-                <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
-                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
-                  <span>Konfirmasi Kehadiran • RSVP</span>
-                  <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+              <ScrollReveal animation="fade-up" duration={850}>
+                <div className="text-center mb-10">
+                  <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#16382C]/70 backdrop-blur-md border border-[#C5A059] text-[#E2C792] text-[10px] sm:text-xs font-serif uppercase tracking-[0.3em] font-bold mb-4 shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                    <span>Konfirmasi Kehadiran • RSVP</span>
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                  </div>
+                  <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
+                    RSVP &amp; Doa Restu
+                  </h2>
+                  <RoyalCalligraphicDivider className="my-2.5 max-w-[240px] mx-auto" />
+                  <MountainPineHeritageCrest className="mb-4" />
+                  <p className="text-xs sm:text-sm text-white/85 max-w-lg mx-auto leading-relaxed font-light">
+                    Mohon kesediaan Bapak/Ibu/Saudara/i untuk mengonfirmasi kehadiran serta mengirimkan untaian doa.
+                  </p>
                 </div>
-                <h2 className="font-serif text-3xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0D0] to-[#E2C792] mb-3 font-normal drop-shadow-md">
-                  RSVP &amp; Doa Restu
-                </h2>
-                <RoyalCalligraphicDivider className="my-2.5 max-w-[240px] mx-auto" />
-                <MountainPineHeritageCrest className="mb-4" />
-                <p className="text-xs sm:text-sm text-white/85 max-w-lg mx-auto leading-relaxed font-light">
-                  Mohon kesediaan Bapak/Ibu/Saudara/i untuk mengonfirmasi kehadiran serta mengirimkan untaian doa.
-                </p>
-              </div>
+              </ScrollReveal>
 
               {/* RSVP Form Card with Royal Emerald-Gold VIP Aesthetic */}
-              <form onSubmit={handleSubmitRsvp} className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-7 sm:p-10 rounded-[32px] border-2 border-[#C5A059]/80 shadow-[0_25px_60px_rgba(0,0,0,0.6),0_0_35px_rgba(197,160,89,0.25)] mb-12 overflow-hidden">
+              <ScrollReveal animation="fade-up" delay={100} duration={900}>
+                <form onSubmit={handleSubmitRsvp} className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-7 sm:p-10 rounded-[32px] border-2 border-[#C5A059]/80 shadow-[0_25px_60px_rgba(0,0,0,0.6),0_0_35px_rgba(197,160,89,0.25)] mb-12 overflow-hidden">
                 {/* High-End Metallic Sheen & Watermark */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#C5A059]/10 to-white/5 pointer-events-none" />
                 <GuillocheParchmentWatermark opacity={0.06} />
@@ -2465,10 +2576,12 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   </button>
                 </div>
               </form>
+              </ScrollReveal>
 
               {/* VIP GUEST VERIFIED PASS (Holographic Card) */}
               {savedPass && (
-                <div className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-7 rounded-3xl border-2 border-[#C5A059] shadow-2xl mb-12 text-center overflow-hidden">
+                <ScrollReveal animation="zoom-in" delay={100} duration={850}>
+                  <div className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-7 rounded-3xl border-2 border-[#C5A059] shadow-2xl mb-12 text-center overflow-hidden">
                   <div className="absolute inset-1.5 rounded-2xl border border-[#C5A059]/30 pointer-events-none" />
                   <NirwanaGoldCorner size={28} color="#E2C792" />
 
@@ -2494,10 +2607,12 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                     Tunjukkan barcode VIP ini kepada resepsionis saat tiba di lokasi Hotel Nirwana Sarangan.
                   </p>
                 </div>
+                </ScrollReveal>
               )}
 
               {/* LIST OF GUEST WISHES (Royal Registry Ledger) */}
-              <div className="space-y-4">
+              <ScrollReveal animation="fade-up" delay={140} duration={850}>
+                <div className="space-y-4">
                 <h3 className="text-xs uppercase tracking-wider font-semibold text-[#E2C792] mb-4 flex items-center justify-between font-serif">
                   <span className="flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
@@ -2540,6 +2655,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   )}
                 </div>
               </div>
+              </ScrollReveal>
             </div>
           </section>
 
@@ -2561,7 +2677,8 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
 
             <div className="relative z-10 max-w-xl mx-auto">
               {/* Glassmorphic Gilded Card Frame */}
-              <div className="relative bg-gradient-to-br from-[#0B2219]/80 via-[#071912]/85 to-[#040E0A]/90 backdrop-blur-md p-8 sm:p-12 rounded-[36px] border-2 border-[#C5A059]/75 shadow-[0_30px_70px_rgba(0,0,0,0.65),0_0_35px_rgba(197,160,89,0.22)] overflow-hidden">
+              <ScrollReveal animation="arch-reveal" duration={950}>
+                <div className="relative bg-gradient-to-br from-[#0B2219]/80 via-[#071912]/85 to-[#040E0A]/90 backdrop-blur-md p-8 sm:p-12 rounded-[36px] border-2 border-[#C5A059]/75 shadow-[0_30px_70px_rgba(0,0,0,0.65),0_0_35px_rgba(197,160,89,0.22)] overflow-hidden">
                 {/* High-End Metallic Sheen & Watermark */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#C5A059]/10 to-white/5 pointer-events-none" />
                 <GuillocheParchmentWatermark opacity={0.05} />
@@ -2618,6 +2735,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   </div>
                 </div>
               </div>
+              </ScrollReveal>
             </div>
           </section>
 
