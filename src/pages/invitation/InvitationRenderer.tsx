@@ -1723,6 +1723,11 @@ export const InvitationRenderer: React.FC = () => {
         isNirwanaSarangan ? (
           <NirwanaSaranganEntrancePortal
             onComplete={handleFinishAnimation}
+            guestName={guestName}
+            groomName={groomDisplayName}
+            brideName={brideDisplayName}
+            coverImage={coverImage}
+            weddingDate={events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'Jumat, 20 November 2026'}
           />
         ) : isJogloMaroon ? (
           <BatakHeritageEntrancePortal
