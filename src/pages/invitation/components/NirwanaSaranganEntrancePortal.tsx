@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, ChevronRight, Crown } from 'lucide-react';
+import { Sparkles, ChevronRight } from 'lucide-react';
 import { 
-  RoyalCalligraphicDivider, 
   FallingPineParticles,
   FloatingLakeMist,
   FloatingGoldenDust
@@ -43,30 +42,30 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
   };
 
   useEffect(() => {
-    // 1.5s: Enable skip button to prevent accidental tap dismiss
+    // 0.4s: Enable skip button
     const tSkip = setTimeout(() => {
       setCanSkip(true);
-    }, 1500);
+    }, 400);
 
-    // Stage 1: Unlocking - Golden seal resonates with 24K flare (0.7s)
+    // Stage 1: Unlocking - Golden seal resonates with 24K flare (0.45s)
     const tUnlock = setTimeout(() => {
       if (!isFinishedRef.current) setStage('unlocking');
-    }, 700);
+    }, 450);
 
-    // Stage 2: Opening - 3D Emerald velvet folio gates swing open with realistic depth (1.2s)
+    // Stage 2: Opening - 3D Emerald velvet folio gates swing open with realistic depth (0.9s)
     const tOpen = setTimeout(() => {
       if (!isFinishedRef.current) setStage('opening');
-    }, 1200);
+    }, 900);
 
-    // Stage 3: Gliding - Smooth cinematic glide through the opened gates into the invitation (2.4s)
+    // Stage 3: Gliding - Smooth cinematic glide through the opened gates directly into the invitation (1.8s)
     const tGlide = setTimeout(() => {
       if (!isFinishedRef.current) setStage('gliding');
-    }, 2400);
+    }, 1800);
 
-    // Stage 4: Seamless transition handoff into invitation (3.7s)
+    // Stage 4: Seamless transition handoff into invitation (2.6s)
     const tExit = setTimeout(() => {
       handleFinish();
-    }, 3700);
+    }, 2600);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -171,11 +170,11 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
       <div 
         className="relative w-full h-full max-w-[500px] max-h-[100dvh] flex items-center justify-center will-change-transform z-10 p-2 sm:p-4"
         style={{
-          transform: isGliding ? 'scale(1.8)' : 'scale(1)',
+          transform: isGliding ? 'scale(2.2)' : 'scale(1)',
           opacity: isGliding ? 0 : 1,
           transformOrigin: '50% 52%',
           transition: isGliding 
-            ? 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.3s cubic-bezier(0.4, 0, 0.8, 1)' 
+            ? 'transform 1.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.0s cubic-bezier(0.4, 0, 0.8, 1)' 
             : 'transform 0.4s ease-out, opacity 0.4s ease-out',
         }}
       >
@@ -193,72 +192,13 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
               top: '8.43%',
               width: '81.25%',
               height: '83.43%',
-              background: 'radial-gradient(ellipse at center, rgba(16, 44, 32, 0.45) 0%, rgba(2, 10, 7, 0.98) 100%)',
+              background: 'radial-gradient(ellipse at 50% 45%, rgba(16, 50, 36, 0.45) 0%, rgba(3, 14, 10, 0.95) 70%, rgba(2, 8, 5, 0.99) 100%)',
               boxShadow: 'inset 0 0 50px rgba(0,0,0,0.95)',
               borderRadius: '240px 240px 0 0',
             }}
           />
 
-          {/* B. INNER SANCTUM REVEAL CARD (Revealed when folio doors swing open) */}
-          <div 
-            className="absolute z-6 flex flex-col items-center justify-between text-center overflow-hidden"
-            style={{
-              left: '10.5%',
-              top: '9.5%',
-              width: '79.0%',
-              height: '81.5%',
-              borderRadius: '230px 230px 0 0',
-              padding: '24px 20px 28px 20px',
-              background: 'radial-gradient(ellipse at 50% 35%, #082218 0%, #04140e 65%, #020a07 100%)',
-              boxShadow: 'inset 0 0 40px rgba(0,0,0,0.85)',
-            }}
-          >
-            {/* Top Crest */}
-            <div className="pt-2 flex flex-col items-center">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C5A059]/15 border border-[#C5A059]/40 shadow-sm">
-                <Crown className="w-3 h-3 text-[#E2C792]" />
-                <span className="text-[10px] font-serif font-bold uppercase tracking-[0.25em] text-[#F3E5AB]">
-                  HOTEL NIRWANA SARANGAN
-                </span>
-                <Crown className="w-3 h-3 text-[#E2C792]" />
-              </div>
-              <p className="text-[9px] font-serif tracking-[0.3em] text-[#A2D2C3] uppercase mt-1.5">
-                The Royal Lakeside Wedding
-              </p>
-            </div>
-
-            {/* Arched Couple Photo */}
-            <div className="relative w-40 sm:w-48 aspect-[3/4] rounded-t-[100px] rounded-b-2xl overflow-hidden border-2 border-[#C5A059] shadow-[0_15px_35px_rgba(0,0,0,0.85)] my-auto group">
-              <img 
-                src={coverImage} 
-                alt={`${groomName} & ${brideName}`} 
-                className="w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#020C08]/85 via-transparent to-transparent" />
-              <div className="absolute inset-0 ring-1 ring-inset ring-[#FFF9E8]/30 rounded-t-[100px] rounded-b-2xl" />
-            </div>
-
-            {/* Couple Names & Date */}
-            <div className="pb-2 flex flex-col items-center w-full">
-              <h1 
-                className="text-2xl sm:text-3xl font-serif text-white font-normal tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {groomName} <span className="font-light italic text-[#E2C792]">&amp;</span> {brideName}
-              </h1>
-
-              <RoyalCalligraphicDivider className="my-1.5 opacity-90 scale-90" />
-
-              <p className="text-xs font-serif text-[#F3E5AB] tracking-widest uppercase">
-                {weddingDate}
-              </p>
-              <p className="text-[10px] text-[#A2D2C3] font-serif tracking-wider italic mt-0.5">
-                Telaga Sarangan, Magetan, Jawa Timur
-              </p>
-            </div>
-          </div>
-
-          {/* C. VOLUMETRIC DIVINE GOLDEN LIGHT BURST (Beams forward through opening doors) */}
+          {/* B. VOLUMETRIC DIVINE GOLDEN LIGHT BURST (Beams forward directly as doors open) */}
           <div 
             className={`absolute inset-0 z-8 pointer-events-none transition-opacity duration-1000 ease-out ${
               isDoorsOpen ? 'opacity-100' : 'opacity-0'
