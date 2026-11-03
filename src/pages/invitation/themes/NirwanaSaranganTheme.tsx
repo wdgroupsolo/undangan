@@ -845,7 +845,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
   const bridePhotoImg = couple?.bride_photo_url || couple?.bride_photo || '/photos/photo-4.jpg';
 
   // Countdown timer calculation
-  const targetDateStr = events[0]?.event_date || invitation?.settings?.countdown_date || '2026-11-20T09:00:00';
+  const targetDateStr = events[0]?.event_date || (events[0] as any)?.date || invitation?.settings?.countdown_date || '2027-03-26T07:00:00';
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -1486,7 +1486,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   {/* Parents Information Plaque */}
                   <div className="w-full my-3 py-3.5 px-4 rounded-2xl bg-gradient-to-b from-[#16382C]/[0.05] via-[#C5A059]/[0.08] to-[#16382C]/[0.05] border border-[#C5A059]/40 text-center relative z-10 shadow-xs">
                     <span className="text-[10px] uppercase tracking-[0.2em] text-[#8C6D2B] font-serif font-bold block mb-1">
-                      ✦ Putra Tercinta Dari ✦
+                      ✦ {couple?.groom_parents_label || (couple?.groom_order ? `Putra ke-${couple.groom_order} Dari` : 'Putra Tercinta Dari')} ✦
                     </span>
                     <p className="font-serif font-bold text-sm text-[#123326] leading-snug">
                       {groomFather} <span className="font-normal text-xs text-[#4A7263]">&amp;</span> {groomMother}
@@ -1562,7 +1562,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   {/* Parents Information Plaque */}
                   <div className="w-full my-3 py-3.5 px-4 rounded-2xl bg-gradient-to-b from-[#16382C]/[0.05] via-[#C5A059]/[0.08] to-[#16382C]/[0.05] border border-[#C5A059]/40 text-center relative z-10 shadow-xs">
                     <span className="text-[10px] uppercase tracking-[0.2em] text-[#8C6D2B] font-serif font-bold block mb-1">
-                      ✦ Putri Tercinta Dari ✦
+                      ✦ {couple?.bride_parents_label || (couple?.bride_order ? `Putri ke-${couple.bride_order} Dari` : 'Putri Tercinta Dari')} ✦
                     </span>
                     <p className="font-serif font-bold text-sm text-[#123326] leading-snug">
                       {brideFather} <span className="font-normal text-xs text-[#4A7263]">&amp;</span> {brideMother}
@@ -1735,15 +1735,11 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                     ((evt as any).location && String((evt as any).location).toLowerCase().includes('saba')) ||
                     (evt.address && String(evt.address).toLowerCase().includes('surakarta'));
 
-                  const eventVenue = !isSoloVenue && evt.location_name && !evt.location_name.toLowerCase().includes('zayed') && !evt.location_name.toLowerCase().includes('saba')
-                    ? evt.location_name
-                    : (idx === 0 ? 'Ballroom & Lakeside Terrace - Hotel Nirwana Sarangan' : 'Grand Lakeview Hall - Hotel Nirwana Sarangan');
+                  const eventVenue = evt.venue_name || evt.location_name || evt.location || (!isSoloVenue ? (idx === 0 ? 'Hotel Nirwana 2 Sarangan' : 'Hotel Nirwana 2 Sarangan') : 'Hotel Nirwana 2 Sarangan');
 
-                  const eventAddress = !isSoloVenue && evt.address && !evt.address.toLowerCase().includes('surakarta')
-                    ? evt.address
-                    : 'Jl. Raya Telaga Sarangan No. 187, Plaosan, Kabupaten Magetan, Jawa Timur 63361';
+                  const eventAddress = evt.address || (!isSoloVenue ? 'Jl. Raya Telaga Sarangan, Plaosan, Telaga Pasir, Sarangan, Kec. Plaosan, Kabupaten Magetan, Jawa Timur 63361, Indonesia' : 'Jl. Raya Telaga Sarangan No. 187, Plaosan, Kabupaten Magetan, Jawa Timur 63361');
 
-                  const eventMapsUrl = 'https://maps.google.com/?q=Hotel+Nirwana+Sarangan+Magetan';
+                  const eventMapsUrl = evt.maps_url || evt.google_maps_url || 'https://maps.app.goo.gl/MS5wE3M2dKTAsKqH6';
 
                   const eventDesc = idx === 0 
                     ? 'Prosesi Ijab Qabul Sakral Berlatar Sejuknya Panorama Telaga Sarangan' 
@@ -2392,7 +2388,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                       <div>
                         <span className="text-[10px] uppercase tracking-wider text-[#E2C792]/80 block font-sans">Penerima Paket</span>
                         <span className="font-serif font-bold text-white text-sm sm:text-base">{groomFullName} &amp; {brideFullName}</span>
-                        <span className="text-white/60 text-xs block">d/a Hotel Nirwana Sarangan (Wedding Reception)</span>
+                        <span className="text-white/60 text-xs block">d/a Hotel Nirwana 2 Sarangan (Wedding Reception)</span>
                       </div>
                     </div>
 
@@ -2401,9 +2397,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                       <div>
                         <span className="text-[10px] uppercase tracking-wider text-[#E2C792]/80 block font-sans">Alamat Tujuan Pengiriman</span>
                         <p className="text-white/90 leading-relaxed font-light mt-0.5">
-                          Hotel Nirwana Sarangan (Front Desk / Panitia Resepsi {groomName} &amp; {brideName})<br />
-                          Jl. Raya Telaga Sarangan No. 187, Ngluweng, Plaosan,<br />
-                          Kabupaten Magetan, Jawa Timur 63361
+                          {couple?.gift_address || 'Hotel Nirwana 2 Sarangan, Jl. Raya Telaga Sarangan, Plaosan, Telaga Pasir, Sarangan, Kec. Plaosan, Kabupaten Magetan, Jawa Timur 63361'}
                         </p>
                       </div>
                     </div>

@@ -186,6 +186,43 @@ export const INVITATION_HAFIZ_SYAFIKA: Invitation & { theme?: any; client?: any 
   created_at: '2026-10-30T10:00:00Z'
 };
 
+export const INVITATION_YOGA_FATMA: Invitation & { theme?: any; client?: any } = {
+  id: 'e6000000-0000-0000-0000-000000000006',
+  client_id: 'c5000000-0000-0000-0000-000000000005',
+  theme_id: 'b2c3d4e5-6789-4012-c345-6def78901234',
+  title: 'The Sacred Wedding of Yoga & Fatma',
+  slug: 'yoga-fatma',
+  status: 'published',
+  wedding_date: '2027-03-26T07:00:00+07:00',
+  settings: {
+    theme_slug: 'nirwana-sarangan',
+    default_guest_name: 'Tamu Undangan',
+    cover_title: 'YOGA & FATMA',
+    cover_photo: '/themes/nirwana-sarangan/couple-cover.jpg',
+    groom_instagram: '@yogaandriannn',
+    bride_instagram: '@fatmamahfudiani',
+    gift_recipient: 'YOGA & FATMA',
+    gift_address: 'Hotel Nirwana 2 Sarangan, Jl. Raya Telaga Sarangan, Plaosan, Telaga Pasir, Sarangan, Kec. Plaosan, Kabupaten Magetan, Jawa Timur 63361',
+    color_concept: 'Emerald Green & Royal Gold (Nirwana Sarangan)',
+    music_title: 'Beautiful In White - Saxophone Version',
+    music_url: '/beautiful-in-white.mp3',
+    show_akad: true,
+    show_resepsi: true,
+    show_love_story: true,
+    show_live_streaming: false
+  },
+  theme: {
+    id: 'b2c3d4e5-6789-4012-c345-6def78901234',
+    name: 'Nirwana Sarangan Resort',
+    slug: 'nirwana-sarangan'
+  },
+  client: {
+    id: 'c5000000-0000-0000-0000-000000000005',
+    name: 'YOGA & FATMA'
+  },
+  created_at: '2026-11-03T23:30:00Z'
+};
+
 export const INVITATION_DEMO_TESTIMONI = INVITATION_BIMA_RATNA;
 
 export const invitationService = {
@@ -207,7 +244,9 @@ export const invitationService = {
     const hasAgni = result.some(inv => inv.slug === 'agni-putri' || inv.slug === 'agni-kahuripan');
     const hasBima = result.some(inv => inv.id === INVITATION_BIMA_RATNA.id || inv.slug === 'bima-ratna');
     const hasDimas = result.some(inv => inv.id === INVITATION_DIMAS_ANISA.id || inv.slug === 'dimas-anisa');
+    const hasYoga = result.some(inv => inv.id === INVITATION_YOGA_FATMA.id || inv.slug === 'yoga-fatma');
 
+    if (!hasYoga) result.unshift(INVITATION_YOGA_FATMA);
     if (!hasDimas) result.unshift(INVITATION_DIMAS_ANISA);
     if (!hasBima) result.unshift(INVITATION_BIMA_RATNA);
     if (!hasAgni) result.unshift(INVITATION_AGNI_PUTRI);
@@ -221,6 +260,9 @@ export const invitationService = {
 
   async getInvitation(id: string) {
     const cachedStatus = getSavedStatus(id);
+    if (id === INVITATION_YOGA_FATMA.id) {
+      return cachedStatus ? { ...INVITATION_YOGA_FATMA, status: cachedStatus } : INVITATION_YOGA_FATMA;
+    }
     if (id === INVITATION_AGNI_PUTRI.id) {
       return cachedStatus ? { ...INVITATION_AGNI_PUTRI, status: cachedStatus } : INVITATION_AGNI_PUTRI;
     }
@@ -248,6 +290,7 @@ export const invitationService = {
 
   async getInvitationBySlug(slug: string) {
     const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim();
+    const isYoga = cleanSlug === 'yoga-fatma' || cleanSlug === 'fatma-yoga' || cleanSlug.includes('yoga') || cleanSlug.includes('fatma');
     const isHafiz = cleanSlug === 'hafiz-syafika' || cleanSlug.includes('hafiz') || cleanSlug.includes('syafika') || cleanSlug === 'kuala-lumpur-heritage';
     const isAgni = cleanSlug.includes('agni') || cleanSlug.includes('kribo');
     const isBima = cleanSlug === 'bima-ratna' || cleanSlug === 'demo-testimoni' || cleanSlug === 'demo-undangan' || cleanSlug.includes('bima');
@@ -256,10 +299,19 @@ export const invitationService = {
     // Check if status is paused or overridden in localStorage
     const cachedStatus = getSavedStatus(slug) || 
       getSavedStatus(cleanSlug) || 
+      (isYoga ? (getSavedStatus('e6000000-0000-0000-0000-000000000006') || getSavedStatus('yoga-fatma')) : null) ||
       (isHafiz ? (getSavedStatus('e5000000-0000-0000-0000-000000000005') || getSavedStatus('hafiz-syafika')) : null) ||
       (isAgni ? (getSavedStatus('e2000000-0000-0000-0000-000000000002') || getSavedStatus('agni-putri') || getSavedStatus('agni-kahuripan')) : null) ||
       (isBima ? getSavedStatus('e3000000-0000-0000-0000-000000000003') : null) ||
       (isDimas ? getSavedStatus('e4000000-0000-0000-0000-000000000004') : null);
+
+    if (isYoga) {
+      return {
+        ...INVITATION_YOGA_FATMA,
+        slug: slug,
+        status: cachedStatus || INVITATION_YOGA_FATMA.status || 'published'
+      };
+    }
 
     if (isHafiz) {
       return {

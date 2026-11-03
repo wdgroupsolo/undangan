@@ -322,6 +322,114 @@ export const COUPLE_HAFIZ_SYAFIKA = {
   gift_address: 'No. 28, Jalan Ampang Hilir, Taman U-Thant, 55000 Kuala Lumpur, Malaysia'
 };
 
+export const COUPLE_YOGA_FATMA = {
+  id: '37000000-0000-0000-0000-000000000007',
+  invitation_id: 'e6000000-0000-0000-0000-000000000006',
+  groom_full_name: 'Yoga Andrian Surya Saputra',
+  groom_nickname: 'Yoga',
+  groom_father: 'Miran (alm)',
+  groom_father_name: 'Miran (alm)',
+  groom_mother: 'Sri Mulyani',
+  groom_mother_name: 'Sri Mulyani',
+  groom_parents: 'Putra ke-3 dari 3 Bersaudara dari Bpk. Miran (alm) & Ibu Sri Mulyani',
+  groom_parents_label: 'Putra ke-3 dari 3 Bersaudara',
+  groom_order: '3 dari 3 Bersaudara',
+  groom_photo: '/themes/nirwana-sarangan/couple-cover.jpg',
+  groom_photo_url: '/themes/nirwana-sarangan/couple-cover.jpg',
+  groom_instagram: '@yogaandriannn',
+  bride_full_name: 'Fatma Tiara Mahfudiani',
+  bride_nickname: 'Fatma',
+  bride_father: 'Kabibul Mahfut',
+  bride_father_name: 'Kabibul Mahfut',
+  bride_mother: 'Anik Sumarni',
+  bride_mother_name: 'Anik Sumarni',
+  bride_parents: 'Putri ke-2 dari 2 Bersaudara dari Bpk. Kabibul Mahfut & Ibu Anik Sumarni',
+  bride_parents_label: 'Putri ke-2 dari 2 Bersaudara',
+  bride_order: '2 dari 2 Bersaudara',
+  bride_photo: '/themes/nirwana-sarangan/couple-cover.jpg',
+  bride_photo_url: '/themes/nirwana-sarangan/couple-cover.jpg',
+  bride_instagram: '@fatmamahfudiani',
+  cover_photo_url: '/themes/nirwana-sarangan/couple-cover.jpg',
+  gift_address: 'Hotel Nirwana 2 Sarangan, Jl. Raya Telaga Sarangan, Plaosan, Telaga Pasir, Sarangan, Kec. Plaosan, Kabupaten Magetan, Jawa Timur 63361'
+};
+
+export const EVENTS_YOGA_FATMA = [
+  {
+    id: '60000000-0000-0000-0000-000000000011',
+    invitation_id: 'e6000000-0000-0000-0000-000000000006',
+    title: 'Akad Nikah',
+    name: 'AKAD NIKAH',
+    event_date: '2027-03-26',
+    date: '2027-03-26',
+    start_time: '07:00',
+    end_time: '08:00',
+    location: 'Hotel Nirwana 2 Sarangan',
+    venue_name: 'Hotel Nirwana 2 Sarangan',
+    location_name: 'Hotel Nirwana 2 Sarangan',
+    address: 'Jl. Raya Telaga Sarangan, Plaosan, Telaga Pasir, Sarangan, Kec. Plaosan, Kabupaten Magetan, Jawa Timur 63361, Indonesia',
+    maps_url: 'https://maps.app.goo.gl/MS5wE3M2dKTAsKqH6',
+    google_maps_url: 'https://maps.app.goo.gl/MS5wE3M2dKTAsKqH6',
+    description: 'Prosesi Akad Nikah & Ijab Qabul dengan Khidmat dan Penuh Berkah',
+    sort_order: 1
+  },
+  {
+    id: '61000000-0000-0000-0000-000000000012',
+    invitation_id: 'e6000000-0000-0000-0000-000000000006',
+    title: 'Resepsi',
+    name: 'RESEPSI',
+    event_date: '2027-03-26',
+    date: '2027-03-26',
+    start_time: '09:00',
+    end_time: '11:30',
+    location: 'Hotel Nirwana 2 Sarangan',
+    venue_name: 'Hotel Nirwana 2 Sarangan',
+    location_name: 'Hotel Nirwana 2 Sarangan',
+    address: 'Jl. Raya Telaga Sarangan, Plaosan, Telaga Pasir, Sarangan, Kec. Plaosan, Kabupaten Magetan, Jawa Timur 63361, Indonesia',
+    maps_url: 'https://maps.app.goo.gl/MS5wE3M2dKTAsKqH6',
+    google_maps_url: 'https://maps.app.goo.gl/MS5wE3M2dKTAsKqH6',
+    description: 'Resepsi Pernikahan, Ramah Tamah & Santap Bersama Berlatar Keindahan Telaga Sarangan',
+    sort_order: 2
+  }
+];
+
+export const STORIES_YOGA_FATMA = [
+  {
+    id: 'st-yf-01',
+    invitation_id: 'e6000000-0000-0000-0000-000000000006',
+    title: 'Pertemuan Pertama',
+    date: 'Awal Pertemuan',
+    content: 'Sebuah perjumpaan sederhana yang mempertemukan kami dalam canda, tawa, dan rasa saling melengkapi satu sama lain.',
+    sort_order: 1
+  },
+  {
+    id: 'st-yf-02',
+    invitation_id: 'e6000000-0000-0000-0000-000000000006',
+    title: 'Menjalin Hubungan',
+    date: 'Masa Bersama',
+    content: 'Melewati berbagai cerita bersama, belajar saling memahami, dan bertumbuh dalam kebaikan dan kasih sayang.',
+    sort_order: 2
+  },
+  {
+    id: 'st-yf-03',
+    invitation_id: 'e6000000-0000-0000-0000-000000000006',
+    title: 'Menuju Hari Bahagia',
+    date: 'Menuju Pernikahan',
+    content: 'Dengan restu kedua orang tua dan limpahan rahmat Ilahi, kami memilih Hotel Nirwana 2 Sarangan sebagai saksi suci penyatuan dua hati dalam ikatan pernikahan kudus.',
+    sort_order: 3
+  }
+];
+
+export const GALLERY_YOGA_FATMA = [
+  { id: 'yf-gal-1', image_url: '/themes/nirwana-sarangan/couple-cover.jpg', caption: 'Kebersamaan & Tawa Bahagia Yoga & Fatma', sort_order: 1 },
+  { id: 'yf-gal-2', image_url: '/themes/nirwana-sarangan/lakeview-panorama.jpg', caption: 'Panorama Romantis Telaga Sarangan', sort_order: 2 },
+  { id: 'yf-gal-3', image_url: '/photos/photo-4.jpg', caption: 'Pesona Anggun Mempelai Putri', sort_order: 3 },
+  { id: 'yf-gal-4', image_url: '/photos/photo-7.jpg', caption: 'Ketulusan Hati Mempelai Pria', sort_order: 4 },
+  { id: 'yf-gal-5', image_url: '/photos/photo-3.jpg', caption: 'Langkah Menuju Hari Sakral', sort_order: 5 },
+  { id: 'yf-gal-6', image_url: '/photos/photo-5.jpg', caption: 'Genggaman Menuju Masa Depan', sort_order: 6 },
+];
+
+export const GIFTS_YOGA_FATMA: any[] = [];
+
 export const editorService = {
   // Couple Info
   async getCouple(invitationId: string) {
@@ -329,6 +437,11 @@ export const editorService = {
       const { data, error } = await supabase.from('couples').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
+    if (isYogaId) {
+      return COUPLE_YOGA_FATMA;
+    }
     const isHafizId = invitationId === 'e5000000-0000-0000-0000-000000000005' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('hafiz') || invitationId.toLowerCase().includes('syafika') || invitationId.toLowerCase().includes('kuala-lumpur')));
     if (isHafizId) {
@@ -376,6 +489,11 @@ export const editorService = {
       const { data, error } = await supabase.from('events').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
+    if (isYogaId) {
+      return EVENTS_YOGA_FATMA;
+    }
     const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
       (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
     if (isDimasId) {
@@ -414,6 +532,11 @@ export const editorService = {
       const { data, error } = await supabase.from('stories').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
+    if (isYogaId) {
+      return STORIES_YOGA_FATMA;
+    }
     const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
       (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
     if (isDimasId) {
@@ -452,6 +575,11 @@ export const editorService = {
       const { data, error } = await supabase.from('gallery').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
+    if (isYogaId) {
+      return GALLERY_YOGA_FATMA;
+    }
     const isStevenBungaId = invitationId === 'demo-theme-invitation' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('steven') || invitationId.toLowerCase().includes('bunga')));
     if (isStevenBungaId) {
@@ -549,6 +677,12 @@ export const editorService = {
       }
     } catch (e) {
       console.warn('Could not fetch gifts from settings:', e);
+    }
+
+    const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
+    if (isYogaId) {
+      return GIFTS_YOGA_FATMA;
     }
 
     const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 

@@ -44,6 +44,17 @@ export const CLIENT_DIMAS_ANISA: Client = {
   created_at: '2026-10-11T09:00:00Z',
 };
 
+export const CLIENT_YOGA_FATMA: Client = {
+  id: 'c5000000-0000-0000-0000-000000000005',
+  name: 'YOGA & FATMA',
+  phone: '0812-3456-7890',
+  email: 'yoga.fatma@gmail.com',
+  address: 'Jl. Raya Telaga Sarangan, Plaosan, Telaga Pasir, Sarangan, Kec. Plaosan, Kabupaten Magetan, Jawa Timur 63361, Indonesia',
+  notes: 'Tema Nirwana Sarangan Resort. Akad & Resepsi: 26 Maret 2027 di Hotel Nirwana 2 Sarangan. Instagram: @yogaandriannn & @fatmamahfudiani',
+  status: 'active',
+  created_at: '2026-11-03T23:30:00Z',
+};
+
 export const CLIENT_DEMO_TESTIMONI = CLIENT_BIMA_RATNA;
 
 export const clientService = {
@@ -62,12 +73,14 @@ export const clientService = {
       console.warn('Error fetching clients from Supabase:', e);
     }
 
-    // Ensure Agni Putri, Bima Ratna (Testi Barcode), and Dimas Anisa (Testi Tanpa Barcode) clients are present
+    // Ensure Agni Putri, Bima Ratna, Dimas Anisa, and Yoga Fatma clients are present
     const hasAgni = list.some(c => c.name.toLowerCase().includes('agni'));
     const hasBima = list.some(c => c.id === CLIENT_BIMA_RATNA.id || c.name.toLowerCase().includes('bima'));
     const hasDimas = list.some(c => c.id === CLIENT_DIMAS_ANISA.id || c.name.toLowerCase().includes('dimas'));
+    const hasYoga = list.some(c => c.id === CLIENT_YOGA_FATMA.id || c.name.toLowerCase().includes('yoga') || c.name.toLowerCase().includes('fatma'));
 
     const result = [...list];
+    if (!hasYoga) result.unshift(CLIENT_YOGA_FATMA);
     if (!hasDimas) result.unshift(CLIENT_DIMAS_ANISA);
     if (!hasBima) result.unshift(CLIENT_BIMA_RATNA);
     if (!hasAgni) result.unshift(CLIENT_AGNI_PUTRI);
@@ -76,6 +89,7 @@ export const clientService = {
   },
 
   async getClient(id: string) {
+    if (id === CLIENT_YOGA_FATMA.id) return CLIENT_YOGA_FATMA;
     if (id === CLIENT_AGNI_PUTRI.id) return CLIENT_AGNI_PUTRI;
     if (id === CLIENT_BIMA_RATNA.id || id === 'demo-client') return CLIENT_BIMA_RATNA;
     if (id === CLIENT_DIMAS_ANISA.id) return CLIENT_DIMAS_ANISA;

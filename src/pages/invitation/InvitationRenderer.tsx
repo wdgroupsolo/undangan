@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
-import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI, COUPLE_STEVEN_BUNGA, GALLERY_STEVEN_BUNGA, COUPLE_HAFIZ_SYAFIKA } from '../../services/editorService';
+import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI, COUPLE_STEVEN_BUNGA, GALLERY_STEVEN_BUNGA, COUPLE_HAFIZ_SYAFIKA, COUPLE_YOGA_FATMA } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
 import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
@@ -65,22 +65,25 @@ export const InvitationRenderer: React.FC = () => {
   const { data: music } = useQuery({ queryKey: ['music', invId], queryFn: () => editorService.getMusic(invId!), enabled: !!invId });
 
   const rawSlug = decodeURIComponent(slug || '').toLowerCase().trim();
-  const isAgniSlug = rawSlug.includes('agni') || rawSlug.includes('kribo');
-  const isHafizSlug = rawSlug.includes('hafiz') || rawSlug.includes('syafika') || rawSlug === 'kuala-lumpur-heritage';
-  const isNirwanaSlug = rawSlug === 'nirwana-sarangan' || rawSlug === 'hotel-nirwana' || rawSlug === 'telaga-sarangan' || rawSlug.includes('nirwana');
+  const isYogaFatmaSlug = rawSlug === 'yoga-fatma' || rawSlug === 'fatma-yoga' || rawSlug.includes('yoga') || rawSlug.includes('fatma');
+  const isAgniSlug = !isYogaFatmaSlug && (rawSlug.includes('agni') || rawSlug.includes('kribo'));
+  const isHafizSlug = !isYogaFatmaSlug && (rawSlug.includes('hafiz') || rawSlug.includes('syafika') || rawSlug === 'kuala-lumpur-heritage');
+  const isNirwanaSlug = isYogaFatmaSlug || rawSlug === 'nirwana-sarangan' || rawSlug === 'hotel-nirwana' || rawSlug === 'telaga-sarangan' || rawSlug.includes('nirwana');
 
   const activeThemeSlug = requestedTheme || (
-    isHafizSlug
-      ? 'kuala-lumpur-heritage'
-      : (isNirwanaSlug
-        ? 'nirwana-sarangan'
-        : (isAgniSlug
-          ? 'royal-wayang-gold'
-          : ((slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga'))
-            ? 'royal-wayang-gold' 
-            : (slug === 'habib-adiba' 
-              ? 'javanese-heritage' 
-              : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold')))))
+    isYogaFatmaSlug
+      ? 'nirwana-sarangan'
+      : (isHafizSlug
+        ? 'kuala-lumpur-heritage'
+        : (isNirwanaSlug
+          ? 'nirwana-sarangan'
+          : (isAgniSlug
+            ? 'royal-wayang-gold'
+            : ((slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga'))
+              ? 'royal-wayang-gold' 
+              : (slug === 'habib-adiba' 
+                ? 'javanese-heritage' 
+                : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold'))))))
   );
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
@@ -164,8 +167,8 @@ export const InvitationRenderer: React.FC = () => {
     }
   }, [couple, slug]);
 
-  const isStevenBungaSlug = (rawSlug === 'steven-bunga' || rawSlug === 'bunga-steven' || (!slug && !couple));
-  const isBimaSlug = !isStevenBungaSlug && (rawSlug === 'bima-ratna' || rawSlug.includes('testimoni'));
+  const isStevenBungaSlug = !isYogaFatmaSlug && (rawSlug === 'steven-bunga' || rawSlug === 'bunga-steven' || (!slug && !couple));
+  const isBimaSlug = !isYogaFatmaSlug && !isStevenBungaSlug && (rawSlug === 'bima-ratna' || rawSlug.includes('testimoni'));
 
   // Prioritize real database/props couple data over demo presets
   const hasRealCoupleData = couple && (
@@ -177,19 +180,19 @@ export const InvitationRenderer: React.FC = () => {
 
   const activeCouple = hasRealCoupleData
     ? couple
-    : (cachedCouple || (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA))));
+    : (cachedCouple || (isYogaFatmaSlug ? COUPLE_YOGA_FATMA : (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA)))));
 
   const rawGroomNick = activeCouple?.groom_nickname?.trim();
   const rawGroomFull = activeCouple?.groom_full_name?.trim();
   const groom = rawGroomNick
     ? formatName(rawGroomNick)
-    : (rawGroomFull ? formatName(rawGroomFull.split(/[\s,]+/)[0]) : (isAgniSlug ? 'Agni' : (isBimaSlug ? 'Bima' : 'Steven')));
+    : (rawGroomFull ? formatName(rawGroomFull.split(/[\s,]+/)[0]) : (isYogaFatmaSlug ? 'Yoga' : (isAgniSlug ? 'Agni' : (isBimaSlug ? 'Bima' : 'Steven'))));
 
   const rawBrideNick = activeCouple?.bride_nickname?.trim();
   const rawBrideFull = activeCouple?.bride_full_name?.trim();
   const bride = rawBrideNick
     ? formatName(rawBrideNick)
-    : (rawBrideFull ? formatName(rawBrideFull.split(/[\s,]+/)[0]) : (isAgniSlug ? 'Putri' : (isBimaSlug ? 'Ratna' : 'Bunga')));
+    : (rawBrideFull ? formatName(rawBrideFull.split(/[\s,]+/)[0]) : (isYogaFatmaSlug ? 'Fatma' : (isAgniSlug ? 'Putri' : (isBimaSlug ? 'Ratna' : 'Bunga'))));
 
   // Dynamically set page title and Open Graph meta tags in browser tab (Called unconditionally)
   useEffect(() => {
@@ -306,8 +309,8 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  const groomDisplayName = isHafizSlug ? 'Hafiz' : (isAgniSlug ? 'Agni' : (groom || 'Steven'));
-  const brideDisplayName = isHafizSlug ? 'Syafika' : (isAgniSlug ? 'Putri' : (bride || 'Bunga'));
+  const groomDisplayName = isYogaFatmaSlug ? 'Yoga' : (isHafizSlug ? 'Hafiz' : (isAgniSlug ? 'Agni' : (groom || 'Steven')));
+  const brideDisplayName = isYogaFatmaSlug ? 'Fatma' : (isHafizSlug ? 'Syafika' : (isAgniSlug ? 'Putri' : (bride || 'Bunga')));
 
   // Automatic paused screen when invitation status is 'paused'
   if (invitation?.status === 'paused') {
@@ -1727,7 +1730,7 @@ export const InvitationRenderer: React.FC = () => {
             groomName={groomDisplayName}
             brideName={brideDisplayName}
             coverImage={coverImage}
-            weddingDate={events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'Jumat, 20 November 2026'}
+            weddingDate={events?.[0]?.event_date ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : (isYogaFatmaSlug ? 'Jumat, 26 Maret 2027' : 'Jumat, 20 November 2026')}
           />
         ) : isJogloMaroon ? (
           <BatakHeritageEntrancePortal
