@@ -28,6 +28,8 @@ scratch/
 resources/raw-media/
 *.mp4
 !public/themes/*.mp4
+!public/themes/*/*.mp4
+public/themes/nirwana-sarangan/nirwana-entrance-gate.mp4
 !public/*.mp4
 *.mp3
 !public/music/*.mp3

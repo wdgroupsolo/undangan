@@ -23,6 +23,7 @@ import {
 import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSaranganTheme';
 import { KualaLumpurHeritageTheme } from './themes/KualaLumpurHeritageTheme';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
+import { NirwanaSaranganEntrancePortal } from './components/NirwanaSaranganEntrancePortal';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
 import { InvitationPausedScreen } from '../../components/InvitationPausedScreen';
 import { analyticsService } from '../../services/analyticsService';
@@ -66,17 +67,20 @@ export const InvitationRenderer: React.FC = () => {
   const rawSlug = decodeURIComponent(slug || '').toLowerCase().trim();
   const isAgniSlug = rawSlug.includes('agni') || rawSlug.includes('kribo');
   const isHafizSlug = rawSlug.includes('hafiz') || rawSlug.includes('syafika') || rawSlug === 'kuala-lumpur-heritage';
+  const isNirwanaSlug = rawSlug === 'nirwana-sarangan' || rawSlug === 'hotel-nirwana' || rawSlug === 'telaga-sarangan' || rawSlug.includes('nirwana');
 
   const activeThemeSlug = requestedTheme || (
     isHafizSlug
       ? 'kuala-lumpur-heritage'
-      : (isAgniSlug
-        ? 'royal-wayang-gold'
-        : ((slug === 'benny-indah' || slug === 'steven-bunga')
-          ? 'royal-wayang-gold' 
-          : (slug === 'habib-adiba' 
-            ? 'javanese-heritage' 
-            : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold'))))
+      : (isNirwanaSlug
+        ? 'nirwana-sarangan'
+        : (isAgniSlug
+          ? 'royal-wayang-gold'
+          : ((slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga'))
+            ? 'royal-wayang-gold' 
+            : (slug === 'habib-adiba' 
+              ? 'javanese-heritage' 
+              : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold')))))
   );
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
@@ -342,7 +346,7 @@ export const InvitationRenderer: React.FC = () => {
     (isNirwanaSarangan ? '/themes/nirwana-sarangan/couple-cover.jpg' : isJogloMaroon ? '/photos/photo-3.jpg' : isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isNirwanaSarangan
-    ? '/themes/nirwana-entrance-gate.mp4'
+    ? '/gemini_generated_video_1f694672.mp4'
     : isJogloMaroon
       ? '/themes/joglo-maroon-entrance.mp4'
       : isRoyalWayang
@@ -364,12 +368,13 @@ export const InvitationRenderer: React.FC = () => {
       animTimeoutRef.current = null;
     }
     setIsVideoExiting(true);
+    const exitDelay = isNirwanaSarangan ? 150 : 1000;
     setTimeout(() => {
       setOpeningStage('opened');
       setIsVideoExiting(false);
       setCanSkipVideo(false);
       isVideoExitingRef.current = false;
-    }, 1000);
+    }, exitDelay);
   };
 
   // Handle clicking "Buka Undangan": starts audio and triggers entrance animation sequence
@@ -836,10 +841,15 @@ export const InvitationRenderer: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleOpen}
-                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#16382C] via-[#2A5241] to-[#122E24] text-[#E2C792] font-serif text-sm font-semibold tracking-widest uppercase shadow-lg shadow-[#16382C]/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 border border-[#C5A059]/40 flex items-center justify-center gap-2 cursor-pointer"
+                  aria-label="Buka Undangan / Open Invitation"
+                  className="group relative w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#16382C] via-[#2A5241] to-[#122E24] text-[#E2C792] font-serif text-sm font-semibold tracking-widest uppercase shadow-lg shadow-[#16382C]/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 border border-[#C5A059]/40 flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:ring-offset-2 focus:ring-offset-[#0D2018]"
                 >
-                  <MailOpen className="w-4 h-4 text-[#C5A059]" />
-                  <span>Buka Undangan</span>
+                  <MailOpen className="w-4 h-4 text-[#C5A059] transition-transform group-hover:scale-110" />
+                  <span className="flex items-center gap-2">
+                    <span>Buka Undangan</span>
+                    <span className="text-[#C5A059]/60 font-sans text-[10px] tracking-wider font-normal">|</span>
+                    <span className="text-[11px] tracking-[0.2em] text-[#F3E5AB]/90 font-medium">OPEN INVITATION</span>
+                  </span>
                 </button>
               </div>
             </div>
@@ -1708,9 +1718,13 @@ export const InvitationRenderer: React.FC = () => {
         )
       )}
 
-      {/* 2. Entrance Animation: Batak Heritage Portal, or Gate Video (Nirwana, Wayang, Maroon, etc.) */}
+      {/* 2. Entrance Animation: Nirwana Sarangan Portal, Batak Heritage Portal, or Gate Video */}
       {openingStage === 'arch-video' && (
-        isJogloMaroon ? (
+        isNirwanaSarangan ? (
+          <NirwanaSaranganEntrancePortal
+            onComplete={handleFinishAnimation}
+          />
+        ) : isJogloMaroon ? (
           <BatakHeritageEntrancePortal
             onComplete={handleFinishAnimation}
             guestName={guestName}
@@ -1722,10 +1736,10 @@ export const InvitationRenderer: React.FC = () => {
             onClick={() => {
               if (canSkipVideo) handleFinishAnimation();
             }}
-            className={`fixed inset-0 h-full ${
+            className={`fixed top-0 right-0 h-full ${
               isNirwanaSarangan
-                ? 'w-full'
-                : (isSplitTheme ? 'w-full lg:w-[42%] lg:right-0 lg:left-auto' : 'w-full')
+                ? 'w-full lg:w-7/12 xl:w-1/2'
+                : (isSplitTheme ? 'w-full lg:w-[42%]' : 'w-full inset-0')
             } z-50 bg-[#071712] flex items-center justify-center transition-opacity duration-1000 ease-out overflow-hidden select-none ${
               isVideoExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
             } ${canSkipVideo ? 'cursor-pointer' : ''}`}

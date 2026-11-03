@@ -306,7 +306,27 @@ export const invitationService = {
       };
     }
 
-    const targetSlug = (slug === 'bagas-siti' || slug === 'habib-adiba' || slug === 'bunga-steven' || slug === 'nirwana-sarangan') ? 'steven-bunga' : slug;
+    const isNirwanaSlug = slug === 'nirwana-sarangan' || slug === 'hotel-nirwana' || slug === 'telaga-sarangan' || (typeof slug === 'string' && slug.toLowerCase().includes('nirwana'));
+    if (isNirwanaSlug) {
+      return {
+        id: 'demo-theme-invitation',
+        slug: slug,
+        title: 'The Sacred Wedding of Steven & Bunga',
+        status: cachedStatus || 'published',
+        wedding_date: '2026-11-20',
+        settings: {
+          is_theme_demo: true,
+          theme_slug: 'nirwana-sarangan',
+          default_guest_name: 'Tamu Undangan'
+        },
+        theme: {
+          slug: 'nirwana-sarangan',
+          name: 'Nirwana Sarangan Resort'
+        }
+      };
+    }
+
+    const targetSlug = (slug === 'bagas-siti' || slug === 'habib-adiba' || slug === 'bunga-steven') ? 'steven-bunga' : slug;
     try {
       const { data, error } = await supabase
         .from('invitations')
