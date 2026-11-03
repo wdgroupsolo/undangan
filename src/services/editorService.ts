@@ -430,6 +430,138 @@ export const GALLERY_YOGA_FATMA = [
 
 export const GIFTS_YOGA_FATMA: any[] = [];
 
+export const COUPLE_AUDI_OVYOLA = {
+  id: '38000000-0000-0000-0000-000000000008',
+  invitation_id: 'e7000000-0000-0000-0000-000000000007',
+  groom_full_name: 'Audi Febrianto',
+  groom_nickname: 'Audi',
+  groom_father: 'Samudi',
+  groom_father_name: 'Samudi',
+  groom_mother: 'Cicik Tri Rejeki',
+  groom_mother_name: 'Cicik Tri Rejeki',
+  groom_parents: 'Putra ke-2 dari Bpk. Samudi & Ibu Cicik Tri Rejeki',
+  groom_parents_label: 'Putra ke-2 Dari',
+  groom_order: '2',
+  groom_photo: '/themes/agni-putri/groom-agni.jpg',
+  groom_photo_url: '/themes/agni-putri/groom-agni.jpg',
+  groom_instagram: '@audifebrian',
+  bride_full_name: 'Ovyola Praristawati Wibowo',
+  bride_nickname: 'Ovyola',
+  bride_father: 'Fitrian Sulis Wibodo',
+  bride_father_name: 'Fitrian Sulis Wibodo',
+  bride_mother: 'Erna Sulistyaningsih',
+  bride_mother_name: 'Erna Sulistyaningsih',
+  bride_parents: 'Putri ke-2 dari Bpk. Fitrian Sulis Wibodo & Ibu Erna Sulistyaningsih',
+  bride_parents_label: 'Putri ke-2 Dari',
+  bride_order: '2',
+  bride_photo: '/themes/agni-putri/bride-putri.jpg',
+  bride_photo_url: '/themes/agni-putri/bride-putri.jpg',
+  bride_instagram: '@ovyolaprx',
+  cover_photo_url: '/themes/agni-putri/couple-outdoor.jpg',
+  gift_recipient: 'OVYOLA PRARISTAWATI WIBOWO',
+  gift_address: 'KEL. Sampung rt01/01 kec. Kawedanan Kab. Magetan (No. HP: 0895341102195 - Ovyola)'
+};
+
+export const EVENTS_AUDI_OVYOLA = [
+  {
+    id: '71000000-0000-0000-0000-000000000013',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    title: 'Akad Nikah',
+    name: 'AKAD NIKAH',
+    event_date: '2027-01-09',
+    date: '2027-01-09',
+    start_time: '07:00',
+    end_time: '08:00',
+    location: 'Gedung Sus PG Rejosari',
+    venue_name: 'Gedung Sus PG Rejosari',
+    location_name: 'Gedung Sus PG Rejosari',
+    address: 'Jalan Rajawali No. 222 (atau area Jl. Bhayangkara), Rejosari I, Kecamatan Kawedanan, Kabupaten Magetan',
+    maps_url: 'https://maps.app.goo.gl/SyvhHGeS7M8k8iA79?g_st=ic',
+    google_maps_url: 'https://maps.app.goo.gl/SyvhHGeS7M8k8iA79?g_st=ic',
+    description: 'Prosesi Akad Nikah & Ijab Qabul dengan Khidmat dan Penuh Berkah',
+    sort_order: 1
+  },
+  {
+    id: '72000000-0000-0000-0000-000000000014',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    title: 'Temu Manten',
+    name: 'TEMU MANTEN',
+    event_date: '2027-01-09',
+    date: '2027-01-09',
+    start_time: '10:00',
+    end_time: '12:00',
+    location: 'Gedung Sus PG Rejosari',
+    venue_name: 'Gedung Sus PG Rejosari',
+    location_name: 'Gedung Sus PG Rejosari',
+    address: 'Jalan Rajawali No. 222 (atau area Jl. Bhayangkara), Rejosari I, Kecamatan Kawedanan, Kabupaten Magetan',
+    maps_url: 'https://maps.app.goo.gl/SyvhHGeS7M8k8iA79?g_st=ic',
+    google_maps_url: 'https://maps.app.goo.gl/SyvhHGeS7M8k8iA79?g_st=ic',
+    description: 'Upacara Tradisi Adat Temu Manten Penuh Makna & Doa Restu Leluhur',
+    sort_order: 2
+  },
+  {
+    id: '73000000-0000-0000-0000-000000000015',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    title: 'Resepsi',
+    name: 'RESEPSI',
+    event_date: '2027-01-09',
+    date: '2027-01-09',
+    start_time: '12:00',
+    end_time: 'Selesai',
+    location: 'Gedung Sus PG Rejosari',
+    venue_name: 'Gedung Sus PG Rejosari',
+    location_name: 'Gedung Sus PG Rejosari',
+    address: 'Jalan Rajawali No. 222 (atau area Jl. Bhayangkara), Rejosari I, Kecamatan Kawedanan, Kabupaten Magetan',
+    maps_url: 'https://maps.app.goo.gl/SyvhHGeS7M8k8iA79?g_st=ic',
+    google_maps_url: 'https://maps.app.goo.gl/SyvhHGeS7M8k8iA79?g_st=ic',
+    description: 'Resepsi Pernikahan, Ramah Tamah & Santap Bersama Penuh Rasa Syukur',
+    sort_order: 3
+  }
+];
+
+export const STORIES_AUDI_OVYOLA = [
+  {
+    id: 'st-ao-01',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    title: 'Awal Bertemu',
+    date: 'Pertemuan',
+    content: 'Sebuah perjumpaan manis yang mempertemukan dua hati untuk saling mengenal, berbagi cerita, dan melangkah bersama.',
+    sort_order: 1
+  },
+  {
+    id: 'st-ao-02',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    title: 'Menuju Pelaminan',
+    date: 'Janji Suci',
+    content: 'Dengan keyakinan bahwa apa yang menjadi takdir kita akan menemukan jalannya, kami memantapkan niat suci menuju mahligai pernikahan.',
+    sort_order: 2
+  }
+];
+
+export const GALLERY_AUDI_OVYOLA = [
+  { id: 'ao-gal-1', image_url: '/themes/agni-putri/couple-outdoor.jpg', caption: 'Kebersamaan & Tawa Bahagia Audi & Ovyola', sort_order: 1 },
+  { id: 'ao-gal-2', image_url: '/themes/agni-putri/couple-arch.jpg', caption: 'Romansa Kehangatan Cinta', sort_order: 2 },
+  { id: 'ao-gal-3', image_url: '/themes/agni-putri/bride-putri.jpg', caption: 'Pesona Anggun Mempelai Putri', sort_order: 3 },
+  { id: 'ao-gal-4', image_url: '/themes/agni-putri/groom-agni.jpg', caption: 'Ketulusan Hati Mempelai Pria', sort_order: 4 },
+  { id: 'ao-gal-5', image_url: '/themes/agni-putri/couple-intimate.jpg', caption: 'Genggaman Menuju Masa Depan', sort_order: 5 },
+  { id: 'ao-gal-6', image_url: '/themes/agni-putri/couple-retro.jpg', caption: 'Langkah Menuju Janji Suci', sort_order: 6 },
+];
+
+export const GIFTS_AUDI_OVYOLA = [
+  {
+    id: 'gift-ao-01',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    type: 'bank',
+    provider: 'BRI',
+    bank_name: 'BANK BRI',
+    bank_code: 'BRI',
+    account_number: '0382 0105 8862 505',
+    raw_number: '038201058862505',
+    account_name: 'OVYOLA PRARISTAWATI WIBOWO',
+    is_active: true
+  }
+];
+
 export const editorService = {
   // Couple Info
   async getCouple(invitationId: string) {
@@ -437,6 +569,12 @@ export const editorService = {
       const { data, error } = await supabase.from('couples').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
+    if (isAudiId) {
+      return COUPLE_AUDI_OVYOLA;
+    }
+
     const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
     if (isYogaId) {
@@ -489,6 +627,12 @@ export const editorService = {
       const { data, error } = await supabase.from('events').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
+    if (isAudiId) {
+      return EVENTS_AUDI_OVYOLA;
+    }
+
     const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
     if (isYogaId) {
@@ -532,6 +676,12 @@ export const editorService = {
       const { data, error } = await supabase.from('stories').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
+    if (isAudiId) {
+      return STORIES_AUDI_OVYOLA;
+    }
+
     const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
     if (isYogaId) {
@@ -575,6 +725,12 @@ export const editorService = {
       const { data, error } = await supabase.from('gallery').select('*').eq('invitation_id', invitationId).order('sort_order');
       if (!error && data && data.length > 0) return data;
     } catch {}
+    const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
+    if (isAudiId) {
+      return GALLERY_AUDI_OVYOLA;
+    }
+
     const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('yoga') || invitationId.toLowerCase().includes('fatma')));
     if (isYogaId) {
@@ -677,6 +833,12 @@ export const editorService = {
       }
     } catch (e) {
       console.warn('Could not fetch gifts from settings:', e);
+    }
+
+    const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
+    if (isAudiId) {
+      return GIFTS_AUDI_OVYOLA;
     }
 
     const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 

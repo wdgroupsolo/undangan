@@ -223,6 +223,45 @@ export const INVITATION_YOGA_FATMA: Invitation & { theme?: any; client?: any } =
   created_at: '2026-11-03T23:30:00Z'
 };
 
+export const INVITATION_AUDI_OVYOLA: Invitation & { theme?: any; client?: any } = {
+  id: 'e7000000-0000-0000-0000-000000000007',
+  client_id: 'c6000000-0000-0000-0000-000000000006',
+  theme_id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
+  title: 'The Wedding of Audi & Ovyola',
+  slug: 'audi-ovyola',
+  status: 'published',
+  wedding_date: '2027-01-09T07:00:00+07:00',
+  settings: {
+    theme_slug: 'royal-wayang-gold',
+    default_guest_name: 'Tamu Undangan',
+    cover_title: 'AUDI & OVYOLA',
+    cover_photo: '/themes/agni-putri/couple-outdoor.jpg',
+    groom_instagram: '@audifebrian',
+    bride_instagram: '@ovyolaprx',
+    gift_recipient: 'OVYOLA PRARISTAWATI WIBOWO',
+    gift_address: 'KEL. Sampung rt01/01 kec. Kawedanan Kab. Magetan (No. HP: 0895341102195 - Ovyola)',
+    color_concept: 'Hitam & Emas (Royal Wayang Gold)',
+    music_title: 'Tiara Andini - Tulang dan Nadi',
+    music_url: '/music/landon-pigg-falling-in-love.mp3',
+    quote: 'Apa yang menjadi takdirmu, maka akan mencari jalan untuk menemukan mu.',
+    quote_source: 'Untaian Doa & Harapan',
+    show_akad: true,
+    show_resepsi: true,
+    show_love_story: false,
+    show_live_streaming: false
+  },
+  theme: {
+    id: 'f4a5b6c7-8901-4345-a789-0bcdef012345',
+    name: 'Royal Wayang Gold',
+    slug: 'royal-wayang-gold'
+  },
+  client: {
+    id: 'c6000000-0000-0000-0000-000000000006',
+    name: 'AUDI & OVYOLA'
+  },
+  created_at: '2026-11-04T00:00:00Z'
+};
+
 export const INVITATION_DEMO_TESTIMONI = INVITATION_BIMA_RATNA;
 
 export const invitationService = {
@@ -245,7 +284,9 @@ export const invitationService = {
     const hasBima = result.some(inv => inv.id === INVITATION_BIMA_RATNA.id || inv.slug === 'bima-ratna');
     const hasDimas = result.some(inv => inv.id === INVITATION_DIMAS_ANISA.id || inv.slug === 'dimas-anisa');
     const hasYoga = result.some(inv => inv.id === INVITATION_YOGA_FATMA.id || inv.slug === 'yoga-fatma');
+    const hasAudi = result.some(inv => inv.id === INVITATION_AUDI_OVYOLA.id || inv.slug === 'audi-ovyola');
 
+    if (!hasAudi) result.unshift(INVITATION_AUDI_OVYOLA);
     if (!hasYoga) result.unshift(INVITATION_YOGA_FATMA);
     if (!hasDimas) result.unshift(INVITATION_DIMAS_ANISA);
     if (!hasBima) result.unshift(INVITATION_BIMA_RATNA);
@@ -260,6 +301,9 @@ export const invitationService = {
 
   async getInvitation(id: string) {
     const cachedStatus = getSavedStatus(id);
+    if (id === INVITATION_AUDI_OVYOLA.id) {
+      return cachedStatus ? { ...INVITATION_AUDI_OVYOLA, status: cachedStatus } : INVITATION_AUDI_OVYOLA;
+    }
     if (id === INVITATION_YOGA_FATMA.id) {
       return cachedStatus ? { ...INVITATION_YOGA_FATMA, status: cachedStatus } : INVITATION_YOGA_FATMA;
     }
@@ -290,6 +334,7 @@ export const invitationService = {
 
   async getInvitationBySlug(slug: string) {
     const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim();
+    const isAudi = cleanSlug === 'audi-ovyola' || cleanSlug === 'ovyola-audi' || cleanSlug.includes('audi') || cleanSlug.includes('ovyola');
     const isYoga = cleanSlug === 'yoga-fatma' || cleanSlug === 'fatma-yoga' || cleanSlug.includes('yoga') || cleanSlug.includes('fatma');
     const isHafiz = cleanSlug === 'hafiz-syafika' || cleanSlug.includes('hafiz') || cleanSlug.includes('syafika') || cleanSlug === 'kuala-lumpur-heritage';
     const isAgni = cleanSlug.includes('agni') || cleanSlug.includes('kribo');
@@ -299,11 +344,20 @@ export const invitationService = {
     // Check if status is paused or overridden in localStorage
     const cachedStatus = getSavedStatus(slug) || 
       getSavedStatus(cleanSlug) || 
+      (isAudi ? (getSavedStatus('e7000000-0000-0000-0000-000000000007') || getSavedStatus('audi-ovyola')) : null) ||
       (isYoga ? (getSavedStatus('e6000000-0000-0000-0000-000000000006') || getSavedStatus('yoga-fatma')) : null) ||
       (isHafiz ? (getSavedStatus('e5000000-0000-0000-0000-000000000005') || getSavedStatus('hafiz-syafika')) : null) ||
       (isAgni ? (getSavedStatus('e2000000-0000-0000-0000-000000000002') || getSavedStatus('agni-putri') || getSavedStatus('agni-kahuripan')) : null) ||
       (isBima ? getSavedStatus('e3000000-0000-0000-0000-000000000003') : null) ||
       (isDimas ? getSavedStatus('e4000000-0000-0000-0000-000000000004') : null);
+
+    if (isAudi) {
+      return {
+        ...INVITATION_AUDI_OVYOLA,
+        slug: slug,
+        status: cachedStatus || INVITATION_AUDI_OVYOLA.status || 'published'
+      };
+    }
 
     if (isYoga) {
       return {

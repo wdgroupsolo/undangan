@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
-import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI, COUPLE_STEVEN_BUNGA, GALLERY_STEVEN_BUNGA, COUPLE_HAFIZ_SYAFIKA, COUPLE_YOGA_FATMA } from '../../services/editorService';
+import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI, COUPLE_STEVEN_BUNGA, GALLERY_STEVEN_BUNGA, COUPLE_HAFIZ_SYAFIKA, COUPLE_YOGA_FATMA, COUPLE_AUDI_OVYOLA } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
 import { LuxuryAnimatedTheme } from './themes/LuxuryAnimatedTheme';
 import { SplitFloralTheme } from './themes/SplitFloralTheme';
@@ -65,29 +65,32 @@ export const InvitationRenderer: React.FC = () => {
   const { data: music } = useQuery({ queryKey: ['music', invId], queryFn: () => editorService.getMusic(invId!), enabled: !!invId });
 
   const rawSlug = decodeURIComponent(slug || '').toLowerCase().trim();
-  const isYogaFatmaSlug = rawSlug === 'yoga-fatma' || rawSlug === 'fatma-yoga' || rawSlug.includes('yoga') || rawSlug.includes('fatma');
-  const isAgniSlug = !isYogaFatmaSlug && (rawSlug.includes('agni') || rawSlug.includes('kribo'));
-  const isHafizSlug = !isYogaFatmaSlug && (rawSlug.includes('hafiz') || rawSlug.includes('syafika') || rawSlug === 'kuala-lumpur-heritage');
+  const isAudiOvyolaSlug = rawSlug === 'audi-ovyola' || rawSlug === 'ovyola-audi' || rawSlug.includes('audi') || rawSlug.includes('ovyola');
+  const isYogaFatmaSlug = !isAudiOvyolaSlug && (rawSlug === 'yoga-fatma' || rawSlug === 'fatma-yoga' || rawSlug.includes('yoga') || rawSlug.includes('fatma'));
+  const isAgniSlug = !isAudiOvyolaSlug && !isYogaFatmaSlug && (rawSlug.includes('agni') || rawSlug.includes('kribo'));
+  const isHafizSlug = !isAudiOvyolaSlug && !isYogaFatmaSlug && (rawSlug.includes('hafiz') || rawSlug.includes('syafika') || rawSlug === 'kuala-lumpur-heritage');
   const isNirwanaSlug = isYogaFatmaSlug || rawSlug === 'nirwana-sarangan' || rawSlug === 'hotel-nirwana' || rawSlug === 'telaga-sarangan' || rawSlug.includes('nirwana');
 
   const activeThemeSlug = requestedTheme || (
-    isYogaFatmaSlug
-      ? 'nirwana-sarangan'
-      : (isHafizSlug
-        ? 'kuala-lumpur-heritage'
-        : (isNirwanaSlug
-          ? 'nirwana-sarangan'
-          : (isAgniSlug
-            ? 'royal-wayang-gold'
-            : ((slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga'))
-              ? 'royal-wayang-gold' 
-              : (slug === 'habib-adiba' 
-                ? 'javanese-heritage' 
-                : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold'))))))
+    isAudiOvyolaSlug
+      ? 'royal-wayang-gold'
+      : (isYogaFatmaSlug
+        ? 'nirwana-sarangan'
+        : (isHafizSlug
+          ? 'kuala-lumpur-heritage'
+          : (isNirwanaSlug
+            ? 'nirwana-sarangan'
+            : (isAgniSlug
+              ? 'royal-wayang-gold'
+              : ((slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga'))
+                ? 'royal-wayang-gold' 
+                : (slug === 'habib-adiba' 
+                  ? 'javanese-heritage' 
+                  : ((invitation?.settings as any)?.theme_slug || invitation?.theme?.slug || 'royal-wayang-gold')))))))
   );
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
-    if (isAgniSlug) {
+    if (isAudiOvyolaSlug || isAgniSlug) {
       return '/music/landon-pigg-falling-in-love.mp3';
     }
     switch (themeSlug) {
@@ -167,8 +170,8 @@ export const InvitationRenderer: React.FC = () => {
     }
   }, [couple, slug]);
 
-  const isStevenBungaSlug = !isYogaFatmaSlug && (rawSlug === 'steven-bunga' || rawSlug === 'bunga-steven' || (!slug && !couple));
-  const isBimaSlug = !isYogaFatmaSlug && !isStevenBungaSlug && (rawSlug === 'bima-ratna' || rawSlug.includes('testimoni'));
+  const isStevenBungaSlug = !isAudiOvyolaSlug && !isYogaFatmaSlug && (rawSlug === 'steven-bunga' || rawSlug === 'bunga-steven' || (!slug && !couple));
+  const isBimaSlug = !isAudiOvyolaSlug && !isYogaFatmaSlug && !isStevenBungaSlug && (rawSlug === 'bima-ratna' || rawSlug.includes('testimoni'));
 
   // Prioritize real database/props couple data over demo presets
   const hasRealCoupleData = couple && (
@@ -180,19 +183,19 @@ export const InvitationRenderer: React.FC = () => {
 
   const activeCouple = hasRealCoupleData
     ? couple
-    : (cachedCouple || (isYogaFatmaSlug ? COUPLE_YOGA_FATMA : (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA)))));
+    : (cachedCouple || (isAudiOvyolaSlug ? COUPLE_AUDI_OVYOLA : (isYogaFatmaSlug ? COUPLE_YOGA_FATMA : (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA))))));
 
   const rawGroomNick = activeCouple?.groom_nickname?.trim();
   const rawGroomFull = activeCouple?.groom_full_name?.trim();
   const groom = rawGroomNick
     ? formatName(rawGroomNick)
-    : (rawGroomFull ? formatName(rawGroomFull.split(/[\s,]+/)[0]) : (isYogaFatmaSlug ? 'Yoga' : (isAgniSlug ? 'Agni' : (isBimaSlug ? 'Bima' : 'Steven'))));
+    : (rawGroomFull ? formatName(rawGroomFull.split(/[\s,]+/)[0]) : (isAudiOvyolaSlug ? 'Audi' : (isYogaFatmaSlug ? 'Yoga' : (isAgniSlug ? 'Agni' : (isBimaSlug ? 'Bima' : 'Steven')))));
 
   const rawBrideNick = activeCouple?.bride_nickname?.trim();
   const rawBrideFull = activeCouple?.bride_full_name?.trim();
   const bride = rawBrideNick
     ? formatName(rawBrideNick)
-    : (rawBrideFull ? formatName(rawBrideFull.split(/[\s,]+/)[0]) : (isYogaFatmaSlug ? 'Fatma' : (isAgniSlug ? 'Putri' : (isBimaSlug ? 'Ratna' : 'Bunga'))));
+    : (rawBrideFull ? formatName(rawBrideFull.split(/[\s,]+/)[0]) : (isAudiOvyolaSlug ? 'Ovyola' : (isYogaFatmaSlug ? 'Fatma' : (isAgniSlug ? 'Putri' : (isBimaSlug ? 'Ratna' : 'Bunga')))));
 
   // Dynamically set page title and Open Graph meta tags in browser tab (Called unconditionally)
   useEffect(() => {
@@ -309,8 +312,8 @@ export const InvitationRenderer: React.FC = () => {
     return <WeddingLoadingScreen groomName={groom} brideName={bride} />;
   }
 
-  const groomDisplayName = isYogaFatmaSlug ? 'Yoga' : (isHafizSlug ? 'Hafiz' : (isAgniSlug ? 'Agni' : (groom || 'Steven')));
-  const brideDisplayName = isYogaFatmaSlug ? 'Fatma' : (isHafizSlug ? 'Syafika' : (isAgniSlug ? 'Putri' : (bride || 'Bunga')));
+  const groomDisplayName = isAudiOvyolaSlug ? 'Audi' : (isYogaFatmaSlug ? 'Yoga' : (isHafizSlug ? 'Hafiz' : (isAgniSlug ? 'Agni' : (groom || 'Steven'))));
+  const brideDisplayName = isAudiOvyolaSlug ? 'Ovyola' : (isYogaFatmaSlug ? 'Fatma' : (isHafizSlug ? 'Syafika' : (isAgniSlug ? 'Putri' : (bride || 'Bunga'))));
 
   // Automatic paused screen when invitation status is 'paused'
   if (invitation?.status === 'paused') {
@@ -327,7 +330,7 @@ export const InvitationRenderer: React.FC = () => {
   const isKualaLumpur = activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug;
   const isNirwanaSarangan = !isKualaLumpur && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
   const isJogloMaroon = !isKualaLumpur && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
-  const isRoyalWayang = !isKualaLumpur && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
+  const isRoyalWayang = !isKualaLumpur && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';

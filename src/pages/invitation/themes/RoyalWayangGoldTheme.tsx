@@ -1255,34 +1255,35 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   };
 
   // Determine available events and visibility
-  const explicitAkad = events?.find((e: any) => e.name?.toLowerCase().includes('akad'));
-  const explicitResepsi = events?.find((e: any) => e.name?.toLowerCase().includes('resepsi'));
+  const explicitAkad = events?.find((e: any) => (e.name || e.title)?.toLowerCase().includes('akad'));
+  const explicitResepsi = events?.find((e: any) => (e.name || e.title)?.toLowerCase().includes('resepsi'));
 
   const showAkad = invitation?.settings?.show_akad !== false && (isAgni ? false : (!!explicitAkad || (events && events.length > 1)));
   const showResepsi = invitation?.settings?.show_resepsi !== false;
 
   const akadEvt = showAkad ? (explicitAkad || (events && events.length > 0 ? events[0] : null)) : null;
   const resepsiEvt = explicitResepsi || (events && events.length === 1 && !explicitAkad ? events[0] : (events && events.length > 1 ? events[1] : null)) || events?.[0];
+  const otherEvents = (events || []).filter((e: any) => e !== akadEvt && e !== resepsiEvt);
 
-  const akadTitle = akadEvt?.name || 'AKAD NIKAH';
+  const akadTitle = akadEvt?.name || akadEvt?.title || 'AKAD NIKAH';
   const akadDateFormatted = formatEventDateID(akadEvt?.date || akadEvt?.event_date, 'SABTU, 25 OKTOBER 2026');
   const akadTimeFormatted = formatEventTimeID(akadEvt?.start_time, akadEvt?.end_time, '10.00 WIB - Selesai');
-  const akadVenueTitle = akadEvt?.venue_name || akadEvt?.location || 'KEDIAMAN MEMPELAI WANITA';
+  const akadVenueTitle = akadEvt?.venue_name || akadEvt?.location_name || akadEvt?.location || 'KEDIAMAN MEMPELAI WANITA';
   const akadVenueAddress = akadEvt?.address || akadEvt?.location || 'Jl Harapan Dusun X Tanjung Morawa';
-  const akadMapUrl = akadEvt?.maps_url || akadEvt?.map_url || (akadEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(akadEvt.location + ' ' + (akadEvt.address || ''))}` : 'https://maps.google.com/?q=Tanjung+Morawa');
+  const akadMapUrl = akadEvt?.maps_url || akadEvt?.google_maps_url || akadEvt?.map_url || (akadEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(akadEvt.location + ' ' + (akadEvt.address || ''))}` : 'https://maps.google.com/?q=Tanjung+Morawa');
   const akadRawDate = akadEvt?.date ? akadEvt.date.split('T')[0] : (akadEvt?.event_date ? akadEvt.event_date.split('T')[0] : '2026-10-25');
   const akadRawStart = akadEvt?.start_time || '10:00';
   const akadRawEnd = akadEvt?.end_time || '13:00';
 
-  const rawResepsiTitle = resepsiEvt?.name || 'RESEPSI PERNIKAHAN';
+  const rawResepsiTitle = resepsiEvt?.name || resepsiEvt?.title || 'RESEPSI PERNIKAHAN';
   const resepsiTitleLines = rawResepsiTitle.toLowerCase().includes('resepsi') && rawResepsiTitle.toLowerCase().includes('pernikahan')
     ? ['RESEPSI', 'PERNIKAHAN']
     : [rawResepsiTitle];
   const resepsiDateFormatted = formatEventDateID(resepsiEvt?.date || resepsiEvt?.event_date, 'MINGGU, 25 OKTOBER 2026');
   const resepsiTimeFormatted = formatEventTimeID(resepsiEvt?.start_time, resepsiEvt?.end_time, '10.00 WIB - 20.00 WIB');
-  const resepsiVenueTitle = resepsiEvt?.venue_name || resepsiEvt?.location || (isAgni ? 'RUMAH MEMPELAI LAKI-LAKI' : 'KEDIAMAN MEMPELAI WANITA');
+  const resepsiVenueTitle = resepsiEvt?.venue_name || resepsiEvt?.location_name || resepsiEvt?.location || (isAgni ? 'RUMAH MEMPELAI LAKI-LAKI' : 'KEDIAMAN MEMPELAI WANITA');
   const resepsiVenueAddress = resepsiEvt?.address || resepsiEvt?.location || (isAgni ? 'Dk. Talang, RT 03, RW 01, Selotinatah, Ngariboyo, Magetan, Jawa Timur' : 'Jl Harapan Dusun X Tanjung Morawa');
-  const resepsiMapUrl = resepsiEvt?.maps_url || resepsiEvt?.map_url || (resepsiEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(resepsiEvt.location + ' ' + (resepsiEvt.address || ''))}` : 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic');
+  const resepsiMapUrl = resepsiEvt?.maps_url || resepsiEvt?.google_maps_url || resepsiEvt?.map_url || (resepsiEvt?.location ? `https://maps.google.com/?q=${encodeURIComponent(resepsiEvt.location + ' ' + (resepsiEvt.address || ''))}` : 'https://maps.app.goo.gl/mdB1sVeHfiu5QYXx6?g_st=ic');
   const resepsiRawDate = resepsiEvt?.date ? resepsiEvt.date.split('T')[0] : (resepsiEvt?.event_date ? resepsiEvt.event_date.split('T')[0] : '2026-10-25');
   const resepsiRawStart = resepsiEvt?.start_time || '10:00';
   const resepsiRawEnd = resepsiEvt?.end_time || '20:00';
@@ -2216,8 +2217,137 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               </div>
             )}
 
+            {/* Middle Events (like Temu Manten) */}
+            {otherEvents.map((evt: any, idx: number) => {
+              const extraTitle = evt.name || evt.title || `Adicara ${idx + 2}`;
+              const extraDateFormatted = formatEventDateID(evt.date || evt.event_date);
+              const extraTimeFormatted = formatEventTimeID(evt.start_time, evt.end_time);
+              const extraVenueTitle = evt.venue_name || evt.location_name || evt.location || 'TEMPAT ACARA';
+              const extraVenueAddress = evt.address || evt.location || 'Alamat lokasi acara';
+              const extraMapUrl = evt.maps_url || evt.google_maps_url || evt.map_url || (evt.location ? `https://maps.google.com/?q=${encodeURIComponent(evt.location + ' ' + (evt.address || ''))}` : 'https://maps.google.com/?q=Magetan');
+              const extraRawDate = evt.date ? evt.date.split('T')[0] : (evt.event_date ? evt.event_date.split('T')[0] : '2027-01-09');
+              const extraRawStart = evt.start_time || '10:00';
+              const extraRawEnd = evt.end_time || '12:00';
+
+              return (
+                <React.Fragment key={evt.id || idx}>
+                  <div className="flex items-center justify-center gap-3.5 my-2 relative z-10">
+                    <div className="w-16 sm:w-28 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-b from-[#3a2514] via-[#1a1108] to-[#0c0804] border-2 border-[#d4af37] flex items-center justify-center relative shadow-[0_0_20px_rgba(212,175,55,0.45)]">
+                      <span className="font-serif italic text-lg text-transparent bg-clip-text bg-gradient-to-b from-[#FFF5C2] to-[#ECC460]">❖</span>
+                    </div>
+                    <div className="w-16 sm:w-28 h-px bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                  </div>
+
+                  <div className="relative w-full max-w-[390px] sm:max-w-[420px] rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#221811]/98 via-[#150f0a]/98 to-[#0a0704] border-2 border-[#d4af37]/50 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex flex-col items-center text-center backdrop-blur-md relative overflow-hidden group">
+                    <div className="absolute inset-2 sm:inset-2.5 rounded-[22px] sm:rounded-[26px] border border-[#d4af37]/30 pointer-events-none z-10" />
+
+                    {/* Corner Filigrees */}
+                    <div className="absolute top-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                      <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
+                    </div>
+                    <div className="absolute top-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                      <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
+                    </div>
+                    <div className="absolute bottom-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                      <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-y-100" />
+                    </div>
+                    <div className="absolute bottom-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
+                      <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100 -scale-y-100" />
+                    </div>
+
+                    {/* Top Accent Divider */}
+                    <div className="flex items-center gap-2 mb-2 relative z-20">
+                      <div className="w-10 h-px bg-gradient-to-r from-transparent to-[#d4af37]/80" />
+                      <span className="text-[#ffd778] text-xs filter drop-shadow-[0_0_6px_rgba(212,175,55,0.8)]">❦</span>
+                      <div className="w-10 h-px bg-gradient-to-l from-transparent to-[#d4af37]/80" />
+                    </div>
+
+                    <h3 
+                      className="font-serif text-2xl sm:text-3xl font-bold tracking-[0.15em] text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7CE] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_12px_rgba(212,175,55,0.45)] mb-1 relative z-20 uppercase"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {extraTitle}
+                    </h3>
+
+                    {/* Keraton Diamond Divider */}
+                    <div className="flex items-center justify-center gap-2.5 w-full max-w-[180px] my-2 relative z-20">
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                      <span className="text-[#ffd778] text-[9px] filter drop-shadow-[0_0_8px_rgba(212,175,55,0.9)]">✦ ❖ ✦</span>
+                      <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />
+                    </div>
+
+                    <div className="w-full py-3 px-4 rounded-2xl border border-[#d4af37]/45 bg-gradient-to-b from-[#2a1d12]/75 via-[#1b1209]/80 to-[#100b06]/90 flex flex-col items-center my-3 shadow-[0_4px_16px_rgba(0,0,0,0.5)] relative z-20">
+                      <div className="flex items-center gap-2 mb-1">
+                        <CalendarIcon className="w-4 h-4 text-[#ffd778]" />
+                        <span className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                          {extraDateFormatted}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-3.5 h-3.5 text-[#ffd778]/80" />
+                        <span className="text-xs sm:text-[13px] font-serif text-[#D8D2C6] tracking-wide">
+                          {extraTimeFormatted}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5 max-w-[280px] mx-auto my-2 text-center relative z-20">
+                      <div className="w-10 h-10 rounded-full border border-[#d4af37]/60 bg-gradient-to-b from-[#3a2514] via-[#22160c] to-[#120c07] flex items-center justify-center mx-auto mb-2 shadow-[0_0_14px_rgba(212,175,55,0.45)]">
+                        <MapPin className="w-4 h-4 text-[#ffd778]" />
+                      </div>
+                      <h4 className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase leading-tight" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                        {extraVenueTitle}
+                      </h4>
+                      <p className="text-xs sm:text-[13px] text-[#D8D2C6] font-serif leading-relaxed italic">
+                        {extraVenueAddress}
+                      </p>
+                      {evt?.description && (
+                        <div className="mt-2.5 px-3 py-1.5 rounded-xl border border-[#d4af37]/35 bg-[#25170d]/85 text-[#ffd778] text-[11px] font-serif tracking-wide shadow-sm">
+                          {evt.description}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="w-full flex items-center justify-center gap-3 pt-3 relative z-20">
+                      <a
+                        href={extraMapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 max-w-[170px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/75 hover:border-[#ffd778] bg-gradient-to-r from-[#2a1d12]/95 via-[#3a2717]/95 to-[#2a1d12]/95 hover:from-[#d4af37]/30 hover:to-[#ecc460]/20 text-[#f5dfa8] hover:text-white transition-all duration-300 text-[11px] tracking-[0.2em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] group cursor-pointer active:scale-95"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                      >
+                        <MapPin className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
+                        <span className="font-semibold tracking-[0.18em]">GOOGLE MAPS</span>
+                      </a>
+
+                      <button
+                        onClick={() => {
+                          setSelectedCalendarEvent({
+                            title: `${extraTitle} ${groomName} & ${brideName}`,
+                            description: `${evt.description || extraTitle} ${groomFullName} dan ${brideFullName}.`,
+                            location: extraVenueAddress,
+                            eventDate: extraRawDate,
+                            startTime: extraRawStart,
+                            endTime: extraRawEnd,
+                          });
+                          setIsCalendarModalOpen(true);
+                        }}
+                        className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full border border-[#d4af37]/50 hover:border-[#ffd778] bg-gradient-to-r from-[#1f1610] to-[#120c07] hover:bg-[#d4af37]/20 text-[#D8D2C6] hover:text-white transition-all duration-300 text-[11px] tracking-[0.18em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] cursor-pointer active:scale-95 group"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        title="Simpan Kalender"
+                      >
+                        <CalendarIcon className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
+                        <span className="font-semibold tracking-[0.15em]">KALENDER</span>
+                      </button>
+                    </div>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+
             {/* Sacred Royal Connector Medallion */}
-            {showAkad && akadEvt && showResepsi && resepsiEvt && (
+            {((showAkad && akadEvt) || otherEvents.length > 0) && showResepsi && resepsiEvt && (
               <div className="flex items-center justify-center gap-3.5 my-2 relative z-10">
                 <div className="w-16 sm:w-28 h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
                 <div className="w-12 h-12 rounded-full bg-gradient-to-b from-[#3a2514] via-[#1a1108] to-[#0c0804] border-2 border-[#d4af37] flex items-center justify-center relative shadow-[0_0_20px_rgba(212,175,55,0.45)]">
@@ -2351,83 +2481,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               </div>
             )}
 
-
-            {/* Extra Events (if any) */}
-            {events.length > 2 && events.slice(2).map((evt: any, idx: number) => {
-              const extraTitle = evt.name || `Adicara ${idx + 3}`;
-              const extraDateFormatted = formatEventDateID(evt.date || evt.event_date);
-              const extraTimeFormatted = formatEventTimeID(evt.start_time, evt.end_time);
-              const extraVenueTitle = evt.venue_name || 'TEMPAT ACARA';
-              const extraVenueAddress = evt.location || 'Alamat lokasi acara';
-              const extraMapUrl = evt.map_url || (evt.location ? `https://maps.google.com/?q=${encodeURIComponent(evt.location)}` : 'https://maps.google.com/?q=Tanjung+Morawa');
-
-              return (
-                <div key={evt.id || idx} className="relative w-full max-w-[390px] sm:max-w-[420px] rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#221811]/98 via-[#150f0a]/98 to-[#0a0704] border-2 border-[#d4af37]/50 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex flex-col items-center text-center backdrop-blur-md relative overflow-hidden group">
-                  <div className="absolute inset-2 sm:inset-2.5 rounded-[22px] sm:rounded-[26px] border border-[#d4af37]/30 pointer-events-none z-10" />
-
-                  {/* Corner Filigrees */}
-                  <div className="absolute top-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                    <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain" />
-                  </div>
-                  <div className="absolute top-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                    <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
-                  </div>
-                  <div className="absolute bottom-1 left-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                    <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-y-100" />
-                  </div>
-                  <div className="absolute bottom-1 right-1 w-14 sm:w-16 pointer-events-none z-20 opacity-80 drop-shadow-md">
-                    <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100 -scale-y-100" />
-                  </div>
-
-                  <h3 
-                    className="font-serif text-2xl sm:text-3xl font-bold tracking-[0.15em] text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7CE] via-[#ECC460] to-[#FFEAA0] drop-shadow-[0_2px_12px_rgba(212,175,55,0.45)] mb-1 relative z-20 uppercase"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                  >
-                    {extraTitle}
-                  </h3>
-
-                  <div className="w-full py-3 px-4 rounded-2xl border border-[#d4af37]/45 bg-gradient-to-b from-[#2a1d12]/75 via-[#1b1209]/80 to-[#100b06]/90 flex flex-col items-center my-3 shadow-[0_4px_16px_rgba(0,0,0,0.5)] relative z-20">
-                    <div className="flex items-center gap-2 mb-1">
-                      <CalendarIcon className="w-4 h-4 text-[#ffd778]" />
-                      <span className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                        {extraDateFormatted}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-3.5 h-3.5 text-[#ffd778]/80" />
-                      <span className="text-xs sm:text-[13px] font-serif text-[#D8D2C6] tracking-wide">
-                        {extraTimeFormatted}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5 max-w-[280px] mx-auto my-2 text-center relative z-20">
-                    <div className="w-10 h-10 rounded-full border border-[#d4af37]/60 bg-gradient-to-b from-[#3a2514] via-[#22160c] to-[#120c07] flex items-center justify-center mx-auto mb-2 shadow-[0_0_14px_rgba(212,175,55,0.45)]">
-                      <MapPin className="w-4 h-4 text-[#ffd778]" />
-                    </div>
-                    <h4 className="font-serif text-sm sm:text-base font-bold tracking-wider text-[#FFF5C2] uppercase leading-tight" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                      {extraVenueTitle}
-                    </h4>
-                    <p className="text-xs sm:text-[13px] text-[#D8D2C6] font-serif leading-relaxed italic">
-                      {extraVenueAddress}
-                    </p>
-                  </div>
-
-                  <div className="w-full flex items-center justify-center gap-3 pt-3 relative z-20">
-                    <a
-                      href={extraMapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border border-[#d4af37]/75 hover:border-[#ffd778] bg-gradient-to-r from-[#2a1d12]/95 via-[#3a2717]/95 to-[#2a1d12]/95 hover:from-[#d4af37]/30 hover:to-[#ecc460]/20 text-[#f5dfa8] hover:text-white transition-all duration-300 text-[11px] tracking-[0.2em] font-serif uppercase shadow-[0_4px_16px_rgba(0,0,0,0.7)] group cursor-pointer active:scale-95"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                    >
-                      <MapPin className="w-3.5 h-3.5 text-[#ffd778] group-hover:scale-110 group-hover:text-white transition-all duration-300" />
-                      <span className="font-semibold tracking-[0.18em]">GOOGLE MAPS</span>
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </section>
 

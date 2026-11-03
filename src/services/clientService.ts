@@ -55,6 +55,17 @@ export const CLIENT_YOGA_FATMA: Client = {
   created_at: '2026-11-03T23:30:00Z',
 };
 
+export const CLIENT_AUDI_OVYOLA: Client = {
+  id: 'c6000000-0000-0000-0000-000000000006',
+  name: 'AUDI & OVYOLA',
+  phone: '0895341102195',
+  email: 'audi.ovyola@gmail.com',
+  address: 'KEL. Sampung rt01/01 kec. Kawedanan Kab. Magetan',
+  notes: 'Tema Royal Wayang Gold. Akad, Temu Manten & Resepsi: Sabtu, 9 Januari 2027 di Gedung Sus PG Rejosari, Magetan. Instagram: @audifebrian & @ovyolaprx',
+  status: 'active',
+  created_at: '2026-11-04T00:00:00Z',
+};
+
 export const CLIENT_DEMO_TESTIMONI = CLIENT_BIMA_RATNA;
 
 export const clientService = {
@@ -73,13 +84,15 @@ export const clientService = {
       console.warn('Error fetching clients from Supabase:', e);
     }
 
-    // Ensure Agni Putri, Bima Ratna, Dimas Anisa, and Yoga Fatma clients are present
+    // Ensure Agni Putri, Bima Ratna, Dimas Anisa, Yoga Fatma, and Audi Ovyola clients are present
     const hasAgni = list.some(c => c.name.toLowerCase().includes('agni'));
     const hasBima = list.some(c => c.id === CLIENT_BIMA_RATNA.id || c.name.toLowerCase().includes('bima'));
     const hasDimas = list.some(c => c.id === CLIENT_DIMAS_ANISA.id || c.name.toLowerCase().includes('dimas'));
     const hasYoga = list.some(c => c.id === CLIENT_YOGA_FATMA.id || c.name.toLowerCase().includes('yoga') || c.name.toLowerCase().includes('fatma'));
+    const hasAudi = list.some(c => c.id === CLIENT_AUDI_OVYOLA.id || c.name.toLowerCase().includes('audi') || c.name.toLowerCase().includes('ovyola'));
 
     const result = [...list];
+    if (!hasAudi) result.unshift(CLIENT_AUDI_OVYOLA);
     if (!hasYoga) result.unshift(CLIENT_YOGA_FATMA);
     if (!hasDimas) result.unshift(CLIENT_DIMAS_ANISA);
     if (!hasBima) result.unshift(CLIENT_BIMA_RATNA);
@@ -89,6 +102,7 @@ export const clientService = {
   },
 
   async getClient(id: string) {
+    if (id === CLIENT_AUDI_OVYOLA.id) return CLIENT_AUDI_OVYOLA;
     if (id === CLIENT_YOGA_FATMA.id) return CLIENT_YOGA_FATMA;
     if (id === CLIENT_AGNI_PUTRI.id) return CLIENT_AGNI_PUTRI;
     if (id === CLIENT_BIMA_RATNA.id || id === 'demo-client') return CLIENT_BIMA_RATNA;
