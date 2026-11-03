@@ -38,34 +38,34 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
     setStage('exiting');
     setTimeout(() => {
       onComplete();
-    }, 600);
+    }, 450);
   };
 
   useEffect(() => {
-    // 0.4s: Enable skip button
+    // 0.35s: Enable skip button
     const tSkip = setTimeout(() => {
       setCanSkip(true);
-    }, 400);
+    }, 350);
 
-    // Stage 1: Unlocking - Golden seal resonates with 24K flare (0.45s)
+    // Stage 1: Unlocking - Golden seal resonates with 24K radiant flare (0.45s)
     const tUnlock = setTimeout(() => {
       if (!isFinishedRef.current) setStage('unlocking');
     }, 450);
 
-    // Stage 2: Opening - 3D Emerald velvet folio gates swing open with realistic depth (0.9s)
+    // Stage 2: Opening - 3D Emerald velvet folio gates swing open with realistic depth (0.95s)
     const tOpen = setTimeout(() => {
       if (!isFinishedRef.current) setStage('opening');
-    }, 900);
+    }, 950);
 
-    // Stage 3: Gliding - Smooth cinematic glide through the opened gates directly into the invitation (1.8s)
+    // Stage 3: Gliding - Smooth cinematic glide through the opened gates directly into the invitation (1.85s)
     const tGlide = setTimeout(() => {
       if (!isFinishedRef.current) setStage('gliding');
-    }, 1800);
+    }, 1850);
 
-    // Stage 4: Seamless transition handoff into invitation (2.6s)
+    // Stage 4: Seamless transition handoff directly into invitation (2.65s)
     const tExit = setTimeout(() => {
       handleFinish();
-    }, 2600);
+    }, 2650);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -90,9 +90,12 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
 
   return (
     <div 
-      className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#C5A059]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#041610] transition-opacity duration-600 ease-out ${
-        isExiting ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
-      }`}
+      onClick={() => {
+        if (canSkip) handleFinish();
+      }}
+      className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#C5A059]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#041610] transition-all duration-600 ease-out ${
+        isExiting ? 'opacity-0 pointer-events-none scale-105' : 'opacity-100 pointer-events-auto scale-100'
+      } ${canSkip ? 'cursor-pointer' : ''}`}
     >
       <style>{`
         @keyframes nirwana-seal-pulse {
@@ -136,7 +139,12 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
       {/* ========================================================================= */}
       {/* 1. SCENIC TELAGA SARANGAN & HOTEL NIRWANA DRONE VIDEO BACKDROP           */}
       {/* ========================================================================= */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <div 
+        className="absolute inset-0 z-0 overflow-hidden pointer-events-none transition-transform duration-1000 ease-out will-change-transform"
+        style={{
+          transform: isGliding ? 'scale(1.2)' : 'scale(1)'
+        }}
+      >
         {/* Scenic lake image background fallback */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
@@ -170,47 +178,49 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
       <div 
         className="relative w-full h-full max-w-[500px] max-h-[100dvh] flex items-center justify-center will-change-transform z-10 p-2 sm:p-4"
         style={{
-          transform: isGliding ? 'scale(2.2)' : 'scale(1)',
+          transform: isGliding ? 'scale(2.3)' : 'scale(1)',
           opacity: isGliding ? 0 : 1,
-          transformOrigin: '50% 52%',
+          transformOrigin: '50% 50%',
           transition: isGliding 
-            ? 'transform 1.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.0s cubic-bezier(0.4, 0, 0.8, 1)' 
+            ? 'transform 1.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.95s cubic-bezier(0.4, 0, 0.8, 1)' 
             : 'transform 0.4s ease-out, opacity 0.4s ease-out',
         }}
       >
         {/* 768 x 1376 Aspect Frame Canvas with 3D Architectural Perspective */}
         <div 
           className="relative w-full aspect-[768/1376] max-h-[96dvh] flex items-center justify-center overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.95)]"
-          style={{ perspective: '1300px', transformStyle: 'preserve-3d' }}
+          style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
         >
 
-          {/* A. RECESSED INNER DOOR JAMB DEPTH (Behind the doors) */}
+          {/* A. RECESSED INNER DOORWAY INTERIOR (Deep 3D Architectural Depth behind the doors) */}
           <div 
-            className="absolute z-5 pointer-events-none"
+            className="absolute z-5 pointer-events-none transition-all duration-1000"
             style={{
               left: '9.375%',
               top: '8.43%',
               width: '81.25%',
               height: '83.43%',
-              background: 'radial-gradient(ellipse at 50% 45%, rgba(16, 50, 36, 0.45) 0%, rgba(3, 14, 10, 0.95) 70%, rgba(2, 8, 5, 0.99) 100%)',
-              boxShadow: 'inset 0 0 50px rgba(0,0,0,0.95)',
+              background: isDoorsOpen
+                ? 'radial-gradient(ellipse at 50% 50%, #153e2e 0%, #082218 50%, #03120d 100%)'
+                : 'radial-gradient(ellipse at 50% 45%, rgba(16, 50, 36, 0.45) 0%, rgba(3, 14, 10, 0.95) 70%, rgba(2, 8, 5, 0.99) 100%)',
+              boxShadow: 'inset 0 0 60px rgba(0,0,0,0.95)',
               borderRadius: '240px 240px 0 0',
             }}
           />
 
           {/* B. VOLUMETRIC DIVINE GOLDEN LIGHT BURST (Beams forward directly as doors open) */}
           <div 
-            className={`absolute inset-0 z-8 pointer-events-none transition-opacity duration-1000 ease-out ${
-              isDoorsOpen ? 'opacity-100' : 'opacity-0'
+            className={`absolute inset-0 z-8 pointer-events-none transition-all duration-1000 ease-out ${
+              isDoorsOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
             }`}
             style={{
-              background: 'radial-gradient(ellipse at 50% 50%, rgba(255, 245, 190, 0.95) 0%, rgba(197, 160, 89, 0.45) 40%, transparent 75%)',
+              background: 'radial-gradient(ellipse at 50% 50%, rgba(255, 248, 210, 0.92) 0%, rgba(212, 175, 55, 0.45) 45%, transparent 75%)',
               mixBlendMode: 'screen',
-              animation: isDoorsOpen ? 'nirwana-god-rays 4s ease-in-out infinite' : 'none',
+              animation: isDoorsOpen ? 'nirwana-god-rays 3.5s ease-in-out infinite' : 'none',
             }}
           />
 
-          {/* D. LEFT 3D SOLID CARVED EMERALD DOOR LEAF */}
+          {/* C. LEFT 3D SOLID CARVED EMERALD DOOR LEAF (With Real 12px 3D Side Thickness) */}
           <div 
             className="absolute z-10 will-change-transform"
             style={{
@@ -221,12 +231,12 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
               transformOrigin: '0% 50%',
               transformStyle: 'preserve-3d',
               transform: isDoorsOpen 
-                ? 'rotateY(-78deg)' 
-                : 'rotateY(0deg)',
-              transition: 'transform 1.85s cubic-bezier(0.16, 1, 0.3, 1), filter 1.6s ease',
+                ? 'rotateY(-80deg) translateZ(4px)' 
+                : 'rotateY(0deg) translateZ(0px)',
+              transition: 'transform 1.45s cubic-bezier(0.16, 1, 0.3, 1), filter 1.3s ease',
               filter: isDoorsOpen 
-                ? 'brightness(0.75) contrast(1.15) drop-shadow(10px 4px 22px rgba(0,0,0,0.95))' 
-                : 'brightness(1) contrast(1)',
+                ? 'brightness(0.76) contrast(1.12) drop-shadow(12px 6px 24px rgba(0,0,0,0.95))' 
+                : 'brightness(1) contrast(1) drop-shadow(2px 0 6px rgba(0,0,0,0.6))',
             }}
           >
             {/* Front Photorealistic Carved Velvet & 24K Gold Face */}
@@ -236,15 +246,42 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
               className="w-full h-full object-contain object-left-top select-none pointer-events-none block"
             />
 
+            {/* REAL 3D EXTRUDED SIDE EDGE (Tebal Daun Pintu 12px - Solid Velvet & Gold Trim) */}
+            <div 
+              className="absolute pointer-events-none"
+              style={{
+                top: 0,
+                bottom: 0,
+                right: 0,
+                width: '12px',
+                transformOrigin: 'right center',
+                transform: 'rotateY(-90deg)',
+                background: 'linear-gradient(to right, #09261a, #1a4a35, #0a2217)',
+                borderRight: '1.5px solid #d4af37',
+                boxShadow: 'inset 0 0 6px rgba(0,0,0,0.85)',
+              }}
+            />
+
+            {/* Back Face (Deep Royal Emerald Velvet) */}
+            <div 
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                transform: 'translateZ(-12px) rotateY(180deg)',
+                background: 'linear-gradient(to bottom, #061c14, #020d09)',
+                border: '1px solid rgba(197, 160, 89, 0.35)',
+                boxShadow: 'inset 0 0 25px rgba(0,0,0,0.9)',
+              }}
+            />
+
             {/* Ambient Shadow Overlay on Open */}
             <div 
-              className={`absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent pointer-events-none transition-opacity duration-1200 ${
+              className={`absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent pointer-events-none transition-opacity duration-1000 ${
                 isDoorsOpen ? 'opacity-80' : 'opacity-0'
               }`}
             />
           </div>
 
-          {/* E. RIGHT 3D SOLID CARVED EMERALD DOOR LEAF */}
+          {/* D. RIGHT 3D SOLID CARVED EMERALD DOOR LEAF (With Real 12px 3D Side Thickness) */}
           <div 
             className="absolute z-10 will-change-transform"
             style={{
@@ -255,12 +292,12 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
               transformOrigin: '100% 50%',
               transformStyle: 'preserve-3d',
               transform: isDoorsOpen 
-                ? 'rotateY(78deg)' 
-                : 'rotateY(0deg)',
-              transition: 'transform 1.85s cubic-bezier(0.16, 1, 0.3, 1), filter 1.6s ease',
+                ? 'rotateY(80deg) translateZ(4px)' 
+                : 'rotateY(0deg) translateZ(0px)',
+              transition: 'transform 1.45s cubic-bezier(0.16, 1, 0.3, 1), filter 1.3s ease',
               filter: isDoorsOpen 
-                ? 'brightness(0.75) contrast(1.15) drop-shadow(-10px 4px 22px rgba(0,0,0,0.95))' 
-                : 'brightness(1) contrast(1)',
+                ? 'brightness(0.76) contrast(1.12) drop-shadow(-12px 6px 24px rgba(0,0,0,0.95))' 
+                : 'brightness(1) contrast(1) drop-shadow(-2px 0 6px rgba(0,0,0,0.6))',
             }}
           >
             {/* Front Photorealistic Carved Velvet & 24K Gold Face */}
@@ -270,15 +307,42 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
               className="w-full h-full object-contain object-right-top select-none pointer-events-none block"
             />
 
+            {/* REAL 3D EXTRUDED SIDE EDGE (Tebal Daun Pintu 12px - Solid Velvet & Gold Trim) */}
+            <div 
+              className="absolute pointer-events-none"
+              style={{
+                top: 0,
+                bottom: 0,
+                left: 0,
+                width: '12px',
+                transformOrigin: 'left center',
+                transform: 'rotateY(90deg)',
+                background: 'linear-gradient(to left, #09261a, #1a4a35, #0a2217)',
+                borderLeft: '1.5px solid #d4af37',
+                boxShadow: 'inset 0 0 6px rgba(0,0,0,0.85)',
+              }}
+            />
+
+            {/* Back Face (Deep Royal Emerald Velvet) */}
+            <div 
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                transform: 'translateZ(-12px) rotateY(180deg)',
+                background: 'linear-gradient(to bottom, #061c14, #020d09)',
+                border: '1px solid rgba(197, 160, 89, 0.35)',
+                boxShadow: 'inset 0 0 25px rgba(0,0,0,0.9)',
+              }}
+            />
+
             {/* Ambient Shadow Overlay on Open */}
             <div 
-              className={`absolute inset-0 bg-gradient-to-l from-black/60 via-black/20 to-transparent pointer-events-none transition-opacity duration-1200 ${
+              className={`absolute inset-0 bg-gradient-to-l from-black/60 via-black/20 to-transparent pointer-events-none transition-opacity duration-1000 ${
                 isDoorsOpen ? 'opacity-80' : 'opacity-0'
               }`}
             />
           </div>
 
-          {/* F. ROYAL 24K GOLD CARVED MEDALLION SEAL (Central Lock Mechanism) */}
+          {/* E. ROYAL 24K GOLD CARVED MEDALLION SEAL (Central Lock Mechanism) */}
           <div 
             className="absolute z-20 pointer-events-none will-change-transform"
             style={{
@@ -294,13 +358,13 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
                 transform: stage === 'intro' 
                   ? 'scale(1)' 
                   : stage === 'unlocking' 
-                    ? 'scale(1.15)' 
-                    : 'scale(1.35)',
+                    ? 'scale(1.16)' 
+                    : 'scale(1.28)',
                 opacity: isDoorsOpen ? 0 : 1,
                 filter: stage === 'unlocking' 
-                  ? 'drop-shadow(0 8px 25px rgba(0,0,0,0.9)) drop-shadow(0 0 24px rgba(255, 225, 130, 0.75))' 
+                  ? 'drop-shadow(0 8px 25px rgba(0,0,0,0.9)) drop-shadow(0 0 24px rgba(255, 225, 130, 0.85))' 
                   : 'drop-shadow(0 6px 18px rgba(0,0,0,0.85)) drop-shadow(0 0 8px rgba(212, 175, 55, 0.35))',
-                transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease-out, filter 0.5s ease',
+                transition: 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease-out, filter 0.4s ease',
                 animation: stage === 'intro' ? 'nirwana-seal-pulse 3.6s ease-in-out infinite' : 'none',
               }}
             >
@@ -343,14 +407,14 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
                   <div className="absolute inset-0 rounded-full border border-amber-300 animate-ping opacity-75 pointer-events-none" />
                   <div 
                     className="absolute -inset-6 rounded-full bg-radial from-white/70 via-amber-300/30 to-transparent pointer-events-none"
-                    style={{ animation: 'nirwana-gold-flare 0.85s ease-out forwards' }}
+                    style={{ animation: 'nirwana-gold-flare 0.75s ease-out forwards' }}
                   />
                 </>
               )}
             </div>
           </div>
 
-          {/* G. FOREGROUND ARCH FRAME (Solid 24K Gold Corinthian Pilasters & Pediment Arch) */}
+          {/* F. FOREGROUND ARCH FRAME (Solid 24K Gold Corinthian Pilasters & Pediment Arch) */}
           <div className="absolute inset-0 z-25 pointer-events-none select-none">
             <img 
               src="/themes/nirwana-door-frame.png" 
@@ -359,10 +423,10 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
             />
           </div>
 
-          {/* H. TOP ROYAL CARTOUCHE BADGE */}
+          {/* G. TOP ROYAL CARTOUCHE BADGE */}
           <div 
-            className={`absolute top-5 sm:top-6 left-1/2 -translate-x-1/2 z-30 transition-all duration-700 text-center pointer-events-none w-11/12 max-w-xs ${
-              isDoorsOpen ? 'opacity-0 -translate-y-5 scale-95' : 'opacity-100 translate-y-0 scale-100'
+            className={`absolute top-5 sm:top-6 left-1/2 -translate-x-1/2 z-30 transition-all duration-600 text-center pointer-events-none w-11/12 max-w-xs ${
+              stage !== 'intro' ? 'opacity-0 -translate-y-4 scale-95' : 'opacity-100 translate-y-0 scale-100'
             }`}
           >
             <div className="px-4 py-2 rounded-full bg-[#020D0A]/85 backdrop-blur-md border border-[#C5A059]/60 shadow-[0_6px_25px_rgba(0,0,0,0.7)] flex items-center justify-center gap-2">
@@ -374,11 +438,11 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
             </div>
           </div>
 
-          {/* I. BOTTOM RECIPIENT GUEST VIP BADGE (Dynamic if guestName is given) */}
+          {/* H. BOTTOM RECIPIENT GUEST VIP BADGE (Dynamic if guestName is given) */}
           {guestName && guestName.trim() !== '' && guestName !== 'Tamu Undangan' && (
             <div 
-              className={`absolute bottom-6 sm:bottom-7 left-1/2 -translate-x-1/2 z-30 transition-all duration-700 text-center pointer-events-none w-11/12 max-w-xs ${
-                isDoorsOpen ? 'opacity-0 translate-y-5 scale-95' : 'opacity-100 translate-y-0 scale-100'
+              className={`absolute bottom-6 sm:bottom-7 left-1/2 -translate-x-1/2 z-30 transition-all duration-600 text-center pointer-events-none w-11/12 max-w-xs ${
+                stage !== 'intro' ? 'opacity-0 translate-y-4 scale-95' : 'opacity-100 translate-y-0 scale-100'
               }`}
             >
               <div className="px-5 py-3 rounded-2xl bg-[#041610]/92 backdrop-blur-md border border-[#C5A059]/50 shadow-[0_8px_30px_rgba(0,0,0,0.8)]">
