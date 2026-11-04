@@ -51,7 +51,7 @@ export const Home: React.FC = () => {
       id: 'nirwana-sarangan',
       name: 'Nirwana Sarangan Resort',
       slug: 'nirwana-sarangan',
-      badge: 'Tema Resor Eksklusif',
+      badge: 'Tema Resort Eksklusif',
       couple: 'Steven & Bunga',
       date: 'Minggu, 18 Oktober 2026',
       preview: '/themes/nirwana-sarangan/theme-preview.jpg',
@@ -927,7 +927,7 @@ export const Home: React.FC = () => {
               const featuresList = isNirwana ? [
                 'Kemegahan Hotel Nirwana & Panorama Telaga Sarangan',
                 'Nuansa Hijau Pinus Lereng Lawu & Kabut Danau Romantis',
-                'Resor Venue Peta Langsung & Lobi Nirwana Sarangan',
+                'Resort Venue Peta Langsung & Lobi Nirwana Sarangan',
                 'Amplop Digital, Salin Rekening & RSVP Online'
               ] : isJogloMaroon ? [
                 'Kemegahan Rumah Adat Batak (Rumah Bolon)',
@@ -995,7 +995,7 @@ export const Home: React.FC = () => {
                     <div className="sm:col-span-7 p-6 flex flex-col justify-between space-y-4">
                       <div>
                         <div className="text-xs font-bold uppercase tracking-wider text-primary-800 mb-1">
-                          {isNirwana ? 'Resor Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
+                          {isNirwana ? 'Resort Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
                         </div>
                         <h3 className="font-bold text-xl sm:text-2xl text-stone-900">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3">

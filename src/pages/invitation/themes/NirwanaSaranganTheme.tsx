@@ -1640,15 +1640,15 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#122E24] via-black/40 to-transparent" />
                   
-                  {/* Top VIP 5-Star Badge */}
+                  {/* Top VIP 3-Star Badge */}
                   <div className="absolute top-4 left-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#122E24]/90 backdrop-blur-md border border-[#C5A059]/60 shadow-lg text-xs text-[#E2C792] z-20">
                     <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
-                    <span className="font-serif tracking-wider uppercase text-[10px] font-semibold">Resor Pernikahan Bintang 5</span>
+                    <span className="font-serif tracking-wider uppercase text-[10px] font-semibold">Resort Pernikahan Bintang 3</span>
                   </div>
 
-                  {/* 5 Gold Star Rating */}
+                  {/* 3 Gold Star Rating */}
                   <div className="absolute top-4 right-4 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 z-20">
-                    {[...Array(5)].map((_, i) => (
+                    {[...Array(3)].map((_, i) => (
                       <Star key={i} className="w-3 h-3 text-[#FFD700] fill-[#FFD700]" />
                     ))}
                   </div>
@@ -1687,7 +1687,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                     <div className="flex items-center gap-2.5 bg-white/5 p-3 rounded-2xl border border-white/10 hover:border-[#C5A059]/40 transition-colors">
                       <ShieldCheck className="w-4 h-4 text-[#C5A059] shrink-0 mt-0.5" />
                       <div>
-                        <strong className="block text-white text-[11px]">Fasilitas Bintang 5</strong>
+                        <strong className="block text-white text-[11px]">Fasilitas Bintang 3</strong>
                         <span className="text-[10px] text-white/70">Lift, Restoran &amp; Kamar Mewah</span>
                       </div>
                     </div>

@@ -90,12 +90,12 @@ export const REAL_NIRWANA_SARANGAN_THEME: Theme = {
   preview_image: '/themes/nirwana-sarangan/theme-preview.jpg',
   thumbnail: '/themes/nirwana-sarangan/theme-preview.jpg',
   status: 'active',
-  badge: 'Tema Resor Eksklusif',
+  badge: 'Tema Resort Eksklusif',
   rating: '5.0',
   features: [
     'Kemegahan Hotel Nirwana & Panorama Telaga Sarangan',
     'Nuansa Hijau Pinus Lereng Lawu & Kabut Danau Romantis',
-    'Resor Venue Peta Langsung & Lobi Nirwana Sarangan',
+    'Resort Venue Peta Langsung & Lobi Nirwana Sarangan',
     'Amplop Digital, Salin Rekening & RSVP Online'
   ],
   theme_config: { 

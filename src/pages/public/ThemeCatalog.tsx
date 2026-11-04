@@ -161,7 +161,7 @@ export const ThemeCatalog: React.FC = () => {
                           {theme.category || (isNirwana ? 'Resort & Nature' : isJogloMaroon ? 'Traditional & Heritage' : isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
                         </span>
                         <span className="bg-amber-400 text-stone-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow w-fit">
-                          {theme.badge || (isNirwana ? 'Tema Resor Eksklusif' : 'Tema Aktif')}
+                          {theme.badge || (isNirwana ? 'Tema Resort Eksklusif' : 'Tema Aktif')}
                         </span>
                       </div>
 
@@ -186,7 +186,7 @@ export const ThemeCatalog: React.FC = () => {
                     <div className="sm:col-span-7 p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
                       <div>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-2.5 py-1 rounded-md">
-                          {isNirwana ? 'Resor Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Trending Masterpiece' : isMaroon ? 'Royal Classic' : isSplit ? 'Masterpiece Edition' : (theme.category || 'Special Edition')}
+                          {isNirwana ? 'Resort Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Trending Masterpiece' : isMaroon ? 'Royal Classic' : isSplit ? 'Masterpiece Edition' : (theme.category || 'Special Edition')}
                         </span>
                         <h3 className="text-xl sm:text-2xl font-bold text-stone-900 mt-2">{theme.name}</h3>
                         <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-3 sm:line-clamp-none">
@@ -208,7 +208,7 @@ export const ThemeCatalog: React.FC = () => {
                           {(isNirwana ? [
                             'Kemegahan Hotel Nirwana & Panorama Telaga Sarangan',
                             'Nuansa Hijau Pinus Lereng Lawu & Kabut Danau Romantis',
-                            'Resor Venue Peta Langsung & Lobi Nirwana Sarangan',
+                            'Resort Venue Peta Langsung & Lobi Nirwana Sarangan',
                             'Amplop Digital, Salin Rekening & RSVP Online'
                           ] : isJogloMaroon ? [
                             'Kemegahan Rumah Adat Batak (Rumah Bolon)',
