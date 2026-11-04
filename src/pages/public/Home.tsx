@@ -30,7 +30,15 @@ import {
   Bot,
   Send,
   RotateCcw,
-  Globe
+  Globe,
+  Search,
+  Star,
+  Compass,
+  ShieldCheck,
+  Award,
+  SlidersHorizontal,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 export const Home: React.FC = () => {
@@ -43,6 +51,13 @@ export const Home: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Modern Luxury Hero & Capsule States
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [isLikedFeatured, setIsLikedFeatured] = useState(false);
+  const [activeConceptFilter, setActiveConceptFilter] = useState('all');
+  const [activeFeatureFilter, setActiveFeatureFilter] = useState('all');
+  const [activeTimelineFilter, setActiveTimelineFilter] = useState('2026-2027');
 
   // Showcase Themes for Hero Phone Mockup Slider
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
@@ -439,321 +454,540 @@ export const Home: React.FC = () => {
         </a>
       </div>
 
-      {/* Main Navigation Header */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 transition-all shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16 sm:h-20">
+      {/* Modern Luxury Resort Frame Hero (Editorial Travel & Wedding Architecture) */}
+      <div id="hero" className="max-w-[1400px] mx-auto p-2 sm:p-4 md:p-6 lg:p-8">
+        <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden bg-stone-900 shadow-2xl border border-stone-200/40 min-h-[760px] lg:min-h-[840px] flex flex-col justify-between">
           
-          {/* Brand Identity */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-xl bg-primary-900 flex items-center justify-center text-amber-200 shadow-sm transition-transform group-hover:scale-105">
-              <span className="font-cinzel text-lg font-bold tracking-wider">WD</span>
-            </div>
-            <div>
-              <span className="text-lg sm:text-xl font-bold font-cinzel text-stone-900 tracking-wider block leading-none">
-                WD GROUP
-              </span>
-              <span className="text-[10px] tracking-[0.2em] text-stone-500 font-semibold uppercase mt-0.5 block">
-                {t('brandSubtitle') as string}
-              </span>
-            </div>
-          </Link>
-
-          {/* Streamlined Desktop Navigation Links (5 Clean Links) */}
-          <nav className="hidden lg:flex items-center space-x-8 text-xs font-bold text-stone-600 tracking-wider uppercase">
-            <a href="#themes" className="hover:text-primary-800 transition-colors">{t('navThemes') as string}</a>
-            <a href="#keunggulan" className="hover:text-primary-800 transition-colors">{t('navFeatures') as string}</a>
-            <a href="#alur" className="hover:text-primary-800 transition-colors">{t('navWorkflow') as string}</a>
-            <a href="#pricing" className="hover:text-primary-800 transition-colors">{t('navPricing') as string}</a>
-            <a href="#faq" className="hover:text-primary-800 transition-colors">{t('navFaq') as string}</a>
-          </nav>
-
-          {/* Right Action Button & Mobile Toggle */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            <a 
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center space-x-2 bg-primary-900 hover:bg-primary-950 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs transition-all transform hover:-translate-y-0.5"
-            >
-              <MessageCircle size={15} className="text-amber-300" />
-              <span>{t('navConsult') as string}</span>
-            </a>
-
-            {/* Language Toggle */}
-            <button
-              onClick={toggleLang}
-              className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 text-xs font-bold transition-colors cursor-pointer"
-              aria-label={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-              title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-            >
-              <Globe size={14} />
-              <span className="hidden min-[420px]:inline">{t('langToggle') as string}</span>
-            </button>
-
-            {/* Mobile Menu Toggle Button */}
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-stone-700 hover:bg-stone-100 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+          {/* Panoramic Resort Background with Mediterranean Sea & Cliffside Villas */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=2400&q=85" 
+              alt="Mediterranean Coastal Resort View" 
+              className="w-full h-full object-cover object-[center_35%] filter brightness-[0.98] contrast-[1.02]"
+            />
+            {/* Luminous atmospheric lighting overlays */}
+            <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-white/70 via-white/20 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-stone-950/60 via-stone-900/25 to-transparent pointer-events-none" />
           </div>
 
-        </div>
+          {/* Floating Top Navigation Bar */}
+          <header className="relative z-30 p-4 sm:p-6 lg:p-8 flex items-center justify-between">
+            {/* Brand Monogram & Title */}
+            <Link to="/" className="flex items-center space-x-3 group select-none">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-stone-900/85 backdrop-blur-md flex items-center justify-center text-white border border-white/20 shadow-sm transition-transform group-hover:scale-105">
+                <span className="font-cinzel text-base sm:text-lg font-bold tracking-wider">WD</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs sm:text-sm font-extrabold tracking-[0.22em] text-stone-900 uppercase font-sans">
+                  WD PRODUCTION
+                </span>
+                <span className="text-[9px] tracking-[0.25em] text-stone-600 font-semibold uppercase">
+                  LUXURY WEDDING INVITATIONS
+                </span>
+              </div>
+            </Link>
 
-        {/* Mobile Dropdown Menu Drawer */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-stone-200 px-5 py-6 space-y-4 animate-reveal-up shadow-lg">
-            <nav className="flex flex-col space-y-3.5 text-sm font-semibold text-stone-700">
-              <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('navThemes') as string}</a>
-              <a href="#keunggulan" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavFeatures') as string}</a>
-              <a href="#alur" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavWorkflow') as string}</a>
-              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('navPricing') as string}</a>
-              <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavFaq') as string}</a>
-            </nav>
-            <div className="pt-4 border-t border-stone-100 flex flex-col gap-2.5">
+            {/* Frosted Glass Capsule Navigation Pill */}
+            <nav className="hidden lg:flex items-center bg-white/80 backdrop-blur-md rounded-full p-1.5 shadow-sm border border-white/60 text-xs font-semibold text-stone-700">
               <a 
-                href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-full text-center py-2.5 text-xs font-bold text-white bg-primary-900 rounded-xl"
+                href="#hero" 
+                className="bg-stone-900 text-white rounded-full px-4 py-1.5 transition-all shadow-xs"
               >
-                {t('mobileNavConsultWa') as string}
+                Home
               </a>
-              <Link 
-                to="/admin/login" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2 text-xs font-medium text-stone-500 hover:text-stone-800"
+              <a 
+                href="#themes" 
+                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
               >
-                {t('mobileNavAdmin') as string} &rarr;
-              </Link>
-            </div>
-          </div>
-        )}
-      </header>
+                {lang === 'id' ? 'Destinasi Tema' : 'Destinations'}
+              </a>
+              <a 
+                href="#keunggulan" 
+                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
+              >
+                {lang === 'id' ? 'Keunggulan' : 'Features'}
+              </a>
+              <a 
+                href="#alur" 
+                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
+              >
+                {lang === 'id' ? 'Alur Pesan' : 'Experiences'}
+              </a>
+              <a 
+                href="#pricing" 
+                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
+              >
+                {lang === 'id' ? 'Paket Harga' : 'Pricing'}
+              </a>
+              <a 
+                href="#faq" 
+                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
+              >
+                {lang === 'id' ? 'Tanya Jawab' : 'FAQ'}
+              </a>
+            </nav>
 
-      {/* HERO SECTION */}
-      <section id="hero" className="pt-12 sm:pt-16 pb-16 sm:pb-24 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            {/* Right Buttons: Search pill, Action CTA, Language switcher, Mobile menu */}
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              {/* Search Trigger Pill */}
+              <a 
+                href="#themes"
+                className="w-9 h-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md border border-white/60 text-stone-800 flex items-center justify-center shadow-xs transition-all cursor-pointer"
+                title={lang === 'id' ? 'Cari tema undangan' : 'Search themes'}
+                aria-label="Search"
+              >
+                <Search size={15} />
+              </a>
+
+              {/* Language Switcher Pill */}
+              <button
+                onClick={toggleLang}
+                className="hidden min-[480px]:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/85 hover:bg-white backdrop-blur-md border border-white/60 text-stone-800 text-xs font-bold transition-all shadow-xs cursor-pointer"
+                title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+              >
+                <Globe size={13} />
+                <span>{lang.toUpperCase()}</span>
+              </button>
+
+              {/* Dark Pill CTA: Book a Journey / Konsultasi */}
+              <a
+                href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital%20mewah"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white pl-4 pr-1.5 py-1.5 rounded-full text-xs font-semibold shadow-md transition-all group"
+              >
+                <span>{lang === 'id' ? 'Pesan Undangan' : 'Book a Journey'}</span>
+                <span className="w-6 h-6 rounded-full bg-white text-stone-900 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                  <ArrowRight size={13} />
+                </span>
+              </a>
+
+              {/* Mobile Hamburger Drawer Toggle */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden w-9 h-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md border border-white/60 text-stone-800 flex items-center justify-center transition-all shadow-xs"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+              </button>
+            </div>
+          </header>
+
+          {/* Mobile Navigation Drawer inside frame */}
+          {mobileMenuOpen && (
+            <div className="lg:hidden relative z-40 mx-4 sm:mx-6 p-4 rounded-2xl bg-white/95 backdrop-blur-md shadow-xl border border-white/80 animate-reveal-up space-y-3">
+              <nav className="flex flex-col space-y-2 text-xs font-bold text-stone-700 uppercase tracking-wider">
+                <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
+                  {lang === 'id' ? 'Destinasi Tema' : 'Destinations'}
+                </a>
+                <a href="#keunggulan" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
+                  {lang === 'id' ? 'Keunggulan' : 'Features'}
+                </a>
+                <a href="#alur" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
+                  {lang === 'id' ? 'Alur Pesan' : 'Experiences'}
+                </a>
+                <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
+                  {lang === 'id' ? 'Paket Harga' : 'Pricing'}
+                </a>
+                <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
+                  {lang === 'id' ? 'Tanya Jawab' : 'FAQ'}
+                </a>
+              </nav>
+              <div className="pt-2 border-t border-stone-200/80 flex items-center justify-between">
+                <button
+                  onClick={toggleLang}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-100 text-stone-800 text-xs font-bold"
+                >
+                  <Globe size={13} />
+                  <span>{lang === 'id' ? 'English' : 'Bahasa Indonesia'}</span>
+                </button>
+                <a
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-stone-900 underline"
+                >
+                  WhatsApp Support &rarr;
+                </a>
+              </div>
+            </div>
+          )}
+
+          {/* Hero Main Content */}
+          <div className="relative z-20 px-4 sm:px-8 lg:px-12 pt-4 sm:pt-8 pb-8 flex-1 flex flex-col justify-between">
             
-            {/* Left Content Column */}
-            <div className="lg:col-span-7 text-center lg:text-left space-y-6">
+            {/* Top row: Headline + Right Tag */}
+            <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
               
-              {/* Editorial Category Label */}
-              <div className="text-xs font-bold tracking-[0.2em] text-primary-800 uppercase font-serif">
-                {t('heroLabel') as string}
+              {/* Left Headline Area */}
+              <div className="max-w-2xl space-y-4 sm:space-y-5">
+                
+                {/* Spaced Kicker */}
+                <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-700 uppercase flex items-center gap-2 select-none">
+                  <span>TRAVEL</span>
+                  <span className="w-1 h-1 rounded-full bg-stone-400" />
+                  <span>EXPLORE</span>
+                  <span className="w-1 h-1 rounded-full bg-stone-400" />
+                  <span>EXPERIENCE</span>
+                  <span className="w-1 h-1 rounded-full bg-stone-400" />
+                  <span>BELONG</span>
+                </div>
+
+                {/* Editorial Serif Dual-Tone Headline */}
+                <h1 className="text-4xl sm:text-6xl lg:text-[4.5rem] font-serif font-medium tracking-tight text-stone-900 leading-[1.06]">
+                  Discover Journeys <br />
+                  <span className="italic font-serif font-normal text-[#9b6f38] drop-shadow-xs">
+                    Beyond Ordinary
+                  </span>
+                </h1>
+
+                {/* Subtitle */}
+                <p className="text-sm sm:text-base text-stone-700 font-normal leading-relaxed max-w-xl">
+                  {lang === 'id' 
+                    ? 'Koleksi undangan pernikahan digital eksklusif berarsitektur visual mewah. Lebih dari sekadar undangan, kami merangkai kisah sakral yang abadi untuk dikenang selamanya.'
+                    : 'Curated digital wedding invitations crafted for extraordinary celebrations. More than invitations, we create digital stories you will cherish forever.'}
+                </p>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <a
+                    href="#themes"
+                    className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 active:scale-98 text-white text-xs sm:text-sm font-semibold px-6 py-3 rounded-full shadow-lg transition-all"
+                  >
+                    <span>{lang === 'id' ? 'Eksplorasi Tema' : 'Explore Destinations'}</span>
+                    <ArrowRight size={15} />
+                  </a>
+
+                  <button
+                    onClick={() => setVideoModalOpen(true)}
+                    className="inline-flex items-center gap-2.5 bg-white/80 hover:bg-white text-stone-900 text-xs sm:text-sm font-semibold px-5 py-3 rounded-full backdrop-blur-md border border-white/70 shadow-sm transition-all cursor-pointer group"
+                  >
+                    <span className="w-6 h-6 rounded-full bg-stone-900 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Play size={10} className="ml-0.5 fill-current" />
+                    </span>
+                    <span>{lang === 'id' ? 'Lihat Video Teaser' : 'Watch Guide'}</span>
+                  </button>
+                </div>
+
               </div>
 
-              {/* Main Headline */}
-              <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-stone-900 tracking-tight leading-[1.18]">
-                {t('heroHeadline') as string} <span className="font-playfair italic font-normal text-primary-800" style={{ whiteSpace: 'nowrap' }}>{t('heroAccent') as string}</span>
-              </h1>
+              {/* Right Corner Editorial Text */}
+              <div className="hidden lg:block text-right select-none">
+                <div className="text-[10px] font-bold tracking-[0.25em] text-stone-700 uppercase leading-relaxed font-sans">
+                  EXTRAORDINARY<br />
+                  DESTINATIONS<br />
+                  MEANINGFUL<br />
+                  EXPERIENCES
+                </div>
+              </div>
 
-              {/* Subheadline */}
-              <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                {t('heroSubheadline') as string}
-              </p>
+            </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
-                <a 
+            {/* Center Floating Quick Search Bar */}
+            <div className="my-8 sm:my-10">
+              <div className="bg-white/90 backdrop-blur-md rounded-2xl lg:rounded-full p-2.5 sm:p-3 shadow-xl border border-white/80 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 text-stone-800 transition-all">
+                
+                {/* 1. Destination Field */}
+                <div className="flex-1 flex items-center gap-3 px-3 py-2 border-b lg:border-b-0 lg:border-r border-stone-200/80">
+                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
+                    <Compass size={17} />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="text-[11px] font-bold text-stone-900 uppercase tracking-wider">
+                      {lang === 'id' ? 'Tema Destinasi' : 'Destinations'}
+                    </span>
+                    <select
+                      value={activeConceptFilter}
+                      onChange={(e) => setActiveConceptFilter(e.target.value)}
+                      className="text-xs text-stone-500 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer"
+                    >
+                      <option value="all">{lang === 'id' ? 'Semua Pilihan Tema' : 'Where to go?'}</option>
+                      <option value="nirwana-sarangan">Nirwana Sarangan Resort</option>
+                      <option value="royal-wayang-gold">Royal Wayang Gold</option>
+                      <option value="joglo-maroon-heritage">Batak Maroon Heritage</option>
+                      <option value="javanese-heritage">Javanese Heritage</option>
+                      <option value="secret-garden">Secret Botanical Garden</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* 2. Dates Field */}
+                <div className="flex-1 flex items-center gap-3 px-3 py-2 border-b lg:border-b-0 lg:border-r border-stone-200/80">
+                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
+                    <Calendar size={17} />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="text-[11px] font-bold text-stone-900 uppercase tracking-wider">
+                      {lang === 'id' ? 'Jadwal Acara' : 'Dates'}
+                    </span>
+                    <select
+                      value={activeTimelineFilter}
+                      onChange={(e) => setActiveTimelineFilter(e.target.value)}
+                      className="text-xs text-stone-500 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer"
+                    >
+                      <option value="2026-2027">2026 - 2027</option>
+                      <option value="q1-2027">Q1 2027 (Jan - Mar)</option>
+                      <option value="q2-2027">Q2 2027 (Apr - Jun)</option>
+                      <option value="express-24h">{lang === 'id' ? 'Kilat 24 Jam Siap' : '24-Hour Express'}</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* 3. Travelers / Guest Count Field */}
+                <div className="flex-1 flex items-center gap-3 px-3 py-2 border-b lg:border-b-0 lg:border-r border-stone-200/80">
+                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
+                    <Users size={17} />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="text-[11px] font-bold text-stone-900 uppercase tracking-wider">
+                      {lang === 'id' ? 'Jumlah Tamu' : 'Travelers'}
+                    </span>
+                    <span className="text-xs text-stone-500 font-medium">
+                      {lang === 'id' ? 'Tamu Tanpa Batas' : 'Unlimited Guests'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* 4. Budget / Package Field */}
+                <div className="flex-1 flex items-center gap-3 px-3 py-2">
+                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
+                    <Sparkles size={17} />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="text-[11px] font-bold text-stone-900 uppercase tracking-wider">
+                      {lang === 'id' ? 'Paket Investasi' : 'Budget'}
+                    </span>
+                    <span className="text-xs text-stone-500 font-medium">
+                      {lang === 'id' ? 'Mulai Rp 49.000' : 'Any budget'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Search Button */}
+                <a
                   href="#themes"
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-primary-800 hover:bg-primary-900 active:scale-98 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2"
+                  className="bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-semibold px-7 py-3.5 rounded-xl lg:rounded-full flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer whitespace-nowrap active:scale-98"
                 >
-                  <span>{t('heroCta1') as string}</span>
-                  <ArrowRight size={16} />
+                  <Search size={15} />
+                  <span>{lang === 'id' ? 'Cari Tema' : 'Search Journeys'}</span>
                 </a>
 
-                <Link 
-                  to="/themes"
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-stone-800 font-bold text-xs sm:text-sm border border-stone-300 hover:bg-stone-50 hover:border-stone-400 transition-all flex items-center justify-center space-x-2"
-                >
-                  <Smartphone size={16} className="text-stone-600" />
-                  <span>{t('heroCta2') as string}</span>
-                </Link>
               </div>
-
-              {/* Trust Indicators (Centered on mobile, left-aligned on desktop) */}
-              <div className="pt-6 border-t border-stone-200/80 flex flex-wrap items-center justify-center lg:justify-start gap-y-2.5 gap-x-6 text-xs text-stone-600">
-                <div className="flex items-center space-x-2">
-                  <Check size={16} className="text-emerald-700 shrink-0" />
-                  <span>{t('trustOriginal') as string}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Check size={16} className="text-emerald-700 shrink-0" />
-                  <span>{t('trustWa') as string}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Check size={16} className="text-emerald-700 shrink-0" />
-                  <span>{t('trustResponsive') as string}</span>
-                </div>
-              </div>
-
             </div>
 
-            {/* Right Interactive Mockup Showcase */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full">
+            {/* Bottom Bento Grid: 3 Modern Floating Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
               
-              {/* Real Audio Player for Mockup Preview */}
-              <audio 
-                ref={mockupAudioRef} 
-                src={currentShowcase.musicUrl} 
-                preload="none" 
-                onEnded={() => setIsPlayingAudio(false)} 
-              />
-
-              {/* Phone Frame Mockup */}
-              <div className="w-full max-w-[280px] min-[380px]:max-w-[310px] sm:max-w-[330px] rounded-[44px] bg-stone-950 p-3 sm:p-3.5 shadow-2xl border-4 border-stone-800 relative mx-auto select-none">
-                
-                {/* Speaker & Notch */}
-                <div className="w-28 h-3.5 bg-stone-900 rounded-full mx-auto mb-2.5 flex items-center justify-center space-x-1.5">
-                  <div className="w-2 h-2 rounded-full bg-stone-950" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-stone-800" />
-                </div>
-
-                {/* Phone Screen Container */}
-                <div className="rounded-[32px] bg-[#fbf9f6] overflow-hidden border border-stone-200/40 text-center">
-                  
-                  {/* Music Player Bar */}
-                  <div className="bg-primary-900 text-white px-3.5 py-2.5 flex items-center justify-between text-xs">
-                    <div className="flex items-center space-x-2">
-                      <button 
-                        onClick={toggleMockupAudio}
-                        className="w-6 h-6 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-700 transition-colors cursor-pointer"
-                        title={isPlayingAudio ? t('mockupPause') as string : t('mockupPlay') as string}
-                        aria-label={isPlayingAudio ? t('mockupPause') as string : t('mockupPlay') as string}
-                      >
-                        {isPlayingAudio ? <Pause size={10} /> : <Play size={10} className="ml-0.5" />}
-                      </button>
-                      <div className="text-left leading-tight">
-                        <p className="text-[9px] text-amber-200 font-semibold tracking-wider uppercase">{t('mockupMusicLabel') as string}</p>
-                        <p className="text-[11px] font-medium truncate max-w-[130px] text-stone-100">{currentShowcase.musicTitle}</p>
-                      </div>
-                    </div>
-                    <Music size={13} className={`text-amber-200 ${isPlayingAudio ? 'animate-bounce' : ''}`} />
-                  </div>
-
-                  {/* Invitation Preview Hero with Slide Controls & Touch Swipe */}
-                  <div 
-                    className="relative h-60 sm:h-64 overflow-hidden group touch-pan-y"
-                    onTouchStart={handleTouchStart}
-                    onTouchEnd={handleTouchEnd}
-                  >
+              {/* Card 1: Featured Destination / Theme (md:col-span-4) */}
+              <div className="md:col-span-4 bg-white/92 backdrop-blur-md rounded-[26px] p-3.5 shadow-xl border border-white/80 flex flex-col justify-between group">
+                <div>
+                  {/* Card Image Thumbnail with badges */}
+                  <div className="relative h-36 rounded-2xl overflow-hidden mb-3">
                     <img 
-                      key={currentShowcase.slug}
-                      src={currentShowcase.preview} 
-                      alt={`Tema ${currentShowcase.name}`} 
-                      className="w-full h-full object-cover transition-all duration-300" 
+                      src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80" 
+                      alt="Santorini Greece Luxury Destination" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-
-                    {/* Prev Slide Arrow */}
+                    <div className="absolute top-2.5 left-2.5">
+                      <span className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-white/85 backdrop-blur-md text-stone-800 shadow-xs border border-white/60">
+                        FEATURED DESTINATION
+                      </span>
+                    </div>
                     <button
-                      onClick={handlePrevTheme}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-stone-950/65 hover:bg-stone-950/90 text-white backdrop-blur-xs flex items-center justify-center transition-all z-20 shadow-md border border-white/25 active:scale-95 cursor-pointer"
-                      aria-label="Tema Sebelumnya"
-                      title="Tema Sebelumnya"
+                      onClick={() => setIsLikedFeatured(!isLikedFeatured)}
+                      className={`absolute top-2.5 right-2.5 w-7 h-7 rounded-full backdrop-blur-md flex items-center justify-center transition-all cursor-pointer ${
+                        isLikedFeatured 
+                          ? 'bg-rose-500 text-white' 
+                          : 'bg-white/80 text-stone-700 hover:bg-white'
+                      }`}
+                      aria-label="Favorite destination"
                     >
-                      <ChevronLeft size={16} />
+                      <Heart size={14} className={isLikedFeatured ? 'fill-current' : ''} />
                     </button>
+                  </div>
 
-                    {/* Next Slide Arrow */}
-                    <button
-                      onClick={handleNextTheme}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-stone-950/65 hover:bg-stone-950/90 text-white backdrop-blur-xs flex items-center justify-center transition-all z-20 shadow-md border border-white/25 active:scale-95 cursor-pointer"
-                      aria-label="Tema Selanjutnya"
-                      title="Tema Selanjutnya"
-                    >
-                      <ChevronRight size={16} />
-                    </button>
-
-                    {/* Overlay Details */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/30 to-transparent flex flex-col justify-end p-4 text-white text-left pointer-events-none">
-                      <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-[10px] uppercase tracking-widest text-amber-300 font-bold drop-shadow-xs">
-                          {currentShowcase.name}
-                        </span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-black/50 backdrop-blur-xs text-white/90 font-mono font-bold">
-                          {activeMockupThemeIndex + 1}/{showcaseThemes.length}
-                        </span>
-                      </div>
-                      <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide text-white drop-shadow-xs">
-                        {currentShowcase.couple}
-                      </h3>
-                      <p className="text-[11px] text-stone-200 mt-1 font-light flex items-center space-x-1">
-                        <Calendar size={12} className="text-amber-300 inline shrink-0" />
-                        <span>{currentShowcase.date}</span>
-                      </p>
+                  {/* Title & Reviews */}
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-serif font-bold text-base text-stone-900">
+                      Santorini, Greece
+                    </h3>
+                    <div className="flex items-center text-xs text-stone-800 font-semibold gap-1">
+                      <Star size={13} className="text-amber-500 fill-amber-500" />
+                      <span>4.9</span>
+                      <span className="text-stone-400 font-normal">(1.2K)</span>
                     </div>
                   </div>
 
-                  {/* Slide Indicators */}
-                  <div className="flex items-center justify-center gap-1.5 pt-2 pb-1 bg-white">
-                    {showcaseThemes.map((th, i) => (
-                      <button
-                        key={th.id}
-                        onClick={() => { pauseAutoSlide(); setActiveMockupThemeIndex(i); }}
-                        className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                          activeMockupThemeIndex === i 
-                            ? 'w-5 bg-primary-900' 
-                            : 'w-1.5 bg-stone-300 hover:bg-stone-400'
-                        }`}
-                        aria-label={`Pilih tema ${th.name}`}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Live Dynamic Countdown Box */}
-                  <div className="p-3.5 bg-white border-b border-stone-100">
-                    <p className="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-2">
-                      {t('mockupCountdownLabel') as string}
-                    </p>
-                    <div className="grid grid-cols-4 gap-1.5 text-center">
-                      <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
-                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{countdown.days}</span>
-                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownDays') as string}</span>
-                      </div>
-                      <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
-                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.hours).padStart(2, '0')}</span>
-                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownHours') as string}</span>
-                      </div>
-                      <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
-                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.minutes).padStart(2, '0')}</span>
-                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownMin') as string}</span>
-                      </div>
-                      <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
-                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.seconds).padStart(2, '0')}</span>
-                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownSec') as string}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Dynamic Demo Button - changes link and name based on active theme */}
-                  <div className="p-3.5 bg-[#faf8f5]">
-                    <a 
-                      href={currentShowcase.demoUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-full bg-primary-800 hover:bg-primary-900 text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 shadow-sm group active:scale-98"
-                    >
-                      <span>{t('mockupDemoBtn') as string} ({currentShowcase.name})</span>
-                      <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
-                    </a>
-                  </div>
-
+                  <p className="text-xs text-stone-500 mt-1 leading-snug">
+                    Iconic views, timeless charm and unforgettable sunsets.
+                  </p>
                 </div>
 
-                {/* Bottom Home Indicator */}
-                <div className="w-24 h-1 bg-stone-700 rounded-full mx-auto mt-2.5" />
+                {/* Bottom Link Arrow */}
+                <div className="pt-3 flex justify-end">
+                  <a
+                    href="#themes"
+                    className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-900 hover:text-white text-stone-700 flex items-center justify-center transition-all shadow-2xs"
+                    aria-label="Lihat tema destinasi"
+                  >
+                    <ArrowRight size={14} />
+                  </a>
+                </div>
               </div>
 
+              {/* Card 2: Metrics & Social Proof (md:col-span-5) */}
+              <div className="md:col-span-5 bg-white/92 backdrop-blur-md rounded-[26px] p-5 shadow-xl border border-white/80 flex flex-col justify-between">
+                
+                {/* 4 Stats Grid */}
+                <div className="grid grid-cols-4 gap-2 text-center pb-4 border-b border-stone-200/80">
+                  <div className="space-y-0.5">
+                    <div className="flex justify-center text-stone-600 mb-1">
+                      <Compass size={16} />
+                    </div>
+                    <span className="block text-sm sm:text-base font-extrabold text-stone-900 font-sans">250+</span>
+                    <span className="block text-[9px] text-stone-500 leading-tight uppercase font-medium">Destinasi Unik</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <div className="flex justify-center text-stone-600 mb-1">
+                      <Users size={16} />
+                    </div>
+                    <span className="block text-sm sm:text-base font-extrabold text-stone-900 font-sans">50K+</span>
+                    <span className="block text-[9px] text-stone-500 leading-tight uppercase font-medium">Tamu Bahagia</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <div className="flex justify-center text-stone-600 mb-1">
+                      <Award size={16} />
+                    </div>
+                    <span className="block text-sm sm:text-base font-extrabold text-stone-900 font-sans">1,200+</span>
+                    <span className="block text-[9px] text-stone-500 leading-tight uppercase font-medium">Karya Kurasi</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <div className="flex justify-center text-stone-600 mb-1">
+                      <Globe size={16} />
+                    </div>
+                    <span className="block text-sm sm:text-base font-extrabold text-stone-900 font-sans">95+</span>
+                    <span className="block text-[9px] text-stone-500 leading-tight uppercase font-medium">Kota & Wilayah</span>
+                  </div>
+                </div>
+
+                {/* Bottom Testimonial Row */}
+                <div className="pt-3.5 flex flex-col sm:flex-row items-center gap-3">
+                  {/* Avatar stack */}
+                  <div className="flex items-center -space-x-2 shrink-0">
+                    <img 
+                      src="/photos/avatar-rendy-maya.jpg" 
+                      alt="Reviewer 1" 
+                      className="w-8 h-8 rounded-full border-2 border-white object-cover" 
+                    />
+                    <img 
+                      src="/photos/avatar-dimas-nadia.jpg" 
+                      alt="Reviewer 2" 
+                      className="w-8 h-8 rounded-full border-2 border-white object-cover" 
+                    />
+                    <img 
+                      src="/photos/avatar-faris-aisyah.jpg" 
+                      alt="Reviewer 3" 
+                      className="w-8 h-8 rounded-full border-2 border-white object-cover" 
+                    />
+                    <div className="w-8 h-8 rounded-full border-2 border-white bg-stone-900 text-white text-[10px] font-bold flex items-center justify-center">
+                      +
+                    </div>
+                  </div>
+
+                  {/* Quote + Reviewer Note */}
+                  <div className="text-left space-y-1">
+                    <p className="text-[11px] text-stone-700 italic leading-snug line-clamp-2">
+                      &ldquo;Incredible planning, unforgettable experiences. Truly a celebration of a lifetime!&rdquo;
+                    </p>
+                    <div className="flex items-center gap-1.5 text-[10px] text-stone-500">
+                      <div className="flex text-amber-500">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={10} className="fill-amber-500" />
+                        ))}
+                      </div>
+                      <span className="font-semibold text-stone-700">Sarah M.</span>
+                      <span>&bull;</span>
+                      <span>Traveled to Sarangan</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Card 3: Real Places. Real Stories. Teaser Thumbnail (md:col-span-3) */}
+              <div 
+                onClick={() => setVideoModalOpen(true)}
+                className="md:col-span-3 relative rounded-[26px] overflow-hidden min-h-[170px] p-4 flex flex-col justify-between text-white shadow-xl cursor-pointer group border border-white/50"
+              >
+                {/* Background Image */}
+                <img 
+                  src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" 
+                  alt="Overwater resort villas and beach stories" 
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/30 to-transparent pointer-events-none" />
+
+                {/* Top Play Button */}
+                <div className="relative z-10 flex justify-start">
+                  <div className="w-9 h-9 rounded-full bg-white/80 backdrop-blur-md text-stone-900 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                    <Play size={14} className="ml-0.5 fill-current" />
+                  </div>
+                </div>
+
+                {/* Bottom Story Text */}
+                <div className="relative z-10 space-y-0.5">
+                  <h4 className="font-serif font-bold text-sm sm:text-base text-white tracking-wide">
+                    Real Places. Real Stories.
+                  </h4>
+                  <p className="text-[10px] sm:text-[11px] text-stone-200 leading-tight">
+                    Watch traveler stories from around the world.
+                  </p>
+                </div>
+              </div>
 
             </div>
 
           </div>
+
         </div>
-      </section>
+      </div>
+
+      {/* Video Modal Preview */}
+      {videoModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/80 backdrop-blur-md animate-reveal-up">
+          <div className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-stone-950 shadow-2xl border border-white/20">
+            <button
+              onClick={() => setVideoModalOpen(false)}
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-stone-900/80 text-white hover:bg-stone-800 flex items-center justify-center transition-all cursor-pointer"
+              aria-label="Tutup video"
+            >
+              <X size={18} />
+            </button>
+            <div className="aspect-video w-full bg-black flex items-center justify-center">
+              <video 
+                src="/gemini_generated_video_1f694672.mp4" 
+                controls 
+                autoPlay 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-4 bg-stone-900 text-stone-200 text-xs flex items-center justify-between">
+              <div>
+                <p className="font-serif font-bold text-sm text-white">Cinematic Wedding Journey Teaser</p>
+                <p className="text-stone-400 text-[11px]">WD Wedding Production &bull; Experience Timeless Elegance</p>
+              </div>
+              <a 
+                href="#themes"
+                onClick={() => setVideoModalOpen(false)}
+                className="px-4 py-2 rounded-full bg-white text-stone-900 font-semibold hover:bg-stone-100 transition-colors"
+              >
+                {lang === 'id' ? 'Pilih Tema Sekarang' : 'Explore Themes'}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* UNIFIED KEUNGGULAN & FITUR SECTION (Merged Cleanly) */}
       <section id="keunggulan" className="py-20 sm:py-24 bg-white border-y border-stone-200/80">
