@@ -613,53 +613,72 @@ export const MountainPineHeritageCrest: React.FC<{ className?: string }> = ({ cl
   </div>
 );
 
-// Premium On-Scroll Reveal Component (Replays smoothly on scroll, tailored for Nirwana Sarangan Resort)
+// Premium On-Scroll Reveal Component (Smooth entrance on scroll, stable & jitter-free)
 export const ScrollReveal: React.FC<{
   children: React.ReactNode;
   animation?: 'fade-up' | 'fade-down' | 'zoom-in' | 'slide-left' | 'slide-right' | 'arch-reveal' | 'fade-in';
   delay?: number;
   duration?: number;
   className?: string;
-}> = ({ children, animation = 'fade-up', delay = 0, duration = 850, className = '' }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  once?: boolean;
+}> = ({ children, animation = 'fade-up', delay = 0, duration = 800, className = '', once = true }) => {
+  const [hasRevealed, setHasRevealed] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
+    if (hasRevealed) return;
+
+    // If already in viewport on mount, reveal smoothly without layout flicker
+    const rect = el.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < windowHeight && rect.bottom > 0) {
+      setHasRevealed(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setHasRevealed(true);
+          if (once) {
+            observer.unobserve(el);
+          }
+        }
       },
-      { threshold: 0.1, rootMargin: '0px 0px -25px 0px' }
+      { 
+        threshold: 0.05, 
+        rootMargin: '0px 0px -20px 0px' 
+      }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [hasRevealed, once]);
 
   const getAnimClass = () => {
-    if (!isVisible) {
+    if (!hasRevealed) {
       switch (animation) {
         case 'fade-up':
-          return 'opacity-0 translate-y-12 scale-[0.98]';
+          return 'opacity-0 translate-y-8 scale-[0.99]';
         case 'fade-down':
-          return 'opacity-0 -translate-y-10 scale-[0.98]';
+          return 'opacity-0 -translate-y-8 scale-[0.99]';
         case 'zoom-in':
-          return 'opacity-0 scale-[0.9]';
+          return 'opacity-0 scale-[0.95]';
         case 'slide-left':
-          return 'opacity-0 -translate-x-12';
+          return 'opacity-0 -translate-x-8';
         case 'slide-right':
-          return 'opacity-0 translate-x-12';
+          return 'opacity-0 translate-x-8';
         case 'arch-reveal':
-          return 'opacity-0 translate-y-14 scale-[0.94] blur-[1px]';
+          return 'opacity-0 translate-y-8 scale-[0.97]';
         case 'fade-in':
         default:
           return 'opacity-0';
       }
     }
-    return 'opacity-100 translate-y-0 translate-x-0 scale-100 blur-0';
+    return 'opacity-100 translate-y-0 translate-x-0 scale-100';
   };
 
   return (
@@ -668,7 +687,7 @@ export const ScrollReveal: React.FC<{
       className={`transition-all will-change-transform ${getAnimClass()} ${className}`}
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: isVisible ? `${delay}ms` : '0ms',
+        transitionDelay: hasRevealed ? `${delay}ms` : '0ms',
         transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
