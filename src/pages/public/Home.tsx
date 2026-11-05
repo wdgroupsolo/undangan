@@ -804,18 +804,18 @@ export const Home: React.FC = () => {
         </div>
       )}
 
-      {/* REAL-TIME WEDDING GUEST JOURNEY & LIVE RSVP (Swift-Style Showcase Card) */}
-      <section id="keunggulan" className="py-16 sm:py-24 bg-[#faf9f6] border-y border-stone-200/80 relative overflow-hidden">
+      {/* DIGITAL INVITATION ORDER WORKFLOW (Swift-Style Showcase Card) */}
+      <section id="alur" className="py-16 sm:py-24 bg-[#faf9f6] border-y border-stone-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Grand Panoramic Showcase Card (Adapted from Swift Real-time Tracking Layout) */}
+          {/* Grand Panoramic Showcase Card: Alur Pemesanan Undangan Digital */}
           <div className="relative w-full rounded-[28px] sm:rounded-[36px] lg:rounded-[44px] bg-white border border-stone-200/90 shadow-2xl shadow-stone-200/60 overflow-hidden mb-12 sm:mb-16">
             
-            {/* Desktop Background: 3D Isometric Wedding Journey Diorama with soft left fade */}
+            {/* Desktop Background: 3D Isometric Wedding Studio & Invitation Crafting Diorama */}
             <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[60%] pointer-events-none overflow-hidden">
               <img 
-                src="/images/wedding_journey_realtime_diorama.jpg" 
-                alt="3D Isometric Wedding Journey Diorama" 
+                src="/images/wedding_order_workflow_diorama.jpg" 
+                alt="3D Isometric Wedding Invitation Creation Studio" 
                 className="w-full h-full object-cover object-left"
               />
               <div className="absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-white via-white/80 to-transparent" />
@@ -824,14 +824,14 @@ export const Home: React.FC = () => {
             {/* Inner Content Grid */}
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 p-7 sm:p-10 lg:p-14 items-center">
               
-              {/* Left Column: Narrative Copy & Actions */}
+              {/* Left Column: Narrative Copy & Order Actions */}
               <div className="lg:col-span-6 space-y-6">
                 
                 {/* Eyebrow Pill Badge */}
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-300/40 text-amber-900 text-[11px] font-bold uppercase tracking-widest font-mono">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
                   <span>
-                    {lang === 'id' ? 'PANTAU SECARA REAL-TIME' : 'TRACK IN REAL TIME'}
+                    {lang === 'id' ? 'ALUR PEMESANAN • 4 LANGKAH MUDAH' : 'ORDER WORKFLOW • 4 EASY STEPS'}
                   </span>
                 </div>
 
@@ -839,13 +839,13 @@ export const Home: React.FC = () => {
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight leading-[1.15]">
                   {lang === 'id' ? (
                     <>
-                      Setiap Doa &amp; Kehadiran.
-                      <span className="text-primary-900 block mt-1">Langsung di Genggaman.</span>
+                      Wujudkan Undangan Impian.
+                      <span className="text-primary-900 block mt-1">Praktis, Cepat &amp; Bebas Repot.</span>
                     </>
                   ) : (
                     <>
-                      Every Blessing &amp; Guest.
-                      <span className="text-primary-900 block mt-1">In Your Hands.</span>
+                      Craft Your Dream Invitation.
+                      <span className="text-primary-900 block mt-1">Fast, Elegant &amp; Seamless.</span>
                     </>
                   )}
                 </h2>
@@ -853,32 +853,30 @@ export const Home: React.FC = () => {
                 {/* Subtitle Description */}
                 <p className="text-sm sm:text-base text-stone-600 leading-relaxed max-w-xl">
                   {lang === 'id' 
-                    ? 'Dapatkan pembaruan langsung dari undangan terkirim hingga konfirmasi kehadiran. Ketahui secara pasti respon keluarga dan kerabat Anda kapan saja melalui dashboard yang rapi dan terintegrasi.'
-                    : 'Get real-time updates from invitation sent to attendance confirmation. Know exactly your guests\' responses anytime through a clean and integrated dashboard.'}
+                    ? 'Proses kolaboratif yang terarah dan praktis. Mulai dari memilih tema impian, mengisi data acara sakral, peninjauan draf kilat 24 jam, hingga tautan resmi siap disebar ke WhatsApp seluruh keluarga & sahabat.'
+                    : 'A guided, practical collaborative process. From choosing your dream theme, submitting event details, fast 24-hour draft review, to official invitation links ready to share via WhatsApp.'}
                 </p>
 
-                {/* Action Buttons: Primary Demo Launcher + Secondary Workflow Link */}
+                {/* Action Buttons: Primary Order Now + Secondary Explore Themes */}
                 <div className="flex flex-wrap items-center gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const url = '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true';
-                      window.open(url, '_blank');
-                    }}
+                  <a
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20tertarik%20memesan%20undangan%20pernikahan%20digital"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-primary-900 hover:bg-primary-950 text-amber-200 px-6 py-3.5 rounded-full font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-md shadow-primary-900/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
                   >
-                    <span>{lang === 'id' ? 'Coba Pantau Tamu Demo' : 'Track Guest Demo'}</span>
+                    <span>{lang === 'id' ? 'Pesan Undangan Sekarang' : 'Order Invitation Now'}</span>
                     <ArrowRight size={16} />
-                  </button>
+                  </a>
 
                   <a
-                    href="#alur"
+                    href="#themes"
                     className="flex items-center gap-2.5 px-4 py-3 rounded-full hover:bg-stone-100 text-stone-700 font-semibold text-xs sm:text-sm transition-all cursor-pointer"
                   >
                     <div className="w-8 h-8 rounded-full bg-stone-900 text-white flex items-center justify-center shadow-xs">
                       <Play size={13} className="ml-0.5" />
                     </div>
-                    <span>{lang === 'id' ? 'Lihat Alur Kerja' : 'How it works'}</span>
+                    <span>{lang === 'id' ? 'Lihat Katalog Tema' : 'Explore Themes'}</span>
                   </a>
                 </div>
 
@@ -887,37 +885,37 @@ export const Home: React.FC = () => {
               {/* Mobile / Tablet 3D Diorama Image (Shown only on screens < lg) */}
               <div className="lg:hidden relative w-full aspect-[16/9] rounded-2xl overflow-hidden border border-stone-200 shadow-md">
                 <img 
-                  src="/images/wedding_journey_realtime_diorama.jpg" 
-                  alt="3D Isometric Wedding Journey Diorama" 
+                  src="/images/wedding_order_workflow_diorama.jpg" 
+                  alt="3D Isometric Wedding Invitation Creation Studio" 
                   className="w-full h-full object-cover"
                 />
               </div>
 
-              {/* Right Column: Floating Real-time RSVP Status Card & Calligraphy Accent */}
+              {/* Right Column: Floating Order Workflow Timeline Card & Calligraphy Accent */}
               <div className="lg:col-span-6 flex flex-col items-center lg:items-end justify-center w-full">
                 
                 {/* Floating Status Card */}
                 <div className="relative w-full max-w-[310px] sm:max-w-[340px] bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(44,30,26,0.14)] border border-stone-200/90 space-y-4">
                   
-                  {/* Card Header: Icon + Status Headline */}
+                  {/* Card Header: Icon + Workflow Status Title */}
                   <div className="flex items-center gap-3.5 pb-3 border-b border-stone-100">
                     <div className="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-300/40 text-amber-800 flex items-center justify-center shrink-0">
-                      <CheckCircle2 size={22} className="text-amber-700" />
+                      <Sparkles size={22} className="text-amber-700" />
                     </div>
                     <div>
                       <span className="block font-bold text-stone-900 text-sm sm:text-base leading-tight">
-                        {lang === 'id' ? 'Konfirmasi Hadir' : 'Confirmed Attendance'}
+                        {lang === 'id' ? 'Proses Pembuatan Undangan' : 'Invitation Order Status'}
                       </span>
                       <span className="block text-[11px] text-stone-500 mt-0.5">
-                        {lang === 'id' ? 'Bpk. & Ibu Hendra (2 Tamu)' : 'Mr. & Mrs. Hendra (2 Guests)'}
+                        {lang === 'id' ? 'Estimasi Pengerjaan: 1x24 Jam' : 'Estimated Completion: 24 Hours'}
                       </span>
                     </div>
                   </div>
 
-                  {/* Vertical Stepper Timeline */}
+                  {/* Vertical Stepper Timeline (4 Order Steps) */}
                   <div className="space-y-3.5 relative pl-1">
                     
-                    {/* Step 1: Undangan Terkirim */}
+                    {/* Step 1: Pilih Tema & Konsultasi */}
                     <div className="flex items-start gap-3 relative">
                       <div className="flex flex-col items-center">
                         <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-xs">
@@ -928,15 +926,15 @@ export const Home: React.FC = () => {
                       <div className="flex-1 pt-0.5">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-stone-900 text-xs">
-                            {lang === 'id' ? 'Undangan Terkirim' : 'Invitation Sent'}
+                            {lang === 'id' ? '1. Pilih Tema & Konsultasi' : '1. Choose Theme & Consult'}
                           </span>
-                          <span className="text-[10px] text-stone-400 font-mono">09:15</span>
+                          <span className="text-[10px] text-emerald-700 font-bold font-mono">SELESAI</span>
                         </div>
-                        <span className="text-[10.5px] text-stone-500 block">WhatsApp VIP Personal</span>
+                        <span className="text-[10.5px] text-stone-500 block">Katalog eksklusif / kustom konsep</span>
                       </div>
                     </div>
 
-                    {/* Step 2: Amplop Dibuka */}
+                    {/* Step 2: Kirimkan Detail Acara */}
                     <div className="flex items-start gap-3 relative">
                       <div className="flex flex-col items-center">
                         <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-xs">
@@ -947,15 +945,15 @@ export const Home: React.FC = () => {
                       <div className="flex-1 pt-0.5">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-stone-900 text-xs">
-                            {lang === 'id' ? 'Undangan Dibuka' : 'Envelope Opened'}
+                            {lang === 'id' ? '2. Kirimkan Data Acara' : '2. Submit Event Details'}
                           </span>
-                          <span className="text-[10px] text-stone-400 font-mono">09:22</span>
+                          <span className="text-[10px] text-emerald-700 font-bold font-mono">SELESAI</span>
                         </div>
-                        <span className="text-[10.5px] text-stone-500 block">Gerbang Portal Sinematik</span>
+                        <span className="text-[10.5px] text-stone-500 block">Mempelai, jadwal, Maps &amp; foto</span>
                       </div>
                     </div>
 
-                    {/* Step 3: RSVP Dikonfirmasi (Active / Pulsing) */}
+                    {/* Step 3: Pengerjaan Draf & Revisi (Active / Pulsing) */}
                     <div className="flex items-start gap-3 relative">
                       <div className="flex flex-col items-center">
                         <span className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px] ring-4 ring-amber-100 animate-pulse shadow-xs">
@@ -966,27 +964,27 @@ export const Home: React.FC = () => {
                       <div className="flex-1 pt-0.5">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-amber-950 text-xs">
-                            {lang === 'id' ? 'RSVP Dikonfirmasi' : 'RSVP Confirmed'}
+                            {lang === 'id' ? '3. Draf Kilat & Revisi' : '3. Draft & Revisions'}
                           </span>
-                          <span className="text-[10px] text-amber-700 font-bold font-mono">09:25</span>
+                          <span className="text-[10px] text-amber-700 font-bold font-mono">PROSES</span>
                         </div>
                         <span className="text-[10.5px] text-amber-800 font-medium block">
-                          {lang === 'id' ? '2 Tamu Hadir • Doa Terkirim' : '2 Guests Attending • Wishes Sent'}
+                          {lang === 'id' ? 'Pratinjau online & bebas revisi' : 'Online preview & free revisions'}
                         </span>
                       </div>
                     </div>
 
-                    {/* Step 4: Check-in Meja Tamu (Upcoming) */}
+                    {/* Step 4: Undangan Siap Disebar (Upcoming / Target) */}
                     <div className="flex items-start gap-3 relative">
                       <div className="flex flex-col items-center">
                         <span className="w-5 h-5 rounded-full border-2 border-stone-300 bg-white flex items-center justify-center" />
                       </div>
                       <div className="flex-1 pt-0.5">
-                        <span className="font-medium text-stone-400 text-xs block">
-                          {lang === 'id' ? 'Check-in Meja Tamu' : 'Reception Check-in'}
+                        <span className="font-medium text-stone-500 text-xs block">
+                          {lang === 'id' ? '4. Undangan Siap Disebar' : '4. Ready to Distribute'}
                         </span>
                         <span className="text-[10.5px] text-stone-400 block">
-                          {lang === 'id' ? 'Barcode Pass Siap di Lokasi' : 'QR Barcode Pass Ready'}
+                          {lang === 'id' ? 'Tautan aktif + generator nama tamu WA' : 'Live link + WhatsApp guest generator'}
                         </span>
                       </div>
                     </div>
@@ -998,7 +996,7 @@ export const Home: React.FC = () => {
                 {/* Elegant Handwritten Script on the side (Matching Swift's 'Closer Deliveries Happier Days.') */}
                 <div className="mt-3.5 text-center lg:text-right w-full max-w-[310px] sm:max-w-[340px] pr-2">
                   <span className="font-serif italic text-stone-400 text-xs sm:text-sm tracking-wide select-none">
-                    {lang === 'id' ? 'Momen Sakral, Tertata Sempurna.' : 'Sacred Moments, Perfectly Arranged.'}
+                    {lang === 'id' ? 'Siap Disebar Dalam 24 Jam.' : 'Ready to Share in 24 Hours.'}
                   </span>
                 </div>
 
@@ -1009,7 +1007,7 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Four Core Capabilities (Clean 4-column row below the grand showcase) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div id="keunggulan" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 scroll-mt-20">
             
             <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
               <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
@@ -1244,73 +1242,6 @@ export const Home: React.FC = () => {
             >
               {t('themeCustomBtn') as string}
             </a>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ALUR PEMESANAN (Workflow Narrative) */}
-      <section id="alur" className="py-20 sm:py-24 bg-white border-b border-stone-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('workflowLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('workflowTitle') as string}
-            </h2>
-            <p className="text-sm sm:text-base text-stone-600">
-              {t('workflowDesc') as string}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            {/* Step 1 */}
-            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
-                01
-              </div>
-              <h3 className="font-bold text-stone-900 text-base">{t('step1Title') as string}</h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {t('step1Desc') as string}
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
-                02
-              </div>
-              <h3 className="font-bold text-stone-900 text-base">{t('step2Title') as string}</h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {t('step2Desc') as string}
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
-                03
-              </div>
-              <h3 className="font-bold text-stone-900 text-base">{t('step3Title') as string}</h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {t('step3Desc') as string}
-              </p>
-            </div>
-
-            {/* Step 4 */}
-            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
-                04
-              </div>
-              <h3 className="font-bold text-stone-900 text-base">{t('step4Title') as string}</h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {t('step4Desc') as string}
-              </p>
-            </div>
-
           </div>
 
         </div>
