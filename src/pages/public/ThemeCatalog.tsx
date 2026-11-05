@@ -119,7 +119,7 @@ export const ThemeCatalog: React.FC = () => {
               const isSplit = theme.slug === 'split-floral';
 
               const imageSrc = theme.preview_image || theme.thumbnail || (isNirwana
-                ? '/themes/nirwana-sarangan/theme-preview.jpg'
+                ? '/themes/nirwana-sarangan/nirwana-theme-preview.png'
                 : (isJogloMaroon
                   ? '/themes/joglo-maroon-theme-preview.png'
                   : (isRoyalWayang
