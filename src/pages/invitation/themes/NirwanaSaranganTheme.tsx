@@ -1655,14 +1655,14 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                   <img 
                     src={hotelExteriorImg} 
                     alt="Hotel Nirwana Sarangan Resort"
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#122E24] via-black/40 to-transparent" />
                   
-                  {/* Top VIP 3-Star Badge */}
+                  {/* Top VIP Badge: Hotel Nirwana Sarangan */}
                   <div className="absolute top-4 left-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#122E24]/90 backdrop-blur-md border border-[#C5A059]/60 shadow-lg text-xs text-[#E2C792] z-20">
                     <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
-                    <span className="font-serif tracking-wider uppercase text-[10px] font-semibold">Resort Pernikahan Bintang 3</span>
+                    <span className="font-serif tracking-wider uppercase text-[10px] font-semibold">Hotel Nirwana Sarangan</span>
                   </div>
 
                   {/* 3 Gold Star Rating */}
