@@ -48,6 +48,7 @@ export const Home: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [testimonialIdx, setTestimonialIdx] = useState(0);
   const [themeFilter, setThemeFilter] = useState<'all' | 'traditional' | 'resort' | 'modern'>('all');
+  const [showAllThemes, setShowAllThemes] = useState(false);
 
   // Showcase Themes for Hero Showcase
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
@@ -1313,7 +1314,10 @@ export const Home: React.FC = () => {
                     ].map((tab) => (
                       <button
                         key={tab.key}
-                        onClick={() => setThemeFilter(tab.key as any)}
+                        onClick={() => {
+                          setThemeFilter(tab.key as any);
+                          setShowAllThemes(false);
+                        }}
                         className={`px-3.5 py-2 rounded-xl text-xs font-bold text-left transition-all cursor-pointer flex items-center justify-between ${
                           themeFilter === tab.key
                             ? 'bg-stone-900 text-white shadow-xs'
@@ -1343,66 +1347,95 @@ export const Home: React.FC = () => {
 
               {/* Right Column: Dynamic Theme Cards with Live Demos */}
               <div className="lg:col-span-9 space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
-                  {ALL_DEMO_THEMES
-                    .filter((theme) => {
-                      if (themeFilter === 'all') return true;
-                      return theme.category === themeFilter;
-                    })
-                    .map((theme) => (
-                      <div 
-                        key={theme.id}
-                        className="bg-white rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
-                      >
-                        <div>
-                          {/* Image Preview with Badges */}
-                          <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden bg-stone-900 mb-3.5 relative border border-stone-100">
-                            <img 
-                              src={theme.preview} 
-                              alt={theme.name} 
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                            />
-                            {/* Badges Overlay */}
-                            <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10 pointer-events-none">
-                              <span className="bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-2xs">
-                                {theme.categoryLabel}
-                              </span>
-                              <span className="bg-white/90 backdrop-blur-xs text-stone-900 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-2xs">
-                                <Star size={10} className="text-amber-500 fill-amber-500" />
-                                <span>4.9</span>
-                              </span>
+                {(() => {
+                  const filtered = ALL_DEMO_THEMES.filter((theme) => {
+                    if (themeFilter === 'all') return true;
+                    return theme.category === themeFilter;
+                  });
+                  const displayed = showAllThemes ? filtered : filtered.slice(0, 6);
+
+                  return (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
+                        {displayed.map((theme) => (
+                          <div 
+                            key={theme.id}
+                            className="bg-white rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
+                          >
+                            <div>
+                              {/* Image Preview with Badges */}
+                              <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden bg-stone-900 mb-3.5 relative border border-stone-100">
+                                <img 
+                                  src={theme.preview} 
+                                  alt={theme.name} 
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                                />
+                                {/* Badges Overlay */}
+                                <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10 pointer-events-none">
+                                  <span className="bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-2xs">
+                                    {theme.categoryLabel}
+                                  </span>
+                                  <span className="bg-white/90 backdrop-blur-xs text-stone-900 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-2xs">
+                                    <Star size={10} className="text-amber-500 fill-amber-500" />
+                                    <span>4.9</span>
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Theme Header & Text */}
+                              <div className="space-y-1 mb-3">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-primary-800 font-mono block">
+                                  {theme.tag}
+                                </span>
+                                <h4 className="font-bold text-stone-900 text-base group-hover:text-primary-900 transition-colors">
+                                  {theme.name}
+                                </h4>
+                                <p className="text-xs text-stone-500 leading-relaxed line-clamp-2 pt-0.5">
+                                  {theme.desc}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Direct Live Demo CTA Button */}
+                            <div className="pt-3 border-t border-stone-100 mt-2">
+                              <a
+                                href={theme.demoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-95"
+                              >
+                                <span>{lang === 'id' ? 'Buka Live Demo' : 'Open Live Demo'}</span>
+                                <ArrowRight size={14} />
+                              </a>
                             </div>
                           </div>
-
-                          {/* Theme Header & Text */}
-                          <div className="space-y-1 mb-3">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-primary-800 font-mono block">
-                              {theme.tag}
-                            </span>
-                            <h4 className="font-bold text-stone-900 text-base group-hover:text-primary-900 transition-colors">
-                              {theme.name}
-                            </h4>
-                            <p className="text-xs text-stone-500 leading-relaxed line-clamp-2 pt-0.5">
-                              {theme.desc}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Direct Live Demo CTA Button */}
-                        <div className="pt-3 border-t border-stone-100 mt-2">
-                          <a
-                            href={theme.demoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-95"
-                          >
-                            <span>{lang === 'id' ? 'Buka Live Demo' : 'Open Live Demo'}</span>
-                            <ArrowRight size={14} />
-                          </a>
-                        </div>
+                        ))}
                       </div>
-                    ))}
-                </div>
+
+                      {/* Expand / Collapse Button if more than 6 themes */}
+                      {filtered.length > 6 && (
+                        <div className="flex justify-center pt-2">
+                          <button
+                            onClick={() => setShowAllThemes(!showAllThemes)}
+                            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white hover:bg-stone-50 border border-stone-200/90 text-stone-800 text-xs font-bold shadow-2xs hover:shadow-xs transition-all cursor-pointer group"
+                          >
+                            <span>
+                              {showAllThemes
+                                ? (lang === 'id' ? 'Tampilkan Lebih Sedikit' : 'Show Less')
+                                : (lang === 'id' ? 'Lihat Selengkapnya' : 'View All Themes')}
+                            </span>
+                            <ChevronDown 
+                              size={15} 
+                              className={`text-stone-500 group-hover:text-stone-800 transition-transform duration-300 ${
+                                showAllThemes ? 'rotate-180' : ''
+                              }`} 
+                            />
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
 
                 {/* Custom Design Notice Card */}
                 <div className="bg-[#faf8f5] rounded-3xl border border-stone-200/90 p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
