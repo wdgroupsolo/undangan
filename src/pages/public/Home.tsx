@@ -804,79 +804,211 @@ export const Home: React.FC = () => {
         </div>
       )}
 
-      {/* UNIFIED KEUNGGULAN & FITUR SECTION (Merged Cleanly) */}
-      <section id="keunggulan" className="py-20 sm:py-24 bg-white border-y border-stone-200/80">
+      {/* REAL-TIME WEDDING GUEST JOURNEY & LIVE RSVP (Swift-Style Showcase Card) */}
+      <section id="keunggulan" className="py-16 sm:py-24 bg-[#faf9f6] border-y border-stone-200/80 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('featuresLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('featuresTitle') as string}
-            </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
-              {t('featuresDesc') as string}
-            </p>
-          </div>
 
-          {/* Two Flagship Showcase Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Grand Panoramic Showcase Card (Adapted from Swift Real-time Tracking Layout) */}
+          <div className="relative w-full rounded-[28px] sm:rounded-[36px] lg:rounded-[44px] bg-white border border-stone-200/90 shadow-2xl shadow-stone-200/60 overflow-hidden mb-12 sm:mb-16">
             
-            {/* Flagship 1: Cinematic Video & Audio */}
-            <div className="bg-[#faf8f5] rounded-3xl p-7 sm:p-9 border border-stone-200 flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-900 text-amber-200 flex items-center justify-center">
-                  <Play size={20} />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                  {t('flagship1Title') as string}
-                </h3>
-                <p className="text-sm text-stone-600 leading-relaxed">
-                  {t('flagship1Desc') as string}
-                </p>
-              </div>
-              <div className="pt-6 border-t border-stone-200/70 mt-6 grid grid-cols-2 gap-3 text-xs text-stone-700">
-                <div className="flex items-center space-x-2">
-                  <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>{t('flagship1Check1') as string}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>{t('flagship1Check2') as string}</span>
-                </div>
-              </div>
+            {/* Desktop Background: 3D Isometric Wedding Journey Diorama with soft left fade */}
+            <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[60%] pointer-events-none overflow-hidden">
+              <img 
+                src="/images/wedding_journey_realtime_diorama.jpg" 
+                alt="3D Isometric Wedding Journey Diorama" 
+                className="w-full h-full object-cover object-left"
+              />
+              <div className="absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-white via-white/80 to-transparent" />
             </div>
 
-            {/* Flagship 2: RSVP & Digital Guestbook */}
-            <div className="bg-[#faf8f5] rounded-3xl p-7 sm:p-9 border border-stone-200 flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-900 text-amber-200 flex items-center justify-center">
-                  <CheckCircle2 size={20} />
+            {/* Inner Content Grid */}
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 p-7 sm:p-10 lg:p-14 items-center">
+              
+              {/* Left Column: Narrative Copy & Actions */}
+              <div className="lg:col-span-6 space-y-6">
+                
+                {/* Eyebrow Pill Badge */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-300/40 text-amber-900 text-[11px] font-bold uppercase tracking-widest font-mono">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
+                  <span>
+                    {lang === 'id' ? 'PANTAU SECARA REAL-TIME' : 'TRACK IN REAL TIME'}
+                  </span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                  {t('flagship2Title') as string}
-                </h3>
-                <p className="text-sm text-stone-600 leading-relaxed">
-                  {t('flagship2Desc') as string}
+
+                {/* Main Headline */}
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight leading-[1.15]">
+                  {lang === 'id' ? (
+                    <>
+                      Setiap Doa &amp; Kehadiran.
+                      <span className="text-primary-900 block mt-1">Langsung di Genggaman.</span>
+                    </>
+                  ) : (
+                    <>
+                      Every Blessing &amp; Guest.
+                      <span className="text-primary-900 block mt-1">In Your Hands.</span>
+                    </>
+                  )}
+                </h2>
+
+                {/* Subtitle Description */}
+                <p className="text-sm sm:text-base text-stone-600 leading-relaxed max-w-xl">
+                  {lang === 'id' 
+                    ? 'Dapatkan pembaruan langsung dari undangan terkirim hingga konfirmasi kehadiran. Ketahui secara pasti respon keluarga dan kerabat Anda kapan saja melalui dashboard yang rapi dan terintegrasi.'
+                    : 'Get real-time updates from invitation sent to attendance confirmation. Know exactly your guests\' responses anytime through a clean and integrated dashboard.'}
                 </p>
-              </div>
-              <div className="pt-6 border-t border-stone-200/70 mt-6 grid grid-cols-2 gap-3 text-xs text-stone-700">
-                <div className="flex items-center space-x-2">
-                  <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>{t('flagship2Check1') as string}</span>
+
+                {/* Action Buttons: Primary Demo Launcher + Secondary Workflow Link */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const url = '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true';
+                      window.open(url, '_blank');
+                    }}
+                    className="bg-primary-900 hover:bg-primary-950 text-amber-200 px-6 py-3.5 rounded-full font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-md shadow-primary-900/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                  >
+                    <span>{lang === 'id' ? 'Coba Pantau Tamu Demo' : 'Track Guest Demo'}</span>
+                    <ArrowRight size={16} />
+                  </button>
+
+                  <a
+                    href="#alur"
+                    className="flex items-center gap-2.5 px-4 py-3 rounded-full hover:bg-stone-100 text-stone-700 font-semibold text-xs sm:text-sm transition-all cursor-pointer"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-stone-900 text-white flex items-center justify-center shadow-xs">
+                      <Play size={13} className="ml-0.5" />
+                    </div>
+                    <span>{lang === 'id' ? 'Lihat Alur Kerja' : 'How it works'}</span>
+                  </a>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>{t('flagship2Check2') as string}</span>
-                </div>
+
               </div>
+
+              {/* Mobile / Tablet 3D Diorama Image (Shown only on screens < lg) */}
+              <div className="lg:hidden relative w-full aspect-[16/9] rounded-2xl overflow-hidden border border-stone-200 shadow-md">
+                <img 
+                  src="/images/wedding_journey_realtime_diorama.jpg" 
+                  alt="3D Isometric Wedding Journey Diorama" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Right Column: Floating Real-time RSVP Status Card & Calligraphy Accent */}
+              <div className="lg:col-span-6 flex flex-col items-center lg:items-end justify-center w-full">
+                
+                {/* Floating Status Card */}
+                <div className="relative w-full max-w-[310px] sm:max-w-[340px] bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(44,30,26,0.14)] border border-stone-200/90 space-y-4">
+                  
+                  {/* Card Header: Icon + Status Headline */}
+                  <div className="flex items-center gap-3.5 pb-3 border-b border-stone-100">
+                    <div className="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-300/40 text-amber-800 flex items-center justify-center shrink-0">
+                      <CheckCircle2 size={22} className="text-amber-700" />
+                    </div>
+                    <div>
+                      <span className="block font-bold text-stone-900 text-sm sm:text-base leading-tight">
+                        {lang === 'id' ? 'Konfirmasi Hadir' : 'Confirmed Attendance'}
+                      </span>
+                      <span className="block text-[11px] text-stone-500 mt-0.5">
+                        {lang === 'id' ? 'Bpk. & Ibu Hendra (2 Tamu)' : 'Mr. & Mrs. Hendra (2 Guests)'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Vertical Stepper Timeline */}
+                  <div className="space-y-3.5 relative pl-1">
+                    
+                    {/* Step 1: Undangan Terkirim */}
+                    <div className="flex items-start gap-3 relative">
+                      <div className="flex flex-col items-center">
+                        <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-xs">
+                          <Check size={11} strokeWidth={3} />
+                        </span>
+                        <span className="w-0.5 h-6 bg-emerald-300 my-0.5" />
+                      </div>
+                      <div className="flex-1 pt-0.5">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-stone-900 text-xs">
+                            {lang === 'id' ? 'Undangan Terkirim' : 'Invitation Sent'}
+                          </span>
+                          <span className="text-[10px] text-stone-400 font-mono">09:15</span>
+                        </div>
+                        <span className="text-[10.5px] text-stone-500 block">WhatsApp VIP Personal</span>
+                      </div>
+                    </div>
+
+                    {/* Step 2: Amplop Dibuka */}
+                    <div className="flex items-start gap-3 relative">
+                      <div className="flex flex-col items-center">
+                        <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-xs">
+                          <Check size={11} strokeWidth={3} />
+                        </span>
+                        <span className="w-0.5 h-6 bg-amber-300 my-0.5" />
+                      </div>
+                      <div className="flex-1 pt-0.5">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-stone-900 text-xs">
+                            {lang === 'id' ? 'Undangan Dibuka' : 'Envelope Opened'}
+                          </span>
+                          <span className="text-[10px] text-stone-400 font-mono">09:22</span>
+                        </div>
+                        <span className="text-[10.5px] text-stone-500 block">Gerbang Portal Sinematik</span>
+                      </div>
+                    </div>
+
+                    {/* Step 3: RSVP Dikonfirmasi (Active / Pulsing) */}
+                    <div className="flex items-start gap-3 relative">
+                      <div className="flex flex-col items-center">
+                        <span className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px] ring-4 ring-amber-100 animate-pulse shadow-xs">
+                          <span className="w-2 h-2 rounded-full bg-white" />
+                        </span>
+                        <span className="w-0.5 h-6 bg-stone-200 my-0.5" />
+                      </div>
+                      <div className="flex-1 pt-0.5">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-amber-950 text-xs">
+                            {lang === 'id' ? 'RSVP Dikonfirmasi' : 'RSVP Confirmed'}
+                          </span>
+                          <span className="text-[10px] text-amber-700 font-bold font-mono">09:25</span>
+                        </div>
+                        <span className="text-[10.5px] text-amber-800 font-medium block">
+                          {lang === 'id' ? '2 Tamu Hadir • Doa Terkirim' : '2 Guests Attending • Wishes Sent'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Step 4: Check-in Meja Tamu (Upcoming) */}
+                    <div className="flex items-start gap-3 relative">
+                      <div className="flex flex-col items-center">
+                        <span className="w-5 h-5 rounded-full border-2 border-stone-300 bg-white flex items-center justify-center" />
+                      </div>
+                      <div className="flex-1 pt-0.5">
+                        <span className="font-medium text-stone-400 text-xs block">
+                          {lang === 'id' ? 'Check-in Meja Tamu' : 'Reception Check-in'}
+                        </span>
+                        <span className="text-[10.5px] text-stone-400 block">
+                          {lang === 'id' ? 'Barcode Pass Siap di Lokasi' : 'QR Barcode Pass Ready'}
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                {/* Elegant Handwritten Script on the side (Matching Swift's 'Closer Deliveries Happier Days.') */}
+                <div className="mt-3.5 text-center lg:text-right w-full max-w-[310px] sm:max-w-[340px] pr-2">
+                  <span className="font-serif italic text-stone-400 text-xs sm:text-sm tracking-wide select-none">
+                    {lang === 'id' ? 'Momen Sakral, Tertata Sempurna.' : 'Sacred Moments, Perfectly Arranged.'}
+                  </span>
+                </div>
+
+              </div>
+
             </div>
 
           </div>
 
-          {/* Four Core Capabilities (Clean 4-column row) */}
+          {/* Four Core Capabilities (Clean 4-column row below the grand showcase) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
             <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
