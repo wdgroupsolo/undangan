@@ -1868,8 +1868,8 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         {/* ==================================================== */}
         <section id="save-the-date" className="relative w-full border-t border-amber-500/20 bg-[#0c0806] select-none">
           
-          {/* Slide Utama Save The Date (100dvh Screen Fitting) */}
-          <div className="relative w-full min-h-[100dvh] h-[100dvh] flex flex-col justify-between items-center px-4 py-8 sm:py-10 overflow-hidden bg-[#0c0806]">
+          {/* Slide Utama Save The Date (Sizing proporsional & natural) */}
+          <div className="relative w-full flex flex-col items-center justify-center px-4 py-10 sm:py-14 overflow-hidden bg-[#0c0806]">
             
             {/* Cinematic Background Image with Dark Royal Vignette */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -1886,7 +1886,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             {/* Sparkle Golden Dust */}
             <GoldenSparkleDust />
 
-            {/* Inner Royal Hairline Border Framing the Screen */}
+            {/* Inner Royal Hairline Border Framing the Section */}
             <div className="absolute inset-3 sm:inset-5 rounded-[28px] sm:rounded-[32px] border border-[#d4af37]/35 pointer-events-none z-15" />
 
             {/* Luxury Corner Flourishes */}
@@ -1904,7 +1904,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
 
             {/* 1. Header: Royal Blessing Title */}
-            <div className="relative z-20 w-full text-center flex flex-col items-center pt-2 sm:pt-4">
+            <div className="relative z-20 w-full text-center flex flex-col items-center pt-1 sm:pt-2">
               <div className="flex items-center justify-center gap-2 mb-1.5">
                 <div className="w-10 sm:w-16 h-px bg-gradient-to-r from-transparent via-[#d4af37]/70 to-[#d4af37]" />
                 <span className="text-[#ffd778] text-[11px] filter drop-shadow-[0_0_8px_rgba(212,175,55,0.9)]">✦ ❖ ✦</span>
@@ -1924,7 +1924,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
 
             {/* 2. Middle: Ayat Suci Ar-Rum 21 Card (Glassmorphism Luxury) */}
-            <div className="relative z-20 w-full max-w-[360px] sm:max-w-[420px] rounded-2xl bg-gradient-to-b from-[#221811]/90 via-[#150f0a]/92 to-[#0a0704]/95 border border-[#d4af37]/45 p-4 sm:p-5 backdrop-blur-md shadow-[0_16px_40px_rgba(0,0,0,0.85)] flex flex-col items-center text-center my-auto">
+            <div className="relative z-20 w-full max-w-[360px] sm:max-w-[420px] rounded-2xl bg-gradient-to-b from-[#221811]/90 via-[#150f0a]/92 to-[#0a0704]/95 border border-[#d4af37]/45 p-4 sm:p-5 backdrop-blur-md shadow-[0_16px_40px_rgba(0,0,0,0.85)] flex flex-col items-center text-center my-4 sm:my-5">
               <div className="absolute inset-1.5 rounded-xl border border-[#ffd778]/20 pointer-events-none" />
 
               {/* Decorative Basmalah / Floral accent */}
@@ -1948,7 +1948,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </div>
 
             {/* 3. Bottom: Luxury Gold Countdown Cards & Action Button */}
-            <div className="relative z-20 w-full flex flex-col items-center pb-2 sm:pb-4 space-y-3">
+            <div className="relative z-20 w-full flex flex-col items-center pb-1 sm:pb-2 space-y-3">
               
               {/* Dynamic Live Countdown Timer with 4 Regal Cards */}
               <div className="flex items-center justify-center gap-2 sm:gap-3.5">
