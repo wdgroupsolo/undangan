@@ -989,167 +989,27 @@ export const Home: React.FC = () => {
         </div>
       )}
 
-      {/* CURATED KEUNGGULAN & ARSITEKTUR FITUR (Luxury Editorial Layout) */}
-      <section id="keunggulan" className="py-20 sm:py-28 bg-[#faf8f5] border-y border-stone-200/70 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
-              <span>EXPERIENCE</span>
-              <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>CRAFTSMANSHIP</span>
-              <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>EXCELLENCE</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
-              {lang === 'id' ? 'Fitur Lengkap untuk Momen Sakral yang' : 'Curated Features Crafted for a'}{' '}
-              <span className="italic font-serif font-normal text-[#9b6f38]">
-                {lang === 'id' ? 'Anggun & Abadi' : 'Timeless Celebration'}
-              </span>
-            </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
-              {t('featuresDesc') as string}
-            </p>
-          </div>
-
-          {/* Two Flagship Showcase Cards in Luxury Editorial Bento */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-            
-            {/* Flagship 1: Cinematic Video & Audio (Obsidian Luxury Card) */}
-            <div className="bg-stone-900 text-white rounded-[30px] p-8 sm:p-10 border border-white/10 shadow-xl flex flex-col justify-between relative overflow-hidden group">
-              <div className="relative z-10 space-y-5">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md text-amber-300 flex items-center justify-center border border-white/15 shadow-sm group-hover:scale-105 transition-transform">
-                    <Play size={20} className="ml-0.5 fill-current" />
-                  </div>
-                  <span className="text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-stone-300 border border-white/10">
-                    CINEMATIC EXPERIENCE
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
-                    {t('flagship1Title') as string}
-                  </h3>
-                  <p className="text-sm text-stone-300 mt-2.5 leading-relaxed font-light">
-                    {t('flagship1Desc') as string}
-                  </p>
-                </div>
-              </div>
-
-              <div className="relative z-10 pt-6 border-t border-white/15 mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-stone-300">
-                <div className="flex items-center space-x-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
-                  <Check size={14} className="text-amber-300 shrink-0" />
-                  <span className="font-medium">{t('flagship1Check1') as string}</span>
-                </div>
-                <div className="flex items-center space-x-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
-                  <Check size={14} className="text-amber-300 shrink-0" />
-                  <span className="font-medium">{t('flagship1Check2') as string}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Flagship 2: RSVP & Digital Guestbook (Warm Ivory Luxury Card) */}
-            <div className="bg-white rounded-[30px] p-8 sm:p-10 border border-stone-200/90 shadow-xl flex flex-col justify-between relative overflow-hidden group">
-              <div className="relative z-10 space-y-5">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-stone-100 text-stone-900 flex items-center justify-center border border-stone-200 shadow-sm group-hover:scale-105 transition-transform">
-                    <CheckCircle2 size={22} className="text-[#9b6f38]" />
-                  </div>
-                  <span className="text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
-                    GUEST MANAGEMENT
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 tracking-tight">
-                    {t('flagship2Title') as string}
-                  </h3>
-                  <p className="text-sm text-stone-600 mt-2.5 leading-relaxed font-normal">
-                    {t('flagship2Desc') as string}
-                  </p>
-                </div>
-              </div>
-
-              <div className="relative z-10 pt-6 border-t border-stone-200/70 mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-stone-700">
-                <div className="flex items-center space-x-2 bg-stone-50 rounded-xl px-3 py-2 border border-stone-200">
-                  <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span className="font-medium">{t('flagship2Check1') as string}</span>
-                </div>
-                <div className="flex items-center space-x-2 bg-stone-50 rounded-xl px-3 py-2 border border-stone-200">
-                  <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span className="font-medium">{t('flagship2Check2') as string}</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Four Core Capabilities (Clean 4-column Luxury Bento Row) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <div className="bg-white rounded-[24px] p-6 border border-stone-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
-              <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
-                <Gift size={19} className="text-[#9b6f38]" />
-              </div>
-              <h4 className="font-serif font-bold text-stone-900 text-base">{t('cap1Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                {t('cap1Desc') as string}
-              </p>
-            </div>
-
-            <div className="bg-white rounded-[24px] p-6 border border-stone-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
-              <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
-                <MapPin size={19} className="text-[#9b6f38]" />
-              </div>
-              <h4 className="font-serif font-bold text-stone-900 text-base">{t('cap2Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                {t('cap2Desc') as string}
-              </p>
-            </div>
-
-            <div className="bg-white rounded-[24px] p-6 border border-stone-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
-              <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
-                <Users size={19} className="text-[#9b6f38]" />
-              </div>
-              <h4 className="font-serif font-bold text-stone-900 text-base">{t('cap3Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                {t('cap3Desc') as string}
-              </p>
-            </div>
-
-            <div className="bg-white rounded-[24px] p-6 border border-stone-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
-              <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
-                <Calendar size={19} className="text-[#9b6f38]" />
-              </div>
-              <h4 className="font-serif font-bold text-stone-900 text-base">{t('cap4Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                {t('cap4Desc') as string}
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* THEMES SHOWCASE SECTION (Signature Destinations & Masterpiece Catalog) */}
-      <section id="themes" className="py-20 sm:py-28 bg-[#f5f1eb] border-y border-stone-200/80">
+      {/* POPULAR DESTINATIONS & SIGNATURE THEMES (Directly Below Hero Frame) */}
+      <section id="themes" className="py-20 sm:py-28 bg-[#f5f1eb] border-y border-stone-200/80 relative">
+        <div id="destinations" className="absolute -top-20" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
-              <span>EXCLUSIVE COLLECTION</span>
+              <span>POPULAR DESTINATIONS</span>
               <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>SIGNATURE DESTINATIONS</span>
+              <span>SIGNATURE THEMES</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
-              {lang === 'id' ? 'Koleksi Tema Eksklusif &' : 'Signature Invitation Collections &'}{' '}
+              {lang === 'id' ? 'Jelajahi Destinasi Tema &' : 'Explore Extraordinary Destinations &'}{' '}
               <span className="italic font-serif font-normal text-[#9b6f38]">
-                {lang === 'id' ? 'Destinasi Sakral' : 'Sacred Destinations'}
+                {lang === 'id' ? 'Koleksi Sakral' : 'Signature Journeys'}
               </span>
             </h2>
             <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
-              {t('themesDesc') as string}
+              {lang === 'id'
+                ? 'Dari pesona resort tepi danau hingga kemegahan budaya Nusantara, temukan tema undangan pernikahan digital yang sempurna untuk hari bahagia Anda.'
+                : 'From serene lakeside mountain resorts to timeless royal heritage, discover curated digital wedding journeys crafted for extraordinary celebrations.'}
             </p>
           </div>
 
@@ -1335,6 +1195,141 @@ export const Home: React.FC = () => {
             >
               {t('themeCustomBtn') as string} &rarr;
             </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* CURATED EXPERIENCES SECTION (Modern Editorial Bento Architecture) */}
+      <section id="experiences" className="py-20 sm:py-28 bg-[#faf8f5] border-b border-stone-200/70 relative">
+        <div id="keunggulan" className="absolute -top-20" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
+              <span>EXTRAORDINARY EXPERIENCES</span>
+              <span className="w-1 h-1 rounded-full bg-stone-400" />
+              <span>MEANINGFUL MOMENTS</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
+              {lang === 'id' ? 'Pengalaman Berkesan yang' : 'Extraordinary Experiences for a'}{' '}
+              <span className="italic font-serif font-normal text-[#9b6f38]">
+                {lang === 'id' ? 'Tak Terlupakan' : 'Timeless Celebration'}
+              </span>
+            </h2>
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
+              {lang === 'id'
+                ? 'Setiap detik perayaan dikurasi dengan arsitektur visual sinematik, harmoni musik sakral, dan kenyamanan digital bagi seluruh tamu undangan.'
+                : 'Every moment is elevated with cinematic visual architecture, orchestral audio ambiance, and effortless digital hospitality.'}
+            </p>
+          </div>
+
+          {/* Bento Experience Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+            
+            {/* Experience 1: Cinematic Entrance & Music (md:col-span-7) */}
+            <div className="md:col-span-7 bg-stone-950 text-white rounded-[32px] p-8 sm:p-10 border border-white/10 shadow-xl flex flex-col justify-between relative overflow-hidden group">
+              <div className="relative z-10 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-2xl bg-white/10 backdrop-blur-md text-amber-300 flex items-center justify-center border border-white/15 shadow-sm group-hover:scale-105 transition-transform">
+                    <Play size={18} className="ml-0.5 fill-current" />
+                  </div>
+                  <span className="text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-stone-300 border border-white/10">
+                    CINEMATIC GATE
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
+                    {lang === 'id' ? 'Video Gerbang Sinematik & Musik Latar Sakral' : 'Cinematic Gate Video & Sacred Background Music'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-300 mt-2 leading-relaxed font-light">
+                    {lang === 'id' 
+                      ? 'Menyambut tamu dengan transisi video pembuka pintu gerbang megah berkualitas HD, disusul alunan instrumen piano & strings romantis yang berputar otomatis.'
+                      : 'Welcomes guests with a high-definition majestic opening gate video transition, followed by romantic piano & strings instrumental.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative z-10 pt-6 border-t border-white/10 mt-6 flex flex-wrap gap-2 text-xs text-stone-300">
+                <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 font-medium">HD Gate Animation</span>
+                <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 font-medium">Auto-Play Symphony</span>
+                <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 font-medium">Independent Controls</span>
+              </div>
+            </div>
+
+            {/* Experience 2: Live RSVP & Digital Guestbook (md:col-span-5) */}
+            <div className="md:col-span-5 bg-white rounded-[32px] p-8 sm:p-10 border border-stone-200/90 shadow-xl flex flex-col justify-between relative overflow-hidden group">
+              <div className="relative z-10 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-2xl bg-stone-100 text-stone-900 flex items-center justify-center border border-stone-200 shadow-sm group-hover:scale-105 transition-transform">
+                    <CheckCircle2 size={20} className="text-[#9b6f38]" />
+                  </div>
+                  <span className="text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
+                    REAL-TIME RSVP
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 tracking-tight">
+                    {lang === 'id' ? 'Buku Tamu Digital & Konfirmasi Kehadiran' : 'Digital Guestbook & Live RSVP Management'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-600 mt-2 leading-relaxed font-normal">
+                    {lang === 'id'
+                      ? 'Tamu mengonfirmasi kehadiran serta menuliskan doa restu hangat secara instan. Data kehadiran terkapitulasi otomatis di dashboard admin.'
+                      : 'Guests confirm attendance and share warm blessings instantly, synchronized directly into the real-time admin portal.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative z-10 pt-6 border-t border-stone-100 mt-6 flex flex-wrap gap-2 text-xs text-stone-700">
+                <span className="px-3 py-1.5 rounded-full bg-stone-50 border border-stone-200 font-medium">Instant Confirmation</span>
+                <span className="px-3 py-1.5 rounded-full bg-stone-50 border border-stone-200 font-medium">Guest Database</span>
+              </div>
+            </div>
+
+            {/* Experience 3: Precision Venue Navigation (md:col-span-6) */}
+            <div className="md:col-span-6 bg-white rounded-[32px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-800">
+                  <MapPin size={18} className="text-[#9b6f38]" />
+                </div>
+                <span className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600">
+                  NAVIGATION
+                </span>
+              </div>
+              <div>
+                <h4 className="font-serif font-bold text-stone-900 text-lg">
+                  {lang === 'id' ? 'Navigasi Lokasi & Google Maps Presisi' : 'Precision Maps & Venue Navigation'}
+                </h4>
+                <p className="text-xs text-stone-600 mt-1.5 leading-relaxed font-normal">
+                  {lang === 'id'
+                    ? 'Panduan penunjuk arah dan peta Google Maps terintegrasi untuk akad nikah, temu manten, dan resepsi di venue pilihan Anda.'
+                    : 'Interactive Google Maps with accurate pinpoint navigation directly to your ceremony and reception venues.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Experience 4: Cashless Digital Envelope & QRIS (md:col-span-6) */}
+            <div className="md:col-span-6 bg-white rounded-[32px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-800">
+                  <Gift size={18} className="text-[#9b6f38]" />
+                </div>
+                <span className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600">
+                  CASHLESS GIFT
+                </span>
+              </div>
+              <div>
+                <h4 className="font-serif font-bold text-stone-900 text-lg">
+                  {lang === 'id' ? 'Amplop Digital & Salin Rekening Instan' : 'Digital Envelope & Cashless QRIS'}
+                </h4>
+                <p className="text-xs text-stone-600 mt-1.5 leading-relaxed font-normal">
+                  {lang === 'id'
+                    ? 'Kemudahan transfer tanda kasih langsung ke rekening mempelai (BCA, BRI, Mandiri, BSI) dilengkapi fitur salin nomor rekening satu klik dan scan QRIS.'
+                    : 'Seamless digital gifting with one-click bank account number copying and instant QRIS payment scanning.'}
+                </p>
+              </div>
+            </div>
+
           </div>
 
         </div>
