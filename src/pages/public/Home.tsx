@@ -1006,47 +1006,317 @@ export const Home: React.FC = () => {
 
           </div>
 
-          {/* Four Core Capabilities (Clean 4-column row below the grand showcase) */}
-          <div id="keunggulan" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 scroll-mt-20">
+          {/* SWIFT-STYLE SECTION 1: FITUR UNGGULAN (Delivery for Every Need style) */}
+          <div id="keunggulan" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-start scroll-mt-20 pt-4 pb-14 border-b border-stone-200/80">
             
-            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
-                <Gift size={18} />
-              </div>
-              <h4 className="font-bold text-stone-900 text-sm">{t('cap1Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                {t('cap1Desc') as string}
+            {/* Left Header Column */}
+            <div className="lg:col-span-3 space-y-4 text-left">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-primary-800 font-mono block">
+                {lang === 'id' ? 'FITUR LENGKAP' : 'OUR FEATURES'}
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight leading-tight">
+                {lang === 'id' ? (
+                  <>
+                    Undangan Mewah untuk <span className="text-primary-900">Setiap Momen.</span>
+                  </>
+                ) : (
+                  <>
+                    Luxury Invitations for <span className="text-primary-900">Every Moment.</span>
+                  </>
+                )}
+              </h3>
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {lang === 'id' 
+                  ? 'Solusi digital terintegrasi yang memudahkan pengantin dan memanjakan seluruh tamu undangan.'
+                  : 'Integrated digital solutions designed for effortless hosting and memorable guest experiences.'}
               </p>
+              <div className="pt-2">
+                <a
+                  href="#themes"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-stone-300 text-stone-800 text-xs font-bold hover:bg-stone-100 hover:border-stone-400 transition-all cursor-pointer shadow-2xs"
+                >
+                  <span>{lang === 'id' ? 'Eksplorasi Fitur' : 'Explore Features'}</span>
+                  <ArrowRight size={13} />
+                </a>
+              </div>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
-                <MapPin size={18} />
+            {/* Right Column: 4 Visual 3D Feature Cards */}
+            <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              
+              {/* Card 1: Video Entrance */}
+              <div 
+                onClick={() => {
+                  const url = '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true';
+                  window.open(url, '_blank');
+                }}
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+              >
+                <div>
+                  <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#faf9f6] flex items-center justify-center p-3 mb-3.5 border border-stone-100">
+                    <img 
+                      src="/images/features/feat_video_entrance.png" 
+                      alt="Video Entrance Megah" 
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
+                    <Play size={13} className="ml-0.5" />
+                  </div>
+                  <h4 className="font-bold text-stone-900 text-sm group-hover:text-primary-900 transition-colors">
+                    {lang === 'id' ? 'Video Entrance Megah' : 'Cinematic Video Portal'}
+                  </h4>
+                  <p className="text-[11px] sm:text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
+                    {lang === 'id' 
+                      ? 'Transisi pembuka gerbang 3D sinematik dan lantunan musik sakral otomatis.'
+                      : 'Cinematic 3D gate-opening transition with auto-playing sacred background score.'}
+                  </p>
+                </div>
+                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
+                  <ArrowRight size={15} />
+                </div>
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">{t('cap2Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                {t('cap2Desc') as string}
-              </p>
+
+              {/* Card 2: Amplop Digital */}
+              <div 
+                onClick={() => {
+                  const url = '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true';
+                  window.open(url, '_blank');
+                }}
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+              >
+                <div>
+                  <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#faf9f6] flex items-center justify-center p-3 mb-3.5 border border-stone-100">
+                    <img 
+                      src="/images/features/feat_amplop_digital.png" 
+                      alt="Amplop Digital & QRIS" 
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
+                    <Gift size={13} />
+                  </div>
+                  <h4 className="font-bold text-stone-900 text-sm group-hover:text-primary-900 transition-colors">
+                    {lang === 'id' ? 'Amplop Digital & QRIS' : 'Digital Envelope & QRIS'}
+                  </h4>
+                  <p className="text-[11px] sm:text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
+                    {lang === 'id' 
+                      ? 'Kirim tanda kasih cashless via transfer bank & QRIS resmi tanpa potongan.'
+                      : 'Cashless wedding gifts via direct bank transfer and official instant QRIS.'}
+                  </p>
+                </div>
+                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
+                  <ArrowRight size={15} />
+                </div>
+              </div>
+
+              {/* Card 3: Buku Tamu & RSVP */}
+              <div 
+                onClick={() => {
+                  const url = '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true';
+                  window.open(url, '_blank');
+                }}
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+              >
+                <div>
+                  <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#faf9f6] flex items-center justify-center p-3 mb-3.5 border border-stone-100">
+                    <img 
+                      src="/images/features/feat_buku_tamu.png" 
+                      alt="Buku Tamu & RSVP Real-time" 
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
+                    <CheckCircle2 size={13} />
+                  </div>
+                  <h4 className="font-bold text-stone-900 text-sm group-hover:text-primary-900 transition-colors">
+                    {lang === 'id' ? 'Buku Tamu & RSVP' : 'Live Guestbook & RSVP'}
+                  </h4>
+                  <p className="text-[11px] sm:text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
+                    {lang === 'id' 
+                      ? 'Konfirmasi kehadiran langsung dan catatan doa restu terekam rapi di dashboard.'
+                      : 'Instant attendance confirmations and blessings recorded neatly on dashboard.'}
+                  </p>
+                </div>
+                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
+                  <ArrowRight size={15} />
+                </div>
+              </div>
+
+              {/* Card 4: Navigasi & Kalender */}
+              <div 
+                onClick={() => {
+                  const url = '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true';
+                  window.open(url, '_blank');
+                }}
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+              >
+                <div>
+                  <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#faf9f6] flex items-center justify-center p-3 mb-3.5 border border-stone-100">
+                    <img 
+                      src="/images/features/feat_navigasi_kalender.png" 
+                      alt="Navigasi Google Maps & Kalender" 
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
+                    <MapPin size={13} />
+                  </div>
+                  <h4 className="font-bold text-stone-900 text-sm group-hover:text-primary-900 transition-colors">
+                    {lang === 'id' ? 'Navigasi & Kalender' : 'Navigation & Calendar'}
+                  </h4>
+                  <p className="text-[11px] sm:text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
+                    {lang === 'id' 
+                      ? 'Petunjuk rute akurat Google Maps & satu klik simpan jadwal ke Google/Apple Calendar.'
+                      : 'Accurate Google Maps directions and one-tap save date to mobile calendar.'}
+                  </p>
+                </div>
+                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
+                  <ArrowRight size={15} />
+                </div>
+              </div>
+
             </div>
 
-            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
-                <Users size={18} />
-              </div>
-              <h4 className="font-bold text-stone-900 text-sm">{t('cap3Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                {t('cap3Desc') as string}
+          </div>
+
+          {/* SWIFT-STYLE SECTION 2: VARIAN TRADISI & KONSEP (Built for Every Delivery style) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-start pt-14">
+            
+            {/* Left Header Column */}
+            <div className="lg:col-span-3 space-y-4 text-left">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-primary-800 font-mono block">
+                {lang === 'id' ? 'KONSEP & TRADISI' : 'THEMES & TRADITIONS'}
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight leading-tight">
+                {lang === 'id' ? (
+                  <>
+                    Sempurna untuk <span className="text-primary-900">Setiap Tradisi.</span>
+                  </>
+                ) : (
+                  <>
+                    Crafted for <span className="text-primary-900">Every Tradition.</span>
+                  </>
+                )}
+              </h3>
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {lang === 'id' 
+                  ? 'Dari keagungan adat budaya Keraton Nusantara, syahdunya intimate resort pegunungan, hingga estetika minimalis modern.'
+                  : 'From sacred traditional palace heritage, serene natural resort destinations, to elegant modern minimalist celebrations.'}
               </p>
+              <div className="pt-2">
+                <a
+                  href="#themes"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-stone-300 text-stone-800 text-xs font-bold hover:bg-stone-100 hover:border-stone-400 transition-all cursor-pointer shadow-2xs"
+                >
+                  <span>{lang === 'id' ? 'Lihat Semua Tema' : 'View All Themes'}</span>
+                  <ArrowRight size={13} />
+                </a>
+              </div>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
-                <Calendar size={18} />
+            {/* Right Column: 3 Curated Segment Cards */}
+            <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
+              
+              {/* Segment 1: Tradisional & Keraton */}
+              <div 
+                onClick={() => {
+                  const element = document.getElementById('themes');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+              >
+                <div>
+                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 mb-3.5 border border-stone-200/80">
+                    <img 
+                      src="/images/segments/seg_tradisional.jpg" 
+                      alt="Pernikahan Adat & Keraton" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+                  </div>
+                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
+                    <Users size={13} />
+                  </div>
+                  <h4 className="font-bold text-stone-900 text-sm sm:text-base group-hover:text-primary-900 transition-colors">
+                    {lang === 'id' ? 'Pernikahan Adat & Keraton' : 'Traditional & Heritage'}
+                  </h4>
+                  <p className="text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
+                    {lang === 'id' 
+                      ? 'Filosofi sakral budaya Jawa, Batak, Sunda & Nusantara berhias ornamen otentik.'
+                      : 'Sacred cultural heritage of Javanese, Batak, Sundanese & Nusantara with authentic motifs.'}
+                  </p>
+                </div>
+                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
+                  <ArrowRight size={15} />
+                </div>
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">{t('cap4Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                {t('cap4Desc') as string}
-              </p>
+
+              {/* Segment 2: Resort & Destination */}
+              <div 
+                onClick={() => {
+                  const element = document.getElementById('themes');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+              >
+                <div>
+                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 mb-3.5 border border-stone-200/80">
+                    <img 
+                      src="/images/segments/seg_resort.jpg" 
+                      alt="Resort & Destination Wedding" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+                  </div>
+                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
+                    <MapPin size={13} />
+                  </div>
+                  <h4 className="font-bold text-stone-900 text-sm sm:text-base group-hover:text-primary-900 transition-colors">
+                    {lang === 'id' ? 'Resort & Destination' : 'Resort & Destination'}
+                  </h4>
+                  <p className="text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
+                    {lang === 'id' 
+                      ? 'Nuansa pemandangan telaga sejuk dan konsep intimate wedding nan menenangkan.'
+                      : 'Serene lakeside mountain scenery for refreshing intimate destination ceremonies.'}
+                  </p>
+                </div>
+                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
+                  <ArrowRight size={15} />
+                </div>
+              </div>
+
+              {/* Segment 3: Modern & Botanical */}
+              <div 
+                onClick={() => {
+                  const element = document.getElementById('themes');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+              >
+                <div>
+                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 mb-3.5 border border-stone-200/80">
+                    <img 
+                      src="/images/segments/seg_modern.jpg" 
+                      alt="Modern Minimalis & Botanical" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+                  </div>
+                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
+                    <Sparkles size={13} />
+                  </div>
+                  <h4 className="font-bold text-stone-900 text-sm sm:text-base group-hover:text-primary-900 transition-colors">
+                    {lang === 'id' ? 'Modern & Botanical' : 'Modern & Botanical'}
+                  </h4>
+                  <p className="text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
+                    {lang === 'id' 
+                      ? 'Estetika editorial bersih kontemporer dengan hamparan floral anggun.'
+                      : 'Clean contemporary editorial aesthetics with elegant romantic botanical foliage.'}
+                  </p>
+                </div>
+                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
+                  <ArrowRight size={15} />
+                </div>
+              </div>
+
             </div>
 
           </div>
