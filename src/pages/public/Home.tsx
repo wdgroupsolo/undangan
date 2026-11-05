@@ -560,46 +560,32 @@ export const Home: React.FC = () => {
         )}
       </header>
 
-      {/* HERO SECTION (Swift 3D Claymorphic Layout) */}
+      {/* HERO SECTION (Swift Modern Layout with Real Digital Theme Mockup Showcase) */}
       <section id="hero" className="pt-8 sm:pt-12 lg:pt-14 pb-16 sm:pb-20 relative overflow-hidden bg-gradient-to-b from-[#faf9f6] via-white to-[#faf9f6]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
             
-            {/* Left Column: Stacked Punchy Headline + Interactive Demo Capsule + Metrics */}
+            {/* Left Column: Dignified Wedding Copy + Interactive Demo Capsule + Metrics */}
             <div className="lg:col-span-7 text-center lg:text-left space-y-6">
               
-              {/* Kicker */}
-              <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] text-stone-400 uppercase flex items-center justify-center lg:justify-start gap-2 select-none">
-                <span>DELIVERING SACRED HAPPINESS</span>
-                <span className="w-1 h-1 rounded-full bg-stone-300" />
-                <span>MEMORABLE CELEBRATION</span>
+              {/* Kicker Pill */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-[11px] font-bold tracking-[0.15em] text-[#ea580c] uppercase select-none">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] animate-pulse" />
+                <span>{t('heroLabel') as string}</span>
               </div>
 
-              {/* Stacked 3-Line Headline */}
-              <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold text-stone-900 tracking-tight leading-[1.04]">
-                {lang === 'id' ? (
-                  <>
-                    Undang <br />
-                    Keluarga &amp; Sahabat. <br />
-                    <span className="text-[#ea580c]">Lebih Anggun.</span>
-                  </>
-                ) : (
-                  <>
-                    Invite <br />
-                    Family &amp; Friends. <br />
-                    <span className="text-[#ea580c]">With Elegance.</span>
-                  </>
-                )}
+              {/* Main Headline */}
+              <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-stone-900 tracking-tight leading-[1.12]">
+                {t('heroHeadline') as string}{' '}
+                <span className="text-[#ea580c] block sm:inline">{t('heroAccent') as string}</span>
               </h1>
 
               {/* Subheadline Prose */}
               <p className="text-sm sm:text-base text-stone-600 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                {lang === 'id'
-                  ? 'Koleksi undangan pernikahan digital eksklusif dengan video entrance sinematik, musik latar sakral, buku tamu digital, dan konfirmasi RSVP real-time. Cepat, anggun, dan siap disebar ke seluruh tamu undangan.'
-                  : 'Exclusive digital wedding invitations crafted with cinematic gate video entrance, sacred music ambience, real-time RSVP, and digital gifting. Fast, elegant, and ready to share.'}
+                {t('heroSubheadline') as string}
               </p>
 
-              {/* Interactive Action Capsule (Modeled after Swift's Enter pickup | Enter delivery ->) */}
+              {/* Interactive Action Capsule (Swift Search Pill Style) */}
               <form onSubmit={handleLaunchDemo} className="pt-2">
                 <div className="bg-white rounded-2xl sm:rounded-full p-2 sm:p-2.5 shadow-xl border border-stone-200/90 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 max-w-xl mx-auto lg:mx-0 transition-all hover:border-orange-300 hover:shadow-2xl">
                   
@@ -624,7 +610,14 @@ export const Home: React.FC = () => {
                     </div>
                     <select
                       value={demoSelectedTheme}
-                      onChange={(e) => setDemoSelectedTheme(e.target.value)}
+                      onChange={(e) => {
+                        setDemoSelectedTheme(e.target.value);
+                        const foundIdx = showcaseThemes.findIndex(s => s.slug === e.target.value);
+                        if (foundIdx !== -1) {
+                          pauseAutoSlide();
+                          setActiveMockupThemeIndex(foundIdx);
+                        }
+                      }}
                       className="w-full text-xs sm:text-sm text-stone-700 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer outline-none"
                     >
                       <option value="nirwana-sarangan">Nirwana Sarangan Resort</option>
@@ -682,37 +675,192 @@ export const Home: React.FC = () => {
 
             </div>
 
-            {/* Right Column: 3D Isometric Miniature Wedding Hub Diorama */}
-            <div className="lg:col-span-5 relative flex items-center justify-center">
+            {/* Right Column: Interactive Digital Wedding Themes Showcase (Real Created Themes) */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full">
               
-              <div className="relative w-full rounded-[32px] sm:rounded-[40px] overflow-hidden bg-white shadow-2xl border border-stone-200/80 group">
+              {/* Real Audio Player for Mockup Preview */}
+              <audio 
+                ref={mockupAudioRef} 
+                src={currentShowcase.musicUrl} 
+                preload="none" 
+                onEnded={() => setIsPlayingAudio(false)} 
+              />
+
+              {/* Device Mockup Card Frame */}
+              <div className="w-full max-w-[320px] sm:max-w-[340px] rounded-[44px] bg-stone-950 p-3 sm:p-3.5 shadow-2xl border-4 border-stone-800 relative mx-auto select-none transition-all">
                 
-                {/* 3D Illustration Image */}
-                <img 
-                  src="/illustrations/wedding-hub-3d-diorama.jpg" 
-                  alt="3D Wedding Hub Diorama" 
-                  className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-700 ease-out"
-                />
-
-                {/* Floating Interactive Badge: Video Gate Teaser Trigger */}
-                <button
-                  type="button"
-                  onClick={() => setVideoModalOpen(true)}
-                  className="absolute top-4 right-4 bg-white/95 hover:bg-white backdrop-blur-md px-3.5 py-2 rounded-full text-xs font-bold text-stone-800 shadow-lg border border-white/80 flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
-                >
-                  <span className="w-5 h-5 rounded-full bg-[#ea580c] text-white flex items-center justify-center">
-                    <Play size={10} className="ml-0.5 fill-current" />
-                  </span>
-                  <span>{lang === 'id' ? 'Lihat Video Teaser' : 'Watch Video'}</span>
-                </button>
-
-                {/* Floating Pill: Nirwana Sarangan Resort / Flagship */}
-                <div className="absolute bottom-4 left-4 bg-stone-900/85 backdrop-blur-md px-4 py-2 rounded-full text-white text-xs font-medium flex items-center gap-2 shadow-lg border border-white/10">
-                  <span className="w-2 h-2 rounded-full bg-amber-400" />
-                  <span className="font-semibold">Nirwana Sarangan Resort</span>
-                  <span className="text-stone-400 text-[10px]">★ 4.9</span>
+                {/* Speaker Notch */}
+                <div className="w-28 h-3.5 bg-stone-900 rounded-full mx-auto mb-2.5 flex items-center justify-center space-x-1.5">
+                  <div className="w-2 h-2 rounded-full bg-stone-950" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-stone-800" />
                 </div>
 
+                {/* Phone Screen Container */}
+                <div className="rounded-[32px] bg-[#fbf9f6] overflow-hidden border border-stone-200/40 text-center">
+                  
+                  {/* Music Player Bar */}
+                  <div className="bg-stone-900 text-white px-3.5 py-2.5 flex items-center justify-between text-xs border-b border-stone-800">
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        onClick={toggleMockupAudio}
+                        className="w-6 h-6 rounded-full bg-orange-600 hover:bg-orange-500 text-white flex items-center justify-center transition-colors cursor-pointer"
+                        title={isPlayingAudio ? (t('mockupPause') as string) : (t('mockupPlay') as string)}
+                        aria-label={isPlayingAudio ? (t('mockupPause') as string) : (t('mockupPlay') as string)}
+                      >
+                        {isPlayingAudio ? <Pause size={10} /> : <Play size={10} className="ml-0.5 fill-current" />}
+                      </button>
+                      <div className="text-left leading-tight">
+                        <p className="text-[9px] text-amber-300 font-semibold tracking-wider uppercase">{t('mockupMusicLabel') as string}</p>
+                        <p className="text-[11px] font-medium truncate max-w-[130px] text-stone-200">{currentShowcase.musicTitle}</p>
+                      </div>
+                    </div>
+                    <Music size={13} className={`text-amber-300 ${isPlayingAudio ? 'animate-bounce' : ''}`} />
+                  </div>
+
+                  {/* Theme Preview Image with Slide Controls & Details */}
+                  <div 
+                    className="relative h-64 sm:h-72 overflow-hidden group touch-pan-y"
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
+                  >
+                    <img 
+                      key={currentShowcase.slug}
+                      src={currentShowcase.preview} 
+                      alt={`Tema ${currentShowcase.name}`} 
+                      className="w-full h-full object-cover transition-all duration-500 ease-out" 
+                    />
+
+                    {/* Prev Slide Arrow */}
+                    <button
+                      onClick={handlePrevTheme}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-stone-950/70 hover:bg-stone-950 text-white backdrop-blur-xs flex items-center justify-center transition-all z-20 shadow-md border border-white/25 active:scale-95 cursor-pointer"
+                      aria-label="Tema Sebelumnya"
+                      title="Tema Sebelumnya"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+
+                    {/* Next Slide Arrow */}
+                    <button
+                      onClick={handleNextTheme}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-stone-950/70 hover:bg-stone-950 text-white backdrop-blur-xs flex items-center justify-center transition-all z-20 shadow-md border border-white/25 active:scale-95 cursor-pointer"
+                      aria-label="Tema Selanjutnya"
+                      title="Tema Selanjutnya"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+
+                    {/* Top Floating Video Teaser Trigger */}
+                    <button
+                      type="button"
+                      onClick={() => setVideoModalOpen(true)}
+                      className="absolute top-2.5 right-2.5 bg-stone-900/85 hover:bg-stone-900 text-white backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold shadow-md border border-white/20 flex items-center gap-1.5 cursor-pointer transition-all hover:scale-105 active:scale-95 z-20"
+                    >
+                      <Play size={9} className="fill-orange-400 text-orange-400" />
+                      <span>{lang === 'id' ? 'Video Entrance' : 'Gate Teaser'}</span>
+                    </button>
+
+                    {/* Top Floating Badge: Theme Category */}
+                    <div className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white text-[10px] font-semibold border border-white/15 z-10">
+                      {currentShowcase.badge}
+                    </div>
+
+                    {/* Bottom Gradient Overlay & Details */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/40 to-transparent flex flex-col justify-end p-4 text-white text-left pointer-events-none">
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[10px] uppercase tracking-widest text-orange-300 font-bold drop-shadow-xs">
+                          {currentShowcase.name}
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-black/50 backdrop-blur-xs text-white/90 font-mono font-bold">
+                          {activeMockupThemeIndex + 1}/{showcaseThemes.length}
+                        </span>
+                      </div>
+                      <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide text-white drop-shadow-xs">
+                        {currentShowcase.couple}
+                      </h3>
+                      <p className="text-[11px] text-stone-200 mt-1 font-light flex items-center space-x-1">
+                        <Calendar size={12} className="text-orange-300 inline shrink-0" />
+                        <span>{currentShowcase.date}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Slide Indicators */}
+                  <div className="flex items-center justify-center gap-1.5 py-2 bg-white border-t border-stone-100">
+                    {showcaseThemes.map((th, i) => (
+                      <button
+                        key={th.id}
+                        onClick={() => { pauseAutoSlide(); setActiveMockupThemeIndex(i); }}
+                        className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                          activeMockupThemeIndex === i 
+                            ? 'w-5 bg-[#ea580c]' 
+                            : 'w-1.5 bg-stone-300 hover:bg-stone-400'
+                        }`}
+                        aria-label={`Pilih tema ${th.name}`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Live Dynamic Countdown Box */}
+                  <div className="px-3.5 py-2.5 bg-stone-50 border-y border-stone-100">
+                    <p className="text-[9px] font-bold text-stone-500 uppercase tracking-wider mb-1.5">
+                      {t('mockupCountdownLabel') as string}
+                    </p>
+                    <div className="grid grid-cols-4 gap-1.5 text-center">
+                      <div className="bg-white p-1 rounded-md border border-stone-200 shadow-2xs">
+                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{countdown.days}</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownDays') as string}</span>
+                      </div>
+                      <div className="bg-white p-1 rounded-md border border-stone-200 shadow-2xs">
+                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.hours).padStart(2, '0')}</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownHours') as string}</span>
+                      </div>
+                      <div className="bg-white p-1 rounded-md border border-stone-200 shadow-2xs">
+                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.minutes).padStart(2, '0')}</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownMin') as string}</span>
+                      </div>
+                      <div className="bg-white p-1 rounded-md border border-stone-200 shadow-2xs">
+                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.seconds).padStart(2, '0')}</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownSec') as string}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dynamic Demo Button */}
+                  <div className="p-3 bg-white">
+                    <a 
+                      href={currentShowcase.demoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full bg-[#ea580c] hover:bg-[#c2410c] text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 shadow-sm group active:scale-98"
+                    >
+                      <span>{t('mockupDemoBtn') as string} ({currentShowcase.name})</span>
+                      <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Quick Theme Selector Pills Under Mockup */}
+              <div className="flex flex-wrap items-center justify-center gap-1.5 mt-4 max-w-sm">
+                {showcaseThemes.map((th, idx) => (
+                  <button
+                    key={th.id}
+                    onClick={() => {
+                      pauseAutoSlide();
+                      setActiveMockupThemeIndex(idx);
+                    }}
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
+                      activeMockupThemeIndex === idx
+                        ? 'bg-stone-900 text-white shadow-xs'
+                        : 'bg-white hover:bg-stone-100 text-stone-600 border border-stone-200'
+                    }`}
+                  >
+                    {th.name.replace(' Resort', '').replace(' Heritage', '').replace(' Classical', '')}
+                  </button>
+                ))}
               </div>
 
             </div>
