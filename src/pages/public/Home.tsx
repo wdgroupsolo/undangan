@@ -2261,90 +2261,200 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-stone-950 text-stone-400 py-12 sm:py-16 border-t border-stone-800 text-sm">
+      {/* FOOTER - Swift Design System Style */}
+      <footer className="bg-[#faf8f5] text-stone-600 py-12 sm:py-16 border-t border-stone-200/80 text-xs sm:text-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+          
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
             
-            {/* Brand Info */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 rounded-lg bg-primary-800 flex items-center justify-center text-amber-200 font-cinzel font-bold">
-                  WD
-                </div>
-                <span className="text-xl font-bold font-cinzel text-white tracking-wider">WD GROUP</span>
-              </div>
-              <p className="text-xs text-stone-400 leading-relaxed">
-                {t('footerDesc') as string}
+            {/* Left: Brand & Subtitle */}
+            <div className="md:col-span-3 space-y-2">
+              <Link to="/" className="inline-block group select-none">
+                <span className="text-2xl font-black text-stone-900 tracking-tight font-sans">
+                  wdproduction<span className="text-orange-500">.</span>
+                </span>
+              </Link>
+              <p className="text-xs text-stone-400 font-medium">
+                {lang === 'id' ? 'Momen Sakral, Cinta Abadi' : 'Moments People Memories'}
               </p>
             </div>
 
-            {/* Quick Links */}
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerNavTitle') as string}</h4>
-              <ul className="space-y-2 text-xs">
-                <li><a href="#hero" className="hover:text-white transition-colors">{t('footerHome') as string}</a></li>
-                <li><a href="#themes" className="hover:text-white transition-colors">{t('footerThemes') as string}</a></li>
-                <li><a href="#keunggulan" className="hover:text-white transition-colors">{t('footerFeaturesLink') as string}</a></li>
-                <li><a href="#alur" className="hover:text-white transition-colors">{t('footerWorkflow') as string}</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors">{t('footerPricing') as string}</a></li>
-                <li><a href="#faq" className="hover:text-white transition-colors">{t('footerFaq') as string}</a></li>
-              </ul>
+            {/* Middle: 3 Navigation Columns */}
+            <div className="md:col-span-6 grid grid-cols-3 gap-6 sm:gap-8">
+              
+              {/* Column 1: Company */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold text-stone-900 font-sans tracking-tight">
+                  {lang === 'id' ? 'Company' : 'Company'}
+                </h4>
+                <ul className="space-y-2 text-xs text-stone-500">
+                  <li>
+                    <a href="#hero" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Tentang Kami' : 'About Us'}
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#alur" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Alur Pesan' : 'Process'}
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#themes" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Koleksi Tema' : 'Themes'}
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-stone-900 transition-colors"
+                    >
+                      {lang === 'id' ? 'Kontak Kami' : 'Contact'}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Column 2: Solutions */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold text-stone-900 font-sans tracking-tight">
+                  {lang === 'id' ? 'Solutions' : 'Solutions'}
+                </h4>
+                <ul className="space-y-2 text-xs text-stone-500">
+                  <li>
+                    <Link to="/themes" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Adat & Keraton' : 'Traditional'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/themes" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Resort & Danau' : 'Resort & Intimate'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/themes" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Secret Botanical' : 'Botanical Modern'}
+                    </Link>
+                  </li>
+                  <li>
+                    <a href="#pricing" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Custom Desain' : 'Bespoke Custom'}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Column 3: Support */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold text-stone-900 font-sans tracking-tight">
+                  {lang === 'id' ? 'Support' : 'Support'}
+                </h4>
+                <ul className="space-y-2 text-xs text-stone-500">
+                  <li>
+                    <a href="#faq" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Tanya Jawab (FAQ)' : 'Help Center'}
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#pricing" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Daftar Paket' : 'Pricing Plans'}
+                    </a>
+                  </li>
+                  <li>
+                    <Link to="/admin/login" className="hover:text-stone-900 transition-colors">
+                      {lang === 'id' ? 'Portal Pengantin' : 'Portal Login'}
+                    </Link>
+                  </li>
+                  <li>
+                    <a 
+                      href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20butuh%20bantuan%20seputar%20undangan"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-stone-900 transition-colors"
+                    >
+                      {lang === 'id' ? 'Bantuan WA' : 'Live Chat'}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
             </div>
 
-            {/* Themes */}
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerDesignTitle') as string}</h4>
-              <ul className="space-y-2 text-xs">
-                <li><Link to="/themes" className="hover:text-white transition-colors">Javanese Heritage (Adat)</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Maroon Gold (Royal)</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Secret Garden (Botanical)</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Split Floral (Luxury)</Link></li>
-              </ul>
-            </div>
+            {/* Right: Social Media Icons & Copyright */}
+            <div className="md:col-span-3 flex flex-col items-start md:items-end justify-between space-y-4 pt-2 md:pt-0">
+              {/* Social Icons Strip */}
+              <div className="flex items-center space-x-4 text-stone-800">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-600 transition-colors"
+                  aria-label="Instagram"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-600 transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                </a>
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-600 transition-colors"
+                  aria-label="YouTube"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                  </svg>
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-600 transition-colors"
+                  aria-label="Facebook"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                </a>
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-600 transition-colors"
+                  aria-label="X (Twitter)"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                  </svg>
+                </a>
+              </div>
 
-            {/* Contact & Admin */}
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerContactTitle') as string}</h4>
-              <ul className="space-y-2 text-xs">
-                <li>
-                  <a 
-                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20mengenai%20pembuatan%20undangan%20pernikahan%20digital."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-amber-200 transition-colors"
-                  >
-                    WhatsApp: +62 857-0790-9415
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="mailto:groupcompanywd@gmail.com"
-                    className="hover:text-amber-200 transition-colors"
-                  >
-                    Email: groupcompanywd@gmail.com
-                  </a>
-                </li>
-                <li><span>{t('footerLocation') as string}</span></li>
-                <li><span>{t('footerHours') as string}</span></li>
-                <li className="pt-2">
-                  <Link to="/admin/login" className="text-amber-200 hover:underline font-semibold">
-                    {t('footerAdminLink') as string} &rarr;
-                  </Link>
-                </li>
-              </ul>
+              {/* Copyright Text */}
+              <p className="text-xs text-stone-400">
+                &copy; {new Date().getFullYear()} WD Production. All rights reserved.
+              </p>
             </div>
 
           </div>
 
-          <div className="pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-stone-500 gap-4 text-center sm:text-left">
-            <p>&copy; {new Date().getFullYear()} WD Group. {t('footerCopyright') as string}</p>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              <Link to="/themes" className="hover:text-stone-300">{t('footerCatalog') as string}</Link>
-              <a href="#faq" className="hover:text-stone-300">{t('footerHelp') as string}</a>
-              <Link to="/admin/login" className="hover:text-stone-300">{t('mobileNavAdmin') as string}</Link>
-            </div>
-          </div>
         </div>
       </footer>
 
