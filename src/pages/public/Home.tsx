@@ -465,12 +465,12 @@ export const Home: React.FC = () => {
           
           {/* Brand Identity */}
           <Link to="/" className="flex items-center space-x-2.5 group select-none">
-            <div className="w-10 h-10 rounded-2xl bg-stone-900 flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
+            <div className="w-10 h-10 rounded-2xl bg-primary-900 flex items-center justify-center text-amber-200 shadow-sm transition-transform group-hover:scale-105">
               <span className="font-cinzel text-lg font-bold tracking-wider">WD</span>
             </div>
             <div>
               <span className="text-xl sm:text-2xl font-black text-stone-900 tracking-tight font-sans block leading-none">
-                wdproduction<span className="text-[#ea580c]">.</span>
+                wdproduction<span className="text-primary-800">.</span>
               </span>
               <span className="text-[9px] tracking-[0.2em] text-stone-400 font-semibold uppercase mt-0.5 block">
                 {t('brandSubtitle') as string}
@@ -511,15 +511,15 @@ export const Home: React.FC = () => {
               <span>{lang.toUpperCase()}</span>
             </button>
 
-            {/* Vibrant Pill CTA (Matches Swift Ship Now button) */}
+            {/* Elegant Pill CTA */}
             <a 
               href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
               target="_blank" 
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 bg-[#ea580c] hover:bg-[#c2410c] text-white pl-4 pr-1.5 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all transform hover:-translate-y-0.5 active:scale-95 group"
+              className="hidden sm:inline-flex items-center gap-2 bg-primary-900 hover:bg-primary-950 text-white pl-4 pr-1.5 py-1.5 rounded-full text-xs font-bold shadow-sm transition-all transform hover:-translate-y-0.5 active:scale-95 group"
             >
               <span>{lang === 'id' ? 'Pesan Sekarang' : 'Order Now'}</span>
-              <span className="w-6 h-6 rounded-full bg-white text-[#ea580c] flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+              <span className="w-6 h-6 rounded-full bg-primary-800 text-amber-200 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
                 <ArrowRight size={13} />
               </span>
             </a>
@@ -540,18 +540,18 @@ export const Home: React.FC = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-b border-stone-200 px-5 py-6 space-y-4 animate-reveal-up shadow-lg">
             <nav className="flex flex-col space-y-3 text-sm font-semibold text-stone-700">
-              <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-[#ea580c] transition-colors">{lang === 'id' ? 'Koleksi Tema' : 'Themes'}</a>
-              <a href="#keunggulan" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-[#ea580c] transition-colors">{lang === 'id' ? 'Fitur Unggulan' : 'Features'}</a>
-              <a href="#alur" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-[#ea580c] transition-colors">{lang === 'id' ? 'Alur Pesan' : 'How it Works'}</a>
-              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-[#ea580c] transition-colors">{lang === 'id' ? 'Paket Harga' : 'Pricing'}</a>
-              <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-[#ea580c] transition-colors">{lang === 'id' ? 'Tanya Jawab' : 'FAQ'}</a>
+              <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{lang === 'id' ? 'Koleksi Tema' : 'Themes'}</a>
+              <a href="#keunggulan" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{lang === 'id' ? 'Fitur Unggulan' : 'Features'}</a>
+              <a href="#alur" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{lang === 'id' ? 'Alur Pesan' : 'How it Works'}</a>
+              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{lang === 'id' ? 'Paket Harga' : 'Pricing'}</a>
+              <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{lang === 'id' ? 'Tanya Jawab' : 'FAQ'}</a>
             </nav>
             <div className="pt-4 border-t border-stone-100 flex flex-col gap-2.5">
               <a 
                 href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-full text-center py-2.5 text-xs font-bold text-white bg-[#ea580c] rounded-full shadow-xs"
+                className="w-full text-center py-2.5 text-xs font-bold text-white bg-primary-900 hover:bg-primary-950 rounded-full shadow-xs"
               >
                 {lang === 'id' ? 'Konsultasi via WhatsApp' : 'Consult via WhatsApp'}
               </a>
@@ -576,15 +576,15 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-7 text-center lg:text-left space-y-6">
               
               {/* Kicker Pill */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-[11px] font-bold tracking-[0.15em] text-[#ea580c] uppercase select-none">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-200/80 text-[11px] font-bold tracking-[0.15em] text-primary-800 uppercase select-none">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-800 animate-pulse" />
                 <span>{t('heroLabel') as string}</span>
               </div>
 
               {/* Main Headline */}
               <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-stone-900 tracking-tight leading-[1.12]">
                 {t('heroHeadline') as string}{' '}
-                <span className="text-[#ea580c] block sm:inline">{t('heroAccent') as string}</span>
+                <span className="font-playfair italic font-normal text-primary-800 block sm:inline">{t('heroAccent') as string}</span>
               </h1>
 
               {/* Subheadline Prose */}
@@ -594,11 +594,11 @@ export const Home: React.FC = () => {
 
               {/* Interactive Action Capsule (Swift Search Pill Style) */}
               <form onSubmit={handleLaunchDemo} className="pt-2">
-                <div className="bg-white rounded-2xl sm:rounded-full p-2 sm:p-2.5 shadow-xl border border-stone-200/90 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 max-w-xl mx-auto lg:mx-0 transition-all hover:border-orange-300 hover:shadow-2xl">
+                <div className="bg-white rounded-2xl sm:rounded-full p-2 sm:p-2.5 shadow-xl border border-stone-200/90 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 max-w-xl mx-auto lg:mx-0 transition-all hover:border-primary-300 hover:shadow-2xl">
                   
                   {/* Input 1: Guest Name */}
                   <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 sm:border-r border-stone-200">
-                    <div className="w-8 h-8 rounded-full bg-orange-50 text-[#ea580c] flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-primary-50 text-primary-800 flex items-center justify-center shrink-0">
                       <Mail size={16} />
                     </div>
                     <input
@@ -636,11 +636,11 @@ export const Home: React.FC = () => {
                     </select>
                   </div>
 
-                  {/* Action Button: Round Orange Arrow */}
+                  {/* Action Button: Round Luxury Primary Arrow */}
                   <button
                     type="submit"
                     title={lang === 'id' ? 'Buka Undangan Demo' : 'Launch Live Demo'}
-                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#ea580c] hover:bg-[#c2410c] text-white flex items-center justify-center shrink-0 shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer mx-auto sm:mx-0"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-primary-900 hover:bg-primary-950 text-amber-200 flex items-center justify-center shrink-0 shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer mx-auto sm:mx-0"
                   >
                     <ArrowRight size={18} />
                   </button>
@@ -729,7 +729,7 @@ export const Home: React.FC = () => {
                     href={currentShowcase.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0 bg-[#ea580c] hover:bg-[#c2410c] text-white px-3.5 py-1.5 rounded-full text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95"
+                    className="shrink-0 bg-primary-800 hover:bg-primary-700 text-amber-200 border border-amber-300/30 px-3.5 py-1.5 rounded-full text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95"
                     title="Buka Undangan Demo Langsung"
                   >
                     <span>Live Demo</span>
@@ -751,7 +751,7 @@ export const Home: React.FC = () => {
                     }}
                     className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                       activeMockupThemeIndex === idx
-                        ? 'bg-stone-900 text-white shadow-xs'
+                        ? 'bg-primary-900 text-amber-200 shadow-xs border border-amber-300/30'
                         : 'bg-white hover:bg-stone-100 text-stone-600 border border-stone-200'
                     }`}
                   >
@@ -794,7 +794,7 @@ export const Home: React.FC = () => {
                 href={currentShowcase.demoUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-2 rounded-full bg-[#ea580c] hover:bg-[#c2410c] text-white font-semibold transition-colors flex items-center gap-1.5"
+                className="px-4 py-2 rounded-full bg-primary-800 hover:bg-primary-700 text-amber-200 font-semibold transition-colors flex items-center gap-1.5 border border-amber-300/30"
               >
                 <span>{lang === 'id' ? 'Buka Live Demo' : 'Open Live Demo'}</span>
                 <ArrowRight size={13} />
