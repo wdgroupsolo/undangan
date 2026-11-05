@@ -1047,7 +1047,7 @@ export const Home: React.FC = () => {
             {/* Right Column: 4 Visual 3D Feature Cards */}
             <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
               
-              {/* Card 1: Video Entrance */}
+              {/* Card 1: Personalisasi Nama Tamu */}
               <div 
                 onClick={() => {
                   const url = '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true';
@@ -1058,21 +1058,21 @@ export const Home: React.FC = () => {
                 <div>
                   <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#faf9f6] flex items-center justify-center p-3 mb-3.5 border border-stone-100">
                     <img 
-                      src="/images/features/feat_video_entrance.png" 
-                      alt="Video Entrance Megah" 
+                      src="/images/features/feat_personalisasi_tamu.png" 
+                      alt="Personalisasi Nama Tamu WhatsApp" 
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
-                    <Play size={13} className="ml-0.5" />
+                    <Mail size={13} />
                   </div>
                   <h4 className="font-bold text-stone-900 text-sm group-hover:text-primary-900 transition-colors">
-                    {lang === 'id' ? 'Video Entrance Megah' : 'Cinematic Video Portal'}
+                    {lang === 'id' ? 'Personalisasi Nama Tamu' : 'Guest Personalization'}
                   </h4>
                   <p className="text-[11px] sm:text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
                     {lang === 'id' 
-                      ? 'Transisi pembuka gerbang 3D sinematik dan lantunan musik sakral otomatis.'
-                      : 'Cinematic 3D gate-opening transition with auto-playing sacred background score.'}
+                      ? 'Kirim tautan undangan resmi per nama tamu via WhatsApp dalam satu klik otomatis.'
+                      : 'Send official personalized invitation links per guest via WhatsApp in one click.'}
                   </p>
                 </div>
                 <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
