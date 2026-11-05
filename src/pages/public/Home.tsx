@@ -30,15 +30,7 @@ import {
   Bot,
   Send,
   RotateCcw,
-  Globe,
-  Search,
-  Star,
-  Compass,
-  ShieldCheck,
-  Award,
-  SlidersHorizontal,
-  Volume2,
-  VolumeX
+  Globe
 } from 'lucide-react';
 
 export const Home: React.FC = () => {
@@ -51,13 +43,6 @@ export const Home: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
-
-  // Modern Luxury Hero & Capsule States
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
-  const [isLikedFeatured, setIsLikedFeatured] = useState(false);
-  const [activeConceptFilter, setActiveConceptFilter] = useState('all');
-  const [activeFeatureFilter, setActiveFeatureFilter] = useState('all');
-  const [activeTimelineFilter, setActiveTimelineFilter] = useState('2026-2027');
 
   // Showcase Themes for Hero Phone Mockup Slider
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
@@ -446,559 +431,463 @@ export const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#faf8f5] text-stone-800 font-jakarta selection:bg-primary-700 selection:text-white overflow-x-clip">
       
-      {/* Modern Luxury Resort Full-Bleed Hero (Editorial Travel & Wedding Architecture) */}
-      <div id="hero" className="relative w-full min-h-screen lg:h-screen flex flex-col justify-between overflow-hidden bg-stone-900 text-stone-900 select-none">
-        
-        {/* Panoramic Resort Background with Mediterranean Sea & Cliffside Villas */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=2400&q=85" 
-            alt="Mediterranean Coastal Resort View" 
-            className="w-full h-full object-cover object-[center_35%] filter brightness-[0.98] contrast-[1.02]"
-          />
-          {/* Luminous atmospheric lighting overlays */}
-          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/75 via-white/25 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-stone-950/65 via-stone-900/30 to-transparent pointer-events-none" />
+      {/* Top Announcement Bar */}
+      <div className="bg-[#1c1917] text-stone-200 text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2 relative z-50">
+        <span>{t('announcementText') as string}</span>
+        <a href="#themes" className="underline font-semibold text-amber-300 hover:text-white transition-colors">
+          {t('announcementLink') as string} &rarr;
+        </a>
+      </div>
+
+      {/* Main Navigation Header */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 transition-all shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16 sm:h-20">
+          
+          {/* Brand Identity */}
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="w-10 h-10 rounded-xl bg-primary-900 flex items-center justify-center text-amber-200 shadow-sm transition-transform group-hover:scale-105">
+              <span className="font-cinzel text-lg font-bold tracking-wider">WD</span>
+            </div>
+            <div>
+              <span className="text-lg sm:text-xl font-bold font-cinzel text-stone-900 tracking-wider block leading-none">
+                WD GROUP
+              </span>
+              <span className="text-[10px] tracking-[0.2em] text-stone-500 font-semibold uppercase mt-0.5 block">
+                {t('brandSubtitle') as string}
+              </span>
+            </div>
+          </Link>
+
+          {/* Streamlined Desktop Navigation Links (5 Clean Links) */}
+          <nav className="hidden lg:flex items-center space-x-8 text-xs font-bold text-stone-600 tracking-wider uppercase">
+            <a href="#themes" className="hover:text-primary-800 transition-colors">{t('navThemes') as string}</a>
+            <a href="#keunggulan" className="hover:text-primary-800 transition-colors">{t('navFeatures') as string}</a>
+            <a href="#alur" className="hover:text-primary-800 transition-colors">{t('navWorkflow') as string}</a>
+            <a href="#pricing" className="hover:text-primary-800 transition-colors">{t('navPricing') as string}</a>
+            <a href="#faq" className="hover:text-primary-800 transition-colors">{t('navFaq') as string}</a>
+          </nav>
+
+          {/* Right Action Button & Mobile Toggle */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <a 
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center space-x-2 bg-primary-900 hover:bg-primary-950 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs transition-all transform hover:-translate-y-0.5"
+            >
+              <MessageCircle size={15} className="text-amber-300" />
+              <span>{t('navConsult') as string}</span>
+            </a>
+
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLang}
+              className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-700 text-xs font-bold transition-colors cursor-pointer"
+              aria-label={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+              title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+            >
+              <Globe size={14} />
+              <span className="hidden min-[420px]:inline">{t('langToggle') as string}</span>
+            </button>
+
+            {/* Mobile Menu Toggle Button */}
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 rounded-xl text-stone-700 hover:bg-stone-100 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+
         </div>
 
-        {/* Floating Top Navigation Bar */}
-        <header className="relative z-30 px-4 sm:px-8 lg:px-12 pt-3 sm:pt-5 pb-1 flex items-center justify-between">
-            {/* Brand Monogram & Title */}
-            <Link to="/" className="flex items-center space-x-3 group select-none">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-stone-900/85 backdrop-blur-md flex items-center justify-center text-white border border-white/20 shadow-sm transition-transform group-hover:scale-105">
-                <span className="font-cinzel text-base sm:text-lg font-bold tracking-wider">WD</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs sm:text-sm font-extrabold tracking-[0.22em] text-stone-900 uppercase font-sans">
-                  WD PRODUCTION
-                </span>
-                <span className="text-[9px] tracking-[0.25em] text-stone-600 font-semibold uppercase">
-                  LUXURY WEDDING INVITATIONS
-                </span>
-              </div>
-            </Link>
-
-            {/* Frosted Glass Capsule Navigation Pill */}
-            <nav className="hidden lg:flex items-center bg-white/80 backdrop-blur-md rounded-full p-1.5 shadow-sm border border-white/60 text-xs font-semibold text-stone-700">
-              <a 
-                href="#hero" 
-                className="bg-stone-900 text-white rounded-full px-4 py-1.5 transition-all shadow-xs"
-              >
-                Home
-              </a>
-              <a 
-                href="#themes" 
-                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
-              >
-                {lang === 'id' ? 'Destinasi Tema' : 'Destinations'}
-              </a>
-              <a 
-                href="#keunggulan" 
-                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
-              >
-                {lang === 'id' ? 'Keunggulan' : 'Features'}
-              </a>
-              <a 
-                href="#alur" 
-                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
-              >
-                {lang === 'id' ? 'Alur Pesan' : 'Experiences'}
-              </a>
-              <a 
-                href="#pricing" 
-                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
-              >
-                {lang === 'id' ? 'Paket Harga' : 'Pricing'}
-              </a>
-              <a 
-                href="#faq" 
-                className="px-3.5 py-1.5 rounded-full hover:text-stone-950 hover:bg-white/60 transition-all"
-              >
-                {lang === 'id' ? 'Tanya Jawab' : 'FAQ'}
-              </a>
+        {/* Mobile Dropdown Menu Drawer */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden bg-white border-b border-stone-200 px-5 py-6 space-y-4 animate-reveal-up shadow-lg">
+            <nav className="flex flex-col space-y-3.5 text-sm font-semibold text-stone-700">
+              <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('navThemes') as string}</a>
+              <a href="#keunggulan" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavFeatures') as string}</a>
+              <a href="#alur" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavWorkflow') as string}</a>
+              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('navPricing') as string}</a>
+              <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-primary-800 transition-colors">{t('mobileNavFaq') as string}</a>
             </nav>
-
-            {/* Right Buttons: Search pill, Action CTA, Language switcher, Mobile menu */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              {/* Search Trigger Pill */}
+            <div className="pt-4 border-t border-stone-100 flex flex-col gap-2.5">
               <a 
-                href="#themes"
-                className="w-9 h-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md border border-white/60 text-stone-800 flex items-center justify-center shadow-xs transition-all cursor-pointer"
-                title={lang === 'id' ? 'Cari tema undangan' : 'Search themes'}
-                aria-label="Search"
-              >
-                <Search size={15} />
-              </a>
-
-              {/* Language Switcher Pill */}
-              <button
-                onClick={toggleLang}
-                className="hidden min-[480px]:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/85 hover:bg-white backdrop-blur-md border border-white/60 text-stone-800 text-xs font-bold transition-all shadow-xs cursor-pointer"
-                title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-              >
-                <Globe size={13} />
-                <span>{lang.toUpperCase()}</span>
-              </button>
-
-              {/* Dark Pill CTA: Book a Journey / Konsultasi */}
-              <a
-                href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital%20mewah"
-                target="_blank"
+                href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20tertarik%20konsultasi%20pembuatan%20undangan%20pernikahan%20digital"
+                target="_blank" 
                 rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white pl-4 pr-1.5 py-1.5 rounded-full text-xs font-semibold shadow-md transition-all group"
+                className="w-full text-center py-2.5 text-xs font-bold text-white bg-primary-900 rounded-xl"
               >
-                <span>{lang === 'id' ? 'Pesan Undangan' : 'Book a Journey'}</span>
-                <span className="w-6 h-6 rounded-full bg-white text-stone-900 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
-                  <ArrowRight size={13} />
-                </span>
+                {t('mobileNavConsultWa') as string}
               </a>
-
-              {/* Mobile Hamburger Drawer Toggle */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden w-9 h-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md border border-white/60 text-stone-800 flex items-center justify-center transition-all shadow-xs"
-                aria-label="Toggle menu"
+              <Link 
+                to="/admin/login" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-center py-2 text-xs font-medium text-stone-500 hover:text-stone-800"
               >
-                {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-              </button>
+                {t('mobileNavAdmin') as string} &rarr;
+              </Link>
             </div>
-          </header>
+          </div>
+        )}
+      </header>
 
-          {/* Mobile Navigation Drawer inside frame */}
-          {mobileMenuOpen && (
-            <div className="lg:hidden relative z-40 mx-4 sm:mx-6 p-4 rounded-2xl bg-white/95 backdrop-blur-md shadow-xl border border-white/80 animate-reveal-up space-y-3">
-              <nav className="flex flex-col space-y-2 text-xs font-bold text-stone-700 uppercase tracking-wider">
-                <a href="#themes" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
-                  {lang === 'id' ? 'Destinasi Tema' : 'Destinations'}
-                </a>
-                <a href="#keunggulan" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
-                  {lang === 'id' ? 'Keunggulan' : 'Features'}
-                </a>
-                <a href="#alur" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
-                  {lang === 'id' ? 'Alur Pesan' : 'Experiences'}
-                </a>
-                <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
-                  {lang === 'id' ? 'Paket Harga' : 'Pricing'}
-                </a>
-                <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors">
-                  {lang === 'id' ? 'Tanya Jawab' : 'FAQ'}
-                </a>
-              </nav>
-              <div className="pt-2 border-t border-stone-200/80 flex items-center justify-between">
-                <button
-                  onClick={toggleLang}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-100 text-stone-800 text-xs font-bold"
-                >
-                  <Globe size={13} />
-                  <span>{lang === 'id' ? 'English' : 'Bahasa Indonesia'}</span>
-                </button>
-                <a
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-bold text-stone-900 underline"
-                >
-                  WhatsApp Support &rarr;
-                </a>
-              </div>
-            </div>
-          )}
-
-        {/* Hero Main Content */}
-        <div className="relative z-20 px-4 sm:px-8 lg:px-12 py-2 sm:py-3 flex-1 flex flex-col justify-between gap-2.5 sm:gap-3">
-          
-          {/* Top row: Headline + Right Tag */}
-          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+      {/* HERO SECTION */}
+      <section id="hero" className="pt-12 sm:pt-16 pb-16 sm:pb-24 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
-            {/* Left Headline Area */}
-            <div className="max-w-2xl space-y-2.5 sm:space-y-3.5">
+            {/* Left Content Column */}
+            <div className="lg:col-span-7 text-center lg:text-left space-y-6">
               
-              {/* Spaced Kicker */}
-              <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-700 uppercase flex items-center gap-2 select-none">
-                <span>TRAVEL</span>
-                <span className="w-1 h-1 rounded-full bg-stone-400" />
-                <span>EXPLORE</span>
-                <span className="w-1 h-1 rounded-full bg-stone-400" />
-                <span>EXPERIENCE</span>
-                <span className="w-1 h-1 rounded-full bg-stone-400" />
-                <span>BELONG</span>
+              {/* Editorial Category Label */}
+              <div className="text-xs font-bold tracking-[0.2em] text-primary-800 uppercase font-serif">
+                {t('heroLabel') as string}
               </div>
 
-              {/* Editorial Serif Dual-Tone Headline */}
-              <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-serif font-medium tracking-tight text-stone-900 leading-[1.05]">
-                Discover Journeys <br />
-                <span className="italic font-serif font-normal text-[#9b6f38] drop-shadow-xs">
-                  Beyond Ordinary
-                </span>
+              {/* Main Headline */}
+              <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-stone-900 tracking-tight leading-[1.18]">
+                {t('heroHeadline') as string} <span className="font-playfair italic font-normal text-primary-800" style={{ whiteSpace: 'nowrap' }}>{t('heroAccent') as string}</span>
               </h1>
 
-              {/* Subtitle */}
-              <p className="text-xs sm:text-sm lg:text-base text-stone-700 font-normal leading-relaxed max-w-xl line-clamp-2">
-                {lang === 'id' 
-                  ? 'Koleksi undangan pernikahan digital eksklusif berarsitektur visual mewah. Lebih dari sekadar undangan, kami merangkai kisah sakral yang abadi untuk dikenang selamanya.'
-                  : 'Curated digital wedding invitations crafted for extraordinary celebrations. More than invitations, we create digital stories you will cherish forever.'}
+              {/* Subheadline */}
+              <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                {t('heroSubheadline') as string}
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-2.5 pt-1">
-                <a
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
+                <a 
                   href="#themes"
-                  className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 active:scale-98 text-white text-xs sm:text-sm font-semibold px-5 sm:px-6 py-2.5 rounded-full shadow-lg transition-all"
+                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-primary-800 hover:bg-primary-900 active:scale-98 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2"
                 >
-                  <span>{lang === 'id' ? 'Eksplorasi Tema' : 'Explore Destinations'}</span>
-                  <ArrowRight size={15} />
+                  <span>{t('heroCta1') as string}</span>
+                  <ArrowRight size={16} />
                 </a>
 
-                <button
-                  onClick={() => setVideoModalOpen(true)}
-                  className="inline-flex items-center gap-2 bg-white/80 hover:bg-white text-stone-900 text-xs sm:text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-full backdrop-blur-md border border-white/70 shadow-sm transition-all cursor-pointer group"
+                <Link 
+                  to="/themes"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-stone-800 font-bold text-xs sm:text-sm border border-stone-300 hover:bg-stone-50 hover:border-stone-400 transition-all flex items-center justify-center space-x-2"
                 >
-                  <span className="w-5 h-5 rounded-full bg-stone-900 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Play size={9} className="ml-0.5 fill-current" />
-                  </span>
-                  <span>{lang === 'id' ? 'Lihat Video Teaser' : 'Watch Guide'}</span>
-                </button>
+                  <Smartphone size={16} className="text-stone-600" />
+                  <span>{t('heroCta2') as string}</span>
+                </Link>
+              </div>
+
+              {/* Trust Indicators (Centered on mobile, left-aligned on desktop) */}
+              <div className="pt-6 border-t border-stone-200/80 flex flex-wrap items-center justify-center lg:justify-start gap-y-2.5 gap-x-6 text-xs text-stone-600">
+                <div className="flex items-center space-x-2">
+                  <Check size={16} className="text-emerald-700 shrink-0" />
+                  <span>{t('trustOriginal') as string}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Check size={16} className="text-emerald-700 shrink-0" />
+                  <span>{t('trustWa') as string}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Check size={16} className="text-emerald-700 shrink-0" />
+                  <span>{t('trustResponsive') as string}</span>
+                </div>
               </div>
 
             </div>
 
-            {/* Right Corner Editorial Text */}
-            <div className="hidden lg:block text-right select-none pt-2">
-              <div className="text-[10px] font-bold tracking-[0.25em] text-stone-700 uppercase leading-relaxed font-sans">
-                EXTRAORDINARY<br />
-                DESTINATIONS<br />
-                MEANINGFUL<br />
-                EXPERIENCES
-              </div>
-            </div>
-
-          </div>
-
-          {/* Center Floating Quick Search Bar */}
-          <div className="my-1 sm:my-2">
-            <div className="bg-white/92 backdrop-blur-md rounded-2xl lg:rounded-full p-2 sm:p-2.5 shadow-xl border border-white/80 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 text-stone-800 transition-all">
+            {/* Right Interactive Mockup Showcase */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center relative w-full">
               
-              {/* 1. Destination Field */}
-              <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 border-b lg:border-b-0 lg:border-r border-stone-200/80">
-                <div className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
-                  <Compass size={15} />
-                </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[10px] font-bold text-stone-900 uppercase tracking-wider">
-                    {lang === 'id' ? 'Tema Destinasi' : 'Destinations'}
-                  </span>
-                  <select
-                    value={activeConceptFilter}
-                    onChange={(e) => setActiveConceptFilter(e.target.value)}
-                    className="text-xs text-stone-500 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer"
-                  >
-                    <option value="all">{lang === 'id' ? 'Semua Pilihan Tema' : 'Where to go?'}</option>
-                    <option value="nirwana-sarangan">Nirwana Sarangan Resort</option>
-                    <option value="royal-wayang-gold">Royal Wayang Gold</option>
-                    <option value="joglo-maroon-heritage">Batak Maroon Heritage</option>
-                    <option value="javanese-heritage">Javanese Heritage</option>
-                    <option value="secret-garden">Secret Botanical Garden</option>
-                  </select>
-                </div>
-              </div>
+              {/* Real Audio Player for Mockup Preview */}
+              <audio 
+                ref={mockupAudioRef} 
+                src={currentShowcase.musicUrl} 
+                preload="none" 
+                onEnded={() => setIsPlayingAudio(false)} 
+              />
 
-              {/* 2. Dates Field */}
-              <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 border-b lg:border-b-0 lg:border-r border-stone-200/80">
-                <div className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
-                  <Calendar size={15} />
-                </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[10px] font-bold text-stone-900 uppercase tracking-wider">
-                    {lang === 'id' ? 'Jadwal Acara' : 'Dates'}
-                  </span>
-                  <select
-                    value={activeTimelineFilter}
-                    onChange={(e) => setActiveTimelineFilter(e.target.value)}
-                    className="text-xs text-stone-500 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer"
-                  >
-                    <option value="2026-2027">2026 - 2027</option>
-                    <option value="q1-2027">Q1 2027 (Jan - Mar)</option>
-                    <option value="q2-2027">Q2 2027 (Apr - Jun)</option>
-                    <option value="express-24h">{lang === 'id' ? 'Kilat 24 Jam Siap' : '24-Hour Express'}</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* 3. Travelers / Guest Count Field */}
-              <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 border-b lg:border-b-0 lg:border-r border-stone-200/80">
-                <div className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
-                  <Users size={15} />
-                </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[10px] font-bold text-stone-900 uppercase tracking-wider">
-                    {lang === 'id' ? 'Jumlah Tamu' : 'Travelers'}
-                  </span>
-                  <span className="text-xs text-stone-500 font-medium">
-                    {lang === 'id' ? 'Tamu Tanpa Batas' : 'Unlimited Guests'}
-                  </span>
-                </div>
-              </div>
-
-              {/* 4. Budget / Package Field */}
-              <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5">
-                <div className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
-                  <Sparkles size={15} />
-                </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[10px] font-bold text-stone-900 uppercase tracking-wider">
-                    {lang === 'id' ? 'Paket Investasi' : 'Budget'}
-                  </span>
-                  <span className="text-xs text-stone-500 font-medium">
-                    {lang === 'id' ? 'Mulai Rp 49.000' : 'Any budget'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Search Button */}
-              <a
-                href="#themes"
-                className="bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-semibold px-6 py-2.5 rounded-xl lg:rounded-full flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer whitespace-nowrap active:scale-98"
-              >
-                <Search size={14} />
-                <span>{lang === 'id' ? 'Cari Tema' : 'Search Journeys'}</span>
-              </a>
-
-            </div>
-          </div>
-
-          {/* Bottom Bento Grid: 3 Modern Floating Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-stretch pb-3 sm:pb-4">
-            
-            {/* Card 1: Featured Destination / Theme (md:col-span-4) */}
-            <div className="md:col-span-4 bg-white/92 backdrop-blur-md rounded-[22px] sm:rounded-[26px] p-3 shadow-xl border border-white/80 flex flex-col justify-between group">
-              <div>
-                {/* Card Image Thumbnail with badges */}
-                <div className="relative h-24 sm:h-28 rounded-xl sm:rounded-2xl overflow-hidden mb-2 sm:mb-2.5">
-                  <img 
-                    src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80" 
-                    alt="Santorini Greece Luxury Destination" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-2 left-2">
-                    <span className="text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-stone-800 shadow-xs border border-white/60">
-                      FEATURED DESTINATION
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setIsLikedFeatured(!isLikedFeatured)}
-                    className={`absolute top-2 right-2 w-6 h-6 rounded-full backdrop-blur-md flex items-center justify-center transition-all cursor-pointer ${
-                      isLikedFeatured 
-                        ? 'bg-rose-500 text-white' 
-                        : 'bg-white/80 text-stone-700 hover:bg-white'
-                    }`}
-                    aria-label="Favorite destination"
-                  >
-                    <Heart size={12} className={isLikedFeatured ? 'fill-current' : ''} />
-                  </button>
+              {/* Phone Frame Mockup */}
+              <div className="w-full max-w-[280px] min-[380px]:max-w-[310px] sm:max-w-[330px] rounded-[44px] bg-stone-950 p-3 sm:p-3.5 shadow-2xl border-4 border-stone-800 relative mx-auto select-none">
+                
+                {/* Speaker & Notch */}
+                <div className="w-28 h-3.5 bg-stone-900 rounded-full mx-auto mb-2.5 flex items-center justify-center space-x-1.5">
+                  <div className="w-2 h-2 rounded-full bg-stone-950" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-stone-800" />
                 </div>
 
-                {/* Title & Reviews */}
-                <div className="flex items-center justify-between">
-                  <h3 className="font-serif font-bold text-sm sm:text-base text-stone-900">
-                    Santorini, Greece
-                  </h3>
-                  <div className="flex items-center text-xs text-stone-800 font-semibold gap-1">
-                    <Star size={12} className="text-amber-500 fill-amber-500" />
-                    <span>4.9</span>
-                    <span className="text-stone-400 font-normal">(1.2K)</span>
-                  </div>
-                </div>
-
-                <p className="text-[11px] text-stone-500 mt-0.5 leading-snug line-clamp-1">
-                  Iconic views, timeless charm and unforgettable sunsets.
-                </p>
-              </div>
-
-              {/* Bottom Link Arrow */}
-              <div className="pt-2 flex justify-end">
-                <a
-                  href="#themes"
-                  className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-900 hover:text-white text-stone-700 flex items-center justify-center transition-all shadow-2xs"
-                  aria-label="Lihat tema destinasi"
-                >
-                  <ArrowRight size={13} />
-                </a>
-              </div>
-            </div>
-
-            {/* Card 2: Metrics & Social Proof (md:col-span-5) */}
-            <div className="md:col-span-5 bg-white/92 backdrop-blur-md rounded-[22px] sm:rounded-[26px] p-3 sm:p-3.5 shadow-xl border border-white/80 flex flex-col justify-between">
-              
-              {/* 4 Stats Grid */}
-              <div className="grid grid-cols-4 gap-1.5 text-center pb-2.5 border-b border-stone-200/80">
-                <div className="space-y-0.5">
-                  <div className="flex justify-center text-stone-600 mb-0.5">
-                    <Compass size={14} />
-                  </div>
-                  <span className="block text-xs sm:text-sm font-extrabold text-stone-900 font-sans">250+</span>
-                  <span className="block text-[8px] sm:text-[9px] text-stone-500 leading-tight uppercase font-medium">Destinasi Unik</span>
-                </div>
-                <div className="space-y-0.5">
-                  <div className="flex justify-center text-stone-600 mb-0.5">
-                    <Users size={14} />
-                  </div>
-                  <span className="block text-xs sm:text-sm font-extrabold text-stone-900 font-sans">50K+</span>
-                  <span className="block text-[8px] sm:text-[9px] text-stone-500 leading-tight uppercase font-medium">Tamu Bahagia</span>
-                </div>
-                <div className="space-y-0.5">
-                  <div className="flex justify-center text-stone-600 mb-0.5">
-                    <Award size={14} />
-                  </div>
-                  <span className="block text-xs sm:text-sm font-extrabold text-stone-900 font-sans">1,200+</span>
-                  <span className="block text-[8px] sm:text-[9px] text-stone-500 leading-tight uppercase font-medium">Karya Kurasi</span>
-                </div>
-                <div className="space-y-0.5">
-                  <div className="flex justify-center text-stone-600 mb-0.5">
-                    <Globe size={14} />
-                  </div>
-                  <span className="block text-xs sm:text-sm font-extrabold text-stone-900 font-sans">95+</span>
-                  <span className="block text-[8px] sm:text-[9px] text-stone-500 leading-tight uppercase font-medium">Kota & Wilayah</span>
-                </div>
-              </div>
-
-              {/* Bottom Testimonial Row */}
-              <div className="pt-2 flex items-center gap-2.5">
-                {/* Avatar stack */}
-                <div className="flex items-center -space-x-1.5 shrink-0">
-                  <img 
-                    src="/photos/avatar-rendy-maya.jpg" 
-                    alt="Reviewer 1" 
-                    className="w-7 h-7 rounded-full border border-white object-cover" 
-                  />
-                  <img 
-                    src="/photos/avatar-dimas-nadia.jpg" 
-                    alt="Reviewer 2" 
-                    className="w-7 h-7 rounded-full border border-white object-cover" 
-                  />
-                  <img 
-                    src="/photos/avatar-faris-aisyah.jpg" 
-                    alt="Reviewer 3" 
-                    className="w-7 h-7 rounded-full border border-white object-cover" 
-                  />
-                  <div className="w-7 h-7 rounded-full border border-white bg-stone-900 text-white text-[9px] font-bold flex items-center justify-center">
-                    +
-                  </div>
-                </div>
-
-                {/* Quote + Reviewer Note */}
-                <div className="text-left space-y-0.5 min-w-0 flex-1">
-                  <p className="text-[10px] sm:text-[11px] text-stone-700 italic leading-tight truncate">
-                    &ldquo;Incredible planning, unforgettable experiences. Truly a celebration of a lifetime!&rdquo;
-                  </p>
-                  <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-stone-500">
-                    <div className="flex text-amber-500 shrink-0">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={9} className="fill-amber-500" />
-                      ))}
+                {/* Phone Screen Container */}
+                <div className="rounded-[32px] bg-[#fbf9f6] overflow-hidden border border-stone-200/40 text-center">
+                  
+                  {/* Music Player Bar */}
+                  <div className="bg-primary-900 text-white px-3.5 py-2.5 flex items-center justify-between text-xs">
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        onClick={toggleMockupAudio}
+                        className="w-6 h-6 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-700 transition-colors cursor-pointer"
+                        title={isPlayingAudio ? t('mockupPause') as string : t('mockupPlay') as string}
+                        aria-label={isPlayingAudio ? t('mockupPause') as string : t('mockupPlay') as string}
+                      >
+                        {isPlayingAudio ? <Pause size={10} /> : <Play size={10} className="ml-0.5" />}
+                      </button>
+                      <div className="text-left leading-tight">
+                        <p className="text-[9px] text-amber-200 font-semibold tracking-wider uppercase">{t('mockupMusicLabel') as string}</p>
+                        <p className="text-[11px] font-medium truncate max-w-[130px] text-stone-100">{currentShowcase.musicTitle}</p>
+                      </div>
                     </div>
-                    <span className="font-semibold text-stone-700 truncate">Sarah M.</span>
-                    <span>&bull;</span>
-                    <span className="truncate">Traveled to Sarangan</span>
+                    <Music size={13} className={`text-amber-200 ${isPlayingAudio ? 'animate-bounce' : ''}`} />
                   </div>
+
+                  {/* Invitation Preview Hero with Slide Controls & Touch Swipe */}
+                  <div 
+                    className="relative h-60 sm:h-64 overflow-hidden group touch-pan-y"
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
+                  >
+                    <img 
+                      key={currentShowcase.slug}
+                      src={currentShowcase.preview} 
+                      alt={`Tema ${currentShowcase.name}`} 
+                      className="w-full h-full object-cover transition-all duration-300" 
+                    />
+
+                    {/* Prev Slide Arrow */}
+                    <button
+                      onClick={handlePrevTheme}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-stone-950/65 hover:bg-stone-950/90 text-white backdrop-blur-xs flex items-center justify-center transition-all z-20 shadow-md border border-white/25 active:scale-95 cursor-pointer"
+                      aria-label="Tema Sebelumnya"
+                      title="Tema Sebelumnya"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+
+                    {/* Next Slide Arrow */}
+                    <button
+                      onClick={handleNextTheme}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-stone-950/65 hover:bg-stone-950/90 text-white backdrop-blur-xs flex items-center justify-center transition-all z-20 shadow-md border border-white/25 active:scale-95 cursor-pointer"
+                      aria-label="Tema Selanjutnya"
+                      title="Tema Selanjutnya"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+
+                    {/* Overlay Details */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/30 to-transparent flex flex-col justify-end p-4 text-white text-left pointer-events-none">
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[10px] uppercase tracking-widest text-amber-300 font-bold drop-shadow-xs">
+                          {currentShowcase.name}
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-black/50 backdrop-blur-xs text-white/90 font-mono font-bold">
+                          {activeMockupThemeIndex + 1}/{showcaseThemes.length}
+                        </span>
+                      </div>
+                      <h3 className="font-cinzel text-xl sm:text-2xl font-bold tracking-wide text-white drop-shadow-xs">
+                        {currentShowcase.couple}
+                      </h3>
+                      <p className="text-[11px] text-stone-200 mt-1 font-light flex items-center space-x-1">
+                        <Calendar size={12} className="text-amber-300 inline shrink-0" />
+                        <span>{currentShowcase.date}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Slide Indicators */}
+                  <div className="flex items-center justify-center gap-1.5 pt-2 pb-1 bg-white">
+                    {showcaseThemes.map((th, i) => (
+                      <button
+                        key={th.id}
+                        onClick={() => { pauseAutoSlide(); setActiveMockupThemeIndex(i); }}
+                        className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                          activeMockupThemeIndex === i 
+                            ? 'w-5 bg-primary-900' 
+                            : 'w-1.5 bg-stone-300 hover:bg-stone-400'
+                        }`}
+                        aria-label={`Pilih tema ${th.name}`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Live Dynamic Countdown Box */}
+                  <div className="p-3.5 bg-white border-b border-stone-100">
+                    <p className="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-2">
+                      {t('mockupCountdownLabel') as string}
+                    </p>
+                    <div className="grid grid-cols-4 gap-1.5 text-center">
+                      <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
+                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{countdown.days}</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownDays') as string}</span>
+                      </div>
+                      <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
+                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.hours).padStart(2, '0')}</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownHours') as string}</span>
+                      </div>
+                      <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
+                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.minutes).padStart(2, '0')}</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownMin') as string}</span>
+                      </div>
+                      <div className="bg-stone-50 p-1.5 rounded-lg border border-stone-200">
+                        <span className="block text-xs sm:text-sm font-bold text-stone-900 font-mono">{String(countdown.seconds).padStart(2, '0')}</span>
+                        <span className="text-[8px] text-stone-500 uppercase">{t('mockupCountdownSec') as string}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dynamic Demo Button - changes link and name based on active theme */}
+                  <div className="p-3.5 bg-[#faf8f5]">
+                    <a 
+                      href={currentShowcase.demoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full bg-primary-800 hover:bg-primary-900 text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 shadow-sm group active:scale-98"
+                    >
+                      <span>{t('mockupDemoBtn') as string} ({currentShowcase.name})</span>
+                      <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  </div>
+
                 </div>
+
+                {/* Bottom Home Indicator */}
+                <div className="w-24 h-1 bg-stone-700 rounded-full mx-auto mt-2.5" />
               </div>
 
-            </div>
 
-            {/* Card 3: Real Places. Real Stories. Teaser Thumbnail (md:col-span-3) */}
-            <div 
-              onClick={() => setVideoModalOpen(true)}
-              className="md:col-span-3 relative rounded-[22px] sm:rounded-[26px] overflow-hidden min-h-[120px] sm:min-h-[135px] p-3 flex flex-col justify-between text-white shadow-xl cursor-pointer group border border-white/50"
-            >
-              {/* Background Image */}
-              <img 
-                src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" 
-                alt="Overwater resort villas and beach stories" 
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/30 to-transparent pointer-events-none" />
-
-              {/* Top Play Button */}
-              <div className="relative z-10 flex justify-start">
-                <div className="w-7 h-7 rounded-full bg-white/80 backdrop-blur-md text-stone-900 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                  <Play size={12} className="ml-0.5 fill-current" />
-                </div>
-              </div>
-
-              {/* Bottom Story Text */}
-              <div className="relative z-10 space-y-0.5">
-                <h4 className="font-serif font-bold text-xs sm:text-sm text-white tracking-wide">
-                  Real Places. Real Stories.
-                </h4>
-                <p className="text-[9px] sm:text-[10px] text-stone-200 leading-tight">
-                  Watch traveler stories from around the world.
-                </p>
-              </div>
             </div>
 
           </div>
-
         </div>
-      </div>
+      </section>
 
-      {/* Video Modal Preview */}
-      {videoModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/80 backdrop-blur-md animate-reveal-up">
-          <div className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-stone-950 shadow-2xl border border-white/20">
-            <button
-              onClick={() => setVideoModalOpen(false)}
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-stone-900/80 text-white hover:bg-stone-800 flex items-center justify-center transition-all cursor-pointer"
-              aria-label="Tutup video"
-            >
-              <X size={18} />
-            </button>
-            <div className="aspect-video w-full bg-black flex items-center justify-center">
-              <video 
-                src="/gemini_generated_video_1f694672.mp4" 
-                controls 
-                autoPlay 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-4 bg-stone-900 text-stone-200 text-xs flex items-center justify-between">
-              <div>
-                <p className="font-serif font-bold text-sm text-white">Cinematic Wedding Journey Teaser</p>
-                <p className="text-stone-400 text-[11px]">WD Wedding Production &bull; Experience Timeless Elegance</p>
-              </div>
-              <a 
-                href="#themes"
-                onClick={() => setVideoModalOpen(false)}
-                className="px-4 py-2 rounded-full bg-white text-stone-900 font-semibold hover:bg-stone-100 transition-colors"
-              >
-                {lang === 'id' ? 'Pilih Tema Sekarang' : 'Explore Themes'}
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* POPULAR DESTINATIONS & SIGNATURE THEMES (Directly Below Hero Frame) */}
-      <section id="themes" className="py-20 sm:py-28 bg-[#f5f1eb] border-y border-stone-200/80 relative">
-        <div id="destinations" className="absolute -top-20" />
+      {/* UNIFIED KEUNGGULAN & FITUR SECTION (Merged Cleanly) */}
+      <section id="keunggulan" className="py-20 sm:py-24 bg-white border-y border-stone-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
+          {/* Section Header */}
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
-              <span>POPULAR DESTINATIONS</span>
-              <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>SIGNATURE THEMES</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
-              {lang === 'id' ? 'Jelajahi Destinasi Tema &' : 'Explore Extraordinary Destinations &'}{' '}
-              <span className="italic font-serif font-normal text-[#9b6f38]">
-                {lang === 'id' ? 'Koleksi Sakral' : 'Signature Journeys'}
-              </span>
+            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
+              {t('featuresLabel') as string}
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+              {t('featuresTitle') as string}
             </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
-              {lang === 'id'
-                ? 'Dari pesona resort tepi danau hingga kemegahan budaya Nusantara, temukan tema undangan pernikahan digital yang sempurna untuk hari bahagia Anda.'
-                : 'From serene lakeside mountain resorts to timeless royal heritage, discover curated digital wedding journeys crafted for extraordinary celebrations.'}
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+              {t('featuresDesc') as string}
+            </p>
+          </div>
+
+          {/* Two Flagship Showcase Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            
+            {/* Flagship 1: Cinematic Video & Audio */}
+            <div className="bg-[#faf8f5] rounded-3xl p-7 sm:p-9 border border-stone-200 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-primary-900 text-amber-200 flex items-center justify-center">
+                  <Play size={20} />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
+                  {t('flagship1Title') as string}
+                </h3>
+                <p className="text-sm text-stone-600 leading-relaxed">
+                  {t('flagship1Desc') as string}
+                </p>
+              </div>
+              <div className="pt-6 border-t border-stone-200/70 mt-6 grid grid-cols-2 gap-3 text-xs text-stone-700">
+                <div className="flex items-center space-x-2">
+                  <Check size={14} className="text-emerald-700 shrink-0" />
+                  <span>{t('flagship1Check1') as string}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Check size={14} className="text-emerald-700 shrink-0" />
+                  <span>{t('flagship1Check2') as string}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Flagship 2: RSVP & Digital Guestbook */}
+            <div className="bg-[#faf8f5] rounded-3xl p-7 sm:p-9 border border-stone-200 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-primary-900 text-amber-200 flex items-center justify-center">
+                  <CheckCircle2 size={20} />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
+                  {t('flagship2Title') as string}
+                </h3>
+                <p className="text-sm text-stone-600 leading-relaxed">
+                  {t('flagship2Desc') as string}
+                </p>
+              </div>
+              <div className="pt-6 border-t border-stone-200/70 mt-6 grid grid-cols-2 gap-3 text-xs text-stone-700">
+                <div className="flex items-center space-x-2">
+                  <Check size={14} className="text-emerald-700 shrink-0" />
+                  <span>{t('flagship2Check1') as string}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Check size={14} className="text-emerald-700 shrink-0" />
+                  <span>{t('flagship2Check2') as string}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Four Core Capabilities (Clean 4-column row) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
+                <Gift size={18} />
+              </div>
+              <h4 className="font-bold text-stone-900 text-sm">{t('cap1Title') as string}</h4>
+              <p className="text-xs text-stone-600 leading-relaxed">
+                {t('cap1Desc') as string}
+              </p>
+            </div>
+
+            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
+                <MapPin size={18} />
+              </div>
+              <h4 className="font-bold text-stone-900 text-sm">{t('cap2Title') as string}</h4>
+              <p className="text-xs text-stone-600 leading-relaxed">
+                {t('cap2Desc') as string}
+              </p>
+            </div>
+
+            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
+                <Users size={18} />
+              </div>
+              <h4 className="font-bold text-stone-900 text-sm">{t('cap3Title') as string}</h4>
+              <p className="text-xs text-stone-600 leading-relaxed">
+                {t('cap3Desc') as string}
+              </p>
+            </div>
+
+            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
+                <Calendar size={18} />
+              </div>
+              <h4 className="font-bold text-stone-900 text-sm">{t('cap4Title') as string}</h4>
+              <p className="text-xs text-stone-600 leading-relaxed">
+                {t('cap4Desc') as string}
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* THEMES SHOWCASE SECTION */}
+      <section id="themes" className="py-20 sm:py-24 bg-[#f5f1eb] border-y border-stone-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
+              {t('themesLabel') as string}
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+              {t('themesTitle') as string}
+            </h2>
+            <p className="text-sm sm:text-base text-stone-600">
+              {t('themesDesc') as string}
             </p>
           </div>
 
@@ -1084,38 +973,32 @@ export const Home: React.FC = () => {
               return (
                 <div 
                   key={theme.id || theme.slug}
-                  className="bg-white rounded-[28px] overflow-hidden border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
+                  className="bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-sm hover:shadow-md transition-shadow flex flex-col group"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-12 h-full">
                     
-                    {/* Image Preview with Editorial Badges */}
-                    <div className="sm:col-span-5 relative aspect-[4/3] sm:aspect-auto min-h-[230px] sm:min-h-full overflow-hidden bg-stone-900">
+                    {/* Image Preview */}
+                    <div className="sm:col-span-5 relative aspect-[4/3] sm:aspect-auto min-h-[220px] sm:min-h-full overflow-hidden bg-stone-900">
                       <img 
                         src={previewImg} 
                         alt={theme.name} 
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out" 
                       />
                       <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-                        <span className="bg-stone-950/80 backdrop-blur-md text-white text-[9px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full border border-white/10 shadow-xs">
+                        <span className="bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-md">
                           {theme.category || (isNirwana ? 'Resort & Nature' : isJogloMaroon ? 'Traditional & Heritage' : isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
-                        </span>
-                      </div>
-                      <div className="absolute top-3 right-3 z-10">
-                        <span className="bg-white/90 backdrop-blur-md text-stone-900 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs border border-white/60">
-                          <Star size={11} className="text-amber-500 fill-amber-500" />
-                          <span>4.9</span>
                         </span>
                       </div>
                     </div>
 
                     {/* Theme Info */}
-                    <div className="sm:col-span-7 p-6 sm:p-7 flex flex-col justify-between space-y-4">
+                    <div className="sm:col-span-7 p-6 flex flex-col justify-between space-y-4">
                       <div>
-                        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#9b6f38] mb-1 font-sans">
+                        <div className="text-xs font-bold uppercase tracking-wider text-primary-800 mb-1">
                           {isNirwana ? 'Resort Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
                         </div>
-                        <h3 className="font-serif font-bold text-xl sm:text-2xl text-stone-900 tracking-tight">{theme.name}</h3>
-                        <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3 font-normal">
+                        <h3 className="font-bold text-xl sm:text-2xl text-stone-900">{theme.name}</h3>
+                        <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3">
                           {isNirwana
                             ? 'Tema pernikahan eksklusif bernuansa pemandangan Telaga Sarangan yang sejuk dan menenangkan di lereng Gunung Lawu, berlatar kemegahan Hotel Nirwana Sarangan, riak air danau, kabut pegunungan, dan sentuhan intimate wedding & wisata.'
                             : isJogloMaroon
@@ -1140,10 +1023,10 @@ export const Home: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="flex flex-col sm:flex-row gap-2.5 pt-4 border-t border-stone-100">
+                      <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t border-stone-100">
                         <Link 
                           to="/themes"
-                          className="w-full sm:flex-1 py-2.5 px-4 rounded-full border border-stone-300 text-stone-800 font-semibold text-xs hover:bg-stone-100 transition-colors text-center block"
+                          className="w-full sm:flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 transition-colors text-center block"
                         >
                           {t('themeCatalogBtn') as string}
                         </Link>
@@ -1151,10 +1034,9 @@ export const Home: React.FC = () => {
                           href={demoUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="w-full sm:flex-1 py-2.5 px-4 rounded-full bg-stone-900 text-white font-semibold text-xs hover:bg-stone-800 transition-colors text-center flex items-center justify-center gap-1.5 shadow-sm"
+                          className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 transition-colors text-center block"
                         >
-                          <span>{t('themeDemoBtn') as string}</span>
-                          <ArrowRight size={13} />
+                          {t('themeDemoBtn') as string}
                         </a>
                       </div>
                     </div>
@@ -1165,182 +1047,39 @@ export const Home: React.FC = () => {
             })}
           </div>
 
-          {/* Custom Theme Bespoke Request Banner */}
-          <div className="mt-10 max-w-6xl mx-auto bg-gradient-to-r from-stone-900 via-stone-900 to-stone-950 text-white rounded-[28px] border border-white/10 p-7 sm:p-9 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-6 shadow-xl">
-            <div className="space-y-1 max-w-xl">
-              <span className="text-[10px] font-bold tracking-[0.25em] text-amber-300 uppercase font-sans">
-                BESPOKE ATELIER
-              </span>
-              <h3 className="text-lg sm:text-xl font-serif font-bold text-white">{t('themeCustomTitle') as string}</h3>
-              <p className="text-xs text-stone-300 leading-relaxed font-light">
+          {/* Custom Theme Request Notice */}
+          <div className="mt-8 max-w-6xl mx-auto bg-white rounded-2xl border border-stone-200 p-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
+            <div>
+              <h3 className="text-sm sm:text-base font-bold text-stone-900">{t('themeCustomTitle') as string}</h3>
+              <p className="text-xs text-stone-600 mt-0.5">
                 {t('themeCustomDesc') as string}
               </p>
             </div>
             <a 
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 rounded-full bg-white hover:bg-stone-100 text-stone-900 text-xs font-semibold shadow-md transition-all shrink-0 active:scale-95"
+              className="px-5 py-2.5 rounded-xl bg-stone-900 text-white text-xs font-bold hover:bg-stone-800 transition-colors shrink-0"
             >
-              {t('themeCustomBtn') as string} &rarr;
+              {t('themeCustomBtn') as string}
             </a>
           </div>
 
         </div>
       </section>
 
-      {/* CURATED EXPERIENCES SECTION (Modern Editorial Bento Architecture) */}
-      <section id="experiences" className="py-20 sm:py-28 bg-[#faf8f5] border-b border-stone-200/70 relative">
-        <div id="keunggulan" className="absolute -top-20" />
+      {/* ALUR PEMESANAN (Workflow Narrative) */}
+      <section id="alur" className="py-20 sm:py-24 bg-white border-b border-stone-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
-              <span>EXTRAORDINARY EXPERIENCES</span>
-              <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>MEANINGFUL MOMENTS</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
-              {lang === 'id' ? 'Pengalaman Berkesan yang' : 'Extraordinary Experiences for a'}{' '}
-              <span className="italic font-serif font-normal text-[#9b6f38]">
-                {lang === 'id' ? 'Tak Terlupakan' : 'Timeless Celebration'}
-              </span>
+            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
+              {t('workflowLabel') as string}
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+              {t('workflowTitle') as string}
             </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
-              {lang === 'id'
-                ? 'Setiap detik perayaan dikurasi dengan arsitektur visual sinematik, harmoni musik sakral, dan kenyamanan digital bagi seluruh tamu undangan.'
-                : 'Every moment is elevated with cinematic visual architecture, orchestral audio ambiance, and effortless digital hospitality.'}
-            </p>
-          </div>
-
-          {/* Bento Experience Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
-            
-            {/* Experience 1: Cinematic Entrance & Music (md:col-span-7) */}
-            <div className="md:col-span-7 bg-stone-950 text-white rounded-[32px] p-8 sm:p-10 border border-white/10 shadow-xl flex flex-col justify-between relative overflow-hidden group">
-              <div className="relative z-10 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-2xl bg-white/10 backdrop-blur-md text-amber-300 flex items-center justify-center border border-white/15 shadow-sm group-hover:scale-105 transition-transform">
-                    <Play size={18} className="ml-0.5 fill-current" />
-                  </div>
-                  <span className="text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-stone-300 border border-white/10">
-                    CINEMATIC GATE
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
-                    {lang === 'id' ? 'Video Gerbang Sinematik & Musik Latar Sakral' : 'Cinematic Gate Video & Sacred Background Music'}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-stone-300 mt-2 leading-relaxed font-light">
-                    {lang === 'id' 
-                      ? 'Menyambut tamu dengan transisi video pembuka pintu gerbang megah berkualitas HD, disusul alunan instrumen piano & strings romantis yang berputar otomatis.'
-                      : 'Welcomes guests with a high-definition majestic opening gate video transition, followed by romantic piano & strings instrumental.'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="relative z-10 pt-6 border-t border-white/10 mt-6 flex flex-wrap gap-2 text-xs text-stone-300">
-                <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 font-medium">HD Gate Animation</span>
-                <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 font-medium">Auto-Play Symphony</span>
-                <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 font-medium">Independent Controls</span>
-              </div>
-            </div>
-
-            {/* Experience 2: Live RSVP & Digital Guestbook (md:col-span-5) */}
-            <div className="md:col-span-5 bg-white rounded-[32px] p-8 sm:p-10 border border-stone-200/90 shadow-xl flex flex-col justify-between relative overflow-hidden group">
-              <div className="relative z-10 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-2xl bg-stone-100 text-stone-900 flex items-center justify-center border border-stone-200 shadow-sm group-hover:scale-105 transition-transform">
-                    <CheckCircle2 size={20} className="text-[#9b6f38]" />
-                  </div>
-                  <span className="text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
-                    REAL-TIME RSVP
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 tracking-tight">
-                    {lang === 'id' ? 'Buku Tamu Digital & Konfirmasi Kehadiran' : 'Digital Guestbook & Live RSVP Management'}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-stone-600 mt-2 leading-relaxed font-normal">
-                    {lang === 'id'
-                      ? 'Tamu mengonfirmasi kehadiran serta menuliskan doa restu hangat secara instan. Data kehadiran terkapitulasi otomatis di dashboard admin.'
-                      : 'Guests confirm attendance and share warm blessings instantly, synchronized directly into the real-time admin portal.'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="relative z-10 pt-6 border-t border-stone-100 mt-6 flex flex-wrap gap-2 text-xs text-stone-700">
-                <span className="px-3 py-1.5 rounded-full bg-stone-50 border border-stone-200 font-medium">Instant Confirmation</span>
-                <span className="px-3 py-1.5 rounded-full bg-stone-50 border border-stone-200 font-medium">Guest Database</span>
-              </div>
-            </div>
-
-            {/* Experience 3: Precision Venue Navigation (md:col-span-6) */}
-            <div className="md:col-span-6 bg-white rounded-[32px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-800">
-                  <MapPin size={18} className="text-[#9b6f38]" />
-                </div>
-                <span className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600">
-                  NAVIGATION
-                </span>
-              </div>
-              <div>
-                <h4 className="font-serif font-bold text-stone-900 text-lg">
-                  {lang === 'id' ? 'Navigasi Lokasi & Google Maps Presisi' : 'Precision Maps & Venue Navigation'}
-                </h4>
-                <p className="text-xs text-stone-600 mt-1.5 leading-relaxed font-normal">
-                  {lang === 'id'
-                    ? 'Panduan penunjuk arah dan peta Google Maps terintegrasi untuk akad nikah, temu manten, dan resepsi di venue pilihan Anda.'
-                    : 'Interactive Google Maps with accurate pinpoint navigation directly to your ceremony and reception venues.'}
-                </p>
-              </div>
-            </div>
-
-            {/* Experience 4: Cashless Digital Envelope & QRIS (md:col-span-6) */}
-            <div className="md:col-span-6 bg-white rounded-[32px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-800">
-                  <Gift size={18} className="text-[#9b6f38]" />
-                </div>
-                <span className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600">
-                  CASHLESS GIFT
-                </span>
-              </div>
-              <div>
-                <h4 className="font-serif font-bold text-stone-900 text-lg">
-                  {lang === 'id' ? 'Amplop Digital & Salin Rekening Instan' : 'Digital Envelope & Cashless QRIS'}
-                </h4>
-                <p className="text-xs text-stone-600 mt-1.5 leading-relaxed font-normal">
-                  {lang === 'id'
-                    ? 'Kemudahan transfer tanda kasih langsung ke rekening mempelai (BCA, BRI, Mandiri, BSI) dilengkapi fitur salin nomor rekening satu klik dan scan QRIS.'
-                    : 'Seamless digital gifting with one-click bank account number copying and instant QRIS payment scanning.'}
-                </p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* THE JOURNEY / ALUR PEMESANAN (Editorial Roadmap Layout) */}
-      <section id="alur" className="py-20 sm:py-28 bg-white border-b border-stone-200/70">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
-              <span>THE JOURNEY</span>
-              <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>FROM VISION TO CELEBRATION</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
-              {lang === 'id' ? 'Alur Pemesanan Cepat &' : 'Seamless Process from Discovery to'}{' '}
-              <span className="italic font-serif font-normal text-[#9b6f38]">
-                {lang === 'id' ? 'Praktis' : 'Perfection'}
-              </span>
-            </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-stone-600">
               {t('workflowDesc') as string}
             </p>
           </div>
@@ -1348,75 +1087,47 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
             {/* Step 1 */}
-            <div className="p-7 sm:p-8 rounded-[26px] bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-between space-y-4 hover:shadow-md transition-all group">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-3xl font-bold text-[#9b6f38]/60 group-hover:text-[#9b6f38] transition-colors">
-                    01
-                  </span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-400 px-2 py-0.5 rounded-full bg-stone-200/60">
-                    STEP ONE
-                  </span>
-                </div>
-                <h3 className="font-serif font-bold text-stone-900 text-lg">{t('step1Title') as string}</h3>
-                <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                  {t('step1Desc') as string}
-                </p>
+            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
+                01
               </div>
+              <h3 className="font-bold text-stone-900 text-base">{t('step1Title') as string}</h3>
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {t('step1Desc') as string}
+              </p>
             </div>
 
             {/* Step 2 */}
-            <div className="p-7 sm:p-8 rounded-[26px] bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-between space-y-4 hover:shadow-md transition-all group">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-3xl font-bold text-[#9b6f38]/60 group-hover:text-[#9b6f38] transition-colors">
-                    02
-                  </span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-400 px-2 py-0.5 rounded-full bg-stone-200/60">
-                    STEP TWO
-                  </span>
-                </div>
-                <h3 className="font-serif font-bold text-stone-900 text-lg">{t('step2Title') as string}</h3>
-                <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                  {t('step2Desc') as string}
-                </p>
+            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
+                02
               </div>
+              <h3 className="font-bold text-stone-900 text-base">{t('step2Title') as string}</h3>
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {t('step2Desc') as string}
+              </p>
             </div>
 
             {/* Step 3 */}
-            <div className="p-7 sm:p-8 rounded-[26px] bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-between space-y-4 hover:shadow-md transition-all group">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-3xl font-bold text-[#9b6f38]/60 group-hover:text-[#9b6f38] transition-colors">
-                    03
-                  </span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-400 px-2 py-0.5 rounded-full bg-stone-200/60">
-                    STEP THREE
-                  </span>
-                </div>
-                <h3 className="font-serif font-bold text-stone-900 text-lg">{t('step3Title') as string}</h3>
-                <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                  {t('step3Desc') as string}
-                </p>
+            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
+                03
               </div>
+              <h3 className="font-bold text-stone-900 text-base">{t('step3Title') as string}</h3>
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {t('step3Desc') as string}
+              </p>
             </div>
 
             {/* Step 4 */}
-            <div className="p-7 sm:p-8 rounded-[26px] bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-between space-y-4 hover:shadow-md transition-all group">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-3xl font-bold text-[#9b6f38]/60 group-hover:text-[#9b6f38] transition-colors">
-                    04
-                  </span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-400 px-2 py-0.5 rounded-full bg-stone-200/60">
-                    STEP FOUR
-                  </span>
-                </div>
-                <h3 className="font-serif font-bold text-stone-900 text-lg">{t('step4Title') as string}</h3>
-                <p className="text-xs text-stone-600 leading-relaxed font-normal">
-                  {t('step4Desc') as string}
-                </p>
+            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
+                04
               </div>
+              <h3 className="font-bold text-stone-900 text-base">{t('step4Title') as string}</h3>
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {t('step4Desc') as string}
+              </p>
             </div>
 
           </div>
@@ -1424,62 +1135,54 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* PRICING SUITES SECTION (Luxury Editorial Investment Collections) */}
-      <section id="pricing" className="py-20 sm:py-28 bg-[#f5f1eb] border-b border-stone-200/80">
+      {/* PRICING SECTION (Preserves Requested 'Start from' Labels) */}
+      <section id="pricing" className="py-20 sm:py-24 bg-[#f5f1eb] border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
-              <span>INVESTMENT SUITES</span>
-              <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>TRANSPARENT VALUE</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
-              {lang === 'id' ? 'Pilihan Paket Investasi' : 'Transparent Investment Suites for'}{' '}
-              <span className="italic font-serif font-normal text-[#9b6f38]">
-                {lang === 'id' ? 'Undangan Pernikahan' : 'Your Sacred Celebration'}
-              </span>
+          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
+              {t('pricingLabel') as string}
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+              {t('pricingTitle') as string}
             </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-stone-600">
               {t('pricingDesc') as string}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch max-w-6xl mx-auto">
             
-            {/* 1. STARTER SUITE */}
-            <div className="bg-white rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            {/* 1. STARTER PLAN */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col justify-between">
               <div>
                 <div className="text-center pb-5 border-b border-stone-200">
-                  <span className="text-[9px] font-bold tracking-[0.2em] text-stone-400 uppercase">
-                    PRACTICAL SUITE
-                  </span>
-                  <h3 className="text-2xl font-serif font-bold text-stone-900 tracking-wide mt-1">
+                  <h3 className="text-2xl font-extrabold text-stone-900 tracking-wider font-cinzel">
                     STARTER
                   </h3>
-                  <p className="text-xs font-normal text-stone-500 mt-1">
-                    Undangan Digital Praktis &amp; Elegan
+                  <p className="text-xs font-medium text-stone-500 mt-1">
+                    Undangan Digital Praktis
                   </p>
 
-                  <div className="mt-5 flex flex-col items-center justify-center">
+                  <div className="mt-4 flex flex-col items-center justify-center">
                     <div className="flex items-center space-x-2">
-                      <span className="line-through text-stone-400 text-xs font-semibold">
+                      <span className="line-through text-stone-400 text-sm font-semibold">
                         Rp 150.000
                       </span>
                       <span className="bg-stone-100 text-stone-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                         Hemat 67%
                       </span>
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mt-1.5 font-sans">
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-stone-500 mt-1.5">
                       Start from
                     </span>
-                    <div className="text-3xl font-serif font-bold text-stone-950 mt-0.5">
+                    <div className="text-3xl font-black text-stone-950 font-cinzel mt-0.5">
                       Rp 50.000
                     </div>
                   </div>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700 font-normal">
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
                   <li className="flex items-center space-x-2.5">
                     <Check size={16} className="text-emerald-700 shrink-0" />
                     <span>Pilihan tema standar pilihan</span>
@@ -1517,53 +1220,50 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20pesan%20Paket%20Starter%20(Start%20from%20Rp%2050.000)"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Start%20from%20Rp%2050.000)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3 rounded-full bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs sm:text-sm transition-colors shadow-xs"
+                  className="w-full block text-center py-3 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm transition-colors"
                 >
                   Pilih Paket Starter
                 </a>
               </div>
             </div>
 
-            {/* 2. SIGNATURE PREMIUM SUITE (Featured Flagship Tier) */}
-            <div className="bg-stone-950 text-white rounded-[30px] p-7 sm:p-9 border-2 border-amber-400 shadow-2xl flex flex-col justify-between relative ring-2 ring-amber-400/20 transform lg:-translate-y-2">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-stone-950 text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow-sm font-sans">
+            {/* 2. PREMIUM PLAN */}
+            <div className="bg-[#1c1917] text-white rounded-3xl p-6 sm:p-8 border-2 border-amber-400 shadow-2xl flex flex-col justify-between relative ring-1 ring-amber-400/30">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-stone-950 text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow-sm">
                 {t('premiumBadge') as string}
               </div>
 
               <div>
                 <div className="text-center pb-5 border-b border-white/15 pt-2">
-                  <span className="text-[9px] font-bold tracking-[0.2em] text-amber-300 uppercase">
-                    MOST POPULAR SIGNATURE
-                  </span>
-                  <h3 className="text-2xl font-serif font-bold text-white tracking-wide mt-1">
+                  <h3 className="text-2xl font-extrabold text-white tracking-wider font-cinzel">
                     PREMIUM
                   </h3>
-                  <p className="text-xs font-normal text-amber-200 mt-1">
-                    Undangan Digital Fitur Lengkap &amp; Eksklusif
+                  <p className="text-xs font-medium text-amber-200 mt-1">
+                    Undangan Digital Fitur Lengkap
                   </p>
 
-                  <div className="mt-5 flex flex-col items-center justify-center">
+                  <div className="mt-4 flex flex-col items-center justify-center">
                     <div className="flex items-center space-x-2">
-                      <span className="line-through text-stone-400 text-xs font-semibold">
+                      <span className="line-through text-stone-400 text-sm font-semibold">
                         Rp 250.000
                       </span>
                       <span className="bg-amber-400 text-stone-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
                         Hemat 40%
                       </span>
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300 mt-1.5 font-sans">
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-amber-300 mt-1.5">
                       Start from
                     </span>
-                    <div className="text-3xl font-serif font-bold text-white mt-0.5">
+                    <div className="text-3xl font-black text-white font-cinzel mt-0.5">
                       Rp 150.000
                     </div>
                   </div>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-200 font-normal">
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-100">
                   <li className="flex items-center space-x-2.5">
                     <Check size={16} className="text-amber-300 shrink-0" />
                     <span><strong>Seluruh fitur Paket Starter</strong></span>
@@ -1601,46 +1301,43 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20pesan%20Paket%20Premium%20(Start%20from%20Rp%20150.000)"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Start%20from%20Rp%20150.000)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 font-bold text-xs sm:text-sm text-stone-950 transition-colors shadow-md"
+                  className="w-full block text-center py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 font-extrabold text-xs sm:text-sm text-stone-950 transition-colors shadow-md"
                 >
                   Pesan Paket Premium
                 </a>
               </div>
             </div>
 
-            {/* 3. BESPOKE ROYAL ATELIER (Custom Plan) */}
-            <div className="bg-white rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
+            {/* 3. CUSTOM PLAN */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col justify-between md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
               <div>
                 <div className="text-center pb-5 border-b border-stone-200">
-                  <span className="text-[9px] font-bold tracking-[0.2em] text-stone-400 uppercase">
-                    HAUTE COUTURE
-                  </span>
-                  <h3 className="text-2xl font-serif font-bold text-stone-900 tracking-wide mt-1">
+                  <h3 className="text-2xl font-extrabold text-stone-900 tracking-wider font-cinzel">
                     CUSTOM
                   </h3>
-                  <p className="text-xs font-normal text-stone-500 mt-1">
-                    Bespoke Wedding Architecture
+                  <p className="text-xs font-medium text-stone-500 mt-1">
+                    Bespoke Wedding Website
                   </p>
 
-                  <div className="mt-5 flex flex-col items-center justify-center">
+                  <div className="mt-4 flex flex-col items-center justify-center">
                     <div className="flex items-center space-x-2">
                       <span className="bg-stone-100 text-stone-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                         Bebas Request
                       </span>
                     </div>
-                    <div className="text-2xl font-serif font-bold text-stone-950 mt-2">
+                    <div className="text-2xl font-black text-stone-950 font-cinzel mt-1">
                       Custom Design
                     </div>
-                    <span className="text-[11px] font-normal text-stone-500 mt-0.5">
+                    <span className="text-[11px] font-medium text-stone-500 mt-0.5">
                       Menyesuaikan konsep &amp; dekorasi Anda
                     </span>
                   </div>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700 font-normal">
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
                   <li className="flex items-center space-x-2.5">
                     <Check size={16} className="text-emerald-700 shrink-0" />
                     <span><strong>Seluruh fitur Paket Premium</strong></span>
@@ -1670,10 +1367,10 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3 rounded-full bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs sm:text-sm transition-colors shadow-xs"
+                  className="w-full block text-center py-3 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm transition-colors"
                 >
                   Konsultasi Paket Custom
                 </a>
@@ -1685,85 +1382,59 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION (Stories of Love & Real Celebrations) */}
-      <section id="testimonials" className="py-20 sm:py-28 bg-white">
+      {/* TESTIMONIALS SECTION */}
+      <section id="testimonials" className="py-20 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
-              <span>STORIES OF LOVE</span>
-              <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>REAL CELEBRATIONS</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
-              {lang === 'id' ? 'Kisah Bahagia &' : 'Cherished Stories &'}{' '}
-              <span className="italic font-serif font-normal text-[#9b6f38]">
-                {lang === 'id' ? 'Apresiasi Tamu' : 'Guest Impressions'}
-              </span>
+            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
+              {t('testimonialsLabel') as string}
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+              {t('testimonialsTitle') as string}
             </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-stone-600">
               {t('testimonialsDesc') as string}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <div className="bg-[#faf8f5] rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6">
-              <div className="space-y-3">
-                <div className="flex text-amber-500 gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} className="fill-amber-500" />
-                  ))}
-                </div>
-                <p className="text-stone-700 text-sm leading-relaxed italic font-serif">
-                  &ldquo;Sangat suka dengan detail visual dan ornamen batiknya. Tamu-tamu keluarga besar kami sangat mengapresiasi karena mudah dibuka di HP dan musiknya sakral.&rdquo;
-                </p>
-              </div>
-              <div className="flex items-center space-x-3.5 pt-5 border-t border-stone-200/70">
-                <img src="/photos/avatar-rendy-maya.jpg" alt="Rendy & Maya" className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-xs" />
+            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between">
+              <p className="text-stone-700 text-sm leading-relaxed italic">
+                &ldquo;Sangat suka dengan detail visual dan ornamen batiknya. Tamu-tamu keluarga besar kami sangat mengapresiasi karena mudah dibuka di HP dan musiknya sakral.&rdquo;
+              </p>
+              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
+                <img src="/photos/avatar-rendy-maya.jpg" alt="Rendy & Maya" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
                 <div>
-                  <h4 className="font-serif font-bold text-stone-900 text-base">Rendy &amp; Maya</h4>
-                  <p className="text-xs text-stone-500 font-sans">Pernikahan di Solo • Tema Javanese Heritage</p>
+                  <h4 className="font-bold text-stone-900 text-sm">Rendy &amp; Maya</h4>
+                  <p className="text-xs text-stone-500">Pernikahan di Solo • Tema Javanese Heritage</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6">
-              <div className="space-y-3">
-                <div className="flex text-amber-500 gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} className="fill-amber-500" />
-                  ))}
-                </div>
-                <p className="text-stone-700 text-sm leading-relaxed italic font-serif">
-                  &ldquo;Pelayanan cepat dan ramah, revisi langsung dibantu admin. Fitur generator nama tamu di WhatsApp sangat membantu menghemat waktu sebar undangan.&rdquo;
-                </p>
-              </div>
-              <div className="flex items-center space-x-3.5 pt-5 border-t border-stone-200/70">
-                <img src="/photos/avatar-dimas-nadia.jpg" alt="Dimas & Nadia" className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-xs" />
+            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between">
+              <p className="text-stone-700 text-sm leading-relaxed italic">
+                &ldquo;Pelayanan cepat dan ramah, revisi langsung dibantu admin. Fitur generator nama tamu di WhatsApp sangat membantu menghemat waktu sebar undangan.&rdquo;
+              </p>
+              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
+                <img src="/photos/avatar-dimas-nadia.jpg" alt="Dimas & Nadia" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
                 <div>
-                  <h4 className="font-serif font-bold text-stone-900 text-base">Dimas &amp; Nadia</h4>
-                  <p className="text-xs text-stone-500 font-sans">Pernikahan di Yogyakarta • Tema Split Floral</p>
+                  <h4 className="font-bold text-stone-900 text-sm">Dimas &amp; Nadia</h4>
+                  <p className="text-xs text-stone-500">Pernikahan di Yogyakarta • Tema Split Floral</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6 md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
-              <div className="space-y-3">
-                <div className="flex text-amber-500 gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} className="fill-amber-500" />
-                  ))}
-                </div>
-                <p className="text-stone-700 text-sm leading-relaxed italic font-serif">
-                  &ldquo;Transisi video gerbang pembukanya sangat mewah. Banyak teman kami yang memuji undangannya terasa eksklusif dan beda dari undangan digital biasa.&rdquo;
-                </p>
-              </div>
-              <div className="flex items-center space-x-3.5 pt-5 border-t border-stone-200/70">
-                <img src="/photos/avatar-faris-aisyah.jpg" alt="Faris & Aisyah" className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-xs" />
+            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
+              <p className="text-stone-700 text-sm leading-relaxed italic">
+                &ldquo;Transisi video gerbang pembukanya sangat mewah. Banyak teman kami yang memuji undangannya terasa eksklusif dan beda dari undangan digital biasa.&rdquo;
+              </p>
+              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
+                <img src="/photos/avatar-faris-aisyah.jpg" alt="Faris & Aisyah" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
                 <div>
-                  <h4 className="font-serif font-bold text-stone-900 text-base">Faris &amp; Aisyah</h4>
-                  <p className="text-xs text-stone-500 font-sans">Pernikahan di Semarang • Tema Maroon Gold</p>
+                  <h4 className="font-bold text-stone-900 text-sm">Faris &amp; Aisyah</h4>
+                  <p className="text-xs text-stone-500">Pernikahan di Semarang • Tema Maroon Gold</p>
                 </div>
               </div>
             </div>
@@ -1773,63 +1444,59 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* CONCIERGE FAQ & INTERACTIVE CHATBOT SECTION */}
-      <section id="faq" className="py-20 sm:py-28 bg-[#f5f1eb] border-t border-stone-200/80 relative">
+      {/* FAQ CHATBOT SECTION */}
+      <section id="faq" className="py-20 sm:py-24 bg-[#f7f4ee] border-t border-stone-200/80 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
-              <span>ASSISTANCE</span>
-              <span className="w-1 h-1 rounded-full bg-stone-400" />
-              <span>CONCIERGE FAQ</span>
+          <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-200/80 text-stone-800 text-xs font-semibold tracking-wide">
+              <Bot size={15} className="text-primary-800" />
+              <span>{t('faqBotLabel') as string}</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
-              {lang === 'id' ? 'Pusat Bantuan &' : 'Concierge Assistance &'}{' '}
-              <span className="italic font-serif font-normal text-[#9b6f38]">
-                {lang === 'id' ? 'Tanya Jawab' : 'Frequently Asked'}
-              </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
+              {t('faqTitle') as string}
             </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
               {t('faqDesc') as string}
             </p>
           </div>
 
-          {/* Chatbot Window Container (Luxury Frosted Architecture) */}
-          <div className="bg-white rounded-[30px] border border-stone-300/80 shadow-2xl overflow-hidden flex flex-col">
+          {/* Chatbot Window Container */}
+          <div className="bg-white rounded-3xl border border-stone-300/80 shadow-xl overflow-hidden flex flex-col">
             
             {/* Chatbot Header */}
-            <div className="bg-stone-950 text-white px-6 py-4.5 flex items-center justify-between border-b border-stone-800">
-              <div className="flex items-center space-x-3.5">
+            <div className="bg-stone-950 text-white px-5 py-4 flex items-center justify-between border-b border-stone-800">
+              <div className="flex items-center space-x-3">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center text-amber-300 font-bold border border-amber-300/30 shadow-xs">
+                  <div className="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-amber-300 font-bold border border-amber-300/30 shadow-xs">
                     <Bot size={20} />
                   </div>
                   <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-stone-950 animate-pulse" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-serif font-bold text-white flex items-center gap-2">
-                    <span>WD Digital Concierge</span>
-                    <span className="text-[9px] font-sans font-semibold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">Active</span>
+                  <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+                    <span>WD Wedding Assistant</span>
+                    <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">Bot FAQ</span>
                   </h3>
-                  <p className="text-xs text-stone-400 font-sans">{t('faqBotStatus') as string}</p>
+                  <p className="text-xs text-stone-400">{t('faqBotStatus') as string}</p>
                 </div>
               </div>
 
               <div className="flex items-center space-x-2">
                 <button
                   onClick={handleResetChat}
-                  className="px-3 py-1.5 rounded-full bg-stone-800/80 hover:bg-stone-800 text-stone-300 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-lg bg-stone-800/80 hover:bg-stone-800 text-stone-300 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
                   title={t('faqResetTitle') as string}
                 >
                   <RotateCcw size={13} />
                   <span className="hidden sm:inline">Reset</span>
                 </button>
                 <a
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20tanya%20langsung%20dengan%20tim%20desainer"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20tanya%20langsung%20dengan%20tim%20desainer"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-1.5 rounded-full bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
+                  className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
                 >
                   <MessageCircle size={13} />
                   <span className="hidden sm:inline">{t('faqChatWa') as string}</span>
@@ -1840,10 +1507,10 @@ export const Home: React.FC = () => {
             {/* Chat Messages Log Area */}
             <div
               ref={chatMessagesContainerRef}
-              className="h-[360px] sm:h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fbf9f6]/90 text-xs sm:text-sm font-sans"
+              className="h-[360px] sm:h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fbf9f6]/80 text-xs sm:text-sm"
             >
               <div className="text-center my-1">
-                <span className="text-[10px] font-medium text-stone-500 bg-stone-100 px-3 py-1 rounded-full">
+                <span className="text-[10px] font-medium text-stone-400 bg-stone-100 px-3 py-1 rounded-full">
                   {t('faqConvoStart') as string}
                 </span>
               </div>
@@ -1856,7 +1523,7 @@ export const Home: React.FC = () => {
                     className={`flex items-end gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
                   >
                     {!isUser && (
-                      <div className="w-7 h-7 rounded-full bg-stone-900 text-amber-300 flex items-center justify-center shrink-0 text-xs shadow-2xs">
+                      <div className="w-7 h-7 rounded-full bg-primary-900 text-amber-300 flex items-center justify-center shrink-0 text-xs shadow-2xs">
                         <Bot size={14} />
                       </div>
                     )}
@@ -1864,7 +1531,7 @@ export const Home: React.FC = () => {
                     <div
                       className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 shadow-2xs leading-relaxed space-y-2 ${
                         isUser
-                          ? 'bg-stone-900 text-white rounded-br-xs text-right'
+                          ? 'bg-primary-900 text-white rounded-br-xs text-right'
                           : 'bg-white text-stone-800 border border-stone-200/90 rounded-bl-xs text-left'
                       }`}
                     >
@@ -1876,7 +1543,7 @@ export const Home: React.FC = () => {
                             href={msg.actionUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-2xs"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-2xs"
                           >
                             <MessageCircle size={14} />
                             <span>{msg.actionLabel || 'Hubungi WhatsApp'}</span>
@@ -1904,7 +1571,7 @@ export const Home: React.FC = () => {
 
               {isTyping && (
                 <div className="flex items-center gap-2.5 justify-start">
-                  <div className="w-7 h-7 rounded-full bg-stone-900 text-amber-300 flex items-center justify-center shrink-0 text-xs">
+                  <div className="w-7 h-7 rounded-full bg-primary-900 text-amber-300 flex items-center justify-center shrink-0 text-xs">
                     <Bot size={14} />
                   </div>
                   <div className="bg-white border border-stone-200/90 rounded-2xl rounded-bl-xs px-4 py-3 shadow-2xs flex items-center space-x-1.5">
@@ -1932,7 +1599,7 @@ export const Home: React.FC = () => {
                   <button
                     key={item.id}
                     onClick={() => handleAskQuestion(item.question, item.answer)}
-                    className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-stone-900 hover:text-white border border-stone-300/80 text-stone-700 transition-colors whitespace-nowrap cursor-pointer shrink-0 shadow-2xs active:scale-95"
+                    className="px-3 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-amber-100 hover:text-amber-900 border border-stone-300/80 text-stone-700 transition-colors whitespace-nowrap cursor-pointer shrink-0 shadow-2xs active:scale-95"
                   >
                     {item.chip}
                   </button>
@@ -1953,16 +1620,16 @@ export const Home: React.FC = () => {
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder={t('faqInputPlaceholder') as string}
-                className="flex-1 px-4 py-2.5 rounded-full bg-stone-50 border border-stone-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-stone-900/20 focus:border-stone-900 transition-all placeholder:text-stone-400"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-stone-50 border border-stone-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-800/20 focus:border-primary-800 transition-all placeholder:text-stone-400"
               />
               <button
                 type="submit"
                 disabled={!chatInput.trim()}
-                className="w-10 h-10 rounded-full bg-stone-900 hover:bg-stone-800 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer shrink-0 active:scale-95"
+                className="w-10 h-10 rounded-xl bg-primary-900 hover:bg-primary-950 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer shrink-0 active:scale-95"
                 title={t('faqSendTitle') as string}
                 aria-label={t('faqSendTitle') as string}
               >
-                <Send size={15} />
+                <Send size={16} />
               </button>
             </form>
 
@@ -1975,10 +1642,10 @@ export const Home: React.FC = () => {
               <span>{t('faqSupportText') as string} <strong>{t('faqSupportHours') as string}</strong></span>
             </div>
             <a
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-stone-900 hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-primary-900 hover:text-primary-950 underline flex items-center gap-1"
             >
               <span>{t('faqSupportLink') as string}</span>
               <ArrowRight size={13} />
@@ -1988,28 +1655,25 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* CALL TO ACTION BANNER (Luxury Ambient Editorial Finish) */}
-      <section className="py-20 sm:py-28 bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 text-white relative overflow-hidden border-t border-white/10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
-          <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-amber-300 uppercase select-none">
-            WD WEDDING PRODUCTION • TIMELESS ARCHITECTURE
-          </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-medium tracking-tight leading-[1.12]">
-            {lang === 'id' ? 'Siap Mengabadikan Momen Bahagia Anda Bersama' : 'Ready to Immortalize Your Sacred Celebration with'}{' '}
-            <span className="italic font-serif font-normal text-amber-300">
-              WD Production?
-            </span>
+      {/* CALL TO ACTION BANNER */}
+      <section className="py-16 sm:py-20 bg-primary-900 text-white relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
+          <span className="font-cinzel text-amber-200 uppercase tracking-widest text-xs font-bold block">
+            WD Group Wedding Invitation
+          </span>
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+            {t('ctaTitle') as string}
           </h2>
-          <p className="text-sm sm:text-base text-stone-300 max-w-xl mx-auto font-light leading-relaxed">
+          <p className="text-sm sm:text-base text-stone-200 max-w-xl mx-auto font-light leading-relaxed">
             {t('ctaDesc') as string}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
             <a 
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
-              target="_blank" 
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
+              target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs sm:text-sm shadow-xl transition-all flex items-center justify-center space-x-2 active:scale-95"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-amber-300 hover:bg-amber-200 text-stone-950 font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2"
             >
               <MessageCircle size={16} />
               <span>{t('ctaBtn1') as string}</span>
@@ -2017,7 +1681,7 @@ export const Home: React.FC = () => {
 
             <Link 
               to="/themes"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 transition-all flex items-center justify-center space-x-2 backdrop-blur-md active:scale-95"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all flex items-center justify-center space-x-2"
             >
               <span>{t('ctaBtn2') as string}</span>
               <ArrowRight size={15} />
@@ -2026,35 +1690,28 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* FOOTER (Refined Luxury Editorial Signature) */}
-      <footer className="bg-stone-950 text-stone-400 py-16 sm:py-20 border-t border-stone-800/80 text-sm font-sans">
+      {/* FOOTER */}
+      <footer className="bg-stone-950 text-stone-400 py-12 sm:py-16 border-t border-stone-800 text-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
             
             {/* Brand Info */}
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-stone-900 border border-white/20 flex items-center justify-center text-white font-cinzel font-bold text-lg shadow-xs">
+                <div className="w-9 h-9 rounded-lg bg-primary-800 flex items-center justify-center text-amber-200 font-cinzel font-bold">
                   WD
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-extrabold tracking-[0.2em] text-white uppercase font-sans">
-                    WD PRODUCTION
-                  </span>
-                  <span className="text-[9px] tracking-[0.22em] text-stone-400 font-medium uppercase">
-                    LUXURY WEDDINGS
-                  </span>
-                </div>
+                <span className="text-xl font-bold font-cinzel text-white tracking-wider">WD GROUP</span>
               </div>
-              <p className="text-xs text-stone-400 leading-relaxed font-light">
+              <p className="text-xs text-stone-400 leading-relaxed">
                 {t('footerDesc') as string}
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-stone-200 mb-4 font-sans">{t('footerNavTitle') as string}</h4>
-              <ul className="space-y-2.5 text-xs">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerNavTitle') as string}</h4>
+              <ul className="space-y-2 text-xs">
                 <li><a href="#hero" className="hover:text-white transition-colors">{t('footerHome') as string}</a></li>
                 <li><a href="#themes" className="hover:text-white transition-colors">{t('footerThemes') as string}</a></li>
                 <li><a href="#keunggulan" className="hover:text-white transition-colors">{t('footerFeaturesLink') as string}</a></li>
@@ -2066,23 +1723,22 @@ export const Home: React.FC = () => {
 
             {/* Themes */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-stone-200 mb-4 font-sans">{t('footerDesignTitle') as string}</h4>
-              <ul className="space-y-2.5 text-xs">
-                <li><Link to="/themes" className="hover:text-white transition-colors">Nirwana Sarangan Resort</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Royal Wayang Gold (Keraton)</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Batak Maroon Heritage</Link></li>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerDesignTitle') as string}</h4>
+              <ul className="space-y-2 text-xs">
                 <li><Link to="/themes" className="hover:text-white transition-colors">Javanese Heritage (Adat)</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Secret Botanical Garden</Link></li>
+                <li><Link to="/themes" className="hover:text-white transition-colors">Maroon Gold (Royal)</Link></li>
+                <li><Link to="/themes" className="hover:text-white transition-colors">Secret Garden (Botanical)</Link></li>
+                <li><Link to="/themes" className="hover:text-white transition-colors">Split Floral (Luxury)</Link></li>
               </ul>
             </div>
 
             {/* Contact & Admin */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-stone-200 mb-4 font-sans">{t('footerContactTitle') as string}</h4>
-              <ul className="space-y-2.5 text-xs">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerContactTitle') as string}</h4>
+              <ul className="space-y-2 text-xs">
                 <li>
                   <a 
-                    href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20konsultasi%20mengenai%20pembuatan%20undangan%20pernikahan%20digital."
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20mengenai%20pembuatan%20undangan%20pernikahan%20digital."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-amber-200 transition-colors"
@@ -2101,7 +1757,7 @@ export const Home: React.FC = () => {
                 <li><span>{t('footerLocation') as string}</span></li>
                 <li><span>{t('footerHours') as string}</span></li>
                 <li className="pt-2">
-                  <Link to="/admin/login" className="text-amber-300 hover:underline font-semibold">
+                  <Link to="/admin/login" className="text-amber-200 hover:underline font-semibold">
                     {t('footerAdminLink') as string} &rarr;
                   </Link>
                 </li>
@@ -2111,7 +1767,7 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-stone-500 gap-4 text-center sm:text-left">
-            <p>&copy; {new Date().getFullYear()} WD Production. {t('footerCopyright') as string}</p>
+            <p>&copy; {new Date().getFullYear()} WD Group. {t('footerCopyright') as string}</p>
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
               <Link to="/themes" className="hover:text-stone-300">{t('footerCatalog') as string}</Link>
               <a href="#faq" className="hover:text-stone-300">{t('footerHelp') as string}</a>
