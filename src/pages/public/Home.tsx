@@ -860,27 +860,6 @@ export const Home: React.FC = () => {
 
               </div>
 
-              {/* Theme Selector Pills Row Below Card */}
-              <div className="flex flex-wrap items-center justify-center gap-1.5 mt-3.5 max-w-sm sm:max-w-md">
-                {showcaseThemes.map((th, idx) => (
-                  <button
-                    key={th.id}
-                    onClick={() => {
-                      pauseAutoSlide();
-                      setActiveMockupThemeIndex(idx);
-                      setDemoSelectedTheme(th.slug);
-                    }}
-                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                      activeMockupThemeIndex === idx
-                        ? 'bg-primary-900 text-amber-200 shadow-xs border border-amber-300/30'
-                        : 'bg-white hover:bg-stone-100 text-stone-600 border border-stone-200'
-                    }`}
-                  >
-                    {th.name.replace(' Resort', '').replace(' Heritage', '').replace(' Classical', '')}
-                  </button>
-                ))}
-              </div>
-
             </div>
 
           </div>
