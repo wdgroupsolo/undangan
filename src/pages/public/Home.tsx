@@ -989,117 +989,140 @@ export const Home: React.FC = () => {
         </div>
       )}
 
-      {/* UNIFIED KEUNGGULAN & FITUR SECTION (Merged Cleanly) */}
-      <section id="keunggulan" className="py-20 sm:py-24 bg-white border-y border-stone-200/80">
+      {/* CURATED KEUNGGULAN & ARSITEKTUR FITUR (Luxury Editorial Layout) */}
+      <section id="keunggulan" className="py-20 sm:py-28 bg-[#faf8f5] border-y border-stone-200/70 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Section Header */}
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('featuresLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('featuresTitle') as string}
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
+              <span>EXPERIENCE</span>
+              <span className="w-1 h-1 rounded-full bg-stone-400" />
+              <span>CRAFTSMANSHIP</span>
+              <span className="w-1 h-1 rounded-full bg-stone-400" />
+              <span>EXCELLENCE</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
+              {lang === 'id' ? 'Fitur Lengkap untuk Momen Sakral yang' : 'Curated Features Crafted for a'}{' '}
+              <span className="italic font-serif font-normal text-[#9b6f38]">
+                {lang === 'id' ? 'Anggun & Abadi' : 'Timeless Celebration'}
+              </span>
             </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
               {t('featuresDesc') as string}
             </p>
           </div>
 
-          {/* Two Flagship Showcase Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Two Flagship Showcase Cards in Luxury Editorial Bento */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
             
-            {/* Flagship 1: Cinematic Video & Audio */}
-            <div className="bg-[#faf8f5] rounded-3xl p-7 sm:p-9 border border-stone-200 flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-900 text-amber-200 flex items-center justify-center">
-                  <Play size={20} />
+            {/* Flagship 1: Cinematic Video & Audio (Obsidian Luxury Card) */}
+            <div className="bg-stone-900 text-white rounded-[30px] p-8 sm:p-10 border border-white/10 shadow-xl flex flex-col justify-between relative overflow-hidden group">
+              <div className="relative z-10 space-y-5">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md text-amber-300 flex items-center justify-center border border-white/15 shadow-sm group-hover:scale-105 transition-transform">
+                    <Play size={20} className="ml-0.5 fill-current" />
+                  </div>
+                  <span className="text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-stone-300 border border-white/10">
+                    CINEMATIC EXPERIENCE
+                  </span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                  {t('flagship1Title') as string}
-                </h3>
-                <p className="text-sm text-stone-600 leading-relaxed">
-                  {t('flagship1Desc') as string}
-                </p>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
+                    {t('flagship1Title') as string}
+                  </h3>
+                  <p className="text-sm text-stone-300 mt-2.5 leading-relaxed font-light">
+                    {t('flagship1Desc') as string}
+                  </p>
+                </div>
               </div>
-              <div className="pt-6 border-t border-stone-200/70 mt-6 grid grid-cols-2 gap-3 text-xs text-stone-700">
-                <div className="flex items-center space-x-2">
-                  <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>{t('flagship1Check1') as string}</span>
+
+              <div className="relative z-10 pt-6 border-t border-white/15 mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-stone-300">
+                <div className="flex items-center space-x-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
+                  <Check size={14} className="text-amber-300 shrink-0" />
+                  <span className="font-medium">{t('flagship1Check1') as string}</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>{t('flagship1Check2') as string}</span>
+                <div className="flex items-center space-x-2 bg-white/5 rounded-xl px-3 py-2 border border-white/10">
+                  <Check size={14} className="text-amber-300 shrink-0" />
+                  <span className="font-medium">{t('flagship1Check2') as string}</span>
                 </div>
               </div>
             </div>
 
-            {/* Flagship 2: RSVP & Digital Guestbook */}
-            <div className="bg-[#faf8f5] rounded-3xl p-7 sm:p-9 border border-stone-200 flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-900 text-amber-200 flex items-center justify-center">
-                  <CheckCircle2 size={20} />
+            {/* Flagship 2: RSVP & Digital Guestbook (Warm Ivory Luxury Card) */}
+            <div className="bg-white rounded-[30px] p-8 sm:p-10 border border-stone-200/90 shadow-xl flex flex-col justify-between relative overflow-hidden group">
+              <div className="relative z-10 space-y-5">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-stone-100 text-stone-900 flex items-center justify-center border border-stone-200 shadow-sm group-hover:scale-105 transition-transform">
+                    <CheckCircle2 size={22} className="text-[#9b6f38]" />
+                  </div>
+                  <span className="text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
+                    GUEST MANAGEMENT
+                  </span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                  {t('flagship2Title') as string}
-                </h3>
-                <p className="text-sm text-stone-600 leading-relaxed">
-                  {t('flagship2Desc') as string}
-                </p>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 tracking-tight">
+                    {t('flagship2Title') as string}
+                  </h3>
+                  <p className="text-sm text-stone-600 mt-2.5 leading-relaxed font-normal">
+                    {t('flagship2Desc') as string}
+                  </p>
+                </div>
               </div>
-              <div className="pt-6 border-t border-stone-200/70 mt-6 grid grid-cols-2 gap-3 text-xs text-stone-700">
-                <div className="flex items-center space-x-2">
+
+              <div className="relative z-10 pt-6 border-t border-stone-200/70 mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-stone-700">
+                <div className="flex items-center space-x-2 bg-stone-50 rounded-xl px-3 py-2 border border-stone-200">
                   <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>{t('flagship2Check1') as string}</span>
+                  <span className="font-medium">{t('flagship2Check1') as string}</span>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 bg-stone-50 rounded-xl px-3 py-2 border border-stone-200">
                   <Check size={14} className="text-emerald-700 shrink-0" />
-                  <span>{t('flagship2Check2') as string}</span>
+                  <span className="font-medium">{t('flagship2Check2') as string}</span>
                 </div>
               </div>
             </div>
 
           </div>
 
-          {/* Four Core Capabilities (Clean 4-column row) */}
+          {/* Four Core Capabilities (Clean 4-column Luxury Bento Row) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
-                <Gift size={18} />
+            <div className="bg-white rounded-[24px] p-6 border border-stone-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+              <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
+                <Gift size={19} className="text-[#9b6f38]" />
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">{t('cap1Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed">
+              <h4 className="font-serif font-bold text-stone-900 text-base">{t('cap1Title') as string}</h4>
+              <p className="text-xs text-stone-600 leading-relaxed font-normal">
                 {t('cap1Desc') as string}
               </p>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
-                <MapPin size={18} />
+            <div className="bg-white rounded-[24px] p-6 border border-stone-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+              <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
+                <MapPin size={19} className="text-[#9b6f38]" />
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">{t('cap2Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed">
+              <h4 className="font-serif font-bold text-stone-900 text-base">{t('cap2Title') as string}</h4>
+              <p className="text-xs text-stone-600 leading-relaxed font-normal">
                 {t('cap2Desc') as string}
               </p>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
-                <Users size={18} />
+            <div className="bg-white rounded-[24px] p-6 border border-stone-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+              <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
+                <Users size={19} className="text-[#9b6f38]" />
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">{t('cap3Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed">
+              <h4 className="font-serif font-bold text-stone-900 text-base">{t('cap3Title') as string}</h4>
+              <p className="text-xs text-stone-600 leading-relaxed font-normal">
                 {t('cap3Desc') as string}
               </p>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-2xl p-6 border border-stone-200/90 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-stone-200/70 flex items-center justify-center text-primary-900">
-                <Calendar size={18} />
+            <div className="bg-white rounded-[24px] p-6 border border-stone-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+              <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-800 group-hover:scale-105 transition-transform">
+                <Calendar size={19} className="text-[#9b6f38]" />
               </div>
-              <h4 className="font-bold text-stone-900 text-sm">{t('cap4Title') as string}</h4>
-              <p className="text-xs text-stone-600 leading-relaxed">
+              <h4 className="font-serif font-bold text-stone-900 text-base">{t('cap4Title') as string}</h4>
+              <p className="text-xs text-stone-600 leading-relaxed font-normal">
                 {t('cap4Desc') as string}
               </p>
             </div>
@@ -1109,18 +1132,23 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* THEMES SHOWCASE SECTION */}
-      <section id="themes" className="py-20 sm:py-24 bg-[#f5f1eb] border-y border-stone-200">
+      {/* THEMES SHOWCASE SECTION (Signature Destinations & Masterpiece Catalog) */}
+      <section id="themes" className="py-20 sm:py-28 bg-[#f5f1eb] border-y border-stone-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('themesLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('themesTitle') as string}
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
+              <span>EXCLUSIVE COLLECTION</span>
+              <span className="w-1 h-1 rounded-full bg-stone-400" />
+              <span>SIGNATURE DESTINATIONS</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
+              {lang === 'id' ? 'Koleksi Tema Eksklusif &' : 'Signature Invitation Collections &'}{' '}
+              <span className="italic font-serif font-normal text-[#9b6f38]">
+                {lang === 'id' ? 'Destinasi Sakral' : 'Sacred Destinations'}
+              </span>
             </h2>
-            <p className="text-sm sm:text-base text-stone-600">
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
               {t('themesDesc') as string}
             </p>
           </div>
@@ -1207,32 +1235,38 @@ export const Home: React.FC = () => {
               return (
                 <div 
                   key={theme.id || theme.slug}
-                  className="bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-sm hover:shadow-md transition-shadow flex flex-col group"
+                  className="bg-white rounded-[28px] overflow-hidden border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-12 h-full">
                     
-                    {/* Image Preview */}
-                    <div className="sm:col-span-5 relative aspect-[4/3] sm:aspect-auto min-h-[220px] sm:min-h-full overflow-hidden bg-stone-900">
+                    {/* Image Preview with Editorial Badges */}
+                    <div className="sm:col-span-5 relative aspect-[4/3] sm:aspect-auto min-h-[230px] sm:min-h-full overflow-hidden bg-stone-900">
                       <img 
                         src={previewImg} 
                         alt={theme.name} 
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out" 
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
                       />
                       <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-                        <span className="bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-md">
+                        <span className="bg-stone-950/80 backdrop-blur-md text-white text-[9px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full border border-white/10 shadow-xs">
                           {theme.category || (isNirwana ? 'Resort & Nature' : isJogloMaroon ? 'Traditional & Heritage' : isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
+                        </span>
+                      </div>
+                      <div className="absolute top-3 right-3 z-10">
+                        <span className="bg-white/90 backdrop-blur-md text-stone-900 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs border border-white/60">
+                          <Star size={11} className="text-amber-500 fill-amber-500" />
+                          <span>4.9</span>
                         </span>
                       </div>
                     </div>
 
                     {/* Theme Info */}
-                    <div className="sm:col-span-7 p-6 flex flex-col justify-between space-y-4">
+                    <div className="sm:col-span-7 p-6 sm:p-7 flex flex-col justify-between space-y-4">
                       <div>
-                        <div className="text-xs font-bold uppercase tracking-wider text-primary-800 mb-1">
+                        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#9b6f38] mb-1 font-sans">
                           {isNirwana ? 'Resort Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
                         </div>
-                        <h3 className="font-bold text-xl sm:text-2xl text-stone-900">{theme.name}</h3>
-                        <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3">
+                        <h3 className="font-serif font-bold text-xl sm:text-2xl text-stone-900 tracking-tight">{theme.name}</h3>
+                        <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3 font-normal">
                           {isNirwana
                             ? 'Tema pernikahan eksklusif bernuansa pemandangan Telaga Sarangan yang sejuk dan menenangkan di lereng Gunung Lawu, berlatar kemegahan Hotel Nirwana Sarangan, riak air danau, kabut pegunungan, dan sentuhan intimate wedding & wisata.'
                             : isJogloMaroon
@@ -1257,10 +1291,10 @@ export const Home: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t border-stone-100">
+                      <div className="flex flex-col sm:flex-row gap-2.5 pt-4 border-t border-stone-100">
                         <Link 
                           to="/themes"
-                          className="w-full sm:flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 transition-colors text-center block"
+                          className="w-full sm:flex-1 py-2.5 px-4 rounded-full border border-stone-300 text-stone-800 font-semibold text-xs hover:bg-stone-100 transition-colors text-center block"
                         >
                           {t('themeCatalogBtn') as string}
                         </Link>
@@ -1268,9 +1302,10 @@ export const Home: React.FC = () => {
                           href={demoUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 transition-colors text-center block"
+                          className="w-full sm:flex-1 py-2.5 px-4 rounded-full bg-stone-900 text-white font-semibold text-xs hover:bg-stone-800 transition-colors text-center flex items-center justify-center gap-1.5 shadow-sm"
                         >
-                          {t('themeDemoBtn') as string}
+                          <span>{t('themeDemoBtn') as string}</span>
+                          <ArrowRight size={13} />
                         </a>
                       </div>
                     </div>
@@ -1281,39 +1316,47 @@ export const Home: React.FC = () => {
             })}
           </div>
 
-          {/* Custom Theme Request Notice */}
-          <div className="mt-8 max-w-6xl mx-auto bg-white rounded-2xl border border-stone-200 p-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
-            <div>
-              <h3 className="text-sm sm:text-base font-bold text-stone-900">{t('themeCustomTitle') as string}</h3>
-              <p className="text-xs text-stone-600 mt-0.5">
+          {/* Custom Theme Bespoke Request Banner */}
+          <div className="mt-10 max-w-6xl mx-auto bg-gradient-to-r from-stone-900 via-stone-900 to-stone-950 text-white rounded-[28px] border border-white/10 p-7 sm:p-9 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-6 shadow-xl">
+            <div className="space-y-1 max-w-xl">
+              <span className="text-[10px] font-bold tracking-[0.25em] text-amber-300 uppercase font-sans">
+                BESPOKE ATELIER
+              </span>
+              <h3 className="text-lg sm:text-xl font-serif font-bold text-white">{t('themeCustomTitle') as string}</h3>
+              <p className="text-xs text-stone-300 leading-relaxed font-light">
                 {t('themeCustomDesc') as string}
               </p>
             </div>
             <a 
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2.5 rounded-xl bg-stone-900 text-white text-xs font-bold hover:bg-stone-800 transition-colors shrink-0"
+              className="px-6 py-3 rounded-full bg-white hover:bg-stone-100 text-stone-900 text-xs font-semibold shadow-md transition-all shrink-0 active:scale-95"
             >
-              {t('themeCustomBtn') as string}
+              {t('themeCustomBtn') as string} &rarr;
             </a>
           </div>
 
         </div>
       </section>
 
-      {/* ALUR PEMESANAN (Workflow Narrative) */}
-      <section id="alur" className="py-20 sm:py-24 bg-white border-b border-stone-200/80">
+      {/* THE JOURNEY / ALUR PEMESANAN (Editorial Roadmap Layout) */}
+      <section id="alur" className="py-20 sm:py-28 bg-white border-b border-stone-200/70">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('workflowLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('workflowTitle') as string}
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
+              <span>THE JOURNEY</span>
+              <span className="w-1 h-1 rounded-full bg-stone-400" />
+              <span>FROM VISION TO CELEBRATION</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
+              {lang === 'id' ? 'Alur Pemesanan Cepat &' : 'Seamless Process from Discovery to'}{' '}
+              <span className="italic font-serif font-normal text-[#9b6f38]">
+                {lang === 'id' ? 'Praktis' : 'Perfection'}
+              </span>
             </h2>
-            <p className="text-sm sm:text-base text-stone-600">
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
               {t('workflowDesc') as string}
             </p>
           </div>
@@ -1321,47 +1364,75 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
             {/* Step 1 */}
-            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
-                01
+            <div className="p-7 sm:p-8 rounded-[26px] bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-between space-y-4 hover:shadow-md transition-all group">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-serif text-3xl font-bold text-[#9b6f38]/60 group-hover:text-[#9b6f38] transition-colors">
+                    01
+                  </span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-400 px-2 py-0.5 rounded-full bg-stone-200/60">
+                    STEP ONE
+                  </span>
+                </div>
+                <h3 className="font-serif font-bold text-stone-900 text-lg">{t('step1Title') as string}</h3>
+                <p className="text-xs text-stone-600 leading-relaxed font-normal">
+                  {t('step1Desc') as string}
+                </p>
               </div>
-              <h3 className="font-bold text-stone-900 text-base">{t('step1Title') as string}</h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {t('step1Desc') as string}
-              </p>
             </div>
 
             {/* Step 2 */}
-            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
-                02
+            <div className="p-7 sm:p-8 rounded-[26px] bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-between space-y-4 hover:shadow-md transition-all group">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-serif text-3xl font-bold text-[#9b6f38]/60 group-hover:text-[#9b6f38] transition-colors">
+                    02
+                  </span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-400 px-2 py-0.5 rounded-full bg-stone-200/60">
+                    STEP TWO
+                  </span>
+                </div>
+                <h3 className="font-serif font-bold text-stone-900 text-lg">{t('step2Title') as string}</h3>
+                <p className="text-xs text-stone-600 leading-relaxed font-normal">
+                  {t('step2Desc') as string}
+                </p>
               </div>
-              <h3 className="font-bold text-stone-900 text-base">{t('step2Title') as string}</h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {t('step2Desc') as string}
-              </p>
             </div>
 
             {/* Step 3 */}
-            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
-                03
+            <div className="p-7 sm:p-8 rounded-[26px] bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-between space-y-4 hover:shadow-md transition-all group">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-serif text-3xl font-bold text-[#9b6f38]/60 group-hover:text-[#9b6f38] transition-colors">
+                    03
+                  </span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-400 px-2 py-0.5 rounded-full bg-stone-200/60">
+                    STEP THREE
+                  </span>
+                </div>
+                <h3 className="font-serif font-bold text-stone-900 text-lg">{t('step3Title') as string}</h3>
+                <p className="text-xs text-stone-600 leading-relaxed font-normal">
+                  {t('step3Desc') as string}
+                </p>
               </div>
-              <h3 className="font-bold text-stone-900 text-base">{t('step3Title') as string}</h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {t('step3Desc') as string}
-              </p>
             </div>
 
             {/* Step 4 */}
-            <div className="p-6 rounded-2xl bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-start space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary-900 text-amber-200 font-cinzel text-base font-bold flex items-center justify-center">
-                04
+            <div className="p-7 sm:p-8 rounded-[26px] bg-[#faf8f5] border border-stone-200/90 h-full flex flex-col justify-between space-y-4 hover:shadow-md transition-all group">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-serif text-3xl font-bold text-[#9b6f38]/60 group-hover:text-[#9b6f38] transition-colors">
+                    04
+                  </span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-stone-400 px-2 py-0.5 rounded-full bg-stone-200/60">
+                    STEP FOUR
+                  </span>
+                </div>
+                <h3 className="font-serif font-bold text-stone-900 text-lg">{t('step4Title') as string}</h3>
+                <p className="text-xs text-stone-600 leading-relaxed font-normal">
+                  {t('step4Desc') as string}
+                </p>
               </div>
-              <h3 className="font-bold text-stone-900 text-base">{t('step4Title') as string}</h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {t('step4Desc') as string}
-              </p>
             </div>
 
           </div>
@@ -1369,54 +1440,62 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* PRICING SECTION (Preserves Requested 'Start from' Labels) */}
-      <section id="pricing" className="py-20 sm:py-24 bg-[#f5f1eb] border-b border-stone-200">
+      {/* PRICING SUITES SECTION (Luxury Editorial Investment Collections) */}
+      <section id="pricing" className="py-20 sm:py-28 bg-[#f5f1eb] border-b border-stone-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('pricingLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('pricingTitle') as string}
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
+              <span>INVESTMENT SUITES</span>
+              <span className="w-1 h-1 rounded-full bg-stone-400" />
+              <span>TRANSPARENT VALUE</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
+              {lang === 'id' ? 'Pilihan Paket Investasi' : 'Transparent Investment Suites for'}{' '}
+              <span className="italic font-serif font-normal text-[#9b6f38]">
+                {lang === 'id' ? 'Undangan Pernikahan' : 'Your Sacred Celebration'}
+              </span>
             </h2>
-            <p className="text-sm sm:text-base text-stone-600">
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
               {t('pricingDesc') as string}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch max-w-6xl mx-auto">
             
-            {/* 1. STARTER PLAN */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col justify-between">
+            {/* 1. STARTER SUITE */}
+            <div className="bg-white rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
               <div>
                 <div className="text-center pb-5 border-b border-stone-200">
-                  <h3 className="text-2xl font-extrabold text-stone-900 tracking-wider font-cinzel">
+                  <span className="text-[9px] font-bold tracking-[0.2em] text-stone-400 uppercase">
+                    PRACTICAL SUITE
+                  </span>
+                  <h3 className="text-2xl font-serif font-bold text-stone-900 tracking-wide mt-1">
                     STARTER
                   </h3>
-                  <p className="text-xs font-medium text-stone-500 mt-1">
-                    Undangan Digital Praktis
+                  <p className="text-xs font-normal text-stone-500 mt-1">
+                    Undangan Digital Praktis &amp; Elegan
                   </p>
 
-                  <div className="mt-4 flex flex-col items-center justify-center">
+                  <div className="mt-5 flex flex-col items-center justify-center">
                     <div className="flex items-center space-x-2">
-                      <span className="line-through text-stone-400 text-sm font-semibold">
+                      <span className="line-through text-stone-400 text-xs font-semibold">
                         Rp 150.000
                       </span>
                       <span className="bg-stone-100 text-stone-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                         Hemat 67%
                       </span>
                     </div>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-stone-500 mt-1.5">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mt-1.5 font-sans">
                       Start from
                     </span>
-                    <div className="text-3xl font-black text-stone-950 font-cinzel mt-0.5">
+                    <div className="text-3xl font-serif font-bold text-stone-950 mt-0.5">
                       Rp 50.000
                     </div>
                   </div>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700 font-normal">
                   <li className="flex items-center space-x-2.5">
                     <Check size={16} className="text-emerald-700 shrink-0" />
                     <span>Pilihan tema standar pilihan</span>
@@ -1454,50 +1533,53 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Start%20from%20Rp%2050.000)"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20pesan%20Paket%20Starter%20(Start%20from%20Rp%2050.000)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm transition-colors"
+                  className="w-full block text-center py-3 rounded-full bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs sm:text-sm transition-colors shadow-xs"
                 >
                   Pilih Paket Starter
                 </a>
               </div>
             </div>
 
-            {/* 2. PREMIUM PLAN */}
-            <div className="bg-[#1c1917] text-white rounded-3xl p-6 sm:p-8 border-2 border-amber-400 shadow-2xl flex flex-col justify-between relative ring-1 ring-amber-400/30">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-stone-950 text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow-sm">
+            {/* 2. SIGNATURE PREMIUM SUITE (Featured Flagship Tier) */}
+            <div className="bg-stone-950 text-white rounded-[30px] p-7 sm:p-9 border-2 border-amber-400 shadow-2xl flex flex-col justify-between relative ring-2 ring-amber-400/20 transform lg:-translate-y-2">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-stone-950 text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow-sm font-sans">
                 {t('premiumBadge') as string}
               </div>
 
               <div>
                 <div className="text-center pb-5 border-b border-white/15 pt-2">
-                  <h3 className="text-2xl font-extrabold text-white tracking-wider font-cinzel">
+                  <span className="text-[9px] font-bold tracking-[0.2em] text-amber-300 uppercase">
+                    MOST POPULAR SIGNATURE
+                  </span>
+                  <h3 className="text-2xl font-serif font-bold text-white tracking-wide mt-1">
                     PREMIUM
                   </h3>
-                  <p className="text-xs font-medium text-amber-200 mt-1">
-                    Undangan Digital Fitur Lengkap
+                  <p className="text-xs font-normal text-amber-200 mt-1">
+                    Undangan Digital Fitur Lengkap &amp; Eksklusif
                   </p>
 
-                  <div className="mt-4 flex flex-col items-center justify-center">
+                  <div className="mt-5 flex flex-col items-center justify-center">
                     <div className="flex items-center space-x-2">
-                      <span className="line-through text-stone-400 text-sm font-semibold">
+                      <span className="line-through text-stone-400 text-xs font-semibold">
                         Rp 250.000
                       </span>
                       <span className="bg-amber-400 text-stone-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
                         Hemat 40%
                       </span>
                     </div>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-amber-300 mt-1.5">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300 mt-1.5 font-sans">
                       Start from
                     </span>
-                    <div className="text-3xl font-black text-white font-cinzel mt-0.5">
+                    <div className="text-3xl font-serif font-bold text-white mt-0.5">
                       Rp 150.000
                     </div>
                   </div>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-100">
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-200 font-normal">
                   <li className="flex items-center space-x-2.5">
                     <Check size={16} className="text-amber-300 shrink-0" />
                     <span><strong>Seluruh fitur Paket Starter</strong></span>
@@ -1535,43 +1617,46 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Start%20from%20Rp%20150.000)"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20pesan%20Paket%20Premium%20(Start%20from%20Rp%20150.000)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 font-extrabold text-xs sm:text-sm text-stone-950 transition-colors shadow-md"
+                  className="w-full block text-center py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 font-bold text-xs sm:text-sm text-stone-950 transition-colors shadow-md"
                 >
                   Pesan Paket Premium
                 </a>
               </div>
             </div>
 
-            {/* 3. CUSTOM PLAN */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col justify-between md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
+            {/* 3. BESPOKE ROYAL ATELIER (Custom Plan) */}
+            <div className="bg-white rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
               <div>
                 <div className="text-center pb-5 border-b border-stone-200">
-                  <h3 className="text-2xl font-extrabold text-stone-900 tracking-wider font-cinzel">
+                  <span className="text-[9px] font-bold tracking-[0.2em] text-stone-400 uppercase">
+                    HAUTE COUTURE
+                  </span>
+                  <h3 className="text-2xl font-serif font-bold text-stone-900 tracking-wide mt-1">
                     CUSTOM
                   </h3>
-                  <p className="text-xs font-medium text-stone-500 mt-1">
-                    Bespoke Wedding Website
+                  <p className="text-xs font-normal text-stone-500 mt-1">
+                    Bespoke Wedding Architecture
                   </p>
 
-                  <div className="mt-4 flex flex-col items-center justify-center">
+                  <div className="mt-5 flex flex-col items-center justify-center">
                     <div className="flex items-center space-x-2">
                       <span className="bg-stone-100 text-stone-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                         Bebas Request
                       </span>
                     </div>
-                    <div className="text-2xl font-black text-stone-950 font-cinzel mt-1">
+                    <div className="text-2xl font-serif font-bold text-stone-950 mt-2">
                       Custom Design
                     </div>
-                    <span className="text-[11px] font-medium text-stone-500 mt-0.5">
+                    <span className="text-[11px] font-normal text-stone-500 mt-0.5">
                       Menyesuaikan konsep &amp; dekorasi Anda
                     </span>
                   </div>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
+                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700 font-normal">
                   <li className="flex items-center space-x-2.5">
                     <Check size={16} className="text-emerald-700 shrink-0" />
                     <span><strong>Seluruh fitur Paket Premium</strong></span>
@@ -1601,10 +1686,10 @@ export const Home: React.FC = () => {
 
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full block text-center py-3 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm transition-colors"
+                  className="w-full block text-center py-3 rounded-full bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs sm:text-sm transition-colors shadow-xs"
                 >
                   Konsultasi Paket Custom
                 </a>
@@ -1616,59 +1701,85 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION */}
-      <section id="testimonials" className="py-20 sm:py-24 bg-white">
+      {/* TESTIMONIALS SECTION (Stories of Love & Real Celebrations) */}
+      <section id="testimonials" className="py-20 sm:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('testimonialsLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('testimonialsTitle') as string}
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
+              <span>STORIES OF LOVE</span>
+              <span className="w-1 h-1 rounded-full bg-stone-400" />
+              <span>REAL CELEBRATIONS</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
+              {lang === 'id' ? 'Kisah Bahagia &' : 'Cherished Stories &'}{' '}
+              <span className="italic font-serif font-normal text-[#9b6f38]">
+                {lang === 'id' ? 'Apresiasi Tamu' : 'Guest Impressions'}
+              </span>
             </h2>
-            <p className="text-sm sm:text-base text-stone-600">
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
               {t('testimonialsDesc') as string}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between">
-              <p className="text-stone-700 text-sm leading-relaxed italic">
-                &ldquo;Sangat suka dengan detail visual dan ornamen batiknya. Tamu-tamu keluarga besar kami sangat mengapresiasi karena mudah dibuka di HP dan musiknya sakral.&rdquo;
-              </p>
-              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/avatar-rendy-maya.jpg" alt="Rendy & Maya" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
+            <div className="bg-[#faf8f5] rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6">
+              <div className="space-y-3">
+                <div className="flex text-amber-500 gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={14} className="fill-amber-500" />
+                  ))}
+                </div>
+                <p className="text-stone-700 text-sm leading-relaxed italic font-serif">
+                  &ldquo;Sangat suka dengan detail visual dan ornamen batiknya. Tamu-tamu keluarga besar kami sangat mengapresiasi karena mudah dibuka di HP dan musiknya sakral.&rdquo;
+                </p>
+              </div>
+              <div className="flex items-center space-x-3.5 pt-5 border-t border-stone-200/70">
+                <img src="/photos/avatar-rendy-maya.jpg" alt="Rendy & Maya" className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-xs" />
                 <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Rendy &amp; Maya</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Solo • Tema Javanese Heritage</p>
+                  <h4 className="font-serif font-bold text-stone-900 text-base">Rendy &amp; Maya</h4>
+                  <p className="text-xs text-stone-500 font-sans">Pernikahan di Solo • Tema Javanese Heritage</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between">
-              <p className="text-stone-700 text-sm leading-relaxed italic">
-                &ldquo;Pelayanan cepat dan ramah, revisi langsung dibantu admin. Fitur generator nama tamu di WhatsApp sangat membantu menghemat waktu sebar undangan.&rdquo;
-              </p>
-              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/avatar-dimas-nadia.jpg" alt="Dimas & Nadia" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
+            <div className="bg-[#faf8f5] rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6">
+              <div className="space-y-3">
+                <div className="flex text-amber-500 gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={14} className="fill-amber-500" />
+                  ))}
+                </div>
+                <p className="text-stone-700 text-sm leading-relaxed italic font-serif">
+                  &ldquo;Pelayanan cepat dan ramah, revisi langsung dibantu admin. Fitur generator nama tamu di WhatsApp sangat membantu menghemat waktu sebar undangan.&rdquo;
+                </p>
+              </div>
+              <div className="flex items-center space-x-3.5 pt-5 border-t border-stone-200/70">
+                <img src="/photos/avatar-dimas-nadia.jpg" alt="Dimas & Nadia" className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-xs" />
                 <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Dimas &amp; Nadia</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Yogyakarta • Tema Split Floral</p>
+                  <h4 className="font-serif font-bold text-stone-900 text-base">Dimas &amp; Nadia</h4>
+                  <p className="text-xs text-stone-500 font-sans">Pernikahan di Yogyakarta • Tema Split Floral</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
-              <p className="text-stone-700 text-sm leading-relaxed italic">
-                &ldquo;Transisi video gerbang pembukanya sangat mewah. Banyak teman kami yang memuji undangannya terasa eksklusif dan beda dari undangan digital biasa.&rdquo;
-              </p>
-              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/avatar-faris-aisyah.jpg" alt="Faris & Aisyah" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
+            <div className="bg-[#faf8f5] rounded-[28px] p-7 sm:p-8 border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6 md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
+              <div className="space-y-3">
+                <div className="flex text-amber-500 gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={14} className="fill-amber-500" />
+                  ))}
+                </div>
+                <p className="text-stone-700 text-sm leading-relaxed italic font-serif">
+                  &ldquo;Transisi video gerbang pembukanya sangat mewah. Banyak teman kami yang memuji undangannya terasa eksklusif dan beda dari undangan digital biasa.&rdquo;
+                </p>
+              </div>
+              <div className="flex items-center space-x-3.5 pt-5 border-t border-stone-200/70">
+                <img src="/photos/avatar-faris-aisyah.jpg" alt="Faris & Aisyah" className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-xs" />
                 <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Faris &amp; Aisyah</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Semarang • Tema Maroon Gold</p>
+                  <h4 className="font-serif font-bold text-stone-900 text-base">Faris &amp; Aisyah</h4>
+                  <p className="text-xs text-stone-500 font-sans">Pernikahan di Semarang • Tema Maroon Gold</p>
                 </div>
               </div>
             </div>
@@ -1678,59 +1789,63 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* FAQ CHATBOT SECTION */}
-      <section id="faq" className="py-20 sm:py-24 bg-[#f7f4ee] border-t border-stone-200/80 relative">
+      {/* CONCIERGE FAQ & INTERACTIVE CHATBOT SECTION */}
+      <section id="faq" className="py-20 sm:py-28 bg-[#f5f1eb] border-t border-stone-200/80 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-200/80 text-stone-800 text-xs font-semibold tracking-wide">
-              <Bot size={15} className="text-primary-800" />
-              <span>{t('faqBotLabel') as string}</span>
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-600 uppercase flex items-center justify-center gap-2 select-none">
+              <span>ASSISTANCE</span>
+              <span className="w-1 h-1 rounded-full bg-stone-400" />
+              <span>CONCIERGE FAQ</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
-              {t('faqTitle') as string}
+            <h2 className="text-3xl sm:text-5xl font-serif font-medium text-stone-900 tracking-tight leading-[1.12]">
+              {lang === 'id' ? 'Pusat Bantuan &' : 'Concierge Assistance &'}{' '}
+              <span className="italic font-serif font-normal text-[#9b6f38]">
+                {lang === 'id' ? 'Tanya Jawab' : 'Frequently Asked'}
+              </span>
             </h2>
-            <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+            <p className="text-sm sm:text-base text-stone-600 leading-relaxed font-normal">
               {t('faqDesc') as string}
             </p>
           </div>
 
-          {/* Chatbot Window Container */}
-          <div className="bg-white rounded-3xl border border-stone-300/80 shadow-xl overflow-hidden flex flex-col">
+          {/* Chatbot Window Container (Luxury Frosted Architecture) */}
+          <div className="bg-white rounded-[30px] border border-stone-300/80 shadow-2xl overflow-hidden flex flex-col">
             
             {/* Chatbot Header */}
-            <div className="bg-stone-950 text-white px-5 py-4 flex items-center justify-between border-b border-stone-800">
-              <div className="flex items-center space-x-3">
+            <div className="bg-stone-950 text-white px-6 py-4.5 flex items-center justify-between border-b border-stone-800">
+              <div className="flex items-center space-x-3.5">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-amber-300 font-bold border border-amber-300/30 shadow-xs">
+                  <div className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center text-amber-300 font-bold border border-amber-300/30 shadow-xs">
                     <Bot size={20} />
                   </div>
                   <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-stone-950 animate-pulse" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
-                    <span>WD Wedding Assistant</span>
-                    <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">Bot FAQ</span>
+                  <h3 className="text-sm font-serif font-bold text-white flex items-center gap-2">
+                    <span>WD Digital Concierge</span>
+                    <span className="text-[9px] font-sans font-semibold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">Active</span>
                   </h3>
-                  <p className="text-xs text-stone-400">{t('faqBotStatus') as string}</p>
+                  <p className="text-xs text-stone-400 font-sans">{t('faqBotStatus') as string}</p>
                 </div>
               </div>
 
               <div className="flex items-center space-x-2">
                 <button
                   onClick={handleResetChat}
-                  className="px-2.5 py-1.5 rounded-lg bg-stone-800/80 hover:bg-stone-800 text-stone-300 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="px-3 py-1.5 rounded-full bg-stone-800/80 hover:bg-stone-800 text-stone-300 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
                   title={t('faqResetTitle') as string}
                 >
                   <RotateCcw size={13} />
                   <span className="hidden sm:inline">Reset</span>
                 </button>
                 <a
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20tanya%20langsung%20dengan%20tim%20desainer"
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20tanya%20langsung%20dengan%20tim%20desainer"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
+                  className="px-4 py-1.5 rounded-full bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
                 >
                   <MessageCircle size={13} />
                   <span className="hidden sm:inline">{t('faqChatWa') as string}</span>
@@ -1741,10 +1856,10 @@ export const Home: React.FC = () => {
             {/* Chat Messages Log Area */}
             <div
               ref={chatMessagesContainerRef}
-              className="h-[360px] sm:h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fbf9f6]/80 text-xs sm:text-sm"
+              className="h-[360px] sm:h-[420px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fbf9f6]/90 text-xs sm:text-sm font-sans"
             >
               <div className="text-center my-1">
-                <span className="text-[10px] font-medium text-stone-400 bg-stone-100 px-3 py-1 rounded-full">
+                <span className="text-[10px] font-medium text-stone-500 bg-stone-100 px-3 py-1 rounded-full">
                   {t('faqConvoStart') as string}
                 </span>
               </div>
@@ -1757,7 +1872,7 @@ export const Home: React.FC = () => {
                     className={`flex items-end gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
                   >
                     {!isUser && (
-                      <div className="w-7 h-7 rounded-full bg-primary-900 text-amber-300 flex items-center justify-center shrink-0 text-xs shadow-2xs">
+                      <div className="w-7 h-7 rounded-full bg-stone-900 text-amber-300 flex items-center justify-center shrink-0 text-xs shadow-2xs">
                         <Bot size={14} />
                       </div>
                     )}
@@ -1765,7 +1880,7 @@ export const Home: React.FC = () => {
                     <div
                       className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 shadow-2xs leading-relaxed space-y-2 ${
                         isUser
-                          ? 'bg-primary-900 text-white rounded-br-xs text-right'
+                          ? 'bg-stone-900 text-white rounded-br-xs text-right'
                           : 'bg-white text-stone-800 border border-stone-200/90 rounded-bl-xs text-left'
                       }`}
                     >
@@ -1777,7 +1892,7 @@ export const Home: React.FC = () => {
                             href={msg.actionUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-2xs"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-2xs"
                           >
                             <MessageCircle size={14} />
                             <span>{msg.actionLabel || 'Hubungi WhatsApp'}</span>
@@ -1805,7 +1920,7 @@ export const Home: React.FC = () => {
 
               {isTyping && (
                 <div className="flex items-center gap-2.5 justify-start">
-                  <div className="w-7 h-7 rounded-full bg-primary-900 text-amber-300 flex items-center justify-center shrink-0 text-xs">
+                  <div className="w-7 h-7 rounded-full bg-stone-900 text-amber-300 flex items-center justify-center shrink-0 text-xs">
                     <Bot size={14} />
                   </div>
                   <div className="bg-white border border-stone-200/90 rounded-2xl rounded-bl-xs px-4 py-3 shadow-2xs flex items-center space-x-1.5">
@@ -1833,7 +1948,7 @@ export const Home: React.FC = () => {
                   <button
                     key={item.id}
                     onClick={() => handleAskQuestion(item.question, item.answer)}
-                    className="px-3 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-amber-100 hover:text-amber-900 border border-stone-300/80 text-stone-700 transition-colors whitespace-nowrap cursor-pointer shrink-0 shadow-2xs active:scale-95"
+                    className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-stone-900 hover:text-white border border-stone-300/80 text-stone-700 transition-colors whitespace-nowrap cursor-pointer shrink-0 shadow-2xs active:scale-95"
                   >
                     {item.chip}
                   </button>
@@ -1854,16 +1969,16 @@ export const Home: React.FC = () => {
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder={t('faqInputPlaceholder') as string}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-stone-50 border border-stone-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-800/20 focus:border-primary-800 transition-all placeholder:text-stone-400"
+                className="flex-1 px-4 py-2.5 rounded-full bg-stone-50 border border-stone-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-stone-900/20 focus:border-stone-900 transition-all placeholder:text-stone-400"
               />
               <button
                 type="submit"
                 disabled={!chatInput.trim()}
-                className="w-10 h-10 rounded-xl bg-primary-900 hover:bg-primary-950 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer shrink-0 active:scale-95"
+                className="w-10 h-10 rounded-full bg-stone-900 hover:bg-stone-800 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer shrink-0 active:scale-95"
                 title={t('faqSendTitle') as string}
                 aria-label={t('faqSendTitle') as string}
               >
-                <Send size={16} />
+                <Send size={15} />
               </button>
             </form>
 
@@ -1876,10 +1991,10 @@ export const Home: React.FC = () => {
               <span>{t('faqSupportText') as string} <strong>{t('faqSupportHours') as string}</strong></span>
             </div>
             <a
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-primary-900 hover:text-primary-950 underline flex items-center gap-1"
+              className="text-xs font-bold text-stone-900 hover:underline flex items-center gap-1"
             >
               <span>{t('faqSupportLink') as string}</span>
               <ArrowRight size={13} />
@@ -1889,25 +2004,28 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* CALL TO ACTION BANNER */}
-      <section className="py-16 sm:py-20 bg-primary-900 text-white relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
-          <span className="font-cinzel text-amber-200 uppercase tracking-widest text-xs font-bold block">
-            WD Group Wedding Invitation
-          </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-            {t('ctaTitle') as string}
+      {/* CALL TO ACTION BANNER (Luxury Ambient Editorial Finish) */}
+      <section className="py-20 sm:py-28 bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 text-white relative overflow-hidden border-t border-white/10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
+          <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-amber-300 uppercase select-none">
+            WD WEDDING PRODUCTION • TIMELESS ARCHITECTURE
+          </div>
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-medium tracking-tight leading-[1.12]">
+            {lang === 'id' ? 'Siap Mengabadikan Momen Bahagia Anda Bersama' : 'Ready to Immortalize Your Sacred Celebration with'}{' '}
+            <span className="italic font-serif font-normal text-amber-300">
+              WD Production?
+            </span>
           </h2>
-          <p className="text-sm sm:text-base text-stone-200 max-w-xl mx-auto font-light leading-relaxed">
+          <p className="text-sm sm:text-base text-stone-300 max-w-xl mx-auto font-light leading-relaxed">
             {t('ctaDesc') as string}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
             <a 
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
-              target="_blank"
+              href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
+              target="_blank" 
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-amber-300 hover:bg-amber-200 text-stone-950 font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs sm:text-sm shadow-xl transition-all flex items-center justify-center space-x-2 active:scale-95"
             >
               <MessageCircle size={16} />
               <span>{t('ctaBtn1') as string}</span>
@@ -1915,7 +2033,7 @@ export const Home: React.FC = () => {
 
             <Link 
               to="/themes"
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all flex items-center justify-center space-x-2"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 transition-all flex items-center justify-center space-x-2 backdrop-blur-md active:scale-95"
             >
               <span>{t('ctaBtn2') as string}</span>
               <ArrowRight size={15} />
@@ -1924,28 +2042,35 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-stone-950 text-stone-400 py-12 sm:py-16 border-t border-stone-800 text-sm">
+      {/* FOOTER (Refined Luxury Editorial Signature) */}
+      <footer className="bg-stone-950 text-stone-400 py-16 sm:py-20 border-t border-stone-800/80 text-sm font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             
             {/* Brand Info */}
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 rounded-lg bg-primary-800 flex items-center justify-center text-amber-200 font-cinzel font-bold">
+                <div className="w-10 h-10 rounded-xl bg-stone-900 border border-white/20 flex items-center justify-center text-white font-cinzel font-bold text-lg shadow-xs">
                   WD
                 </div>
-                <span className="text-xl font-bold font-cinzel text-white tracking-wider">WD GROUP</span>
+                <div className="flex flex-col">
+                  <span className="text-sm font-extrabold tracking-[0.2em] text-white uppercase font-sans">
+                    WD PRODUCTION
+                  </span>
+                  <span className="text-[9px] tracking-[0.22em] text-stone-400 font-medium uppercase">
+                    LUXURY WEDDINGS
+                  </span>
+                </div>
               </div>
-              <p className="text-xs text-stone-400 leading-relaxed">
+              <p className="text-xs text-stone-400 leading-relaxed font-light">
                 {t('footerDesc') as string}
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerNavTitle') as string}</h4>
-              <ul className="space-y-2 text-xs">
+              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-stone-200 mb-4 font-sans">{t('footerNavTitle') as string}</h4>
+              <ul className="space-y-2.5 text-xs">
                 <li><a href="#hero" className="hover:text-white transition-colors">{t('footerHome') as string}</a></li>
                 <li><a href="#themes" className="hover:text-white transition-colors">{t('footerThemes') as string}</a></li>
                 <li><a href="#keunggulan" className="hover:text-white transition-colors">{t('footerFeaturesLink') as string}</a></li>
@@ -1957,22 +2082,23 @@ export const Home: React.FC = () => {
 
             {/* Themes */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerDesignTitle') as string}</h4>
-              <ul className="space-y-2 text-xs">
+              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-stone-200 mb-4 font-sans">{t('footerDesignTitle') as string}</h4>
+              <ul className="space-y-2.5 text-xs">
+                <li><Link to="/themes" className="hover:text-white transition-colors">Nirwana Sarangan Resort</Link></li>
+                <li><Link to="/themes" className="hover:text-white transition-colors">Royal Wayang Gold (Keraton)</Link></li>
+                <li><Link to="/themes" className="hover:text-white transition-colors">Batak Maroon Heritage</Link></li>
                 <li><Link to="/themes" className="hover:text-white transition-colors">Javanese Heritage (Adat)</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Maroon Gold (Royal)</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Secret Garden (Botanical)</Link></li>
-                <li><Link to="/themes" className="hover:text-white transition-colors">Split Floral (Luxury)</Link></li>
+                <li><Link to="/themes" className="hover:text-white transition-colors">Secret Botanical Garden</Link></li>
               </ul>
             </div>
 
             {/* Contact & Admin */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-stone-200 mb-4 font-serif">{t('footerContactTitle') as string}</h4>
-              <ul className="space-y-2 text-xs">
+              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-stone-200 mb-4 font-sans">{t('footerContactTitle') as string}</h4>
+              <ul className="space-y-2.5 text-xs">
                 <li>
                   <a 
-                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20mengenai%20pembuatan%20undangan%20pernikahan%20digital."
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Production,%20saya%20ingin%20konsultasi%20mengenai%20pembuatan%20undangan%20pernikahan%20digital."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-amber-200 transition-colors"
@@ -1991,7 +2117,7 @@ export const Home: React.FC = () => {
                 <li><span>{t('footerLocation') as string}</span></li>
                 <li><span>{t('footerHours') as string}</span></li>
                 <li className="pt-2">
-                  <Link to="/admin/login" className="text-amber-200 hover:underline font-semibold">
+                  <Link to="/admin/login" className="text-amber-300 hover:underline font-semibold">
                     {t('footerAdminLink') as string} &rarr;
                   </Link>
                 </li>
@@ -2001,7 +2127,7 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-stone-500 gap-4 text-center sm:text-left">
-            <p>&copy; {new Date().getFullYear()} WD Group. {t('footerCopyright') as string}</p>
+            <p>&copy; {new Date().getFullYear()} WD Production. {t('footerCopyright') as string}</p>
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
               <Link to="/themes" className="hover:text-stone-300">{t('footerCatalog') as string}</Link>
               <a href="#faq" className="hover:text-stone-300">{t('footerHelp') as string}</a>
