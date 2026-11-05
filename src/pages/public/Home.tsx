@@ -446,33 +446,24 @@ export const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#faf8f5] text-stone-800 font-jakarta selection:bg-primary-700 selection:text-white overflow-x-clip">
       
-      {/* Top Announcement Bar */}
-      <div className="bg-[#1c1917] text-stone-200 text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2 relative z-50">
-        <span>{t('announcementText') as string}</span>
-        <a href="#themes" className="underline font-semibold text-amber-300 hover:text-white transition-colors">
-          {t('announcementLink') as string} &rarr;
-        </a>
-      </div>
+      {/* Modern Luxury Resort Full-Bleed Hero (Editorial Travel & Wedding Architecture) */}
+      <div id="hero" className="relative w-full min-h-screen lg:h-screen flex flex-col justify-between overflow-hidden bg-stone-900 text-stone-900 select-none">
+        
+        {/* Panoramic Resort Background with Mediterranean Sea & Cliffside Villas */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=2400&q=85" 
+            alt="Mediterranean Coastal Resort View" 
+            className="w-full h-full object-cover object-[center_35%] filter brightness-[0.98] contrast-[1.02]"
+          />
+          {/* Luminous atmospheric lighting overlays */}
+          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/75 via-white/25 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-stone-950/65 via-stone-900/30 to-transparent pointer-events-none" />
+        </div>
 
-      {/* Modern Luxury Resort Frame Hero (Editorial Travel & Wedding Architecture) */}
-      <div id="hero" className="max-w-[1400px] mx-auto p-2 sm:p-4 md:p-6 lg:p-8">
-        <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden bg-stone-900 shadow-2xl border border-stone-200/40 min-h-[760px] lg:min-h-[840px] flex flex-col justify-between">
-          
-          {/* Panoramic Resort Background with Mediterranean Sea & Cliffside Villas */}
-          <div className="absolute inset-0 z-0">
-            <img 
-              src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=2400&q=85" 
-              alt="Mediterranean Coastal Resort View" 
-              className="w-full h-full object-cover object-[center_35%] filter brightness-[0.98] contrast-[1.02]"
-            />
-            {/* Luminous atmospheric lighting overlays */}
-            <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-white/70 via-white/20 to-transparent pointer-events-none" />
-            <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
-            <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-stone-950/60 via-stone-900/25 to-transparent pointer-events-none" />
-          </div>
-
-          {/* Floating Top Navigation Bar */}
-          <header className="relative z-30 p-4 sm:p-6 lg:p-8 flex items-center justify-between">
+        {/* Floating Top Navigation Bar */}
+        <header className="relative z-30 px-4 sm:px-8 lg:px-12 pt-3 sm:pt-5 pb-1 flex items-center justify-between">
             {/* Brand Monogram & Title */}
             <Link to="/" className="flex items-center space-x-3 group select-none">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-stone-900/85 backdrop-blur-md flex items-center justify-center text-white border border-white/20 shadow-sm transition-transform group-hover:scale-105">
@@ -614,338 +605,336 @@ export const Home: React.FC = () => {
             </div>
           )}
 
-          {/* Hero Main Content */}
-          <div className="relative z-20 px-4 sm:px-8 lg:px-12 pt-4 sm:pt-8 pb-8 flex-1 flex flex-col justify-between">
+        {/* Hero Main Content */}
+        <div className="relative z-20 px-4 sm:px-8 lg:px-12 py-2 sm:py-3 flex-1 flex flex-col justify-between gap-2.5 sm:gap-3">
+          
+          {/* Top row: Headline + Right Tag */}
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
             
-            {/* Top row: Headline + Right Tag */}
-            <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            {/* Left Headline Area */}
+            <div className="max-w-2xl space-y-2.5 sm:space-y-3.5">
               
-              {/* Left Headline Area */}
-              <div className="max-w-2xl space-y-4 sm:space-y-5">
-                
-                {/* Spaced Kicker */}
-                <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-700 uppercase flex items-center gap-2 select-none">
-                  <span>TRAVEL</span>
-                  <span className="w-1 h-1 rounded-full bg-stone-400" />
-                  <span>EXPLORE</span>
-                  <span className="w-1 h-1 rounded-full bg-stone-400" />
-                  <span>EXPERIENCE</span>
-                  <span className="w-1 h-1 rounded-full bg-stone-400" />
-                  <span>BELONG</span>
-                </div>
+              {/* Spaced Kicker */}
+              <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-stone-700 uppercase flex items-center gap-2 select-none">
+                <span>TRAVEL</span>
+                <span className="w-1 h-1 rounded-full bg-stone-400" />
+                <span>EXPLORE</span>
+                <span className="w-1 h-1 rounded-full bg-stone-400" />
+                <span>EXPERIENCE</span>
+                <span className="w-1 h-1 rounded-full bg-stone-400" />
+                <span>BELONG</span>
+              </div>
 
-                {/* Editorial Serif Dual-Tone Headline */}
-                <h1 className="text-4xl sm:text-6xl lg:text-[4.5rem] font-serif font-medium tracking-tight text-stone-900 leading-[1.06]">
-                  Discover Journeys <br />
-                  <span className="italic font-serif font-normal text-[#9b6f38] drop-shadow-xs">
-                    Beyond Ordinary
+              {/* Editorial Serif Dual-Tone Headline */}
+              <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-serif font-medium tracking-tight text-stone-900 leading-[1.05]">
+                Discover Journeys <br />
+                <span className="italic font-serif font-normal text-[#9b6f38] drop-shadow-xs">
+                  Beyond Ordinary
+                </span>
+              </h1>
+
+              {/* Subtitle */}
+              <p className="text-xs sm:text-sm lg:text-base text-stone-700 font-normal leading-relaxed max-w-xl line-clamp-2">
+                {lang === 'id' 
+                  ? 'Koleksi undangan pernikahan digital eksklusif berarsitektur visual mewah. Lebih dari sekadar undangan, kami merangkai kisah sakral yang abadi untuk dikenang selamanya.'
+                  : 'Curated digital wedding invitations crafted for extraordinary celebrations. More than invitations, we create digital stories you will cherish forever.'}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                <a
+                  href="#themes"
+                  className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 active:scale-98 text-white text-xs sm:text-sm font-semibold px-5 sm:px-6 py-2.5 rounded-full shadow-lg transition-all"
+                >
+                  <span>{lang === 'id' ? 'Eksplorasi Tema' : 'Explore Destinations'}</span>
+                  <ArrowRight size={15} />
+                </a>
+
+                <button
+                  onClick={() => setVideoModalOpen(true)}
+                  className="inline-flex items-center gap-2 bg-white/80 hover:bg-white text-stone-900 text-xs sm:text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-full backdrop-blur-md border border-white/70 shadow-sm transition-all cursor-pointer group"
+                >
+                  <span className="w-5 h-5 rounded-full bg-stone-900 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Play size={9} className="ml-0.5 fill-current" />
                   </span>
-                </h1>
+                  <span>{lang === 'id' ? 'Lihat Video Teaser' : 'Watch Guide'}</span>
+                </button>
+              </div>
 
-                {/* Subtitle */}
-                <p className="text-sm sm:text-base text-stone-700 font-normal leading-relaxed max-w-xl">
-                  {lang === 'id' 
-                    ? 'Koleksi undangan pernikahan digital eksklusif berarsitektur visual mewah. Lebih dari sekadar undangan, kami merangkai kisah sakral yang abadi untuk dikenang selamanya.'
-                    : 'Curated digital wedding invitations crafted for extraordinary celebrations. More than invitations, we create digital stories you will cherish forever.'}
-                </p>
+            </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-wrap items-center gap-3 pt-2">
-                  <a
-                    href="#themes"
-                    className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 active:scale-98 text-white text-xs sm:text-sm font-semibold px-6 py-3 rounded-full shadow-lg transition-all"
+            {/* Right Corner Editorial Text */}
+            <div className="hidden lg:block text-right select-none pt-2">
+              <div className="text-[10px] font-bold tracking-[0.25em] text-stone-700 uppercase leading-relaxed font-sans">
+                EXTRAORDINARY<br />
+                DESTINATIONS<br />
+                MEANINGFUL<br />
+                EXPERIENCES
+              </div>
+            </div>
+
+          </div>
+
+          {/* Center Floating Quick Search Bar */}
+          <div className="my-1 sm:my-2">
+            <div className="bg-white/92 backdrop-blur-md rounded-2xl lg:rounded-full p-2 sm:p-2.5 shadow-xl border border-white/80 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 text-stone-800 transition-all">
+              
+              {/* 1. Destination Field */}
+              <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 border-b lg:border-b-0 lg:border-r border-stone-200/80">
+                <div className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
+                  <Compass size={15} />
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] font-bold text-stone-900 uppercase tracking-wider">
+                    {lang === 'id' ? 'Tema Destinasi' : 'Destinations'}
+                  </span>
+                  <select
+                    value={activeConceptFilter}
+                    onChange={(e) => setActiveConceptFilter(e.target.value)}
+                    className="text-xs text-stone-500 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer"
                   >
-                    <span>{lang === 'id' ? 'Eksplorasi Tema' : 'Explore Destinations'}</span>
-                    <ArrowRight size={15} />
-                  </a>
+                    <option value="all">{lang === 'id' ? 'Semua Pilihan Tema' : 'Where to go?'}</option>
+                    <option value="nirwana-sarangan">Nirwana Sarangan Resort</option>
+                    <option value="royal-wayang-gold">Royal Wayang Gold</option>
+                    <option value="joglo-maroon-heritage">Batak Maroon Heritage</option>
+                    <option value="javanese-heritage">Javanese Heritage</option>
+                    <option value="secret-garden">Secret Botanical Garden</option>
+                  </select>
+                </div>
+              </div>
 
-                  <button
-                    onClick={() => setVideoModalOpen(true)}
-                    className="inline-flex items-center gap-2.5 bg-white/80 hover:bg-white text-stone-900 text-xs sm:text-sm font-semibold px-5 py-3 rounded-full backdrop-blur-md border border-white/70 shadow-sm transition-all cursor-pointer group"
+              {/* 2. Dates Field */}
+              <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 border-b lg:border-b-0 lg:border-r border-stone-200/80">
+                <div className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
+                  <Calendar size={15} />
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] font-bold text-stone-900 uppercase tracking-wider">
+                    {lang === 'id' ? 'Jadwal Acara' : 'Dates'}
+                  </span>
+                  <select
+                    value={activeTimelineFilter}
+                    onChange={(e) => setActiveTimelineFilter(e.target.value)}
+                    className="text-xs text-stone-500 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer"
                   >
-                    <span className="w-6 h-6 rounded-full bg-stone-900 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Play size={10} className="ml-0.5 fill-current" />
+                    <option value="2026-2027">2026 - 2027</option>
+                    <option value="q1-2027">Q1 2027 (Jan - Mar)</option>
+                    <option value="q2-2027">Q2 2027 (Apr - Jun)</option>
+                    <option value="express-24h">{lang === 'id' ? 'Kilat 24 Jam Siap' : '24-Hour Express'}</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* 3. Travelers / Guest Count Field */}
+              <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 border-b lg:border-b-0 lg:border-r border-stone-200/80">
+                <div className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
+                  <Users size={15} />
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] font-bold text-stone-900 uppercase tracking-wider">
+                    {lang === 'id' ? 'Jumlah Tamu' : 'Travelers'}
+                  </span>
+                  <span className="text-xs text-stone-500 font-medium">
+                    {lang === 'id' ? 'Tamu Tanpa Batas' : 'Unlimited Guests'}
+                  </span>
+                </div>
+              </div>
+
+              {/* 4. Budget / Package Field */}
+              <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5">
+                <div className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
+                  <Sparkles size={15} />
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] font-bold text-stone-900 uppercase tracking-wider">
+                    {lang === 'id' ? 'Paket Investasi' : 'Budget'}
+                  </span>
+                  <span className="text-xs text-stone-500 font-medium">
+                    {lang === 'id' ? 'Mulai Rp 49.000' : 'Any budget'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Search Button */}
+              <a
+                href="#themes"
+                className="bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-semibold px-6 py-2.5 rounded-xl lg:rounded-full flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer whitespace-nowrap active:scale-98"
+              >
+                <Search size={14} />
+                <span>{lang === 'id' ? 'Cari Tema' : 'Search Journeys'}</span>
+              </a>
+
+            </div>
+          </div>
+
+          {/* Bottom Bento Grid: 3 Modern Floating Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-stretch pb-3 sm:pb-4">
+            
+            {/* Card 1: Featured Destination / Theme (md:col-span-4) */}
+            <div className="md:col-span-4 bg-white/92 backdrop-blur-md rounded-[22px] sm:rounded-[26px] p-3 shadow-xl border border-white/80 flex flex-col justify-between group">
+              <div>
+                {/* Card Image Thumbnail with badges */}
+                <div className="relative h-24 sm:h-28 rounded-xl sm:rounded-2xl overflow-hidden mb-2 sm:mb-2.5">
+                  <img 
+                    src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80" 
+                    alt="Santorini Greece Luxury Destination" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-2 left-2">
+                    <span className="text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-stone-800 shadow-xs border border-white/60">
+                      FEATURED DESTINATION
                     </span>
-                    <span>{lang === 'id' ? 'Lihat Video Teaser' : 'Watch Guide'}</span>
+                  </div>
+                  <button
+                    onClick={() => setIsLikedFeatured(!isLikedFeatured)}
+                    className={`absolute top-2 right-2 w-6 h-6 rounded-full backdrop-blur-md flex items-center justify-center transition-all cursor-pointer ${
+                      isLikedFeatured 
+                        ? 'bg-rose-500 text-white' 
+                        : 'bg-white/80 text-stone-700 hover:bg-white'
+                    }`}
+                    aria-label="Favorite destination"
+                  >
+                    <Heart size={12} className={isLikedFeatured ? 'fill-current' : ''} />
                   </button>
                 </div>
 
+                {/* Title & Reviews */}
+                <div className="flex items-center justify-between">
+                  <h3 className="font-serif font-bold text-sm sm:text-base text-stone-900">
+                    Santorini, Greece
+                  </h3>
+                  <div className="flex items-center text-xs text-stone-800 font-semibold gap-1">
+                    <Star size={12} className="text-amber-500 fill-amber-500" />
+                    <span>4.9</span>
+                    <span className="text-stone-400 font-normal">(1.2K)</span>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-stone-500 mt-0.5 leading-snug line-clamp-1">
+                  Iconic views, timeless charm and unforgettable sunsets.
+                </p>
               </div>
 
-              {/* Right Corner Editorial Text */}
-              <div className="hidden lg:block text-right select-none">
-                <div className="text-[10px] font-bold tracking-[0.25em] text-stone-700 uppercase leading-relaxed font-sans">
-                  EXTRAORDINARY<br />
-                  DESTINATIONS<br />
-                  MEANINGFUL<br />
-                  EXPERIENCES
-                </div>
-              </div>
-
-            </div>
-
-            {/* Center Floating Quick Search Bar */}
-            <div className="my-8 sm:my-10">
-              <div className="bg-white/90 backdrop-blur-md rounded-2xl lg:rounded-full p-2.5 sm:p-3 shadow-xl border border-white/80 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 text-stone-800 transition-all">
-                
-                {/* 1. Destination Field */}
-                <div className="flex-1 flex items-center gap-3 px-3 py-2 border-b lg:border-b-0 lg:border-r border-stone-200/80">
-                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
-                    <Compass size={17} />
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <span className="text-[11px] font-bold text-stone-900 uppercase tracking-wider">
-                      {lang === 'id' ? 'Tema Destinasi' : 'Destinations'}
-                    </span>
-                    <select
-                      value={activeConceptFilter}
-                      onChange={(e) => setActiveConceptFilter(e.target.value)}
-                      className="text-xs text-stone-500 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer"
-                    >
-                      <option value="all">{lang === 'id' ? 'Semua Pilihan Tema' : 'Where to go?'}</option>
-                      <option value="nirwana-sarangan">Nirwana Sarangan Resort</option>
-                      <option value="royal-wayang-gold">Royal Wayang Gold</option>
-                      <option value="joglo-maroon-heritage">Batak Maroon Heritage</option>
-                      <option value="javanese-heritage">Javanese Heritage</option>
-                      <option value="secret-garden">Secret Botanical Garden</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* 2. Dates Field */}
-                <div className="flex-1 flex items-center gap-3 px-3 py-2 border-b lg:border-b-0 lg:border-r border-stone-200/80">
-                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
-                    <Calendar size={17} />
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <span className="text-[11px] font-bold text-stone-900 uppercase tracking-wider">
-                      {lang === 'id' ? 'Jadwal Acara' : 'Dates'}
-                    </span>
-                    <select
-                      value={activeTimelineFilter}
-                      onChange={(e) => setActiveTimelineFilter(e.target.value)}
-                      className="text-xs text-stone-500 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer"
-                    >
-                      <option value="2026-2027">2026 - 2027</option>
-                      <option value="q1-2027">Q1 2027 (Jan - Mar)</option>
-                      <option value="q2-2027">Q2 2027 (Apr - Jun)</option>
-                      <option value="express-24h">{lang === 'id' ? 'Kilat 24 Jam Siap' : '24-Hour Express'}</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* 3. Travelers / Guest Count Field */}
-                <div className="flex-1 flex items-center gap-3 px-3 py-2 border-b lg:border-b-0 lg:border-r border-stone-200/80">
-                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
-                    <Users size={17} />
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <span className="text-[11px] font-bold text-stone-900 uppercase tracking-wider">
-                      {lang === 'id' ? 'Jumlah Tamu' : 'Travelers'}
-                    </span>
-                    <span className="text-xs text-stone-500 font-medium">
-                      {lang === 'id' ? 'Tamu Tanpa Batas' : 'Unlimited Guests'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* 4. Budget / Package Field */}
-                <div className="flex-1 flex items-center gap-3 px-3 py-2">
-                  <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 shrink-0">
-                    <Sparkles size={17} />
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <span className="text-[11px] font-bold text-stone-900 uppercase tracking-wider">
-                      {lang === 'id' ? 'Paket Investasi' : 'Budget'}
-                    </span>
-                    <span className="text-xs text-stone-500 font-medium">
-                      {lang === 'id' ? 'Mulai Rp 49.000' : 'Any budget'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Search Button */}
+              {/* Bottom Link Arrow */}
+              <div className="pt-2 flex justify-end">
                 <a
                   href="#themes"
-                  className="bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-semibold px-7 py-3.5 rounded-xl lg:rounded-full flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer whitespace-nowrap active:scale-98"
+                  className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-900 hover:text-white text-stone-700 flex items-center justify-center transition-all shadow-2xs"
+                  aria-label="Lihat tema destinasi"
                 >
-                  <Search size={15} />
-                  <span>{lang === 'id' ? 'Cari Tema' : 'Search Journeys'}</span>
+                  <ArrowRight size={13} />
                 </a>
-
               </div>
             </div>
 
-            {/* Bottom Bento Grid: 3 Modern Floating Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
+            {/* Card 2: Metrics & Social Proof (md:col-span-5) */}
+            <div className="md:col-span-5 bg-white/92 backdrop-blur-md rounded-[22px] sm:rounded-[26px] p-3 sm:p-3.5 shadow-xl border border-white/80 flex flex-col justify-between">
               
-              {/* Card 1: Featured Destination / Theme (md:col-span-4) */}
-              <div className="md:col-span-4 bg-white/92 backdrop-blur-md rounded-[26px] p-3.5 shadow-xl border border-white/80 flex flex-col justify-between group">
-                <div>
-                  {/* Card Image Thumbnail with badges */}
-                  <div className="relative h-36 rounded-2xl overflow-hidden mb-3">
-                    <img 
-                      src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80" 
-                      alt="Santorini Greece Luxury Destination" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-2.5 left-2.5">
-                      <span className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-white/85 backdrop-blur-md text-stone-800 shadow-xs border border-white/60">
-                        FEATURED DESTINATION
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => setIsLikedFeatured(!isLikedFeatured)}
-                      className={`absolute top-2.5 right-2.5 w-7 h-7 rounded-full backdrop-blur-md flex items-center justify-center transition-all cursor-pointer ${
-                        isLikedFeatured 
-                          ? 'bg-rose-500 text-white' 
-                          : 'bg-white/80 text-stone-700 hover:bg-white'
-                      }`}
-                      aria-label="Favorite destination"
-                    >
-                      <Heart size={14} className={isLikedFeatured ? 'fill-current' : ''} />
-                    </button>
+              {/* 4 Stats Grid */}
+              <div className="grid grid-cols-4 gap-1.5 text-center pb-2.5 border-b border-stone-200/80">
+                <div className="space-y-0.5">
+                  <div className="flex justify-center text-stone-600 mb-0.5">
+                    <Compass size={14} />
                   </div>
-
-                  {/* Title & Reviews */}
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-serif font-bold text-base text-stone-900">
-                      Santorini, Greece
-                    </h3>
-                    <div className="flex items-center text-xs text-stone-800 font-semibold gap-1">
-                      <Star size={13} className="text-amber-500 fill-amber-500" />
-                      <span>4.9</span>
-                      <span className="text-stone-400 font-normal">(1.2K)</span>
-                    </div>
+                  <span className="block text-xs sm:text-sm font-extrabold text-stone-900 font-sans">250+</span>
+                  <span className="block text-[8px] sm:text-[9px] text-stone-500 leading-tight uppercase font-medium">Destinasi Unik</span>
+                </div>
+                <div className="space-y-0.5">
+                  <div className="flex justify-center text-stone-600 mb-0.5">
+                    <Users size={14} />
                   </div>
+                  <span className="block text-xs sm:text-sm font-extrabold text-stone-900 font-sans">50K+</span>
+                  <span className="block text-[8px] sm:text-[9px] text-stone-500 leading-tight uppercase font-medium">Tamu Bahagia</span>
+                </div>
+                <div className="space-y-0.5">
+                  <div className="flex justify-center text-stone-600 mb-0.5">
+                    <Award size={14} />
+                  </div>
+                  <span className="block text-xs sm:text-sm font-extrabold text-stone-900 font-sans">1,200+</span>
+                  <span className="block text-[8px] sm:text-[9px] text-stone-500 leading-tight uppercase font-medium">Karya Kurasi</span>
+                </div>
+                <div className="space-y-0.5">
+                  <div className="flex justify-center text-stone-600 mb-0.5">
+                    <Globe size={14} />
+                  </div>
+                  <span className="block text-xs sm:text-sm font-extrabold text-stone-900 font-sans">95+</span>
+                  <span className="block text-[8px] sm:text-[9px] text-stone-500 leading-tight uppercase font-medium">Kota & Wilayah</span>
+                </div>
+              </div>
 
-                  <p className="text-xs text-stone-500 mt-1 leading-snug">
-                    Iconic views, timeless charm and unforgettable sunsets.
+              {/* Bottom Testimonial Row */}
+              <div className="pt-2 flex items-center gap-2.5">
+                {/* Avatar stack */}
+                <div className="flex items-center -space-x-1.5 shrink-0">
+                  <img 
+                    src="/photos/avatar-rendy-maya.jpg" 
+                    alt="Reviewer 1" 
+                    className="w-7 h-7 rounded-full border border-white object-cover" 
+                  />
+                  <img 
+                    src="/photos/avatar-dimas-nadia.jpg" 
+                    alt="Reviewer 2" 
+                    className="w-7 h-7 rounded-full border border-white object-cover" 
+                  />
+                  <img 
+                    src="/photos/avatar-faris-aisyah.jpg" 
+                    alt="Reviewer 3" 
+                    className="w-7 h-7 rounded-full border border-white object-cover" 
+                  />
+                  <div className="w-7 h-7 rounded-full border border-white bg-stone-900 text-white text-[9px] font-bold flex items-center justify-center">
+                    +
+                  </div>
+                </div>
+
+                {/* Quote + Reviewer Note */}
+                <div className="text-left space-y-0.5 min-w-0 flex-1">
+                  <p className="text-[10px] sm:text-[11px] text-stone-700 italic leading-tight truncate">
+                    &ldquo;Incredible planning, unforgettable experiences. Truly a celebration of a lifetime!&rdquo;
                   </p>
-                </div>
-
-                {/* Bottom Link Arrow */}
-                <div className="pt-3 flex justify-end">
-                  <a
-                    href="#themes"
-                    className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-900 hover:text-white text-stone-700 flex items-center justify-center transition-all shadow-2xs"
-                    aria-label="Lihat tema destinasi"
-                  >
-                    <ArrowRight size={14} />
-                  </a>
-                </div>
-              </div>
-
-              {/* Card 2: Metrics & Social Proof (md:col-span-5) */}
-              <div className="md:col-span-5 bg-white/92 backdrop-blur-md rounded-[26px] p-5 shadow-xl border border-white/80 flex flex-col justify-between">
-                
-                {/* 4 Stats Grid */}
-                <div className="grid grid-cols-4 gap-2 text-center pb-4 border-b border-stone-200/80">
-                  <div className="space-y-0.5">
-                    <div className="flex justify-center text-stone-600 mb-1">
-                      <Compass size={16} />
+                  <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-stone-500">
+                    <div className="flex text-amber-500 shrink-0">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={9} className="fill-amber-500" />
+                      ))}
                     </div>
-                    <span className="block text-sm sm:text-base font-extrabold text-stone-900 font-sans">250+</span>
-                    <span className="block text-[9px] text-stone-500 leading-tight uppercase font-medium">Destinasi Unik</span>
+                    <span className="font-semibold text-stone-700 truncate">Sarah M.</span>
+                    <span>&bull;</span>
+                    <span className="truncate">Traveled to Sarangan</span>
                   </div>
-                  <div className="space-y-0.5">
-                    <div className="flex justify-center text-stone-600 mb-1">
-                      <Users size={16} />
-                    </div>
-                    <span className="block text-sm sm:text-base font-extrabold text-stone-900 font-sans">50K+</span>
-                    <span className="block text-[9px] text-stone-500 leading-tight uppercase font-medium">Tamu Bahagia</span>
-                  </div>
-                  <div className="space-y-0.5">
-                    <div className="flex justify-center text-stone-600 mb-1">
-                      <Award size={16} />
-                    </div>
-                    <span className="block text-sm sm:text-base font-extrabold text-stone-900 font-sans">1,200+</span>
-                    <span className="block text-[9px] text-stone-500 leading-tight uppercase font-medium">Karya Kurasi</span>
-                  </div>
-                  <div className="space-y-0.5">
-                    <div className="flex justify-center text-stone-600 mb-1">
-                      <Globe size={16} />
-                    </div>
-                    <span className="block text-sm sm:text-base font-extrabold text-stone-900 font-sans">95+</span>
-                    <span className="block text-[9px] text-stone-500 leading-tight uppercase font-medium">Kota & Wilayah</span>
-                  </div>
-                </div>
-
-                {/* Bottom Testimonial Row */}
-                <div className="pt-3.5 flex flex-col sm:flex-row items-center gap-3">
-                  {/* Avatar stack */}
-                  <div className="flex items-center -space-x-2 shrink-0">
-                    <img 
-                      src="/photos/avatar-rendy-maya.jpg" 
-                      alt="Reviewer 1" 
-                      className="w-8 h-8 rounded-full border-2 border-white object-cover" 
-                    />
-                    <img 
-                      src="/photos/avatar-dimas-nadia.jpg" 
-                      alt="Reviewer 2" 
-                      className="w-8 h-8 rounded-full border-2 border-white object-cover" 
-                    />
-                    <img 
-                      src="/photos/avatar-faris-aisyah.jpg" 
-                      alt="Reviewer 3" 
-                      className="w-8 h-8 rounded-full border-2 border-white object-cover" 
-                    />
-                    <div className="w-8 h-8 rounded-full border-2 border-white bg-stone-900 text-white text-[10px] font-bold flex items-center justify-center">
-                      +
-                    </div>
-                  </div>
-
-                  {/* Quote + Reviewer Note */}
-                  <div className="text-left space-y-1">
-                    <p className="text-[11px] text-stone-700 italic leading-snug line-clamp-2">
-                      &ldquo;Incredible planning, unforgettable experiences. Truly a celebration of a lifetime!&rdquo;
-                    </p>
-                    <div className="flex items-center gap-1.5 text-[10px] text-stone-500">
-                      <div className="flex text-amber-500">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} size={10} className="fill-amber-500" />
-                        ))}
-                      </div>
-                      <span className="font-semibold text-stone-700">Sarah M.</span>
-                      <span>&bull;</span>
-                      <span>Traveled to Sarangan</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Card 3: Real Places. Real Stories. Teaser Thumbnail (md:col-span-3) */}
-              <div 
-                onClick={() => setVideoModalOpen(true)}
-                className="md:col-span-3 relative rounded-[26px] overflow-hidden min-h-[170px] p-4 flex flex-col justify-between text-white shadow-xl cursor-pointer group border border-white/50"
-              >
-                {/* Background Image */}
-                <img 
-                  src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" 
-                  alt="Overwater resort villas and beach stories" 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/30 to-transparent pointer-events-none" />
-
-                {/* Top Play Button */}
-                <div className="relative z-10 flex justify-start">
-                  <div className="w-9 h-9 rounded-full bg-white/80 backdrop-blur-md text-stone-900 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                    <Play size={14} className="ml-0.5 fill-current" />
-                  </div>
-                </div>
-
-                {/* Bottom Story Text */}
-                <div className="relative z-10 space-y-0.5">
-                  <h4 className="font-serif font-bold text-sm sm:text-base text-white tracking-wide">
-                    Real Places. Real Stories.
-                  </h4>
-                  <p className="text-[10px] sm:text-[11px] text-stone-200 leading-tight">
-                    Watch traveler stories from around the world.
-                  </p>
                 </div>
               </div>
 
+            </div>
+
+            {/* Card 3: Real Places. Real Stories. Teaser Thumbnail (md:col-span-3) */}
+            <div 
+              onClick={() => setVideoModalOpen(true)}
+              className="md:col-span-3 relative rounded-[22px] sm:rounded-[26px] overflow-hidden min-h-[120px] sm:min-h-[135px] p-3 flex flex-col justify-between text-white shadow-xl cursor-pointer group border border-white/50"
+            >
+              {/* Background Image */}
+              <img 
+                src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" 
+                alt="Overwater resort villas and beach stories" 
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/30 to-transparent pointer-events-none" />
+
+              {/* Top Play Button */}
+              <div className="relative z-10 flex justify-start">
+                <div className="w-7 h-7 rounded-full bg-white/80 backdrop-blur-md text-stone-900 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                  <Play size={12} className="ml-0.5 fill-current" />
+                </div>
+              </div>
+
+              {/* Bottom Story Text */}
+              <div className="relative z-10 space-y-0.5">
+                <h4 className="font-serif font-bold text-xs sm:text-sm text-white tracking-wide">
+                  Real Places. Real Stories.
+                </h4>
+                <p className="text-[9px] sm:text-[10px] text-stone-200 leading-tight">
+                  Watch traveler stories from around the world.
+                </p>
+              </div>
             </div>
 
           </div>
