@@ -31,7 +31,9 @@ import {
   Bot,
   Send,
   RotateCcw,
-  Globe
+  Globe,
+  Star,
+  ShieldCheck
 } from 'lucide-react';
 
 export const Home: React.FC = () => {
@@ -44,6 +46,7 @@ export const Home: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [testimonialIdx, setTestimonialIdx] = useState(0);
 
   // Showcase Themes for Hero Showcase
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
@@ -1517,310 +1520,449 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* PRICING SECTION (Preserves Requested 'Start from' Labels) */}
-      <section id="pricing" className="py-20 sm:py-24 bg-[#f5f1eb] border-b border-stone-200">
+      {/* PRICING SECTION - Swift Style Layout */}
+      <section id="pricing" className="py-20 sm:py-24 bg-[#faf8f5] border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('pricingLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('pricingTitle') as string}
-            </h2>
-            <p className="text-sm sm:text-base text-stone-600">
-              {t('pricingDesc') as string}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
             
-            {/* 1. STARTER PLAN */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col justify-between">
+            {/* Left Header Column */}
+            <div className="lg:col-span-3 flex flex-col justify-between">
               <div>
-                <div className="text-center pb-5 border-b border-stone-200">
-                  <h3 className="text-2xl font-extrabold text-stone-900 tracking-wider font-cinzel">
-                    STARTER
-                  </h3>
-                  <p className="text-xs font-medium text-stone-500 mt-1">
-                    Undangan Digital Praktis
-                  </p>
+                <span className="text-[11px] font-bold uppercase tracking-widest text-stone-500 font-sans block mb-3">
+                  {lang === 'id' ? 'INVESTASI & PAKET' : 'SIMPLE PRICING'}
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-[1.15]">
+                  {lang === 'id' ? 'Paket yang Mengikuti Kebutuhan Anda.' : 'Plans That Move With You.'}
+                </h2>
+                <p className="text-xs sm:text-sm text-stone-600 mt-4 leading-relaxed">
+                  {lang === 'id' 
+                    ? 'Pilihan paket transparan tanpa biaya tersembunyi. Siap disebar dengan mudah, anggun, dan berkesan.'
+                    : 'Transparent pricing. No hidden fees. Just reliable and elegant delivery.'}
+                </p>
+              </div>
 
-                  <div className="mt-4 flex flex-col items-center justify-center">
-                    <div className="flex items-center space-x-2">
-                      <span className="line-through text-stone-400 text-sm font-semibold">
+              <div className="pt-6 lg:pt-0">
+                <a
+                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20tanya%20detail%20seluruh%20paket%20undangan%20digital"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-stone-300 bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold shadow-xs transition-all"
+                >
+                  <span>{lang === 'id' ? 'Lihat Semua Rincian' : 'View All Plans'}</span>
+                  <ArrowRight size={14} />
+                </a>
+              </div>
+            </div>
+
+            {/* Right Cards: 3 Pricing Cards + 1 3D Isometric Accent Box */}
+            <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 items-stretch">
+              
+              {/* 1. Standard / Starter Plan */}
+              <div className="bg-white rounded-3xl p-6 border border-stone-200/90 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                  <div className="pb-4 border-b border-stone-100">
+                    <h3 className="text-lg font-bold text-stone-900">
+                      Standard
+                    </h3>
+                    <p className="text-[11px] text-stone-500 mt-0.5">
+                      {lang === 'id' ? 'Undangan Digital Praktis' : 'Essential Digital Invitation'}
+                    </p>
+                    <div className="mt-4 flex items-baseline gap-1.5">
+                      <span className="text-2xl sm:text-3xl font-black text-stone-950">
+                        Rp 50rb
+                      </span>
+                      <span className="text-[11px] text-stone-400 font-medium">
+                        / paket
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="line-through text-stone-400 text-xs font-semibold">
                         Rp 150.000
                       </span>
-                      <span className="bg-stone-100 text-stone-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
                         Hemat 67%
                       </span>
                     </div>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-stone-500 mt-1.5">
-                      Start from
-                    </span>
-                    <div className="text-3xl font-black text-stone-950 font-cinzel mt-0.5">
-                      Rp 50.000
-                    </div>
                   </div>
+
+                  <ul className="py-5 space-y-2.5 text-xs text-stone-600">
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span>{lang === 'id' ? 'Pengerjaan 3-5 hari kerja' : '3-5 business days delivery'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span>{lang === 'id' ? 'Pilihan tema standar pilihan' : 'Standard theme catalogue'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span>{lang === 'id' ? 'Hitung mundur & Google Maps' : 'Countdown timer & maps'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span>{lang === 'id' ? 'Amplop transfer & RSVP' : 'Digital envelope & RSVP'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span><strong>{lang === 'id' ? 'Masa aktif 7 hari' : 'Active for 7 days'}</strong></span>
+                    </li>
+                  </ul>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Pilihan tema standar pilihan</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Foto &amp; informasi kedua mempelai</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Detail jadwal akad &amp; resepsi</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Hitung mundur acara &amp; Google Maps</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Konfirmasi RSVP &amp; ucapan doa restu</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Amplop transfer digital</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Revisi data 1 kali</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span><strong>Masa aktif 7 hari</strong></span>
-                  </li>
-                </ul>
+                <div className="pt-3">
+                  <a
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Rp%2050.000)"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full block text-center py-2.5 rounded-full bg-white hover:bg-stone-100 text-stone-900 border border-stone-300 font-bold text-xs transition-colors shadow-2xs"
+                  >
+                    {lang === 'id' ? 'Pilih Paket' : 'Choose Plan'}
+                  </a>
+                </div>
               </div>
 
-              <div className="pt-2">
-                <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Start%20from%20Rp%2050.000)"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full block text-center py-3 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm transition-colors"
-                >
-                  Pilih Paket Starter
-                </a>
-              </div>
-            </div>
+              {/* 2. Express / Premium Plan - FEATURED (Orange/Amber Accent) */}
+              <div className="bg-white rounded-3xl p-6 border-2 border-orange-500 shadow-md flex flex-col justify-between relative ring-2 ring-orange-500/20">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] font-black px-3.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                  {lang === 'id' ? 'Paling Diminati' : 'Most Popular'}
+                </div>
 
-            {/* 2. PREMIUM PLAN */}
-            <div className="bg-[#1c1917] text-white rounded-3xl p-6 sm:p-8 border-2 border-amber-400 shadow-2xl flex flex-col justify-between relative ring-1 ring-amber-400/30">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-stone-950 text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                {t('premiumBadge') as string}
-              </div>
-
-              <div>
-                <div className="text-center pb-5 border-b border-white/15 pt-2">
-                  <h3 className="text-2xl font-extrabold text-white tracking-wider font-cinzel">
-                    PREMIUM
-                  </h3>
-                  <p className="text-xs font-medium text-amber-200 mt-1">
-                    Undangan Digital Fitur Lengkap
-                  </p>
-
-                  <div className="mt-4 flex flex-col items-center justify-center">
-                    <div className="flex items-center space-x-2">
-                      <span className="line-through text-stone-400 text-sm font-semibold">
+                <div>
+                  <div className="pb-4 border-b border-stone-100 pt-1">
+                    <h3 className="text-lg font-bold text-stone-900">
+                      Express
+                    </h3>
+                    <p className="text-[11px] text-orange-600 font-semibold mt-0.5">
+                      {lang === 'id' ? 'Fitur Lengkap & Video Gate' : 'Full Features & Video Gate'}
+                    </p>
+                    <div className="mt-4 flex items-baseline gap-1.5">
+                      <span className="text-2xl sm:text-3xl font-black text-stone-950">
+                        Rp 150rb
+                      </span>
+                      <span className="text-[11px] text-stone-400 font-medium">
+                        / paket
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="line-through text-stone-400 text-xs font-semibold">
                         Rp 250.000
                       </span>
-                      <span className="bg-amber-400 text-stone-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                      <span className="text-[10px] font-bold text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full">
                         Hemat 40%
                       </span>
                     </div>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-amber-300 mt-1.5">
-                      Start from
-                    </span>
-                    <div className="text-3xl font-black text-white font-cinzel mt-0.5">
-                      Rp 150.000
-                    </div>
                   </div>
+
+                  <ul className="py-5 space-y-2.5 text-xs text-stone-700">
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <span>{lang === 'id' ? 'Pengerjaan 1-2 hari kerja' : '1-2 business days delivery'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <span>{lang === 'id' ? 'Seluruh fitur Paket Standard' : 'All standard features included'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <span>{lang === 'id' ? 'Transisi video gerbang sinematik' : 'Cinematic video entrance gate'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <span>{lang === 'id' ? 'Akses seluruh tema premium' : 'All premium themes included'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <span><strong>{lang === 'id' ? 'Masa aktif 1 bulan penuh' : 'Active for 1 full month'}</strong></span>
+                    </li>
+                  </ul>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-100">
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-amber-300 shrink-0" />
-                    <span><strong>Seluruh fitur Paket Starter</strong></span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-amber-300 shrink-0" />
-                    <span>Akses seluruh tema premium eksklusif</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-amber-300 shrink-0" />
-                    <span>Kustomisasi warna &amp; tipografi tema</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-amber-300 shrink-0" />
-                    <span>Galeri foto lebih banyak &amp; love story</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-amber-300 shrink-0" />
-                    <span>Manajemen RSVP &amp; database tamu</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-amber-300 shrink-0" />
-                    <span>Transisi video gerbang &amp; musik custom</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-amber-300 shrink-0" />
-                    <span>Revisi data hingga 3 kali</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-amber-300 shrink-0" />
-                    <span><strong>Masa aktif 1 bulan penuh</strong></span>
-                  </li>
-                </ul>
+                <div className="pt-3">
+                  <a
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Express%20Premium%20(Rp%20150.000)"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full block text-center py-2.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition-colors shadow-sm"
+                  >
+                    {lang === 'id' ? 'Pilih Paket' : 'Choose Plan'}
+                  </a>
+                </div>
               </div>
 
-              <div className="pt-2">
-                <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Premium%20(Start%20from%20Rp%20150.000)"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full block text-center py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 font-extrabold text-xs sm:text-sm text-stone-950 transition-colors shadow-md"
-                >
-                  Pesan Paket Premium
-                </a>
-              </div>
-            </div>
-
-            {/* 3. CUSTOM PLAN */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col justify-between md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
-              <div>
-                <div className="text-center pb-5 border-b border-stone-200">
-                  <h3 className="text-2xl font-extrabold text-stone-900 tracking-wider font-cinzel">
-                    CUSTOM
-                  </h3>
-                  <p className="text-xs font-medium text-stone-500 mt-1">
-                    Bespoke Wedding Website
-                  </p>
-
-                  <div className="mt-4 flex flex-col items-center justify-center">
-                    <div className="flex items-center space-x-2">
-                      <span className="bg-stone-100 text-stone-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                        Bebas Request
+              {/* 3. Same-Day / Custom Plan */}
+              <div className="bg-white rounded-3xl p-6 border border-stone-200/90 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                  <div className="pb-4 border-b border-stone-100">
+                    <h3 className="text-lg font-bold text-stone-900">
+                      Same-Day / Custom
+                    </h3>
+                    <p className="text-[11px] text-stone-500 mt-0.5">
+                      {lang === 'id' ? 'Desain Khusus Bebas Request' : 'Bespoke Custom Design'}
+                    </p>
+                    <div className="mt-4 flex items-baseline gap-1.5">
+                      <span className="text-2xl sm:text-3xl font-black text-stone-950">
+                        Custom
                       </span>
                     </div>
-                    <div className="text-2xl font-black text-stone-950 font-cinzel mt-1">
-                      Custom Design
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[10px] font-bold text-stone-600 bg-stone-100 px-2 py-0.5 rounded-full">
+                        {lang === 'id' ? 'Prioritas Ekspres' : 'Priority Express'}
+                      </span>
                     </div>
-                    <span className="text-[11px] font-medium text-stone-500 mt-0.5">
-                      Menyesuaikan konsep &amp; dekorasi Anda
-                    </span>
                   </div>
+
+                  <ul className="py-5 space-y-2.5 text-xs text-stone-600">
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span>{lang === 'id' ? 'Selesai di hari yang sama / fleksibel' : 'Within the same day / flexible'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span>{lang === 'id' ? 'Desain eksklusif 100% dari nol' : '100% bespoke from scratch'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span>{lang === 'id' ? 'Integrasi QR Code check-in' : 'QR code guest check-in'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span>{lang === 'id' ? 'Revisi intensif bersama tim' : 'Intensive revision with team'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check size={14} className="text-emerald-600 shrink-0" />
+                      <span><strong>{lang === 'id' ? 'Masa aktif menyesuaikan' : 'Custom active duration'}</strong></span>
+                    </li>
+                  </ul>
                 </div>
 
-                <ul className="py-6 space-y-3 text-xs sm:text-sm text-stone-700">
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span><strong>Seluruh fitur Paket Premium</strong></span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Desain khusus 100% dari nol sesuai tema</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Kustomisasi animasi, ilustrasi &amp; layout</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Integrasi QR Code kehadiran di lokasi</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span>Revisi hingga 5 kali bersama desainer</span>
-                  </li>
-                  <li className="flex items-center space-x-2.5">
-                    <Check size={16} className="text-emerald-700 shrink-0" />
-                    <span><strong>Masa aktif fleksibel menyesuaikan</strong></span>
-                  </li>
-                </ul>
+                <div className="pt-3">
+                  <a
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20Paket%20Custom%20Same-Day"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full block text-center py-2.5 rounded-full bg-white hover:bg-stone-100 text-stone-900 border border-stone-300 font-bold text-xs transition-colors shadow-2xs"
+                  >
+                    {lang === 'id' ? 'Pilih Paket' : 'Choose Plan'}
+                  </a>
+                </div>
               </div>
 
-              <div className="pt-2">
-                <a 
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20desain%20undangan%20Paket%20Custom"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full block text-center py-3 rounded-xl bg-stone-900 hover:bg-stone-950 text-white font-bold text-xs sm:text-sm transition-colors"
-                >
-                  Konsultasi Paket Custom
-                </a>
+              {/* 4. 3D Visual Accent Box (Isometric Diorama Style) */}
+              <div className="bg-gradient-to-b from-[#fff6ed] to-[#ffeedb] rounded-3xl p-6 border border-orange-200/80 shadow-xs flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div className="w-full flex items-center justify-between text-[11px] font-bold text-orange-950">
+                  <span className="font-cinzel tracking-wider">WD EXCLUSIVE</span>
+                  <Sparkles size={14} className="text-orange-500" />
+                </div>
+
+                <div className="my-3 py-2 flex flex-col items-center justify-center">
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 relative flex items-center justify-center">
+                    <img
+                      src="/images/features/feat_amplop_digital.png"
+                      alt="Digital Wedding Stationery"
+                      className="w-full h-full object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <p className="font-serif italic text-sm text-orange-950 font-semibold mt-2 leading-snug">
+                    &ldquo;Momen Sakral, Berawal Dari Sini.&rdquo;
+                  </p>
+                </div>
+
+                <div className="w-full pt-2 border-t border-orange-200/70 flex items-center justify-between text-[10px] text-stone-600 font-medium">
+                  <span>WD Studio Magetan</span>
+                  <span className="font-bold text-orange-700">★ 4.9 Rating</span>
+                </div>
               </div>
+
             </div>
 
           </div>
-
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION */}
-      <section id="testimonials" className="py-20 sm:py-24 bg-white">
+      {/* TESTIMONIALS & TRUST SECTION - Swift Style Layout */}
+      <section id="testimonials" className="py-20 sm:py-24 bg-[#faf9f6] border-b border-stone-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('testimonialsLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('testimonialsTitle') as string}
-            </h2>
-            <p className="text-sm sm:text-base text-stone-600">
-              {t('testimonialsDesc') as string}
-            </p>
+          {/* Main 3-column row: Header & Arrows / 3 Testimonials / Stats Card */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-stretch">
+            
+            {/* Left Header Column with Slider Arrows */}
+            <div className="lg:col-span-3 flex flex-col justify-between">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-widest text-stone-500 font-sans block mb-3">
+                  {lang === 'id' ? 'DIPERCAYA RIBUAN PENGANTIN' : 'TRUSTED BY THOUSANDS'}
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-[1.15]">
+                  {lang === 'id' ? 'Keluarga Bahagia. Momen yang Lebih Bermakna.' : 'Happier Couples. A More Connected Day.'}
+                </h2>
+                <p className="text-xs sm:text-sm text-stone-600 mt-4 leading-relaxed">
+                  {lang === 'id'
+                    ? 'Kesan pertama yang tak terlupakan bagi setiap tamu undangan pernikahan Anda.'
+                    : 'Unforgettable first impressions for every invited guest at your sacred celebration.'}
+                </p>
+              </div>
+
+              {/* Slider Arrow Controls */}
+              <div className="flex items-center gap-2 pt-6 lg:pt-0">
+                <button
+                  type="button"
+                  onClick={() => setTestimonialIdx(prev => (prev === 0 ? 2 : prev - 1))}
+                  className="w-10 h-10 rounded-full border border-stone-300 bg-white hover:bg-stone-100 text-stone-800 flex items-center justify-center transition-all cursor-pointer shadow-2xs active:scale-95"
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTestimonialIdx(prev => (prev === 2 ? 0 : prev + 1))}
+                  className="w-10 h-10 rounded-full border border-stone-300 bg-white hover:bg-stone-100 text-stone-800 flex items-center justify-center transition-all cursor-pointer shadow-2xs active:scale-95"
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Middle 3 Testimonial Cards */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch">
+              
+              {/* Card 1 */}
+              <div className={`bg-white rounded-3xl p-5 border transition-all duration-300 flex flex-col justify-between shadow-xs ${
+                testimonialIdx === 0 ? 'border-orange-500/80 ring-1 ring-orange-500/20' : 'border-stone-200/90'
+              }`}>
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <img
+                      src="/photos/avatar-rendy-maya.jpg"
+                      alt="Rendy & Maya"
+                      className="w-9 h-9 rounded-full object-cover border border-stone-200"
+                    />
+                    <span className="text-[11px] font-bold text-stone-900 truncate">Rendy &amp; Maya</span>
+                  </div>
+                  <p className="text-xs text-stone-600 leading-relaxed italic">
+                    &ldquo;Sangat suka dengan detail visual dan ornamen batiknya. Tamu keluarga besar kami sangat mengapresiasi karena mudah dibuka dan sakral.&rdquo;
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-stone-100 mt-4">
+                  <span className="text-[11px] font-medium text-stone-500 block">- Rendy &amp; Maya (Solo)</span>
+                  <div className="flex items-center gap-0.5 mt-1 text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={13} fill="currentColor" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2 */}
+              <div className={`bg-white rounded-3xl p-5 border transition-all duration-300 flex flex-col justify-between shadow-xs ${
+                testimonialIdx === 1 ? 'border-orange-500/80 ring-1 ring-orange-500/20' : 'border-stone-200/90'
+              }`}>
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <img
+                      src="/photos/avatar-dimas-nadia.jpg"
+                      alt="Dimas & Nadia"
+                      className="w-9 h-9 rounded-full object-cover border border-stone-200"
+                    />
+                    <span className="text-[11px] font-bold text-stone-900 truncate">Dimas &amp; Nadia</span>
+                  </div>
+                  <p className="text-xs text-stone-600 leading-relaxed italic">
+                    &ldquo;Pelayanan super cepat &amp; ramah! Fitur generator nama tamu WhatsApp sangat membantu menghemat waktu sebar undangan kami.&rdquo;
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-stone-100 mt-4">
+                  <span className="text-[11px] font-medium text-stone-500 block">- Dimas &amp; Nadia (Yogya)</span>
+                  <div className="flex items-center gap-0.5 mt-1 text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={13} fill="currentColor" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 3 */}
+              <div className={`bg-white rounded-3xl p-5 border transition-all duration-300 flex flex-col justify-between shadow-xs ${
+                testimonialIdx === 2 ? 'border-orange-500/80 ring-1 ring-orange-500/20' : 'border-stone-200/90'
+              }`}>
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <img
+                      src="/photos/avatar-faris-aisyah.jpg"
+                      alt="Faris & Aisyah"
+                      className="w-9 h-9 rounded-full object-cover border border-stone-200"
+                    />
+                    <span className="text-[11px] font-bold text-stone-900 truncate">Faris &amp; Aisyah</span>
+                  </div>
+                  <p className="text-xs text-stone-600 leading-relaxed italic">
+                    &ldquo;Transisi video gerbang pembukanya sangat mewah. Banyak teman yang memuji undangannya terasa eksklusif dan beda dari yang lain.&rdquo;
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-stone-100 mt-4">
+                  <span className="text-[11px] font-medium text-stone-500 block">- Faris &amp; Aisyah (Semarang)</span>
+                  <div className="flex items-center gap-0.5 mt-1 text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={13} fill="currentColor" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Summary Metrics Card */}
+            <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-stone-200/90 shadow-xs flex flex-col justify-between">
+              <div className="w-10 h-10 rounded-2xl bg-amber-100/70 text-amber-700 flex items-center justify-center mb-4">
+                <ShieldCheck size={22} />
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <div className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
+                    1,500+
+                  </div>
+                  <p className="text-[11px] text-stone-500 font-medium">
+                    {lang === 'id' ? 'Pasangan Bahagia' : 'Happy Couples'}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-stone-100">
+                  <div className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
+                    99.8%
+                  </div>
+                  <p className="text-[11px] text-stone-500 font-medium">
+                    {lang === 'id' ? 'Tamu Terkesan' : 'Delighted Guests'}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-stone-100">
+                  <div className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
+                    4.9/5
+                  </div>
+                  <p className="text-[11px] text-stone-500 font-medium">
+                    {lang === 'id' ? 'Rating Kepuasan' : 'Customer Rating'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between">
-              <p className="text-stone-700 text-sm leading-relaxed italic">
-                &ldquo;Sangat suka dengan detail visual dan ornamen batiknya. Tamu-tamu keluarga besar kami sangat mengapresiasi karena mudah dibuka di HP dan musiknya sakral.&rdquo;
-              </p>
-              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/avatar-rendy-maya.jpg" alt="Rendy & Maya" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
-                <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Rendy &amp; Maya</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Solo • Tema Javanese Heritage</p>
-                </div>
-              </div>
+          {/* Bottom Integration / Trust Strip */}
+          <div className="mt-12 pt-8 border-t border-stone-200/70">
+            <div className="flex flex-wrap items-center justify-between gap-6 opacity-75 grayscale hover:grayscale-0 transition-all text-xs font-bold text-stone-500">
+              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">BCA</span>
+              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">Mandiri</span>
+              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">BRI</span>
+              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">BNI</span>
+              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">QRIS</span>
+              <span className="tracking-tight font-sans text-stone-700 font-extrabold">Google Maps</span>
+              <span className="tracking-tight font-sans text-stone-700 font-extrabold">Apple Calendar</span>
+              <span className="tracking-tight font-sans text-stone-700 font-extrabold">WhatsApp VIP</span>
+              <span className="text-[11px] font-semibold text-stone-400">+ lainnya</span>
             </div>
-
-            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between">
-              <p className="text-stone-700 text-sm leading-relaxed italic">
-                &ldquo;Pelayanan cepat dan ramah, revisi langsung dibantu admin. Fitur generator nama tamu di WhatsApp sangat membantu menghemat waktu sebar undangan.&rdquo;
-              </p>
-              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/avatar-dimas-nadia.jpg" alt="Dimas & Nadia" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
-                <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Dimas &amp; Nadia</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Yogyakarta • Tema Split Floral</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-[#faf8f5] rounded-3xl p-7 border border-stone-200/90 shadow-xs flex flex-col justify-between md:col-span-2 lg:col-span-1 md:max-w-xl md:mx-auto md:w-full lg:max-w-none">
-              <p className="text-stone-700 text-sm leading-relaxed italic">
-                &ldquo;Transisi video gerbang pembukanya sangat mewah. Banyak teman kami yang memuji undangannya terasa eksklusif dan beda dari undangan digital biasa.&rdquo;
-              </p>
-              <div className="flex items-center space-x-3 pt-5 border-t border-stone-200/70 mt-6">
-                <img src="/photos/avatar-faris-aisyah.jpg" alt="Faris & Aisyah" className="w-11 h-11 rounded-full object-cover border border-stone-200" />
-                <div>
-                  <h4 className="font-bold text-stone-900 text-sm">Faris &amp; Aisyah</h4>
-                  <p className="text-xs text-stone-500">Pernikahan di Semarang • Tema Maroon Gold</p>
-                </div>
-              </div>
-            </div>
-
           </div>
 
         </div>
@@ -2037,37 +2179,84 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* CALL TO ACTION BANNER */}
-      <section className="py-16 sm:py-20 bg-primary-900 text-white relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
-          <span className="font-cinzel text-amber-200 uppercase tracking-widest text-xs font-bold block">
-            WD Group Wedding Invitation
-          </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-            {t('ctaTitle') as string}
-          </h2>
-          <p className="text-sm sm:text-base text-stone-200 max-w-xl mx-auto font-light leading-relaxed">
-            {t('ctaDesc') as string}
-          </p>
+      {/* CALL TO ACTION BANNER - Swift Style Panoramic Card */}
+      <section className="py-16 sm:py-20 bg-[#faf8f5]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-[32px] sm:rounded-[40px] bg-[#171513] text-white p-8 sm:p-12 lg:p-14 relative overflow-hidden border border-stone-800 shadow-2xl">
+            
+            {/* Subtle background glow effect */}
+            <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
-            <a 
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-amber-300 hover:bg-amber-200 text-stone-950 font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2"
-            >
-              <MessageCircle size={16} />
-              <span>{t('ctaBtn1') as string}</span>
-            </a>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+              
+              {/* Left Column: Heading, Copy, Pill CTA */}
+              <div className="lg:col-span-6 space-y-4">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-orange-400 font-sans block">
+                  {lang === 'id' ? 'SIAP MERAYAKAN HARI BAHAGIA?' : 'READY TO CELEBRATE?'}
+                </span>
+                
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.12] text-white">
+                  {lang === 'id' ? 'Abadikan Hari Bahagia Anda Sekarang.' : "Let's Move a Brighter Tomorrow."}
+                </h2>
 
-            <Link 
-              to="/themes"
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all flex items-center justify-center space-x-2"
-            >
-              <span>{t('ctaBtn2') as string}</span>
-              <ArrowRight size={15} />
-            </Link>
+                <p className="text-xs sm:text-sm text-stone-300 max-w-lg leading-relaxed font-light pt-1">
+                  {lang === 'id'
+                    ? 'Bergabunglah bersama ribuan pasangan yang mempercayakan undangan pernikahan digital mereka kepada WD Production. Cepat, anggun, dan tanpa repot.'
+                    : 'Join thousands of couples who trust WD Production for fast, elegant, and worry-free digital wedding invitations.'}
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 pt-4">
+                  <a
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-orange-950/40 transition-all active:scale-95"
+                  >
+                    <span>{lang === 'id' ? 'Pesan Sekarang' : 'Get Started Now'}</span>
+                    <ArrowRight size={16} />
+                  </a>
+
+                  <Link
+                    to="/themes"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-stone-800/90 hover:bg-stone-800 text-stone-200 hover:text-white font-semibold text-xs sm:text-sm border border-stone-700 transition-all"
+                  >
+                    <span>{lang === 'id' ? 'Koleksi Tema' : 'Theme Catalog'}</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right Column: 3D Diorama & Cursive Badge */}
+              <div className="lg:col-span-6 relative">
+                
+                {/* Floating cursive text */}
+                <div className="hidden sm:flex items-center gap-2 absolute top-3 right-4 z-20 pointer-events-none">
+                  <span className="font-serif italic text-stone-300 text-sm sm:text-base tracking-wide drop-shadow-md">
+                    More Than An Invitation
+                  </span>
+                  <Sparkles size={14} className="text-amber-400" />
+                </div>
+
+                {/* 3D Wedding Journey Diorama Image */}
+                <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-stone-900 group">
+                  <img
+                    src="/images/wedding_journey_realtime_diorama.jpg"
+                    alt="Wedding Journey Real-Time Diorama"
+                    className="w-full h-auto max-h-[360px] object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent pointer-events-none" />
+                  
+                  {/* Subtle caption pill on bottom */}
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[11px] text-white/90 px-3.5 py-2 rounded-2xl bg-stone-950/60 backdrop-blur-md border border-white/10">
+                    <span className="font-medium">WD Production • Magetan, Jawa Timur</span>
+                    <span className="text-orange-400 font-bold">24 Jam Pengerjaan</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
         </div>
       </section>
