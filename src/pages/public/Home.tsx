@@ -47,6 +47,7 @@ export const Home: React.FC = () => {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [testimonialIdx, setTestimonialIdx] = useState(0);
+  const [themeFilter, setThemeFilter] = useState<'all' | 'traditional' | 'resort' | 'modern'>('all');
 
   // Showcase Themes for Hero Showcase
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
@@ -338,6 +339,93 @@ export const Home: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const ALL_DEMO_THEMES = [
+    {
+      id: 'nirwana-sarangan',
+      name: 'Nirwana Sarangan Resort',
+      category: 'resort',
+      categoryLabel: 'Resort & Nature',
+      tag: 'Resort Telaga Sarangan',
+      preview: '/themes/nirwana-sarangan/nirwana-theme-preview.png',
+      demoUrl: '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true',
+      desc: lang === 'id' 
+        ? 'Nuansa Telaga Sarangan sejuk, kemegahan Hotel Nirwana & intimate wedding pegunungan.'
+        : 'Serene lakeside mountain scenery, grand Hotel Nirwana & intimate destination ceremonies.'
+    },
+    {
+      id: 'royal-wayang-gold',
+      name: 'Royal Wayang Gold',
+      category: 'traditional',
+      categoryLabel: 'Adat & Keraton',
+      tag: 'Keraton Jawa Klasik',
+      preview: '/themes/royal-wayang-theme-preview.png',
+      demoUrl: '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true',
+      desc: lang === 'id'
+        ? 'Kemegahan Pendopo Joglo malam hari, siluet wayang Kamajaya & Kamaratih berbalut emas murni.'
+        : 'Grand Javanese Joglo at night with pure gold Kamajaya & Kamaratih wayang silhouettes.'
+    },
+    {
+      id: 'joglo-maroon-heritage',
+      name: 'Batak Maroon Heritage',
+      category: 'traditional',
+      categoryLabel: 'Adat & Nusantara',
+      tag: 'Batak Bolon Heritage',
+      preview: '/themes/joglo-maroon-theme-preview.png',
+      demoUrl: '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true',
+      desc: lang === 'id'
+        ? 'Kemegahan Rumah Bolon adat Batak, ornamen ukiran Gorga otentik & aksen tenun Ulos.'
+        : 'Majestic Batak Bolon traditional house, authentic Gorga carvings & Ulos fabric accents.'
+    },
+    {
+      id: 'javanese-heritage',
+      name: 'Javanese Heritage',
+      category: 'traditional',
+      categoryLabel: 'Adat & Nusantara',
+      tag: 'Nusantara Heritage',
+      preview: '/themes/javanese-heritage-theme-preview.png',
+      demoUrl: '/invitation/steven-bunga?theme=javanese-heritage&demo=true',
+      desc: lang === 'id'
+        ? 'Sentuhan sakral Candi Borobudur, ornamen batik Truntum klasik & nuansa terracotta marun.'
+        : 'Sacred Borobudur temple motifs, classic Truntum batik patterns & terracotta maroon.'
+    },
+    {
+      id: 'secret-garden',
+      name: 'Secret Garden',
+      category: 'modern',
+      categoryLabel: 'Modern & Botanical',
+      tag: 'Botanical Romance',
+      preview: '/themes/secret-garden-theme-preview.png',
+      demoUrl: '/invitation/steven-bunga?theme=secret-garden&demo=true',
+      desc: lang === 'id'
+        ? 'Nuansa taman romantis dusty rose & earthy mauve, bingkai arched oval & kelopak bunga.'
+        : 'Romantic dusty rose botanical garden, elegant arched frames & floating flower petals.'
+    },
+    {
+      id: 'split-floral',
+      name: 'Split Floral Luxury',
+      category: 'modern',
+      categoryLabel: 'Modern & Floral',
+      tag: 'Flagship Luxury',
+      preview: '/themes/split-floral-theme-preview.png',
+      demoUrl: '/invitation/steven-bunga?theme=split-floral&demo=true',
+      desc: lang === 'id'
+        ? 'Tampilan split-screen modern, ornamen floral vintage, saxophone jazz & piringan hitam.'
+        : 'Modern split-screen layout, vintage florals, smooth saxophone & vinyl record player.'
+    },
+    {
+      id: 'maroon-gold',
+      name: 'Maroon Gold Royal',
+      category: 'traditional',
+      categoryLabel: 'Royal Classic',
+      tag: 'Royal Vintage',
+      preview: '/themes/maroon-gold-theme-preview.png',
+      demoUrl: '/invitation/steven-bunga?theme=maroon-gold&demo=true',
+      desc: lang === 'id'
+        ? 'Nuansa merah marun & emas kerajaan, bingkai vintage berornamen & transisi gerbang istana.'
+        : 'Royal maroon & imperial gold tones, ornate vintage frames & palace gate entrance.'
+    }
+  ];
 
   interface ChatMessage {
     id: string;
@@ -1183,342 +1271,170 @@ export const Home: React.FC = () => {
 
           </div>
 
-          {/* SWIFT-STYLE SECTION 2: VARIAN TRADISI & KONSEP (Built for Every Delivery style) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-start pt-14">
-            
-            {/* Left Header Column */}
-            <div className="lg:col-span-3 space-y-4 text-left">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-primary-800 font-mono block">
-                {lang === 'id' ? 'KONSEP & TRADISI' : 'THEMES & TRADITIONS'}
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight leading-tight">
-                {lang === 'id' ? (
-                  <>
-                    Sempurna untuk <span className="text-primary-900">Setiap Tradisi.</span>
-                  </>
-                ) : (
-                  <>
-                    Crafted for <span className="text-primary-900">Every Tradition.</span>
-                  </>
-                )}
-              </h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                {lang === 'id' 
-                  ? 'Dari keagungan adat budaya Keraton Nusantara, syahdunya intimate resort pegunungan, hingga estetika minimalis modern.'
-                  : 'From sacred traditional palace heritage, serene natural resort destinations, to elegant modern minimalist celebrations.'}
-              </p>
-              <div className="pt-2">
-                <a
-                  href="#themes"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-stone-300 text-stone-800 text-xs font-bold hover:bg-stone-100 hover:border-stone-400 transition-all cursor-pointer shadow-2xs"
-                >
-                  <span>{lang === 'id' ? 'Lihat Semua Tema' : 'View All Themes'}</span>
-                  <ArrowRight size={13} />
-                </a>
-              </div>
-            </div>
-
-            {/* Right Column: 3 Curated Segment Cards */}
-            <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
+          {/* SWIFT-STYLE SECTION 2: DIGITAL WEDDING INVITATION THEMES & LIVE DEMOS */}
+          <div id="themes" className="pt-16 border-t border-stone-200/80">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
               
-              {/* Segment 1: Tradisional & Keraton */}
-              <div 
-                onClick={() => {
-                  const element = document.getElementById('themes');
-                  if (element) element.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
-              >
+              {/* Left Header Column */}
+              <div className="lg:col-span-3 space-y-5 text-left sticky top-24">
                 <div>
-                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 mb-3.5 border border-stone-200/80">
-                    <img 
-                      src="/images/segments/seg_tradisional.jpg" 
-                      alt="Pernikahan Adat & Keraton" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                    />
-                  </div>
-                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
-                    <Users size={13} />
-                  </div>
-                  <h4 className="font-bold text-stone-900 text-sm sm:text-base group-hover:text-primary-900 transition-colors">
-                    {lang === 'id' ? 'Pernikahan Adat & Keraton' : 'Traditional & Heritage'}
-                  </h4>
-                  <p className="text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-primary-800 font-mono block mb-2">
+                    {lang === 'id' ? 'KOLEKSI TEMA EKSKLUSIF' : 'CURATED THEMES'}
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight leading-[1.18]">
+                    {lang === 'id' ? (
+                      <>
+                        Desain Elegan Siap <span className="text-primary-900">Disesuaikan.</span>
+                      </>
+                    ) : (
+                      <>
+                        Elegant Themes Ready to <span className="text-primary-900">Customize.</span>
+                      </>
+                    )}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-600 leading-relaxed mt-3">
                     {lang === 'id' 
-                      ? 'Filosofi sakral budaya Jawa, Batak, Sunda & Nusantara berhias ornamen otentik.'
-                      : 'Sacred cultural heritage of Javanese, Batak, Sundanese & Nusantara with authentic motifs.'}
+                      ? 'Setiap tema dirancang dengan komposisi visual matang, tipografi premium, dan fitur interaktif lengkap. Coba live demo langsung di ponsel Anda.'
+                      : 'Each theme is crafted with refined visual composition, premium typography, and complete interactive features. Try live demos directly on mobile.'}
                   </p>
                 </div>
-                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
-                  <ArrowRight size={15} />
+
+                {/* Category Filter Tabs */}
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
+                    {lang === 'id' ? 'Filter Kategori:' : 'Category Filter:'}
+                  </span>
+                  <div className="flex flex-wrap lg:flex-col gap-1.5">
+                    {[
+                      { key: 'all', label: lang === 'id' ? 'Semua Tema (7)' : 'All Themes (7)' },
+                      { key: 'traditional', label: lang === 'id' ? 'Adat & Keraton' : 'Traditional' },
+                      { key: 'resort', label: lang === 'id' ? 'Resort & Danau' : 'Resort & Nature' },
+                      { key: 'modern', label: lang === 'id' ? 'Modern & Botanical' : 'Modern & Botanical' },
+                    ].map((tab) => (
+                      <button
+                        key={tab.key}
+                        onClick={() => setThemeFilter(tab.key as any)}
+                        className={`px-3.5 py-2 rounded-xl text-xs font-bold text-left transition-all cursor-pointer flex items-center justify-between ${
+                          themeFilter === tab.key
+                            ? 'bg-stone-900 text-white shadow-xs'
+                            : 'bg-white hover:bg-stone-100 text-stone-600 border border-stone-200/80'
+                        }`}
+                      >
+                        <span>{tab.label}</span>
+                        {themeFilter === tab.key && <Check size={13} className="text-amber-400" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Custom Request Pill */}
+                <div className="pt-2">
+                  <a
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-stone-300 text-stone-800 text-xs font-bold hover:bg-stone-100 hover:border-stone-400 transition-all cursor-pointer shadow-2xs w-full justify-center"
+                  >
+                    <span>{lang === 'id' ? 'Konsultasi Desain Khusus' : 'Bespoke Custom Request'}</span>
+                    <ArrowRight size={13} />
+                  </a>
                 </div>
               </div>
 
-              {/* Segment 2: Resort & Destination */}
-              <div 
-                onClick={() => {
-                  const element = document.getElementById('themes');
-                  if (element) element.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
-              >
-                <div>
-                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 mb-3.5 border border-stone-200/80">
-                    <img 
-                      src="/images/segments/seg_resort.jpg" 
-                      alt="Resort & Destination Wedding" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                    />
-                  </div>
-                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
-                    <MapPin size={13} />
-                  </div>
-                  <h4 className="font-bold text-stone-900 text-sm sm:text-base group-hover:text-primary-900 transition-colors">
-                    {lang === 'id' ? 'Resort & Destination' : 'Resort & Destination'}
-                  </h4>
-                  <p className="text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
-                    {lang === 'id' 
-                      ? 'Nuansa pemandangan telaga sejuk dan konsep intimate wedding nan menenangkan.'
-                      : 'Serene lakeside mountain scenery for refreshing intimate destination ceremonies.'}
-                  </p>
-                </div>
-                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
-                  <ArrowRight size={15} />
-                </div>
-              </div>
-
-              {/* Segment 3: Modern & Botanical */}
-              <div 
-                onClick={() => {
-                  const element = document.getElementById('themes');
-                  if (element) element.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
-              >
-                <div>
-                  <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 mb-3.5 border border-stone-200/80">
-                    <img 
-                      src="/images/segments/seg_modern.jpg" 
-                      alt="Modern Minimalis & Botanical" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                    />
-                  </div>
-                  <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-2xs">
-                    <Sparkles size={13} />
-                  </div>
-                  <h4 className="font-bold text-stone-900 text-sm sm:text-base group-hover:text-primary-900 transition-colors">
-                    {lang === 'id' ? 'Modern & Botanical' : 'Modern & Botanical'}
-                  </h4>
-                  <p className="text-xs text-stone-500 leading-relaxed mt-1 line-clamp-2">
-                    {lang === 'id' 
-                      ? 'Estetika editorial bersih kontemporer dengan hamparan floral anggun.'
-                      : 'Clean contemporary editorial aesthetics with elegant romantic botanical foliage.'}
-                  </p>
-                </div>
-                <div className="flex justify-end pt-3 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-1 transition-all">
-                  <ArrowRight size={15} />
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* THEMES SHOWCASE SECTION */}
-      <section id="themes" className="py-20 sm:py-24 bg-[#f5f1eb] border-y border-stone-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary-800 font-serif">
-              {t('themesLabel') as string}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              {t('themesTitle') as string}
-            </h2>
-            <p className="text-sm sm:text-base text-stone-600">
-              {t('themesDesc') as string}
-            </p>
-          </div>
-
-          {/* Theme Cards Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {displayThemes.map((theme) => {
-              const isNirwana = theme.slug === 'nirwana-sarangan' || theme.slug === 'hotel-nirwana' || theme.slug === 'telaga-sarangan';
-              const isJogloMaroon = theme.slug === 'joglo-maroon-heritage' || theme.slug === 'joglo-maroon' || theme.slug === 'joglo-bloom';
-              const isRoyalWayang = theme.slug === 'royal-wayang-gold' || theme.slug === 'royal-wayang';
-              const isGarden = theme.slug === 'secret-garden';
-              const isJavanese = theme.slug === 'javanese-heritage' || theme.slug === 'jawa-klasik' || theme.slug === 'borobudur';
-              const isMaroon = theme.slug === 'maroon-gold';
-              const isSplit = theme.slug === 'split-floral';
-
-              const previewImg = theme.preview_image || theme.thumbnail || (isNirwana
-                ? '/themes/nirwana-sarangan/nirwana-theme-preview.png'
-                : (isJogloMaroon
-                  ? '/themes/joglo-maroon-theme-preview.png'
-                  : (isRoyalWayang
-                    ? '/themes/royal-wayang-theme-preview.png'
-                    : (isGarden 
-                        ? '/themes/secret-garden-theme-preview.png'
-                        : (isSplit 
-                            ? '/themes/split-floral-theme-preview.png' 
-                            : '/themes/javanese-heritage-theme-preview.png')))));
-
-              const demoUrl = isNirwana
-                ? '/invitation/steven-bunga?theme=nirwana-sarangan&demo=true'
-                : (isJogloMaroon
-                  ? '/invitation/steven-bunga?theme=joglo-maroon-heritage&demo=true'
-                  : (isRoyalWayang
-                    ? '/invitation/steven-bunga?theme=royal-wayang-gold&demo=true'
-                    : (isJavanese 
-                        ? '/invitation/steven-bunga?theme=javanese-heritage&demo=true' 
-                        : (theme.slug ? `/invitation/steven-bunga?theme=${theme.slug}&demo=true` : '/themes'))));
-
-              const featuresList = isNirwana ? [
-                'Kemegahan Hotel Nirwana & Panorama Telaga Sarangan',
-                'Nuansa Hijau Pinus Lereng Lawu & Kabut Danau Romantis',
-                'Resort Venue Peta Langsung & Lobi Nirwana Sarangan',
-                'Amplop Digital, Salin Rekening & RSVP Online'
-              ] : isJogloMaroon ? [
-                'Kemegahan Rumah Adat Batak (Rumah Bolon)',
-                'Ornamen Ukiran Gorga & Aksen Tenun Ulos',
-                'Bingkai Foto Lengkung & Hamparan Bunga Marun',
-                'Amplop Digital (BCA/Mandiri), Salin Rekening & RSVP'
-              ] : isRoyalWayang ? [
-                'Kemegahan Pendopo Joglo & Siluet Wayang Emas',
-                'Nuansa Hitam Emas Keraton & Paugeran Busana',
-                'Split Screen Desktop & Full Mobile Interaktif',
-                'Amplop Digital (BCA/BRI/Mandiri), QRIS & RSVP Online'
-              ] : isJavanese ? [
-                'Ilustrasi Candi Borobudur & Batik Truntum',
-                'Ornamen Anggrek Marun & Nuansa Terracotta',
-                'Split Screen Desktop & Full Mobile Interaktif',
-                'Amplop Digital (BCA/Mandiri/BSI), RSVP & Buku Tamu'
-              ] : isMaroon ? [
-                'Transisi Video Gerbang Istana Kerajaan',
-                'Nuansa Merah Marun & Bingkai Emas Vintage',
-                'Timeline Kisah Cinta & Galeri Lightbox',
-                'RSVP Real-Time & Rekening Amplop Digital'
-              ] : isGarden ? [
-                'Video Entrance Sinematik HD',
-                'Nuansa Dusty Rose & Dresscode Swatches',
-                'Bingkai Oval Arched & Amplop Digital',
-                'Hitung Mundur Real-Time & Add to Calendar'
-              ] : isSplit ? [
-                'Transisi Video Cover Entrance Megah',
-                'Tampilan Split-Screen Desktop & Fullscreen Mobile',
-                'Backsound Saxophone & Pemutar Audio Piringan Hitam',
-                'RSVP, Buku Tamu, Amplop Digital & Google Maps'
-              ] : (
-                Array.isArray(theme.features) && theme.features.length > 0
-                  ? theme.features.slice(0, 4).map((f: any) => typeof f === 'string' ? f : f.name || 'Fitur Lengkap')
-                  : [
-                    'Desain Responsif Mobile & Desktop',
-                    'Formulir RSVP & Ucapan Online',
-                    'Amplop Digital & Navigasi Lokasi',
-                    'Musik Latar & Countdown Interaktif'
-                  ]
-              );
-
-              return (
-                <div 
-                  key={theme.id || theme.slug}
-                  className="bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-sm hover:shadow-md transition-shadow flex flex-col group"
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-12 h-full">
-                    
-                    {/* Image Preview */}
-                    <div className="sm:col-span-5 relative aspect-[4/3] sm:aspect-auto min-h-[220px] sm:min-h-full overflow-hidden bg-stone-900">
-                      <img 
-                        src={previewImg} 
-                        alt={theme.name} 
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out" 
-                      />
-                      <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-                        <span className="bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-md">
-                          {theme.category || (isNirwana ? 'Resort & Nature' : isJogloMaroon ? 'Traditional & Heritage' : isRoyalWayang ? 'Traditional & Heritage' : isJavanese ? 'Traditional & Heritage' : isGarden ? 'Botanical & Garden' : 'Floral & Classic')}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Theme Info */}
-                    <div className="sm:col-span-7 p-6 flex flex-col justify-between space-y-4">
-                      <div>
-                        <div className="text-xs font-bold uppercase tracking-wider text-primary-800 mb-1">
-                          {isNirwana ? 'Resort Telaga Sarangan Masterpiece' : isJogloMaroon ? 'Batak Heritage Masterpiece' : isRoyalWayang ? 'Keraton Masterpiece' : isJavanese ? 'Nusantara Masterpiece' : isGarden ? 'Botanical Romance' : isMaroon ? 'Royal Classic' : isSplit ? 'Flagship Masterpiece' : (theme.category || 'Special Edition')}
-                        </div>
-                        <h3 className="font-bold text-xl sm:text-2xl text-stone-900">{theme.name}</h3>
-                        <p className="text-stone-600 text-xs mt-2 leading-relaxed line-clamp-2 sm:line-clamp-3">
-                          {isNirwana
-                            ? 'Tema pernikahan eksklusif bernuansa pemandangan Telaga Sarangan yang sejuk dan menenangkan di lereng Gunung Lawu, berlatar kemegahan Hotel Nirwana Sarangan, riak air danau, kabut pegunungan, dan sentuhan intimate wedding & wisata.'
-                            : isJogloMaroon
-                            ? 'Tema pernikahan adat Batak bernuansa Rumah Adat Bolon megah berhias ukiran Gorga dan hamparan bunga merah marun, diperkaya aksen tenun Ulos, kupu-kupu beterbangan, dan suasana sakral penuh kehormatan.'
-                            : isRoyalWayang
-                              ? 'Tema pernikahan agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, diperkaya siluet wayang Kamajaya & Kamaratih berlapis emas, ornamen floral klasik, serta alunan sakral khas Nusantara.'
-                              : theme.description || (isJavanese
-                                ? 'Tema bernuansa kemegahan Candi Borobudur, ornamen batik klasik, paduan warna terracotta & merah marun, serta rangkaian anggrek vintage.'
-                                : isGarden 
-                                ? 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance sinematik, dan ornamen bunga melayang.'
-                                : 'Tema split screen klasik dengan ornamen floral melengkung vintage, entrance video arch, dan alunan saxophone romantis.')
-                          }
-                        </p>
-
-                        <div className="mt-4 space-y-1.5 text-xs text-stone-700">
-                          {featuresList.map((featureText, idx) => (
-                            <div key={idx} className="flex items-center space-x-2">
-                              <Check size={14} className="text-emerald-700 shrink-0" />
-                              <span className="line-clamp-1">{featureText}</span>
+              {/* Right Column: Dynamic Theme Cards with Live Demos */}
+              <div className="lg:col-span-9 space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
+                  {ALL_DEMO_THEMES
+                    .filter((theme) => {
+                      if (themeFilter === 'all') return true;
+                      return theme.category === themeFilter;
+                    })
+                    .map((theme) => (
+                      <div 
+                        key={theme.id}
+                        className="bg-white rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
+                      >
+                        <div>
+                          {/* Image Preview with Badges */}
+                          <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden bg-stone-900 mb-3.5 relative border border-stone-100">
+                            <img 
+                              src={theme.preview} 
+                              alt={theme.name} 
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                            />
+                            {/* Badges Overlay */}
+                            <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10 pointer-events-none">
+                              <span className="bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-2xs">
+                                {theme.categoryLabel}
+                              </span>
+                              <span className="bg-white/90 backdrop-blur-xs text-stone-900 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-2xs">
+                                <Star size={10} className="text-amber-500 fill-amber-500" />
+                                <span>4.9</span>
+                              </span>
                             </div>
-                          ))}
+                          </div>
+
+                          {/* Theme Header & Text */}
+                          <div className="space-y-1 mb-3">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-primary-800 font-mono block">
+                              {theme.tag}
+                            </span>
+                            <h4 className="font-bold text-stone-900 text-base group-hover:text-primary-900 transition-colors">
+                              {theme.name}
+                            </h4>
+                            <p className="text-xs text-stone-500 leading-relaxed line-clamp-2 pt-0.5">
+                              {theme.desc}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Direct Live Demo CTA Button */}
+                        <div className="pt-3 border-t border-stone-100 mt-2">
+                          <a
+                            href={theme.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-95"
+                          >
+                            <span>{lang === 'id' ? 'Buka Live Demo' : 'Open Live Demo'}</span>
+                            <ArrowRight size={14} />
+                          </a>
                         </div>
                       </div>
-
-                      <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t border-stone-100">
-                        <Link 
-                          to="/themes"
-                          className="w-full sm:flex-1 py-2.5 rounded-xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-stone-50 transition-colors text-center block"
-                        >
-                          {t('themeCatalogBtn') as string}
-                        </Link>
-                        <a 
-                          href={demoUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="w-full sm:flex-1 py-2.5 rounded-xl bg-primary-800 text-white font-bold text-xs hover:bg-primary-900 transition-colors text-center block"
-                        >
-                          {t('themeDemoBtn') as string}
-                        </a>
-                      </div>
-                    </div>
-
-                  </div>
+                    ))}
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Custom Theme Request Notice */}
-          <div className="mt-8 max-w-6xl mx-auto bg-white rounded-2xl border border-stone-200 p-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
-            <div>
-              <h3 className="text-sm sm:text-base font-bold text-stone-900">{t('themeCustomTitle') as string}</h3>
-              <p className="text-xs text-stone-600 mt-0.5">
-                {t('themeCustomDesc') as string}
-              </p>
+                {/* Custom Design Notice Card */}
+                <div className="bg-[#faf8f5] rounded-3xl border border-stone-200/90 p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
+                  <div>
+                    <h4 className="text-sm sm:text-base font-bold text-stone-900">
+                      {lang === 'id' ? 'Ingin Desain Khusus Sesuai Konsep Pernikahan Anda?' : 'Want a Custom Design for Your Wedding Concept?'}
+                    </h4>
+                    <p className="text-xs text-stone-500 mt-0.5">
+                      {lang === 'id' 
+                        ? 'Tim desainer kami siap membuat konsep visual baru dari nol yang selaras dengan dekorasi & busana.'
+                        : 'Our design team is ready to create a bespoke visual concept from scratch.'}
+                    </p>
+                  </div>
+                  <a
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-2.5 rounded-full bg-stone-900 hover:bg-stone-950 text-white text-xs font-bold transition-colors shrink-0 shadow-xs"
+                  >
+                    {lang === 'id' ? 'Konsultasi Desain Khusus' : 'Consult Designers'}
+                  </a>
+                </div>
+
+              </div>
+
             </div>
-            <a 
-              href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20apakah%20bisa%20konsultasi%20request%20custom%20tema?"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2.5 rounded-xl bg-stone-900 text-white text-xs font-bold hover:bg-stone-800 transition-colors shrink-0"
-            >
-              {t('themeCustomBtn') as string}
-            </a>
           </div>
 
         </div>
       </section>
+
+
 
       {/* PRICING SECTION - Swift Style Layout */}
       <section id="pricing" className="py-20 sm:py-24 bg-[#faf8f5] border-b border-stone-200">
