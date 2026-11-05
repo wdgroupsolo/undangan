@@ -211,6 +211,7 @@ export const InvitationRenderer: React.FC = () => {
 
   const isDemoParam = searchParams.get('demo') === 'true';
   const isSessionTestMode = (isStevenBungaSlug || isDemoParam) && !!sessionTestCouple;
+  const isDemoWatermarkVisible = isSessionTestMode || isDemoParam || isStevenBungaSlug;
 
   const displayCouple = useMemo(() => {
     if (!isSessionTestMode || !sessionTestCouple) {
@@ -585,30 +586,51 @@ export const InvitationRenderer: React.FC = () => {
         </button>
       )}
 
-      {isSessionTestMode && (
-        <div className="fixed top-3 left-1/2 -translate-x-1/2 z-[9999] pointer-events-auto">
-          <div className="bg-stone-900/95 text-amber-200 border border-amber-500/50 px-4 py-1.5 rounded-full text-xs font-sans shadow-2xl backdrop-blur-md flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="font-semibold tracking-wide">
-              Preview Mempelai: {groom} &amp; {bride}
-            </span>
-            <span className="text-[10px] text-stone-400 hidden sm:inline border-l border-stone-700 pl-2">
-              Khusus 1 sesi browser • Tidak dapat dibagikan
-            </span>
-            <button
-              onClick={() => {
-                try {
-                  sessionStorage.removeItem('wd_demo_couple');
-                  localStorage.removeItem('wd_demo_couple_session');
-                } catch {}
-                setSessionTestCouple(null);
-              }}
-              title="Kembalikan ke nama demo default"
-              className="ml-1 px-2.5 py-0.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[10px] font-bold cursor-pointer transition-colors"
-            >
-              Reset
-            </button>
-          </div>
+      {/* Testing Demo Background Watermark Pattern */}
+      {isDemoWatermarkVisible && (
+        <div 
+          aria-hidden="true" 
+          className="fixed inset-0 pointer-events-none select-none z-[80] overflow-hidden"
+        >
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern
+                id="testing-demo-watermark"
+                width="320"
+                height="180"
+                patternUnits="userSpaceOnUse"
+                patternTransform="rotate(-25)"
+              >
+                <text
+                  x="20"
+                  y="45"
+                  fill="rgba(255, 255, 255, 0.15)"
+                  stroke="rgba(0, 0, 0, 0.28)"
+                  strokeWidth="0.5"
+                  fontSize="15"
+                  fontWeight="800"
+                  letterSpacing="3"
+                  fontFamily="system-ui, -apple-system, sans-serif"
+                >
+                  TESTING DEMO
+                </text>
+                <text
+                  x="20"
+                  y="72"
+                  fill="rgba(212, 175, 55, 0.22)"
+                  stroke="rgba(0, 0, 0, 0.25)"
+                  strokeWidth="0.5"
+                  fontSize="9.5"
+                  fontWeight="700"
+                  letterSpacing="2"
+                  fontFamily="system-ui, -apple-system, sans-serif"
+                >
+                  WD DIGITAL INVITATION
+                </text>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#testing-demo-watermark)" />
+          </svg>
         </div>
       )}
 
