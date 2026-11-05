@@ -156,14 +156,43 @@ export const Home: React.FC = () => {
   const [autoSlidePaused, setAutoSlidePaused] = useState(false);
 
   // Interactive Swift-style Demo Launcher State
-  const [demoGuestName, setDemoGuestName] = useState('');
+  const [demoCoupleName, setDemoCoupleName] = useState('');
   const [demoSelectedTheme, setDemoSelectedTheme] = useState('nirwana-sarangan');
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   const handleLaunchDemo = (e: React.FormEvent) => {
     e.preventDefault();
-    const nameParam = demoGuestName.trim() ? encodeURIComponent(demoGuestName.trim()) : 'Tamu Undangan';
-    const url = `/invitation/steven-bunga?theme=${demoSelectedTheme}&to=${nameParam}&demo=true`;
+    const rawInput = demoCoupleName.trim();
+    if (rawInput) {
+      const parts = rawInput.split(/\s*(?:&|dan|and|\+)\s*/i);
+      const groomInput = parts[0]?.trim() || rawInput;
+      const brideInput = parts[1]?.trim() || (lang === 'id' ? 'Bunga' : 'Bunga');
+
+      const testCoupleData = {
+        groom_nickname: groomInput,
+        groom_full_name: groomInput,
+        groom_name: groomInput,
+        bride_nickname: brideInput,
+        bride_full_name: brideInput,
+        bride_name: brideInput,
+        is_session_test: true,
+        timestamp: Date.now()
+      };
+
+      try {
+        sessionStorage.setItem('wd_demo_couple', JSON.stringify(testCoupleData));
+        localStorage.setItem('wd_demo_couple_session', JSON.stringify(testCoupleData));
+      } catch (err) {
+        console.warn('Storage not available', err);
+      }
+    } else {
+      try {
+        sessionStorage.removeItem('wd_demo_couple');
+        localStorage.removeItem('wd_demo_couple_session');
+      } catch {}
+    }
+
+    const url = `/invitation/steven-bunga?theme=${demoSelectedTheme}&demo=true`;
     window.open(url, '_blank');
   };
 
@@ -688,16 +717,16 @@ export const Home: React.FC = () => {
               <form onSubmit={handleLaunchDemo} className="pt-2">
                 <div className="bg-white rounded-2xl sm:rounded-full p-2 sm:p-2.5 shadow-xl border border-stone-200/90 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 max-w-xl mx-auto lg:mx-0 transition-all hover:border-primary-300 hover:shadow-2xl">
                   
-                  {/* Input 1: Guest Name */}
+                  {/* Input 1: Couple Names for 1-Session Testing */}
                   <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 sm:border-r border-stone-200">
                     <div className="w-8 h-8 rounded-full bg-primary-50 text-primary-800 flex items-center justify-center shrink-0">
-                      <Mail size={16} />
+                      <Heart size={16} className="fill-primary-700/20 text-primary-800" />
                     </div>
                     <input
                       type="text"
-                      value={demoGuestName}
-                      onChange={(e) => setDemoGuestName(e.target.value)}
-                      placeholder={lang === 'id' ? 'Nama Tamu (misal: Bpk. & Ibu Hendra)' : 'Guest Name (e.g. Mr. & Mrs. Smith)'}
+                      value={demoCoupleName}
+                      onChange={(e) => setDemoCoupleName(e.target.value)}
+                      placeholder={lang === 'id' ? 'Nama Mempelai (misal: Steven & Bunga)' : 'Couple Names (e.g. Steven & Bunga)'}
                       className="w-full text-xs sm:text-sm text-stone-800 placeholder-stone-400 bg-transparent border-none p-0 focus:ring-0 font-medium outline-none"
                     />
                   </div>
@@ -744,8 +773,8 @@ export const Home: React.FC = () => {
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                   <span>
                     {lang === 'id' 
-                      ? 'Ketik nama tamu & klik panah untuk mencoba undangan personalisasi langsung.'
-                      : 'Type guest name & click arrow to test personalized live invitation.'}
+                      ? 'Ketik nama Anda & pasangan untuk uji coba live preview langsung (khusus 1 sesi browser).'
+                      : 'Type your & partner names for a live 1-session demo preview.'}
                   </span>
                 </div>
               </form>

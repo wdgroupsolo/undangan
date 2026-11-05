@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause } from 'lucide-react';
@@ -185,14 +185,56 @@ export const InvitationRenderer: React.FC = () => {
     ? couple
     : (cachedCouple || (isAudiOvyolaSlug ? COUPLE_AUDI_OVYOLA : (isYogaFatmaSlug ? COUPLE_YOGA_FATMA : (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA))))));
 
-  const rawGroomNick = activeCouple?.groom_nickname?.trim();
-  const rawGroomFull = activeCouple?.groom_full_name?.trim();
+  // 1-Session browser test override (from Home interactive pill launcher)
+  const [sessionTestCouple, setSessionTestCouple] = useState<{
+    groom_nickname?: string;
+    groom_full_name?: string;
+    groom_name?: string;
+    bride_nickname?: string;
+    bride_full_name?: string;
+    bride_name?: string;
+  } | null>(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const sess = sessionStorage.getItem('wd_demo_couple');
+      if (sess) return JSON.parse(sess);
+      const local = localStorage.getItem('wd_demo_couple_session');
+      if (local) {
+        const parsed = JSON.parse(local);
+        if (Date.now() - (parsed.timestamp || 0) < 2 * 3600 * 1000) {
+          return parsed;
+        }
+      }
+    } catch {}
+    return null;
+  });
+
+  const isDemoParam = searchParams.get('demo') === 'true';
+  const isSessionTestMode = (isStevenBungaSlug || isDemoParam) && !!sessionTestCouple;
+
+  const displayCouple = useMemo(() => {
+    if (!isSessionTestMode || !sessionTestCouple) {
+      return activeCouple;
+    }
+    return {
+      ...(activeCouple || {}),
+      groom_nickname: sessionTestCouple.groom_nickname || activeCouple?.groom_nickname,
+      groom_full_name: sessionTestCouple.groom_full_name || activeCouple?.groom_full_name,
+      groom_name: sessionTestCouple.groom_nickname || activeCouple?.groom_name,
+      bride_nickname: sessionTestCouple.bride_nickname || activeCouple?.bride_nickname,
+      bride_full_name: sessionTestCouple.bride_full_name || activeCouple?.bride_full_name,
+      bride_name: sessionTestCouple.bride_nickname || activeCouple?.bride_name,
+    };
+  }, [activeCouple, sessionTestCouple, isSessionTestMode]);
+
+  const rawGroomNick = displayCouple?.groom_nickname?.trim();
+  const rawGroomFull = displayCouple?.groom_full_name?.trim();
   const groom = rawGroomNick
     ? formatName(rawGroomNick)
     : (rawGroomFull ? formatName(rawGroomFull.split(/[\s,]+/)[0]) : (isAudiOvyolaSlug ? 'Audi' : (isYogaFatmaSlug ? 'Yoga' : (isAgniSlug ? 'Agni' : (isBimaSlug ? 'Bima' : 'Steven')))));
 
-  const rawBrideNick = activeCouple?.bride_nickname?.trim();
-  const rawBrideFull = activeCouple?.bride_full_name?.trim();
+  const rawBrideNick = displayCouple?.bride_nickname?.trim();
+  const rawBrideFull = displayCouple?.bride_full_name?.trim();
   const bride = rawBrideNick
     ? formatName(rawBrideNick)
     : (rawBrideFull ? formatName(rawBrideFull.split(/[\s,]+/)[0]) : (isAudiOvyolaSlug ? 'Ovyola' : (isYogaFatmaSlug ? 'Fatma' : (isAgniSlug ? 'Putri' : (isBimaSlug ? 'Ratna' : 'Bunga')))));
@@ -543,6 +585,33 @@ export const InvitationRenderer: React.FC = () => {
         </button>
       )}
 
+      {isSessionTestMode && (
+        <div className="fixed top-3 left-1/2 -translate-x-1/2 z-[9999] pointer-events-auto">
+          <div className="bg-stone-900/95 text-amber-200 border border-amber-500/50 px-4 py-1.5 rounded-full text-xs font-sans shadow-2xl backdrop-blur-md flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="font-semibold tracking-wide">
+              Preview Mempelai: {groom} &amp; {bride}
+            </span>
+            <span className="text-[10px] text-stone-400 hidden sm:inline border-l border-stone-700 pl-2">
+              Khusus 1 sesi browser • Tidak dapat dibagikan
+            </span>
+            <button
+              onClick={() => {
+                try {
+                  sessionStorage.removeItem('wd_demo_couple');
+                  localStorage.removeItem('wd_demo_couple_session');
+                } catch {}
+                setSessionTestCouple(null);
+              }}
+              title="Kembalikan ke nama demo default"
+              className="ml-1 px-2.5 py-0.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[10px] font-bold cursor-pointer transition-colors"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Main Invitation Content */}
       <div className={
         isSplitTheme
@@ -557,7 +626,7 @@ export const InvitationRenderer: React.FC = () => {
           isKualaLumpur ? (
             <KualaLumpurHeritageTheme 
               invitation={invitation}
-              couple={couple || COUPLE_HAFIZ_SYAFIKA}
+              couple={displayCouple || COUPLE_HAFIZ_SYAFIKA}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -569,7 +638,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : isNirwanaSarangan ? (
             <NirwanaSaranganTheme 
               invitation={invitation}
-              couple={couple || activeCouple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={(gallery && gallery.length > 0 && !gallery[0]?.image_url?.includes('agni-putri')) ? gallery : (isStevenBungaSlug ? GALLERY_STEVEN_BUNGA : (gallery || []))}
@@ -580,7 +649,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : isJogloMaroon ? (
             <JogloMaroonHeritageTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -591,7 +660,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : isRoyalWayang ? (
             <RoyalWayangGoldTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -602,7 +671,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : isJavaneseHeritage ? (
             <JavaneseHeritageTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -612,7 +681,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : isRoyalElegance ? (
             <RoyalEleganceTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -622,7 +691,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : isMaroonGold ? (
             <MaroonGoldTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -632,7 +701,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : isSecretGarden ? (
             <SecretGardenTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -642,7 +711,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : (activeThemeSlug === 'animated-luxury' || activeThemeSlug === 'elegant-gold' || activeThemeSlug === 'navy-luxury') ? (
             <LuxuryAnimatedTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -652,7 +721,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : activeThemeSlug === 'split-floral' ? (
             <SplitFloralTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -662,7 +731,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : (activeThemeSlug === 'animated-floral' || activeThemeSlug === 'floral-romance' || activeThemeSlug === 'sakura-blossom') ? (
             <AnimatedFloralTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
@@ -672,7 +741,7 @@ export const InvitationRenderer: React.FC = () => {
           ) : (
             <BaseTheme 
               invitation={invitation}
-              couple={couple}
+              couple={displayCouple}
               events={events || []}
               stories={stories || []}
               gallery={gallery || []}
