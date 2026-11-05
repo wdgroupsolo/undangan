@@ -1866,18 +1866,90 @@ export const Home: React.FC = () => {
 
           </div>
 
-          {/* Bottom Integration / Trust Strip */}
+          {/* WD Group Divisions Ecosystem Strip */}
           <div className="mt-12 pt-8 border-t border-stone-200/70">
-            <div className="flex flex-wrap items-center justify-between gap-6 opacity-75 grayscale hover:grayscale-0 transition-all text-xs font-bold text-stone-500">
-              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">BCA</span>
-              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">Mandiri</span>
-              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">BRI</span>
-              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">BNI</span>
-              <span className="tracking-wider uppercase font-sans text-stone-700 font-extrabold">QRIS</span>
-              <span className="tracking-tight font-sans text-stone-700 font-extrabold">Google Maps</span>
-              <span className="tracking-tight font-sans text-stone-700 font-extrabold">Apple Calendar</span>
-              <span className="tracking-tight font-sans text-stone-700 font-extrabold">WhatsApp VIP</span>
-              <span className="text-[11px] font-semibold text-stone-400">+ lainnya</span>
+            <div className="text-center mb-6">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-stone-400 font-mono">
+                {lang === 'id' ? 'EKOSISTEM & DIVISI RESMI PT WD GROUP' : 'OFFICIAL WD GROUP DIVISIONS'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 items-stretch">
+              {/* Division 1: WD Sky Wedding Organizer */}
+              <div className="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-16 w-full flex items-center justify-center py-1">
+                  <img
+                    src="/images/divisions/div_wd_sky_wo.png"
+                    alt="WD Sky Wedding Organizer"
+                    className="max-h-full max-w-full object-contain opacity-85 group-hover:opacity-100 transition-opacity"
+                  />
+                </div>
+                <div className="pt-2 border-t border-stone-100 w-full mt-2">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors">
+                    WD Sky Wedding Organizer
+                  </h5>
+                  <span className="text-[10px] text-stone-400 font-medium block">
+                    PT WD Group Solo
+                  </span>
+                </div>
+              </div>
+
+              {/* Division 2: WD Digital Invitation */}
+              <div className="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-16 w-full flex items-center justify-center py-1">
+                  <img
+                    src="/images/divisions/div_wd_digital_invitation.png"
+                    alt="WD Digital Invitation"
+                    className="max-h-full max-w-full object-contain opacity-85 group-hover:opacity-100 transition-opacity"
+                  />
+                </div>
+                <div className="pt-2 border-t border-stone-100 w-full mt-2">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors">
+                    WD Digital Invitation
+                  </h5>
+                  <span className="text-[10px] text-stone-400 font-medium block">
+                    Undangan Digital Eksklusif
+                  </span>
+                </div>
+              </div>
+
+              {/* Division 3: WD Music Entertainment */}
+              <div className="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-16 w-full flex items-center justify-center py-1">
+                  <img
+                    src="/images/divisions/div_wd_music.png"
+                    alt="WD Music Entertainment"
+                    className="max-h-full max-w-full object-contain opacity-85 group-hover:opacity-100 transition-opacity"
+                  />
+                </div>
+                <div className="pt-2 border-t border-stone-100 w-full mt-2">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors">
+                    WD Music Entertainment
+                  </h5>
+                  <span className="text-[10px] text-stone-400 font-medium block">
+                    Tata Musik &amp; Akustik
+                  </span>
+                </div>
+              </div>
+
+              {/* Division 4: WD Edu */}
+              <div className="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-16 w-full flex items-center justify-center py-1">
+                  <img
+                    src="/images/divisions/div_wd_edu.png"
+                    alt="WD Edu Learning Center"
+                    className="max-h-full max-w-full object-contain opacity-85 group-hover:opacity-100 transition-opacity"
+                  />
+                </div>
+                <div className="pt-2 border-t border-stone-100 w-full mt-2">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors">
+                    WD Edu
+                  </h5>
+                  <span className="text-[10px] text-stone-400 font-medium block">
+                    Education &amp; Learning Center
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
