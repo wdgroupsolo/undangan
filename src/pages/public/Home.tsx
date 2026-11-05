@@ -55,7 +55,7 @@ export const Home: React.FC = () => {
       badge: 'Tema Resort Eksklusif',
       couple: 'Steven & Bunga',
       date: 'Minggu, 18 Oktober 2026',
-      preview: '/themes/nirwana-sarangan/gate-video-poster.jpg',
+      preview: '/themes/nirwana-sarangan/nirwana-theme-preview.png',
       videoUrl: '/gemini_generated_video_1f694672.mp4',
       musicTitle: 'Bergema Sampai Selamanya - Nadhief Basalamah (Piano)',
       musicUrl: '/music/bergema-sampai-selamanya.mp3',
