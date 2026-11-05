@@ -94,7 +94,7 @@ export const Home: React.FC = () => {
       badge: showcaseBadges[0] || 'Tema Tradisional Jawa',
       couple: 'Habib & Adiba',
       date: 'Sabtu, 24 Oktober 2026',
-      preview: '/themes/javanese-heritage-desktop.jpg',
+      preview: '/themes/javanese-heritage-theme-preview.png',
       videoUrl: '/themes/javanese-heritage-entrance.mp4',
       musicTitle: 'Bergema Sampai Selamanya - Nadhief Basalamah (Piano)',
       musicUrl: '/music/bergema-sampai-selamanya.mp3',
@@ -682,100 +682,65 @@ export const Home: React.FC = () => {
 
             </div>
 
-            {/* Right Column: Swift-Style Modern Landscape Showcase Card (Examples of Created Digital Wedding Themes) */}
+            {/* Right Column: Clean Digital Wedding Invitation Theme Showcase Card (Uncropped, Elegant Size) */}
             <div className="lg:col-span-5 relative flex flex-col items-center justify-center w-full">
               
-              <div className="relative w-full rounded-[32px] sm:rounded-[40px] overflow-hidden bg-stone-950 shadow-2xl border border-stone-200/80 group aspect-[4/3] sm:aspect-[16/11]">
+              {/* Outer Showcase Card (Sized so the theme photo is never oversized or cropped) */}
+              <div className="relative w-full max-w-[320px] sm:max-w-[350px] rounded-[28px] sm:rounded-[32px] overflow-hidden bg-stone-950 shadow-2xl border border-stone-200/80 group">
                 
-                {/* Visual Media: Cinematic Video Loop or High-Res Image Preview */}
-                {currentShowcase.videoUrl ? (
-                  <video 
-                    key={currentShowcase.slug}
-                    src={currentShowcase.videoUrl} 
-                    poster={currentShowcase.preview}
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
-                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 ease-out"
-                  />
-                ) : (
+                {/* Photo Container: Clean Digital Invitation Photo (Full View, No Cropping) */}
+                <div className="relative aspect-[3/4] w-full bg-stone-950 flex items-center justify-center overflow-hidden">
                   <img 
                     key={currentShowcase.slug}
                     src={currentShowcase.preview} 
-                    alt={`Tema ${currentShowcase.name}`} 
-                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 ease-out"
+                    alt={`Tema Undangan Digital ${currentShowcase.name}`} 
+                    className="w-full h-full object-contain transition-all duration-500 ease-out"
                   />
-                )}
 
-                {/* Subtle Gradient Overlays for Readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-stone-950/30 pointer-events-none" />
+                  {/* Left & Right Slide Chevrons (Hover to reveal) */}
+                  <button
+                    type="button"
+                    onClick={handlePrevTheme}
+                    className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-stone-950/70 hover:bg-stone-950 text-white backdrop-blur-md flex items-center justify-center transition-all z-20 opacity-80 sm:opacity-0 group-hover:opacity-100 border border-white/20 active:scale-95 cursor-pointer shadow-md"
+                    aria-label="Tema Sebelumnya"
+                    title="Tema Sebelumnya"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
 
-                {/* Floating Interactive Badge: Video Gate Teaser Trigger (Top Right - Matches Swift Teaser Button) */}
-                <button
-                  type="button"
-                  onClick={() => setVideoModalOpen(true)}
-                  className="absolute top-4 right-4 bg-white/95 hover:bg-white backdrop-blur-md px-3.5 py-2 rounded-full text-xs font-bold text-stone-800 shadow-lg border border-white/80 flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95 z-20"
-                >
-                  <span className="w-5 h-5 rounded-full bg-[#ea580c] text-white flex items-center justify-center">
-                    <Play size={10} className="ml-0.5 fill-current" />
-                  </span>
-                  <span>{lang === 'id' ? 'Lihat Video Teaser' : 'Watch Video'}</span>
-                </button>
-
-                {/* Floating Theme Category Pill (Top Left) */}
-                <div className="absolute top-4 left-4 bg-stone-950/70 backdrop-blur-md px-3.5 py-1.5 rounded-full text-white text-[11px] font-semibold flex items-center gap-2 shadow-md border border-white/15 z-20">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>{currentShowcase.badge}</span>
+                  <button
+                    type="button"
+                    onClick={handleNextTheme}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-stone-950/70 hover:bg-stone-950 text-white backdrop-blur-md flex items-center justify-center transition-all z-20 opacity-80 sm:opacity-0 group-hover:opacity-100 border border-white/20 active:scale-95 cursor-pointer shadow-md"
+                    aria-label="Tema Selanjutnya"
+                    title="Tema Selanjutnya"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
                 </div>
 
-                {/* Navigation Chevrons on Hover */}
-                <button
-                  type="button"
-                  onClick={handlePrevTheme}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-stone-950/60 hover:bg-stone-950 text-white backdrop-blur-md flex items-center justify-center transition-all z-20 opacity-80 sm:opacity-0 group-hover:opacity-100 border border-white/20 active:scale-95 cursor-pointer shadow-md"
-                  aria-label="Tema Sebelumnya"
-                  title="Tema Sebelumnya"
-                >
-                  <ChevronLeft size={18} />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleNextTheme}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-stone-950/60 hover:bg-stone-950 text-white backdrop-blur-md flex items-center justify-center transition-all z-20 opacity-80 sm:opacity-0 group-hover:opacity-100 border border-white/20 active:scale-95 cursor-pointer shadow-md"
-                  aria-label="Tema Selanjutnya"
-                  title="Tema Selanjutnya"
-                >
-                  <ChevronRight size={18} />
-                </button>
-
-                {/* Floating Pill: Theme Name + Couple + Star Rating (Bottom Left - Matches "Kaya Tadi") */}
-                <div className="absolute bottom-4 left-4 bg-stone-900/90 backdrop-blur-md px-4 py-2.5 rounded-2xl sm:rounded-full text-white text-xs font-medium flex items-center gap-2.5 shadow-lg border border-white/10 z-20 max-w-[calc(100%-8.5rem)]">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0" />
-                  <div className="truncate">
-                    <span className="font-bold block sm:inline">{currentShowcase.name}</span>
-                    <span className="text-stone-400 text-[10px] hidden sm:inline ml-1.5">({currentShowcase.couple})</span>
+                {/* Bottom Details Bar (Outside the photo area, never covers the invitation design) */}
+                <div className="p-3.5 bg-stone-900 border-t border-stone-800/90 flex items-center justify-between text-white">
+                  <div className="truncate mr-2.5">
+                    <span className="text-xs font-bold block truncate text-stone-100">{currentShowcase.name}</span>
+                    <span className="text-[10px] text-stone-400 block truncate">{currentShowcase.couple}</span>
                   </div>
-                  <span className="text-amber-300 text-[10px] font-bold shrink-0">★ 4.9</span>
+                  <a
+                    href={currentShowcase.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 bg-[#ea580c] hover:bg-[#c2410c] text-white px-3.5 py-1.5 rounded-full text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95"
+                    title="Buka Undangan Demo Langsung"
+                  >
+                    <span>Live Demo</span>
+                    <ArrowRight size={12} />
+                  </a>
                 </div>
-
-                {/* Floating Direct Live Demo CTA (Bottom Right) */}
-                <a
-                  href={currentShowcase.demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute bottom-4 right-4 bg-[#ea580c] hover:bg-[#c2410c] text-white px-3.5 py-2.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 z-20"
-                  title="Buka Undangan Demo Langsung"
-                >
-                  <span>{lang === 'id' ? 'Live Demo' : 'Live Demo'}</span>
-                  <ArrowRight size={13} />
-                </a>
 
               </div>
 
               {/* Theme Selector Pills Row Below Card */}
-              <div className="flex flex-wrap items-center justify-center gap-1.5 mt-3.5 max-w-lg">
+              <div className="flex flex-wrap items-center justify-center gap-1.5 mt-3.5 max-w-sm sm:max-w-md">
                 {showcaseThemes.map((th, idx) => (
                   <button
                     key={th.id}
