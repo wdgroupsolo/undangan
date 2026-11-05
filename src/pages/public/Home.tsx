@@ -1874,79 +1874,117 @@ export const Home: React.FC = () => {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 items-stretch">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 items-stretch">
               {/* Division 1: WD Sky Wedding Organizer */}
-              <div className="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
-                <div className="h-16 w-full flex items-center justify-center py-1">
+              <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-14 sm:h-16 w-full flex items-center justify-center py-1">
                   <img
                     src="/images/divisions/div_wd_sky_wo.png"
                     alt="WD Sky Wedding Organizer"
-                    className="max-h-full max-w-full object-contain opacity-85 group-hover:opacity-100 transition-opacity"
+                    className="max-h-full max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
                 <div className="pt-2 border-t border-stone-100 w-full mt-2">
-                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors leading-tight">
                     WD Sky Wedding Organizer
                   </h5>
-                  <span className="text-[10px] text-stone-400 font-medium block">
+                  <span className="text-[10px] text-stone-400 font-medium block mt-0.5">
                     PT WD Group Solo
                   </span>
                 </div>
               </div>
 
               {/* Division 2: WD Digital Invitation */}
-              <div className="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
-                <div className="h-16 w-full flex items-center justify-center py-1">
+              <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-14 sm:h-16 w-full flex items-center justify-center py-1">
                   <img
                     src="/images/divisions/div_wd_digital_invitation.png"
                     alt="WD Digital Invitation"
-                    className="max-h-full max-w-full object-contain opacity-85 group-hover:opacity-100 transition-opacity"
+                    className="max-h-full max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
                 <div className="pt-2 border-t border-stone-100 w-full mt-2">
-                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors leading-tight">
                     WD Digital Invitation
                   </h5>
-                  <span className="text-[10px] text-stone-400 font-medium block">
-                    Undangan Digital Eksklusif
+                  <span className="text-[10px] text-stone-400 font-medium block mt-0.5">
+                    {lang === 'id' ? 'Undangan Digital' : 'Digital Invitation'}
                   </span>
                 </div>
               </div>
 
               {/* Division 3: WD Music Entertainment */}
-              <div className="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
-                <div className="h-16 w-full flex items-center justify-center py-1">
+              <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-14 sm:h-16 w-full flex items-center justify-center py-1">
                   <img
                     src="/images/divisions/div_wd_music.png"
                     alt="WD Music Entertainment"
-                    className="max-h-full max-w-full object-contain opacity-85 group-hover:opacity-100 transition-opacity"
+                    className="max-h-full max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
                 <div className="pt-2 border-t border-stone-100 w-full mt-2">
-                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors leading-tight">
                     WD Music Entertainment
                   </h5>
-                  <span className="text-[10px] text-stone-400 font-medium block">
-                    Tata Musik &amp; Akustik
+                  <span className="text-[10px] text-stone-400 font-medium block mt-0.5">
+                    {lang === 'id' ? 'Tata Musik & Akustik' : 'Music & Acoustic'}
                   </span>
                 </div>
               </div>
 
-              {/* Division 4: WD Edu */}
-              <div className="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
-                <div className="h-16 w-full flex items-center justify-center py-1">
+              {/* Division 4: WD Music Class */}
+              <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-14 sm:h-16 w-full flex items-center justify-center py-1">
                   <img
-                    src="/images/divisions/div_wd_edu.png"
-                    alt="WD Edu Learning Center"
-                    className="max-h-full max-w-full object-contain opacity-85 group-hover:opacity-100 transition-opacity"
+                    src="/images/divisions/div_wd_music_class.png"
+                    alt="WD Music Class"
+                    className="max-h-full max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
                 <div className="pt-2 border-t border-stone-100 w-full mt-2">
-                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors leading-tight">
+                    WD Music Class
+                  </h5>
+                  <span className="text-[10px] text-stone-400 font-medium block mt-0.5">
+                    Play • Learn • Grow
+                  </span>
+                </div>
+              </div>
+
+              {/* Division 5: WD Edu */}
+              <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-14 sm:h-16 w-full flex items-center justify-center py-1">
+                  <img
+                    src="/images/divisions/div_wd_edu.png"
+                    alt="WD Edu Learning Center"
+                    className="max-h-full max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                  />
+                </div>
+                <div className="pt-2 border-t border-stone-100 w-full mt-2">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors leading-tight">
                     WD Edu
                   </h5>
-                  <span className="text-[10px] text-stone-400 font-medium block">
-                    Education &amp; Learning Center
+                  <span className="text-[10px] text-stone-400 font-medium block mt-0.5">
+                    Learning Center
+                  </span>
+                </div>
+              </div>
+
+              {/* Division 6: WD Jaya Workshop */}
+              <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-stone-200/80 shadow-2xs hover:shadow-xs hover:border-amber-400/60 transition-all flex flex-col items-center justify-between text-center group">
+                <div className="h-14 sm:h-16 w-full flex items-center justify-center py-1">
+                  <img
+                    src="/images/divisions/div_wd_jaya_workshop.png"
+                    alt="WD Jaya Workshop"
+                    className="max-h-full max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                  />
+                </div>
+                <div className="pt-2 border-t border-stone-100 w-full mt-2">
+                  <h5 className="font-bold text-xs text-stone-800 group-hover:text-primary-900 transition-colors leading-tight">
+                    WD Jaya Workshop
+                  </h5>
+                  <span className="text-[10px] text-stone-400 font-medium block mt-0.5">
+                    {lang === 'id' ? 'Workshop & Las' : 'Workshop & Metal'}
                   </span>
                 </div>
               </div>
