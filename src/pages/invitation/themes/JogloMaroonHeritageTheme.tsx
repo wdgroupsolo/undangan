@@ -1,23 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { 
   MapPin, 
-  Gift, 
   Check, 
   X, 
   Copy, 
   Calendar as CalendarIcon, 
   Heart, 
-  Clock,
-  Send,
-  User,
-  CheckCircle2,
   Sparkles,
-  Users,
   Video,
   Play,
-  ExternalLink,
-  ChevronLeft,
-  ChevronRight,
   ChevronDown,
   QrCode
 } from 'lucide-react';
@@ -694,7 +685,8 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
   stories = [],
   gallery = [],
   gifts = [],
-  isOpening = false,
+  music: _music,
+  isOpening: _isOpening = false,
 }) => {
   const toast = useToast();
 
@@ -751,10 +743,8 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
     }
   }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
 
-  // Guest list & pagination
+  // Guest list
   const [rsvps, setRsvps] = useState<RSVPItem[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
 
   useEffect(() => {
     if (!invitation?.id) return;
@@ -984,10 +974,6 @@ export const JogloMaroonHeritageTheme: React.FC<JogloMaroonHeritageThemeProps> =
 
   const physicalAddress = invitation?.physical_address || 'Jalan Raya Bojongsari No.5, Gunung Putri';
   const physicalRecipient = couple?.bride_full_name && couple?.bride_full_name !== 'Tina Saputri' ? couple.bride_full_name : 'Elyana Azkiya Nur';
-
-  // Pagination for guestbook
-  const totalPages = Math.ceil(rsvps.length / itemsPerPage);
-  const displayedRsvps = rsvps.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="relative w-full min-h-screen bg-[#140e0b] text-[#2c1d19] font-sans overflow-x-hidden selection:bg-[#7e2231] selection:text-white">

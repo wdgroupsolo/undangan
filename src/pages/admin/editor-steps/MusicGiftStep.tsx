@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editorService } from '../../../services/editorService';
 import { invitationService } from '../../../services/invitationService';
 import { useToast } from '../../../context/ToastContext';
-import { Plus, Trash2, CreditCard, QrCode, Upload, Music, Volume2, Info, Gift, Package, Check } from 'lucide-react';
+import { Plus, Trash2, CreditCard, QrCode, Upload, Music, Volume2, Info, Gift } from 'lucide-react';
 
 export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId }) => {
   const queryClient = useQueryClient();

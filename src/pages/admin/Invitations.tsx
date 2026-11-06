@@ -41,7 +41,7 @@ export const Invitations: React.FC = () => {
   });
 
   const toggleBarcodeMutation = useMutation({
-    mutationFn: ({ id, slug, currentSettings }: { id: string; slug: string; currentSettings: any }) =>
+    mutationFn: ({ id, slug: _slug, currentSettings }: { id: string; slug: string; currentSettings: any }) =>
       invitationService.updateInvitation(id, {
         settings: {
           ...(currentSettings || {}),

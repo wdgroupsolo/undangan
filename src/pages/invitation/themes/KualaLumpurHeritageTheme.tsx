@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Heart, Calendar, Clock, MapPin, Copy, Check, Send, 
-  Sparkles, Gift, Compass, MessageCircle, ChevronDown, Crown, Disc, Play, Pause
+  Sparkles, Gift, Compass, MessageCircle, ChevronDown, Crown
 } from 'lucide-react';
 
 interface KualaLumpurHeritageThemeProps {
@@ -86,14 +86,14 @@ const FloatingRosePetals: React.FC = () => {
 };
 
 export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> = ({
-  invitation,
+  invitation: _invitation,
   couple,
-  events,
-  stories,
-  gallery,
-  gifts,
+  events: _events,
+  stories: _stories,
+  gallery: _gallery,
+  gifts: _gifts,
   guestName = 'Tuan/Puan/Saudara/Saudari',
-  isOpening = false
+  isOpening: _isOpening = false
 }) => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'opening' | 'profile' | 'event' | 'location' | 'rsvp' | 'gift'>('opening');

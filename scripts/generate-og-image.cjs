@@ -1,6 +1,5 @@
 const sharp = require('sharp');
 const fs = require('fs');
-const path = require('path');
 
 const src = 'C:/Users/WD Group/.gemini/antigravity-ide/brain/1f442522-7dc9-42f5-9cd7-ec765274acd2/.user_uploaded/media_1791537655401.png';
 

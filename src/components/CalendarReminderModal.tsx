@@ -13,7 +13,7 @@ export const CalendarReminderModal: React.FC<CalendarReminderModalProps> = ({
   isOpen,
   onClose,
   event,
-  themeStyle = 'default',
+  themeStyle: _themeStyle = 'default',
 }) => {
   if (!isOpen) return null;
 

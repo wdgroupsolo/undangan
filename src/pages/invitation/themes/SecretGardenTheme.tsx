@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Calendar, MapPin, Copy, Check, ExternalLink, 
-  ChevronLeft, ChevronRight, Gift,
+  Gift,
   X, FileText, Video, Navigation, QrCode
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';

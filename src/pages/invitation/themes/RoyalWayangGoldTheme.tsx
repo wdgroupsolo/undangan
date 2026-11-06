@@ -6,14 +6,12 @@ import {
   X, 
   Copy, 
   ChevronDown, 
-  ChevronUp, 
   ChevronLeft, 
   ChevronRight, 
   Calendar as CalendarIcon, 
   Heart, 
   Clock,
   Send,
-  MessageCircle,
   User,
   CheckCircle2,
   Sparkles,
@@ -23,7 +21,6 @@ import {
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
-import { supabase } from '../../../lib/supabase';
 import { rsvpService, RSVPItem } from '../../../services/rsvpService';
 import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode, clearBarcodePass } from '../../../utils/barcodePass';
 
@@ -943,7 +940,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const [rsvpMessage, setRsvpMessage] = useState('');
   const [rsvpSubmitting, setRsvpSubmitting] = useState(false);
   const [rsvpList, setRsvpList] = useState<RSVPItem[]>([]);
-  const [showWishes, setShowWishes] = useState(false);
 
   // Only true when explicitly opened via "Demo Tema" button from landing page/catalog (?demo=true)
   // Real client invitations and invitations in admin list are NOT demos.
@@ -972,9 +968,6 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
       setSubmittedRsvp(existing as any);
     }
   }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
-
-  // Read real RSVP wishes list
-  const displayWishes = rsvpList;
 
   // Photobooth Modal State
   const [isPhotoboothOpen, setIsPhotoboothOpen] = useState(false);

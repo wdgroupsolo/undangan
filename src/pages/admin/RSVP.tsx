@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { rsvpService, RSVPItem } from '../../services/rsvpService';
+import { rsvpService } from '../../services/rsvpService';
 import { invitationService } from '../../services/invitationService';
 import { 
   Search, 

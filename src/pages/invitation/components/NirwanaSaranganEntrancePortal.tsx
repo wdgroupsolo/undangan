@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Sparkles, ChevronRight } from 'lucide-react';
 import { 
   FallingPineParticles,
@@ -21,8 +21,8 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
   guestName = 'Tamu Undangan',
   groomName = 'Steven',
   brideName = 'Bunga',
-  coverImage = '/themes/nirwana-sarangan/couple-cover.jpg',
-  weddingDate = 'Jumat, 20 November 2026',
+  coverImage: _coverImage,
+  weddingDate: _weddingDate,
   themeSlug = 'nirwana-sarangan'
 }) => {
   // Animation stages: 'intro' -> 'unlocking' -> 'opening' -> 'gliding' -> 'exiting'
@@ -36,14 +36,14 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
   const groomInitial = groomName ? groomName.trim().charAt(0).toUpperCase() : (isRoyalWayang ? 'A' : 'S');
   const brideInitial = brideName ? brideName.trim().charAt(0).toUpperCase() : (isRoyalWayang ? 'O' : 'B');
 
-  const handleFinish = () => {
+  const handleFinish = useCallback(() => {
     if (isFinishedRef.current) return;
     isFinishedRef.current = true;
     setStage('exiting');
     setTimeout(() => {
       onComplete();
     }, 450);
-  };
+  }, [onComplete]);
 
   useEffect(() => {
     // 0.6s: Enable skip button
@@ -86,7 +86,7 @@ export const NirwanaSaranganEntrancePortal: React.FC<NirwanaSaranganEntrancePort
       clearTimeout(tExit);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [handleFinish]);
 
   const isDoorsOpen = stage === 'opening' || stage === 'gliding' || stage === 'exiting';
   const isGliding = stage === 'gliding' || stage === 'exiting';

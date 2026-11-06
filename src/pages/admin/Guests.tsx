@@ -1,9 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { 
-  guestService, 
-  Guest 
-} from '../../services/guestService';
+import { guestService } from '../../services/guestService';
 import { invitationService } from '../../services/invitationService';
 import { 
   Search, 
@@ -41,7 +38,7 @@ export const Guests: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isBulkCopyModalOpen, setIsBulkCopyModalOpen] = useState(false);
   const [isClearConfirmOpen, setIsClearConfirmOpen] = useState(false);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [_deletingId, setDeletingId] = useState<string | null>(null);
 
   // Single Guest Form State
   const [newGuestName, setNewGuestName] = useState('');
@@ -53,7 +50,7 @@ export const Guests: React.FC = () => {
   const [rawPastedText, setRawPastedText] = useState('');
   const [parsedPreview, setParsedPreview] = useState<{ name: string; phone?: string; code?: string }[]>([]);
   const [importMode, setImportMode] = useState<'append' | 'replace'>('append');
-  const [isParsing, setIsParsing] = useState(false);
+  const [_isParsing, setIsParsing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const queryClient = useQueryClient();

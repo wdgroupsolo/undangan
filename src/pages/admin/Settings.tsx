@@ -7,11 +7,9 @@ import {
 import { 
   Globe, 
   ShieldAlert, 
-  CheckCircle2, 
   PauseCircle, 
   PlayCircle, 
   Save, 
-  RefreshCw, 
   ExternalLink, 
   Building2, 
   Phone, 
@@ -19,7 +17,6 @@ import {
   MapPin, 
   User, 
   Bell, 
-  Lock,
   Layers,
   Sparkles
 } from 'lucide-react';

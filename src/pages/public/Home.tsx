@@ -1,39 +1,31 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { themeService, REAL_SPLIT_FLORAL_THEME, DEFAULT_THEMES } from '../../services/themeService';
+import { themeService, DEFAULT_THEMES } from '../../services/themeService';
 import { translations, Lang } from '../../i18n/translations';
 import { 
   Heart, 
-  Music, 
   MapPin, 
-  Calendar, 
   Gift, 
-  Mail,
+  Mail, 
   CheckCircle2, 
-  Users, 
   ChevronDown, 
-  ChevronUp,
-  ChevronLeft,
-  ChevronRight,
+  ChevronUp, 
+  ChevronLeft, 
+  ChevronRight, 
   Play, 
-  Pause, 
-  Smartphone, 
   ArrowRight, 
   MessageCircle, 
   Check, 
   Menu, 
-  X,
-  Palette,
-  ExternalLink,
-  Sparkles,
-  HelpCircle,
-  Bot,
-  Send,
-  RotateCcw,
-  Globe,
-  Star,
-  ShieldCheck
+  X, 
+  Sparkles, 
+  Bot, 
+  Send, 
+  RotateCcw, 
+  Globe, 
+  Star, 
+  ShieldCheck 
 } from 'lucide-react';
 
 export const Home: React.FC = () => {
@@ -44,7 +36,6 @@ export const Home: React.FC = () => {
   const toggleLang = () => setLang(prev => prev === 'id' ? 'en' : 'id');
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [testimonialIdx, setTestimonialIdx] = useState(0);
   const [themeFilter, setThemeFilter] = useState<'all' | 'traditional' | 'resort' | 'modern'>('all');
@@ -148,9 +139,6 @@ export const Home: React.FC = () => {
 
   const [activeMockupThemeIndex, setActiveMockupThemeIndex] = useState(0);
   const currentShowcase = showcaseThemes[activeMockupThemeIndex];
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const mockupAudioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const autoSlideTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const autoSlideResumeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [autoSlidePaused, setAutoSlidePaused] = useState(false);
@@ -242,31 +230,6 @@ export const Home: React.FC = () => {
     };
   }, []);
 
-  // Sync audio source when theme changes if playing
-  useEffect(() => {
-    if (mockupAudioRef.current) {
-      mockupAudioRef.current.src = currentShowcase.musicUrl;
-      if (isPlayingAudio) {
-        mockupAudioRef.current.play().catch(() => setIsPlayingAudio(false));
-      }
-    }
-  }, [activeMockupThemeIndex]);
-
-  const toggleMockupAudio = () => {
-    if (!mockupAudioRef.current) return;
-    if (isPlayingAudio) {
-      mockupAudioRef.current.pause();
-      setIsPlayingAudio(false);
-    } else {
-      mockupAudioRef.current.play().then(() => {
-        setIsPlayingAudio(true);
-      }).catch(err => {
-        console.warn('Playback blocked by browser policy:', err);
-        setIsPlayingAudio(false);
-      });
-    }
-  };
-
   const handlePrevTheme = () => {
     pauseAutoSlide();
     setActiveMockupThemeIndex(prev => (prev - 1 + showcaseThemes.length) % showcaseThemes.length);
@@ -276,47 +239,6 @@ export const Home: React.FC = () => {
     pauseAutoSlide();
     setActiveMockupThemeIndex(prev => (prev + 1) % showcaseThemes.length);
   };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX === null) return;
-    const diff = e.changedTouches[0].clientX - touchStartX;
-    if (diff > 40) {
-      handlePrevTheme();
-    } else if (diff < -40) {
-      handleNextTheme();
-    }
-    setTouchStartX(null);
-  };
-
-  // Live countdown ticker inside the phone mockup preview
-  const [countdown, setCountdown] = useState({
-    days: 124,
-    hours: 8,
-    minutes: 42,
-    seconds: 19
-  });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        } else if (prev.days > 0) {
-          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
-        }
-        return prev;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   // Scroll to top button visibility
   useEffect(() => {

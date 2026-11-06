@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { editorService } from '../../../services/editorService';
 import { invitationService } from '../../../services/invitationService';
 import { useToast } from '../../../context/ToastContext';
-import { Upload, Image as ImageIcon, Heart, Sparkles } from 'lucide-react';
+import { Upload, Image as ImageIcon, Sparkles } from 'lucide-react';
 
 const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size = 18, className = '' }) => (
   <svg 

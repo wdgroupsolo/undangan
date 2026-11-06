@@ -12,8 +12,8 @@ interface BatakHeritageEntrancePortalProps {
 export const BatakHeritageEntrancePortal: React.FC<BatakHeritageEntrancePortalProps> = ({
   onComplete,
   guestName = 'Tamu Undangan',
-  groomName = 'Steven',
-  brideName = 'Bunga'
+  groomName: _groomName = 'Steven',
+  brideName: _brideName = 'Bunga'
 }) => {
   // Animation stages: 'intro' -> 'unlocking' -> 'opening' -> 'gliding' -> 'exiting'
   const [stage, setStage] = useState<'intro' | 'unlocking' | 'opening' | 'gliding' | 'exiting'>('intro');

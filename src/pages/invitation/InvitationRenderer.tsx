@@ -186,7 +186,7 @@ export const InvitationRenderer: React.FC = () => {
     : (cachedCouple || (isAudiOvyolaSlug ? COUPLE_AUDI_OVYOLA : (isYogaFatmaSlug ? COUPLE_YOGA_FATMA : (isStevenBungaSlug ? COUPLE_STEVEN_BUNGA : (isBimaSlug ? COUPLE_DEMO_TESTIMONI : (isAgniSlug ? COUPLE_AGNI_PUTRI : COUPLE_STEVEN_BUNGA))))));
 
   // 1-Session browser test override (from Home interactive pill launcher)
-  const [sessionTestCouple, setSessionTestCouple] = useState<{
+  const [sessionTestCouple] = useState<{
     groom_nickname?: string;
     groom_full_name?: string;
     groom_name?: string;

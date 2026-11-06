@@ -258,10 +258,6 @@ export const SplitFloralTheme: React.FC<SplitFloralThemeProps> = ({ invitation, 
   const brideFather = formatName(couple?.bride_father_name) || 'Bapak Mempelai Wanita';
   const brideMother = formatName(couple?.bride_mother_name) || 'Ibu Mempelai Wanita';
   const brandName = invitation?.settings?.powered_by || 'WD Group';
-  const brandUrl = 
-    !invitation?.settings?.powered_by_url || invitation.settings.powered_by_url === 'https://instagram.com/wdgroup'
-      ? 'https://www.instagram.com/wdgroupcompany'
-      : invitation.settings.powered_by_url;
 
   const [showGiftDetails, setShowGiftDetails] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);

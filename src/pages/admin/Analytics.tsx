@@ -10,16 +10,11 @@ import {
   MapPin, 
   Gift, 
   Smartphone, 
-  Laptop, 
   Share2, 
   Download, 
   TrendingUp, 
   CheckCircle2, 
-  XCircle, 
-  HelpCircle, 
-  ArrowUpRight, 
   RefreshCw,
-  QrCode,
   Sparkles,
   ChevronDown
 } from 'lucide-react';
