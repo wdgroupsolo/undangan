@@ -1337,10 +1337,10 @@ export const Home: React.FC = () => {
                                 href={theme.demoUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-95"
+                                className="w-full py-2.5 px-4 rounded-xl bg-primary-900 hover:bg-primary-950 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-95 group border border-primary-800/30"
                               >
-                                <span>{lang === 'id' ? 'Buka Live Demo' : 'Open Live Demo'}</span>
-                                <ArrowRight size={14} />
+                                <span className="group-hover:text-amber-200 transition-colors">{lang === 'id' ? 'Buka Live Demo' : 'Open Live Demo'}</span>
+                                <ArrowRight size={14} className="text-amber-300 group-hover:translate-x-0.5 transition-transform" />
                               </a>
                             </div>
                           </div>
@@ -1505,9 +1505,9 @@ export const Home: React.FC = () => {
                 </div>
               </div>
 
-              {/* 2. Express / Premium Plan - FEATURED (Orange/Amber Accent) */}
-              <div className="bg-white rounded-3xl p-6 border-2 border-orange-500 shadow-md flex flex-col justify-between relative ring-2 ring-orange-500/20">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] font-black px-3.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+              {/* 2. Express / Premium Plan - FEATURED (Luxury Primary Dark Accent) */}
+              <div className="bg-white rounded-3xl p-6 border-2 border-primary-900 shadow-md flex flex-col justify-between relative ring-2 ring-primary-900/10">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-900 text-amber-200 text-[10px] font-black px-3.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
                   {lang === 'id' ? 'Paling Diminati' : 'Most Popular'}
                 </div>
 
@@ -1516,7 +1516,7 @@ export const Home: React.FC = () => {
                     <h3 className="text-lg font-bold text-stone-900">
                       Express
                     </h3>
-                    <p className="text-[11px] text-orange-600 font-semibold mt-0.5">
+                    <p className="text-[11px] text-primary-800 font-semibold mt-0.5">
                       {lang === 'id' ? 'Fitur Lengkap & Video Gate' : 'Full Features & Video Gate'}
                     </p>
                     <div className="mt-4 flex items-baseline gap-1.5">
@@ -1531,7 +1531,7 @@ export const Home: React.FC = () => {
                       <span className="line-through text-stone-400 text-xs font-semibold">
                         Rp 250.000
                       </span>
-                      <span className="text-[10px] font-bold text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold text-primary-900 bg-primary-100 px-2 py-0.5 rounded-full">
                         Hemat 40%
                       </span>
                     </div>
@@ -1539,23 +1539,23 @@ export const Home: React.FC = () => {
 
                   <ul className="py-5 space-y-2.5 text-xs text-stone-700">
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
                       <span>{lang === 'id' ? 'Pengerjaan 1-2 hari kerja' : '1-2 business days delivery'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
                       <span>{lang === 'id' ? 'Seluruh fitur Paket Standard' : 'All standard features included'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
                       <span>{lang === 'id' ? 'Transisi video gerbang sinematik' : 'Cinematic video entrance gate'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
                       <span>{lang === 'id' ? 'Akses seluruh tema premium' : 'All premium themes included'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-orange-600 shrink-0 font-bold" />
+                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
                       <span><strong>{lang === 'id' ? 'Masa aktif 1 bulan penuh' : 'Active for 1 full month'}</strong></span>
                     </li>
                   </ul>
@@ -1566,7 +1566,7 @@ export const Home: React.FC = () => {
                     href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Express%20Premium%20(Rp%20150.000)"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full block text-center py-2.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition-colors shadow-sm"
+                    className="w-full block text-center py-2.5 rounded-full bg-primary-900 hover:bg-primary-950 text-amber-200 font-bold text-xs transition-colors shadow-sm"
                   >
                     {lang === 'id' ? 'Pilih Paket' : 'Choose Plan'}
                   </a>
@@ -1632,10 +1632,10 @@ export const Home: React.FC = () => {
               </div>
 
               {/* 4. 3D Visual Accent Box (Isometric Diorama Style) */}
-              <div className="bg-gradient-to-b from-[#fff6ed] to-[#ffeedb] rounded-3xl p-6 border border-orange-200/80 shadow-xs flex flex-col items-center justify-between text-center relative overflow-hidden group">
-                <div className="w-full flex items-center justify-between text-[11px] font-bold text-orange-950">
+              <div className="bg-gradient-to-b from-[#fdfbf9] to-[#f4eee8] rounded-3xl p-6 border border-primary-200/80 shadow-xs flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div className="w-full flex items-center justify-between text-[11px] font-bold text-stone-900">
                   <span className="font-cinzel tracking-wider">WD EXCLUSIVE</span>
-                  <Sparkles size={14} className="text-orange-500" />
+                  <Sparkles size={14} className="text-amber-500" />
                 </div>
 
                 <div className="my-3 py-2 flex flex-col items-center justify-center">
@@ -1646,14 +1646,14 @@ export const Home: React.FC = () => {
                       className="w-full h-full object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <p className="font-serif italic text-sm text-orange-950 font-semibold mt-2 leading-snug">
+                  <p className="font-serif italic text-sm text-stone-800 font-semibold mt-2 leading-snug">
                     &ldquo;Momen Sakral, Berawal Dari Sini.&rdquo;
                   </p>
                 </div>
 
-                <div className="w-full pt-2 border-t border-orange-200/70 flex items-center justify-between text-[10px] text-stone-600 font-medium">
+                <div className="w-full pt-2 border-t border-stone-200/70 flex items-center justify-between text-[10px] text-stone-600 font-medium">
                   <span>WD Studio Sukoharjo</span>
-                  <span className="font-bold text-orange-700">★ 4.9 Rating</span>
+                  <span className="font-bold text-amber-700">★ 4.9 Rating</span>
                 </div>
               </div>
 
@@ -1712,7 +1712,7 @@ export const Home: React.FC = () => {
               
               {/* Card 1 */}
               <div className={`bg-white rounded-3xl p-5 border transition-all duration-300 flex flex-col justify-between shadow-xs ${
-                testimonialIdx === 0 ? 'border-orange-500/80 ring-1 ring-orange-500/20' : 'border-stone-200/90'
+                testimonialIdx === 0 ? 'border-primary-900/80 ring-1 ring-primary-900/15' : 'border-stone-200/90'
               }`}>
                 <div>
                   <div className="flex items-center gap-3 mb-3">
@@ -1740,7 +1740,7 @@ export const Home: React.FC = () => {
 
               {/* Card 2 */}
               <div className={`bg-white rounded-3xl p-5 border transition-all duration-300 flex flex-col justify-between shadow-xs ${
-                testimonialIdx === 1 ? 'border-orange-500/80 ring-1 ring-orange-500/20' : 'border-stone-200/90'
+                testimonialIdx === 1 ? 'border-primary-900/80 ring-1 ring-primary-900/15' : 'border-stone-200/90'
               }`}>
                 <div>
                   <div className="flex items-center gap-3 mb-3">
@@ -1768,7 +1768,7 @@ export const Home: React.FC = () => {
 
               {/* Card 3 */}
               <div className={`bg-white rounded-3xl p-5 border transition-all duration-300 flex flex-col justify-between shadow-xs ${
-                testimonialIdx === 2 ? 'border-orange-500/80 ring-1 ring-orange-500/20' : 'border-stone-200/90'
+                testimonialIdx === 2 ? 'border-primary-900/80 ring-1 ring-primary-900/15' : 'border-stone-200/90'
               }`}>
                 <div>
                   <div className="flex items-center gap-3 mb-3">
@@ -2179,14 +2179,14 @@ export const Home: React.FC = () => {
           <div className="rounded-[32px] sm:rounded-[40px] bg-[#171513] text-white p-8 sm:p-12 lg:p-14 relative overflow-hidden border border-stone-800 shadow-2xl">
             
             {/* Subtle background glow effect */}
-            <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
+            <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-primary-800/15 blur-3xl pointer-events-none" />
             <div className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
               
               {/* Left Column: Heading, Copy, Pill CTA */}
               <div className="lg:col-span-6 space-y-4">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-orange-400 font-sans block">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-amber-300 font-sans block">
                   {lang === 'id' ? 'SIAP MERAYAKAN HARI BAHAGIA?' : 'READY TO CELEBRATE?'}
                 </span>
                 
@@ -2205,7 +2205,7 @@ export const Home: React.FC = () => {
                     href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20siap%20membuat%20undangan%20pernikahan%20digital"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-orange-950/40 transition-all active:scale-95"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-stone-100 text-stone-950 font-bold text-xs sm:text-sm shadow-xl transition-all active:scale-95"
                   >
                     <span>{lang === 'id' ? 'Pesan Sekarang' : 'Get Started Now'}</span>
                     <ArrowRight size={16} />
@@ -2245,7 +2245,7 @@ export const Home: React.FC = () => {
                     <span className="font-medium truncate" title="Griya Edelweis No.12a, Dusun V, Joho, Kec. Mojolaban, Kabupaten Sukoharjo, Jawa Tengah 57554">
                       WD Production • Griya Edelweis No.12a, Joho, Mojolaban, Sukoharjo
                     </span>
-                    <span className="text-orange-400 font-bold shrink-0">24 Jam Pengerjaan</span>
+                    <span className="text-amber-300 font-bold shrink-0">24 Jam Pengerjaan</span>
                   </div>
                 </div>
 
@@ -2267,7 +2267,7 @@ export const Home: React.FC = () => {
             <div className="md:col-span-3 space-y-2">
               <Link to="/" className="inline-block group select-none">
                 <span className="text-2xl font-black text-stone-900 tracking-tight font-sans">
-                  wdproduction<span className="text-orange-500">.</span>
+                  wdproduction<span className="text-primary-800">.</span>
                 </span>
               </Link>
               <p className="text-xs text-stone-400 font-medium">
@@ -2388,7 +2388,7 @@ export const Home: React.FC = () => {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-orange-600 transition-colors"
+                  className="hover:text-primary-900 transition-colors"
                   aria-label="Instagram"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2401,7 +2401,7 @@ export const Home: React.FC = () => {
                   href="https://linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-orange-600 transition-colors"
+                  className="hover:text-primary-900 transition-colors"
                   aria-label="LinkedIn"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2414,7 +2414,7 @@ export const Home: React.FC = () => {
                   href="https://youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-orange-600 transition-colors"
+                  className="hover:text-primary-900 transition-colors"
                   aria-label="YouTube"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2426,7 +2426,7 @@ export const Home: React.FC = () => {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-orange-600 transition-colors"
+                  className="hover:text-primary-900 transition-colors"
                   aria-label="Facebook"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2437,7 +2437,7 @@ export const Home: React.FC = () => {
                   href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-orange-600 transition-colors"
+                  className="hover:text-primary-900 transition-colors"
                   aria-label="X (Twitter)"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
