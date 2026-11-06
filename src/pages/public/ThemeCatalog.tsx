@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { themeService } from '../../services/themeService';
@@ -17,6 +17,10 @@ import {
 } from 'lucide-react';
 
 export const ThemeCatalog: React.FC = () => {
+  useEffect(() => {
+    document.title = 'Koleksi Tema - WD Production Undangan Digital';
+  }, []);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [previewTheme, setPreviewTheme] = useState<Theme | null>(null);
 

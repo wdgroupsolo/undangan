@@ -228,6 +228,11 @@ export const Home: React.FC = () => {
     }, 8000);
   };
 
+  // Set page title for homepage
+  useEffect(() => {
+    document.title = 'WD Production - Undangan Digital';
+  }, []);
+
   // Cleanup resume timeout on unmount
   useEffect(() => {
     return () => {
