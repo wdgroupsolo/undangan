@@ -1406,66 +1406,82 @@ export const Home: React.FC = () => {
 
       {/* PRICING SECTION - Swift Style Layout */}
       <section id="pricing" className="py-20 sm:py-24 bg-[#faf8f5] border-b border-stone-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
             
             {/* Left Header Column */}
             <div className="lg:col-span-3 flex flex-col justify-between">
-              <div>
-                <span className="text-[11px] font-bold uppercase tracking-widest text-stone-500 font-sans block mb-3">
+              <div className="space-y-4">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-stone-500 font-sans block">
                   {lang === 'id' ? 'INVESTASI & PAKET' : 'SIMPLE PRICING'}
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-[1.15]">
                   {lang === 'id' ? 'Paket yang Mengikuti Kebutuhan Anda.' : 'Plans That Move With You.'}
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-600 mt-4 leading-relaxed">
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
                   {lang === 'id' 
                     ? 'Pilihan paket transparan tanpa biaya tersembunyi. Siap disebar dengan mudah, anggun, dan berkesan.'
                     : 'Transparent pricing. No hidden fees. Just reliable and elegant delivery.'}
                 </p>
+
+                <div className="pt-2">
+                  <a
+                    href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20tanya%20detail%20seluruh%20paket%20undangan%20digital"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-stone-300 bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold shadow-2xs transition-all active:scale-95"
+                  >
+                    <span>{lang === 'id' ? 'Lihat Semua Rincian' : 'View All Plans'}</span>
+                    <ArrowRight size={14} className="text-stone-600" />
+                  </a>
+                </div>
               </div>
 
-              <div className="pt-6 lg:pt-0">
-                <a
-                  href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20tanya%20detail%20seluruh%20paket%20undangan%20digital"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-stone-300 bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold shadow-xs transition-all"
-                >
-                  <span>{lang === 'id' ? 'Lihat Semua Rincian' : 'View All Plans'}</span>
-                  <ArrowRight size={14} />
-                </a>
+              <div className="pt-8 border-t border-stone-200/70 hidden lg:block space-y-2.5 text-stone-600 text-xs font-medium">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck size={16} className="text-emerald-600 shrink-0" />
+                  <span>{lang === 'id' ? 'Garansi revisi & panduan setup' : 'Revision guarantee & setup guide'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Sparkles size={16} className="text-amber-500 shrink-0" />
+                  <span>{lang === 'id' ? 'Pengerjaan kilat mulai 24 jam' : 'Express delivery from 24h'}</span>
+                </div>
               </div>
             </div>
 
             {/* Right Cards: 3 Pricing Cards + 1 3D Isometric Accent Box */}
-            <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 items-stretch">
+            <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 items-stretch">
               
               {/* 1. Standard / Starter Plan */}
               <div className="bg-white rounded-3xl p-6 border border-stone-200/90 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
                 <div>
-                  <div className="pb-4 border-b border-stone-100">
-                    <h3 className="text-lg font-bold text-stone-900">
-                      Standard
-                    </h3>
-                    <p className="text-[11px] text-stone-500 mt-0.5">
-                      {lang === 'id' ? 'Undangan Digital Praktis' : 'Essential Digital Invitation'}
-                    </p>
-                    <div className="mt-4 flex items-baseline gap-1.5">
-                      <span className="text-2xl sm:text-3xl font-black text-stone-950">
-                        Rp 50rb
-                      </span>
-                      <span className="text-[11px] text-stone-400 font-medium">
-                        / paket
-                      </span>
+                  <div className="pb-4 border-b border-stone-100 min-h-[148px] flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold text-stone-900">
+                        Standard
+                      </h3>
+                      <p className="text-[11px] text-stone-500 mt-0.5">
+                        {lang === 'id' ? 'Undangan Digital Praktis' : 'Essential Digital Invitation'}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="line-through text-stone-400 text-xs font-semibold">
-                        Rp 150.000
-                      </span>
-                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                        Hemat 67%
-                      </span>
+
+                    <div>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-2xl sm:text-3xl font-black text-stone-950 font-sans tracking-tight">
+                          Rp 50rb
+                        </span>
+                        <span className="text-[11px] text-stone-400 font-medium">
+                          / paket
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="line-through text-stone-400 text-xs font-semibold">
+                          Rp 150.000
+                        </span>
+                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                          Hemat 67%
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -1498,64 +1514,69 @@ export const Home: React.FC = () => {
                     href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Rp%2050.000)"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full block text-center py-2.5 rounded-full bg-white hover:bg-stone-100 text-stone-900 border border-stone-300 font-bold text-xs transition-colors shadow-2xs"
+                    className="w-full block text-center py-2.5 rounded-full bg-white hover:bg-stone-50 text-stone-900 border border-stone-300 font-bold text-xs transition-all active:scale-95 shadow-2xs"
                   >
                     {lang === 'id' ? 'Pilih Paket' : 'Choose Plan'}
                   </a>
                 </div>
               </div>
 
-              {/* 2. Express / Premium Plan - FEATURED (Luxury Primary Dark Accent) */}
-              <div className="bg-white rounded-3xl p-6 border-2 border-primary-900 shadow-md flex flex-col justify-between relative ring-2 ring-primary-900/10">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-900 text-amber-200 text-[10px] font-black px-3.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+              {/* 2. Express / Premium Plan - FEATURED (Luxury Primary Dark Accent, No Orange) */}
+              <div className="bg-white rounded-3xl p-6 border-2 border-primary-900/90 shadow-md flex flex-col justify-between relative ring-1 ring-primary-900/15 hover:shadow-lg transition-shadow">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-900 text-amber-200 text-[10px] font-black px-4 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
                   {lang === 'id' ? 'Paling Diminati' : 'Most Popular'}
                 </div>
 
                 <div>
-                  <div className="pb-4 border-b border-stone-100 pt-1">
-                    <h3 className="text-lg font-bold text-stone-900">
-                      Express
-                    </h3>
-                    <p className="text-[11px] text-primary-800 font-semibold mt-0.5">
-                      {lang === 'id' ? 'Fitur Lengkap & Video Gate' : 'Full Features & Video Gate'}
-                    </p>
-                    <div className="mt-4 flex items-baseline gap-1.5">
-                      <span className="text-2xl sm:text-3xl font-black text-stone-950">
-                        Rp 150rb
-                      </span>
-                      <span className="text-[11px] text-stone-400 font-medium">
-                        / paket
-                      </span>
+                  <div className="pb-4 border-b border-stone-100 min-h-[148px] flex flex-col justify-between pt-1">
+                    <div>
+                      <h3 className="text-lg font-bold text-stone-900">
+                        Express
+                      </h3>
+                      <p className="text-[11px] text-primary-900 font-semibold mt-0.5">
+                        {lang === 'id' ? 'Fitur Lengkap & Video Gate' : 'Full Features & Video Gate'}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="line-through text-stone-400 text-xs font-semibold">
-                        Rp 250.000
-                      </span>
-                      <span className="text-[10px] font-bold text-primary-900 bg-primary-100 px-2 py-0.5 rounded-full">
-                        Hemat 40%
-                      </span>
+
+                    <div>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-2xl sm:text-3xl font-black text-stone-950 font-sans tracking-tight">
+                          Rp 150rb
+                        </span>
+                        <span className="text-[11px] text-stone-400 font-medium">
+                          / paket
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="line-through text-stone-400 text-xs font-semibold">
+                          Rp 250.000
+                        </span>
+                        <span className="text-[10px] font-bold text-amber-900 bg-amber-100/90 border border-amber-300/80 px-2 py-0.5 rounded-full">
+                          Hemat 40%
+                        </span>
+                      </div>
                     </div>
                   </div>
 
                   <ul className="py-5 space-y-2.5 text-xs text-stone-700">
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
+                      <Check size={14} className="text-emerald-600 shrink-0 font-bold" />
                       <span>{lang === 'id' ? 'Pengerjaan 1-2 hari kerja' : '1-2 business days delivery'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
+                      <Check size={14} className="text-emerald-600 shrink-0 font-bold" />
                       <span>{lang === 'id' ? 'Seluruh fitur Paket Standard' : 'All standard features included'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
+                      <Check size={14} className="text-emerald-600 shrink-0 font-bold" />
                       <span>{lang === 'id' ? 'Transisi video gerbang sinematik' : 'Cinematic video entrance gate'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
+                      <Check size={14} className="text-emerald-600 shrink-0 font-bold" />
                       <span>{lang === 'id' ? 'Akses seluruh tema premium' : 'All premium themes included'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check size={14} className="text-primary-800 shrink-0 font-bold" />
+                      <Check size={14} className="text-emerald-600 shrink-0 font-bold" />
                       <span><strong>{lang === 'id' ? 'Masa aktif 1 bulan penuh' : 'Active for 1 full month'}</strong></span>
                     </li>
                   </ul>
@@ -1566,9 +1587,9 @@ export const Home: React.FC = () => {
                     href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Express%20Premium%20(Rp%20150.000)"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full block text-center py-2.5 rounded-full bg-primary-900 hover:bg-primary-950 text-amber-200 font-bold text-xs transition-colors shadow-sm"
+                    className="w-full block text-center py-2.5 rounded-full bg-primary-900 hover:bg-primary-950 text-white font-bold text-xs transition-all active:scale-95 shadow-xs group"
                   >
-                    {lang === 'id' ? 'Pilih Paket' : 'Choose Plan'}
+                    <span className="group-hover:text-amber-200 transition-colors">{lang === 'id' ? 'Pilih Paket' : 'Choose Plan'}</span>
                   </a>
                 </div>
               </div>
@@ -1576,22 +1597,30 @@ export const Home: React.FC = () => {
               {/* 3. Same-Day / Custom Plan */}
               <div className="bg-white rounded-3xl p-6 border border-stone-200/90 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
                 <div>
-                  <div className="pb-4 border-b border-stone-100">
-                    <h3 className="text-lg font-bold text-stone-900">
-                      Same-Day / Custom
-                    </h3>
-                    <p className="text-[11px] text-stone-500 mt-0.5">
-                      {lang === 'id' ? 'Desain Khusus Bebas Request' : 'Bespoke Custom Design'}
-                    </p>
-                    <div className="mt-4 flex items-baseline gap-1.5">
-                      <span className="text-2xl sm:text-3xl font-black text-stone-950">
-                        Custom
-                      </span>
+                  <div className="pb-4 border-b border-stone-100 min-h-[148px] flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold text-stone-900">
+                        Same-Day / Custom
+                      </h3>
+                      <p className="text-[11px] text-stone-500 mt-0.5">
+                        {lang === 'id' ? 'Desain Khusus Bebas Request' : 'Bespoke Custom Design'}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-[10px] font-bold text-stone-600 bg-stone-100 px-2 py-0.5 rounded-full">
-                        {lang === 'id' ? 'Prioritas Ekspres' : 'Priority Express'}
-                      </span>
+
+                    <div>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-2xl sm:text-3xl font-black text-stone-950 font-sans tracking-tight">
+                          Custom
+                        </span>
+                        <span className="text-[11px] text-stone-400 font-medium">
+                          {lang === 'id' ? '/ fleksibel' : '/ tailored'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] font-bold text-stone-800 bg-stone-100 px-2.5 py-0.5 rounded-full border border-stone-200/80">
+                          {lang === 'id' ? 'Prioritas Ekspres' : 'Priority Express'}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -1624,7 +1653,7 @@ export const Home: React.FC = () => {
                     href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20konsultasi%20Paket%20Custom%20Same-Day"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full block text-center py-2.5 rounded-full bg-white hover:bg-stone-100 text-stone-900 border border-stone-300 font-bold text-xs transition-colors shadow-2xs"
+                    className="w-full block text-center py-2.5 rounded-full bg-white hover:bg-stone-50 text-stone-900 border border-stone-300 font-bold text-xs transition-all active:scale-95 shadow-2xs"
                   >
                     {lang === 'id' ? 'Pilih Paket' : 'Choose Plan'}
                   </a>
@@ -1632,28 +1661,34 @@ export const Home: React.FC = () => {
               </div>
 
               {/* 4. 3D Visual Accent Box (Isometric Diorama Style) */}
-              <div className="bg-gradient-to-b from-[#fdfbf9] to-[#f4eee8] rounded-3xl p-6 border border-primary-200/80 shadow-xs flex flex-col items-center justify-between text-center relative overflow-hidden group">
+              <div className="bg-gradient-to-b from-[#fdfbf9] to-[#f4eee8] rounded-3xl p-6 border border-stone-200/90 shadow-xs flex flex-col justify-between text-center relative overflow-hidden group hover:shadow-md transition-shadow">
                 <div className="w-full flex items-center justify-between text-[11px] font-bold text-stone-900">
-                  <span className="font-cinzel tracking-wider">WD EXCLUSIVE</span>
+                  <span className="font-cinzel tracking-wider text-xs">WD EXCLUSIVE</span>
                   <Sparkles size={14} className="text-amber-500" />
                 </div>
 
-                <div className="my-3 py-2 flex flex-col items-center justify-center">
+                <div className="my-auto py-3 flex flex-col items-center justify-center">
                   <div className="w-28 h-28 sm:w-32 sm:h-32 relative flex items-center justify-center">
                     <img
-                      src="/images/features/feat_amplop_digital.png"
+                      src="/images/features/feat_amplop_transparent.png"
                       alt="Digital Wedding Stationery"
-                      className="w-full h-full object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <p className="font-serif italic text-sm text-stone-800 font-semibold mt-2 leading-snug">
+                  <p className="font-serif italic text-sm text-stone-800 font-semibold mt-3 leading-snug px-1">
                     &ldquo;Momen Sakral, Berawal Dari Sini.&rdquo;
+                  </p>
+                  <p className="text-[11px] text-stone-500 mt-1 font-medium">
+                    {lang === 'id' ? 'Sentuhan personal eksklusif' : 'Exclusive personalized touch'}
                   </p>
                 </div>
 
-                <div className="w-full pt-2 border-t border-stone-200/70 flex items-center justify-between text-[10px] text-stone-600 font-medium">
+                <div className="w-full pt-3 border-t border-stone-200/70 flex items-center justify-between text-[10px] text-stone-600 font-medium">
                   <span>WD Studio Sukoharjo</span>
-                  <span className="font-bold text-amber-700">★ 4.9 Rating</span>
+                  <span className="font-bold text-amber-700 flex items-center gap-1">
+                    <Star size={11} className="fill-amber-500 text-amber-500" />
+                    4.9 Rating
+                  </span>
                 </div>
               </div>
 
