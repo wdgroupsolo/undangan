@@ -32,7 +32,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   contact_phone: '6285707909415',
   contact_email: 'admin@wdgroup.com',
   contact_instagram: '@wdgroupcompany',
-  office_address: 'Solo, Jawa Tengah & Magetan, Jawa Timur, Indonesia',
+  office_address: 'Griya Edelweis No.12a, Dusun V, Joho, Kec. Mojolaban, Kabupaten Sukoharjo, Jawa Tengah 57554',
 
   admin_name: 'Admin WD Group',
   admin_email: 'admin@wdgroup.com',

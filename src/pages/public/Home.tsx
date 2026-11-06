@@ -1652,7 +1652,7 @@ export const Home: React.FC = () => {
                 </div>
 
                 <div className="w-full pt-2 border-t border-orange-200/70 flex items-center justify-between text-[10px] text-stone-600 font-medium">
-                  <span>WD Studio Magetan</span>
+                  <span>WD Studio Sukoharjo</span>
                   <span className="font-bold text-orange-700">★ 4.9 Rating</span>
                 </div>
               </div>
@@ -2241,9 +2241,11 @@ export const Home: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent pointer-events-none" />
                   
                   {/* Subtle caption pill on bottom */}
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[11px] text-white/90 px-3.5 py-2 rounded-2xl bg-stone-950/60 backdrop-blur-md border border-white/10">
-                    <span className="font-medium">WD Production • Magetan, Jawa Timur</span>
-                    <span className="text-orange-400 font-bold">24 Jam Pengerjaan</span>
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-2 text-[11px] text-white/90 px-3.5 py-2 rounded-2xl bg-stone-950/60 backdrop-blur-md border border-white/10">
+                    <span className="font-medium truncate" title="Griya Edelweis No.12a, Dusun V, Joho, Kec. Mojolaban, Kabupaten Sukoharjo, Jawa Tengah 57554">
+                      WD Production • Griya Edelweis No.12a, Joho, Mojolaban, Sukoharjo
+                    </span>
+                    <span className="text-orange-400 font-bold shrink-0">24 Jam Pengerjaan</span>
                   </div>
                 </div>
 
@@ -2270,6 +2272,9 @@ export const Home: React.FC = () => {
               </Link>
               <p className="text-xs text-stone-400 font-medium">
                 {lang === 'id' ? 'Momen Sakral, Cinta Abadi' : 'Moments People Memories'}
+              </p>
+              <p className="text-[11px] text-stone-500 leading-relaxed pt-1">
+                Griya Edelweis No.12a, Dusun V, Joho, Kec. Mojolaban, Kabupaten Sukoharjo, Jawa Tengah 57554
               </p>
             </div>
 
