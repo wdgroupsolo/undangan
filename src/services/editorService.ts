@@ -442,8 +442,8 @@ export const COUPLE_AUDI_OVYOLA = {
   groom_parents: 'Putra ke-2 dari Bpk. Samudi & Ibu Cicik Tri Rejeki',
   groom_parents_label: 'Putra ke-2 Dari',
   groom_order: '2',
-  groom_photo: '/themes/agni-putri/groom-agni.jpg',
-  groom_photo_url: '/themes/agni-putri/groom-agni.jpg',
+  groom_photo: '/photos/audi-ovyola/groom-audi.jpg',
+  groom_photo_url: '/photos/audi-ovyola/groom-audi.jpg',
   groom_instagram: '@audifebrian',
   bride_full_name: 'Ovyola Praristawati Wibowo',
   bride_nickname: 'Ovyola',
@@ -454,10 +454,10 @@ export const COUPLE_AUDI_OVYOLA = {
   bride_parents: 'Putri ke-2 dari Bpk. Fitrian Sulis Wibodo & Ibu Erna Sulistyaningsih',
   bride_parents_label: 'Putri ke-2 Dari',
   bride_order: '2',
-  bride_photo: '/themes/agni-putri/bride-putri.jpg',
-  bride_photo_url: '/themes/agni-putri/bride-putri.jpg',
+  bride_photo: '/photos/audi-ovyola/bride-ovyola.jpg',
+  bride_photo_url: '/photos/audi-ovyola/bride-ovyola.jpg',
   bride_instagram: '@ovyolaprx',
-  cover_photo_url: '/themes/agni-putri/couple-outdoor.jpg',
+  cover_photo_url: '/photos/audi-ovyola/cover-audi-ovyola.jpg',
   gift_recipient: 'OVYOLA PRARISTAWATI WIBOWO',
   gift_address: 'KEL. Sampung rt01/01 kec. Kawedanan Kab. Magetan (No. HP: 0895341102195 - Ovyola)'
 };
@@ -539,12 +539,18 @@ export const STORIES_AUDI_OVYOLA = [
 ];
 
 export const GALLERY_AUDI_OVYOLA = [
-  { id: 'ao-gal-1', image_url: '/themes/agni-putri/couple-outdoor.jpg', caption: 'Kebersamaan & Tawa Bahagia Audi & Ovyola', sort_order: 1 },
-  { id: 'ao-gal-2', image_url: '/themes/agni-putri/couple-arch.jpg', caption: 'Romansa Kehangatan Cinta', sort_order: 2 },
-  { id: 'ao-gal-3', image_url: '/themes/agni-putri/bride-putri.jpg', caption: 'Pesona Anggun Mempelai Putri', sort_order: 3 },
-  { id: 'ao-gal-4', image_url: '/themes/agni-putri/groom-agni.jpg', caption: 'Ketulusan Hati Mempelai Pria', sort_order: 4 },
-  { id: 'ao-gal-5', image_url: '/themes/agni-putri/couple-intimate.jpg', caption: 'Genggaman Menuju Masa Depan', sort_order: 5 },
-  { id: 'ao-gal-6', image_url: '/themes/agni-putri/couple-retro.jpg', caption: 'Langkah Menuju Janji Suci', sort_order: 6 },
+  { id: 'ao-gal-1', image_url: '/photos/audi-ovyola/gallery-01.jpg', caption: 'Keanggunan Busana Tradisional Jawa di Pendopo Joglo', sort_order: 1 },
+  { id: 'ao-gal-2', image_url: '/photos/audi-ovyola/gallery-02.jpg', caption: 'Sorot Kasih & Pelukan Hangat Audi & Ovyola', sort_order: 2 },
+  { id: 'ao-gal-3', image_url: '/photos/audi-ovyola/gallery-03.jpg', caption: 'Pesona Ayu Pengantin Putri dalam Balutan Ronce Melati', sort_order: 3 },
+  { id: 'ao-gal-4', image_url: '/photos/audi-ovyola/gallery-04.jpg', caption: 'Wibawa & Keteguhan Hati Pengantin Pria', sort_order: 4 },
+  { id: 'ao-gal-5', image_url: '/photos/audi-ovyola/gallery-05.jpg', caption: 'Harmoni Janji Suci di Bawah Kilau Lentera Candelabra', sort_order: 5 },
+  { id: 'ao-gal-6', image_url: '/photos/audi-ovyola/gallery-06.jpg', caption: 'Genggaman Erat Menuju Mahligai Rumah Tangga', sort_order: 6 },
+  { id: 'ao-gal-7', image_url: '/photos/audi-ovyola/gallery-07.jpg', caption: 'Kisah Romansa Kasual & Senyum Penuh Bahagia', sort_order: 7 },
+  { id: 'ao-gal-8', image_url: '/photos/audi-ovyola/gallery-08.jpg', caption: 'Kemesraan Hangat di Tengah Senja', sort_order: 8 },
+  { id: 'ao-gal-9', image_url: '/photos/audi-ovyola/gallery-09.jpg', caption: 'Langkah Sepadan Mengarungi Masa Depan Bersama', sort_order: 9 },
+  { id: 'ao-gal-10', image_url: '/photos/audi-ovyola/gallery-10.jpg', caption: 'Tawa Lepas Dua Hati yang Saling Melengkapi', sort_order: 10 },
+  { id: 'ao-gal-11', image_url: '/photos/audi-ovyola/gallery-11.jpg', caption: 'Sentuhan Teduh Penuh Kasih Sayang', sort_order: 11 },
+  { id: 'ao-gal-12', image_url: '/photos/audi-ovyola/gallery-12.jpg', caption: 'Doa & Restu Menuju Hari Kemenangan Cinta', sort_order: 12 },
 ];
 
 export const GIFTS_AUDI_OVYOLA = [

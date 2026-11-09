@@ -385,6 +385,7 @@ export const InvitationRenderer: React.FC = () => {
     : (invitation?.settings?.default_guest_name?.trim() || (isKualaLumpur ? 'Tuan/Puan/Saudara/Saudari' : 'Tamu Undangan'));
 
   const coverImage = 
+    (isAudiOvyolaSlug ? '/photos/audi-ovyola/entrance-audi-ovyola.jpg' : null) ||
     (isKualaLumpur ? '/themes/kuala-lumpur-heritage/cover-skyline.jpg' : null) ||
     (isAgniSlug ? '/themes/agni-putri/couple-arch.jpg' : null) ||
     invitation?.settings?.cover_photo ||

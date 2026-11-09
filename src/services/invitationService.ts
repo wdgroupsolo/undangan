@@ -235,7 +235,7 @@ export const INVITATION_AUDI_OVYOLA: Invitation & { theme?: any; client?: any } 
     theme_slug: 'royal-wayang-gold',
     default_guest_name: 'Tamu Undangan',
     cover_title: 'AUDI & OVYOLA',
-    cover_photo: '/themes/agni-putri/couple-outdoor.jpg',
+    cover_photo: '/photos/audi-ovyola/cover-audi-ovyola.jpg',
     groom_instagram: '@audifebrian',
     bride_instagram: '@ovyolaprx',
     gift_recipient: 'OVYOLA PRARISTAWATI WIBOWO',
