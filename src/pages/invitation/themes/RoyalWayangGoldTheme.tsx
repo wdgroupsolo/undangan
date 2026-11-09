@@ -3253,7 +3253,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                       </div>
 
                       <button
-                        onClick={() => handleCopyText(gift.account_number, `No. Rekening ${gift.provider}`, `gift-${idx}`)}
+                        onClick={() => handleCopyText(gift.raw_number || (gift.account_number ? gift.account_number.replace(/\s+/g, '') : ''), `No. Rekening ${gift.provider}`, `gift-${idx}`)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#d4af37]/25 to-[#ffd778]/30 hover:from-[#d4af37] hover:to-[#ecc460] border border-[#d4af37] text-[#ffd778] hover:text-stone-950 font-serif text-[10.5px] font-bold tracking-wider uppercase transition-all duration-300 shadow-md cursor-pointer hover:scale-105 active:scale-95"
                       >
                         {copiedKey === `gift-${idx}` ? (

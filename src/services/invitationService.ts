@@ -240,6 +240,32 @@ export const INVITATION_AUDI_OVYOLA: Invitation & { theme?: any; client?: any } 
     bride_instagram: '@ovyolaprx',
     gift_recipient: 'OVYOLA PRARISTAWATI WIBOWO',
     gift_address: 'KEL. Sampung rt01/01 kec. Kawedanan Kab. Magetan (No. HP: 0895341102195 - Ovyola)',
+    gifts: [
+      {
+        id: 'gift-ao-01',
+        invitation_id: 'e7000000-0000-0000-0000-000000000007',
+        type: 'bank',
+        provider: 'BCA',
+        bank_name: 'BANK BCA',
+        bank_code: 'BCA',
+        account_number: '3850 9753 01',
+        raw_number: '3850975301',
+        account_name: 'Audi Febrianto',
+        is_active: true
+      },
+      {
+        id: 'gift-ao-02',
+        invitation_id: 'e7000000-0000-0000-0000-000000000007',
+        type: 'bank',
+        provider: 'BRI',
+        bank_name: 'BANK BRI',
+        bank_code: 'BRI',
+        account_number: '0382 0105 8862 505',
+        raw_number: '038201058862505',
+        account_name: 'OVYOLA PRARISTAWATI WIBOWO',
+        is_active: true
+      }
+    ],
     color_concept: 'Hitam & Emas (Royal Wayang Gold)',
     music_title: 'Tiara Andini - Tulang dan Nadi',
     music_url: '/music/landon-pigg-falling-in-love.mp3',

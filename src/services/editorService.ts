@@ -552,6 +552,18 @@ export const GIFTS_AUDI_OVYOLA = [
     id: 'gift-ao-01',
     invitation_id: 'e7000000-0000-0000-0000-000000000007',
     type: 'bank',
+    provider: 'BCA',
+    bank_name: 'BANK BCA',
+    bank_code: 'BCA',
+    account_number: '3850 9753 01',
+    raw_number: '3850975301',
+    account_name: 'Audi Febrianto',
+    is_active: true
+  },
+  {
+    id: 'gift-ao-02',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    type: 'bank',
     provider: 'BRI',
     bank_name: 'BANK BRI',
     bank_code: 'BRI',
@@ -804,6 +816,12 @@ export const editorService = {
   },
   
   async getGifts(invitationId: string) {
+    const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
+    if (isAudiId) {
+      return GIFTS_AUDI_OVYOLA;
+    }
+
     // 1. Check gift_accounts table in Supabase
     try {
       const { data, error } = await supabase.from('gift_accounts').select('*').eq('invitation_id', invitationId);
@@ -833,12 +851,6 @@ export const editorService = {
       }
     } catch (e) {
       console.warn('Could not fetch gifts from settings:', e);
-    }
-
-    const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
-      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
-    if (isAudiId) {
-      return GIFTS_AUDI_OVYOLA;
     }
 
     const isYogaId = invitationId === 'e6000000-0000-0000-0000-000000000006' || 
