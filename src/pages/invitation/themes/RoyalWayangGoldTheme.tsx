@@ -994,6 +994,12 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     (invitation?.slug && (invitation.slug.toLowerCase().includes('agni') || invitation.slug.toLowerCase().includes('kribo')))
   );
 
+  const isAudi = typeof window !== 'undefined' && (
+    window.location.pathname.toLowerCase().includes('audi') ||
+    window.location.pathname.toLowerCase().includes('ovyola') ||
+    (invitation?.slug && (invitation.slug.toLowerCase().includes('audi') || invitation.slug.toLowerCase().includes('ovyola')))
+  );
+
   const groomName = isAgni ? 'Agni' : (
     (couple?.groom_full_name ? formatTitleCase(couple.groom_full_name.split(/\s+/)[0]) : '') ||
     (couple?.groom_nickname && couple.groom_nickname.toLowerCase() !== 'bagas' ? formatTitleCase(couple.groom_nickname) : '') ||
@@ -1024,7 +1030,27 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     ? invitation.settings.cover_photo
     : ((couple?.cover_photo_url && couple.cover_photo_url.trim() !== '') 
       ? couple.cover_photo_url 
-      : ((couple?.cover_photo && couple.cover_photo.trim() !== '') ? couple.cover_photo : (isAgni ? '/themes/agni-putri/couple-arch.jpg' : '/photos/photo-3.jpg')));
+      : ((couple?.cover_photo && couple.cover_photo.trim() !== '') ? couple.cover_photo : (isAgni ? '/themes/agni-putri/couple-arch.jpg' : '/photos/audi-ovyola/cover-audi-ovyola.jpg')));
+
+  const photoboothSlides = isAudi
+    ? [
+        '/photos/audi-ovyola/gallery-01.jpg',
+        '/photos/audi-ovyola/gallery-02.jpg',
+        '/photos/audi-ovyola/gallery-07.jpg'
+      ]
+    : (gallery && gallery.length >= 3)
+      ? [
+          (typeof gallery[0] === 'string' ? gallery[0] : gallery[0]?.image_url) || couplePhoto,
+          (typeof gallery[1] === 'string' ? gallery[1] : gallery[1]?.image_url) || couplePhoto,
+          (typeof gallery[6] === 'string' ? gallery[6] : (gallery[4]?.image_url || gallery[2]?.image_url)) || couplePhoto
+        ]
+      : isAgni
+        ? ['/themes/agni-putri/couple-main.jpg', '/themes/agni-putri/couple-outdoor.jpg', '/themes/agni-putri/couple-retro.jpg']
+        : [
+            couplePhoto || '/photos/audi-ovyola/cover-audi-ovyola.jpg',
+            '/photos/audi-ovyola/gallery-02.jpg',
+            '/photos/audi-ovyola/gallery-07.jpg'
+          ];
 
   const groomPhoto = (couple?.groom_photo_url && couple.groom_photo_url.trim() !== '') 
     ? couple.groom_photo_url 
@@ -1052,7 +1078,22 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   };
 
   // Love Story Milestones (Database stories or romantic defaults)
-  const defaultStories = isAgni ? [
+  const defaultStories = isAudi ? [
+    {
+      chapter: 'BABAK I',
+      date: 'Pertemuan',
+      title: 'Awal Bertemu',
+      photo: '/photos/audi-ovyola/gallery-07.jpg',
+      description: 'Sebuah perjumpaan manis yang mempertemukan dua hati untuk saling mengenal, berbagi cerita, dan melangkah bersama.'
+    },
+    {
+      chapter: 'BABAK II',
+      date: 'Janji Suci',
+      title: 'Menuju Pelaminan',
+      photo: '/photos/audi-ovyola/gallery-09.jpg',
+      description: 'Dengan keyakinan bahwa apa yang menjadi takdir kita akan menemukan jalannya, kami memantapkan niat suci menuju mahligai pernikahan.'
+    }
+  ] : isAgni ? [
     {
       chapter: 'BABAK I',
       date: '2020',
@@ -1079,21 +1120,21 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
       chapter: 'BABAK I',
       date: '2019',
       title: 'Awal Bertemu',
-      photo: '/photos/photo-7.jpg',
+      photo: '/photos/audi-ovyola/gallery-07.jpg',
       description: 'Aku memandangi mu tanpa perlu menatap, aku mendengar mu tanpa alat, aku menemui mu tanpa perlu hadir. Aku mencintai mu tanpa perlu apa-apa. Karna kini kumiliki segalanya.'
     },
     {
       chapter: 'BABAK II',
       date: '2023',
       title: 'Menjalin Kasih',
-      photo: '/photos/photo-3.jpg',
+      photo: '/photos/audi-ovyola/gallery-02.jpg',
       description: 'Setelah bertahun-tahun saling mengenal dan membersamai, kami meyakini hati masing-masing untuk melangkah ke jenjang yang lebih serius dengan restu keluarga besar.'
     },
     {
       chapter: 'BABAK III',
       date: '2026',
       title: 'Menuju Pelaminan',
-      photo: '/photos/photo-1.jpg',
+      photo: '/photos/audi-ovyola/gallery-09.jpg',
       description: 'Dengan penuh rasa syukur dan doa yang tulus, kami siap mengikat janji suci pernikahan untuk melangkah bersama mengarungi samudra kehidupan.'
     }
   ];
@@ -1867,7 +1908,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             {/* Cinematic Background Image with Dark Royal Vignette */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
               <img 
-                src={(isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : couplePhoto) || "/photos/photo-1.jpg"} 
+                src={(isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : couplePhoto) || "/photos/audi-ovyola/cover-audi-ovyola.jpg"} 
                 alt={`Save The Date - ${groomName} & ${brideName}`} 
                 className="w-full h-full object-cover object-[center_30%] filter brightness-[0.42] contrast-[1.08] scale-105"
               />
@@ -2674,11 +2715,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
           
           {/* 3-Photo Background Slideshow Track with Smooth Crossfade */}
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            {[
-              isAgni ? '/themes/agni-putri/couple-main.jpg' : (couple?.cover_photo_url || "/photos/photo-7.jpg"),
-              isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : "/photos/photo-3.jpg",
-              isAgni ? '/themes/agni-putri/couple-retro.jpg' : "/photos/photo-1.jpg"
-            ].map((photoUrl, idx) => (
+            {photoboothSlides.map((photoUrl, idx) => (
               <div 
                 key={idx}
                 className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
@@ -2910,10 +2947,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {/* Row 2: 2 Highlight Moments */}
               <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
                 <div 
-                  onClick={() => setSelectedPhoto(isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : '/photos/photo-1.jpg')} 
+                  onClick={() => setSelectedPhoto(isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : '/photos/audi-ovyola/gallery-01.jpg')} 
                   className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <img src={isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : '/photos/photo-1.jpg'} alt="Moment 1" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <img src={isAgni ? '/themes/agni-putri/couple-outdoor.jpg' : '/photos/audi-ovyola/gallery-01.jpg'} alt="Moment 1" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
                   <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
                   <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                     <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -2922,10 +2959,10 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                   </div>
                 </div>
                 <div 
-                  onClick={() => setSelectedPhoto(isAgni ? '/themes/agni-putri/couple-retro.jpg' : '/photos/photo-4.jpg')} 
+                  onClick={() => setSelectedPhoto(isAgni ? '/themes/agni-putri/couple-retro.jpg' : '/photos/audi-ovyola/gallery-04.jpg')} 
                   className="group relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border border-[#d4af37]/45 hover:border-[#ffd778] bg-[#120a06] cursor-pointer shadow-[0_6px_18px_rgba(0,0,0,0.7)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <img src={isAgni ? '/themes/agni-putri/couple-retro.jpg' : '/photos/photo-4.jpg'} alt="Moment 2" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
+                  <img src={isAgni ? '/themes/agni-putri/couple-retro.jpg' : '/photos/audi-ovyola/gallery-04.jpg'} alt="Moment 2" className="w-full h-full object-cover object-center filter brightness-[0.92] group-hover:brightness-105 group-hover:scale-108 transition-all duration-500 ease-out" />
                   <div className="absolute inset-0 rounded-xl sm:rounded-2xl border border-white/10 pointer-events-none z-10" />
                   <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                     <div className="w-7 h-7 rounded-full bg-black/75 border border-[#d4af37] flex items-center justify-center text-[#ffd778] shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -2939,7 +2976,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               <div className="relative z-20 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto mb-2.5 sm:mb-3">
                 {(isAgni 
                   ? ['/themes/agni-putri/couple-intimate.jpg', '/themes/agni-putri/couple-artistic.jpg', '/themes/agni-putri/couple-arch.jpg'] 
-                  : ['/photos/photo-5.jpg', '/photos/photo-6.jpg', '/photos/photo-7.jpg']
+                  : ['/photos/audi-ovyola/gallery-05.jpg', '/photos/audi-ovyola/gallery-06.jpg', '/photos/audi-ovyola/gallery-07.jpg']
                 ).map((photoSrc, idx) => (
                   <div 
                     key={idx}
@@ -2961,7 +2998,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
                 {(isAgni 
                   ? ['/themes/agni-putri/couple-fern.jpg', '/themes/agni-putri/couple-main.jpg'] 
-                  : ['/photos/photo-8.jpg', '/photos/photo-9.jpg']
+                  : ['/photos/audi-ovyola/gallery-08.jpg', '/photos/audi-ovyola/gallery-09.jpg']
                 ).map((photoSrc, idx) => (
                   <div 
                     key={idx}
@@ -3936,7 +3973,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             </h3>
 
             <div className="aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#d4af37]/50 relative shadow-2xl">
-              <img src={isAgni ? '/themes/agni-putri/couple-arch.jpg' : '/photos/photo-8.jpg'} alt="Photobooth Frame" className="w-full h-full object-cover object-center" />
+              <img src={isAgni ? '/themes/agni-putri/couple-arch.jpg' : (photoboothSlides[0] || couplePhoto)} alt="Photobooth Frame" className="w-full h-full object-cover object-center" />
               <div className="absolute inset-0 border-2 border-[#d4af37]/40 rounded-2xl pointer-events-none" />
               <div className="absolute bottom-0 inset-x-0 text-center pointer-events-none bg-gradient-to-t from-black/90 via-black/60 to-transparent py-2.5">
                 <p 

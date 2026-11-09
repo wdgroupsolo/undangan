@@ -393,7 +393,7 @@ export const InvitationRenderer: React.FC = () => {
     couple?.cover_photo ||
     invitation?.cover_image_url || 
     gallery?.[0]?.image_url || 
-    (isNirwanaSarangan ? '/themes/nirwana-sarangan/couple-cover.jpg' : isJogloMaroon ? '/photos/photo-3.jpg' : isRoyalWayang ? '/photos/photo-3.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
+    (isNirwanaSarangan ? '/themes/nirwana-sarangan/couple-cover.jpg' : isJogloMaroon ? '/photos/photo-3.jpg' : isRoyalWayang ? '/photos/audi-ovyola/cover-audi-ovyola.jpg' : isMaroonGold ? '/photos/photo-3.jpg' : (invitation?.theme?.preview_image && !invitation.theme.preview_image.includes('unsplash') ? invitation.theme.preview_image : '/cover-lunar-bg.jpg'));
 
   const entranceVideoSrc = isNirwanaSarangan
     ? '/gemini_generated_video_1f694672.mp4'

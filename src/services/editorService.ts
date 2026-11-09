@@ -525,6 +525,8 @@ export const STORIES_AUDI_OVYOLA = [
     invitation_id: 'e7000000-0000-0000-0000-000000000007',
     title: 'Awal Bertemu',
     date: 'Pertemuan',
+    photo: '/photos/audi-ovyola/gallery-07.jpg',
+    photo_url: '/photos/audi-ovyola/gallery-07.jpg',
     content: 'Sebuah perjumpaan manis yang mempertemukan dua hati untuk saling mengenal, berbagi cerita, dan melangkah bersama.',
     sort_order: 1
   },
@@ -533,6 +535,8 @@ export const STORIES_AUDI_OVYOLA = [
     invitation_id: 'e7000000-0000-0000-0000-000000000007',
     title: 'Menuju Pelaminan',
     date: 'Janji Suci',
+    photo: '/photos/audi-ovyola/gallery-09.jpg',
+    photo_url: '/photos/audi-ovyola/gallery-09.jpg',
     content: 'Dengan keyakinan bahwa apa yang menjadi takdir kita akan menemukan jalannya, kami memantapkan niat suci menuju mahligai pernikahan.',
     sort_order: 2
   }
