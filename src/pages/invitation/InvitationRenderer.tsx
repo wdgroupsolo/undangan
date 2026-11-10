@@ -261,11 +261,31 @@ export const InvitationRenderer: React.FC = () => {
     setMetaTag('property', 'og:title', pageTitle);
     setMetaTag('name', 'twitter:title', pageTitle);
     const domain = typeof window !== 'undefined' ? window.location.origin : 'https://rsvp.wdgroupcompany.biz.id';
-    const previewImg = `${domain}/og-agni-kahuripan.jpg`;
+    let previewImg = `${domain}/og-audi-ovyola.jpg`;
+    if (isAudiOvyolaSlug) {
+      previewImg = `${domain}/og-audi-ovyola.jpg`;
+    } else if (isYogaFatmaSlug) {
+      previewImg = `${domain}/themes/nirwana-sarangan/nirwana-theme-preview.png`;
+    } else if (isHafizSlug) {
+      previewImg = `${domain}/themes/kuala-lumpur-heritage/cover-skyline.jpg`;
+    } else if (isAgniSlug) {
+      previewImg = `${domain}/og-agni-kahuripan.jpg`;
+    } else if (displayCouple?.cover_photo_url) {
+      previewImg = displayCouple.cover_photo_url.startsWith('http')
+        ? displayCouple.cover_photo_url
+        : `${domain}${displayCouple.cover_photo_url}`;
+    }
     setMetaTag('property', 'og:image', previewImg);
     setMetaTag('property', 'og:image:secure_url', previewImg);
     setMetaTag('name', 'twitter:image', previewImg);
-  }, [groom, bride]);
+
+    const descText = rawTo
+      ? `Kepada Yth. Bapak/Ibu/Saudara/i ${rawTo}, kami mengundang Anda untuk menghadiri acara pernikahan ${groom} & ${bride}.`
+      : `Tanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan ${groom} & ${bride}.`;
+    setMetaTag('property', 'og:description', descText);
+    setMetaTag('name', 'description', descText);
+    setMetaTag('name', 'twitter:description', descText);
+  }, [groom, bride, isAudiOvyolaSlug, isYogaFatmaSlug, isHafizSlug, isAgniSlug, displayCouple, rawTo]);
 
   // Track invitation view in analytics
   useEffect(() => {
