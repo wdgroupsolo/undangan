@@ -563,7 +563,7 @@ export const InvitationRenderer: React.FC = () => {
     <div className="relative min-h-screen no-scrollbar overflow-x-clip">
       {/* Ambient Falling Sakura Petals & Golden Stardust across whole screen for Kuala Lumpur Heritage */}
       {isKualaLumpur && (
-        <FallingSakuraPetals count={30} className="z-40" />
+        <FallingSakuraPetals count={32} className="z-[60]" />
       )}
 
       {/* Background Audio */}
@@ -833,6 +833,9 @@ export const InvitationRenderer: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent" />
               </div>
+
+              {/* Dedicated Falling Sakura Petals INSIDE Card Boundaries */}
+              <FallingSakuraPetals count={14} className="absolute inset-0 z-20" />
 
               {/* Sakura Blossoms Frame: Kanan, Kiri, Atas, Bawah */}
               <SakuraCoverFrame />

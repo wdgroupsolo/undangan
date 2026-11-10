@@ -4,27 +4,28 @@ import React from 'react';
 // 1. FALLING SAKURA PETALS ANIMATION (Bunga Jatuh Berguguran)
 // =========================================================================
 export const FallingSakuraPetals: React.FC<{ count?: number; className?: string }> = ({ 
-  count = 20,
-  className = "z-30" 
+  count = 24,
+  className = "z-[60]" 
 }) => {
+  const isAbsolute = className.includes('absolute');
   const petals = Array.from({ length: count }, (_, i) => ({
     id: i,
-    left: `${(i * 5.3 + 2) % 96}%`,
-    duration: `${6 + (i % 7) * 1.3}s`,
-    delay: `${(i * 0.6) % 6}s`,
-    size: 14 + (i % 5) * 4,
-    opacity: 0.4 + (i % 4) * 0.15,
+    left: `${(i * 5.1 + 2) % 96}%`,
+    duration: `${5.5 + (i % 7) * 1.2}s`,
+    delay: `${(i * 0.5) % 5.5}s`,
+    size: 15 + (i % 5) * 4,
+    opacity: 0.45 + (i % 4) * 0.15,
     rotate: (i * 55) % 360,
-    swayAmount: (i % 2 === 0 ? 1 : -1) * (40 + (i % 4) * 15),
+    swayAmount: (i % 2 === 0 ? 1 : -1) * (45 + (i % 4) * 15),
     colorScheme: i % 3 === 0 ? 'crimson' : (i % 3 === 1 ? 'rose' : 'blush')
   }));
 
   return (
-    <div className={`fixed inset-0 pointer-events-none overflow-hidden select-none ${className}`}>
+    <div className={`${isAbsolute ? 'absolute' : 'fixed'} inset-0 pointer-events-none overflow-hidden select-none ${className}`}>
       <style>{`
         @keyframes sakura-fall-sway {
           0% {
-            transform: translate3d(0, -30px, 0) rotate(0deg) scale(0.75);
+            transform: translate3d(0, -35px, 0) rotate(0deg) scale(0.75);
             opacity: 0;
           }
           10% {
@@ -34,19 +35,19 @@ export const FallingSakuraPetals: React.FC<{ count?: number; className?: string 
             opacity: var(--sakura-opacity);
           }
           100% {
-            transform: translate3d(var(--sakura-sway), 108vh, 0) rotate(380deg) scale(1.05);
+            transform: translate3d(var(--sakura-sway), 110vh, 0) rotate(380deg) scale(1.08);
             opacity: 0;
           }
         }
         @keyframes sakura-shimmer {
-          0%, 100% { opacity: 0.2; transform: scale(0.8); }
-          50% { opacity: 0.85; transform: scale(1.2); }
+          0%, 100% { opacity: 0.25; transform: scale(0.8); }
+          50% { opacity: 0.9; transform: scale(1.25); }
         }
       `}</style>
 
       {/* Falling Sakura Petals */}
       {petals.map((p) => {
-        const gradientId = `sakura_grad_${p.id}`;
+        const gradientId = `sakura_grad_${p.id}_${isAbsolute ? 'abs' : 'fix'}`;
         const fillUrl = `url(#${gradientId})`;
         
         return (
@@ -67,15 +68,15 @@ export const FallingSakuraPetals: React.FC<{ count?: number; className?: string 
               height={p.size * 1.25} 
               viewBox="0 0 30 36" 
               style={{ transform: `rotate(${p.rotate}deg)` }}
-              className="drop-shadow-[0_2px_6px_rgba(216,48,77,0.35)]"
+              className="drop-shadow-[0_2px_8px_rgba(224,49,84,0.4)]"
             >
               <defs>
                 <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
                   {p.colorScheme === 'crimson' ? (
                     <>
-                      <stop offset="0%" stopColor="#E63956" />
-                      <stop offset="60%" stopColor="#D82042" />
-                      <stop offset="100%" stopColor="#9E1932" />
+                      <stop offset="0%" stopColor="#FF4D6D" />
+                      <stop offset="55%" stopColor="#E01E4B" />
+                      <stop offset="100%" stopColor="#9B0B2E" />
                     </>
                   ) : p.colorScheme === 'rose' ? (
                     <>
@@ -101,7 +102,7 @@ export const FallingSakuraPetals: React.FC<{ count?: number; className?: string 
               {/* Petal Center Crease Accent */}
               <path
                 d="M15 7 Q15 20 15 28"
-                stroke="rgba(255,255,255,0.45)"
+                stroke="rgba(255,255,255,0.5)"
                 strokeWidth="1.2"
                 strokeLinecap="round"
                 fill="none"
@@ -112,18 +113,18 @@ export const FallingSakuraPetals: React.FC<{ count?: number; className?: string 
       })}
 
       {/* Floating Golden Stardust Specks */}
-      {Array.from({ length: 8 }, (_, i) => (
+      {Array.from({ length: 10 }, (_, i) => (
         <div
           key={`dust_${i}`}
           className="absolute rounded-full bg-[#FFDF80] pointer-events-none"
           style={{
-            top: `${12 + (i * 11) % 80}%`,
-            left: `${8 + (i * 13) % 85}%`,
+            top: `${8 + (i * 9.5) % 85}%`,
+            left: `${6 + (i * 11) % 88}%`,
             width: `${3 + (i % 3)}px`,
             height: `${3 + (i % 3)}px`,
-            boxShadow: '0 0 8px rgba(255,223,128,0.9), 0 0 15px rgba(212,175,55,0.6)',
-            animation: `sakura-shimmer ${2.5 + (i % 3)}s ease-in-out infinite`,
-            animationDelay: `${i * 0.4}s`
+            boxShadow: '0 0 10px rgba(255,223,128,0.95), 0 0 18px rgba(212,175,55,0.7)',
+            animation: `sakura-shimmer ${2.2 + (i % 3)}s ease-in-out infinite`,
+            animationDelay: `${i * 0.35}s`
           }}
         />
       ))}
