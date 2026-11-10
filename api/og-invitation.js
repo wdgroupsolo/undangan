@@ -151,3 +151,4 @@ export default function handler(req, res) {
   res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400');
   res.status(200).send(html);
 }
+

@@ -230,7 +230,7 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
         {/* =========================================================================
             LEFT PANEL (DESKTOP ONLY: Fixed 48% / 50% Panel with Photo & Guest Name)
             ========================================================================= */}
-        <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-10 xl:p-14 overflow-hidden select-none bg-[#38141D] text-white">
+        <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between items-center p-8 xl:p-12 overflow-hidden select-none bg-[#38141D] text-white">
           
           {/* Panoramic Watercolor Background with Slow Ken-Burns */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -244,98 +244,109 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
             <div className="absolute inset-0 bg-radial from-transparent via-[#2B0B13]/40 to-[#2B0B13]/90" />
           </div>
 
-          {/* Gilded Inner Arch Frame Line */}
-          <div className="absolute inset-6 xl:inset-8 rounded-[36px] border border-[#D4AF37]/45 pointer-events-none z-10" />
+          {/* Gilded Inner Arch Frame Line - Symmetrical Royal Border */}
+          <div className="absolute inset-5 xl:inset-7 rounded-[32px] border border-[#D4AF37]/45 pointer-events-none z-10" />
 
-          {/* TOP: Royal Malay Heritage Badge */}
-          <div className="relative z-20 flex items-center justify-between">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#421420]/80 backdrop-blur-md border border-[#D4AF37]/60 shadow-xl text-[#F9E5BA] text-xs font-serif uppercase tracking-[0.25em]">
-              <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
-              <span>Walimatulurus • Dirgahayu Cinta</span>
+          {/* Symmetrical Central Content Column (100% Horizontal & Vertical Balance) */}
+          <div className="relative z-20 w-full max-w-[440px] xl:max-w-[480px] mx-auto flex flex-col justify-between h-full py-1">
+
+            {/* TOP: Symmetrical Royal Badges (Left & Right Balanced) */}
+            <div className="w-full flex items-center justify-between">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#421420]/85 backdrop-blur-md border border-[#D4AF37]/60 shadow-lg text-[#F9E5BA] text-[10.5px] font-serif uppercase tracking-[0.2em]">
+                <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <span>Walimatulurus</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#421420]/85 backdrop-blur-md border border-[#D4AF37]/60 shadow-lg text-[#F9E5BA] text-[10.5px] font-serif uppercase tracking-[0.2em]">
+                <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <span>Kuala Lumpur Heritage</span>
+              </div>
             </div>
-            <span className="text-[#F3D3DA] text-xs font-serif italic tracking-wider">Kuala Lumpur Heritage</span>
-          </div>
 
-          {/* CENTER: Couple Showcase & Recipient Guest Card (Matches User Request: "sebelah kiri foto dan nama tamu/tamu undangan") */}
-          <div className="relative z-20 my-auto max-w-lg w-full flex flex-col items-center text-center">
-            
-            {/* Arched Couple Photo Frame with Royal Gold Songket Border */}
-            <div className="relative mx-auto w-40 h-52 xl:w-48 xl:h-60 rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#D4AF37] shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-1 bg-gradient-to-b from-[#FFF2D6] via-[#D4AF37] to-[#8C6D2B] mb-3 group">
-              <div className="w-full h-full rounded-t-full rounded-b-xl overflow-hidden relative">
-                <img 
-                  src="/themes/kuala-lumpur-heritage/couple-portrait.jpg" 
-                  alt={`${groomName} & ${brideName}`}
-                  className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#2B0B13]/70 via-transparent to-transparent pointer-events-none" />
-                {/* Shimmer light sweep */}
-                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-t-full rounded-b-xl">
-                  <div 
-                    className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none"
-                    style={{ animation: 'kl-shimmer-sweep 5s ease-in-out infinite' }}
+            {/* CENTER: Couple Showcase & Recipient Guest Card */}
+            <div className="my-auto w-full flex flex-col items-center text-center py-4">
+              
+              {/* Arched Couple Photo Frame with Royal Gold Songket Border */}
+              <div className="relative mx-auto w-40 h-52 xl:w-48 xl:h-60 rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#D4AF37] shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-1 bg-gradient-to-b from-[#FFF2D6] via-[#D4AF37] to-[#8C6D2B] mb-3 group">
+                <div className="w-full h-full rounded-t-full rounded-b-xl overflow-hidden relative">
+                  <img 
+                    src="/themes/kuala-lumpur-heritage/couple-portrait.jpg" 
+                    alt={`${groomName} & ${brideName}`}
+                    className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2B0B13]/70 via-transparent to-transparent pointer-events-none" />
+                  {/* Shimmer light sweep */}
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-t-full rounded-b-xl">
+                    <div 
+                      className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none"
+                      style={{ animation: 'kl-shimmer-sweep 5s ease-in-out infinite' }}
+                    />
+                  </div>
                 </div>
               </div>
+
+              <div className="flex items-center justify-center gap-2 mb-1 text-[#E8B5BE]">
+                <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] animate-pulse" />
+                <p className="text-[11px] tracking-[0.3em] uppercase font-serif font-semibold">
+                  THE WEDDING CELEBRATION OF
+                </p>
+                <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] animate-pulse" />
+              </div>
+
+              {/* Couple Names */}
+              <h1 className="font-serif text-3xl xl:text-4xl 2xl:text-5xl font-normal leading-[1.08] tracking-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF2F5] to-[#F5CCD5] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
+                {groomName} <span className="text-xl xl:text-2xl text-[#D4AF37] font-light italic font-serif">&amp;</span> {brideName}
+              </h1>
+
+              <div className="w-24 h-0.5 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-3" />
+
+              {/* RECIPIENT GUEST CARD */}
+              <div className="w-full relative p-3.5 xl:p-4 rounded-2xl bg-gradient-to-b from-[#4A1725]/90 via-[#360F1A]/95 to-[#240810]/98 backdrop-blur-md border border-[#D4AF37]/65 shadow-[0_16px_40px_rgba(0,0,0,0.65),0_0_20px_rgba(212,175,55,0.25)] mb-3">
+                <div className="absolute inset-1.5 rounded-xl border border-[#D4AF37]/25 pointer-events-none" />
+                
+                <p className="text-[10px] uppercase tracking-[0.25em] text-[#D4AF37] font-serif font-semibold mb-0.5 text-center">
+                  Kepada Yth. Bapak/Ibu/Saudara/i :
+                </p>
+                
+                <h2 className="text-lg xl:text-xl font-serif font-bold text-white tracking-wide text-center drop-shadow-sm my-0.5">
+                  {guestName}
+                </h2>
+                
+                <p className="text-[9.5px] tracking-wider text-[#F0C2CC] text-center font-sans mt-0.5">
+                  Merupakan satu kehormatan atas kehadiran &amp; doa restu Anda
+                </p>
+              </div>
+
+              {/* Live Countdown Timer on Left Desktop Panel - Symmetrical Warm Gilded Styling */}
+              <div className="w-full grid grid-cols-4 gap-2.5 text-center">
+                <div className="p-2.5 rounded-xl bg-gradient-to-b from-[#421420]/75 to-[#2B0B13]/85 backdrop-blur-md border border-[#D4AF37]/40 shadow-md">
+                  <span className="block text-xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF2D6] to-[#F9E5BA]">{timeLeft.days}</span>
+                  <span className="text-[9.5px] uppercase tracking-widest text-[#E8BAC5] font-sans">Hari</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-gradient-to-b from-[#421420]/75 to-[#2B0B13]/85 backdrop-blur-md border border-[#D4AF37]/40 shadow-md">
+                  <span className="block text-xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF2D6] to-[#F9E5BA]">{timeLeft.hours}</span>
+                  <span className="text-[9.5px] uppercase tracking-widest text-[#E8BAC5] font-sans">Jam</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-gradient-to-b from-[#421420]/75 to-[#2B0B13]/85 backdrop-blur-md border border-[#D4AF37]/40 shadow-md">
+                  <span className="block text-xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF2D6] to-[#F9E5BA]">{timeLeft.minutes}</span>
+                  <span className="text-[9.5px] uppercase tracking-widest text-[#E8BAC5] font-sans">Minit</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-gradient-to-b from-[#421420]/75 to-[#2B0B13]/85 backdrop-blur-md border border-[#D4AF37]/40 shadow-md">
+                  <span className="block text-xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF2D6] to-[#F9E5BA]">{timeLeft.seconds}</span>
+                  <span className="text-[9.5px] uppercase tracking-widest text-[#E8BAC5] font-sans">Saat</span>
+                </div>
+              </div>
+
             </div>
 
-            <div className="flex items-center justify-center gap-2 mb-1 text-[#E8B5BE]">
-              <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] animate-pulse" />
-              <p className="text-[11px] tracking-[0.3em] uppercase font-serif font-semibold">
-                THE WEDDING CELEBRATION OF
-              </p>
-              <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] animate-pulse" />
+            {/* BOTTOM: Venue Info on Desktop (Matches exact column width & horizontal balance) */}
+            <div className="w-full flex items-center justify-between text-xs text-[#E8BAC5] border-t border-[#D4AF37]/35 pt-4">
+              <span className="font-serif tracking-wide text-[#F9E5BA] flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-[#D4AF37]" />
+                Dewan Perdana Felda
+              </span>
+              <span className="font-sans text-[#F3D3DA]">Kuala Lumpur, Malaysia</span>
             </div>
 
-            {/* Couple Names */}
-            <h1 className="font-serif text-3xl xl:text-4xl 2xl:text-5xl font-normal leading-[1.08] tracking-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF2F5] to-[#F5CCD5] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
-              {groomName} <span className="text-xl xl:text-2xl text-[#D4AF37] font-light italic font-serif">&amp;</span> {brideName}
-            </h1>
-
-            <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-3" />
-
-            {/* RECIPIENT GUEST CARD (Sesuai Permintaan User: "sebelah kiri foto dan nama tamu/tamu undangan") */}
-            <div className="w-full relative p-3.5 xl:p-4 rounded-2xl bg-gradient-to-b from-[#4A1725]/90 via-[#360F1A]/95 to-[#240810]/98 backdrop-blur-md border border-[#D4AF37]/65 shadow-[0_16px_40px_rgba(0,0,0,0.65),0_0_20px_rgba(212,175,55,0.25)] mb-3">
-              <div className="absolute inset-1.5 rounded-xl border border-[#D4AF37]/25 pointer-events-none" />
-              
-              <p className="text-[10px] uppercase tracking-[0.25em] text-[#D4AF37] font-serif font-semibold mb-0.5 text-center">
-                Kepada Yth. Bapak/Ibu/Saudara/i :
-              </p>
-              
-              <h2 className="text-lg xl:text-xl font-serif font-bold text-white tracking-wide text-center drop-shadow-sm my-0.5">
-                {guestName}
-              </h2>
-              
-              <p className="text-[9.5px] tracking-wider text-[#F0C2CC] text-center font-sans mt-0.5">
-                Merupakan satu kehormatan atas kehadiran &amp; doa restu Anda
-              </p>
-            </div>
-
-            {/* Live Countdown Timer on Left Desktop Panel */}
-            <div className="w-full grid grid-cols-4 gap-2 text-center">
-              <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15">
-                <span className="block text-lg font-serif font-bold text-[#F9E5BA]">{timeLeft.days}</span>
-                <span className="text-[9px] uppercase tracking-wider text-[#E8BAC5]">Hari</span>
-              </div>
-              <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15">
-                <span className="block text-lg font-serif font-bold text-[#F9E5BA]">{timeLeft.hours}</span>
-                <span className="text-[9px] uppercase tracking-wider text-[#E8BAC5]">Jam</span>
-              </div>
-              <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15">
-                <span className="block text-lg font-serif font-bold text-[#F9E5BA]">{timeLeft.minutes}</span>
-                <span className="text-[9px] uppercase tracking-wider text-[#E8BAC5]">Minit</span>
-              </div>
-              <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15">
-                <span className="block text-lg font-serif font-bold text-[#F9E5BA]">{timeLeft.seconds}</span>
-                <span className="text-[9px] uppercase tracking-wider text-[#E8BAC5]">Saat</span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* BOTTOM: Venue Info on Desktop */}
-          <div className="relative z-20 flex items-center justify-between text-xs text-[#E8BAC5] border-t border-white/15 pt-5">
-            <span className="font-serif tracking-wide text-[#F9E5BA]">Dewan Perdana Felda</span>
-            <span className="font-sans">Kuala Lumpur, Malaysia</span>
           </div>
 
         </aside>
