@@ -3792,7 +3792,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
         {/* ==================================================== */}
         {/* 13. CLOSING (TERIMA KASIH)                           */}
         {/* ==================================================== */}
-        <section id="closing" className="relative w-full min-h-[100dvh] py-8 sm:py-10 px-4 flex flex-col justify-between items-center text-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none pb-6">
+        <section id="closing" className="relative w-full min-h-[100dvh] pt-8 sm:pt-10 pb-0 px-0 flex flex-col justify-between items-center text-center overflow-hidden bg-[#0c0806] border-t border-amber-500/20 select-none">
           {/* Background Joglo Pendopo with Radial Vignette */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img 
@@ -3814,107 +3814,110 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
             <img src="/themes/royal-floral-corner-luxury.png" alt="" className="w-full h-auto object-contain -scale-x-100" />
           </div>
 
-          {/* Top Header Above Baroque Frame (Agak besar, rapi, premium, keren) */}
-          <div className="relative z-20 pt-2 sm:pt-4 px-2 flex flex-col items-center text-center max-w-[340px] sm:max-w-[380px] mx-auto space-y-1 mb-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#d4af37]/20 via-[#ffd778]/30 to-[#d4af37]/20 border border-[#ffd778]/50 shadow-[0_2px_12px_rgba(0,0,0,0.6)] mb-1">
-              <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
-              <span className="text-[10px] font-serif tracking-[0.3em] text-[#FFF6D8] uppercase font-bold drop-shadow-sm">
-                UNGKAPAN TERIMA KASIH
-              </span>
-              <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+          {/* Main Closing Content (Header & Baroque Frame) */}
+          <div className="relative z-10 w-full flex-1 flex flex-col justify-center items-center px-4 my-auto">
+            {/* Top Header Above Baroque Frame (Agak besar, rapi, premium, keren) */}
+            <div className="relative z-20 pt-2 sm:pt-4 px-2 flex flex-col items-center text-center max-w-[340px] sm:max-w-[380px] mx-auto space-y-1 mb-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#d4af37]/20 via-[#ffd778]/30 to-[#d4af37]/20 border border-[#ffd778]/50 shadow-[0_2px_12px_rgba(0,0,0,0.6)] mb-1">
+                <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+                <span className="text-[10px] font-serif tracking-[0.3em] text-[#FFF6D8] uppercase font-bold drop-shadow-sm">
+                  UNGKAPAN TERIMA KASIH
+                </span>
+                <span className="text-[#ffd778] text-[9px] animate-pulse">✦</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-serif text-center tracking-wide leading-tight">
+                <span 
+                  className="italic text-3xl sm:text-4xl text-[#FFF7DC] drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Matur
+                </span>{' '}
+                <span className="font-cinzel font-extrabold tracking-[0.18em] uppercase text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF2] via-[#FCE38A] via-[#ECC460] to-[#C99126] drop-shadow-[0_4px_18px_rgba(212,175,55,0.6)]">
+                  Nuwun
+                </span>
+              </h2>
+
+              <div className="flex items-center justify-center gap-2.5 my-1.5 w-full max-w-[200px] mx-auto">
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#ffd778]/80 to-[#d4af37]" />
+                <div className="w-1.5 h-1.5 rotate-45 bg-[#ffd778] shadow-[0_0_8px_#ffd778]" />
+                <span className="text-[#ffd778] text-[11px] filter drop-shadow-[0_0_6px_rgba(255,215,120,0.8)]">❖</span>
+                <div className="w-1.5 h-1.5 rotate-45 bg-[#ffd778] shadow-[0_0_8px_#ffd778]" />
+                <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#ffd778]/80 to-[#d4af37]" />
+              </div>
+
+              <p className="text-[12px] sm:text-[13px] text-[#efe5d5]/95 font-serif italic text-center leading-relaxed drop-shadow-sm">
+                &ldquo;{invitation?.settings?.closing_greeting || "Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran serta doa restu Bapak/Ibu/Saudara/i sekalian."}&rdquo;
+              </p>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-serif text-center tracking-wide leading-tight">
-              <span 
-                className="italic text-3xl sm:text-4xl text-[#FFF7DC] drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Matur
-              </span>{' '}
-              <span className="font-cinzel font-extrabold tracking-[0.18em] uppercase text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF2] via-[#FCE38A] via-[#ECC460] to-[#C99126] drop-shadow-[0_4px_18px_rgba(212,175,55,0.6)]">
-                Nuwun
-              </span>
-            </h2>
+            {/* Center 3D Baroque Frame with Couple Photo */}
+            <div className="relative z-10 w-[78%] max-w-[310px] sm:max-w-[340px] aspect-[896/1200] max-h-[50vh] sm:max-h-[54vh] mx-auto flex flex-col items-center justify-center my-auto">
+              {/* Foto Mempelai dalam Kubah Lengkung */}
+              <div className="absolute top-[22%] left-[17%] right-[17%] bottom-[14%] rounded-t-[90px] overflow-hidden z-10 bg-[#160f09] shadow-inner">
+                <img 
+                  src={couplePhoto} 
+                  alt={`${groomName} & ${brideName}`} 
+                  className="w-full h-full object-cover object-top filter brightness-[1.02] contrast-[1.03]"
+                />
+              </div>
 
-            <div className="flex items-center justify-center gap-2.5 my-1.5 w-full max-w-[200px] mx-auto">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#ffd778]/80 to-[#d4af37]" />
-              <div className="w-1.5 h-1.5 rotate-45 bg-[#ffd778] shadow-[0_0_8px_#ffd778]" />
-              <span className="text-[#ffd778] text-[11px] filter drop-shadow-[0_0_6px_rgba(255,215,120,0.8)]">❖</span>
-              <div className="w-1.5 h-1.5 rotate-45 bg-[#ffd778] shadow-[0_0_8px_#ffd778]" />
-              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#ffd778]/80 to-[#d4af37]" />
-            </div>
-
-            <p className="text-[12px] sm:text-[13px] text-[#efe5d5]/95 font-serif italic text-center leading-relaxed drop-shadow-sm">
-              &ldquo;{invitation?.settings?.closing_greeting || "Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran serta doa restu Bapak/Ibu/Saudara/i sekalian."}&rdquo;
-            </p>
-          </div>
-
-          {/* Center 3D Baroque Frame with Couple Photo */}
-          <div className="relative z-10 w-[78%] max-w-[310px] sm:max-w-[340px] aspect-[896/1200] max-h-[52vh] sm:max-h-[55vh] mx-auto flex flex-col items-center justify-center my-auto">
-            {/* Foto Mempelai dalam Kubah Lengkung */}
-            <div className="absolute top-[22%] left-[17%] right-[17%] bottom-[14%] rounded-t-[90px] overflow-hidden z-10 bg-[#160f09] shadow-inner">
+              {/* 3D Carved Gold Baroque Arch Frame */}
               <img 
-                src={couplePhoto} 
-                alt={`${groomName} & ${brideName}`} 
-                className="w-full h-full object-cover object-top filter brightness-[1.02] contrast-[1.03]"
+                src="/themes/royal-baroque-frame-luxury.png" 
+                alt="Royal Baroque Gold Arch Frame" 
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none z-20 filter drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)]" 
+              />
+
+              {/* Plaque Terima Kasih & Nama Mempelai */}
+              <div className="absolute bottom-[8%] left-[10%] right-[10%] py-2 sm:py-2.5 px-3 rounded-lg bg-gradient-to-b from-[#25180c]/95 via-[#180f05]/98 to-[#0b0703] border border-[#d4af37]/75 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30">
+                <p 
+                  className="font-serif italic text-xs sm:text-sm text-[#F3DEB0] mb-0.5 drop-shadow-sm"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  Kami yang Berbahagia
+                </p>
+                <h3 
+                  className="font-serif text-sm sm:text-base font-bold tracking-[0.18em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] drop-shadow-sm"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  {invitation?.settings?.closing_couple_name || `${groomName} & ${brideName}`}
+                </h3>
+                <p className="text-[7.5px] sm:text-[8px] text-stone-300/80 font-serif tracking-widest uppercase mt-0.5">
+                  Beserta Keluarga Besar
+                </p>
+              </div>
+            </div>
+
+            {/* Wayang Flanks - Flanking the Couple's Baroque Frame & Closing Plaque */}
+            <div className="absolute bottom-2 sm:bottom-4 left-1 sm:left-3 z-15 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.9)] opacity-85">
+              <img 
+                src="/themes/royal-kamajaya-luxury.png" 
+                alt="Wayang Raden Kamajaya" 
+                className="w-18 sm:w-24 h-auto object-contain" 
               />
             </div>
-
-            {/* 3D Carved Gold Baroque Arch Frame */}
-            <img 
-              src="/themes/royal-baroque-frame-luxury.png" 
-              alt="Royal Baroque Gold Arch Frame" 
-              className="absolute inset-0 w-full h-full object-contain pointer-events-none z-20 filter drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)]" 
-            />
-
-            {/* Plaque Terima Kasih & Nama Mempelai */}
-            <div className="absolute bottom-[8%] left-[10%] right-[10%] py-2 sm:py-2.5 px-3 rounded-lg bg-gradient-to-b from-[#25180c]/95 via-[#180f05]/98 to-[#0b0703] border border-[#d4af37]/75 backdrop-blur-md text-center shadow-[0_8px_25px_rgba(0,0,0,0.95)] z-30">
-              <p 
-                className="font-serif italic text-xs sm:text-sm text-[#F3DEB0] mb-0.5 drop-shadow-sm"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Kami yang Berbahagia
-              </p>
-              <h3 
-                className="font-serif text-sm sm:text-base font-bold tracking-[0.18em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C2] via-[#ECC460] to-[#FFEAA0] drop-shadow-sm"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                {invitation?.settings?.closing_couple_name || `${groomName} & ${brideName}`}
-              </h3>
-              <p className="text-[7.5px] sm:text-[8px] text-stone-300/80 font-serif tracking-widest uppercase mt-0.5">
-                Beserta Keluarga Besar
-              </p>
+            <div className="absolute bottom-2 sm:bottom-4 right-1 sm:right-3 z-15 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.9)] opacity-85">
+              <img 
+                src="/themes/royal-kamaratih-luxury.png" 
+                alt="Wayang Dewi Kamaratih" 
+                className="w-18 sm:w-24 h-auto object-contain -scale-x-100" 
+              />
             </div>
-          </div>
-
-          {/* Wayang Flanks */}
-          <div className="absolute bottom-6 left-2 sm:left-4 z-15 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.9)] opacity-85">
-            <img 
-              src="/themes/royal-kamajaya-luxury.png" 
-              alt="Wayang Raden Kamajaya" 
-              className="w-20 sm:w-28 h-auto object-contain" 
-            />
-          </div>
-          <div className="absolute bottom-6 right-2 sm:right-4 z-15 pointer-events-none drop-shadow-[0_8px_20px_rgba(0,0,0,0.9)] opacity-85">
-            <img 
-              src="/themes/royal-kamaratih-luxury.png" 
-              alt="Wayang Dewi Kamaratih" 
-              className="w-20 sm:w-28 h-auto object-contain -scale-x-100" 
-            />
           </div>
 
           {/* ROYAL COPYRIGHT FOOTER */}
-          <footer className="pt-4 pb-24 sm:pb-28 px-4 bg-gradient-to-b from-[#140b05] via-[#0a0502] to-[#040201] border-t border-[#d4af37]/20 text-center relative z-20 mt-4">
+          <footer className="w-full pt-3.5 pb-5 sm:pb-6 px-4 bg-gradient-to-b from-[#140b05]/95 via-[#0a0502]/98 to-[#050302] border-t border-[#d4af37]/25 text-center relative z-20 mt-auto">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <div className="h-px w-6 sm:w-12 bg-gradient-to-r from-transparent to-[#d4af37]/40" />
-              <div className="w-1 h-1 rotate-45 bg-[#ffd778]/70" />
-              <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#d4af37]/40" />
+              <div className="h-px w-8 sm:w-14 bg-gradient-to-r from-transparent to-[#d4af37]/40" />
+              <div className="w-1.5 h-1.5 rotate-45 bg-[#ffd778]/80 shadow-[0_0_6px_rgba(255,215,120,0.6)]" />
+              <div className="h-px w-8 sm:w-14 bg-gradient-to-l from-transparent to-[#d4af37]/40" />
             </div>
             <a 
               href="https://www.instagram.com/wdgroupcompany" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-[10px] sm:text-[11px] text-white/40 hover:text-[#ffd778] tracking-wider font-light transition-colors inline-block cursor-pointer"
+              className="text-[10px] sm:text-[11px] text-white/50 hover:text-[#ffd778] tracking-wider font-light transition-colors inline-block cursor-pointer"
             >
               &copy; {new Date().getFullYear()} PT WD Group Solo • All Rights Reserved
             </a>
