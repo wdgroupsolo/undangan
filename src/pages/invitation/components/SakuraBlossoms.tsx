@@ -145,52 +145,50 @@ const SakuraFlower: React.FC<{ size?: number; rotation?: number; className?: str
       height={size} 
       viewBox="0 0 100 100" 
       style={{ transform: `rotate(${rotation}deg)` }}
-      className={`drop-shadow-[0_4px_10px_rgba(158,25,50,0.35)] ${className}`}
+      className={`drop-shadow-[0_3px_8px_rgba(180,20,60,0.45)] filter ${className}`}
     >
       <defs>
-        <radialGradient id="sakuraPetalGrad" cx="50%" cy="30%" r="70%">
-          <stop offset="0%" stopColor="#FFF5F7" />
-          <stop offset="30%" stopColor="#FF85A1" />
-          <stop offset="75%" stopColor="#E63956" />
-          <stop offset="100%" stopColor="#A81832" />
+        <radialGradient id="sakuraVibrantGrad" cx="50%" cy="40%" r="65%">
+          <stop offset="0%" stopColor="#FFF0F5" />
+          <stop offset="35%" stopColor="#FF6B8B" />
+          <stop offset="75%" stopColor="#E61E50" />
+          <stop offset="100%" stopColor="#B80D38" />
         </radialGradient>
-        <radialGradient id="sakuraCenterGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFE066" />
-          <stop offset="45%" stopColor="#F59E0B" />
-          <stop offset="100%" stopColor="#B45309" />
+        <radialGradient id="sakuraGoldPistil" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFF275" />
+          <stop offset="60%" stopColor="#FFB703" />
+          <stop offset="100%" stopColor="#FB8500" />
         </radialGradient>
       </defs>
 
-      {/* 5 Petals arranged radially */}
+      {/* 5 Distinct Rounded Petals with Sakura Notch */}
       {[0, 72, 144, 216, 288].map((angle, idx) => (
         <g key={idx} transform={`rotate(${angle} 50 50)`}>
-          {/* Main Petal with Characteristic Sakura Tip Notch */}
           <path
-            d="M50 50 C40 32, 33 16, 43 7 C47 4, 50 8, 50 8 C50 8, 53 4, 57 7 C67 16, 60 32, 50 50 Z"
-            fill="url(#sakuraPetalGrad)"
-            stroke="#9E1932"
+            d="M50 50 C36 32, 28 14, 41 5 C46 2, 50 7, 50 7 C50 7, 54 2, 59 5 C72 14, 64 32, 50 50 Z"
+            fill="url(#sakuraVibrantGrad)"
+            stroke="#94082B"
             strokeWidth="0.8"
-            opacity="0.96"
+            opacity="0.98"
           />
-          {/* Inner Petal Vein Accent */}
           <path
-            d="M50 50 Q50 30 50 16"
-            stroke="rgba(255, 235, 240, 0.6)"
+            d="M50 48 Q50 28 50 14"
+            stroke="rgba(255, 240, 245, 0.7)"
             strokeWidth="1.2"
             strokeLinecap="round"
           />
         </g>
       ))}
 
-      {/* Golden Pistil & Stamens Center */}
-      <circle cx="50" cy="50" r="11" fill="url(#sakuraCenterGrad)" />
+      {/* Golden Pistil Core & Stamens */}
+      <circle cx="50" cy="50" r="11" fill="url(#sakuraGoldPistil)" stroke="#D4AF37" strokeWidth="0.8" />
       {[0, 45, 90, 135, 180, 225, 270, 315].map((stamenAngle, sIdx) => (
         <g key={`stamen_${sIdx}`} transform={`rotate(${stamenAngle} 50 50)`}>
-          <line x1="50" y1="50" x2="50" y2="40" stroke="#FFFBEB" strokeWidth="1.2" />
-          <circle cx="50" cy="39" r="1.6" fill="#FBBF24" />
+          <line x1="50" y1="50" x2="50" y2="39" stroke="#FFFDF0" strokeWidth="1.2" />
+          <circle cx="50" cy="38" r="1.8" fill="#FFB703" stroke="#D4AF37" strokeWidth="0.5" />
         </g>
       ))}
-      <circle cx="50" cy="50" r="4.5" fill="#92400E" opacity="0.8" />
+      <circle cx="50" cy="50" r="4.5" fill="#D97706" opacity="0.9" />
     </svg>
   );
 };
@@ -212,8 +210,8 @@ const SakuraLeaves: React.FC<{ size?: number; rotation?: number; className?: str
       className={`drop-shadow-sm ${className}`}
     >
       <defs>
-        <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#40916C" />
+        <linearGradient id="sakuraLeafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#52B788" />
           <stop offset="50%" stopColor="#2D6A4F" />
           <stop offset="100%" stopColor="#1B4332" />
         </linearGradient>
@@ -221,18 +219,17 @@ const SakuraLeaves: React.FC<{ size?: number; rotation?: number; className?: str
       {/* Primary Leaf */}
       <path
         d="M20 80 C25 50, 45 25, 80 20 C75 55, 55 75, 20 80 Z"
-        fill="url(#leafGrad)"
+        fill="url(#sakuraLeafGrad)"
         stroke="#1B4332"
         strokeWidth="0.8"
         opacity="0.95"
       />
-      {/* Primary Vein */}
-      <path d="M20 80 Q48 52 80 20" stroke="#74C69D" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M20 80 Q48 52 80 20" stroke="#95D5B2" strokeWidth="1.2" strokeLinecap="round" />
       
       {/* Secondary Flanking Leaf */}
       <path
         d="M35 70 C35 48, 50 32, 75 40 C65 62, 50 72, 35 70 Z"
-        fill="url(#leafGrad)"
+        fill="url(#sakuraLeafGrad)"
         opacity="0.85"
       />
     </svg>
@@ -241,113 +238,115 @@ const SakuraLeaves: React.FC<{ size?: number; rotation?: number; className?: str
 
 // =========================================================================
 // 4. SAKURA FRAME COMPONENT (Kanan, Kiri, Atas, Bawah Bunga Sakura)
+// Matches User's Exact Annotation Circles in media_1794296870582_014bcbfd.jpg
 // =========================================================================
 export const SakuraCoverFrame: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (
-    <div className={`absolute inset-0 pointer-events-none overflow-hidden select-none z-25 ${className}`}>
+    <div className={`absolute inset-0 pointer-events-none select-none z-30 ${className}`}>
       
-      {/* ================= ATAS KIRI (TOP LEFT) ================= */}
-      <div className="absolute -top-3 -left-3 sm:-top-2 sm:-left-2 flex items-center justify-center">
+      {/* ================= 1. ATAS KIRI (TOP LEFT) ================= */}
+      <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center justify-center">
         {/* Leaves behind */}
-        <div className="absolute top-1 left-2">
-          <SakuraLeaves size={75} rotation={-15} />
+        <div className="absolute top-0 left-1 pointer-events-none">
+          <SakuraLeaves size={62} rotation={-10} />
         </div>
-        {/* Main Corner Blossom */}
-        <div className="relative z-10 animate-pulse" style={{ animationDuration: '4s' }}>
-          <SakuraFlower size={68} rotation={12} />
-        </div>
-        {/* Secondary Smaller Blossom */}
-        <div className="absolute top-9 left-11 z-15">
-          <SakuraFlower size={42} rotation={45} />
-        </div>
-        {/* Little Bud */}
-        <div className="absolute top-1 left-16 z-5 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-[#FFF0F3]" />
-      </div>
-
-      {/* ================= ATAS KANAN (TOP RIGHT) ================= */}
-      <div className="absolute -top-3 -right-3 sm:-top-2 sm:-right-2 flex items-center justify-center scale-x-[-1]">
-        {/* Leaves behind */}
-        <div className="absolute top-1 left-2">
-          <SakuraLeaves size={75} rotation={-15} />
-        </div>
-        {/* Main Corner Blossom */}
+        {/* Main Blooming Sakura Flower */}
         <div className="relative z-10 animate-pulse" style={{ animationDuration: '4.5s' }}>
-          <SakuraFlower size={68} rotation={12} />
+          <SakuraFlower size={56} rotation={15} />
         </div>
-        {/* Secondary Smaller Blossom */}
-        <div className="absolute top-9 left-11 z-15">
-          <SakuraFlower size={42} rotation={45} />
+        {/* Secondary Blooming Sakura Flower */}
+        <div className="absolute top-7 left-8 z-15">
+          <SakuraFlower size={38} rotation={50} />
         </div>
         {/* Little Bud */}
-        <div className="absolute top-1 left-16 z-5 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-[#FFF0F3]" />
+        <div className="absolute top-1 left-12 z-5 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF6B8B] to-[#C9184A] border border-[#FFF0F3] shadow-xs" />
       </div>
 
-      {/* ================= KIRI TENGAH (LEFT MIDDLE) ================= */}
-      <div className="absolute top-[48%] -left-3 sm:-left-2 -translate-y-1/2 flex items-center justify-center">
-        <div className="absolute -top-3 left-1">
-          <SakuraLeaves size={60} rotation={25} />
-        </div>
-        <div className="relative z-10">
-          <SakuraFlower size={52} rotation={-20} />
-        </div>
-        <div className="absolute -bottom-5 left-4 z-15">
-          <SakuraFlower size={34} rotation={35} />
-        </div>
-      </div>
-
-      {/* ================= KANAN TENGAH (RIGHT MIDDLE) ================= */}
-      <div className="absolute top-[48%] -right-3 sm:-right-2 -translate-y-1/2 flex items-center justify-center scale-x-[-1]">
-        <div className="absolute -top-3 left-1">
-          <SakuraLeaves size={60} rotation={25} />
-        </div>
-        <div className="relative z-10">
-          <SakuraFlower size={52} rotation={-20} />
-        </div>
-        <div className="absolute -bottom-5 left-4 z-15">
-          <SakuraFlower size={34} rotation={35} />
-        </div>
-      </div>
-
-      {/* ================= BAWAH KIRI (BOTTOM LEFT) ================= */}
-      <div className="absolute -bottom-4 -left-4 sm:-bottom-3 sm:-left-3 flex items-center justify-center">
+      {/* ================= 2. ATAS KANAN (TOP RIGHT) ================= */}
+      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex items-center justify-center scale-x-[-1]">
         {/* Leaves behind */}
-        <div className="absolute bottom-2 left-3">
-          <SakuraLeaves size={85} rotation={75} />
+        <div className="absolute top-0 left-1 pointer-events-none">
+          <SakuraLeaves size={62} rotation={-10} />
+        </div>
+        {/* Main Blooming Sakura Flower */}
+        <div className="relative z-10 animate-pulse" style={{ animationDuration: '5s' }}>
+          <SakuraFlower size={56} rotation={15} />
+        </div>
+        {/* Secondary Blooming Sakura Flower */}
+        <div className="absolute top-7 left-8 z-15">
+          <SakuraFlower size={38} rotation={50} />
+        </div>
+        {/* Little Bud */}
+        <div className="absolute top-1 left-12 z-5 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF6B8B] to-[#C9184A] border border-[#FFF0F3] shadow-xs" />
+      </div>
+
+      {/* ================= 3. KIRI TENGAH (LEFT MIDDLE) ================= */}
+      <div className="absolute top-[52%] left-1.5 sm:left-2.5 -translate-y-1/2 flex items-center justify-center">
+        <div className="absolute -top-3 left-0 pointer-events-none">
+          <SakuraLeaves size={50} rotation={30} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={48} rotation={-20} />
+        </div>
+        <div className="absolute -bottom-5 left-3 z-15">
+          <SakuraFlower size={32} rotation={40} />
+        </div>
+      </div>
+
+      {/* ================= 4. KANAN TENGAH (RIGHT MIDDLE) ================= */}
+      <div className="absolute top-[52%] right-1.5 sm:right-2.5 -translate-y-1/2 flex items-center justify-center scale-x-[-1]">
+        <div className="absolute -top-3 left-0 pointer-events-none">
+          <SakuraLeaves size={50} rotation={30} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={48} rotation={-20} />
+        </div>
+        <div className="absolute -bottom-5 left-3 z-15">
+          <SakuraFlower size={32} rotation={40} />
+        </div>
+      </div>
+
+      {/* ================= 5. BAWAH KIRI (BOTTOM LEFT) ================= */}
+      <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 flex items-center justify-center">
+        {/* Leaves behind */}
+        <div className="absolute bottom-1 left-2 pointer-events-none">
+          <SakuraLeaves size={70} rotation={80} />
         </div>
         {/* Main Corner Blossom */}
         <div className="relative z-10">
-          <SakuraFlower size={74} rotation={-35} />
+          <SakuraFlower size={62} rotation={-30} />
         </div>
         {/* Companion Blossom */}
-        <div className="absolute bottom-11 left-9 z-15">
-          <SakuraFlower size={46} rotation={15} />
+        <div className="absolute bottom-8 left-8 z-15">
+          <SakuraFlower size={42} rotation={20} />
         </div>
-        {/* Tertiary Blossom on Bottom Edge */}
-        <div className="absolute bottom-3 left-14 z-15">
-          <SakuraFlower size={38} rotation={60} />
+        {/* Tertiary Blossom */}
+        <div className="absolute bottom-2 left-11 z-15">
+          <SakuraFlower size={34} rotation={65} />
         </div>
       </div>
 
-      {/* ================= BAWAH KANAN (BOTTOM RIGHT) ================= */}
-      <div className="absolute -bottom-4 -right-4 sm:-bottom-3 sm:-right-3 flex items-center justify-center scale-x-[-1]">
+      {/* ================= 6. BAWAH KANAN (BOTTOM RIGHT) ================= */}
+      <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 flex items-center justify-center scale-x-[-1]">
         {/* Leaves behind */}
-        <div className="absolute bottom-2 left-3">
-          <SakuraLeaves size={85} rotation={75} />
+        <div className="absolute bottom-1 left-2 pointer-events-none">
+          <SakuraLeaves size={70} rotation={80} />
         </div>
         {/* Main Corner Blossom */}
         <div className="relative z-10">
-          <SakuraFlower size={74} rotation={-35} />
+          <SakuraFlower size={62} rotation={-30} />
         </div>
         {/* Companion Blossom */}
-        <div className="absolute bottom-11 left-9 z-15">
-          <SakuraFlower size={46} rotation={15} />
+        <div className="absolute bottom-8 left-8 z-15">
+          <SakuraFlower size={42} rotation={20} />
         </div>
-        {/* Tertiary Blossom on Bottom Edge */}
-        <div className="absolute bottom-3 left-14 z-15">
-          <SakuraFlower size={38} rotation={60} />
+        {/* Tertiary Blossom */}
+        <div className="absolute bottom-2 left-11 z-15">
+          <SakuraFlower size={34} rotation={65} />
         </div>
       </div>
 
     </div>
   );
 };
+
