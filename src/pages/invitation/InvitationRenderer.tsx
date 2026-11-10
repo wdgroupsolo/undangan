@@ -22,6 +22,7 @@ import {
 } from './themes/JogloMaroonHeritageTheme';
 import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSaranganTheme';
 import { KualaLumpurHeritageTheme } from './themes/KualaLumpurHeritageTheme';
+import { FallingSakuraPetals, SakuraCoverFrame } from './components/SakuraBlossoms';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
 import { NirwanaSaranganEntrancePortal } from './components/NirwanaSaranganEntrancePortal';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
@@ -815,6 +816,9 @@ export const InvitationRenderer: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-[#FDF8F7]/85 via-[#FFF2F5]/90 to-[#FDF8F7]/95" />
             </div>
 
+            {/* Falling Sakura Petals Animation (Bunga Jatuh Berguguran) */}
+            <FallingSakuraPetals count={24} className="z-30" />
+
             {/* Centered Mobile/Portrait Cover Frame matching Screenshot 1 */}
             <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[700px] sm:max-h-[95vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-7 shadow-[0_25px_80px_rgba(180,90,110,0.3)] sm:border-[2px] sm:border-[#E8B5BE] bg-white">
               
@@ -827,6 +831,9 @@ export const InvitationRenderer: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent" />
               </div>
+
+              {/* Sakura Blossoms Frame: Kanan, Kiri, Atas, Bawah */}
+              <SakuraCoverFrame />
 
               {/* TOP: "THE WEDDING OF" */}
               <div className="relative z-20 flex flex-col items-center pt-8 sm:pt-10">
