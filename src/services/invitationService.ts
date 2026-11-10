@@ -267,13 +267,13 @@ export const INVITATION_AUDI_OVYOLA: Invitation & { theme?: any; client?: any } 
       }
     ],
     color_concept: 'Hitam & Emas (Royal Wayang Gold)',
-    music_title: 'Tiara Andini - Tulang dan Nadi',
-    music_url: '/music/landon-pigg-falling-in-love.mp3',
+    music_title: 'Tiara Andini - Tulang dan Nadi (Original Instrumental with Backing Vocals)',
+    music_url: '/music/tiara-andini-tulang-dan-nadi.mp3',
     quote: 'Apa yang menjadi takdirmu, maka akan mencari jalan untuk menemukan mu.',
     quote_source: 'Untaian Doa & Harapan',
     show_akad: true,
     show_resepsi: true,
-    show_love_story: false,
+    show_love_story: true,
     show_live_streaming: false
   },
   theme: {

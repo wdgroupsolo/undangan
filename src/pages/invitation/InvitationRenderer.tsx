@@ -90,7 +90,10 @@ export const InvitationRenderer: React.FC = () => {
   );
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
-    if (isAudiOvyolaSlug || isAgniSlug) {
+    if (isAudiOvyolaSlug) {
+      return '/music/tiara-andini-tulang-dan-nadi.mp3';
+    }
+    if (isAgniSlug) {
       return '/music/landon-pigg-falling-in-love.mp3';
     }
     switch (themeSlug) {

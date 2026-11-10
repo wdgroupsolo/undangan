@@ -173,6 +173,13 @@ export const MusicGiftStep: React.FC<{ invitationId: string }> = ({ invitationId
             >
               ☕ Landon Pigg (Falling In Love At A Coffee Shop)
             </button>
+            <button
+              type="button"
+              onClick={() => setMusicData({ music_name: 'Tiara Andini - Tulang dan Nadi (Original Instrumental with Backing Vocals)', music_url: '/music/tiara-andini-tulang-dan-nadi.mp3', autoplay: true })}
+              className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-primary-50 hover:border-primary-300 text-gray-700 transition-colors"
+            >
+              🎵 Tiara Andini (Tulang dan Nadi)
+            </button>
           </div>
         </div>
 

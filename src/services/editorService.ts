@@ -62,6 +62,15 @@ export const MUSIC_AGNI_PUTRI = {
   loop: true
 };
 
+export const MUSIC_AUDI_OVYOLA = {
+  id: '77000000-0000-0000-0000-000000000010',
+  invitation_id: 'e7000000-0000-0000-0000-000000000007',
+  music_name: 'Tiara Andini - Tulang dan Nadi (Original Instrumental with Backing Vocals)',
+  music_url: '/music/tiara-andini-tulang-dan-nadi.mp3',
+  autoplay: true,
+  loop: true
+};
+
 export const STORIES_AGNI_PUTRI: any[] = [];
 
 
@@ -523,22 +532,46 @@ export const STORIES_AUDI_OVYOLA = [
   {
     id: 'st-ao-01',
     invitation_id: 'e7000000-0000-0000-0000-000000000007',
-    title: 'Awal Bertemu',
-    date: 'Pertemuan',
+    chapter: 'BABAK I',
+    title: 'Awal Kisah',
+    date: 'Awal Pertemuan',
     photo: '/photos/audi-ovyola/gallery-07.jpg',
     photo_url: '/photos/audi-ovyola/gallery-07.jpg',
-    content: 'Sebuah perjumpaan manis yang mempertemukan dua hati untuk saling mengenal, berbagi cerita, dan melangkah bersama.',
+    content: 'Semua kisah indah selalu memiliki awalan, dan kisah kita bermula saat kita diperkenalkan oleh seseorang. Di tengah perkembangan zaman, game online menjadi alasanku untuk mengenalmu lebih dekat. Hal yang tak terduga itu mempertemukan dua hati menjadi satu.\n\nSeiring berjalannya waktu dan jarak, pertemuan pertama yang dinanti-nantikan akhirnya tiba. Di setiap obrolan kecil, tatapan singkat, canda, tawa, dan senyuman manis, tumbuh kenyamanan yang perlahan melahirkan rasa. Mungkin saat itu kita belum tahu bahwa dari pertemuan sederhana itulah sebuah perjalanan panjang dimulai.',
     sort_order: 1
   },
   {
     id: 'st-ao-02',
     invitation_id: 'e7000000-0000-0000-0000-000000000007',
-    title: 'Menuju Pelaminan',
-    date: 'Janji Suci',
-    photo: '/photos/audi-ovyola/gallery-09.jpg',
-    photo_url: '/photos/audi-ovyola/gallery-09.jpg',
-    content: 'Dengan keyakinan bahwa apa yang menjadi takdir kita akan menemukan jalannya, kami memantapkan niat suci menuju mahligai pernikahan.',
+    chapter: 'BABAK II',
+    title: 'Relationship',
+    date: 'Menjalin Kasih',
+    photo: '/photos/audi-ovyola/gallery-10.jpg',
+    photo_url: '/photos/audi-ovyola/gallery-10.jpg',
+    content: 'Meluluhkan hati tidak semudah membalikkan telapak tangan. Ada waktu dan jarak yang harus ditempuh, hingga akhirnya kecocokan Audi dan Ovyola menyatu menjadi hubungan yang indah.\n\nSejak saat itu, kami belajar bahwa cinta bukan hanya tentang berbagi, tetapi juga bertahan, menerima, memahami, memaafkan, dan tumbuh bersama, dalam keadaan susah maupun senang.',
     sort_order: 2
+  },
+  {
+    id: 'st-ao-03',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    chapter: 'BABAK III',
+    title: 'Engagement',
+    date: '29 Agustus 2026',
+    photo: '/photos/audi-ovyola/gallery-05.jpg',
+    photo_url: '/photos/audi-ovyola/gallery-05.jpg',
+    content: 'Sekian lama waktu telah kita lalui. Banyak cerita, kebahagiaan, dan kesedihan sudah kita lewati bersama.\n\nSelembar kertas putih telah kita penuhi dengan tulisan kisah cinta kita, dengan alur yang tak selalu tertata, hingga sampai pada satu makna: MENUJU HIDUP BERSAMA.\n\nPada tanggal 29 Agustus 2026, dengan mengucap Bismillahirrahmanirrahim dan restu orang tua serta keluarga, sebuah janji terucap di hadapan keluarga kita. Agar mereka tahu bahwa kisah kita bukan sekadar cerita, melainkan bukti bahwa perjalanan kita memiliki makna: MENUJU HIDUP BERSAMA.',
+    sort_order: 3
+  },
+  {
+    id: 'st-ao-04',
+    invitation_id: 'e7000000-0000-0000-0000-000000000007',
+    chapter: 'BABAK IV',
+    title: 'Married',
+    date: 'Menuju Hidup Bersama',
+    photo: '/photos/audi-ovyola/gallery-01.jpg',
+    photo_url: '/photos/audi-ovyola/gallery-01.jpg',
+    content: 'Begitu banyak perbedaan yang kita terima, hingga yang salah kita benarkan dan yang bengkok kita luruskan. Sampai akhirnya di ujung cerita, kita bertemu di titik yang paling indah, yaitu PERNIKAHAN.\n\nKita tidak lagi berbicara tentang kemarin dan esok, tetapi tentang hari-hari yang akan datang: mimpi yang kita rangkai, rumah yang kita bangun, anak yang kita didik, ujian yang kita hadapi, hingga hal-hal indah yang kita raih bersama.\n\nDari semua cerita kita yang tak beralur, ternyata semuanya menuju satu janji: hidup bersama.',
+    sort_order: 4
   }
 ];
 
@@ -796,6 +829,11 @@ export const editorService = {
       const { data, error } = await supabase.from('music').select('*').eq('invitation_id', invitationId).maybeSingle();
       if (!error && data) return data;
     } catch {}
+    const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
+      (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
+    if (isAudiId) {
+      return MUSIC_AUDI_OVYOLA;
+    }
     const isDimasId = invitationId === 'e4000000-0000-0000-0000-000000000004' || 
       (typeof invitationId === 'string' && invitationId.toLowerCase().includes('dimas'));
     if (isDimasId) {

@@ -1081,17 +1081,31 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
   const defaultStories = isAudi ? [
     {
       chapter: 'BABAK I',
-      date: 'Pertemuan',
-      title: 'Awal Bertemu',
+      date: 'Awal Pertemuan',
+      title: 'Awal Kisah',
       photo: '/photos/audi-ovyola/gallery-07.jpg',
-      description: 'Sebuah perjumpaan manis yang mempertemukan dua hati untuk saling mengenal, berbagi cerita, dan melangkah bersama.'
+      description: 'Semua kisah indah selalu memiliki awalan, dan kisah kita bermula saat kita diperkenalkan oleh seseorang. Di tengah perkembangan zaman, game online menjadi alasanku untuk mengenalmu lebih dekat. Hal yang tak terduga itu mempertemukan dua hati menjadi satu.\n\nSeiring berjalannya waktu dan jarak, pertemuan pertama yang dinanti-nantikan akhirnya tiba. Di setiap obrolan kecil, tatapan singkat, canda, tawa, dan senyuman manis, tumbuh kenyamanan yang perlahan melahirkan rasa. Mungkin saat itu kita belum tahu bahwa dari pertemuan sederhana itulah sebuah perjalanan panjang dimulai.'
     },
     {
       chapter: 'BABAK II',
-      date: 'Janji Suci',
-      title: 'Menuju Pelaminan',
-      photo: '/photos/audi-ovyola/gallery-09.jpg',
-      description: 'Dengan keyakinan bahwa apa yang menjadi takdir kita akan menemukan jalannya, kami memantapkan niat suci menuju mahligai pernikahan.'
+      date: 'Menjalin Kasih',
+      title: 'Relationship',
+      photo: '/photos/audi-ovyola/gallery-10.jpg',
+      description: 'Meluluhkan hati tidak semudah membalikkan telapak tangan. Ada waktu dan jarak yang harus ditempuh, hingga akhirnya kecocokan Audi dan Ovyola menyatu menjadi hubungan yang indah.\n\nSejak saat itu, kami belajar bahwa cinta bukan hanya tentang berbagi, tetapi juga bertahan, menerima, memahami, memaafkan, dan tumbuh bersama, dalam keadaan susah maupun senang.'
+    },
+    {
+      chapter: 'BABAK III',
+      date: '29 Agustus 2026',
+      title: 'Engagement',
+      photo: '/photos/audi-ovyola/gallery-05.jpg',
+      description: 'Sekian lama waktu telah kita lalui. Banyak cerita, kebahagiaan, dan kesedihan sudah kita lewati bersama.\n\nSelembar kertas putih telah kita penuhi dengan tulisan kisah cinta kita, dengan alur yang tak selalu tertata, hingga sampai pada satu makna: MENUJU HIDUP BERSAMA.\n\nPada tanggal 29 Agustus 2026, dengan mengucap Bismillahirrahmanirrahim dan restu orang tua serta keluarga, sebuah janji terucap di hadapan keluarga kita. Agar mereka tahu bahwa kisah kita bukan sekadar cerita, melainkan bukti bahwa perjalanan kita memiliki makna: MENUJU HIDUP BERSAMA.'
+    },
+    {
+      chapter: 'BABAK IV',
+      date: 'Menuju Hidup Bersama',
+      title: 'Married',
+      photo: '/photos/audi-ovyola/gallery-01.jpg',
+      description: 'Begitu banyak perbedaan yang kita terima, hingga yang salah kita benarkan dan yang bengkok kita luruskan. Sampai akhirnya di ujung cerita, kita bertemu di titik yang paling indah, yaitu PERNIKAHAN.\n\nKita tidak lagi berbicara tentang kemarin dan esok, tetapi tentang hari-hari yang akan datang: mimpi yang kita rangkai, rumah yang kita bangun, anak yang kita didik, ujian yang kita hadapi, hingga hal-hal indah yang kita raih bersama.\n\nDari semua cerita kita yang tak beralur, ternyata semuanya menuju satu janji: hidup bersama.'
     }
   ] : isAgni ? [
     {
@@ -1139,13 +1153,14 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     }
   ];
 
+  const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
   const displayStories = (stories && stories.length > 0)
     ? stories.map((s: any, idx: number) => ({
-        chapter: `BABAK ${idx === 0 ? 'I' : idx === 1 ? 'II' : idx === 2 ? 'III' : (idx + 1)}`,
+        chapter: s.chapter || `BABAK ${romanNumerals[idx] || (idx + 1)}`,
         date: s.date || (idx === 0 ? '2019' : idx === 1 ? '2023' : '2026'),
         title: s.title || (idx === 0 ? 'Awal Bertemu' : idx === 1 ? 'Menjalin Kasih' : 'Menuju Pelaminan'),
-        photo: s.photo || s.photo_url || defaultStories[idx % defaultStories.length].photo,
-        description: s.description || s.content || defaultStories[idx % defaultStories.length].description
+        photo: s.photo || s.photo_url || defaultStories[idx % defaultStories.length]?.photo,
+        description: s.description || s.content || defaultStories[idx % defaultStories.length]?.description
       }))
     : defaultStories;
 
@@ -3154,7 +3169,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
 
                     {/* Story Description Text */}
                     <p 
-                      className="text-xs sm:text-[13px] text-[#EADFC9] font-serif leading-relaxed italic drop-shadow-sm"
+                      className="text-xs sm:text-[13px] text-[#EADFC9] font-serif leading-relaxed italic drop-shadow-sm whitespace-pre-line"
                       style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
                       {story.description}
