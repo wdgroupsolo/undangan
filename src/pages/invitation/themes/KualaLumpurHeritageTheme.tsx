@@ -16,75 +16,6 @@ interface KualaLumpurHeritageThemeProps {
   isOpening?: boolean;
 }
 
-// Romantic Floating Rose Petals & Golden Stardust Particle Effect
-const FloatingRosePetals: React.FC = () => {
-  const petals = Array.from({ length: 15 }, (_, i) => ({
-    id: i,
-    left: `${(i * 7 + 3) % 96}%`,
-    duration: `${6 + (i % 6) * 1.5}s`,
-    delay: `${(i * 0.7) % 5}s`,
-    size: `${12 + (i % 4) * 5}px`,
-    opacity: 0.35 + (i % 5) * 0.12,
-    rotate: `${(i * 45) % 360}deg`
-  }));
-
-  return (
-    <div className="fixed inset-0 pointer-events-none z-30 overflow-hidden select-none">
-      <style>{`
-        @keyframes fall-and-sway {
-          0% {
-            transform: translate(0, -20px) rotate(0deg) scale(0.8);
-            opacity: 0;
-          }
-          10% {
-            opacity: var(--petal-opacity);
-          }
-          90% {
-            opacity: var(--petal-opacity);
-          }
-          100% {
-            transform: translate(calc(sin(1) * 60px), 105vh) rotate(360deg) scale(1);
-            opacity: 0;
-          }
-        }
-        @keyframes float-stardust {
-          0%, 100% { transform: translateY(0px) scale(0.9); opacity: 0.3; }
-          50% { transform: translateY(-15px) scale(1.15); opacity: 0.8; }
-        }
-      `}</style>
-      
-      {petals.map((p) => (
-        <div
-          key={p.id}
-          className="absolute top-0 pointer-events-none"
-          style={{
-            left: p.left,
-            animation: `fall-and-sway ${p.duration} linear infinite`,
-            animationDelay: p.delay,
-            // @ts-ignore
-            '--petal-opacity': p.opacity
-          }}
-        >
-          {/* Petal SVG */}
-          <svg 
-            width={p.size} 
-            height={p.size} 
-            viewBox="0 0 30 30" 
-            style={{ transform: `rotate(${p.rotate})` }}
-            className="drop-shadow-sm"
-          >
-            <path
-              d="M15 0 C24 8, 30 18, 15 30 C0 18, 6 8, 15 0 Z"
-              fill={p.id % 2 === 0 ? '#E0536C' : '#D8304D'}
-              opacity="0.85"
-            />
-          </svg>
-        </div>
-      ))}
-    </div>
-  );
-};
-
 export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> = ({
   invitation: _invitation,
   couple,
@@ -199,9 +130,6 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
   return (
     <div className="relative w-full min-h-screen bg-[#FDF8F7] text-[#4A2D35] selection:bg-[#F0C2CC] selection:text-[#5A1D2D] font-serif overflow-x-hidden">
       
-      {/* Floating Animated Rose Petals & Stardust */}
-      <FloatingRosePetals />
-
       {/* Global CSS for Animations */}
       <style>{`
         @keyframes kl-shimmer-sweep {

@@ -1,130 +1,231 @@
 import React from 'react';
 
 // =========================================================================
-// 1. FALLING SAKURA PETALS ANIMATION (Bunga Jatuh Berguguran)
+// 1. SILKY-SMOOTH FALLING SAKURA PETALS ANIMATION (60fps / 120fps GPU)
 // =========================================================================
 export const FallingSakuraPetals: React.FC<{ count?: number; className?: string }> = ({ 
-  count = 24,
+  count = 20,
   className = "z-[60]" 
 }) => {
   const isAbsolute = className.includes('absolute');
-  const petals = Array.from({ length: count }, (_, i) => ({
-    id: i,
-    left: `${(i * 5.1 + 2) % 96}%`,
-    duration: `${5.5 + (i % 7) * 1.2}s`,
-    delay: `${(i * 0.5) % 5.5}s`,
-    size: 15 + (i % 5) * 4,
-    opacity: 0.45 + (i % 4) * 0.15,
-    rotate: (i * 55) % 360,
-    swayAmount: (i % 2 === 0 ? 1 : -1) * (45 + (i % 4) * 15),
-    colorScheme: i % 3 === 0 ? 'crimson' : (i % 3 === 1 ? 'rose' : 'blush')
-  }));
+  
+  // Distinct natural variation profiles for each petal
+  const petals = Array.from({ length: count }, (_, i) => {
+    const swayType = (i % 4) + 1; // 4 unique sway trajectories
+    const durationFall = 7.5 + (i % 6) * 1.1; // 7.5s - 13s graceful descent
+    const durationSway = 2.8 + (i % 5) * 0.45; // 2.8s - 4.6s natural oscillation
+    const delay = (i * 0.48) % 6;
+    const size = 16 + (i % 5) * 3; // 16px - 28px natural petal sizes
+    const opacity = 0.55 + (i % 4) * 0.12; // 0.55 - 0.91 translucent depth
+    const left = `${(i * 5.2 + 2) % 96}%`;
+    const colorScheme = i % 3 === 0 ? 'crimson' : (i % 3 === 1 ? 'rose' : 'blush');
+    
+    return {
+      id: i,
+      swayType,
+      durationFall,
+      durationSway,
+      delay,
+      size,
+      opacity,
+      left,
+      colorScheme
+    };
+  });
 
   return (
-    <div className={`${isAbsolute ? 'absolute' : 'fixed'} inset-0 pointer-events-none overflow-hidden select-none ${className}`}>
+    <div 
+      className={`${isAbsolute ? 'absolute' : 'fixed'} inset-0 pointer-events-none overflow-hidden select-none ${className}`}
+      style={{ perspective: '800px', transform: 'translateZ(0)' }}
+      aria-hidden="true"
+    >
       <style>{`
-        @keyframes sakura-fall-sway {
+        /* Pure Compositor-Only GPU Keyframes (Zero Layout / Paint Overhead) */
+        @keyframes sakura-fall-y {
           0% {
-            transform: translate3d(0, -35px, 0) rotate(0deg) scale(0.75);
+            transform: translate3d(0, -45px, 0);
             opacity: 0;
           }
-          10% {
-            opacity: var(--sakura-opacity);
+          8% {
+            opacity: 1;
           }
-          85% {
-            opacity: var(--sakura-opacity);
+          88% {
+            opacity: 1;
           }
           100% {
-            transform: translate3d(var(--sakura-sway), 110vh, 0) rotate(380deg) scale(1.08);
+            transform: translate3d(0, 108vh, 0);
             opacity: 0;
           }
         }
-        @keyframes sakura-shimmer {
-          0%, 100% { opacity: 0.25; transform: scale(0.8); }
-          50% { opacity: 0.9; transform: scale(1.25); }
+
+        /* 4 Organic Fluttering Sway Profiles (Back & Forth Sine Wave with 3D Flip) */
+        @keyframes sakura-sway-1 {
+          0% {
+            transform: translate3d(0px, 0, 0) rotateZ(0deg) rotateY(0deg) scale(0.9);
+          }
+          25% {
+            transform: translate3d(32px, 0, 0) rotateZ(30deg) rotateY(70deg) scale(1.05);
+          }
+          50% {
+            transform: translate3d(-20px, 0, 0) rotateZ(-22deg) rotateY(160deg) scale(0.92);
+          }
+          75% {
+            transform: translate3d(26px, 0, 0) rotateZ(35deg) rotateY(250deg) scale(1.08);
+          }
+          100% {
+            transform: translate3d(0px, 0, 0) rotateZ(0deg) rotateY(360deg) scale(0.9);
+          }
+        }
+
+        @keyframes sakura-sway-2 {
+          0% {
+            transform: translate3d(0px, 0, 0) rotateZ(15deg) rotateX(0deg) scale(1);
+          }
+          30% {
+            transform: translate3d(-34px, 0, 0) rotateZ(-35deg) rotateX(80deg) scale(0.95);
+          }
+          65% {
+            transform: translate3d(28px, 0, 0) rotateZ(28deg) rotateX(175deg) scale(1.06);
+          }
+          100% {
+            transform: translate3d(0px, 0, 0) rotateZ(15deg) rotateX(360deg) scale(1);
+          }
+        }
+
+        @keyframes sakura-sway-3 {
+          0% {
+            transform: translate3d(0px, 0, 0) rotateZ(-10deg) rotateY(0deg) scale(0.95);
+          }
+          28% {
+            transform: translate3d(25px, 0, 0) rotateZ(24deg) rotateY(90deg) scale(1.03);
+          }
+          60% {
+            transform: translate3d(-28px, 0, 0) rotateZ(-28deg) rotateY(200deg) scale(0.92);
+          }
+          85% {
+            transform: translate3d(18px, 0, 0) rotateZ(15deg) rotateY(290deg) scale(1.04);
+          }
+          100% {
+            transform: translate3d(0px, 0, 0) rotateZ(-10deg) rotateY(360deg) scale(0.95);
+          }
+        }
+
+        @keyframes sakura-sway-4 {
+          0% {
+            transform: translate3d(0px, 0, 0) rotateZ(20deg) scale(1.02);
+          }
+          35% {
+            transform: translate3d(-30px, 0, 0) rotateZ(-25deg) scale(0.92);
+          }
+          70% {
+            transform: translate3d(35px, 0, 0) rotateZ(32deg) scale(1.06);
+          }
+          100% {
+            transform: translate3d(0px, 0, 0) rotateZ(20deg) scale(1.02);
+          }
+        }
+
+        @keyframes sakura-stardust-glow {
+          0%, 100% { opacity: 0.2; transform: translateZ(0) scale(0.85); }
+          50% { opacity: 0.95; transform: translateZ(0) scale(1.2); }
         }
       `}</style>
 
-      {/* Falling Sakura Petals */}
+      {/* Global Shared SVG Defs (Compiled once for maximum GPU memory efficiency) */}
+      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+        <defs>
+          <linearGradient id="global_sakura_crimson" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FF5C7A" />
+            <stop offset="50%" stopColor="#E01E4B" />
+            <stop offset="100%" stopColor="#9B0B2E" />
+          </linearGradient>
+          <linearGradient id="global_sakura_rose" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFA3B5" />
+            <stop offset="60%" stopColor="#E83D62" />
+            <stop offset="100%" stopColor="#C9184A" />
+          </linearGradient>
+          <linearGradient id="global_sakura_blush" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFF0F3" />
+            <stop offset="55%" stopColor="#FFB3C1" />
+            <stop offset="100%" stopColor="#FF758F" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      {/* Falling Sakura Petals with 2-Layer Nested GPU Animation */}
       {petals.map((p) => {
-        const gradientId = `sakura_grad_${p.id}_${isAbsolute ? 'abs' : 'fix'}`;
-        const fillUrl = `url(#${gradientId})`;
-        
+        const fillUrl = p.colorScheme === 'crimson' 
+          ? 'url(#global_sakura_crimson)' 
+          : (p.colorScheme === 'rose' ? 'url(#global_sakura_rose)' : 'url(#global_sakura_blush)');
+
         return (
+          /* Outer Layer: Handles continuous linear vertical descent via GPU compositor */
           <div
             key={p.id}
-            className="absolute top-0 pointer-events-none will-change-transform"
+            className="absolute top-0 pointer-events-none"
             style={{
               left: p.left,
-              animation: `sakura-fall-sway ${p.duration} linear infinite`,
-              animationDelay: p.delay,
-              // @ts-ignore
-              '--sakura-opacity': p.opacity,
-              '--sakura-sway': `${p.swayAmount}px`
+              opacity: p.opacity,
+              animation: `sakura-fall-y ${p.durationFall}s linear infinite`,
+              animationDelay: `${p.delay}s`,
+              willChange: 'transform',
+              transform: 'translateZ(0)'
             }}
           >
-            <svg 
-              width={p.size} 
-              height={p.size * 1.25} 
-              viewBox="0 0 30 36" 
-              style={{ transform: `rotate(${p.rotate}deg)` }}
-              className="drop-shadow-[0_2px_8px_rgba(224,49,84,0.4)]"
+            {/* Inner Layer: Handles natural organic side-to-side sway & 3D flutter */}
+            <div
+              style={{
+                animation: `sakura-sway-${p.swayType} ${p.durationSway}s ease-in-out infinite alternate`,
+                willChange: 'transform',
+                transformStyle: 'preserve-3d'
+              }}
             >
-              <defs>
-                <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-                  {p.colorScheme === 'crimson' ? (
-                    <>
-                      <stop offset="0%" stopColor="#FF4D6D" />
-                      <stop offset="55%" stopColor="#E01E4B" />
-                      <stop offset="100%" stopColor="#9B0B2E" />
-                    </>
-                  ) : p.colorScheme === 'rose' ? (
-                    <>
-                      <stop offset="0%" stopColor="#FF758F" />
-                      <stop offset="65%" stopColor="#E83D62" />
-                      <stop offset="100%" stopColor="#C9184A" />
-                    </>
-                  ) : (
-                    <>
-                      <stop offset="0%" stopColor="#FFF0F3" />
-                      <stop offset="50%" stopColor="#FFB3C1" />
-                      <stop offset="100%" stopColor="#FF758F" />
-                    </>
-                  )}
-                </linearGradient>
-              </defs>
-
-              {/* Heart/Notched Sakura Petal Silhouette */}
-              <path
-                d="M15 2 C21 2, 28 8, 28 17 C28 26, 21 31, 15 35 C9 31, 2 26, 2 17 C2 8, 9 2, 15 2 Z"
-                fill={fillUrl}
-              />
-              {/* Petal Center Crease Accent */}
-              <path
-                d="M15 7 Q15 20 15 28"
-                stroke="rgba(255,255,255,0.5)"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                fill="none"
-              />
-            </svg>
+              <svg 
+                width={p.size} 
+                height={Math.round(p.size * 1.2)} 
+                viewBox="0 0 30 36" 
+                className="overflow-visible"
+              >
+                {/* Soft natural petal shadow rendered via native SVG opacity, NOT heavy blur filter */}
+                <path
+                  d="M15 3 C21 3, 28 9, 28 18 C28 27, 21 32, 15 36 C9 32, 2 27, 2 18 C2 9, 9 3, 15 3 Z"
+                  fill="rgba(155, 11, 46, 0.28)"
+                  transform="translate(1, 2)"
+                />
+                {/* Master Sakura Petal Silhouette with heart-notched curvature */}
+                <path
+                  d="M15 2 C21 2, 28 8, 28 17 C28 26, 21 31, 15 35 C9 31, 2 26, 2 17 C2 8, 9 2, 15 2 Z"
+                  fill={fillUrl}
+                />
+                {/* Delicate Translucent Inner Crease Highlight */}
+                <path
+                  d="M15 6 Q15 18 15 28"
+                  stroke="rgba(255, 255, 255, 0.65)"
+                  strokeWidth="1.1"
+                  strokeLinecap="round"
+                  fill="none"
+                />
+              </svg>
+            </div>
           </div>
         );
       })}
 
-      {/* Floating Golden Stardust Specks */}
-      {Array.from({ length: 10 }, (_, i) => (
+      {/* Floating Golden Stardust Specks (Lightweight hardware-accelerated sparkles) */}
+      {Array.from({ length: 8 }, (_, i) => (
         <div
           key={`dust_${i}`}
           className="absolute rounded-full bg-[#FFDF80] pointer-events-none"
           style={{
-            top: `${8 + (i * 9.5) % 85}%`,
-            left: `${6 + (i * 11) % 88}%`,
-            width: `${3 + (i % 3)}px`,
-            height: `${3 + (i % 3)}px`,
-            boxShadow: '0 0 10px rgba(255,223,128,0.95), 0 0 18px rgba(212,175,55,0.7)',
-            animation: `sakura-shimmer ${2.2 + (i % 3)}s ease-in-out infinite`,
-            animationDelay: `${i * 0.35}s`
+            top: `${10 + (i * 11) % 80}%`,
+            left: `${8 + (i * 12) % 85}%`,
+            width: `${2.5 + (i % 3) * 0.8}px`,
+            height: `${2.5 + (i % 3) * 0.8}px`,
+            boxShadow: '0 0 6px rgba(255, 223, 128, 0.85)',
+            animation: `sakura-stardust-glow ${2.4 + (i % 3) * 0.6}s ease-in-out infinite`,
+            animationDelay: `${i * 0.4}s`,
+            willChange: 'transform, opacity',
+            transform: 'translateZ(0)'
           }}
         />
       ))}
