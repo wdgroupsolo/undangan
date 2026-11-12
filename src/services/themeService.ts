@@ -80,6 +80,36 @@ export const REAL_KUALA_LUMPUR_HERITAGE_THEME: Theme = {
   created_at: '2026-10-30T12:00:00.000000+00:00'
 };
 
+// Masterpiece Starter Theme: Noir Gold Elegance (Paket Rp 50.000)
+export const REAL_NOIR_GOLD_THEME: Theme = {
+  id: 'd1e2f3a4-5678-9012-3456-789012345678',
+  name: 'Noir Gold Elegance',
+  slug: 'noir-gold',
+  description: 'Tema pernikahan mewah harga terjangkau bernuansa hitam obsidian & emas champagne, double hairline border berkelas, segel lilin monogram royal, dan amplop digital VIP Black Gold.',
+  category: 'Luxury Starter (Rp 50.000)',
+  preview_image: '/themes/noir-gold/theme-preview.jpg',
+  thumbnail: '/themes/noir-gold/theme-preview.jpg',
+  status: 'active',
+  badge: 'Best Value Rp 50.000',
+  rating: '4.9',
+  features: [
+    'Nuansa Hitam Obsidian & Emas Champagne Mewah',
+    'Double Hairline Border & Regal Corner Flourish',
+    'Segel Lilin Monogram Kerajaan (Instant Open)',
+    'VIP Black Gold Card & RSVP Buku Tamu Lengkap'
+  ],
+  theme_config: { 
+    primaryColor: '#0B0C0E', 
+    secondaryColor: '#141519', 
+    accentColor: '#D4AF37',
+    style: 'noir-gold',
+    backgroundImage: '/photos/audi-ovyola/cover-audi-ovyola.jpg',
+    desktopBackground: '/photos/audi-ovyola/cover-audi-ovyola.jpg',
+    mobileBackground: '/photos/audi-ovyola/cover-audi-ovyola.jpg',
+  },
+  created_at: '2026-11-12T12:00:00.000000+00:00'
+};
+
 // Masterpiece Theme: Nirwana Sarangan Resort (Telaga Sarangan & Hotel Nirwana)
 export const REAL_NIRWANA_SARANGAN_THEME: Theme = {
   id: 'b2c3d4e5-6789-4012-c345-6def78901234',
@@ -264,6 +294,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
 };
 
 export const DEFAULT_THEMES: Theme[] = [
+  REAL_NOIR_GOLD_THEME,
   REAL_KUALA_LUMPUR_HERITAGE_THEME,
   REAL_NIRWANA_SARANGAN_THEME,
   REAL_JOGLO_MAROON_THEME,
@@ -290,6 +321,10 @@ export const themeService = {
       // Merge database themes with Kuala Lumpur Heritage, Nirwana Sarangan, Joglo Maroon, etc.
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
+
+      if (!existingSlugs.has('noir-gold')) {
+        merged.unshift(REAL_NOIR_GOLD_THEME);
+      }
 
       if (!existingSlugs.has('kuala-lumpur-heritage')) {
         merged.unshift(REAL_KUALA_LUMPUR_HERITAGE_THEME);

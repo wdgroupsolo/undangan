@@ -22,6 +22,7 @@ import {
 } from './themes/JogloMaroonHeritageTheme';
 import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSaranganTheme';
 import { KualaLumpurHeritageTheme } from './themes/KualaLumpurHeritageTheme';
+import { NoirGoldTheme, RegalCorner } from './themes/NoirGoldTheme';
 import { FallingSakuraPetals, SakuraCoverFrame, SakuraInvitationSurround } from './components/SakuraBlossoms';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
 import { NirwanaSaranganEntrancePortal } from './components/NirwanaSaranganEntrancePortal';
@@ -395,14 +396,15 @@ export const InvitationRenderer: React.FC = () => {
   }
 
   const isKualaLumpur = activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug;
-  const isNirwanaSarangan = !isKualaLumpur && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
-  const isJogloMaroon = !isKualaLumpur && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
-  const isRoyalWayang = !isKualaLumpur && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
+  const isNoirGold = !isKualaLumpur && (activeThemeSlug === 'noir-gold' || activeThemeSlug === 'noir' || activeThemeSlug === 'noir-gold-elegance');
+  const isNirwanaSarangan = !isKualaLumpur && !isNoirGold && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
+  const isJogloMaroon = !isKualaLumpur && !isNoirGold && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
+  const isRoyalWayang = !isKualaLumpur && !isNoirGold && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
   const isSecretGarden = activeThemeSlug === 'secret-garden';
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan || isKualaLumpur;
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan || isKualaLumpur || isNoirGold;
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 
@@ -480,12 +482,12 @@ export const InvitationRenderer: React.FC = () => {
       }
     }
 
-    if (isKualaLumpur) {
+    if (isNoirGold || isKualaLumpur) {
       setIsCoverExiting(true);
       setTimeout(() => {
         setOpeningStage('opened');
         setIsCoverExiting(false);
-      }, 750);
+      }, 700);
       return;
     }
 
@@ -675,7 +677,19 @@ export const InvitationRenderer: React.FC = () => {
             }`
       }>
         {(isSplitTheme || isInvitationVisible || isCoverExiting || openingStage === 'arch-video') && (
-          isKualaLumpur ? (
+          isNoirGold ? (
+            <NoirGoldTheme 
+              invitation={invitation}
+              couple={displayCouple}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+              guestName={guestName}
+              isOpening={isVideoExiting || openingStage === 'opened'}
+            />
+          ) : isKualaLumpur ? (
             <KualaLumpurHeritageTheme 
               invitation={invitation}
               couple={displayCouple || COUPLE_HAFIZ_SYAFIKA}
@@ -805,9 +819,74 @@ export const InvitationRenderer: React.FC = () => {
       </div>
 
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
-      {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {openingStage === 'cover' && (
-        isKualaLumpur ? (
+        isNoirGold ? (
+          /* Noir & Champagne Gold Luxury Cover */
+          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none bg-[#090A0C] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-[-20px_0_60px_rgba(0,0,0,0.8)] border-l border-[#D4AF37]/30`}>
+            {/* Background Radial Glow */}
+            <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.15)_0%,rgba(9,10,12,0.95)_70%)]" />
+
+            {/* Centered Mobile/Portrait Cover Frame */}
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[700px] sm:max-h-[92vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_30px_rgba(212,175,55,0.15)] sm:border border-[#D4AF37]/50 bg-[#0E0F13]">
+              
+              {/* Four Regal Corners */}
+              <div className="absolute top-3 left-3"><RegalCorner position="top-left" size={32} /></div>
+              <div className="absolute top-3 right-3"><RegalCorner position="top-right" size={32} /></div>
+              <div className="absolute bottom-3 left-3"><RegalCorner position="bottom-left" size={32} /></div>
+              <div className="absolute bottom-3 right-3"><RegalCorner position="bottom-right" size={32} /></div>
+
+              {/* TOP: "THE WEDDING OF" */}
+              <div className="relative z-20 flex flex-col items-center pt-6 sm:pt-8">
+                <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-[#F5D77F] font-serif font-bold">
+                  THE WEDDING OF
+                </span>
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-[#FFF1BA] via-[#ECC880] to-[#C99E3D] bg-clip-text text-transparent mt-2">
+                  {groomDisplayName} &amp; {brideDisplayName}
+                </h1>
+                <p className="text-[11px] font-sans tracking-[0.2em] uppercase text-stone-400 mt-2 font-medium">
+                  {new Date(invitation?.wedding_date || '2026-12-28').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                </p>
+              </div>
+
+              {/* CENTER: Royal Wax Seal Monogram */}
+              <div className="relative z-20 my-auto py-6 flex flex-col items-center">
+                <div className="relative w-28 h-28 rounded-full p-1 bg-gradient-to-tr from-[#8A6A1E] via-[#F5D77F] to-[#D4AF37] shadow-[0_10px_35px_rgba(212,175,55,0.35)] flex items-center justify-center animate-pulse" style={{ animationDuration: '4s' }}>
+                  <div className="w-full h-full rounded-full bg-[#18191F] border border-[#F5D77F]/60 flex flex-col items-center justify-center text-center">
+                    <Crown className="w-6 h-6 text-[#F5D77F] mb-1" />
+                    <span className="font-serif text-lg font-bold tracking-widest text-[#FFF1BA]">
+                      {groomDisplayName.charAt(0)}&amp;{brideDisplayName.charAt(0)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* BOTTOM: Recipient & Open Invitation Button */}
+              <div className="relative z-20 w-full flex flex-col items-center pb-4 sm:pb-6">
+                <div className="w-full max-w-xs p-3 rounded-2xl bg-black/50 border border-[#D4AF37]/30 backdrop-blur-xs mb-5">
+                  <span className="text-[10px] uppercase tracking-widest text-stone-400 block mb-0.5">
+                    Kepada Yth. Bapak/Ibu/Saudara/i:
+                  </span>
+                  <span className="font-serif text-sm font-bold text-[#F5D77F] block truncate">
+                    {guestName}
+                  </span>
+                </div>
+
+                <button
+                  onClick={handleOpen}
+                  className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-[0_10px_35px_rgba(212,175,55,0.3)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#D4AF37] via-[#F5D77F] to-[#B38F24] border border-[#FFF1BA]"
+                >
+                  <div className="relative flex items-center justify-center gap-2">
+                    <MailOpen className="w-4 h-4 text-black" />
+                    <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-black">
+                      BUKA UNDANGAN
+                    </span>
+                  </div>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        ) : isKualaLumpur ? (
           /* Kuala Lumpur Heritage Royal Songket Cover (Split on Desktop, Fullscreen on Mobile - Matches Screenshot 1) */
           <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none bg-[#FDF8F7] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-[-20px_0_60px_rgba(180,90,110,0.22)] border-l border-[#E8BAC5]/50`}>
             

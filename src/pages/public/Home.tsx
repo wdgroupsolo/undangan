@@ -38,12 +38,25 @@ export const Home: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [testimonialIdx, setTestimonialIdx] = useState(0);
-  const [themeFilter, setThemeFilter] = useState<'all' | 'traditional' | 'resort' | 'modern'>('all');
+  const [themeFilter, setThemeFilter] = useState<'all' | 'traditional' | 'resort' | 'modern' | 'starter'>('all');
   const [showAllThemes, setShowAllThemes] = useState(false);
 
   // Showcase Themes for Hero Showcase
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
   const showcaseThemes = [
+    {
+      id: 'noir-gold',
+      name: 'Noir Gold Elegance',
+      slug: 'noir-gold',
+      badge: 'Paket Starter Rp 50.000',
+      couple: 'Dimas & Nadia',
+      date: 'Sabtu, 26 Desember 2026',
+      preview: '/themes/noir-gold/theme-preview.jpg',
+      videoUrl: '',
+      musicTitle: 'Canon in D (Royal Strings)',
+      musicUrl: '/music/maroon-gold-canon.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=noir-gold&demo=true'
+    },
     {
       id: 'kuala-lumpur-heritage',
       name: 'Kuala Lumpur Heritage',
@@ -313,6 +326,18 @@ export const Home: React.FC = () => {
   };
 
   const ALL_DEMO_THEMES = [
+    {
+      id: 'noir-gold',
+      name: 'Noir Gold Elegance',
+      category: 'starter',
+      categoryLabel: 'Starter Rp 50rb',
+      tag: 'Paket Starter Rp 50.000',
+      preview: '/themes/noir-gold/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=noir-gold&demo=true',
+      desc: lang === 'id'
+        ? 'Nuansa mewah hitam obsidian & emas champagne, double hairline border berkelas dan amplop VIP Black Gold.'
+        : 'Luxurious obsidian black & champagne gold tones, double hairline borders and VIP Black Gold envelope.'
+    },
     {
       id: 'kuala-lumpur-heritage',
       name: 'Kuala Lumpur Heritage',
@@ -702,6 +727,7 @@ export const Home: React.FC = () => {
                       }}
                       className="w-full text-xs sm:text-sm text-stone-700 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer outline-none"
                     >
+                      <option value="noir-gold">Noir Gold Elegance (Starter 50rb)</option>
                       <option value="kuala-lumpur-heritage">Kuala Lumpur Heritage (Walimatulurus)</option>
                       <option value="nirwana-sarangan">Nirwana Sarangan Resort</option>
                       <option value="royal-wayang-gold">Royal Wayang Gold (Keraton)</option>
@@ -1271,6 +1297,7 @@ export const Home: React.FC = () => {
                   <div className="flex flex-wrap lg:flex-col gap-1.5">
                     {[
                       { key: 'all', label: lang === 'id' ? `Semua Tema (${ALL_DEMO_THEMES.length})` : `All Themes (${ALL_DEMO_THEMES.length})` },
+                      { key: 'starter', label: lang === 'id' ? 'Paket 50rb (Starter)' : 'Starter 50k' },
                       { key: 'traditional', label: lang === 'id' ? 'Adat & Keraton' : 'Traditional' },
                       { key: 'resort', label: lang === 'id' ? 'Resort & Danau' : 'Resort & Nature' },
                       { key: 'modern', label: lang === 'id' ? 'Modern & Botanical' : 'Modern & Botanical' },
@@ -1537,7 +1564,15 @@ export const Home: React.FC = () => {
                   </ul>
                 </div>
 
-                <div className="pt-3">
+                <div className="pt-3 space-y-2">
+                  <a
+                    href="/invitation/steven-bunga?theme=noir-gold&demo=true"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full block text-center py-2 rounded-full bg-stone-900 hover:bg-black text-[#F5D77F] border border-[#D4AF37]/50 font-bold text-xs transition-all active:scale-95 shadow-xs"
+                  >
+                    {lang === 'id' ? 'Buka Demo Noir Gold (50rb)' : 'Open Noir Gold Demo'}
+                  </a>
                   <a
                     href="https://wa.me/6285707909415?text=Halo%20WD%20Group,%20saya%20ingin%20pesan%20Paket%20Starter%20(Rp%2050.000)"
                     target="_blank"
