@@ -132,7 +132,7 @@ export const FallingSakuraPetals: React.FC<{ count?: number; className?: string 
       `}</style>
 
       {/* Global Shared SVG Defs (Compiled once for maximum GPU memory efficiency) */}
-      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+      <svg className="fixed top-0 left-0 w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
           <linearGradient id="global_sakura_crimson" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#FF5C7A" />
@@ -148,6 +148,22 @@ export const FallingSakuraPetals: React.FC<{ count?: number; className?: string 
             <stop offset="0%" stopColor="#FFF0F3" />
             <stop offset="55%" stopColor="#FFB3C1" />
             <stop offset="100%" stopColor="#FF758F" />
+          </linearGradient>
+          <radialGradient id="global_sakura_flower_grad" cx="50%" cy="40%" r="65%">
+            <stop offset="0%" stopColor="#FFF0F5" />
+            <stop offset="35%" stopColor="#FF6B8B" />
+            <stop offset="75%" stopColor="#E61E50" />
+            <stop offset="100%" stopColor="#B80D38" />
+          </radialGradient>
+          <radialGradient id="global_sakura_gold_pistil" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#FFF275" />
+            <stop offset="60%" stopColor="#FFB703" />
+            <stop offset="100%" stopColor="#FB8500" />
+          </radialGradient>
+          <linearGradient id="global_sakura_leaf_grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#52B788" />
+            <stop offset="50%" stopColor="#2D6A4F" />
+            <stop offset="100%" stopColor="#1B4332" />
           </linearGradient>
         </defs>
       </svg>
@@ -249,26 +265,12 @@ export const SakuraFlower: React.FC<{ size?: number; rotation?: number; classNam
       style={{ transform: `rotate(${rotation}deg)` }}
       className={`drop-shadow-[0_3px_8px_rgba(180,20,60,0.45)] filter ${className}`}
     >
-      <defs>
-        <radialGradient id="sakuraVibrantGrad" cx="50%" cy="40%" r="65%">
-          <stop offset="0%" stopColor="#FFF0F5" />
-          <stop offset="35%" stopColor="#FF6B8B" />
-          <stop offset="75%" stopColor="#E61E50" />
-          <stop offset="100%" stopColor="#B80D38" />
-        </radialGradient>
-        <radialGradient id="sakuraGoldPistil" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFF275" />
-          <stop offset="60%" stopColor="#FFB703" />
-          <stop offset="100%" stopColor="#FB8500" />
-        </radialGradient>
-      </defs>
-
       {/* 5 Distinct Rounded Petals with Sakura Notch */}
       {[0, 72, 144, 216, 288].map((angle, idx) => (
         <g key={idx} transform={`rotate(${angle} 50 50)`}>
           <path
             d="M50 50 C36 32, 28 14, 41 5 C46 2, 50 7, 50 7 C50 7, 54 2, 59 5 C72 14, 64 32, 50 50 Z"
-            fill="url(#sakuraVibrantGrad)"
+            fill="url(#global_sakura_flower_grad)"
             stroke="#94082B"
             strokeWidth="0.8"
             opacity="0.98"
@@ -283,7 +285,7 @@ export const SakuraFlower: React.FC<{ size?: number; rotation?: number; classNam
       ))}
 
       {/* Golden Pistil Core & Stamens */}
-      <circle cx="50" cy="50" r="11" fill="url(#sakuraGoldPistil)" stroke="#D4AF37" strokeWidth="0.8" />
+      <circle cx="50" cy="50" r="11" fill="url(#global_sakura_gold_pistil)" stroke="#D4AF37" strokeWidth="0.8" />
       {[0, 45, 90, 135, 180, 225, 270, 315].map((stamenAngle, sIdx) => (
         <g key={`stamen_${sIdx}`} transform={`rotate(${stamenAngle} 50 50)`}>
           <line x1="50" y1="50" x2="50" y2="39" stroke="#FFFDF0" strokeWidth="1.2" />
@@ -311,17 +313,10 @@ export const SakuraLeaves: React.FC<{ size?: number; rotation?: number; classNam
       style={{ transform: `rotate(${rotation}deg)` }}
       className={`drop-shadow-sm ${className}`}
     >
-      <defs>
-        <linearGradient id="sakuraLeafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#52B788" />
-          <stop offset="50%" stopColor="#2D6A4F" />
-          <stop offset="100%" stopColor="#1B4332" />
-        </linearGradient>
-      </defs>
       {/* Primary Leaf */}
       <path
         d="M20 80 C25 50, 45 25, 80 20 C75 55, 55 75, 20 80 Z"
-        fill="url(#sakuraLeafGrad)"
+        fill="url(#global_sakura_leaf_grad)"
         stroke="#1B4332"
         strokeWidth="0.8"
         opacity="0.95"
@@ -331,7 +326,7 @@ export const SakuraLeaves: React.FC<{ size?: number; rotation?: number; classNam
       {/* Secondary Flanking Leaf */}
       <path
         d="M35 70 C35 48, 50 32, 75 40 C65 62, 50 72, 35 70 Z"
-        fill="url(#sakuraLeafGrad)"
+        fill="url(#global_sakura_leaf_grad)"
         opacity="0.85"
       />
     </svg>

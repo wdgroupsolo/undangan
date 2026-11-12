@@ -3,6 +3,7 @@ import {
   Heart, Calendar, Clock, MapPin, Copy, Check, Send, 
   Sparkles, Gift, Compass, MessageCircle, ChevronDown, Crown
 } from 'lucide-react';
+import { SakuraFlower, SakuraLeaves } from '../components/SakuraBlossoms';
 
 interface KualaLumpurHeritageThemeProps {
   invitation: any;
@@ -291,28 +292,104 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
                 ======================================================== */}
             <section id="section-opening" className="relative min-h-[92vh] flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden">
               
+              {/* Outer Flanking Sakura Sprays: Kiri & Kanan (Di Area Margin Luar Kartu pada Tablet & Desktop) */}
+              <div className="absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 pointer-events-none z-15 hidden sm:flex flex-col items-center gap-8">
+                <div className="relative animate-pulse" style={{ animationDuration: '6s' }}>
+                  <div className="absolute -top-3 -left-3 pointer-events-none">
+                    <SakuraLeaves size={58} rotation={-35} />
+                  </div>
+                  <SakuraFlower size={54} rotation={15} />
+                  <div className="absolute -bottom-4 left-6 z-15">
+                    <SakuraFlower size={36} rotation={-25} />
+                  </div>
+                  <div className="absolute -top-5 left-4 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
+                </div>
+                <div className="relative scale-y-[-1] mt-6">
+                  <div className="absolute -top-2 -left-3 pointer-events-none">
+                    <SakuraLeaves size={50} rotation={30} />
+                  </div>
+                  <SakuraFlower size={44} rotation={-12} />
+                  <div className="absolute -top-3 left-6 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
+                </div>
+              </div>
+
+              <div className="absolute right-2 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 pointer-events-none z-15 hidden sm:flex flex-col items-center gap-8 scale-x-[-1]">
+                <div className="relative animate-pulse" style={{ animationDuration: '6.5s' }}>
+                  <div className="absolute -top-3 -left-3 pointer-events-none">
+                    <SakuraLeaves size={58} rotation={-35} />
+                  </div>
+                  <SakuraFlower size={54} rotation={15} />
+                  <div className="absolute -bottom-4 left-6 z-15">
+                    <SakuraFlower size={36} rotation={-25} />
+                  </div>
+                  <div className="absolute -top-5 left-4 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
+                </div>
+                <div className="relative scale-y-[-1] mt-6">
+                  <div className="absolute -top-2 -left-3 pointer-events-none">
+                    <SakuraLeaves size={50} rotation={30} />
+                  </div>
+                  <SakuraFlower size={44} rotation={-12} />
+                  <div className="absolute -top-3 left-6 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
+                </div>
+              </div>
+
               {/* Botanical Floral Frame Container with Subtle Shimmer */}
               <div className="relative w-full aspect-[9/13] max-w-[380px] rounded-[36px] p-2.5 bg-gradient-to-b from-[#FFF5F7] via-[#FFFFFF] to-[#FFF0F3] shadow-[0_20px_50px_rgba(180,90,110,0.22)] border-2 border-[#E8BAC5] flex items-center justify-center">
                 
-                {/* Top Hibiscus & Foliage Watercolor Corners */}
-                <div className="absolute -top-4 -left-4 w-24 h-24 pointer-events-none z-20">
-                  <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-                    <circle cx="28" cy="28" r="18" fill="#D8304D" opacity="0.95" />
-                    <circle cx="45" cy="24" r="14" fill="#E8536E" opacity="0.85" />
-                    <path d="M10,40 Q25,10 50,25 Q30,45 10,40 Z" fill="#2E6B47" opacity="0.9" />
-                    <path d="M25,10 Q50,-5 60,20 Q40,30 25,10 Z" fill="#3D855B" opacity="0.85" />
-                    <circle cx="28" cy="28" r="4" fill="#FFDE59" />
-                  </svg>
+                {/* ================= 1. ATAS KIRI (TOP LEFT) ================= */}
+                <div className="absolute -top-3 -left-3 pointer-events-none z-20 flex items-center justify-center">
+                  <div className="absolute -top-2 -left-2 pointer-events-none">
+                    <SakuraLeaves size={62} rotation={-35} />
+                  </div>
+                  <div className="relative z-10 animate-pulse" style={{ animationDuration: '5s' }}>
+                    <SakuraFlower size={54} rotation={15} />
+                  </div>
+                  <div className="absolute top-6 left-7 z-15">
+                    <SakuraFlower size={36} rotation={50} />
+                  </div>
+                  <div className="absolute -top-1 left-10 z-5 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-[#FFF0F3] shadow-xs" />
                 </div>
 
-                <div className="absolute -top-4 -right-4 w-24 h-24 pointer-events-none z-20 scale-x-[-1]">
-                  <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-                    <circle cx="28" cy="28" r="18" fill="#D8304D" opacity="0.95" />
-                    <circle cx="45" cy="24" r="14" fill="#E8536E" opacity="0.85" />
-                    <path d="M10,40 Q25,10 50,25 Q30,45 10,40 Z" fill="#2E6B47" opacity="0.9" />
-                    <path d="M25,10 Q50,-5 60,20 Q40,30 25,10 Z" fill="#3D855B" opacity="0.85" />
-                    <circle cx="28" cy="28" r="4" fill="#FFDE59" />
-                  </svg>
+                {/* ================= 2. ATAS KANAN (TOP RIGHT) ================= */}
+                <div className="absolute -top-3 -right-3 pointer-events-none z-20 flex items-center justify-center scale-x-[-1]">
+                  <div className="absolute -top-2 -left-2 pointer-events-none">
+                    <SakuraLeaves size={62} rotation={-35} />
+                  </div>
+                  <div className="relative z-10 animate-pulse" style={{ animationDuration: '5.5s' }}>
+                    <SakuraFlower size={54} rotation={15} />
+                  </div>
+                  <div className="absolute top-6 left-7 z-15">
+                    <SakuraFlower size={36} rotation={50} />
+                  </div>
+                  <div className="absolute -top-1 left-10 z-5 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-[#FFF0F3] shadow-xs" />
+                </div>
+
+                {/* ================= 3. KIRI TENGAH (LEFT MIDDLE) ================= */}
+                <div className="absolute top-1/2 -left-4 sm:-left-5 -translate-y-1/2 pointer-events-none z-25 flex items-center justify-center">
+                  <div className="absolute -top-3 -left-2 pointer-events-none">
+                    <SakuraLeaves size={58} rotation={25} />
+                  </div>
+                  <div className="relative z-10">
+                    <SakuraFlower size={52} rotation={-15} />
+                  </div>
+                  <div className="absolute -bottom-5 left-4 z-15">
+                    <SakuraFlower size={36} rotation={40} />
+                  </div>
+                  <div className="absolute -top-4 left-6 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
+                </div>
+
+                {/* ================= 4. KANAN TENGAH (RIGHT MIDDLE) ================= */}
+                <div className="absolute top-1/2 -right-4 sm:-right-5 -translate-y-1/2 pointer-events-none z-25 flex items-center justify-center scale-x-[-1]">
+                  <div className="absolute -top-3 -left-2 pointer-events-none">
+                    <SakuraLeaves size={58} rotation={25} />
+                  </div>
+                  <div className="relative z-10">
+                    <SakuraFlower size={52} rotation={-15} />
+                  </div>
+                  <div className="absolute -bottom-5 left-4 z-15">
+                    <SakuraFlower size={36} rotation={40} />
+                  </div>
+                  <div className="absolute -top-4 left-6 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
                 </div>
 
                 {/* Inner Rounded Couple Photo Card */}
@@ -334,21 +411,30 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
                   </div>
                 </div>
 
-                {/* Bottom Floral Corners */}
-                <div className="absolute -bottom-4 -left-4 w-24 h-24 pointer-events-none z-20 scale-y-[-1]">
-                  <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-                    <circle cx="28" cy="28" r="16" fill="#D8304D" opacity="0.95" />
-                    <path d="M10,40 Q25,10 50,25 Q30,45 10,40 Z" fill="#2E6B47" opacity="0.9" />
-                    <circle cx="28" cy="28" r="4" fill="#FFDE59" />
-                  </svg>
+                {/* ================= 5. BAWAH KIRI (BOTTOM LEFT) ================= */}
+                <div className="absolute -bottom-3 -left-3 pointer-events-none z-20 flex items-center justify-center">
+                  <div className="absolute -bottom-2 -left-2 pointer-events-none">
+                    <SakuraLeaves size={64} rotation={80} />
+                  </div>
+                  <div className="relative z-10">
+                    <SakuraFlower size={56} rotation={-30} />
+                  </div>
+                  <div className="absolute bottom-6 left-7 z-15">
+                    <SakuraFlower size={38} rotation={20} />
+                  </div>
                 </div>
 
-                <div className="absolute -bottom-4 -right-4 w-24 h-24 pointer-events-none z-20 scale-[-1]">
-                  <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-                    <circle cx="28" cy="28" r="16" fill="#D8304D" opacity="0.95" />
-                    <path d="M10,40 Q25,10 50,25 Q30,45 10,40 Z" fill="#2E6B47" opacity="0.9" />
-                    <circle cx="28" cy="28" r="4" fill="#FFDE59" />
-                  </svg>
+                {/* ================= 6. BAWAH KANAN (BOTTOM RIGHT) ================= */}
+                <div className="absolute -bottom-3 -right-3 pointer-events-none z-20 flex items-center justify-center scale-x-[-1]">
+                  <div className="absolute -bottom-2 -left-2 pointer-events-none">
+                    <SakuraLeaves size={64} rotation={80} />
+                  </div>
+                  <div className="relative z-10">
+                    <SakuraFlower size={56} rotation={-30} />
+                  </div>
+                  <div className="absolute bottom-6 left-7 z-15">
+                    <SakuraFlower size={38} rotation={20} />
+                  </div>
                 </div>
               </div>
 
