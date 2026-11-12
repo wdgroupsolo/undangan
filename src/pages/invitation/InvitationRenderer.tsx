@@ -22,7 +22,7 @@ import {
 } from './themes/JogloMaroonHeritageTheme';
 import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSaranganTheme';
 import { KualaLumpurHeritageTheme } from './themes/KualaLumpurHeritageTheme';
-import { FallingSakuraPetals, SakuraCoverFrame } from './components/SakuraBlossoms';
+import { FallingSakuraPetals, SakuraCoverFrame, SakuraInvitationSurround } from './components/SakuraBlossoms';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
 import { NirwanaSaranganEntrancePortal } from './components/NirwanaSaranganEntrancePortal';
 import { WeddingLoadingScreen } from '../../components/WeddingLoadingScreen';
@@ -822,7 +822,11 @@ export const InvitationRenderer: React.FC = () => {
             </div>
 
             {/* Centered Mobile/Portrait Cover Frame matching Screenshot 1 */}
-            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[700px] sm:max-h-[95vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-7 shadow-[0_25px_80px_rgba(180,90,110,0.3)] sm:border-[2px] sm:border-[#E8B5BE] bg-white">
+            <div className="relative z-10 flex items-center justify-center w-full h-[100dvh] sm:h-auto sm:w-auto">
+              {/* Botanical Sakura Surround in the White Outer Area ("Bunga Sakura Memutari Undangan") */}
+              <SakuraInvitationSurround />
+
+              <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[700px] sm:max-h-[95vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-7 shadow-[0_25px_80px_rgba(180,90,110,0.3)] sm:border-[2px] sm:border-[#E8B5BE] bg-white">
               
               {/* Cover Art Image Background */}
               <div className="absolute inset-0 z-0 pointer-events-none">
@@ -894,6 +898,7 @@ export const InvitationRenderer: React.FC = () => {
 
             </div>
           </div>
+        </div>
         ) : isNirwanaSarangan ? (
           /* Hotel Nirwana Sarangan Resort & Lakeview Cover */
           <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#0D2018] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
