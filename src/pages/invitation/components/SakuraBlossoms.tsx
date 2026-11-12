@@ -165,6 +165,25 @@ export const FallingSakuraPetals: React.FC<{ count?: number; className?: string 
             <stop offset="50%" stopColor="#2D6A4F" />
             <stop offset="100%" stopColor="#1B4332" />
           </linearGradient>
+          {/* Wood Branch Gradients: Available Everywhere */}
+          <linearGradient id="sakuraWoodBranchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4A1622" />
+            <stop offset="50%" stopColor="#73273A" />
+            <stop offset="100%" stopColor="#3E111C" />
+          </linearGradient>
+          <linearGradient id="sakuraWoodHighlight" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#8C3549" />
+            <stop offset="100%" stopColor="#541B28" />
+          </linearGradient>
+          <linearGradient id="global_sakura_wood_grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4A1622" />
+            <stop offset="50%" stopColor="#73273A" />
+            <stop offset="100%" stopColor="#3E111C" />
+          </linearGradient>
+          <linearGradient id="global_sakura_wood_highlight" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#8C3549" />
+            <stop offset="100%" stopColor="#541B28" />
+          </linearGradient>
         </defs>
       </svg>
 
@@ -448,7 +467,191 @@ export const SakuraCoverFrame: React.FC<{ className?: string }> = ({ className =
 };
 
 // =========================================================================
-// 5. SAKURA INVITATION SURROUND ("Bunga Sakura Memutari Undangan")
+// 5. VERTICAL BOTANICAL SAKURA BOUGH (Memanjang dari Atas Sampai Bawah)
+// Continuous elegant cherry branch with 7 blossom clusters extending to bottom
+// =========================================================================
+export const SakuraVerticalBough: React.FC<{
+  side?: 'left' | 'right';
+  className?: string;
+}> = ({ side = 'left', className = '' }) => {
+  const isLeft = side === 'left';
+
+  return (
+    <div 
+      className={`absolute top-0 -bottom-16 sm:-bottom-24 w-36 sm:w-44 pointer-events-none z-10 select-none ${className}`}
+      style={{
+        animation: isLeft ? 'sakura-bough-left-sway 7s ease-in-out infinite alternate' : 'sakura-bough-right-sway 7.8s ease-in-out infinite alternate',
+        transformOrigin: isLeft ? 'bottom left' : 'bottom right'
+      }}
+      aria-hidden="true"
+    >
+      <div className={`relative w-full h-full ${isLeft ? '' : 'scale-x-[-1] origin-center'}`}>
+        {/* Curving Natural Branch SVG Path running continuously from y: 15 to y: 915 */}
+        <svg 
+          viewBox="0 0 160 920" 
+          className="w-full h-full overflow-visible drop-shadow-[0_3px_10px_rgba(110,35,53,0.25)]" 
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient id="localSakuraWoodBranchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#4A1622" />
+              <stop offset="50%" stopColor="#73273A" />
+              <stop offset="100%" stopColor="#3E111C" />
+            </linearGradient>
+            <linearGradient id="localSakuraWoodHighlight" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#8C3549" />
+              <stop offset="100%" stopColor="#541B28" />
+            </linearGradient>
+          </defs>
+          {/* Main Curved Bough running continuously to the very bottom */}
+          <path
+            d="M120,915 C95,850 75,790 75,730 C72,670 45,610 42,530 C40,450 25,390 28,330 C32,270 35,210 40,150 C45,100 48,50 55,15"
+            fill="none"
+            stroke="url(#localSakuraWoodBranchGrad)"
+            strokeWidth="4.2"
+            strokeLinecap="round"
+          />
+          {/* Highlight ridge */}
+          <path
+            d="M118,910 C93,848 73,788 73,728 C70,668 43,608 40,528 C38,448 23,388 26,328 C30,268 33,208 38,148 C43,98 46,48 53,15"
+            fill="none"
+            stroke="url(#localSakuraWoodHighlight)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            opacity="0.85"
+          />
+
+          {/* Botanical Spurs branching along the entire height */}
+          <path d="M48,80 Q30,55 15,30" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="2.0" strokeLinecap="round" />
+          <path d="M40,150 Q25,120 10,95" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M35,210 Q18,230 8,255" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="2.0" strokeLinecap="round" />
+          <path d="M28,330 Q10,355 2,385" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M30,360 Q15,395 8,435" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M42,530 Q22,560 15,595" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="2.0" strokeLinecap="round" />
+          <path d="M72,670 Q45,700 36,740" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="2.4" strokeLinecap="round" />
+          <path d="M75,760 Q50,790 42,830" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M100,860 Q75,885 68,915" fill="none" stroke="url(#localSakuraWoodBranchGrad)" strokeWidth="2.2" strokeLinecap="round" />
+        </svg>
+
+      {/* --- Cluster 1: Top-High (top: 2%) --- */}
+      <div className="absolute top-[2%] left-6 flex items-center justify-center">
+        <div className="absolute -top-4 -left-4 pointer-events-none">
+          <SakuraLeaves size={64} rotation={-30} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={60} rotation={12} />
+        </div>
+        <div className="absolute -top-6 left-8 z-15">
+          <SakuraFlower size={42} rotation={-45} />
+        </div>
+        <div className="absolute top-10 -left-3 z-15">
+          <SakuraFlower size={36} rotation={60} />
+        </div>
+        <div className="absolute -top-8 left-3 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
+        <div className="absolute top-14 left-8 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
+      </div>
+
+      {/* --- Cluster 2: Upper-Mid (top: 18%) --- */}
+      <div className="absolute top-[18%] left-3 flex items-center justify-center">
+        <div className="absolute -top-3 -left-3 pointer-events-none">
+          <SakuraLeaves size={56} rotation={15} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={54} rotation={-15} />
+        </div>
+        <div className="absolute -bottom-4 left-6 z-15">
+          <SakuraFlower size={36} rotation={45} />
+        </div>
+        <div className="absolute -top-4 left-8 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
+      </div>
+
+      {/* --- Cluster 3: Center-Mid (top: 36%) --- */}
+      <div className="absolute top-[36%] -left-1 -translate-y-1/2 flex items-center justify-center">
+        <div className="absolute -top-4 -left-3 pointer-events-none">
+          <SakuraLeaves size={70} rotation={45} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={66} rotation={-20} />
+        </div>
+        <div className="absolute -bottom-6 left-8 z-15">
+          <SakuraFlower size={44} rotation={35} />
+        </div>
+        <div className="absolute -top-6 left-7 z-15">
+          <SakuraFlower size={38} rotation={80} />
+        </div>
+        <div 
+          className="absolute -left-5 top-2 w-2.5 h-2.5 rounded-full bg-[#FFD700] shadow-[0_0_8px_#FFD700]" 
+          style={{ animation: 'sakura-sparkle-pulse 2.8s infinite' }}
+        />
+      </div>
+
+      {/* --- Cluster 4: Lower-Mid (top: 54%) --- */}
+      <div className="absolute top-[54%] left-4 flex items-center justify-center">
+        <div className="absolute -top-2 -left-3 pointer-events-none">
+          <SakuraLeaves size={58} rotation={75} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={52} rotation={20} />
+        </div>
+        <div className="absolute -top-5 left-6 z-15">
+          <SakuraFlower size={34} rotation={-25} />
+        </div>
+        <div className="absolute bottom-5 left-7 z-15">
+          <SakuraFlower size={30} rotation={60} />
+        </div>
+      </div>
+
+      {/* --- Cluster 5: Low-Base (top: 70%) --- */}
+      <div className="absolute top-[70%] left-6 flex items-center justify-center">
+        <div className="absolute -bottom-2 -left-4 pointer-events-none">
+          <SakuraLeaves size={70} rotation={105} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={60} rotation={25} />
+        </div>
+        <div className="absolute -top-6 left-8 z-15">
+          <SakuraFlower size={42} rotation={-15} />
+        </div>
+        <div className="absolute bottom-6 left-10 z-15">
+          <SakuraFlower size={34} rotation={70} />
+        </div>
+      </div>
+
+      {/* --- Cluster 6: Bottom Ground (top: 84%) --- */}
+      <div className="absolute top-[84%] left-8 flex items-center justify-center">
+        <div className="absolute -bottom-3 -left-3 pointer-events-none">
+          <SakuraLeaves size={66} rotation={95} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={58} rotation={-18} />
+        </div>
+        <div className="absolute -top-5 left-7 z-15">
+          <SakuraFlower size={38} rotation={35} />
+        </div>
+        <div className="absolute bottom-5 left-8 z-15">
+          <SakuraFlower size={32} rotation={-40} />
+        </div>
+      </div>
+
+      {/* --- Cluster 7: Bottom Floor (bottom: 0% - Memanjang Sampe Bawah) --- */}
+      <div className="absolute bottom-[-10px] left-10 flex items-center justify-center">
+        <div className="absolute -bottom-2 -left-3 pointer-events-none">
+          <SakuraLeaves size={64} rotation={80} />
+        </div>
+        <div className="relative z-10">
+          <SakuraFlower size={56} rotation={30} />
+        </div>
+        <div className="absolute -top-6 left-7 z-15">
+          <SakuraFlower size={38} rotation={-20} />
+        </div>
+      </div>
+      </div>
+    </div>
+  );
+};
+
+// =========================================================================
+// 6. SAKURA INVITATION SURROUND ("Bunga Sakura Memutari Undangan")
 // Frames the 420px invitation card in the white background area on desktop
 // Includes botanical branches, lush floral clusters, and orbiting petals
 // =========================================================================
@@ -588,293 +791,35 @@ export const SakuraInvitationSurround: React.FC<{ className?: string }> = ({
       </svg>
 
       {/* ===================================================================
-          1. LEFT BOTANICAL SAKURA BOUGH (Extending into Left White Space)
+          1. LEFT BOTANICAL SAKURA BOUGH (Memanjang dari Atas Sampai Bawah)
           =================================================================== */}
-      <div 
-        className="absolute top-0 bottom-0 -left-16 sm:-left-24 md:-left-32 lg:-left-36 w-44 pointer-events-none z-10"
-        style={{
-          animation: 'sakura-bough-left-sway 7s ease-in-out infinite alternate',
-          transformOrigin: 'bottom left'
-        }}
-      >
-        {/* Curving Natural Branch SVG Path passing directly through floral clusters */}
-        <svg 
-          viewBox="0 0 160 760" 
-          className="w-full h-full overflow-visible drop-shadow-[0_3px_10px_rgba(110,35,53,0.25)]" 
-          preserveAspectRatio="none"
-        >
-          {/* Main Curved Bough running smoothly behind the flower nodes */}
-          <path
-            d="M100,755 C80,720 70,680 72,640 C65,580 40,540 45,490 C50,440 25,390 28,340 C32,290 35,230 40,180 C45,130 48,80 55,30"
-            fill="none"
-            stroke="url(#sakuraWoodBranchGrad)"
-            strokeWidth="3.6"
-            strokeLinecap="round"
-          />
-          {/* Highlight ridge */}
-          <path
-            d="M98,750 C78,718 68,678 70,638 C63,578 38,538 43,488 C48,438 23,388 26,338 C30,288 33,228 38,178 C43,128 46,78 53,30"
-            fill="none"
-            stroke="url(#sakuraWoodHighlight)"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            opacity="0.8"
-          />
-
-          {/* Twig shoots branching into each cluster */}
-          {/* Shoot 1: Top cluster twig reaching left */}
-          <path d="M48,90 Q30,60 15,35" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M40,180 Q25,140 10,110" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.6" strokeLinecap="round" />
-          
-          {/* Shoot 2: Upper-mid twig */}
-          <path d="M35,230 Q18,250 8,275" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.8" strokeLinecap="round" />
-          
-          {/* Shoot 3: Center twig arching into white space */}
-          <path d="M28,340 Q10,370 2,410" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="2.0" strokeLinecap="round" />
-          <path d="M30,370 Q15,410 8,450" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.6" strokeLinecap="round" />
-
-          {/* Shoot 4: Lower-mid twig */}
-          <path d="M45,490 Q25,520 18,555" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.8" strokeLinecap="round" />
-
-          {/* Shoot 5: Base twig */}
-          <path d="M72,640 Q45,670 38,710" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="2.2" strokeLinecap="round" />
-        </svg>
-
-        {/* --- 1.1 Top-High Left Cluster (top: 4%) --- */}
-        <div className="absolute top-[4%] left-6 flex items-center justify-center">
-          <div className="absolute -top-4 -left-4 pointer-events-none">
-            <SakuraLeaves size={64} rotation={-30} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={62} rotation={12} />
-          </div>
-          <div className="absolute -top-6 left-8 z-15">
-            <SakuraFlower size={42} rotation={-45} />
-          </div>
-          <div className="absolute top-10 -left-3 z-15">
-            <SakuraFlower size={36} rotation={60} />
-          </div>
-          {/* Cherry Buds */}
-          <div className="absolute -top-8 left-3 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
-          <div className="absolute top-14 left-8 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
-        </div>
-
-        {/* --- 1.2 Upper-Mid Left Cluster (top: 25%) --- */}
-        <div className="absolute top-[25%] left-3 flex items-center justify-center">
-          <div className="absolute -top-3 -left-3 pointer-events-none">
-            <SakuraLeaves size={56} rotation={15} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={54} rotation={-15} />
-          </div>
-          <div className="absolute -bottom-4 left-6 z-15">
-            <SakuraFlower size={36} rotation={45} />
-          </div>
-          <div className="absolute -top-4 left-8 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
-        </div>
-
-        {/* --- 1.3 Center-Mid Left Cluster (top: 48%) --- */}
-        <div className="absolute top-[48%] -left-1 -translate-y-1/2 flex items-center justify-center">
-          <div className="absolute -top-4 -left-3 pointer-events-none">
-            <SakuraLeaves size={70} rotation={45} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={66} rotation={-20} />
-          </div>
-          <div className="absolute -bottom-6 left-8 z-15">
-            <SakuraFlower size={44} rotation={35} />
-          </div>
-          <div className="absolute -top-6 left-7 z-15">
-            <SakuraFlower size={38} rotation={80} />
-          </div>
-          {/* Stardust */}
-          <div 
-            className="absolute -left-5 top-2 w-2.5 h-2.5 rounded-full bg-[#FFD700] shadow-[0_0_8px_#FFD700]" 
-            style={{ animation: 'sakura-sparkle-pulse 2.8s infinite' }}
-          />
-        </div>
-
-        {/* --- 1.4 Lower-Mid Left Cluster (top: 68%) --- */}
-        <div className="absolute top-[68%] left-4 flex items-center justify-center">
-          <div className="absolute -top-2 -left-3 pointer-events-none">
-            <SakuraLeaves size={58} rotation={75} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={52} rotation={20} />
-          </div>
-          <div className="absolute -top-5 left-6 z-15">
-            <SakuraFlower size={34} rotation={-25} />
-          </div>
-        </div>
-
-        {/* --- 1.5 Base Left Cluster (bottom: 7%) --- */}
-        <div className="absolute bottom-[7%] left-8 flex items-center justify-center">
-          <div className="absolute -bottom-2 -left-4 pointer-events-none">
-            <SakuraLeaves size={74} rotation={110} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={62} rotation={25} />
-          </div>
-          <div className="absolute -top-7 left-8 z-15">
-            <SakuraFlower size={42} rotation={-15} />
-          </div>
-          <div className="absolute bottom-6 left-10 z-15">
-            <SakuraFlower size={34} rotation={70} />
-          </div>
-        </div>
-      </div>
+      <SakuraVerticalBough side="left" className="-left-16 sm:-left-24 md:-left-32 lg:-left-36" />
 
       {/* ===================================================================
-          2. RIGHT BOTANICAL SAKURA BOUGH (Extending into Right White Space)
+          2. RIGHT BOTANICAL SAKURA BOUGH (Memanjang dari Atas Sampai Bawah)
           =================================================================== */}
-      <div 
-        className="absolute top-0 bottom-0 -right-16 sm:-right-24 md:-right-32 lg:-right-36 w-44 pointer-events-none z-10"
-        style={{
-          animation: 'sakura-bough-right-sway 7.8s ease-in-out infinite alternate',
-          transformOrigin: 'bottom right'
-        }}
-      >
-        {/* Curving Natural Branch SVG Path (Mirrored & varied with Spurs) */}
-        <svg 
-          viewBox="0 0 160 760" 
-          className="w-full h-full overflow-visible drop-shadow-[0_3px_10px_rgba(110,35,53,0.25)] scale-x-[-1]" 
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M100,755 C80,720 70,680 72,640 C65,580 40,540 45,490 C50,440 25,390 28,340 C32,290 35,230 40,180 C45,130 48,80 55,30"
-            fill="none"
-            stroke="url(#sakuraWoodBranchGrad)"
-            strokeWidth="3.6"
-            strokeLinecap="round"
-          />
-          <path
-            d="M98,750 C78,718 68,678 70,638 C63,578 38,538 43,488 C48,438 23,388 26,338 C30,288 33,228 38,178 C43,128 46,78 53,30"
-            fill="none"
-            stroke="url(#sakuraWoodHighlight)"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            opacity="0.8"
-          />
-
-          <path d="M48,90 Q30,60 15,35" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M40,180 Q25,140 10,110" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.6" strokeLinecap="round" />
-          <path d="M35,230 Q18,250 8,275" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M28,340 Q10,370 2,410" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="2.0" strokeLinecap="round" />
-          <path d="M30,370 Q15,410 8,450" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.6" strokeLinecap="round" />
-          <path d="M45,490 Q25,520 18,555" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M72,640 Q45,670 38,710" fill="none" stroke="url(#sakuraWoodBranchGrad)" strokeWidth="2.2" strokeLinecap="round" />
-        </svg>
-
-        {/* --- 2.1 Top-High Right Cluster (top: 5%) --- */}
-        <div className="absolute top-[5%] right-6 flex items-center justify-center scale-x-[-1]">
-          <div className="absolute -top-4 -left-4 pointer-events-none">
-            <SakuraLeaves size={64} rotation={-30} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={62} rotation={15} />
-          </div>
-          <div className="absolute -top-6 left-8 z-15">
-            <SakuraFlower size={42} rotation={-45} />
-          </div>
-          <div className="absolute top-10 -left-3 z-15">
-            <SakuraFlower size={36} rotation={60} />
-          </div>
-          <div className="absolute -top-8 left-3 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
-        </div>
-
-        {/* --- 2.2 Upper-Mid Right Cluster (top: 26%) --- */}
-        <div className="absolute top-[26%] right-3 flex items-center justify-center scale-x-[-1]">
-          <div className="absolute -top-3 -left-3 pointer-events-none">
-            <SakuraLeaves size={56} rotation={15} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={54} rotation={-15} />
-          </div>
-          <div className="absolute -bottom-4 left-6 z-15">
-            <SakuraFlower size={36} rotation={45} />
-          </div>
-          <div className="absolute -top-4 left-8 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
-        </div>
-
-        {/* --- 2.3 Center-Mid Right Cluster (top: 50%) --- */}
-        <div className="absolute top-[50%] -right-1 -translate-y-1/2 flex items-center justify-center scale-x-[-1]">
-          <div className="absolute -top-4 -left-3 pointer-events-none">
-            <SakuraLeaves size={70} rotation={45} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={66} rotation={-22} />
-          </div>
-          <div className="absolute -bottom-6 left-8 z-15">
-            <SakuraFlower size={44} rotation={35} />
-          </div>
-          <div className="absolute -top-6 left-7 z-15">
-            <SakuraFlower size={38} rotation={80} />
-          </div>
-          <div 
-            className="absolute -left-5 top-2 w-2.5 h-2.5 rounded-full bg-[#FFD700] shadow-[0_0_8px_#FFD700]" 
-            style={{ animation: 'sakura-sparkle-pulse 3.2s infinite' }}
-          />
-        </div>
-
-        {/* --- 2.4 Lower-Mid Right Cluster (top: 69%) --- */}
-        <div className="absolute top-[69%] right-4 flex items-center justify-center scale-x-[-1]">
-          <div className="absolute -top-2 -left-3 pointer-events-none">
-            <SakuraLeaves size={58} rotation={75} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={52} rotation={22} />
-          </div>
-          <div className="absolute -top-5 left-6 z-15">
-            <SakuraFlower size={34} rotation={-25} />
-          </div>
-        </div>
-
-        {/* --- 2.5 Base Right Cluster (bottom: 8%) --- */}
-        <div className="absolute bottom-[8%] right-8 flex items-center justify-center scale-x-[-1]">
-          <div className="absolute -bottom-2 -left-4 pointer-events-none">
-            <SakuraLeaves size={74} rotation={110} />
-          </div>
-          <div className="relative z-10">
-            <SakuraFlower size={60} rotation={28} />
-          </div>
-          <div className="absolute -top-7 left-8 z-15">
-            <SakuraFlower size={42} rotation={-15} />
-          </div>
-          <div className="absolute bottom-6 left-10 z-15">
-            <SakuraFlower size={34} rotation={70} />
-          </div>
-        </div>
-      </div>
+      <SakuraVerticalBough side="right" className="-right-16 sm:-right-24 md:-right-32 lg:-right-36" />
 
       {/* ===================================================================
           3. TOP ARCH CROWN (Connecting across the top in white space)
           =================================================================== */}
       <div className="absolute -top-9 sm:-top-12 inset-x-0 flex items-center justify-center pointer-events-none z-15">
         <div className="relative flex items-center justify-center gap-4 sm:gap-6">
-          {/* Left Wing Flower */}
           <div className="relative">
             <div className="absolute -top-3 -left-3 pointer-events-none">
               <SakuraLeaves size={52} rotation={-50} />
             </div>
             <SakuraFlower size={46} rotation={-15} />
           </div>
-
-          {/* Central-Left Flower */}
           <div className="relative -top-1">
             <SakuraFlower size={54} rotation={8} />
           </div>
-
-          {/* Central Golden Blossom Accent */}
           <div className="relative -top-2.5 flex items-center justify-center">
             <div className="w-4 h-4 rounded-full bg-gradient-to-br from-[#FFE066] to-[#E6A100] border-2 border-white shadow-[0_0_12px_rgba(255,224,102,0.95)]" />
           </div>
-
-          {/* Central-Right Flower */}
           <div className="relative -top-1 scale-x-[-1]">
             <SakuraFlower size={54} rotation={8} />
           </div>
-
-          {/* Right Wing Flower */}
           <div className="relative scale-x-[-1]">
             <div className="absolute -top-3 -left-3 pointer-events-none">
               <SakuraLeaves size={52} rotation={-50} />
@@ -1033,5 +978,3 @@ export const SakuraInvitationSurround: React.FC<{ className?: string }> = ({
     </div>
   );
 };
-
-
