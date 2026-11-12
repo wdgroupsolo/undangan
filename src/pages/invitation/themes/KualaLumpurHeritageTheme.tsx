@@ -15,6 +15,7 @@ export const ScrollReveal: React.FC<{
   duration?: number;
   className?: string;
   once?: boolean;
+  initialVisible?: boolean;
 }> = ({
   children,
   animation = 'fade-up',
@@ -22,20 +23,26 @@ export const ScrollReveal: React.FC<{
   duration = 800,
   className = '',
   once = false,
+  initialVisible = false,
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(initialVisible);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Check if element is already in viewport on mount
-    const rect = el.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < windowHeight * 0.95 && rect.bottom > 0) {
-      setIsVisible(true);
-    }
+    const checkVisibility = () => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top < windowHeight * 0.95 && rect.bottom > 0) {
+        setIsVisible(true);
+      }
+    };
+
+    // Check immediately and also after layout settles
+    checkVisibility();
+    const timer = setTimeout(checkVisibility, 80);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -44,19 +51,22 @@ export const ScrollReveal: React.FC<{
           if (once) {
             observer.unobserve(el);
           }
-        } else if (!once) {
+        } else if (!once && !initialVisible) {
           setIsVisible(false);
         }
       },
       {
-        threshold: 0.08,
-        rootMargin: '0px 0px -30px 0px'
+        threshold: 0.05,
+        rootMargin: '20px 0px 20px 0px'
       }
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [once]);
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [once, initialVisible]);
 
   const getAnimClass = () => {
     if (!isVisible) {
@@ -450,11 +460,11 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
               </div>
 
               {/* Botanical Floral Frame Container with Subtle Shimmer */}
-              <ScrollReveal animation="fade-up" duration={900} className="w-full flex justify-center">
+              <ScrollReveal animation="fade-up" duration={900} initialVisible={true} className="w-full flex justify-center">
                 <div className="relative w-full aspect-[9/13] max-w-[340px] sm:max-w-[380px] rounded-[36px] p-2.5 bg-gradient-to-b from-[#FFF5F7] via-[#FFFFFF] to-[#FFF0F3] shadow-[0_20px_50px_rgba(180,90,110,0.22)] border-2 border-[#E8BAC5] flex items-center justify-center">
                   
                   {/* ================= 1. ATAS KIRI (TOP LEFT) ================= */}
-                  <ScrollReveal animation="bloom-reveal" delay={120} duration={700} className="absolute -top-3 -left-3 pointer-events-none z-20 flex items-center justify-center">
+                  <ScrollReveal animation="bloom-reveal" delay={120} duration={700} initialVisible={true} className="absolute -top-3 -left-3 pointer-events-none z-20 flex items-center justify-center">
                     <div className="absolute -top-2 -left-2 pointer-events-none">
                       <SakuraLeaves size={62} rotation={-35} />
                     </div>
@@ -468,7 +478,7 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
                   </ScrollReveal>
 
                   {/* ================= 2. ATAS KANAN (TOP RIGHT) ================= */}
-                  <ScrollReveal animation="bloom-reveal" delay={160} duration={700} className="absolute -top-3 -right-3 pointer-events-none z-20 flex items-center justify-center scale-x-[-1]">
+                  <ScrollReveal animation="bloom-reveal" delay={160} duration={700} initialVisible={true} className="absolute -top-3 -right-3 pointer-events-none z-20 flex items-center justify-center scale-x-[-1]">
                     <div className="absolute -top-2 -left-2 pointer-events-none">
                       <SakuraLeaves size={62} rotation={-35} />
                     </div>
@@ -482,7 +492,7 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
                   </ScrollReveal>
 
                   {/* ================= 3. KIRI TENGAH (LEFT MIDDLE) ================= */}
-                  <ScrollReveal animation="bloom-reveal" delay={260} duration={700} className="absolute top-1/2 -left-4 sm:-left-5 -translate-y-1/2 pointer-events-none z-25 flex items-center justify-center">
+                  <ScrollReveal animation="bloom-reveal" delay={260} duration={700} initialVisible={true} className="absolute top-1/2 -left-4 sm:-left-5 -translate-y-1/2 pointer-events-none z-25 flex items-center justify-center">
                     <div className="absolute -top-3 -left-2 pointer-events-none">
                       <SakuraLeaves size={58} rotation={25} />
                     </div>
@@ -496,7 +506,7 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
                   </ScrollReveal>
 
                   {/* ================= 4. KANAN TENGAH (RIGHT MIDDLE) ================= */}
-                  <ScrollReveal animation="bloom-reveal" delay={300} duration={700} className="absolute top-1/2 -right-4 sm:-right-5 -translate-y-1/2 pointer-events-none z-25 flex items-center justify-center scale-x-[-1]">
+                  <ScrollReveal animation="bloom-reveal" delay={300} duration={700} initialVisible={true} className="absolute top-1/2 -right-4 sm:-right-5 -translate-y-1/2 pointer-events-none z-25 flex items-center justify-center scale-x-[-1]">
                     <div className="absolute -top-3 -left-2 pointer-events-none">
                       <SakuraLeaves size={58} rotation={25} />
                     </div>
@@ -529,7 +539,7 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
                   </div>
 
                   {/* ================= 5. BAWAH KIRI (BOTTOM LEFT) ================= */}
-                  <ScrollReveal animation="bloom-reveal" delay={380} duration={700} className="absolute -bottom-3 -left-3 pointer-events-none z-20 flex items-center justify-center">
+                  <ScrollReveal animation="bloom-reveal" delay={380} duration={700} initialVisible={true} className="absolute -bottom-3 -left-3 pointer-events-none z-20 flex items-center justify-center">
                     <div className="absolute -bottom-2 -left-2 pointer-events-none">
                       <SakuraLeaves size={64} rotation={80} />
                     </div>
@@ -542,7 +552,7 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
                   </ScrollReveal>
 
                   {/* ================= 6. BAWAH KANAN (BOTTOM RIGHT) ================= */}
-                  <ScrollReveal animation="bloom-reveal" delay={420} duration={700} className="absolute -bottom-3 -right-3 pointer-events-none z-20 flex items-center justify-center scale-x-[-1]">
+                  <ScrollReveal animation="bloom-reveal" delay={420} duration={700} initialVisible={true} className="absolute -bottom-3 -right-3 pointer-events-none z-20 flex items-center justify-center scale-x-[-1]">
                     <div className="absolute -bottom-2 -left-2 pointer-events-none">
                       <SakuraLeaves size={64} rotation={80} />
                     </div>
@@ -557,7 +567,7 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
               </ScrollReveal>
 
               {/* Scroll Down Indicator */}
-              <ScrollReveal animation="fade-up" delay={550} duration={700}>
+              <ScrollReveal animation="fade-up" delay={550} duration={700} initialVisible={true}>
                 <div 
                   onClick={() => scrollToSection('section-greeting', 'profile')}
                   className="mt-6 flex flex-col items-center gap-1.5 cursor-pointer text-[#8C4656] hover:text-[#5E1E2C] transition-colors"

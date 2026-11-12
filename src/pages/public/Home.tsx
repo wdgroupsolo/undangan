@@ -45,6 +45,19 @@ export const Home: React.FC = () => {
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
   const showcaseThemes = [
     {
+      id: 'kuala-lumpur-heritage',
+      name: 'Kuala Lumpur Heritage',
+      slug: 'kuala-lumpur-heritage',
+      badge: 'Tema Baru Malaysia',
+      couple: 'Hafiz & Syafika',
+      date: 'Sabtu, 28 November 2026',
+      preview: '/themes/kuala-lumpur-heritage/theme-preview.jpg',
+      videoUrl: '',
+      musicTitle: 'Bergema Sampai Selamanya - Nadhief Basalamah (Piano)',
+      musicUrl: '/music/bergema-sampai-selamanya.mp3',
+      demoUrl: '/invitation/hafiz-syafika?demo=true'
+    },
+    {
       id: 'nirwana-sarangan',
       name: 'Nirwana Sarangan Resort',
       slug: 'nirwana-sarangan',
@@ -180,7 +193,9 @@ export const Home: React.FC = () => {
       } catch {}
     }
 
-    const url = `/invitation/steven-bunga?theme=${demoSelectedTheme}&demo=true`;
+    const url = demoSelectedTheme === 'kuala-lumpur-heritage'
+      ? '/invitation/hafiz-syafika?demo=true'
+      : `/invitation/steven-bunga?theme=${demoSelectedTheme}&demo=true`;
     window.open(url, '_blank');
   };
 
@@ -298,6 +313,18 @@ export const Home: React.FC = () => {
   };
 
   const ALL_DEMO_THEMES = [
+    {
+      id: 'kuala-lumpur-heritage',
+      name: 'Kuala Lumpur Heritage',
+      category: 'traditional',
+      categoryLabel: 'Melayu & Heritage',
+      tag: 'Walimatulurus Modern Melayu',
+      preview: '/themes/kuala-lumpur-heritage/theme-preview.jpg',
+      demoUrl: '/invitation/hafiz-syafika?demo=true',
+      desc: lang === 'id'
+        ? 'Nuansa mewah Walimatulurus Melayu, kemegahan arsitektur Menara Petronas & ornamen songket emas.'
+        : 'Exclusive Malay Walimatulurus heritage, iconic Petronas Towers & royal golden songket motifs.'
+    },
     {
       id: 'nirwana-sarangan',
       name: 'Nirwana Sarangan Resort',
@@ -675,6 +702,7 @@ export const Home: React.FC = () => {
                       }}
                       className="w-full text-xs sm:text-sm text-stone-700 bg-transparent border-none p-0 focus:ring-0 font-medium cursor-pointer outline-none"
                     >
+                      <option value="kuala-lumpur-heritage">Kuala Lumpur Heritage (Walimatulurus)</option>
                       <option value="nirwana-sarangan">Nirwana Sarangan Resort</option>
                       <option value="royal-wayang-gold">Royal Wayang Gold (Keraton)</option>
                       <option value="joglo-maroon-heritage">Batak Maroon Heritage</option>
@@ -1242,7 +1270,7 @@ export const Home: React.FC = () => {
                   </span>
                   <div className="flex flex-wrap lg:flex-col gap-1.5">
                     {[
-                      { key: 'all', label: lang === 'id' ? 'Semua Tema (7)' : 'All Themes (7)' },
+                      { key: 'all', label: lang === 'id' ? `Semua Tema (${ALL_DEMO_THEMES.length})` : `All Themes (${ALL_DEMO_THEMES.length})` },
                       { key: 'traditional', label: lang === 'id' ? 'Adat & Keraton' : 'Traditional' },
                       { key: 'resort', label: lang === 'id' ? 'Resort & Danau' : 'Resort & Nature' },
                       { key: 'modern', label: lang === 'id' ? 'Modern & Botanical' : 'Modern & Botanical' },
