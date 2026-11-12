@@ -285,56 +285,137 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
             ========================================================================= */}
         <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen relative z-10 bg-[#FDF8F7] pb-24">
 
-          <div className="max-w-[460px] mx-auto min-h-screen bg-white/80 backdrop-blur-md shadow-[0_0_50px_rgba(180,90,110,0.15)] border-x border-[#F2D6DC]/60">
+          <div className="relative max-w-[460px] mx-auto min-h-screen bg-white/80 backdrop-blur-md shadow-[0_0_50px_rgba(180,90,110,0.15)] border-x border-[#F2D6DC]/60">
+
+            {/* Desktop Outer Flanking Botanical Sakura Boughs (Mengisi Area Putih di Kiri & Kanan pada Layar Desktop) */}
+            <div className="hidden lg:block pointer-events-none select-none" aria-hidden="true">
+              {/* Left Desktop Flank in the White Space */}
+              <div 
+                className="absolute top-12 -left-20 xl:-left-28 w-28 pointer-events-none z-20 flex flex-col items-center gap-14"
+                style={{ animation: 'sakura-bough-left-sway 7s ease-in-out infinite alternate' }}
+              >
+                <div className="relative">
+                  <div className="absolute -top-3 -left-3 pointer-events-none">
+                    <SakuraLeaves size={62} rotation={-30} />
+                  </div>
+                  <SakuraFlower size={58} rotation={15} />
+                  <div className="absolute -bottom-4 left-6 z-15">
+                    <SakuraFlower size={40} rotation={-45} />
+                  </div>
+                  <div className="absolute -top-5 left-5 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
+                </div>
+                <div className="relative mt-8">
+                  <div className="absolute -top-3 -left-2 pointer-events-none">
+                    <SakuraLeaves size={56} rotation={45} />
+                  </div>
+                  <SakuraFlower size={52} rotation={-20} />
+                  <div className="absolute -bottom-4 left-5 z-15">
+                    <SakuraFlower size={36} rotation={30} />
+                  </div>
+                </div>
+                <div className="relative mt-10">
+                  <div className="absolute -bottom-2 -left-3 pointer-events-none">
+                    <SakuraLeaves size={60} rotation={90} />
+                  </div>
+                  <SakuraFlower size={54} rotation={25} />
+                </div>
+              </div>
+
+              {/* Right Desktop Flank in the White Space */}
+              <div 
+                className="absolute top-12 -right-20 xl:-right-28 w-28 pointer-events-none z-20 flex flex-col items-center gap-14 scale-x-[-1]"
+                style={{ animation: 'sakura-bough-right-sway 7.5s ease-in-out infinite alternate' }}
+              >
+                <div className="relative">
+                  <div className="absolute -top-3 -left-3 pointer-events-none">
+                    <SakuraLeaves size={62} rotation={-30} />
+                  </div>
+                  <SakuraFlower size={58} rotation={15} />
+                  <div className="absolute -bottom-4 left-6 z-15">
+                    <SakuraFlower size={40} rotation={-45} />
+                  </div>
+                  <div className="absolute -top-5 left-5 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
+                </div>
+                <div className="relative mt-8">
+                  <div className="absolute -top-3 -left-2 pointer-events-none">
+                    <SakuraLeaves size={56} rotation={45} />
+                  </div>
+                  <SakuraFlower size={52} rotation={-20} />
+                  <div className="absolute -bottom-4 left-5 z-15">
+                    <SakuraFlower size={36} rotation={30} />
+                  </div>
+                </div>
+                <div className="relative mt-10">
+                  <div className="absolute -bottom-2 -left-3 pointer-events-none">
+                    <SakuraLeaves size={60} rotation={90} />
+                  </div>
+                  <SakuraFlower size={54} rotation={25} />
+                </div>
+              </div>
+            </div>
 
             {/* ========================================================
                 SECTION 1: HERO / OPENING CARD (Screenshot 2 Match)
                 ======================================================== */}
-            <section id="section-opening" className="relative min-h-[92vh] flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden">
+            <section id="section-opening" className="relative min-h-[92vh] flex flex-col items-center justify-center p-3 sm:p-6 overflow-hidden">
               
-              {/* Outer Flanking Sakura Sprays: Kiri & Kanan (Di Area Margin Luar Kartu pada Tablet & Desktop) */}
-              <div className="absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 pointer-events-none z-15 hidden sm:flex flex-col items-center gap-8">
+              {/* Outer Flanking Sakura Sprays: Kiri & Kanan (Di Area Putih Luar Kartu untuk Semua Ukuran Layar) */}
+              <div className="absolute left-1 sm:left-3 md:left-5 top-1/2 -translate-y-1/2 pointer-events-none z-15 flex flex-col items-center gap-8">
                 <div className="relative animate-pulse" style={{ animationDuration: '6s' }}>
                   <div className="absolute -top-3 -left-3 pointer-events-none">
-                    <SakuraLeaves size={58} rotation={-35} />
+                    <SakuraLeaves size={54} rotation={-35} />
                   </div>
-                  <SakuraFlower size={54} rotation={15} />
-                  <div className="absolute -bottom-4 left-6 z-15">
-                    <SakuraFlower size={36} rotation={-25} />
+                  <SakuraFlower size={50} rotation={15} />
+                  <div className="absolute -bottom-4 left-5 z-15">
+                    <SakuraFlower size={34} rotation={-25} />
                   </div>
-                  <div className="absolute -top-5 left-4 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
+                  <div className="absolute -top-4 left-4 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
                 </div>
                 <div className="relative scale-y-[-1] mt-6">
                   <div className="absolute -top-2 -left-3 pointer-events-none">
-                    <SakuraLeaves size={50} rotation={30} />
+                    <SakuraLeaves size={48} rotation={30} />
                   </div>
-                  <SakuraFlower size={44} rotation={-12} />
-                  <div className="absolute -top-3 left-6 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
+                  <SakuraFlower size={42} rotation={-12} />
+                  <div className="absolute -top-3 left-5 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
                 </div>
               </div>
 
-              <div className="absolute right-2 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 pointer-events-none z-15 hidden sm:flex flex-col items-center gap-8 scale-x-[-1]">
+              <div className="absolute right-1 sm:right-3 md:right-5 top-1/2 -translate-y-1/2 pointer-events-none z-15 flex flex-col items-center gap-8 scale-x-[-1]">
                 <div className="relative animate-pulse" style={{ animationDuration: '6.5s' }}>
                   <div className="absolute -top-3 -left-3 pointer-events-none">
-                    <SakuraLeaves size={58} rotation={-35} />
+                    <SakuraLeaves size={54} rotation={-35} />
                   </div>
-                  <SakuraFlower size={54} rotation={15} />
-                  <div className="absolute -bottom-4 left-6 z-15">
-                    <SakuraFlower size={36} rotation={-25} />
+                  <SakuraFlower size={50} rotation={15} />
+                  <div className="absolute -bottom-4 left-5 z-15">
+                    <SakuraFlower size={34} rotation={-25} />
                   </div>
-                  <div className="absolute -top-5 left-4 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
+                  <div className="absolute -top-4 left-4 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white shadow-xs" />
                 </div>
                 <div className="relative scale-y-[-1] mt-6">
                   <div className="absolute -top-2 -left-3 pointer-events-none">
-                    <SakuraLeaves size={50} rotation={30} />
+                    <SakuraLeaves size={48} rotation={30} />
                   </div>
-                  <SakuraFlower size={44} rotation={-12} />
-                  <div className="absolute -top-3 left-6 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
+                  <SakuraFlower size={42} rotation={-12} />
+                  <div className="absolute -top-3 left-5 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#FF758F] to-[#C9184A] border border-white" />
                 </div>
+              </div>
+
+              {/* Sudut Putih Atas & Bawah: Bunga Sakura Mengambang */}
+              <div className="absolute top-4 left-3 pointer-events-none z-10 hidden xs:block">
+                <SakuraFlower size={34} rotation={-20} />
+              </div>
+              <div className="absolute top-4 right-3 pointer-events-none z-10 hidden xs:block scale-x-[-1]">
+                <SakuraFlower size={34} rotation={-20} />
+              </div>
+              <div className="absolute bottom-16 left-3 pointer-events-none z-10 hidden xs:block">
+                <SakuraFlower size={32} rotation={35} />
+              </div>
+              <div className="absolute bottom-16 right-3 pointer-events-none z-10 hidden xs:block scale-x-[-1]">
+                <SakuraFlower size={32} rotation={35} />
               </div>
 
               {/* Botanical Floral Frame Container with Subtle Shimmer */}
-              <div className="relative w-full aspect-[9/13] max-w-[380px] rounded-[36px] p-2.5 bg-gradient-to-b from-[#FFF5F7] via-[#FFFFFF] to-[#FFF0F3] shadow-[0_20px_50px_rgba(180,90,110,0.22)] border-2 border-[#E8BAC5] flex items-center justify-center">
+              <div className="relative w-full aspect-[9/13] max-w-[340px] sm:max-w-[380px] rounded-[36px] p-2.5 bg-gradient-to-b from-[#FFF5F7] via-[#FFFFFF] to-[#FFF0F3] shadow-[0_20px_50px_rgba(180,90,110,0.22)] border-2 border-[#E8BAC5] flex items-center justify-center">
                 
                 {/* ================= 1. ATAS KIRI (TOP LEFT) ================= */}
                 <div className="absolute -top-3 -left-3 pointer-events-none z-20 flex items-center justify-center">
