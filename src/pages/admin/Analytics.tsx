@@ -188,78 +188,83 @@ export const Analytics: React.FC = () => {
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-16 font-jakarta">
       
-      {/* 1. Header & Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-stone-200/80 shadow-xs">
-        <div>
-          <div className="flex items-center space-x-2">
-            <span className="p-2 bg-primary-50 text-primary-800 rounded-xl">
-              <TrendingUp size={20} />
-            </span>
-            <h1 className="text-2xl font-extrabold text-stone-900 tracking-tight">Analytics &amp; Traffic Insights</h1>
-          </div>
-          <p className="text-xs sm:text-sm text-stone-500 mt-1">
-            Pantau statistik kunjungan, performa sebar undangan digital, dan konfirmasi kehadiran tamu real-time.
-          </p>
-        </div>
-
-        {/* Action Filters */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          {/* Dropdown Undangan */}
-          <div className="relative min-w-[200px]">
-            <select
-              value={selectedInvitationId}
-              onChange={(e) => setSelectedInvitationId(e.target.value)}
-              className="w-full bg-stone-50 hover:bg-stone-100 text-stone-800 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-primary-600 appearance-none pr-8 cursor-pointer transition-colors"
-            >
-              <option value="all">Semua Undangan (Global)</option>
-              {invitations.map((inv) => (
-                <option key={inv.id} value={inv.id}>
-                  {inv.title || inv.slug}
-                </option>
-              ))}
-            </select>
-            <ChevronDown size={14} className="absolute right-3 top-3.5 text-stone-400 pointer-events-none" />
+      {/* 1. Header & Controls Toolbar */}
+      <div className="bg-white p-6 rounded-3xl border border-stone-200/80 shadow-xs space-y-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-50 text-amber-800 border border-amber-200">
+                <Sparkles size={11} className="text-amber-600" />
+                <span>Real-Time Metrics</span>
+              </span>
+            </div>
+            <h1 className="text-2xl font-extrabold text-stone-900 tracking-tight flex items-center gap-2.5">
+              <span>Analytics &amp; Traffic Insights</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-stone-500 mt-1">
+              Pantau statistik kunjungan, performa sebar undangan digital, dan konfirmasi kehadiran tamu secara langsung.
+            </p>
           </div>
 
-          {/* Time Range Selector */}
-          <div className="flex items-center bg-stone-100 p-1 rounded-xl text-xs font-semibold text-stone-600">
-            {[
-              { label: '7 Hari', value: 7 },
-              { label: '14 Hari', value: 14 },
-              { label: '30 Hari', value: 30 }
-            ].map(range => (
-              <button
-                key={range.value}
-                onClick={() => setDaysRange(range.value)}
-                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  daysRange === range.value 
-                    ? 'bg-white text-stone-900 shadow-xs font-bold' 
-                    : 'hover:text-stone-900'
-                }`}
+          {/* Unified Controls Toolbar */}
+          <div className="flex flex-wrap items-center gap-2.5 self-start lg:self-auto">
+            {/* Filter Undangan Selector */}
+            <div className="relative min-w-[220px]">
+              <select
+                value={selectedInvitationId}
+                onChange={(e) => setSelectedInvitationId(e.target.value)}
+                className="w-full bg-stone-50 hover:bg-stone-100/80 text-stone-900 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-stone-200/90 focus:outline-none focus:ring-2 focus:ring-stone-400 appearance-none pr-8 cursor-pointer transition-colors"
               >
-                {range.label}
-              </button>
-            ))}
+                <option value="all">Semua Undangan (Global)</option>
+                {invitations.map((inv) => (
+                  <option key={inv.id} value={inv.id}>
+                    {inv.title || inv.slug}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-3.5 text-stone-400 pointer-events-none" />
+            </div>
+
+            {/* Time Range Pills */}
+            <div className="flex items-center bg-stone-100 p-1 rounded-xl text-xs font-semibold text-stone-600 border border-stone-200/60">
+              {[
+                { label: '7 Hari', value: 7 },
+                { label: '14 Hari', value: 14 },
+                { label: '30 Hari', value: 30 }
+              ].map(range => (
+                <button
+                  key={range.value}
+                  onClick={() => setDaysRange(range.value)}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    daysRange === range.value 
+                      ? 'bg-stone-900 text-white shadow-xs font-bold' 
+                      : 'hover:text-stone-900'
+                  }`}
+                >
+                  {range.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Refresh Button */}
+            <button
+              onClick={() => refetch()}
+              disabled={isFetching}
+              title="Muat ulang data analitik"
+              className="p-2.5 bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-xl border border-stone-200/90 transition-colors cursor-pointer disabled:opacity-50 flex items-center justify-center shadow-2xs"
+            >
+              <RefreshCw size={15} className={isFetching ? 'animate-spin text-amber-600' : ''} />
+            </button>
+
+            {/* Export CSV Button */}
+            <button
+              onClick={handleExportCSV}
+              className="flex items-center space-x-1.5 px-4 py-2.5 bg-stone-900 hover:bg-stone-800 active:bg-stone-950 text-white rounded-xl text-xs font-bold shadow-xs transition-all cursor-pointer"
+            >
+              <Download size={14} />
+              <span>Ekspor Laporan</span>
+            </button>
           </div>
-
-          {/* Refresh Button */}
-          <button
-            onClick={() => refetch()}
-            disabled={isFetching}
-            title="Muat ulang data"
-            className="p-2.5 bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-xl border border-stone-200 transition-colors cursor-pointer disabled:opacity-50"
-          >
-            <RefreshCw size={15} className={isFetching ? 'animate-spin text-primary-700' : ''} />
-          </button>
-
-          {/* Export CSV Button */}
-          <button
-            onClick={handleExportCSV}
-            className="flex items-center space-x-1.5 px-3.5 py-2.5 bg-primary-800 hover:bg-primary-900 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer"
-          >
-            <Download size={14} />
-            <span>Ekspor Laporan</span>
-          </button>
         </div>
       </div>
 
@@ -267,20 +272,20 @@ export const Analytics: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Card 1: Total Views */}
-        <div className="bg-white p-5 rounded-3xl border border-stone-200/80 shadow-xs relative overflow-hidden flex flex-col justify-between">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs relative overflow-hidden flex flex-col justify-between hover:border-amber-300 transition-all">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">Total Kunjungan</span>
-            <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
-              <Eye size={20} />
+            <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Total Kunjungan</span>
+            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-200 shadow-2xs">
+              <Eye size={18} />
             </div>
           </div>
-          <div className="mt-4">
-            <div className="text-3xl font-black text-stone-900">{analytics.totalViews.toLocaleString('id-ID')}</div>
-            <div className="flex items-center space-x-1.5 mt-1.5 text-[11px] text-emerald-600 font-semibold">
-              <TrendingUp size={13} />
+          <div className="mt-3">
+            <div className="text-3xl font-black text-stone-900 tracking-tight">{analytics.totalViews.toLocaleString('id-ID')}</div>
+            <div className="flex items-center space-x-1.5 mt-2 text-[11px] text-emerald-700 font-medium">
+              <TrendingUp size={13} className="text-emerald-600" />
               <span>
                 {analytics.totalViews > 0 
-                  ? `${analytics.totalViews} kunjungan tercatat real-time` 
+                  ? `${analytics.totalViews.toLocaleString('id-ID')} tayangan tercatat real-time` 
                   : 'Pelacakan otomatis aktif'}
               </span>
             </div>
@@ -288,19 +293,21 @@ export const Analytics: React.FC = () => {
         </div>
 
         {/* Card 2: Unique Visitors */}
-        <div className="bg-white p-5 rounded-3xl border border-stone-200/80 shadow-xs relative overflow-hidden flex flex-col justify-between">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs relative overflow-hidden flex flex-col justify-between hover:border-blue-300 transition-all">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">Tamu Unik Membuka</span>
-            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
-              <Users size={20} />
+            <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Tamu Unik Membuka</span>
+            <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-200 shadow-2xs">
+              <Users size={18} />
             </div>
           </div>
-          <div className="mt-4">
-            <div className="text-3xl font-black text-stone-900">{analytics.uniqueVisitors.toLocaleString('id-ID')}</div>
-            <div className="flex items-center space-x-1.5 mt-1.5 text-[11px] text-stone-500 font-medium">
+          <div className="mt-3">
+            <div className="text-3xl font-black text-stone-900 tracking-tight">{analytics.uniqueVisitors.toLocaleString('id-ID')}</div>
+            <div className="flex items-center space-x-1.5 mt-2 text-[11px] text-stone-600 font-medium">
               <span>
                 {analytics.uniqueVisitors > 0
-                  ? `Rasio pembaca ~${Math.round((analytics.uniqueVisitors / analytics.totalGuests) * 100)}% dari daftar tamu`
+                  ? (analytics.totalGuests > 0 && analytics.uniqueVisitors > analytics.totalGuests
+                      ? `Rata-rata ${(analytics.uniqueVisitors / analytics.totalGuests).toFixed(1)}x dibaca per tamu`
+                      : `~${Math.round((analytics.uniqueVisitors / (analytics.totalGuests || 1)) * 100)}% dari daftar tamu`)
                   : `Dari total ${analytics.totalGuests} tamu undangan`}
               </span>
             </div>
@@ -308,16 +315,16 @@ export const Analytics: React.FC = () => {
         </div>
 
         {/* Card 3: Response Rate */}
-        <div className="bg-white p-5 rounded-3xl border border-stone-200/80 shadow-xs relative overflow-hidden flex flex-col justify-between">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs relative overflow-hidden flex flex-col justify-between hover:border-emerald-300 transition-all">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">Tingkat Respons RSVP</span>
-            <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <CheckCircle2 size={20} />
+            <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Tingkat Respons RSVP</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200 shadow-2xs">
+              <CheckCircle2 size={18} />
             </div>
           </div>
-          <div className="mt-4">
-            <div className="text-3xl font-black text-stone-900">{analytics.responseRate}%</div>
-            <div className="flex items-center space-x-1.5 mt-1.5 text-[11px] text-emerald-700 font-medium">
+          <div className="mt-3">
+            <div className="text-3xl font-black text-stone-900 tracking-tight">{analytics.responseRate}%</div>
+            <div className="flex items-center space-x-1.5 mt-2 text-[11px] text-stone-600 font-medium">
               <span>
                 {analytics.rsvpResponseCount > 0
                   ? `${analytics.rsvpResponseCount} dari ${analytics.totalGuests} tamu terkonfirmasi`
@@ -328,18 +335,18 @@ export const Analytics: React.FC = () => {
         </div>
 
         {/* Card 4: Estimated Catering Pax */}
-        <div className="bg-white p-5 rounded-3xl border border-stone-200/80 shadow-xs relative overflow-hidden flex flex-col justify-between">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs relative overflow-hidden flex flex-col justify-between hover:border-rose-300 transition-all">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">Estimasi Pax Makanan</span>
-            <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center">
-              <UtensilsCrossed size={20} />
+            <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Estimasi Pax Makanan</span>
+            <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-200 shadow-2xs">
+              <UtensilsCrossed size={18} />
             </div>
           </div>
-          <div className="mt-4">
-            <div className="text-3xl font-black text-stone-900">
+          <div className="mt-3">
+            <div className="text-3xl font-black text-stone-900 tracking-tight">
               {analytics.estimatedPax} <span className="text-sm font-semibold text-stone-500">Porsi</span>
             </div>
-            <div className="flex items-center space-x-1.5 mt-1.5 text-[11px] text-stone-500 font-medium">
+            <div className="flex items-center space-x-1.5 mt-2 text-[11px] text-stone-500 font-medium">
               <span>
                 {analytics.attendingCount > 0
                   ? `Berdasarkan ${analytics.attendingCount} konfirmasi hadir + pendamping`
@@ -360,17 +367,17 @@ export const Analytics: React.FC = () => {
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
                 <h2 className="text-base font-bold text-stone-900">Tren Kunjungan Undangan Harian</h2>
-                <p className="text-xs text-stone-500 mt-0.5">Grafik dinamika penonton ({daysRange} hari terakhir)</p>
+                <p className="text-xs text-stone-500 mt-0.5">Grafik dinamika tayangan ({daysRange} hari terakhir)</p>
               </div>
 
               {/* Legend */}
               <div className="flex items-center space-x-4 text-xs font-semibold">
                 <div className="flex items-center space-x-1.5">
-                  <span className="w-3 h-3 rounded-full bg-primary-800" />
+                  <span className="w-3 h-3 rounded-full bg-amber-600 shadow-2xs" />
                   <span className="text-stone-700">Total Kunjungan</span>
                 </div>
                 <div className="flex items-center space-x-1.5">
-                  <span className="w-3 h-3 rounded-full bg-amber-500" />
+                  <span className="w-3 h-3 rounded-full bg-blue-500 shadow-2xs" />
                   <span className="text-stone-700">Tamu Unik</span>
                 </div>
               </div>
@@ -385,8 +392,8 @@ export const Analytics: React.FC = () => {
                 >
                   <defs>
                     <linearGradient id="viewsAreaGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#7c2d12" stopOpacity="0.25" />
-                      <stop offset="100%" stopColor="#7c2d12" stopOpacity="0.00" />
+                      <stop offset="0%" stopColor="#d97706" stopOpacity="0.22" />
+                      <stop offset="100%" stopColor="#d97706" stopOpacity="0.00" />
                     </linearGradient>
                   </defs>
 
@@ -425,14 +432,14 @@ export const Analytics: React.FC = () => {
                   <path
                     d={chartMetrics.viewsPath}
                     fill="none"
-                    stroke="#7c2d12"
+                    stroke="#d97706"
                     strokeWidth="3"
                     strokeLinecap="round"
                   />
                   <path
                     d={chartMetrics.uniquePath}
                     fill="none"
-                    stroke="#f59e0b"
+                    stroke="#3b82f6"
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeDasharray="none"
@@ -450,7 +457,7 @@ export const Analytics: React.FC = () => {
                             y1={chartMetrics.paddingY}
                             x2={pt.x}
                             y2={chartMetrics.height - chartMetrics.paddingY}
-                            stroke="#7c2d12"
+                            stroke="#d97706"
                             strokeWidth="1.5"
                             strokeDasharray="3 3"
                             opacity="0.6"
@@ -462,7 +469,7 @@ export const Analytics: React.FC = () => {
                           cx={pt.x}
                           cy={pt.y}
                           r={isHovered ? 6 : 4}
-                          fill="#7c2d12"
+                          fill="#d97706"
                           stroke="#ffffff"
                           strokeWidth="2"
                           className="transition-all"
@@ -473,7 +480,7 @@ export const Analytics: React.FC = () => {
                           cx={chartMetrics.pointsUnique[idx].x}
                           cy={chartMetrics.pointsUnique[idx].y}
                           r={isHovered ? 5 : 3.5}
-                          fill="#f59e0b"
+                          fill="#3b82f6"
                           stroke="#ffffff"
                           strokeWidth="2"
                           className="transition-all"
@@ -507,11 +514,11 @@ export const Analytics: React.FC = () => {
                     </div>
                     <div className="flex justify-between gap-4">
                       <span className="text-stone-300">Total Kunjungan:</span>
-                      <span className="font-bold text-white">{chartMetrics.pointsViews[hoveredPointIndex].views}</span>
+                      <span className="font-bold text-amber-400">{chartMetrics.pointsViews[hoveredPointIndex].views}</span>
                     </div>
                     <div className="flex justify-between gap-4">
                       <span className="text-stone-300">Tamu Unik:</span>
-                      <span className="font-bold text-amber-400">{chartMetrics.pointsViews[hoveredPointIndex].uniqueVisitors}</span>
+                      <span className="font-bold text-blue-400">{chartMetrics.pointsViews[hoveredPointIndex].uniqueVisitors}</span>
                     </div>
                   </div>
                 )}
@@ -533,12 +540,14 @@ export const Analytics: React.FC = () => {
         <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-stone-200/80 shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between">
-              <h2 className="text-base font-bold text-stone-900">Konfirmasi RSVP</h2>
-              <span className="text-xs bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-md">
+              <div>
+                <h2 className="text-base font-bold text-stone-900">Konfirmasi RSVP</h2>
+                <p className="text-xs text-stone-500 mt-0.5">Komposisi kehadiran tamu undangan</p>
+              </div>
+              <span className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold px-2.5 py-1 rounded-full">
                 {analytics.responseRate}% Respon
               </span>
             </div>
-            <p className="text-xs text-stone-500 mt-0.5">Komposisi kehadiran tamu undangan</p>
 
             {/* Donut SVG */}
             <div className="relative my-6 flex items-center justify-center">
@@ -563,29 +572,29 @@ export const Analytics: React.FC = () => {
 
               {/* Donut Center Info */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span className="text-2xl font-black text-stone-900">{analytics.totalGuests}</span>
+                <span className="text-2xl font-black text-stone-900 tracking-tight">{analytics.totalGuests}</span>
                 <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Total Tamu</span>
               </div>
             </div>
 
             {/* Donut Legends List */}
-            <div className="space-y-2 pt-1 border-t border-stone-100">
+            <div className="space-y-1.5 pt-2 border-t border-stone-100">
               {donutSegments.map((seg) => (
                 <div
                   key={seg.key}
                   onMouseEnter={() => setHoveredDonutSegment(seg.key)}
                   onMouseLeave={() => setHoveredDonutSegment(null)}
-                  className={`flex items-center justify-between p-1.5 rounded-xl text-xs transition-colors cursor-pointer ${
-                    hoveredDonutSegment === seg.key ? 'bg-stone-50 font-bold' : ''
+                  className={`flex items-center justify-between p-2 rounded-xl text-xs transition-colors cursor-pointer ${
+                    hoveredDonutSegment === seg.key ? 'bg-stone-100/80 font-bold' : 'hover:bg-stone-50'
                   }`}
                 >
                   <div className="flex items-center space-x-2">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: seg.color }} />
+                    <span className="w-2.5 h-2.5 rounded-full shadow-2xs" style={{ backgroundColor: seg.color }} />
                     <span className="text-stone-700">{seg.label}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="font-bold text-stone-900">{seg.count} Tamu</span>
-                    <span className="text-[10px] text-stone-400">({seg.percentage}%)</span>
+                    <span className="text-[10px] text-stone-400 font-medium">({seg.percentage}%)</span>
                   </div>
                 </div>
               ))}
