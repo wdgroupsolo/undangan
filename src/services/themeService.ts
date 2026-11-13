@@ -6,6 +6,7 @@ export interface Theme {
   slug: string;
   description: string | null;
   category: string | null;
+  price?: number;
   preview_image: string | null;
   thumbnail: string | null;
   status: 'active' | 'inactive';
@@ -16,7 +17,34 @@ export interface Theme {
   rating?: string;
 }
 
+export const THEME_PRICE_MAP: Record<string, number> = {
+  'noir-gold': 50000,
+  'noir-gold-elegance': 50000,
+  'kuala-lumpur-heritage': 70000,
+  'kuala-lumpur': 70000,
+  'hafiz-syafika': 70000,
+  'nirwana-sarangan': 150000,
+  'hotel-nirwana': 150000,
+  'telaga-sarangan': 150000,
+  'joglo-maroon-heritage': 150000,
+  'joglo-maroon': 150000,
+  'joglo-bloom': 150000,
+  'pendopo-maroon': 150000,
+  'royal-wayang-gold': 150000,
+  'royal-wayang': 150000,
+  'joglo-wayang': 150000,
+  'javanese-heritage': 150000,
+  'jawa-klasik': 150000,
+  'borobudur': 150000,
+  'split-floral': 150000,
+  'secret-garden': 150000,
+  'maroon-gold': 150000,
+  'royal-elegance': 150000,
+};
+
 export const THEME_SCREENSHOT_MAP: Record<string, string> = {
+  'noir-gold': '/themes/noir-gold/theme-preview.jpg',
+  'noir-gold-elegance': '/themes/noir-gold/theme-preview.jpg',
   'joglo-maroon-heritage': '/themes/joglo-maroon-theme-preview.png',
   'joglo-maroon': '/themes/joglo-maroon-theme-preview.png',
   'joglo-bloom': '/themes/joglo-maroon-theme-preview.png',
@@ -40,14 +68,13 @@ export const THEME_SCREENSHOT_MAP: Record<string, string> = {
 
 export const enhanceThemeWithScreenshot = (theme: any): Theme => {
   const screenshot = THEME_SCREENSHOT_MAP[theme.slug];
-  if (screenshot) {
-    return {
-      ...theme,
-      preview_image: screenshot,
-      thumbnail: screenshot,
-    };
-  }
-  return theme as Theme;
+  const price = typeof theme.price === 'number' && !isNaN(theme.price) ? theme.price : (THEME_PRICE_MAP[theme.slug] || 150000);
+  return {
+    ...theme,
+    price,
+    preview_image: screenshot || theme.preview_image,
+    thumbnail: screenshot || theme.thumbnail,
+  };
 };
 
 // Masterpiece Theme: Kuala Lumpur Heritage (Walimatulurus Modern Melayu)
@@ -57,6 +84,7 @@ export const REAL_KUALA_LUMPUR_HERITAGE_THEME: Theme = {
   slug: 'kuala-lumpur-heritage',
   description: 'Tema pernikahan eksklusif bernuansa Modern Malay Heritage / Walimatulurus berlatar kemegahan arsitektur Kuala Lumpur (Menara Kembar Petronas & Bangunan Sultan Abdul Samad), gerbang ukiran Songket emas, dan keanggunan Bunga Raya.',
   category: 'Modern & Cultural',
+  price: 70000,
   preview_image: '/themes/kuala-lumpur-heritage/theme-preview.jpg',
   thumbnail: '/themes/kuala-lumpur-heritage/theme-preview.jpg',
   status: 'active',
@@ -87,6 +115,7 @@ export const REAL_NOIR_GOLD_THEME: Theme = {
   slug: 'noir-gold',
   description: 'Tema pernikahan mewah harga terjangkau bernuansa hitam obsidian & emas champagne, double hairline border berkelas, segel lilin monogram royal, dan amplop digital VIP Black Gold.',
   category: 'Luxury Starter (Rp 50.000)',
+  price: 50000,
   preview_image: '/themes/noir-gold/theme-preview.jpg',
   thumbnail: '/themes/noir-gold/theme-preview.jpg',
   status: 'active',
@@ -117,6 +146,7 @@ export const REAL_NIRWANA_SARANGAN_THEME: Theme = {
   slug: 'nirwana-sarangan',
   description: 'Tema pernikahan eksklusif bernuansa pemandangan Telaga Sarangan yang sejuk dan menenangkan di lereng Gunung Lawu, berlatar kemegahan Hotel Nirwana Sarangan, riak air danau, kabut pegunungan, dan sentuhan intimate wedding & wisata.',
   category: 'Resort & Nature',
+  price: 150000,
   preview_image: '/themes/nirwana-sarangan/nirwana-theme-preview.png',
   thumbnail: '/themes/nirwana-sarangan/nirwana-theme-preview.png',
   status: 'active',
@@ -147,6 +177,7 @@ export const REAL_JOGLO_MAROON_THEME: Theme = {
   slug: 'joglo-maroon-heritage',
   description: 'Tema pernikahan adat Batak bernuansa Rumah Adat Bolon megah berhias ukiran Gorga dan hamparan bunga merah marun, diperkaya aksen tenun Ulos, kupu-kupu beterbangan, dan suasana sakral penuh kehormatan.',
   category: 'Traditional & Heritage',
+  price: 150000,
   preview_image: '/themes/joglo-maroon-theme-preview.png',
   thumbnail: '/themes/joglo-maroon-theme-preview.png',
   status: 'active',
@@ -177,6 +208,7 @@ export const REAL_ROYAL_WAYANG_THEME: Theme = {
   slug: 'royal-wayang-gold',
   description: 'Tema pernikahan agung bernuansa Keraton Jawa & Pendopo Joglo malam hari, diperkaya siluet wayang Kamajaya & Kamaratih berlapis emas, ornamen floral klasik, serta alunan sakral khas Nusantara.',
   category: 'Traditional & Heritage',
+  price: 150000,
   preview_image: '/themes/royal-wayang-theme-preview.png',
   thumbnail: '/themes/royal-wayang-theme-preview.png',
   status: 'active',
@@ -205,6 +237,7 @@ export const REAL_JAVANESE_HERITAGE_THEME: Theme = {
   slug: 'javanese-heritage',
   description: 'Tema tradisional bernuansa Candi Borobudur, ornamen batik klasik, paduan warna terracotta & merah marun, serta rangkaian anggrek vintage nusantara.',
   category: 'Traditional & Heritage',
+  price: 150000,
   preview_image: '/themes/javanese-heritage-theme-preview.png',
   thumbnail: '/themes/javanese-heritage-theme-preview.png',
   status: 'active',
@@ -228,6 +261,7 @@ export const REAL_SPLIT_FLORAL_THEME: Theme = {
   slug: 'split-floral',
   description: 'Tema split screen klasik dengan ornamen floral, bingkai lengkung vintage, entrance video arch, dan alunan saxophone romantis.',
   category: 'Elegant & Classic',
+  price: 150000,
   preview_image: '/themes/split-floral-theme-preview.png',
   thumbnail: '/themes/split-floral-theme-preview.png',
   status: 'active',
@@ -245,6 +279,7 @@ export const REAL_SECRET_GARDEN_THEME: Theme = {
   slug: 'secret-garden',
   description: 'Tema bernuansa taman romantis dusty rose & earthy mauve, bingkai foto lengkung oval, video entrance sinematik, dan ornamen bunga melayang.',
   category: 'Botanical & Garden',
+  price: 150000,
   preview_image: '/themes/secret-garden-theme-preview.png',
   thumbnail: '/themes/secret-garden-theme-preview.png',
   status: 'active',
@@ -261,6 +296,7 @@ export const REAL_ROYAL_ELEGANCE_THEME: Theme = {
   slug: 'royal-elegance',
   description: 'Tema elegan dengan cover layar penuh, gradien warna gelap maroon, dan sentuhan emas eksklusif.',
   category: 'Elegant & Classic',
+  price: 150000,
   preview_image: '/themes/royal-elegance-theme-preview.png',
   thumbnail: '/themes/royal-elegance-theme-preview.png',
   status: 'active',
@@ -277,6 +313,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
   slug: 'maroon-gold',
   description: 'Tema klasik mewah bernuansa merah marun & emas kerajaan, bingkai oval vintage, video entrance gerbang istana, dan pemandangan alam romantis.',
   category: 'Royal & Classic',
+  price: 150000,
   preview_image: '/themes/maroon-gold-theme-preview.png',
   thumbnail: '/themes/maroon-gold-theme-preview.png',
   status: 'active',
@@ -482,13 +519,21 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
+      if (!existingSlugs.has('noir-gold')) {
+        merged.unshift(REAL_NOIR_GOLD_THEME);
+      }
+
+      if (!existingSlugs.has('kuala-lumpur-heritage')) {
+        merged.unshift(REAL_KUALA_LUMPUR_HERITAGE_THEME);
+      }
+
       if (!existingSlugs.has('nirwana-sarangan')) {
-        merged.unshift(REAL_NIRWANA_SARANGAN_THEME);
+        merged.splice(1, 0, REAL_NIRWANA_SARANGAN_THEME);
       } else {
         const idx = merged.findIndex((t: any) => t.slug === 'nirwana-sarangan');
-        if (idx > 0) {
+        if (idx > 1) {
           const [nirwana] = merged.splice(idx, 1);
-          merged.unshift(nirwana);
+          merged.splice(1, 0, nirwana);
         }
       }
 
@@ -619,6 +664,9 @@ export const themeService = {
   },
 
   async getTheme(id: string): Promise<Theme> {
+    if (id === REAL_NOIR_GOLD_THEME.id || id === 'noir-gold' || id === 'noir-gold-elegance') {
+      return REAL_NOIR_GOLD_THEME;
+    }
     if (id === REAL_KUALA_LUMPUR_HERITAGE_THEME.id || id === 'kuala-lumpur-heritage' || id === 'kuala-lumpur' || id === 'hafiz-syafika') {
       return REAL_KUALA_LUMPUR_HERITAGE_THEME;
     }
@@ -659,6 +707,9 @@ export const themeService = {
   },
 
   async getThemeBySlug(slug: string): Promise<Theme> {
+    if (slug === 'noir-gold' || slug === 'noir-gold-elegance') {
+      return REAL_NOIR_GOLD_THEME;
+    }
     if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika') {
       return REAL_KUALA_LUMPUR_HERITAGE_THEME;
     }

@@ -277,7 +277,16 @@ export const InvitationEditor: React.FC = () => {
                           )}
                         </div>
                         <h3 className="font-bold text-gray-900 text-sm">{theme.name}</h3>
-                        <p className="text-xs text-gray-500 mt-1">{theme.category}</p>
+                        <div className="flex items-center justify-between mt-1">
+                          <p className="text-xs text-gray-500">{theme.category}</p>
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                            (theme.price || 150000) === 50000 ? 'bg-amber-100 text-amber-800 border border-amber-200' :
+                            (theme.price || 150000) === 70000 ? 'bg-rose-100 text-rose-800 border border-rose-200' :
+                            'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                          }`}>
+                            Rp {(theme.price || 150000).toLocaleString('id-ID')}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -357,7 +366,16 @@ export const InvitationEditor: React.FC = () => {
                           )}
                         </div>
                         <h3 className="font-bold text-gray-900 text-sm">{theme.name}</h3>
-                        <p className="text-xs text-gray-500 mt-1">{theme.category}</p>
+                        <div className="flex items-center justify-between mt-1">
+                          <p className="text-xs text-gray-500">{theme.category}</p>
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                            (theme.price || 150000) === 50000 ? 'bg-amber-100 text-amber-800 border border-amber-200' :
+                            (theme.price || 150000) === 70000 ? 'bg-rose-100 text-rose-800 border border-rose-200' :
+                            'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                          }`}>
+                            Rp {(theme.price || 150000).toLocaleString('id-ID')}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
