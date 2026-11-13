@@ -42,6 +42,16 @@ export const THEME_PRICE_MAP: Record<string, number> = {
   'royal-elegance': 150000,
 };
 
+export const resolveThemePrice = (theme: { slug?: string; price?: number | null }): number => {
+  if (typeof theme.price === 'number' && !isNaN(theme.price) && theme.price > 0) {
+    return theme.price;
+  }
+  const slug = (theme.slug || '').toLowerCase();
+  if (slug === 'noir-gold' || slug === 'noir-gold-elegance') return 50000;
+  if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika') return 70000;
+  return THEME_PRICE_MAP[slug] || 150000;
+};
+
 export const THEME_SCREENSHOT_MAP: Record<string, string> = {
   'noir-gold': '/themes/noir-gold/theme-preview.jpg',
   'noir-gold-elegance': '/themes/noir-gold/theme-preview.jpg',
@@ -68,7 +78,7 @@ export const THEME_SCREENSHOT_MAP: Record<string, string> = {
 
 export const enhanceThemeWithScreenshot = (theme: any): Theme => {
   const screenshot = THEME_SCREENSHOT_MAP[theme.slug];
-  const price = typeof theme.price === 'number' && !isNaN(theme.price) ? theme.price : (THEME_PRICE_MAP[theme.slug] || 150000);
+  const price = resolveThemePrice(theme);
   return {
     ...theme,
     price,
