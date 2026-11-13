@@ -1,21 +1,26 @@
 import { supabase } from '../lib/supabase';
+import { themeService } from './themeService';
 
 export const adminService = {
   async getDashboardStats() {
-    const [clientsRes, invRes, themesRes, rsvpsRes, recentInvRes, recentClientsRes] = await Promise.all([
+    const [clientsRes, invRes, activeThemesList, rsvpsRes, recentInvRes, recentClientsRes] = await Promise.all([
       supabase.from('clients').select('*', { count: 'exact', head: true }),
       supabase.from('invitations').select('*', { count: 'exact', head: true }),
-      supabase.from('themes').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+      themeService.getActiveThemes().catch(() => []),
       supabase.from('rsvps').select('*', { count: 'exact', head: true }),
       supabase.from('invitations').select('id, title, slug, status, client:clients(name)').order('created_at', { ascending: false }).limit(5),
       supabase.from('clients').select('id, name, email, created_at').order('created_at', { ascending: false }).limit(5)
     ]);
 
+    const activeThemesCount = Array.isArray(activeThemesList) && activeThemesList.length > 0 
+      ? activeThemesList.length 
+      : 9;
+
     return {
       stats: {
         totalClients: clientsRes.count || 1,
         totalInvitations: invRes.count || 1,
-        activeThemes: themesRes.count ?? 5,
+        activeThemes: activeThemesCount,
         totalRsvps: rsvpsRes.count || 0,
       },
       recentInvitations: recentInvRes.data && recentInvRes.data.length > 0 ? recentInvRes.data : [
