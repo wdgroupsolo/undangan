@@ -8,12 +8,10 @@ import {
   Edit2, 
   Trash2, 
   Tag, 
-  ArrowUpDown, 
   ExternalLink, 
   Palette, 
   Sparkles, 
   Crown, 
-  CheckCircle2, 
   X 
 } from 'lucide-react';
 import { format } from 'date-fns';
@@ -22,7 +20,6 @@ import { useToast } from '../../context/ToastContext';
 export const Themes: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [priceFilter, setPriceFilter] = useState<'all' | '50000' | '70000' | '150000'>('all');
-  const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'name-asc'>('default');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
   const queryClient = useQueryClient();
@@ -82,15 +79,8 @@ export const Themes: React.FC = () => {
       if (priceFilter === '150000') return price >= 150000;
 
       return true;
-    }).sort((a, b) => {
-      const priceA = resolveThemePrice(a);
-      const priceB = resolveThemePrice(b);
-      if (sortBy === 'price-asc') return priceA - priceB;
-      if (sortBy === 'price-desc') return priceB - priceA;
-      if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
-      return 0;
     });
-  }, [themes, searchTerm, priceFilter, sortBy]);
+  }, [themes, searchTerm, priceFilter]);
 
   const getDemoUrl = (theme: Theme) => {
     if (theme.slug === 'noir-gold' || theme.slug === 'noir-gold-elegance') {
@@ -220,99 +210,7 @@ export const Themes: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-xs border border-gray-200/80 overflow-hidden">
         
         {/* Controls Bar */}
-        <div className="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 space-y-3">
-          {/* Top row: Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-1.5 p-1 bg-gray-200/60 rounded-xl">
-              <button
-                type="button"
-                onClick={() => setPriceFilter('all')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-                  priceFilter === 'all'
-                    ? 'bg-white text-gray-900 shadow-xs'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <span>Semua Harga</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                  priceFilter === 'all' ? 'bg-gray-900 text-white' : 'bg-gray-300 text-gray-700'
-                }`}>
-                  {counts.all}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPriceFilter('50000')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-                  priceFilter === '50000'
-                    ? 'bg-amber-600 text-white shadow-xs'
-                    : 'text-amber-900 hover:bg-amber-100/60'
-                }`}
-              >
-                <span>50k (Noir Gold)</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                  priceFilter === '50000' ? 'bg-amber-800 text-white' : 'bg-amber-200 text-amber-900'
-                }`}>
-                  {counts.p50k}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPriceFilter('70000')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-                  priceFilter === '70000'
-                    ? 'bg-rose-600 text-white shadow-xs'
-                    : 'text-rose-900 hover:bg-rose-100/60'
-                }`}
-              >
-                <span>70k (Kuala Lumpur)</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                  priceFilter === '70000' ? 'bg-rose-800 text-white' : 'bg-rose-200 text-rose-900'
-                }`}>
-                  {counts.p70k}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPriceFilter('150000')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-                  priceFilter === '150000'
-                    ? 'bg-emerald-700 text-white shadow-xs'
-                    : 'text-emerald-900 hover:bg-emerald-100/60'
-                }`}
-              >
-                <span>150k+ (Masterpiece)</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                  priceFilter === '150000' ? 'bg-emerald-900 text-white' : 'bg-emerald-200 text-emerald-900'
-                }`}>
-                  {counts.p150k}
-                </span>
-              </button>
-            </div>
-
-            {/* Sort Dropdown */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 font-medium hidden sm:inline flex items-center gap-1">
-                <ArrowUpDown size={13} />
-                <span>Urutkan:</span>
-              </span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="text-xs border border-gray-300 rounded-lg px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer shadow-2xs"
-              >
-                <option value="default">Rekomendasi</option>
-                <option value="price-asc">Harga: Termurah (50k → 150k)</option>
-                <option value="price-desc">Harga: Termahal (150k → 50k)</option>
-                <option value="name-asc">Nama Tema (A → Z)</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Bottom row: Search bar */}
+        <div className="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
           <div className="flex items-center gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={17} />
@@ -326,7 +224,7 @@ export const Themes: React.FC = () => {
               {searchTerm && (
                 <button 
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
                 >
                   <X size={15} />
                 </button>
@@ -337,9 +235,10 @@ export const Themes: React.FC = () => {
               <button
                 type="button"
                 onClick={() => { setPriceFilter('all'); setSearchTerm(''); }}
-                className="text-xs text-primary-600 hover:text-primary-800 font-semibold px-2 py-1 whitespace-nowrap cursor-pointer"
+                className="text-xs bg-gray-200/80 hover:bg-gray-300 text-gray-700 font-semibold px-3 py-2 rounded-xl transition-colors whitespace-nowrap cursor-pointer flex items-center gap-1.5"
               >
-                Reset Filter
+                <span>Reset Filter</span>
+                <X size={13} />
               </button>
             )}
           </div>
