@@ -136,7 +136,7 @@ export const Themes: React.FC = () => {
           <p className="text-[11px] text-gray-400 mt-1">Seluruh koleksi undangan</p>
         </button>
 
-        {/* 50k Starter Card */}
+        {/* Starter Card */}
         <button
           type="button"
           onClick={() => setPriceFilter('50000')}
@@ -147,7 +147,7 @@ export const Themes: React.FC = () => {
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-amber-900">Paket 50k (Starter)</span>
+            <span className="text-xs font-semibold text-amber-900">Starter</span>
             <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">
               <Tag size={16} />
             </div>
@@ -156,7 +156,7 @@ export const Themes: React.FC = () => {
             <span className="text-2xl font-bold text-amber-950">{counts.p50k}</span>
             <span className="text-xs font-semibold text-amber-700">Noir Gold</span>
           </div>
-          <p className="text-[11px] text-amber-800/80 mt-1">Best Value Luxury Rp 50.000</p>
+          <p className="text-[11px] text-amber-800/80 mt-1">Best Value Luxury</p>
         </button>
 
         {/* 70k Heritage Card */}
@@ -526,7 +526,7 @@ export const Themes: React.FC = () => {
                       defaultValue={editingTheme?.category || ''} 
                       type="text" 
                       className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm bg-white" 
-                      placeholder="e.g. Luxury Starter (Rp 50.000)" 
+                      placeholder="e.g. Starter" 
                     />
                   </div>
 

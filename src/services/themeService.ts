@@ -118,18 +118,18 @@ export const REAL_KUALA_LUMPUR_HERITAGE_THEME: Theme = {
   created_at: '2026-10-30T12:00:00.000000+00:00'
 };
 
-// Masterpiece Starter Theme: Noir Gold Elegance (Paket Rp 50.000)
+// Masterpiece Starter Theme: Noir Gold Elegance
 export const REAL_NOIR_GOLD_THEME: Theme = {
   id: 'd1e2f3a4-5678-9012-3456-789012345678',
   name: 'Noir Gold Elegance',
   slug: 'noir-gold',
   description: 'Tema pernikahan mewah harga terjangkau bernuansa hitam obsidian & emas champagne, double hairline border berkelas, segel lilin monogram royal, dan amplop digital VIP Black Gold.',
-  category: 'Luxury Starter (Rp 50.000)',
+  category: 'Starter',
   price: 50000,
   preview_image: '/themes/noir-gold/theme-preview.jpg',
   thumbnail: '/themes/noir-gold/theme-preview.jpg',
   status: 'active',
-  badge: 'Best Value Rp 50.000',
+  badge: 'Best Value',
   rating: '4.9',
   features: [
     'Nuansa Hitam Obsidian & Emas Champagne Mewah',
