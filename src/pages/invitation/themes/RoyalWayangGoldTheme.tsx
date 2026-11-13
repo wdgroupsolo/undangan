@@ -1217,6 +1217,19 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
     fetchRsvps();
   }, [activeInvitationId]);
 
+  // Barcode Preview Toggle (allows instant preview of VIP barcode without submitting form)
+  const [showBarcodePreview, setShowBarcodePreview] = useState(false);
+
+  const activeBarcodePass = submittedRsvp || (showBarcodePreview ? {
+    name: rsvpName.trim() || guestName || 'Bpk. Bambang & Keluarga',
+    attendance: rsvpAttendance || 'hadir',
+    guests: parseInt(rsvpGuests, 10) || 2,
+    code: generateStableBarcodeCode('RWG', activeInvitationId || invitation?.slug || 'ROYAL', rsvpName.trim() || guestName || 'BAMBANG'),
+    isDemo: false
+  } : null);
+
+  const isDisplayingBarcode = useBarcode && activeBarcodePass !== null;
+
   // Submit RSVP
   const handleRsvpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -3452,8 +3465,8 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                 </p>
               </div>
 
-              {/* Conditional: Tampilkan Barcode jika pakai barcode & sudah diisi, atau Form */}
-              {useBarcode && submittedRsvp ? (
+              {/* Conditional: Tampilkan Barcode jika pakai barcode & sudah diisi (atau mode preview), atau Form */}
+              {isDisplayingBarcode && activeBarcodePass ? (
                 <div className="w-full flex flex-col items-center animate-in fade-in zoom-in-95 duration-500">
                   <div className="w-full bg-gradient-to-b from-[#24170d]/95 via-[#190f08]/98 to-[#120a05]/98 rounded-2xl p-5 border-2 border-[#d4af37]/75 shadow-[0_15px_35px_rgba(0,0,0,0.8),0_0_25px_rgba(212,175,55,0.25)] text-center relative overflow-hidden">
                     {/* Top Golden Crest Badge */}
@@ -3474,7 +3487,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     )}
 
                     <p className="text-base sm:text-lg font-serif font-bold text-[#FFF8D6] tracking-wide mt-1">
-                      {submittedRsvp.name}
+                      {activeBarcodePass.name}
                     </p>
 
                     {isDemo ? (
@@ -3486,8 +3499,8 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                       <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10.5px] font-sans font-bold my-2 bg-gradient-to-r from-emerald-950/90 to-emerald-900/90 text-emerald-200 border border-emerald-400/50 shadow-sm">
                         <span>✓</span>
                         <span>
-                          {submittedRsvp.attendance === 'hadir' || submittedRsvp.attendance === 'attending'
-                            ? `Terkonfirmasi Hadir (${submittedRsvp.guests} Tamu)`
+                          {activeBarcodePass.attendance === 'hadir' || activeBarcodePass.attendance === 'attending'
+                            ? `Terkonfirmasi Hadir (${activeBarcodePass.guests} Tamu)`
                             : 'Status: Berhalangan Hadir'}
                         </span>
                       </div>
@@ -3499,7 +3512,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                         src={
                           isDemo 
                             ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('DEMO-TESTIMONIAL-PORTOFOLIO-LOCKED|DO-NOT-SCAN|CODE:WD-DEMO-TESTIMONI-88')}`
-                            : (invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'ROYAL'}|GUEST:${submittedRsvp.name}|ATT:${submittedRsvp.attendance}|CODE:${submittedRsvp.code}`)}`)
+                            : (invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'ROYAL'}|GUEST:${activeBarcodePass.name}|ATT:${activeBarcodePass.attendance}|CODE:${activeBarcodePass.code}`)}`)
                         }
                         alt="QR Code Presensi"
                         className="w-full h-full object-contain filter"
@@ -3524,7 +3537,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                         ))}
                       </svg>
                       <span className={`font-mono font-bold text-[11px] tracking-[0.25em] ${isDemo ? 'text-red-700 line-through' : 'text-[#1a1006]'} mt-1`}>
-                        {submittedRsvp.code}
+                        {activeBarcodePass.code}
                       </span>
                       {isDemo && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
@@ -3554,17 +3567,43 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     <button
                       type="button"
                       onClick={() => {
-                        setSubmittedRsvp(null);
-                        clearBarcodePass(invitation?.id, invitation?.slug, submittedRsvp?.name || guestName, 'royal');
+                        setShowBarcodePreview(false);
+                        if (submittedRsvp) {
+                          setSubmittedRsvp(null);
+                          clearBarcodePass(invitation?.id, invitation?.slug, activeBarcodePass?.name || guestName, 'royal');
+                        }
                       }}
                       className="mt-3.5 inline-block text-[11px] font-serif text-[#ffd778] hover:underline font-semibold cursor-pointer transition-colors"
                     >
-                      ← Ubah Konfirmasi Kehadiran
+                      ← {showBarcodePreview && !submittedRsvp ? 'Kembali ke Formulir RSVP' : 'Ubah Konfirmasi Kehadiran'}
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="w-full">
+                  {/* VIP Barcode Announcement Card if active */}
+                  {useBarcode && (
+                    <div className="w-full mb-3.5 p-3.5 rounded-2xl bg-gradient-to-r from-[#2c1c10]/95 via-[#20140a]/98 to-[#2c1c10]/95 border border-[#d4af37]/65 shadow-[0_4px_16px_rgba(0,0,0,0.6)] text-center animate-in fade-in duration-300">
+                      <div className="flex items-center justify-center gap-1.5 text-[#ffd778] mb-1">
+                        <QrCode size={14} className="text-[#ffd778]" />
+                        <span className="text-[10.5px] font-serif font-bold tracking-[0.2em] uppercase text-[#FFF5D6]">
+                          SISTEM VIP PASS &amp; BARCODE AKTIF
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-[#ebe0cd]/90 font-serif leading-relaxed">
+                        Tiket Barcode digital resmi akan otomatis diterbitkan setelah Anda mengisi nama &amp; konfirmasi kehadiran di bawah.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowBarcodePreview(true)}
+                        className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-sans font-bold bg-[#d4af37]/20 text-[#ffd778] border border-[#d4af37]/45 hover:bg-[#d4af37]/35 transition-all cursor-pointer shadow-2xs"
+                      >
+                        <QrCode size={11} />
+                        <span>Lihat Contoh Tiket Barcode</span>
+                        <span>➔</span>
+                      </button>
+                    </div>
+                  )}
                   {/* Form */}
                   <form onSubmit={handleRsvpSubmit} className="w-full space-y-3.5 text-left">
                     {/* Nama Lengkap */}
@@ -3692,6 +3731,11 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                             <span className="inline-block w-3.5 h-3.5 border-2 border-stone-900 border-t-transparent rounded-full animate-spin" />
                             <span>Mengirimkan Doa...</span>
                           </span>
+                        ) : useBarcode ? (
+                          <>
+                            <span className="drop-shadow-sm font-bold tracking-[0.16em]">DAPATKAN TIKET &amp; BARCODE</span>
+                            <QrCode size={15} className="text-[#181005] stroke-[2.5]" />
+                          </>
                         ) : (
                           <>
                             <span className="drop-shadow-sm font-bold tracking-[0.22em]">KIRIM KONFIRMASI</span>

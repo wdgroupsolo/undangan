@@ -321,3 +321,4 @@ export const BarcodeModal: React.FC<BarcodeModalProps> = ({
     </div>
   );
 };
+
