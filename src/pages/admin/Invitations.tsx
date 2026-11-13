@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { invitationService } from '../../services/invitationService';
 import { ConfirmModal } from '../../components/ConfirmModal';
+import { BarcodeModal } from '../../components/BarcodeModal';
 import { 
   Plus, 
   Search, 
@@ -43,6 +44,9 @@ export const Invitations: React.FC = () => {
     variant: 'danger',
     onConfirm: () => {},
   });
+
+  // VIP Barcode Pass & QR Preview Modal State
+  const [barcodeModalData, setBarcodeModalData] = useState<any | null>(null);
 
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -86,18 +90,24 @@ export const Invitations: React.FC = () => {
     onError: () => toast.error('Gagal mengubah status undangan.')
   });
 
-  const toggleBarcodeMutation = useMutation({
-    mutationFn: ({ id, slug: _slug, currentSettings }: { id: string; slug: string; currentSettings: any }) =>
+  const updateBarcodeSettingMutation = useMutation({
+    mutationFn: ({ id, slug, currentSettings, enabled }: { id: string; slug: string; currentSettings: any; enabled: boolean }) =>
       invitationService.updateInvitation(id, {
+        slug,
         settings: {
           ...(currentSettings || {}),
-          use_barcode: !currentSettings?.use_barcode,
+          use_barcode: enabled,
         },
       }),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['invitations'] });
       queryClient.invalidateQueries({ queryKey: ['invitation', variables.slug] });
-      toast.success('Pengaturan Barcode VIP berhasil diperbarui!');
+      setBarcodeModalData(null);
+      if (variables.enabled) {
+        toast.success(`VIP Barcode aktif untuk /${variables.slug}. Tamu otomatis mendapat tiket QR presensi!`);
+      } else {
+        toast.info(`Mode Barcode dinonaktifkan untuk /${variables.slug}. Kembali ke Standar RSVP.`);
+      }
     },
     onError: () => toast.error('Gagal mengubah pengaturan barcode.')
   });
@@ -341,14 +351,24 @@ export const Invitations: React.FC = () => {
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="font-bold text-stone-900 text-sm">{invitation.title || 'Tanpa Judul'}</span>
                             {invitation.settings?.use_barcode ? (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                              <button
+                                type="button"
+                                onClick={() => setBarcodeModalData(invitation)}
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors cursor-pointer"
+                                title="Fitur Barcode VIP Aktif. Klik untuk lihat tiket QR / atur mode"
+                              >
                                 <QrCode size={11} className="text-amber-600" />
                                 <span>VIP Barcode</span>
-                              </span>
+                              </button>
                             ) : (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-stone-100 text-stone-600 border border-stone-200">
+                              <button
+                                type="button"
+                                onClick={() => setBarcodeModalData(invitation)}
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-stone-100 text-stone-600 border border-stone-200 hover:bg-stone-200/80 transition-colors cursor-pointer"
+                                title="Standar RSVP. Klik untuk aktifkan tiket QR Barcode"
+                              >
                                 <span>Standar RSVP</span>
-                              </span>
+                              </button>
                             )}
                           </div>
                           
@@ -411,24 +431,18 @@ export const Invitations: React.FC = () => {
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           
-                          {/* 1. Toggle Barcode Feature */}
+                          {/* 1. VIP Barcode Modal Trigger */}
                           <button
-                            onClick={() => {
-                              toggleBarcodeMutation.mutate({
-                                id: invitation.id,
-                                slug: invitation.slug,
-                                currentSettings: invitation.settings,
-                              });
-                            }}
+                            onClick={() => setBarcodeModalData(invitation)}
                             className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-all cursor-pointer ${
                               invitation.settings?.use_barcode
-                                ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                ? 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 shadow-2xs font-bold'
                                 : 'bg-stone-50 text-stone-400 border-stone-200 hover:text-stone-700 hover:bg-stone-100'
                             }`}
                             title={
                               invitation.settings?.use_barcode
-                                ? 'Fitur Barcode VIP Aktif (Klik untuk ubah ke Standar RSVP)'
-                                : 'Fitur Barcode VIP Nonaktif (Klik untuk aktifkan Barcode VIP)'
+                                ? 'VIP Barcode Aktif (Klik untuk lihat tiket QR & atur mode)'
+                                : 'Standar RSVP (Klik untuk lihat & aktifkan VIP Barcode)'
                             }
                           >
                             <QrCode size={16} />
@@ -538,6 +552,23 @@ export const Invitations: React.FC = () => {
         variant={confirmDialog.variant}
         onConfirm={confirmDialog.onConfirm}
         onCancel={() => setConfirmDialog(prev => ({ ...prev, isOpen: false }))}
+      />
+
+      {/* VIP Barcode Pass & QR Preview Modal */}
+      <BarcodeModal
+        isOpen={!!barcodeModalData}
+        onClose={() => setBarcodeModalData(null)}
+        invitation={barcodeModalData}
+        isLoading={updateBarcodeSettingMutation.isPending}
+        onSave={(enabled) => {
+          if (!barcodeModalData) return;
+          updateBarcodeSettingMutation.mutate({
+            id: barcodeModalData.id,
+            slug: barcodeModalData.slug,
+            currentSettings: barcodeModalData.settings,
+            enabled,
+          });
+        }}
       />
     </div>
   );

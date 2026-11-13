@@ -34,6 +34,33 @@ const setSavedStatus = (id: string, slug?: string, status?: string) => {
   } catch {}
 };
 
+// Persistent tracking for settings (e.g. use_barcode VIP pass toggle)
+export const getSavedSettings = (idOrSlug: string): Record<string, any> | null => {
+  if (typeof window === 'undefined' || !idOrSlug) return null;
+  try {
+    const raw = localStorage.getItem(`wd_inv_settings_${idOrSlug}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+export const setSavedSettings = (id: string, slug?: string, settings?: Record<string, any>) => {
+  if (typeof window === 'undefined' || !settings) return;
+  try {
+    const existing = getSavedSettings(id) || (slug ? getSavedSettings(slug) : null) || {};
+    const merged = { ...existing, ...settings };
+    const raw = JSON.stringify(merged);
+    localStorage.setItem(`wd_inv_settings_${id}`, raw);
+    if (slug) {
+      localStorage.setItem(`wd_inv_settings_${slug}`, raw);
+    }
+    window.dispatchEvent(new CustomEvent('wedding:settings-changed', { detail: { id, slug, settings: merged } }));
+  } catch (err) {
+    console.error('Failed to save invitation settings:', err);
+  }
+};
+
 // Persistent tracking for deleted invitations (so mock & database invitations don't resurrect)
 const DELETED_INVITATIONS_STORAGE_KEY = 'wd_deleted_invitation_ids_v1';
 
@@ -362,29 +389,41 @@ export const invitationService = {
     // Filter out ANY deleted invitation from database results as well
     const activeInvitations = result.filter(inv => !isDeleted(inv.id, inv.slug));
 
-    // Apply any locally cached status updates (e.g., 'paused')
+    // Apply any locally cached status updates (e.g., 'paused') and settings (e.g., use_barcode)
     return activeInvitations.map(inv => {
       const cached = getSavedStatus(inv.id) || getSavedStatus(inv.slug);
-      return cached ? { ...inv, status: cached } : inv;
+      const cachedSettings = getSavedSettings(inv.id) || getSavedSettings(inv.slug);
+      let updated = { ...inv };
+      if (cached) updated.status = cached;
+      if (cachedSettings) updated.settings = { ...(updated.settings || {}), ...cachedSettings };
+      return updated;
     });
   },
 
   async getInvitation(id: string) {
     const cachedStatus = getSavedStatus(id);
+    const cachedSettings = getSavedSettings(id);
+    const applyCache = (inv: any) => {
+      let updated = { ...inv };
+      if (cachedStatus) updated.status = cachedStatus;
+      if (cachedSettings) updated.settings = { ...(updated.settings || {}), ...cachedSettings };
+      return updated;
+    };
+
     if (id === INVITATION_AUDI_OVYOLA.id) {
-      return cachedStatus ? { ...INVITATION_AUDI_OVYOLA, status: cachedStatus } : INVITATION_AUDI_OVYOLA;
+      return applyCache(INVITATION_AUDI_OVYOLA);
     }
     if (id === INVITATION_YOGA_FATMA.id) {
-      return cachedStatus ? { ...INVITATION_YOGA_FATMA, status: cachedStatus } : INVITATION_YOGA_FATMA;
+      return applyCache(INVITATION_YOGA_FATMA);
     }
     if (id === INVITATION_AGNI_PUTRI.id) {
-      return cachedStatus ? { ...INVITATION_AGNI_PUTRI, status: cachedStatus } : INVITATION_AGNI_PUTRI;
+      return applyCache(INVITATION_AGNI_PUTRI);
     }
     if (id === INVITATION_BIMA_RATNA.id) {
-      return cachedStatus ? { ...INVITATION_BIMA_RATNA, status: cachedStatus } : INVITATION_BIMA_RATNA;
+      return applyCache(INVITATION_BIMA_RATNA);
     }
     if (id === INVITATION_DIMAS_ANISA.id) {
-      return cachedStatus ? { ...INVITATION_DIMAS_ANISA, status: cachedStatus } : INVITATION_DIMAS_ANISA;
+      return applyCache(INVITATION_DIMAS_ANISA);
     }
     try {
       const { data, error } = await supabase
@@ -394,12 +433,12 @@ export const invitationService = {
         .single();
       
       if (!error && data) {
-        return (cachedStatus ? { ...data, status: cachedStatus } : data) as Invitation;
+        return applyCache(data) as Invitation;
       }
     } catch (e) {
       console.warn('Error fetching invitation by id:', e);
     }
-    return cachedStatus ? { ...INVITATION_AGNI_PUTRI, status: cachedStatus } : INVITATION_AGNI_PUTRI;
+    return applyCache(INVITATION_AGNI_PUTRI);
   },
 
   async getInvitationBySlug(slug: string) {
@@ -421,44 +460,44 @@ export const invitationService = {
       (isBima ? getSavedStatus('e3000000-0000-0000-0000-000000000003') : null) ||
       (isDimas ? getSavedStatus('e4000000-0000-0000-0000-000000000004') : null);
 
+    // Check if settings (e.g. use_barcode VIP pass) are overridden in localStorage
+    const cachedSettings = getSavedSettings(slug) || 
+      getSavedSettings(cleanSlug) || 
+      (isAudi ? (getSavedSettings('e7000000-0000-0000-0000-000000000007') || getSavedSettings('audi-ovyola')) : null) ||
+      (isYoga ? (getSavedSettings('e6000000-0000-0000-0000-000000000006') || getSavedSettings('yoga-fatma')) : null) ||
+      (isHafiz ? (getSavedSettings('e5000000-0000-0000-0000-000000000005') || getSavedSettings('hafiz-syafika')) : null) ||
+      (isAgni ? (getSavedSettings('e2000000-0000-0000-0000-000000000002') || getSavedSettings('agni-putri') || getSavedSettings('agni-kahuripan')) : null) ||
+      (isBima ? getSavedSettings('e3000000-0000-0000-0000-000000000003') : null) ||
+      (isDimas ? getSavedSettings('e4000000-0000-0000-0000-000000000004') : null);
+
+    const applyItemSettings = (inv: any) => ({
+      ...inv,
+      slug: slug,
+      status: cachedStatus || inv.status || 'published',
+      settings: {
+        ...(inv.settings || {}),
+        ...(cachedSettings || {})
+      }
+    });
+
     if (isAudi) {
-      return {
-        ...INVITATION_AUDI_OVYOLA,
-        slug: slug,
-        status: cachedStatus || INVITATION_AUDI_OVYOLA.status || 'published'
-      };
+      return applyItemSettings(INVITATION_AUDI_OVYOLA);
     }
 
     if (isYoga) {
-      return {
-        ...INVITATION_YOGA_FATMA,
-        slug: slug,
-        status: cachedStatus || INVITATION_YOGA_FATMA.status || 'published'
-      };
+      return applyItemSettings(INVITATION_YOGA_FATMA);
     }
 
     if (isHafiz) {
-      return {
-        ...INVITATION_HAFIZ_SYAFIKA,
-        slug: slug,
-        status: cachedStatus || INVITATION_HAFIZ_SYAFIKA.status || 'published'
-      };
+      return applyItemSettings(INVITATION_HAFIZ_SYAFIKA);
     }
 
     if (isBima) {
-      return {
-        ...INVITATION_BIMA_RATNA,
-        slug: slug,
-        status: cachedStatus || INVITATION_BIMA_RATNA.status || 'published'
-      };
+      return applyItemSettings(INVITATION_BIMA_RATNA);
     }
 
     if (isDimas) {
-      return {
-        ...INVITATION_DIMAS_ANISA,
-        slug: slug,
-        status: cachedStatus || INVITATION_DIMAS_ANISA.status || 'published'
-      };
+      return applyItemSettings(INVITATION_DIMAS_ANISA);
     }
 
     if (isAgni) {
@@ -469,17 +508,10 @@ export const invitationService = {
           .or(`slug.eq.${slug},slug.eq.agni-putri,slug.eq.agni-kahuripan`)
           .maybeSingle();
         if (!error && data) {
-          return {
-            ...data,
-            status: cachedStatus || data.status || 'published'
-          };
+          return applyItemSettings(data);
         }
       } catch {}
-      return {
-        ...INVITATION_AGNI_PUTRI,
-        slug: slug,
-        status: cachedStatus || INVITATION_AGNI_PUTRI.status || 'published'
-      };
+      return applyItemSettings(INVITATION_AGNI_PUTRI);
     }
 
     const isNirwanaSlug = slug === 'nirwana-sarangan' || slug === 'hotel-nirwana' || slug === 'telaga-sarangan' || (typeof slug === 'string' && slug.toLowerCase().includes('nirwana'));
@@ -574,6 +606,26 @@ export const invitationService = {
         INVITATION_AGNI_PUTRI.status = invitation.status as any;
         setSavedStatus(id, 'agni-putri', invitation.status);
         setSavedStatus(id, 'agni-kahuripan', invitation.status);
+      }
+    }
+
+    if (invitation.settings) {
+      setSavedSettings(id, invitation.slug, invitation.settings);
+      // Synchronize in-memory fallback models immediately
+      if (id === INVITATION_AUDI_OVYOLA.id || invitation.slug === 'audi-ovyola') {
+        INVITATION_AUDI_OVYOLA.settings = { ...(INVITATION_AUDI_OVYOLA.settings || {}), ...invitation.settings };
+      }
+      if (id === INVITATION_YOGA_FATMA.id || invitation.slug === 'yoga-fatma') {
+        INVITATION_YOGA_FATMA.settings = { ...(INVITATION_YOGA_FATMA.settings || {}), ...invitation.settings };
+      }
+      if (id === INVITATION_DIMAS_ANISA.id || invitation.slug === 'dimas-anisa') {
+        INVITATION_DIMAS_ANISA.settings = { ...(INVITATION_DIMAS_ANISA.settings || {}), ...invitation.settings };
+      }
+      if (id === INVITATION_BIMA_RATNA.id || invitation.slug === 'bima-ratna') {
+        INVITATION_BIMA_RATNA.settings = { ...(INVITATION_BIMA_RATNA.settings || {}), ...invitation.settings };
+      }
+      if (id === INVITATION_AGNI_PUTRI.id || invitation.slug === 'agni-putri') {
+        INVITATION_AGNI_PUTRI.settings = { ...(INVITATION_AGNI_PUTRI.settings || {}), ...invitation.settings };
       }
     }
 
