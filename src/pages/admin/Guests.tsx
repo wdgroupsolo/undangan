@@ -24,12 +24,14 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
+import { ConfirmModal } from '../../components/ConfirmModal';
 
 export const Guests: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedInvitationId, setSelectedInvitationId] = useState<string>('e2000000-0000-0000-0000-000000000002');
   const [customDomain, setCustomDomain] = useState<string>('https://rsvp.wdgroupcompany.biz.id');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(25);
 
@@ -640,11 +642,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh.`;
 
                             {/* Delete Guest */}
                             <button
-                              onClick={() => {
-                                if (window.confirm(`Hapus tamu "${guest.name}"?`)) {
-                                  deleteMutation.mutate(guest.id);
-                                }
-                              }}
+                              onClick={() => setDeleteTarget({ id: guest.id, name: guest.name })}
                               className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all cursor-pointer"
                               title="Hapus Tamu"
                             >
@@ -1061,6 +1059,32 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh.`;
           </div>
         </div>
       )}
+
+      {/* Luxury Confirm Delete Guest Modal */}
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Hapus Data Tamu"
+        message={
+          deleteTarget ? (
+            <div className="space-y-1.5">
+              <p>Yakin ingin menghapus tamu <strong className="text-stone-900">"{deleteTarget.name}"</strong>?</p>
+              <p className="text-xs text-stone-500">
+                Data tamu dan link undangan personal terkait akan dihapus.
+              </p>
+            </div>
+          ) : ''
+        }
+        confirmText="Ya, Hapus Tamu"
+        variant="danger"
+        isLoading={deleteMutation.isPending}
+        onConfirm={() => {
+          if (deleteTarget) {
+            deleteMutation.mutate(deleteTarget.id);
+            setDeleteTarget(null);
+          }
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 };

@@ -18,11 +18,13 @@ import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 import { useToast } from '../../context/ToastContext';
 import { RsvpScannerModal } from '../../components/RsvpScannerModal';
+import { ConfirmModal } from '../../components/ConfirmModal';
 
 export const RSVP: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedInvitationId, setSelectedInvitationId] = useState<string>('');
   const [selectedAttendance, setSelectedAttendance] = useState<string>('all');
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
 
@@ -354,12 +356,7 @@ export const RSVP: React.FC = () => {
                       {/* Actions */}
                       <td className="px-6 py-4 text-right">
                         <button
-                          onClick={() => {
-                            if (window.confirm(`Hapus konfirmasi RSVP dari "${item.name}"?`)) {
-                              setDeletingId(item.id);
-                              deleteMutation.mutate(item.id);
-                            }
-                          }}
+                          onClick={() => setDeleteTarget({ id: item.id, name: item.name })}
                           disabled={deletingId === item.id}
                           className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors cursor-pointer"
                           title="Hapus RSVP"
@@ -385,6 +382,33 @@ export const RSVP: React.FC = () => {
         onCheckInSuccess={() => {
           queryClient.invalidateQueries({ queryKey: ['rsvps'] });
         }}
+      />
+
+      {/* Luxury Confirm Delete Modal */}
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Hapus Data RSVP"
+        message={
+          deleteTarget ? (
+            <div className="space-y-1.5">
+              <p>Yakin ingin menghapus konfirmasi RSVP dari <strong className="text-stone-900">"{deleteTarget.name}"</strong>?</p>
+              <p className="text-xs text-stone-500">
+                Pesan doa dan status kehadiran tamu ini akan dihapus dari rekap.
+              </p>
+            </div>
+          ) : ''
+        }
+        confirmText="Ya, Hapus RSVP"
+        variant="danger"
+        isLoading={deleteMutation.isPending}
+        onConfirm={() => {
+          if (deleteTarget) {
+            setDeletingId(deleteTarget.id);
+            deleteMutation.mutate(deleteTarget.id);
+            setDeleteTarget(null);
+          }
+        }}
+        onCancel={() => setDeleteTarget(null)}
       />
     </div>
   );

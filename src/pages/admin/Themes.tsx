@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { themeService, resolveThemePrice } from '../../services/themeService';
 import type { Theme } from '../../services/themeService';
+import { ConfirmModal } from '../../components/ConfirmModal';
 import { 
   Plus, 
   Search, 
@@ -22,6 +23,7 @@ export const Themes: React.FC = () => {
   const [priceFilter, setPriceFilter] = useState<'all' | '50000' | '70000' | '150000'>('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Theme | null>(null);
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -407,11 +409,7 @@ export const Themes: React.FC = () => {
 
                           {/* Delete Button */}
                           <button 
-                            onClick={() => {
-                              if(confirm(`Yakin ingin menghapus tema "${theme.name}"?`)) {
-                                deleteMutation.mutate(theme.id);
-                              }
-                            }}
+                            onClick={() => setDeleteTarget(theme)}
                             className="w-8 h-8 rounded-lg bg-gray-50 hover:bg-red-50 text-gray-500 hover:text-red-600 transition-colors flex items-center justify-center cursor-pointer" 
                             title="Hapus Tema"
                           >
@@ -670,6 +668,32 @@ export const Themes: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Luxury Confirm Delete Modal */}
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Hapus Tema Katalog"
+        message={
+          deleteTarget ? (
+            <div className="space-y-1.5">
+              <p>Yakin ingin menghapus tema <strong className="text-stone-900">"{deleteTarget.name}"</strong>?</p>
+              <p className="text-xs text-stone-500">
+                Tema ini akan dihapus secara permanen dari katalog publik maupun daftar tema admin.
+              </p>
+            </div>
+          ) : ''
+        }
+        confirmText="Ya, Hapus Tema"
+        variant="danger"
+        isLoading={deleteMutation.isPending}
+        onConfirm={() => {
+          if (deleteTarget) {
+            deleteMutation.mutate(deleteTarget.id);
+            setDeleteTarget(null);
+          }
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 };

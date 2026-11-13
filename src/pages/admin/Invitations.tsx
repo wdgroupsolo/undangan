@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { invitationService } from '../../services/invitationService';
+import { ConfirmModal } from '../../components/ConfirmModal';
 import { 
   Plus, 
   Search, 
@@ -25,6 +26,23 @@ export const Invitations: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'paused' | 'barcode'>('all');
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
+
+  // Custom Modal Confirmation State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: React.ReactNode;
+    confirmText: string;
+    variant: 'danger' | 'warning' | 'info';
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    confirmText: 'Konfirmasi',
+    variant: 'danger',
+    onConfirm: () => {},
+  });
 
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -420,9 +438,22 @@ export const Invitations: React.FC = () => {
                           {isPublished ? (
                             <button
                               onClick={() => {
-                                if (window.confirm(`Jeda undangan "${invitation.title}"?\n\nWebsite publik akan otomatis dinonaktifkan sementara dan menampilkan layar penangguhan ke tamu.`)) {
-                                  updateStatusMutation.mutate({ id: invitation.id, slug: invitation.slug, status: 'paused' });
-                                }
+                                setConfirmDialog({
+                                  isOpen: true,
+                                  title: 'Jeda Undangan Publik',
+                                  message: (
+                                    <div className="space-y-1.5">
+                                      <p>Jeda undangan <strong className="text-stone-900">"{invitation.title}"</strong>?</p>
+                                      <p className="text-xs text-stone-500">Website publik akan otomatis dinonaktifkan sementara dan menampilkan layar penangguhan ke tamu tanpa menghapus data undangan.</p>
+                                    </div>
+                                  ),
+                                  confirmText: 'Ya, Jeda Undangan',
+                                  variant: 'warning',
+                                  onConfirm: () => {
+                                    updateStatusMutation.mutate({ id: invitation.id, slug: invitation.slug, status: 'paused' });
+                                    setConfirmDialog(prev => ({ ...prev, isOpen: false }));
+                                  }
+                                });
                               }}
                               className="w-8 h-8 rounded-lg bg-stone-50 text-amber-600 border border-stone-200 hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-all flex items-center justify-center cursor-pointer shadow-2xs"
                               title="Jeda Undangan (Otomatis Nonaktifkan Web Publik)"
@@ -464,9 +495,22 @@ export const Invitations: React.FC = () => {
                           {/* 5. Delete */}
                           <button 
                             onClick={() => {
-                              if(window.confirm(`Yakin ingin menghapus undangan "${invitation.title}"?`)) {
-                                deleteMutation.mutate(invitation.id);
-                              }
+                              setConfirmDialog({
+                                isOpen: true,
+                                title: 'Hapus Undangan',
+                                message: (
+                                  <div className="space-y-1.5">
+                                    <p>Yakin ingin menghapus undangan <strong className="text-stone-900">"{invitation.title}"</strong>?</p>
+                                    <p className="text-xs text-stone-500">Tautan <code className="bg-stone-100 px-1 py-0.5 rounded text-stone-700 font-mono">/invitation/{invitation.slug}</code> dan seluruh data acara pengantin akan dihapus secara permanen.</p>
+                                  </div>
+                                ),
+                                confirmText: 'Ya, Hapus Undangan',
+                                variant: 'danger',
+                                onConfirm: () => {
+                                  deleteMutation.mutate(invitation.id);
+                                  setConfirmDialog(prev => ({ ...prev, isOpen: false }));
+                                }
+                              });
                             }}
                             className="w-8 h-8 rounded-lg bg-stone-50 text-stone-400 border border-stone-200 hover:text-red-600 hover:bg-red-50 hover:border-red-300 transition-all flex items-center justify-center cursor-pointer shadow-2xs" 
                             title="Hapus Undangan"
@@ -484,6 +528,17 @@ export const Invitations: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* Reusable Luxury Confirm Modal */}
+      <ConfirmModal
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        confirmText={confirmDialog.confirmText}
+        variant={confirmDialog.variant}
+        onConfirm={confirmDialog.onConfirm}
+        onCancel={() => setConfirmDialog(prev => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 };

@@ -5,11 +5,13 @@ import type { Client } from '../../services/clientService';
 import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useToast } from '../../context/ToastContext';
+import { ConfirmModal } from '../../components/ConfirmModal';
 
 export const Clients: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Client | null>(null);
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -120,11 +122,7 @@ export const Clients: React.FC = () => {
                         <Edit2 size={18} />
                       </button>
                       <button 
-                        onClick={() => {
-                          if(confirm('Are you sure you want to delete this client?')) {
-                            deleteMutation.mutate(client.id);
-                          }
-                        }}
+                        onClick={() => setDeleteTarget(client)}
                         className="text-red-600 hover:text-red-800 transition-colors" title="Delete"
                       >
                         <Trash2 size={18} />
@@ -200,6 +198,32 @@ export const Clients: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Luxury Confirm Delete Modal */}
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Hapus Data Klien"
+        message={
+          deleteTarget ? (
+            <div className="space-y-1.5">
+              <p>Yakin ingin menghapus klien <strong className="text-stone-900">"{deleteTarget.name}"</strong>?</p>
+              <p className="text-xs text-stone-500">
+                Data klien beserta relasi undangan yang terkait akan dihapus secara permanen.
+              </p>
+            </div>
+          ) : ''
+        }
+        confirmText="Ya, Hapus Klien"
+        variant="danger"
+        isLoading={deleteMutation.isPending}
+        onConfirm={() => {
+          if (deleteTarget) {
+            deleteMutation.mutate(deleteTarget.id);
+            setDeleteTarget(null);
+          }
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 };
