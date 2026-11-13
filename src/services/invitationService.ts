@@ -34,6 +34,43 @@ const setSavedStatus = (id: string, slug?: string, status?: string) => {
   } catch {}
 };
 
+// Persistent tracking for deleted invitations (so mock & database invitations don't resurrect)
+const DELETED_INVITATIONS_STORAGE_KEY = 'wd_deleted_invitation_ids_v1';
+
+export const getDeletedInvitationIds = (): Set<string> => {
+  if (typeof window === 'undefined') return new Set();
+  try {
+    const raw = localStorage.getItem(DELETED_INVITATIONS_STORAGE_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw);
+    return new Set(Array.isArray(parsed) ? parsed.map((s: string) => String(s).toLowerCase().trim()) : []);
+  } catch {
+    return new Set();
+  }
+};
+
+export const markInvitationDeleted = (idOrSlug: string) => {
+  if (typeof window === 'undefined' || !idOrSlug) return;
+  try {
+    const deleted = getDeletedInvitationIds();
+    deleted.add(String(idOrSlug).toLowerCase().trim());
+    localStorage.setItem(DELETED_INVITATIONS_STORAGE_KEY, JSON.stringify(Array.from(deleted)));
+  } catch (err) {
+    console.error('Failed to save deleted invitation:', err);
+  }
+};
+
+export const restoreInvitation = (idOrSlug: string) => {
+  if (typeof window === 'undefined' || !idOrSlug) return;
+  try {
+    const deleted = getDeletedInvitationIds();
+    deleted.delete(String(idOrSlug).toLowerCase().trim());
+    localStorage.setItem(DELETED_INVITATIONS_STORAGE_KEY, JSON.stringify(Array.from(deleted)));
+  } catch (err) {
+    console.error('Failed to restore invitation:', err);
+  }
+};
+
 export const INVITATION_AGNI_PUTRI: Invitation & { theme?: any; client?: any } = {
   id: 'e2000000-0000-0000-0000-000000000002',
   client_id: 'c1000000-0000-0000-0000-000000000001',
@@ -292,6 +329,10 @@ export const INVITATION_DEMO_TESTIMONI = INVITATION_BIMA_RATNA;
 
 export const invitationService = {
   async getInvitations() {
+    const deletedIds = getDeletedInvitationIds();
+    const isDeleted = (id: string, slug?: string) => 
+      deletedIds.has(id.toLowerCase()) || (slug ? deletedIds.has(slug.toLowerCase()) : false);
+
     let result: any[] = [];
     try {
       const { data, error } = await supabase
@@ -312,14 +353,17 @@ export const invitationService = {
     const hasYoga = result.some(inv => inv.id === INVITATION_YOGA_FATMA.id || inv.slug === 'yoga-fatma');
     const hasAudi = result.some(inv => inv.id === INVITATION_AUDI_OVYOLA.id || inv.slug === 'audi-ovyola');
 
-    if (!hasAudi) result.unshift(INVITATION_AUDI_OVYOLA);
-    if (!hasYoga) result.unshift(INVITATION_YOGA_FATMA);
-    if (!hasDimas) result.unshift(INVITATION_DIMAS_ANISA);
-    if (!hasBima) result.unshift(INVITATION_BIMA_RATNA);
-    if (!hasAgni) result.unshift(INVITATION_AGNI_PUTRI);
+    if (!hasAudi && !isDeleted(INVITATION_AUDI_OVYOLA.id, INVITATION_AUDI_OVYOLA.slug)) result.unshift(INVITATION_AUDI_OVYOLA);
+    if (!hasYoga && !isDeleted(INVITATION_YOGA_FATMA.id, INVITATION_YOGA_FATMA.slug)) result.unshift(INVITATION_YOGA_FATMA);
+    if (!hasDimas && !isDeleted(INVITATION_DIMAS_ANISA.id, INVITATION_DIMAS_ANISA.slug)) result.unshift(INVITATION_DIMAS_ANISA);
+    if (!hasBima && !isDeleted(INVITATION_BIMA_RATNA.id, INVITATION_BIMA_RATNA.slug)) result.unshift(INVITATION_BIMA_RATNA);
+    if (!hasAgni && !isDeleted(INVITATION_AGNI_PUTRI.id, INVITATION_AGNI_PUTRI.slug)) result.unshift(INVITATION_AGNI_PUTRI);
+
+    // Filter out ANY deleted invitation from database results as well
+    const activeInvitations = result.filter(inv => !isDeleted(inv.id, inv.slug));
 
     // Apply any locally cached status updates (e.g., 'paused')
-    return result.map(inv => {
+    return activeInvitations.map(inv => {
       const cached = getSavedStatus(inv.id) || getSavedStatus(inv.slug);
       return cached ? { ...inv, status: cached } : inv;
     });
@@ -507,6 +551,12 @@ export const invitationService = {
   },
 
   async createInvitation(invitation: Partial<Invitation>) {
+    if (invitation.id) {
+      restoreInvitation(invitation.id);
+    }
+    if (invitation.slug) {
+      restoreInvitation(invitation.slug);
+    }
     const { data, error } = await supabase
       .from('invitations')
       .insert(invitation)
@@ -553,11 +603,38 @@ export const invitationService = {
     try {
       localStorage.removeItem(`wd_inv_status_${id}`);
     } catch {}
-    const { error } = await supabase
-      .from('invitations')
-      .delete()
-      .eq('id', id);
-      
-    if (error) throw error;
+
+    try {
+      // Find invitation to get slug
+      const allInvitations = await invitationService.getInvitations().catch(() => []);
+      const target = allInvitations.find(inv => inv.id === id || inv.slug === id);
+
+      markInvitationDeleted(id);
+      if (target?.slug) {
+        markInvitationDeleted(target.slug);
+        try {
+          localStorage.removeItem(`wd_inv_status_${target.slug}`);
+        } catch {}
+      }
+
+      const { error } = await supabase
+        .from('invitations')
+        .delete()
+        .eq('id', id);
+
+      if (target?.slug) {
+        await supabase
+          .from('invitations')
+          .delete()
+          .eq('slug', target.slug);
+      }
+
+      if (error) {
+        console.warn('Supabase delete error (persisted via local blacklist):', error);
+      }
+    } catch (err) {
+      console.warn('deleteInvitation fallback applied:', err);
+      markInvitationDeleted(id);
+    }
   }
 };
