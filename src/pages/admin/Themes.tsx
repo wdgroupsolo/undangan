@@ -34,6 +34,7 @@ export const Themes: React.FC = () => {
     mutationFn: themeService.deleteTheme,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['themes'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboardStats'] });
       toast.success('Tema berhasil dihapus!');
     },
     onError: () => toast.error('Gagal menghapus tema.'),

@@ -353,8 +353,49 @@ export const DEFAULT_THEMES: Theme[] = [
   REAL_ROYAL_ELEGANCE_THEME,
 ];
 
+// Persistent tracking for deleted themes
+const DELETED_THEMES_STORAGE_KEY = 'wd_deleted_theme_slugs_v1';
+
+export const getDeletedThemeSlugs = (): Set<string> => {
+  if (typeof window === 'undefined') return new Set();
+  try {
+    const raw = localStorage.getItem(DELETED_THEMES_STORAGE_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw);
+    return new Set(Array.isArray(parsed) ? parsed.map((s: string) => String(s).toLowerCase().trim()) : []);
+  } catch {
+    return new Set();
+  }
+};
+
+export const markThemeDeleted = (idOrSlug: string) => {
+  if (typeof window === 'undefined' || !idOrSlug) return;
+  try {
+    const deleted = getDeletedThemeSlugs();
+    deleted.add(String(idOrSlug).toLowerCase().trim());
+    localStorage.setItem(DELETED_THEMES_STORAGE_KEY, JSON.stringify(Array.from(deleted)));
+  } catch (err) {
+    console.error('Failed to save deleted theme:', err);
+  }
+};
+
+export const restoreThemeSlug = (idOrSlug: string) => {
+  if (typeof window === 'undefined' || !idOrSlug) return;
+  try {
+    const deleted = getDeletedThemeSlugs();
+    deleted.delete(String(idOrSlug).toLowerCase().trim());
+    localStorage.setItem(DELETED_THEMES_STORAGE_KEY, JSON.stringify(Array.from(deleted)));
+  } catch (err) {
+    console.error('Failed to restore theme slug:', err);
+  }
+};
+
 export const themeService = {
   async getThemes(): Promise<Theme[]> {
+    const deletedSlugs = getDeletedThemeSlugs();
+    const filterNotDeleted = (list: Theme[]) => 
+      list.filter(t => !deletedSlugs.has(t.id?.toLowerCase()) && !deletedSlugs.has(t.slug?.toLowerCase()));
+
     try {
       const { data, error } = await supabase
         .from('themes')
@@ -362,24 +403,24 @@ export const themeService = {
         .order('created_at', { ascending: false });
       
       if (error || !data || data.length === 0) {
-        return DEFAULT_THEMES;
+        return filterNotDeleted(DEFAULT_THEMES).map(enhanceThemeWithScreenshot);
       }
 
       // Merge database themes with Kuala Lumpur Heritage, Nirwana Sarangan, Joglo Maroon, etc.
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
-      if (!existingSlugs.has('noir-gold')) {
+      if (!existingSlugs.has('noir-gold') && !deletedSlugs.has('noir-gold')) {
         merged.unshift(REAL_NOIR_GOLD_THEME);
       }
 
-      if (!existingSlugs.has('kuala-lumpur-heritage')) {
+      if (!existingSlugs.has('kuala-lumpur-heritage') && !deletedSlugs.has('kuala-lumpur-heritage')) {
         merged.unshift(REAL_KUALA_LUMPUR_HERITAGE_THEME);
       }
 
-      if (!existingSlugs.has('nirwana-sarangan')) {
+      if (!existingSlugs.has('nirwana-sarangan') && !deletedSlugs.has('nirwana-sarangan')) {
         merged.splice(1, 0, REAL_NIRWANA_SARANGAN_THEME);
-      } else {
+      } else if (!deletedSlugs.has('nirwana-sarangan')) {
         const idx = merged.findIndex((t: any) => t.slug === 'nirwana-sarangan');
         if (idx > 1) {
           const [nirwana] = merged.splice(idx, 1);
@@ -387,134 +428,38 @@ export const themeService = {
         }
       }
 
-      if (!existingSlugs.has('joglo-maroon-heritage')) {
+      if (!existingSlugs.has('joglo-maroon-heritage') && !deletedSlugs.has('joglo-maroon-heritage')) {
         merged.splice(1, 0, REAL_JOGLO_MAROON_THEME);
       }
 
-      if (!existingSlugs.has('royal-wayang-gold')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_ROYAL_WAYANG_THEME.id,
-              name: REAL_ROYAL_WAYANG_THEME.name,
-              slug: REAL_ROYAL_WAYANG_THEME.slug,
-              description: REAL_ROYAL_WAYANG_THEME.description,
-              category: REAL_ROYAL_WAYANG_THEME.category,
-              preview_image: REAL_ROYAL_WAYANG_THEME.preview_image,
-              thumbnail: REAL_ROYAL_WAYANG_THEME.thumbnail,
-              status: 'active',
-              features: REAL_ROYAL_WAYANG_THEME.features,
-              theme_config: REAL_ROYAL_WAYANG_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_ROYAL_WAYANG_THEME);
-          }
-        } catch {
-          merged.push(REAL_ROYAL_WAYANG_THEME);
-        }
+      if (!existingSlugs.has('royal-wayang-gold') && !deletedSlugs.has('royal-wayang-gold')) {
+        merged.push(REAL_ROYAL_WAYANG_THEME);
       }
 
-      if (!existingSlugs.has('secret-garden')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_SECRET_GARDEN_THEME.id,
-              name: REAL_SECRET_GARDEN_THEME.name,
-              slug: REAL_SECRET_GARDEN_THEME.slug,
-              description: REAL_SECRET_GARDEN_THEME.description,
-              category: REAL_SECRET_GARDEN_THEME.category,
-              preview_image: REAL_SECRET_GARDEN_THEME.preview_image,
-              thumbnail: REAL_SECRET_GARDEN_THEME.thumbnail,
-              status: 'active',
-              features: REAL_SECRET_GARDEN_THEME.features,
-              theme_config: REAL_SECRET_GARDEN_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_SECRET_GARDEN_THEME);
-          }
-        } catch {
-          merged.push(REAL_SECRET_GARDEN_THEME);
-        }
+      if (!existingSlugs.has('secret-garden') && !deletedSlugs.has('secret-garden')) {
+        merged.push(REAL_SECRET_GARDEN_THEME);
       }
 
-      if (!existingSlugs.has('maroon-gold')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_MAROON_GOLD_THEME.id,
-              name: REAL_MAROON_GOLD_THEME.name,
-              slug: REAL_MAROON_GOLD_THEME.slug,
-              description: REAL_MAROON_GOLD_THEME.description,
-              category: REAL_MAROON_GOLD_THEME.category,
-              preview_image: REAL_MAROON_GOLD_THEME.preview_image,
-              thumbnail: REAL_MAROON_GOLD_THEME.thumbnail,
-              status: 'active',
-              features: REAL_MAROON_GOLD_THEME.features,
-              theme_config: REAL_MAROON_GOLD_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_MAROON_GOLD_THEME);
-          }
-        } catch {
-          merged.push(REAL_MAROON_GOLD_THEME);
-        }
+      if (!existingSlugs.has('maroon-gold') && !deletedSlugs.has('maroon-gold')) {
+        merged.push(REAL_MAROON_GOLD_THEME);
       }
 
-      if (!existingSlugs.has('javanese-heritage')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_JAVANESE_HERITAGE_THEME.id,
-              name: REAL_JAVANESE_HERITAGE_THEME.name,
-              slug: REAL_JAVANESE_HERITAGE_THEME.slug,
-              description: REAL_JAVANESE_HERITAGE_THEME.description,
-              category: REAL_JAVANESE_HERITAGE_THEME.category,
-              preview_image: REAL_JAVANESE_HERITAGE_THEME.preview_image,
-              thumbnail: REAL_JAVANESE_HERITAGE_THEME.thumbnail,
-              status: 'active',
-              features: REAL_JAVANESE_HERITAGE_THEME.features,
-              theme_config: REAL_JAVANESE_HERITAGE_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_JAVANESE_HERITAGE_THEME);
-          }
-        } catch {
-          merged.push(REAL_JAVANESE_HERITAGE_THEME);
-        }
+      if (!existingSlugs.has('javanese-heritage') && !deletedSlugs.has('javanese-heritage')) {
+        merged.push(REAL_JAVANESE_HERITAGE_THEME);
       }
 
-      return merged.map(enhanceThemeWithScreenshot);
+      return filterNotDeleted(merged).map(enhanceThemeWithScreenshot);
     } catch (err) {
       console.warn('Menggunakan fallback data tema riil:', err);
-      return DEFAULT_THEMES;
+      return filterNotDeleted(DEFAULT_THEMES).map(enhanceThemeWithScreenshot);
     }
   },
 
   async getActiveThemes(): Promise<Theme[]> {
+    const deletedSlugs = getDeletedThemeSlugs();
+    const filterNotDeleted = (list: Theme[]) => 
+      list.filter(t => !deletedSlugs.has(t.id?.toLowerCase()) && !deletedSlugs.has(t.slug?.toLowerCase()));
+
     try {
       const { data, error } = await supabase
         .from('themes')
@@ -523,23 +468,23 @@ export const themeService = {
         .order('created_at', { ascending: false });
       
       if (error || !data || data.length === 0) {
-        return DEFAULT_THEMES;
+        return filterNotDeleted(DEFAULT_THEMES).map(enhanceThemeWithScreenshot);
       }
 
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
-      if (!existingSlugs.has('noir-gold')) {
+      if (!existingSlugs.has('noir-gold') && !deletedSlugs.has('noir-gold')) {
         merged.unshift(REAL_NOIR_GOLD_THEME);
       }
 
-      if (!existingSlugs.has('kuala-lumpur-heritage')) {
+      if (!existingSlugs.has('kuala-lumpur-heritage') && !deletedSlugs.has('kuala-lumpur-heritage')) {
         merged.unshift(REAL_KUALA_LUMPUR_HERITAGE_THEME);
       }
 
-      if (!existingSlugs.has('nirwana-sarangan')) {
+      if (!existingSlugs.has('nirwana-sarangan') && !deletedSlugs.has('nirwana-sarangan')) {
         merged.splice(1, 0, REAL_NIRWANA_SARANGAN_THEME);
-      } else {
+      } else if (!deletedSlugs.has('nirwana-sarangan')) {
         const idx = merged.findIndex((t: any) => t.slug === 'nirwana-sarangan');
         if (idx > 1) {
           const [nirwana] = merged.splice(idx, 1);
@@ -547,129 +492,14 @@ export const themeService = {
         }
       }
 
-      if (!existingSlugs.has('joglo-maroon-heritage')) {
+      if (!existingSlugs.has('joglo-maroon-heritage') && !deletedSlugs.has('joglo-maroon-heritage')) {
         merged.splice(1, 0, REAL_JOGLO_MAROON_THEME);
       }
 
-      if (!existingSlugs.has('royal-wayang-gold')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_ROYAL_WAYANG_THEME.id,
-              name: REAL_ROYAL_WAYANG_THEME.name,
-              slug: REAL_ROYAL_WAYANG_THEME.slug,
-              description: REAL_ROYAL_WAYANG_THEME.description,
-              category: REAL_ROYAL_WAYANG_THEME.category,
-              preview_image: REAL_ROYAL_WAYANG_THEME.preview_image,
-              thumbnail: REAL_ROYAL_WAYANG_THEME.thumbnail,
-              status: 'active',
-              features: REAL_ROYAL_WAYANG_THEME.features,
-              theme_config: REAL_ROYAL_WAYANG_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_ROYAL_WAYANG_THEME);
-          }
-        } catch {
-          merged.push(REAL_ROYAL_WAYANG_THEME);
-        }
-      }
-
-      if (!existingSlugs.has('javanese-heritage')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_JAVANESE_HERITAGE_THEME.id,
-              name: REAL_JAVANESE_HERITAGE_THEME.name,
-              slug: REAL_JAVANESE_HERITAGE_THEME.slug,
-              description: REAL_JAVANESE_HERITAGE_THEME.description,
-              category: REAL_JAVANESE_HERITAGE_THEME.category,
-              preview_image: REAL_JAVANESE_HERITAGE_THEME.preview_image,
-              thumbnail: REAL_JAVANESE_HERITAGE_THEME.thumbnail,
-              status: 'active',
-              features: REAL_JAVANESE_HERITAGE_THEME.features,
-              theme_config: REAL_JAVANESE_HERITAGE_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_JAVANESE_HERITAGE_THEME);
-          }
-        } catch {
-          merged.push(REAL_JAVANESE_HERITAGE_THEME);
-        }
-      }
-
-      if (!existingSlugs.has('secret-garden')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_SECRET_GARDEN_THEME.id,
-              name: REAL_SECRET_GARDEN_THEME.name,
-              slug: REAL_SECRET_GARDEN_THEME.slug,
-              description: REAL_SECRET_GARDEN_THEME.description,
-              category: REAL_SECRET_GARDEN_THEME.category,
-              preview_image: REAL_SECRET_GARDEN_THEME.preview_image,
-              thumbnail: REAL_SECRET_GARDEN_THEME.thumbnail,
-              status: 'active',
-              features: REAL_SECRET_GARDEN_THEME.features,
-              theme_config: REAL_SECRET_GARDEN_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_SECRET_GARDEN_THEME);
-          }
-        } catch {
-          merged.push(REAL_SECRET_GARDEN_THEME);
-        }
-      }
-
-      if (!existingSlugs.has('maroon-gold')) {
-        try {
-          const { data: inserted, error: insertErr } = await supabase
-            .from('themes')
-            .insert({
-              id: REAL_MAROON_GOLD_THEME.id,
-              name: REAL_MAROON_GOLD_THEME.name,
-              slug: REAL_MAROON_GOLD_THEME.slug,
-              description: REAL_MAROON_GOLD_THEME.description,
-              category: REAL_MAROON_GOLD_THEME.category,
-              preview_image: REAL_MAROON_GOLD_THEME.preview_image,
-              thumbnail: REAL_MAROON_GOLD_THEME.thumbnail,
-              status: 'active',
-              features: REAL_MAROON_GOLD_THEME.features,
-              theme_config: REAL_MAROON_GOLD_THEME.theme_config
-            })
-            .select()
-            .single();
-
-          if (!insertErr && inserted) {
-            merged.push(inserted as Theme);
-          } else {
-            merged.push(REAL_MAROON_GOLD_THEME);
-          }
-        } catch {
-          merged.push(REAL_MAROON_GOLD_THEME);
-        }
-      }
-
-      return merged.map(enhanceThemeWithScreenshot);
-    } catch {
-      return DEFAULT_THEMES;
+      return filterNotDeleted(merged).map(enhanceThemeWithScreenshot);
+    } catch (err) {
+      console.warn('Gagal memuat tema aktif Supabase, fallback:', err);
+      return filterNotDeleted(DEFAULT_THEMES).map(enhanceThemeWithScreenshot);
     }
   },
 
@@ -761,6 +591,9 @@ export const themeService = {
   },
 
   async createTheme(theme: Partial<Theme>) {
+    if (theme.slug) {
+      restoreThemeSlug(theme.slug);
+    }
     const { data, error } = await supabase
       .from('themes')
       .insert(theme)
@@ -772,6 +605,9 @@ export const themeService = {
   },
 
   async updateTheme(id: string, theme: Partial<Theme>) {
+    if (theme.slug) {
+      restoreThemeSlug(theme.slug);
+    }
     const { data, error } = await supabase
       .from('themes')
       .update(theme)
@@ -784,11 +620,31 @@ export const themeService = {
   },
 
   async deleteTheme(id: string) {
-    const { error } = await supabase
-      .from('themes')
-      .delete()
-      .eq('id', id);
-      
-    if (error) throw error;
+    try {
+      // Find theme to capture both id and slug
+      const allThemes = await themeService.getThemes().catch(() => []);
+      const target = allThemes.find(t => t.id === id || t.slug === id);
+
+      markThemeDeleted(id);
+      if (target?.slug) {
+        markThemeDeleted(target.slug);
+      }
+
+      const { error } = await supabase
+        .from('themes')
+        .delete()
+        .eq('id', id);
+        
+      if (target?.slug) {
+        await supabase.from('themes').delete().eq('slug', target.slug);
+      }
+
+      if (error) {
+        console.warn('Supabase delete error (persisted via local blacklist):', error);
+      }
+    } catch (err) {
+      console.warn('deleteTheme fallback applied:', err);
+      markThemeDeleted(id);
+    }
   }
 };
