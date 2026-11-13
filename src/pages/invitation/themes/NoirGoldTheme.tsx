@@ -297,18 +297,18 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
     }, 600);
   };
 
-  // Safe couple display data
-  const groomName = couple?.groom_nickname || couple?.groom_name || 'Dimas';
-  const groomFullName = couple?.groom_full_name || couple?.groom_name || 'Dimas Wicaksono, S.T.';
-  const groomParents = couple?.groom_parents || 'Putra pertama dari Bpk. Bambang & Ibu Sri Wahyuni';
-  const groomPhoto = couple?.groom_photo || couple?.groom_photo_url || '/photos/photo-3.jpg';
+  // Safe couple display data (default to canonical demo couple Steven & Bunga)
+  const groomName = couple?.groom_nickname || couple?.groom_name || 'Steven';
+  const groomFullName = couple?.groom_full_name || couple?.groom_name || 'Steven Pratama, S.Kom.';
+  const groomParents = couple?.groom_parents || 'Putra pertama dari Bpk. Bambang Pratama & Ibu Siti Rahayu';
+  const groomPhoto = couple?.groom_photo || couple?.groom_photo_url || '/photos/photo-7.jpg';
 
-  const brideName = couple?.bride_nickname || couple?.bride_name || 'Nadia';
-  const brideFullName = couple?.bride_full_name || couple?.bride_name || 'Nadia Larasati, S.I.Kom.';
-  const brideParents = couple?.bride_parents || 'Putri kedua dari Bpk. Suryanto & Ibu Ratna Dewi';
-  const bridePhoto = couple?.bride_photo || couple?.bride_photo_url || '/photos/photo-4.jpg';
+  const brideName = couple?.bride_nickname || couple?.bride_name || 'Bunga';
+  const brideFullName = couple?.bride_full_name || couple?.bride_name || 'Bunga Citra Lestari, S.E.';
+  const brideParents = couple?.bride_parents || 'Putri kedua dari Bpk. Hendra Gunawan & Ibu Ratna Dewi';
+  const bridePhoto = couple?.bride_photo || couple?.bride_photo_url || '/photos/photo-8.jpg';
 
-  const couplePhoto = invitation?.settings?.cover_photo || couple?.cover_photo || '/photos/audi-ovyola/cover-audi-ovyola.jpg';
+  const couplePhoto = invitation?.settings?.cover_photo || couple?.cover_photo || '/themes/nirwana-sarangan/couple-cover.jpg';
 
   // Events data
   const mainEvents = (events && events.length > 0) ? events : [
