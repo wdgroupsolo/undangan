@@ -411,7 +411,7 @@ export const InvitationRenderer: React.FC = () => {
   const isRoyalElegance = activeThemeSlug === 'royal-elegance';
   const isMaroonGold = activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan || isKualaLumpur || isNoirGold || isIvoryPearl;
+  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan;
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 
@@ -843,7 +843,7 @@ export const InvitationRenderer: React.FC = () => {
       {openingStage === 'cover' && (
         isIvoryPearl ? (
           /* Ivory Pearl & Champagne Silk Minimalist Luxury Cover */
-          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none bg-[#FAF8F5] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-[-20px_0_60px_rgba(180,160,140,0.2)] border-l border-[#C5A880]/30`}>
+          <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#FAF8F5] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-2xl`}>
             {/* Background Radial Glow */}
             <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.18)_0%,rgba(250,248,245,0.95)_70%)]" />
 
@@ -909,7 +909,7 @@ export const InvitationRenderer: React.FC = () => {
           </div>
         ) : isNoirGold ? (
           /* Noir & Champagne Gold Luxury Cover */
-          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none bg-[#090A0C] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-[-20px_0_60px_rgba(0,0,0,0.8)] border-l border-[#D4AF37]/30`}>
+          <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#090A0C] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-2xl`}>
             {/* Background Radial Glow */}
             <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.15)_0%,rgba(9,10,12,0.95)_70%)]" />
 
@@ -974,8 +974,8 @@ export const InvitationRenderer: React.FC = () => {
             </div>
           </div>
         ) : isKualaLumpur ? (
-          /* Kuala Lumpur Heritage Royal Songket Cover (Split on Desktop, Fullscreen on Mobile - Matches Screenshot 1) */
-          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none bg-[#FDF8F7] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-[-20px_0_60px_rgba(180,90,110,0.22)] border-l border-[#E8BAC5]/50`}>
+          /* Kuala Lumpur Heritage Royal Songket Cover (Matches Fullscreen Centered Mobile/Desktop) */
+          <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#FDF8F7] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-2xl`}>
             
             {/* Ambient Scenic Background */}
             <div className="absolute inset-0 z-0 pointer-events-none">
