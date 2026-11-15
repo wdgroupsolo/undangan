@@ -24,6 +24,7 @@ import { NirwanaSaranganTheme, FloatingLakeMist } from './themes/NirwanaSarangan
 import { KualaLumpurHeritageTheme } from './themes/KualaLumpurHeritageTheme';
 import { NoirGoldTheme, RegalCorner } from './themes/NoirGoldTheme';
 import { IvoryPearlTheme, PearlCorner } from './themes/IvoryPearlTheme';
+import { CuratedThemeEngine, CURATED_THEMES } from './themes/CuratedThemeEngine';
 import { FallingSakuraPetals, SakuraCoverFrame, SakuraInvitationSurround } from './components/SakuraBlossoms';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
 import { NirwanaSaranganEntrancePortal } from './components/NirwanaSaranganEntrancePortal';
@@ -104,11 +105,23 @@ export const InvitationRenderer: React.FC = () => {
       case 'ivory-pearl-minimalist':
       case 'noir-gold':
       case 'noir-gold-elegance':
+      case 'emerald-velvet':
+      case 'navy-silver':
+      case 'burgundy-wine':
         return '/music/maroon-gold-canon.mp3';
       case 'kuala-lumpur-heritage':
       case 'kuala-lumpur':
       case 'hafiz-syafika':
+      case 'sunda-siger':
+      case 'minang-gadang':
+      case 'bali-kamasan':
+      case 'moroccan-nights':
         return '/music/bergema-sampai-selamanya.mp3';
+      case 'rose-gold':
+      case 'terracotta-boho':
+      case 'sakura-hanami':
+      case 'secret-garden':
+        return '/music/secret-garden.mp3';
       case 'joglo-maroon-heritage':
       case 'joglo-maroon':
       case 'joglo-bloom':
@@ -126,8 +139,6 @@ export const InvitationRenderer: React.FC = () => {
         return '/music/bergema-sampai-selamanya.mp3';
       case 'maroon-gold':
         return '/music/maroon-gold-canon.mp3';
-      case 'secret-garden':
-        return '/music/secret-garden.mp3';
       case 'split-floral':
       default:
         return '/beautiful-in-white.mp3';
@@ -401,17 +412,19 @@ export const InvitationRenderer: React.FC = () => {
     );
   }
 
-  const isKualaLumpur = activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug;
-  const isNoirGold = !isKualaLumpur && (activeThemeSlug === 'noir-gold' || activeThemeSlug === 'noir' || activeThemeSlug === 'noir-gold-elegance');
-  const isIvoryPearl = !isKualaLumpur && !isNoirGold && (activeThemeSlug === 'ivory-pearl' || activeThemeSlug === 'ivory' || activeThemeSlug === 'ivory-pearl-minimalist');
-  const isNirwanaSarangan = !isKualaLumpur && !isNoirGold && !isIvoryPearl && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
-  const isJogloMaroon = !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
-  const isRoyalWayang = !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
-  const isSecretGarden = activeThemeSlug === 'secret-garden';
-  const isRoyalElegance = activeThemeSlug === 'royal-elegance';
-  const isMaroonGold = activeThemeSlug === 'maroon-gold';
-  const isJavaneseHeritage = activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur';
-  const isSplitTheme = activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan;
+  const isCuratedTheme = Boolean(CURATED_THEMES[activeThemeSlug]);
+  const curatedPreset = CURATED_THEMES[activeThemeSlug];
+  const isKualaLumpur = !isCuratedTheme && (activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug);
+  const isNoirGold = !isCuratedTheme && !isKualaLumpur && (activeThemeSlug === 'noir-gold' || activeThemeSlug === 'noir' || activeThemeSlug === 'noir-gold-elegance');
+  const isIvoryPearl = !isCuratedTheme && !isKualaLumpur && !isNoirGold && (activeThemeSlug === 'ivory-pearl' || activeThemeSlug === 'ivory' || activeThemeSlug === 'ivory-pearl-minimalist');
+  const isNirwanaSarangan = !isCuratedTheme && !isKualaLumpur && !isNoirGold && !isIvoryPearl && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
+  const isJogloMaroon = !isCuratedTheme && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
+  const isRoyalWayang = !isCuratedTheme && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
+  const isSecretGarden = !isCuratedTheme && activeThemeSlug === 'secret-garden';
+  const isRoyalElegance = !isCuratedTheme && activeThemeSlug === 'royal-elegance';
+  const isMaroonGold = !isCuratedTheme && activeThemeSlug === 'maroon-gold';
+  const isJavaneseHeritage = !isCuratedTheme && (activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur');
+  const isSplitTheme = !isCuratedTheme && (activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan);
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 
@@ -685,8 +698,20 @@ export const InvitationRenderer: React.FC = () => {
                 : 'opacity-0 pointer-events-none'
             }`
       }>
-        {(isSplitTheme || isInvitationVisible || isCoverExiting || openingStage === 'arch-video') && (
-          isIvoryPearl ? (
+        {(isSplitTheme || isInvitationVisible || isCoverExiting || openingStage === 'arch-video' || isCuratedTheme) && (
+          isCuratedTheme ? (
+            <CuratedThemeEngine 
+              themeSlug={activeThemeSlug}
+              invitation={invitation}
+              couple={displayCouple}
+              events={events || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+              guestName={guestName}
+              isOpening={isVideoExiting || openingStage === 'opened'}
+            />
+          ) : isIvoryPearl ? (
             <IvoryPearlTheme 
               invitation={invitation}
               couple={displayCouple}
@@ -841,7 +866,138 @@ export const InvitationRenderer: React.FC = () => {
 
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {openingStage === 'cover' && (
-        isIvoryPearl ? (
+        isCuratedTheme && curatedPreset ? (
+          /* Curated Theme Cover: Mobile & Desktop Centered Luxury Modal Frame */
+          <div 
+            className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-2xl`}
+            style={{ backgroundColor: curatedPreset.bgMain }}
+          >
+            {/* Ambient Radial Glow */}
+            <div 
+              className="absolute inset-0 z-0 pointer-events-none opacity-40"
+              style={{
+                background: `radial-gradient(circle at center, ${curatedPreset.accentColor}30 0%, transparent 70%)`
+              }}
+            />
+
+            {/* Desktop Scenic Panorama Backdrop if available */}
+            <div className="absolute inset-0 z-0 pointer-events-none hidden sm:block opacity-25 filter blur-[6px]">
+              <img 
+                src={`/themes/${curatedPreset.slug}/theme-preview.jpg`} 
+                alt={curatedPreset.name} 
+                className="w-full h-full object-cover object-center scale-110" 
+              />
+            </div>
+
+            {/* Centered Mobile/Portrait Cover Frame */}
+            <div 
+              className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[700px] sm:max-h-[94vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-7 shadow-[0_25px_80px_rgba(0,0,0,0.45)] sm:border"
+              style={{ 
+                backgroundColor: curatedPreset.bgCard,
+                borderColor: `${curatedPreset.borderColor}60`,
+                color: curatedPreset.textColor
+              }}
+            >
+              {/* TOP: Motif & Subtitle */}
+              <div className="relative z-20 flex flex-col items-center pt-4 sm:pt-6">
+                <div className="mb-2">
+                  {curatedPreset.motif(curatedPreset.accentColor)}
+                </div>
+                <span 
+                  className="text-[10px] sm:text-xs tracking-[0.3em] uppercase font-serif font-bold"
+                  style={{ color: curatedPreset.accentColor }}
+                >
+                  THE WEDDING INVITATION
+                </span>
+                <h1 
+                  className="font-serif text-3xl sm:text-4xl font-bold tracking-tight mt-1.5"
+                  style={{ color: curatedPreset.textColor }}
+                >
+                  {groomDisplayName} <span className="font-light italic" style={{ color: curatedPreset.accentColor }}>&amp;</span> {brideDisplayName}
+                </h1>
+                <p 
+                  className="text-[11px] font-sans tracking-[0.2em] uppercase mt-1.5 font-medium"
+                  style={{ color: curatedPreset.textMuted }}
+                >
+                  {new Date(invitation?.wedding_date || '2026-12-28').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                </p>
+              </div>
+
+              {/* CENTER: Arched / Oval Couple Portrait Window */}
+              <div className="relative z-20 my-auto py-2 flex flex-col items-center">
+                <div 
+                  className="relative w-44 h-56 sm:w-48 sm:h-60 rounded-t-[100px] rounded-b-2xl overflow-hidden p-1.5 shadow-xl group border"
+                  style={{ 
+                    borderColor: `${curatedPreset.accentColor}70`,
+                    background: `linear-gradient(180deg, ${curatedPreset.bgCard} 0%, ${curatedPreset.bgMain} 100%)`
+                  }}
+                >
+                  <div className="w-full h-full rounded-t-[94px] rounded-b-xl overflow-hidden relative">
+                    <img 
+                      src={coverImage} 
+                      alt={`${groomDisplayName} & ${brideDisplayName}`}
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                </div>
+                <div 
+                  className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full border text-[10px] font-serif uppercase tracking-[0.2em] font-semibold"
+                  style={{ 
+                    backgroundColor: curatedPreset.bgMain, 
+                    borderColor: `${curatedPreset.borderColor}50`,
+                    color: curatedPreset.accentColor 
+                  }}
+                >
+                  <Sparkles size={11} />
+                  <span>{curatedPreset.badgeText}</span>
+                </div>
+              </div>
+
+              {/* BOTTOM: Recipient & Open Invitation Button */}
+              <div className="relative z-20 w-full flex flex-col items-center pb-3 sm:pb-5">
+                <div 
+                  className="w-full max-w-xs p-3 rounded-2xl border shadow-xs mb-3 text-center"
+                  style={{ 
+                    backgroundColor: curatedPreset.bgMain, 
+                    borderColor: `${curatedPreset.borderColor}50`
+                  }}
+                >
+                  <span 
+                    className="text-[10px] uppercase tracking-widest block mb-0.5"
+                    style={{ color: curatedPreset.textMuted }}
+                  >
+                    Kepada Yth. Bapak/Ibu/Saudara/i:
+                  </span>
+                  <span 
+                    className="font-serif text-sm font-bold block truncate"
+                    style={{ color: curatedPreset.accentColor }}
+                  >
+                    {guestName}
+                  </span>
+                </div>
+
+                <button
+                  onClick={handleOpen}
+                  className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-lg transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer border"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${curatedPreset.primaryColor} 0%, ${curatedPreset.accentColor} 100%)`,
+                    borderColor: curatedPreset.accentColor,
+                    color: '#FFFFFF'
+                  }}
+                >
+                  <div className="relative flex items-center justify-center gap-2">
+                    <MailOpen className="w-4 h-4 text-white" />
+                    <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-white">
+                      BUKA UNDANGAN
+                    </span>
+                  </div>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        ) : isIvoryPearl ? (
           /* Ivory Pearl: Modern Editorial Fine-Art Arched Cover (Distinct from Noir Gold) */
           <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#FAF8F5] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-2xl`}>
             {/* Background Ambient Radial Glow */}

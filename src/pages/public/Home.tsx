@@ -458,6 +458,126 @@ export const Home: React.FC = () => {
       desc: lang === 'id'
         ? 'Nuansa merah marun & emas kerajaan, bingkai vintage berornamen & transisi gerbang istana.'
         : 'Royal maroon & imperial gold tones, ornate vintage frames & palace gate entrance.'
+    },
+    {
+      id: 'rose-gold',
+      name: 'Rose Gold Romance',
+      category: 'starter',
+      categoryLabel: 'Starter',
+      tag: 'Paket Starter',
+      preview: '/themes/rose-gold/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=rose-gold&demo=true',
+      desc: lang === 'id'
+        ? 'Nuansa lembut dusty rose pastel, aksen metalik foil rose gold berkilau, dan bunga peony romantis.'
+        : 'Soft dusty rose pastel tones, shimmering rose gold foil accents, and romantic peony blooms.'
+    },
+    {
+      id: 'terracotta-boho',
+      name: 'Terracotta Boho Rustic',
+      category: 'starter',
+      categoryLabel: 'Starter',
+      tag: 'Paket Starter',
+      preview: '/themes/terracotta-boho/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=terracotta-boho&demo=true',
+      desc: lang === 'id'
+        ? 'Nuansa hangat earthy terracotta, sentuhan pampas grass kering, dan estetika bohemian modern.'
+        : 'Warm earthy terracotta tones, dried pampas grass accents, and modern bohemian aesthetic.'
+    },
+    {
+      id: 'sunda-siger',
+      name: 'Sunda Siger Parahyangan',
+      category: 'traditional',
+      categoryLabel: 'Adat & Heritage',
+      tag: 'Adat Sunda',
+      preview: '/themes/sunda-siger/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=sunda-siger&demo=true',
+      desc: lang === 'id'
+        ? 'Nuansa hijau sage Priangan, mahkota Siger emas berhias melati ronce, dan alunan suling kecapi sakral.'
+        : 'Sage green Parahyangan ambiance, golden Sundanese Siger crown with jasmine, and sacred flute melodies.'
+    },
+    {
+      id: 'minang-gadang',
+      name: 'Minang Rumah Gadang',
+      category: 'traditional',
+      categoryLabel: 'Adat & Heritage',
+      tag: 'Adat Minang',
+      preview: '/themes/minang-gadang/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=minang-gadang&demo=true',
+      desc: lang === 'id'
+        ? 'Atap gonjong Rumah Gadang megah, mahkota Suntiang emas bertingkat, dan songket Pandai Sikek mewah.'
+        : 'Majestic curved Rumah Gadang roof, tiered golden Suntiang crown, and rich Pandai Sikek songket motifs.'
+    },
+    {
+      id: 'bali-kamasan',
+      name: 'Bali Royal Kamasan',
+      category: 'traditional',
+      categoryLabel: 'Adat & Heritage',
+      tag: 'Adat Bali',
+      preview: '/themes/bali-kamasan/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=bali-kamasan&demo=true',
+      desc: lang === 'id'
+        ? 'Gerbang Candi Bentar pura agung, ukiran emas prada Kamasan, kamboja wangi, dan kain poleng sakral.'
+        : 'Grand Candi Bentar temple gate, Kamasan golden prada carvings, scented frangipani, and sacred poleng.'
+    },
+    {
+      id: 'moroccan-nights',
+      name: 'Moroccan Arabian Nights',
+      category: 'traditional',
+      categoryLabel: 'Adat & Heritage',
+      tag: 'Arabian Nights',
+      preview: '/themes/moroccan-nights/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=moroccan-nights&demo=true',
+      desc: lang === 'id'
+        ? 'Kubah moriska istana Alhambra, lampion tembaga hangat, bintang zelije, dan rona biru lapis amber.'
+        : 'Alhambra moresque arches, warm glowing copper lanterns, zelije star patterns, and royal lapis amber.'
+    },
+    {
+      id: 'emerald-velvet',
+      name: 'Emerald Velvet Royal',
+      category: 'modern',
+      categoryLabel: 'Royal & Classic',
+      tag: 'Masterpiece Royal',
+      preview: '/themes/emerald-velvet/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=emerald-velvet&demo=true',
+      desc: lang === 'id'
+        ? 'Kemewahan ballroom internasional berbalut hijau zamrud tua beludru dan aksen emas champagne berkilap.'
+        : 'International grand ballroom luxury wrapped in deep emerald velvet and gleaming champagne gold accents.'
+    },
+    {
+      id: 'navy-silver',
+      name: 'Midnight Celestial Star',
+      category: 'modern',
+      categoryLabel: 'Modern Celestial',
+      tag: 'Masterpiece Modern',
+      preview: '/themes/navy-silver/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=navy-silver&demo=true',
+      desc: lang === 'id'
+        ? 'Langit malam midnight navy puitis, gugusan konstelasi bintang perak berkilau, dan bulan sabit anggun.'
+        : 'Poetic midnight navy starry skies, shimmering silver starlight constellations, and elegant crescent moon.'
+    },
+    {
+      id: 'burgundy-wine',
+      name: 'Burgundy Wine Classic',
+      category: 'modern',
+      categoryLabel: 'Royal Classic',
+      tag: 'Masterpiece Eropa',
+      preview: '/themes/burgundy-wine/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=burgundy-wine&demo=true',
+      desc: lang === 'id'
+        ? 'Perjamuan anggur bangsawan Eropa bernuansa bordeaux burgundy pekat, ukiran perunggu, dan cameo oval.'
+        : 'European noble wine banquet in deep bordeaux burgundy, antique bronze carvings, and cameo oval frames.'
+    },
+    {
+      id: 'sakura-hanami',
+      name: 'Sakura Kyoto Blossom',
+      category: 'modern',
+      categoryLabel: 'Oriental Modern',
+      tag: 'Oriental Zen',
+      preview: '/themes/sakura-hanami/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=sakura-hanami&demo=true',
+      desc: lang === 'id'
+        ? 'Musim semi bunga sakura mekar di Kyoto, gerbang Torii merah vermilion, dan kertas washi beras estetik.'
+        : 'Kyoto cherry blossom spring, vermilion red Torii gate accents, and aesthetic Japanese washi rice paper.'
     }
   ];
 

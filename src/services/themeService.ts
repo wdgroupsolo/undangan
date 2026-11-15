@@ -22,9 +22,19 @@ export const THEME_PRICE_MAP: Record<string, number> = {
   'ivory-pearl-minimalist': 50000,
   'noir-gold': 50000,
   'noir-gold-elegance': 50000,
+  'rose-gold': 50000,
+  'terracotta-boho': 50000,
   'kuala-lumpur-heritage': 70000,
   'kuala-lumpur': 70000,
   'hafiz-syafika': 70000,
+  'sunda-siger': 70000,
+  'minang-gadang': 70000,
+  'bali-kamasan': 70000,
+  'moroccan-nights': 70000,
+  'emerald-velvet': 150000,
+  'navy-silver': 150000,
+  'burgundy-wine': 150000,
+  'sakura-hanami': 150000,
   'nirwana-sarangan': 150000,
   'hotel-nirwana': 150000,
   'telaga-sarangan': 150000,
@@ -49,9 +59,8 @@ export const resolveThemePrice = (theme: { slug?: string; price?: number | null 
     return theme.price;
   }
   const slug = (theme.slug || '').toLowerCase();
-  if (slug === 'ivory-pearl' || slug === 'ivory-pearl-minimalist') return 50000;
-  if (slug === 'noir-gold' || slug === 'noir-gold-elegance') return 50000;
-  if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika') return 70000;
+  if (slug === 'ivory-pearl' || slug === 'ivory-pearl-minimalist' || slug === 'noir-gold' || slug === 'noir-gold-elegance' || slug === 'rose-gold' || slug === 'terracotta-boho') return 50000;
+  if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika' || slug === 'sunda-siger' || slug === 'minang-gadang' || slug === 'bali-kamasan' || slug === 'moroccan-nights') return 70000;
   return THEME_PRICE_MAP[slug] || 150000;
 };
 
@@ -60,6 +69,16 @@ export const THEME_SCREENSHOT_MAP: Record<string, string> = {
   'ivory-pearl-minimalist': '/themes/ivory-pearl/theme-preview.jpg',
   'noir-gold': '/themes/noir-gold/theme-preview.jpg',
   'noir-gold-elegance': '/themes/noir-gold/theme-preview.jpg',
+  'rose-gold': '/themes/rose-gold/theme-preview.jpg',
+  'terracotta-boho': '/themes/terracotta-boho/theme-preview.jpg',
+  'sunda-siger': '/themes/sunda-siger/theme-preview.jpg',
+  'minang-gadang': '/themes/minang-gadang/theme-preview.jpg',
+  'bali-kamasan': '/themes/bali-kamasan/theme-preview.jpg',
+  'moroccan-nights': '/themes/moroccan-nights/theme-preview.jpg',
+  'emerald-velvet': '/themes/emerald-velvet/theme-preview.jpg',
+  'navy-silver': '/themes/navy-silver/theme-preview.jpg',
+  'burgundy-wine': '/themes/burgundy-wine/theme-preview.jpg',
+  'sakura-hanami': '/themes/sakura-hanami/theme-preview.jpg',
   'joglo-maroon-heritage': '/themes/joglo-maroon-theme-preview.png',
   'joglo-maroon': '/themes/joglo-maroon-theme-preview.png',
   'joglo-bloom': '/themes/joglo-maroon-theme-preview.png',
@@ -376,10 +395,200 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
   created_at: '2026-09-27T12:00:00.000000+00:00'
 };
 
+// 1. Sunda Siger Parahyangan (Rp 70.000 / Adat & Heritage)
+export const REAL_SUNDA_SIGER_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555501',
+  name: 'Sunda Siger Parahyangan',
+  slug: 'sunda-siger',
+  description: 'Tema pernikahan adat Sunda bernuansa hijau sage Parahyangan dan mahkota Siger emas berhias melati ronce, ornamen daun sirih ayun, dan alunan suling kecapi sakral.',
+  category: 'Adat & Heritage',
+  price: 70000,
+  preview_image: '/themes/sunda-siger/theme-preview.jpg',
+  thumbnail: '/themes/sunda-siger/theme-preview.jpg',
+  status: 'active',
+  badge: 'Adat Sunda',
+  rating: '5.0',
+  features: ['Siger Emas 9 Lekuk & Ronce Melati', 'Nuansa Sage Green Priangan & Bambu', 'Kisah Cinta, Doa & Hadiah Digital', 'RSVP & Ucapan Tamu Real-time'],
+  theme_config: { primaryColor: '#2B4A37', secondaryColor: '#F4F7F4', accentColor: '#D4AF37', style: 'sunda-siger' },
+  created_at: '2026-11-15T15:00:00.000000+00:00'
+};
+
+// 2. Minang Rumah Gadang (Rp 70.000 / Adat & Heritage)
+export const REAL_MINANG_GADANG_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555502',
+  name: 'Minang Rumah Gadang',
+  slug: 'minang-gadang',
+  description: 'Tema pernikahan adat Minangkabau berlatar atap gonjong Rumah Gadang megah, mahkota Suntiang emas bertingkat, motif tenun songket Pandai Sikek, dan rona merah marun marawa.',
+  category: 'Adat & Heritage',
+  price: 70000,
+  preview_image: '/themes/minang-gadang/theme-preview.jpg',
+  thumbnail: '/themes/minang-gadang/theme-preview.jpg',
+  status: 'active',
+  badge: 'Adat Minang',
+  rating: '5.0',
+  features: ['Gonjong Rumah Gadang & Suntiang Emas', 'Ornamen Songket Pandai Sikek Mewah', 'Akad & Baralek Salin Rekening', 'Buku Tamu Interaktif Digital'],
+  theme_config: { primaryColor: '#7A1822', secondaryColor: '#FCF7F2', accentColor: '#E1A83E', style: 'minang-gadang' },
+  created_at: '2026-11-15T15:01:00.000000+00:00'
+};
+
+// 3. Bali Royal Kamasan (Rp 70.000 / Adat & Heritage)
+export const REAL_BALI_KAMASAN_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555503',
+  name: 'Bali Royal Kamasan',
+  slug: 'bali-kamasan',
+  description: 'Tema pernikahan adat Bali eksotis bernuansa gerbang Candi Bentar pura agung, ukiran emas prada Kamasan, kamboja kuning dupa wangi, dan kain poleng sakral.',
+  category: 'Adat & Heritage',
+  price: 70000,
+  preview_image: '/themes/bali-kamasan/theme-preview.jpg',
+  thumbnail: '/themes/bali-kamasan/theme-preview.jpg',
+  status: 'active',
+  badge: 'Adat Bali',
+  rating: '5.0',
+  features: ['Gerbang Candi Bentar & Prada Kamasan', 'Bunga Kamboja & Ornamen Ukir Bali', 'Peta Lokasi Pawiwahan & Pura Waze', 'RSVP Digital & Angpao QRIS'],
+  theme_config: { primaryColor: '#783A1E', secondaryColor: '#FDFBF7', accentColor: '#E4AC2D', style: 'bali-kamasan' },
+  created_at: '2026-11-15T15:02:00.000000+00:00'
+};
+
+// 4. Moroccan Arabian Nights (Rp 70.000 / Adat & Heritage)
+export const REAL_MOROCCAN_NIGHTS_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555504',
+  name: 'Moroccan Arabian Nights',
+  slug: 'moroccan-nights',
+  description: 'Tema pernikahan bertema Arabian & Timur Tengah bernuansa kubah moriska istana Alhambra, lampion tembaga bercahaya hangat, motif bintang zelije, dan rona biru lapis lazuli amber.',
+  category: 'Adat & Heritage',
+  price: 70000,
+  preview_image: '/themes/moroccan-nights/theme-preview.jpg',
+  thumbnail: '/themes/moroccan-nights/theme-preview.jpg',
+  status: 'active',
+  badge: 'Arabian Nights',
+  rating: '5.0',
+  features: ['Kubah Moriska Moresque & Bintang 8 Zelije', 'Lampion Tembaga & Nuansa Lapis Amber', 'Amplop Digital Hadiah & Salin No Rek', 'RSVP Buku Doa Selamat Pengantin'],
+  theme_config: { primaryColor: '#0E3A52', secondaryColor: '#FAF7F2', accentColor: '#DE9B35', style: 'moroccan-nights' },
+  created_at: '2026-11-15T15:03:00.000000+00:00'
+};
+
+// 5. Rose Gold Romance (Rp 50.000 / Starter)
+export const REAL_ROSE_GOLD_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555505',
+  name: 'Rose Gold Romance',
+  slug: 'rose-gold',
+  description: 'Tema pernikahan romantis feminin bernuansa dusty rose pastel, aksen metalik foil rose gold berkilau, rangkaian bunga peony mekar, dan estetika modern bersih.',
+  category: 'Starter',
+  price: 50000,
+  preview_image: '/themes/rose-gold/theme-preview.jpg',
+  thumbnail: '/themes/rose-gold/theme-preview.jpg',
+  status: 'active',
+  badge: 'Starter Romantis',
+  rating: '4.9',
+  features: ['Nuansa Lembut Dusty Rose & Peony Mawar', 'Aksen Kilau Rose Gold Metallic Foil', 'Hitung Mundur Acara & Love Timeline', 'Buku Tamu Online & Amplop Digital'],
+  theme_config: { primaryColor: '#8C4D58', secondaryColor: '#FFF8FA', accentColor: '#D89B9B', style: 'rose-gold' },
+  created_at: '2026-11-15T15:04:00.000000+00:00'
+};
+
+// 6. Terracotta Boho Rustic (Rp 50.000 / Starter)
+export const REAL_TERRACOTTA_BOHO_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555506',
+  name: 'Terracotta Boho Rustic',
+  slug: 'terracotta-boho',
+  description: 'Tema pernikahan earthy rustic bernuansa tanah liat terracotta hangat, rumput pampas kering lembut, lengkung gerbang senja, dan gaya bohemian estetik kekinian.',
+  category: 'Starter',
+  price: 50000,
+  preview_image: '/themes/terracotta-boho/theme-preview.jpg',
+  thumbnail: '/themes/terracotta-boho/theme-preview.jpg',
+  status: 'active',
+  badge: 'Starter Rustic',
+  rating: '4.9',
+  features: ['Nuansa Hangat Terracotta & Pampas Grass', 'Desain Arched Minimalis Modern Bohemian', 'Integrasi Google Maps & Kalender', 'RSVP Responsif Semua Perangkat'],
+  theme_config: { primaryColor: '#964B35', secondaryColor: '#FAF5EE', accentColor: '#C47B5D', style: 'terracotta-boho' },
+  created_at: '2026-11-15T15:05:00.000000+00:00'
+};
+
+// 7. Emerald Velvet Royal (Rp 150.000 / Masterpiece)
+export const REAL_EMERALD_VELVET_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555507',
+  name: 'Emerald Velvet Royal',
+  slug: 'emerald-velvet',
+  description: 'Tema pernikahan megah kemewahan ballroom internasional bernuansa hijau zamrud tua beludru, aksen emas champagne berkilap, monogram tameng mahkota, dan pencahayaan kristal dramatis.',
+  category: 'Royal & Classic',
+  price: 150000,
+  preview_image: '/themes/emerald-velvet/theme-preview.jpg',
+  thumbnail: '/themes/emerald-velvet/theme-preview.jpg',
+  status: 'active',
+  badge: 'Kemewahan Royal',
+  rating: '5.0',
+  features: ['Palet Deep Emerald Velvet & Champagne Gold', 'Monogram Crest Royal Tameng Kerajaan', 'Floating Navigation & Fitur Musik Eksklusif', 'Galeri Lightbox & Live RSVP Real-time'],
+  theme_config: { primaryColor: '#0F3025', secondaryColor: '#174033', accentColor: '#ECC880', style: 'emerald-velvet' },
+  created_at: '2026-11-15T15:06:00.000000+00:00'
+};
+
+// 8. Midnight Celestial Star (Rp 150.000 / Masterpiece)
+export const REAL_NAVY_SILVER_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555508',
+  name: 'Midnight Celestial Star',
+  slug: 'navy-silver',
+  description: 'Tema pernikahan modern puitis bernuansa langit malam navy midnight, gugusan bintang konstelasi perak berkilau, siluet bulan sabit anggun, dan tipografi seremonial agung.',
+  category: 'Modern & Cultural',
+  price: 150000,
+  preview_image: '/themes/navy-silver/theme-preview.jpg',
+  thumbnail: '/themes/navy-silver/theme-preview.jpg',
+  status: 'active',
+  badge: 'Tema Celestial Mewah',
+  rating: '5.0',
+  features: ['Nuansa Langit Midnight Navy & Taburan Bintang', 'Aksen Perak Starlight & Bulan Sabit Romantis', 'Kisah Cinta, Countdown & Lokasi Acara', 'RSVP Digital & Hadiah Pernikahan Bank'],
+  theme_config: { primaryColor: '#0C172E', secondaryColor: '#142242', accentColor: '#CBD5E1', style: 'navy-silver' },
+  created_at: '2026-11-15T15:07:00.000000+00:00'
+};
+
+// 9. Burgundy Wine Classic (Rp 150.000 / Masterpiece)
+export const REAL_BURGUNDY_WINE_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555509',
+  name: 'Burgundy Wine Classic',
+  slug: 'burgundy-wine',
+  description: 'Tema pernikahan klasik ala perjamuan anggur bangsawan Eropa bernuansa merah bordeaux tua pekat, ukiran perunggu antik vintage, bingkai cameo oval, dan pita beludru anggun.',
+  category: 'Royal & Classic',
+  price: 150000,
+  preview_image: '/themes/burgundy-wine/theme-preview.jpg',
+  thumbnail: '/themes/burgundy-wine/theme-preview.jpg',
+  status: 'active',
+  badge: 'Masterpiece Eropa',
+  rating: '5.0',
+  features: ['Nuansa Bordeaux Burgundy & Antique Bronze', 'Bingkai Cameo Oval Klasik Bangsawan', 'Buku Tamu Doa & Konfirmasi Kehadiran', 'Bottom Nav Bar Praktis & Fast Load'],
+  theme_config: { primaryColor: '#44101A', secondaryColor: '#FDF7F8', accentColor: '#C99E58', style: 'burgundy-wine' },
+  created_at: '2026-11-15T15:08:00.000000+00:00'
+};
+
+// 10. Sakura Kyoto Blossom (Rp 150.000 / Masterpiece)
+export const REAL_SAKURA_HANAMI_THEME: Theme = {
+  id: 'a1111111-2222-3333-4444-555555555510',
+  name: 'Sakura Kyoto Blossom',
+  slug: 'sakura-hanami',
+  description: 'Tema pernikahan oriental estetis bernuansa musim semi sakura mekar di Kyoto, siluet gerbang Torii merah vermilion, tekstur kertas washi beras, dan sentuhan cinta minimalis Zen.',
+  category: 'Modern & Cultural',
+  price: 150000,
+  preview_image: '/themes/sakura-hanami/theme-preview.jpg',
+  thumbnail: '/themes/sakura-hanami/theme-preview.jpg',
+  status: 'active',
+  badge: 'Oriental Zen',
+  rating: '5.0',
+  features: ['Kelopak Sakura Hanami & Aksen Gerbang Torii', 'Tekstur Kertas Washi Jepang & Pastel Pink', 'Hitung Mundur Kalender & Peta Lokasi', 'Amplop Digital Instant & Kirim Doa'],
+  theme_config: { primaryColor: '#9C3A4E', secondaryColor: '#FFF8FA', accentColor: '#E88B9E', style: 'sakura-hanami' },
+  created_at: '2026-11-15T15:09:00.000000+00:00'
+};
+
 export const DEFAULT_THEMES: Theme[] = [
   REAL_IVORY_PEARL_THEME,
   REAL_NOIR_GOLD_THEME,
+  REAL_ROSE_GOLD_THEME,
+  REAL_TERRACOTTA_BOHO_THEME,
   REAL_KUALA_LUMPUR_HERITAGE_THEME,
+  REAL_SUNDA_SIGER_THEME,
+  REAL_MINANG_GADANG_THEME,
+  REAL_BALI_KAMASAN_THEME,
+  REAL_MOROCCAN_NIGHTS_THEME,
+  REAL_EMERALD_VELVET_THEME,
+  REAL_NAVY_SILVER_THEME,
+  REAL_BURGUNDY_WINE_THEME,
+  REAL_SAKURA_HANAMI_THEME,
   REAL_NIRWANA_SARANGAN_THEME,
   REAL_JOGLO_MAROON_THEME,
   REAL_ROYAL_WAYANG_THEME,
@@ -427,6 +636,22 @@ export const restoreThemeSlug = (idOrSlug: string) => {
   }
 };
 
+export const THEME_ALIASES: Record<string, string> = {
+  'ivory-pearl-minimalist': 'ivory-pearl',
+  'noir-gold-elegance': 'noir-gold',
+  'kuala-lumpur': 'kuala-lumpur-heritage',
+  'hafiz-syafika': 'kuala-lumpur-heritage',
+  'hotel-nirwana': 'nirwana-sarangan',
+  'telaga-sarangan': 'nirwana-sarangan',
+  'joglo-maroon': 'joglo-maroon-heritage',
+  'joglo-bloom': 'joglo-maroon-heritage',
+  'pendopo-maroon': 'joglo-maroon-heritage',
+  'royal-wayang': 'royal-wayang-gold',
+  'joglo-wayang': 'royal-wayang-gold',
+  'jawa-klasik': 'javanese-heritage',
+  'borobudur': 'javanese-heritage',
+};
+
 export const themeService = {
   async getThemes(): Promise<Theme[]> {
     const deletedSlugs = getDeletedThemeSlugs();
@@ -443,50 +668,14 @@ export const themeService = {
         return filterNotDeleted(DEFAULT_THEMES).map(enhanceThemeWithScreenshot);
       }
 
-      // Merge database themes with Kuala Lumpur Heritage, Nirwana Sarangan, Joglo Maroon, etc.
+      // Merge database themes with default curated themes
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
-      if (!existingSlugs.has('ivory-pearl') && !deletedSlugs.has('ivory-pearl')) {
-        merged.unshift(REAL_IVORY_PEARL_THEME);
-      }
-
-      if (!existingSlugs.has('noir-gold') && !deletedSlugs.has('noir-gold')) {
-        merged.unshift(REAL_NOIR_GOLD_THEME);
-      }
-
-      if (!existingSlugs.has('kuala-lumpur-heritage') && !deletedSlugs.has('kuala-lumpur-heritage')) {
-        merged.unshift(REAL_KUALA_LUMPUR_HERITAGE_THEME);
-      }
-
-      if (!existingSlugs.has('nirwana-sarangan') && !deletedSlugs.has('nirwana-sarangan')) {
-        merged.splice(1, 0, REAL_NIRWANA_SARANGAN_THEME);
-      } else if (!deletedSlugs.has('nirwana-sarangan')) {
-        const idx = merged.findIndex((t: any) => t.slug === 'nirwana-sarangan');
-        if (idx > 1) {
-          const [nirwana] = merged.splice(idx, 1);
-          merged.splice(1, 0, nirwana);
+      for (const defTheme of DEFAULT_THEMES) {
+        if (!existingSlugs.has(defTheme.slug) && !deletedSlugs.has(defTheme.slug)) {
+          merged.push(defTheme);
         }
-      }
-
-      if (!existingSlugs.has('joglo-maroon-heritage') && !deletedSlugs.has('joglo-maroon-heritage')) {
-        merged.splice(1, 0, REAL_JOGLO_MAROON_THEME);
-      }
-
-      if (!existingSlugs.has('royal-wayang-gold') && !deletedSlugs.has('royal-wayang-gold')) {
-        merged.push(REAL_ROYAL_WAYANG_THEME);
-      }
-
-      if (!existingSlugs.has('secret-garden') && !deletedSlugs.has('secret-garden')) {
-        merged.push(REAL_SECRET_GARDEN_THEME);
-      }
-
-      if (!existingSlugs.has('maroon-gold') && !deletedSlugs.has('maroon-gold')) {
-        merged.push(REAL_MAROON_GOLD_THEME);
-      }
-
-      if (!existingSlugs.has('javanese-heritage') && !deletedSlugs.has('javanese-heritage')) {
-        merged.push(REAL_JAVANESE_HERITAGE_THEME);
       }
 
       return filterNotDeleted(merged).map(enhanceThemeWithScreenshot);
@@ -515,30 +704,10 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
-      if (!existingSlugs.has('ivory-pearl') && !deletedSlugs.has('ivory-pearl')) {
-        merged.unshift(REAL_IVORY_PEARL_THEME);
-      }
-
-      if (!existingSlugs.has('noir-gold') && !deletedSlugs.has('noir-gold')) {
-        merged.unshift(REAL_NOIR_GOLD_THEME);
-      }
-
-      if (!existingSlugs.has('kuala-lumpur-heritage') && !deletedSlugs.has('kuala-lumpur-heritage')) {
-        merged.unshift(REAL_KUALA_LUMPUR_HERITAGE_THEME);
-      }
-
-      if (!existingSlugs.has('nirwana-sarangan') && !deletedSlugs.has('nirwana-sarangan')) {
-        merged.splice(1, 0, REAL_NIRWANA_SARANGAN_THEME);
-      } else if (!deletedSlugs.has('nirwana-sarangan')) {
-        const idx = merged.findIndex((t: any) => t.slug === 'nirwana-sarangan');
-        if (idx > 1) {
-          const [nirwana] = merged.splice(idx, 1);
-          merged.splice(1, 0, nirwana);
+      for (const defTheme of DEFAULT_THEMES) {
+        if (!existingSlugs.has(defTheme.slug) && !deletedSlugs.has(defTheme.slug)) {
+          merged.push(defTheme);
         }
-      }
-
-      if (!existingSlugs.has('joglo-maroon-heritage') && !deletedSlugs.has('joglo-maroon-heritage')) {
-        merged.splice(1, 0, REAL_JOGLO_MAROON_THEME);
       }
 
       return filterNotDeleted(merged).map(enhanceThemeWithScreenshot);
@@ -549,36 +718,13 @@ export const themeService = {
   },
 
   async getTheme(id: string): Promise<Theme> {
-    if (id === REAL_IVORY_PEARL_THEME.id || id === 'ivory-pearl' || id === 'ivory-pearl-minimalist') {
-      return REAL_IVORY_PEARL_THEME;
+    const normalized = (id || '').toLowerCase().trim();
+    const targetSlug = THEME_ALIASES[normalized] || normalized;
+    const foundDefault = DEFAULT_THEMES.find(t => t.id === normalized || t.slug === targetSlug);
+    if (foundDefault) {
+      return enhanceThemeWithScreenshot(foundDefault);
     }
-    if (id === REAL_NOIR_GOLD_THEME.id || id === 'noir-gold' || id === 'noir-gold-elegance') {
-      return REAL_NOIR_GOLD_THEME;
-    }
-    if (id === REAL_KUALA_LUMPUR_HERITAGE_THEME.id || id === 'kuala-lumpur-heritage' || id === 'kuala-lumpur' || id === 'hafiz-syafika') {
-      return REAL_KUALA_LUMPUR_HERITAGE_THEME;
-    }
-    if (id === REAL_NIRWANA_SARANGAN_THEME.id || id === 'nirwana-sarangan' || id === 'hotel-nirwana' || id === 'telaga-sarangan') {
-      return REAL_NIRWANA_SARANGAN_THEME;
-    }
-    if (id === REAL_JOGLO_MAROON_THEME.id || id === 'joglo-maroon-heritage' || id === 'joglo-maroon' || id === 'joglo-bloom' || id === 'pendopo-maroon') {
-      return REAL_JOGLO_MAROON_THEME;
-    }
-    if (id === REAL_ROYAL_WAYANG_THEME.id || id === 'royal-wayang-gold' || id === 'royal-wayang' || id === 'joglo-wayang') {
-      return REAL_ROYAL_WAYANG_THEME;
-    }
-    if (id === REAL_JAVANESE_HERITAGE_THEME.id || id === 'javanese-heritage' || id === 'jawa-klasik' || id === 'borobudur') {
-      return REAL_JAVANESE_HERITAGE_THEME;
-    }
-    if (id === REAL_SECRET_GARDEN_THEME.id || id === 'secret-garden') {
-      return REAL_SECRET_GARDEN_THEME;
-    }
-    if (id === REAL_ROYAL_ELEGANCE_THEME.id || id === 'royal-elegance') {
-      return REAL_ROYAL_ELEGANCE_THEME;
-    }
-    if (id === REAL_MAROON_GOLD_THEME.id || id === 'maroon-gold') {
-      return REAL_MAROON_GOLD_THEME;
-    }
+
     try {
       const { data, error } = await supabase
         .from('themes')
@@ -595,36 +741,13 @@ export const themeService = {
   },
 
   async getThemeBySlug(slug: string): Promise<Theme> {
-    if (slug === 'ivory-pearl' || slug === 'ivory-pearl-minimalist') {
-      return REAL_IVORY_PEARL_THEME;
+    const normalized = (slug || '').toLowerCase().trim();
+    const targetSlug = THEME_ALIASES[normalized] || normalized;
+    const foundDefault = DEFAULT_THEMES.find(t => t.slug === targetSlug);
+    if (foundDefault) {
+      return enhanceThemeWithScreenshot(foundDefault);
     }
-    if (slug === 'noir-gold' || slug === 'noir-gold-elegance') {
-      return REAL_NOIR_GOLD_THEME;
-    }
-    if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika') {
-      return REAL_KUALA_LUMPUR_HERITAGE_THEME;
-    }
-    if (slug === 'nirwana-sarangan' || slug === 'hotel-nirwana' || slug === 'telaga-sarangan') {
-      return REAL_NIRWANA_SARANGAN_THEME;
-    }
-    if (slug === 'joglo-maroon-heritage' || slug === 'joglo-maroon' || slug === 'joglo-bloom' || slug === 'pendopo-maroon') {
-      return REAL_JOGLO_MAROON_THEME;
-    }
-    if (slug === 'royal-wayang-gold' || slug === 'royal-wayang' || slug === 'joglo-wayang') {
-      return REAL_ROYAL_WAYANG_THEME;
-    }
-    if (slug === 'javanese-heritage' || slug === 'jawa-klasik' || slug === 'borobudur') {
-      return REAL_JAVANESE_HERITAGE_THEME;
-    }
-    if (slug === 'secret-garden') {
-      return REAL_SECRET_GARDEN_THEME;
-    }
-    if (slug === 'royal-elegance') {
-      return REAL_ROYAL_ELEGANCE_THEME;
-    }
-    if (slug === 'maroon-gold') {
-      return REAL_MAROON_GOLD_THEME;
-    }
+
     try {
       const { data, error } = await supabase
         .from('themes')
