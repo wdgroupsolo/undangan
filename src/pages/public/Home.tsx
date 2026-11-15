@@ -45,6 +45,19 @@ export const Home: React.FC = () => {
   const showcaseBadges = t('showcaseBadge') as unknown as string[];
   const showcaseThemes = [
     {
+      id: 'ivory-pearl',
+      name: 'Ivory Pearl Minimalist',
+      slug: 'ivory-pearl',
+      badge: 'Starter Baru',
+      couple: 'Steven & Bunga',
+      date: 'Sabtu, 26 Desember 2026',
+      preview: '/themes/ivory-pearl/theme-preview.jpg',
+      videoUrl: '',
+      musicTitle: 'Canon in D (Warm Strings)',
+      musicUrl: '/music/maroon-gold-canon.mp3',
+      demoUrl: '/invitation/steven-bunga?theme=ivory-pearl&demo=true'
+    },
+    {
       id: 'noir-gold',
       name: 'Noir Gold Elegance',
       slug: 'noir-gold',
@@ -326,6 +339,18 @@ export const Home: React.FC = () => {
   };
 
   const ALL_DEMO_THEMES = [
+    {
+      id: 'ivory-pearl',
+      name: 'Ivory Pearl Minimalist',
+      category: 'starter',
+      categoryLabel: 'Starter',
+      tag: 'Paket Starter',
+      preview: '/themes/ivory-pearl/theme-preview.jpg',
+      demoUrl: '/invitation/steven-bunga?theme=ivory-pearl&demo=true',
+      desc: lang === 'id'
+        ? 'Nuansa mewah ivory pearl & champagne silk, tipografi editorial elegan, double hairline border dan amplop buka otomatis.'
+        : 'Luxurious ivory pearl & champagne silk tones, refined editorial typography, double hairline borders and instant unfold.'
+    },
     {
       id: 'noir-gold',
       name: 'Noir Gold Elegance',

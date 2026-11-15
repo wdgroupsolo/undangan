@@ -18,6 +18,8 @@ export interface Theme {
 }
 
 export const THEME_PRICE_MAP: Record<string, number> = {
+  'ivory-pearl': 50000,
+  'ivory-pearl-minimalist': 50000,
   'noir-gold': 50000,
   'noir-gold-elegance': 50000,
   'kuala-lumpur-heritage': 70000,
@@ -47,12 +49,15 @@ export const resolveThemePrice = (theme: { slug?: string; price?: number | null 
     return theme.price;
   }
   const slug = (theme.slug || '').toLowerCase();
+  if (slug === 'ivory-pearl' || slug === 'ivory-pearl-minimalist') return 50000;
   if (slug === 'noir-gold' || slug === 'noir-gold-elegance') return 50000;
   if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika') return 70000;
   return THEME_PRICE_MAP[slug] || 150000;
 };
 
 export const THEME_SCREENSHOT_MAP: Record<string, string> = {
+  'ivory-pearl': '/themes/ivory-pearl/theme-preview.jpg',
+  'ivory-pearl-minimalist': '/themes/ivory-pearl/theme-preview.jpg',
   'noir-gold': '/themes/noir-gold/theme-preview.jpg',
   'noir-gold-elegance': '/themes/noir-gold/theme-preview.jpg',
   'joglo-maroon-heritage': '/themes/joglo-maroon-theme-preview.png',
@@ -116,6 +121,37 @@ export const REAL_KUALA_LUMPUR_HERITAGE_THEME: Theme = {
     mobileBackground: '/themes/kuala-lumpur-heritage/cover-skyline.jpg',
   },
   created_at: '2026-10-30T12:00:00.000000+00:00'
+};
+
+// Masterpiece Starter Theme: Ivory Pearl Minimalist
+export const REAL_IVORY_PEARL_THEME: Theme = {
+  id: 'e2f3a4b5-6789-0123-4567-890123456789',
+  name: 'Ivory Pearl Minimalist',
+  slug: 'ivory-pearl',
+  description: 'Tema pernikahan modern berkelas harga terjangkau dengan palet warna ivory pearl & champagne silk, tipografi editorial elegan, double hairline border, amplop buka otomatis, dan RSVP digital lengkap.',
+  category: 'Starter',
+  price: 50000,
+  preview_image: '/themes/ivory-pearl/theme-preview.jpg',
+  thumbnail: '/themes/ivory-pearl/theme-preview.jpg',
+  status: 'active',
+  badge: 'Starter Baru',
+  rating: '4.9',
+  features: [
+    'Nuansa Elegan Ivory Pearl & Champagne Silk Minimalis',
+    'Tipografi Editorial Mewah & Double Hairline Border',
+    'Segel Lilin Mutiara & Amplop Digital Instant Open',
+    'Hitung Mundur, Kisah Cinta, Hadiah Digital & RSVP Online'
+  ],
+  theme_config: { 
+    primaryColor: '#C5A880', 
+    secondaryColor: '#FAF8F5', 
+    accentColor: '#5C6B5E',
+    style: 'ivory-pearl',
+    backgroundImage: '/themes/ivory-pearl/theme-preview.jpg',
+    desktopBackground: '/themes/ivory-pearl/theme-preview.jpg',
+    mobileBackground: '/themes/ivory-pearl/theme-preview.jpg',
+  },
+  created_at: '2026-11-15T12:00:00.000000+00:00'
 };
 
 // Masterpiece Starter Theme: Noir Gold Elegance
@@ -341,6 +377,7 @@ export const REAL_MAROON_GOLD_THEME: Theme = {
 };
 
 export const DEFAULT_THEMES: Theme[] = [
+  REAL_IVORY_PEARL_THEME,
   REAL_NOIR_GOLD_THEME,
   REAL_KUALA_LUMPUR_HERITAGE_THEME,
   REAL_NIRWANA_SARANGAN_THEME,
@@ -410,6 +447,10 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
+      if (!existingSlugs.has('ivory-pearl') && !deletedSlugs.has('ivory-pearl')) {
+        merged.unshift(REAL_IVORY_PEARL_THEME);
+      }
+
       if (!existingSlugs.has('noir-gold') && !deletedSlugs.has('noir-gold')) {
         merged.unshift(REAL_NOIR_GOLD_THEME);
       }
@@ -474,6 +515,10 @@ export const themeService = {
       const existingSlugs = new Set(data.map((t: any) => t.slug));
       const merged = [...data];
 
+      if (!existingSlugs.has('ivory-pearl') && !deletedSlugs.has('ivory-pearl')) {
+        merged.unshift(REAL_IVORY_PEARL_THEME);
+      }
+
       if (!existingSlugs.has('noir-gold') && !deletedSlugs.has('noir-gold')) {
         merged.unshift(REAL_NOIR_GOLD_THEME);
       }
@@ -504,6 +549,9 @@ export const themeService = {
   },
 
   async getTheme(id: string): Promise<Theme> {
+    if (id === REAL_IVORY_PEARL_THEME.id || id === 'ivory-pearl' || id === 'ivory-pearl-minimalist') {
+      return REAL_IVORY_PEARL_THEME;
+    }
     if (id === REAL_NOIR_GOLD_THEME.id || id === 'noir-gold' || id === 'noir-gold-elegance') {
       return REAL_NOIR_GOLD_THEME;
     }
@@ -547,6 +595,9 @@ export const themeService = {
   },
 
   async getThemeBySlug(slug: string): Promise<Theme> {
+    if (slug === 'ivory-pearl' || slug === 'ivory-pearl-minimalist') {
+      return REAL_IVORY_PEARL_THEME;
+    }
     if (slug === 'noir-gold' || slug === 'noir-gold-elegance') {
       return REAL_NOIR_GOLD_THEME;
     }

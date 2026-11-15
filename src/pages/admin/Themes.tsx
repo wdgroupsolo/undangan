@@ -89,6 +89,9 @@ export const Themes: React.FC = () => {
     if (theme.slug === 'noir-gold' || theme.slug === 'noir-gold-elegance') {
       return '/invitation/audi-ovyola?theme=noir-gold&demo=true';
     }
+    if (theme.slug === 'ivory-pearl' || theme.slug === 'ivory-pearl-minimalist') {
+      return '/invitation/steven-bunga?theme=ivory-pearl&demo=true';
+    }
     if (theme.slug === 'kuala-lumpur-heritage' || theme.slug === 'kuala-lumpur' || theme.slug === 'hafiz-syafika') {
       return '/invitation/hafiz-syafika?theme=kuala-lumpur-heritage&demo=true';
     }
@@ -157,7 +160,7 @@ export const Themes: React.FC = () => {
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="text-2xl font-bold text-amber-950">{counts.p50k}</span>
-            <span className="text-xs font-semibold text-amber-700">Noir Gold</span>
+            <span className="text-xs font-semibold text-amber-700">Tema Starter</span>
           </div>
           <p className="text-[11px] text-amber-800/80 mt-1">Best Value Luxury</p>
         </button>
