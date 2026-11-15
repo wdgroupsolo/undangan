@@ -842,48 +842,55 @@ export const InvitationRenderer: React.FC = () => {
       {/* 1. Initial Front Cover: Right 42% Panel on Desktop, Fullscreen on Mobile */}
       {openingStage === 'cover' && (
         isIvoryPearl ? (
-          /* Ivory Pearl & Champagne Silk Minimalist Luxury Cover */
+          /* Ivory Pearl: Modern Editorial Fine-Art Arched Cover (Distinct from Noir Gold) */
           <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#FAF8F5] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'} shadow-2xl`}>
-            {/* Background Radial Glow */}
-            <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.18)_0%,rgba(250,248,245,0.95)_70%)]" />
+            {/* Background Ambient Radial Glow */}
+            <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.22)_0%,rgba(250,248,245,0.98)_70%)]" />
 
             {/* Centered Mobile/Portrait Cover Frame */}
-            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[700px] sm:max-h-[92vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-8 shadow-[0_25px_80px_rgba(180,160,140,0.22),0_0_30px_rgba(197,168,128,0.15)] sm:border border-[#C5A880]/50 bg-white">
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:min-h-[700px] sm:max-h-[94vh] sm:rounded-[36px] overflow-hidden flex flex-col justify-between items-center text-center p-6 sm:p-7 shadow-[0_25px_80px_rgba(180,160,140,0.25),0_0_30px_rgba(197,168,128,0.15)] sm:border border-[#C5A880]/50 bg-white">
               
               {/* Four Pearl Corners */}
-              <div className="absolute top-3 left-3"><PearlCorner position="top-left" size={32} /></div>
-              <div className="absolute top-3 right-3"><PearlCorner position="top-right" size={32} /></div>
-              <div className="absolute bottom-3 left-3"><PearlCorner position="bottom-left" size={32} /></div>
-              <div className="absolute bottom-3 right-3"><PearlCorner position="bottom-right" size={32} /></div>
+              <div className="absolute top-3 left-3"><PearlCorner position="top-left" size={30} /></div>
+              <div className="absolute top-3 right-3"><PearlCorner position="top-right" size={30} /></div>
+              <div className="absolute bottom-3 left-3"><PearlCorner position="bottom-left" size={30} /></div>
+              <div className="absolute bottom-3 right-3"><PearlCorner position="bottom-right" size={30} /></div>
 
-              {/* TOP: "THE WEDDING OF" */}
-              <div className="relative z-20 flex flex-col items-center pt-6 sm:pt-8">
-                <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-[#8C6D3F] font-serif font-bold">
-                  THE WEDDING OF
+              {/* TOP: "THE WEDDING INVITATION" */}
+              <div className="relative z-20 flex flex-col items-center pt-5 sm:pt-6">
+                <span className="text-[10px] sm:text-xs tracking-[0.32em] uppercase text-[#8C6D3F] font-serif font-bold">
+                  THE WEDDING INVITATION
                 </span>
-                <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#2A241E] mt-2">
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#2A241E] mt-1.5">
                   {groomDisplayName} <span className="font-light italic text-[#B38F5C]">&amp;</span> {brideDisplayName}
                 </h1>
-                <p className="text-[11px] font-sans tracking-[0.2em] uppercase text-[#7D736A] mt-2 font-medium">
+                <p className="text-[11px] font-sans tracking-[0.22em] uppercase text-[#7D736A] mt-1.5 font-medium">
                   {new Date(invitation?.wedding_date || '2026-12-28').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                 </p>
               </div>
 
-              {/* CENTER: Pearlescent Wax Seal Monogram */}
-              <div className="relative z-20 my-auto py-6 flex flex-col items-center">
-                <div className="relative w-28 h-28 rounded-full p-1 bg-gradient-to-tr from-[#C5A880] via-[#EADBCC] to-[#FAF5EE] shadow-[0_10px_35px_rgba(180,160,140,0.3)] flex items-center justify-center animate-pulse" style={{ animationDuration: '4s' }}>
-                  <div className="w-full h-full rounded-full bg-[#FAF6F0] border border-[#C5A880]/60 flex flex-col items-center justify-center text-center shadow-inner">
-                    <Heart className="w-6 h-6 text-[#8C6D3F] mb-1" />
-                    <span className="font-serif text-lg font-bold tracking-widest text-[#5C4524]">
-                      {groomDisplayName.charAt(0)}&amp;{brideDisplayName.charAt(0)}
-                    </span>
+              {/* CENTER: Arched Couple Portrait Window (Completely distinct from Noir Gold's wax seal) */}
+              <div className="relative z-20 my-auto py-3 flex flex-col items-center">
+                <div className="relative w-44 h-56 sm:w-48 sm:h-60 rounded-t-[100px] rounded-b-2xl overflow-hidden p-1.5 bg-gradient-to-b from-[#EADBCC] via-[#C5A880] to-[#9E7B4B] shadow-[0_12px_35px_rgba(180,150,120,0.25)] group">
+                  <div className="w-full h-full rounded-t-[94px] rounded-b-xl overflow-hidden relative">
+                    <img 
+                      src={coverImage} 
+                      alt={`${groomDisplayName} & ${brideDisplayName}`}
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                   </div>
+                </div>
+                <div className="inline-flex items-center gap-2 mt-3 px-3 py-0.5 rounded-full bg-[#FAF5EE] border border-[#C5A880]/30">
+                  <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#8C6D3F] font-semibold">
+                    Special Invitation
+                  </span>
                 </div>
               </div>
 
               {/* BOTTOM: Recipient & Open Invitation Button */}
-              <div className="relative z-20 w-full flex flex-col items-center pb-4 sm:pb-6">
-                <div className="w-full max-w-xs p-3 rounded-2xl bg-[#FAF6F0] border border-[#C5A880]/30 shadow-xs mb-5">
+              <div className="relative z-20 w-full flex flex-col items-center pb-4 sm:pb-5">
+                <div className="w-full max-w-xs p-3 rounded-2xl bg-[#FAF6F0] border border-[#C5A880]/35 shadow-xs mb-4">
                   <span className="text-[10px] uppercase tracking-widest text-[#7D736A] block mb-0.5">
                     Kepada Yth. Bapak/Ibu/Saudara/i:
                   </span>
@@ -894,11 +901,11 @@ export const InvitationRenderer: React.FC = () => {
 
                 <button
                   onClick={handleOpen}
-                  className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-[0_10px_30px_rgba(180,160,140,0.35)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-[#2A241E] hover:bg-[#3D352D] border border-[#C5A880]/60"
+                  className="group relative w-full overflow-hidden rounded-full py-3.5 px-8 shadow-[0_10px_30px_rgba(180,160,140,0.35)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#C5A880] via-[#B8976C] to-[#9A7B52] border border-[#EADBCC]"
                 >
                   <div className="relative flex items-center justify-center gap-2">
-                    <MailOpen className="w-4 h-4 text-[#EADBCC]" />
-                    <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#FAF5EE]">
+                    <MailOpen className="w-4 h-4 text-white" />
+                    <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-white">
                       BUKA UNDANGAN
                     </span>
                   </div>
