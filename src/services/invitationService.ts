@@ -273,7 +273,8 @@ export const INVITATION_YOGA_FATMA: Invitation & { theme?: any; client?: any } =
     show_akad: true,
     show_resepsi: true,
     show_love_story: true,
-    show_live_streaming: false
+    show_live_streaming: false,
+    use_barcode: true
   },
   theme: {
     id: 'b2c3d4e5-6789-4012-c345-6def78901234',

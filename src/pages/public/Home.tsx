@@ -2628,7 +2628,7 @@ export const Home: React.FC = () => {
               {/* Social Icons Strip */}
               <div className="flex items-center space-x-4 text-stone-800">
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-primary-900 transition-colors"

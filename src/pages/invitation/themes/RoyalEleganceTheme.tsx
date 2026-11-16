@@ -323,7 +323,7 @@ export const RoyalEleganceTheme: React.FC<BaseThemeProps> = ({ couple, events, g
               <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#d4af37]/30" />
             </div>
             <a 
-              href="https://www.instagram.com/wdgroupcompany" 
+              href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-[10px] sm:text-[11px] text-white/40 hover:text-[#d4af37] tracking-wider font-light transition-colors inline-block cursor-pointer"

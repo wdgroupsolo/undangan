@@ -23,6 +23,7 @@ export const THEME_PRICE_MAP: Record<string, number> = {
   'noir-gold': 50000,
   'noir-gold-elegance': 50000,
   'rose-gold': 50000,
+  'rose-gold-romance': 50000,
   'terracotta-boho': 50000,
   'kuala-lumpur-heritage': 70000,
   'kuala-lumpur': 70000,
@@ -59,7 +60,7 @@ export const resolveThemePrice = (theme: { slug?: string; price?: number | null 
     return theme.price;
   }
   const slug = (theme.slug || '').toLowerCase();
-  if (slug === 'ivory-pearl' || slug === 'ivory-pearl-minimalist' || slug === 'noir-gold' || slug === 'noir-gold-elegance' || slug === 'rose-gold' || slug === 'terracotta-boho') return 50000;
+  if (slug === 'ivory-pearl' || slug === 'ivory-pearl-minimalist' || slug === 'noir-gold' || slug === 'noir-gold-elegance' || slug === 'rose-gold' || slug === 'rose-gold-romance' || slug === 'terracotta-boho') return 50000;
   if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika' || slug === 'sunda-siger' || slug === 'minang-gadang' || slug === 'bali-kamasan' || slug === 'moroccan-nights') return 70000;
   return THEME_PRICE_MAP[slug] || 150000;
 };

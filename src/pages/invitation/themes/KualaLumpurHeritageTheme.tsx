@@ -1109,9 +1109,14 @@ export const KualaLumpurHeritageTheme: React.FC<KualaLumpurHeritageThemeProps> =
                 <p className="text-[10px] tracking-[0.2em] uppercase text-[#A66172] font-sans">
                   Kuala Lumpur, Malaysia
                 </p>
-                <p className="text-[9px] text-[#C28593] mt-6 font-sans">
+                <a 
+                  href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-[9px] text-[#C28593] hover:text-[#D8304D] mt-6 font-sans inline-block transition-colors cursor-pointer"
+                >
                   &copy; 2026 WD Group Wedding Invitation. All rights reserved.
-                </p>
+                </a>
               </ScrollReveal>
             </footer>
 

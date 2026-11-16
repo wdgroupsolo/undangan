@@ -31,7 +31,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   primary_domain: 'https://rsvp.wdgroupcompany.biz.id',
   contact_phone: '6285707909415',
   contact_email: 'admin@wdgroup.com',
-  contact_instagram: '@wdgroupcompany',
+  contact_instagram: 'https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6',
   office_address: 'Griya Edelweis No.12a, Dusun V, Joho, Kec. Mojolaban, Kabupaten Sukoharjo, Jawa Tengah 57554',
 
   admin_name: 'Admin WD Group',

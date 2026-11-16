@@ -217,7 +217,7 @@ export const AnimatedFloralTheme: React.FC<AnimatedFloralThemeProps> = ({ couple
             <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#a39178]/40" />
           </div>
           <a 
-            href="https://www.instagram.com/wdgroupcompany" 
+            href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-[10px] sm:text-[11px] text-[#6b5c46]/60 hover:text-[#5c4f3d] tracking-wider font-light transition-colors inline-block cursor-pointer"

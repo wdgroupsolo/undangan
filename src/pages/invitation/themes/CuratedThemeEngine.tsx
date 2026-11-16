@@ -1239,9 +1239,15 @@ export const CuratedThemeEngine: React.FC<CuratedThemeEngineProps> = ({
             Terima kasih atas doa restu dan kehadiran Bapak/Ibu/Saudara/i di hari bahagia kami.
           </p>
 
-          <p className="text-[10px] tracking-widest uppercase font-semibold pt-4" style={{ color: preset.accentColor }}>
+          <a 
+            href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-[10px] tracking-widest uppercase font-semibold pt-4 inline-block hover:opacity-80 transition-opacity cursor-pointer" 
+            style={{ color: preset.accentColor }}
+          >
             WD DIGITAL INVITATION • {preset.badgeText.toUpperCase()}
-          </p>
+          </a>
         </footer>
 
       </div>

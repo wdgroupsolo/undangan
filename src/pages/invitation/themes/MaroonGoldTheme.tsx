@@ -2375,7 +2375,7 @@ export const MaroonGoldTheme: React.FC<MaroonGoldThemeProps> = ({
               <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#8a1c2e]/40" />
             </div>
             <a 
-              href="https://www.instagram.com/wdgroupcompany" 
+              href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-[10px] sm:text-[11px] text-[#4a262b]/60 hover:text-[#8a1c2e] tracking-wider font-light transition-colors inline-block cursor-pointer"

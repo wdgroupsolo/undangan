@@ -3973,7 +3973,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               <div className="h-px w-8 sm:w-14 bg-gradient-to-l from-transparent to-[#d4af37]/40" />
             </div>
             <a 
-              href="https://www.instagram.com/wdgroupcompany" 
+              href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-[10px] sm:text-[11px] text-white/50 hover:text-[#ffd778] tracking-wider font-light transition-colors inline-block cursor-pointer"

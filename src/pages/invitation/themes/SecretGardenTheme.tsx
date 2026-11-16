@@ -2211,7 +2211,7 @@ export const SecretGardenTheme: React.FC<SecretGardenThemeProps> = ({
               <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-white/40" />
             </div>
             <a 
-              href="https://www.instagram.com/wdgroupcompany" 
+              href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-[10px] sm:text-[11px] text-white/75 hover:text-white tracking-wider font-light transition-colors inline-block cursor-pointer"

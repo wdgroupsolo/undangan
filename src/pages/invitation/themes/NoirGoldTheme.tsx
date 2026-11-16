@@ -138,6 +138,209 @@ export const RegalCorner: React.FC<{
 };
 
 // =========================================================================
+// GILDED BOTANICAL FLORALS (Ultra-Luxury Gold Rose & Olive Sprigs)
+// =========================================================================
+
+// Gilded Rose / Peony Component (Black-Gold Aesthetic)
+export const GildedGoldRose: React.FC<{ size?: number; rotation?: number; className?: string }> = ({
+  size = 46,
+  rotation = 0,
+  className = '',
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 100 100"
+    style={{ transform: `rotate(${rotation}deg)` }}
+    className={`drop-shadow-[0_4px_14px_rgba(212,175,55,0.45)] filter ${className}`}
+  >
+    <defs>
+      <radialGradient id="gildedPetalOuter" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#FFF9E6" />
+        <stop offset="55%" stopColor="#F5D77F" />
+        <stop offset="100%" stopColor="#C59B27" />
+      </radialGradient>
+      <radialGradient id="gildedPetalInner" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#FFFDF5" />
+        <stop offset="65%" stopColor="#E5C16C" />
+        <stop offset="100%" stopColor="#9A7822" />
+      </radialGradient>
+      <radialGradient id="gildedPistil" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="50%" stopColor="#FFDE6A" />
+        <stop offset="100%" stopColor="#7A5A12" />
+      </radialGradient>
+    </defs>
+    {/* Outer 6 gold petals */}
+    {[0, 60, 120, 180, 240, 300].map((deg, i) => (
+      <path
+        key={`gold_outer_${i}`}
+        d="M50 50 C28 26, 32 8, 50 10 C68 8, 72 26, 50 50 Z"
+        transform={`rotate(${deg} 50 50)`}
+        fill="url(#gildedPetalOuter)"
+        stroke="#FFEAA7"
+        strokeWidth="0.7"
+        strokeOpacity="0.9"
+      />
+    ))}
+    {/* Mid 6 gold petals */}
+    {[30, 90, 150, 210, 270, 330].map((deg, i) => (
+      <path
+        key={`gold_mid_${i}`}
+        d="M50 50 C36 32, 38 18, 50 20 C62 18, 64 32, 50 50 Z"
+        transform={`rotate(${deg} 50 50)`}
+        fill="url(#gildedPetalInner)"
+        stroke="#D4AF37"
+        strokeWidth="0.75"
+      />
+    ))}
+    {/* Core Gold Pistil & Stamens */}
+    <circle cx="50" cy="50" r="10" fill="url(#gildedPistil)" stroke="#FFF1BA" strokeWidth="0.8" />
+    {[0, 45, 90, 135, 180, 225, 270, 315].map((stamenAngle, sIdx) => (
+      <g key={`gold_stamen_${sIdx}`} transform={`rotate(${stamenAngle} 50 50)`}>
+        <line x1="50" y1="50" x2="50" y2="42" stroke="#FFFDF5" strokeWidth="1.2" />
+        <circle cx="50" cy="41" r="1.4" fill="#FFF9E6" stroke="#D4AF37" strokeWidth="0.4" />
+      </g>
+    ))}
+    <circle cx="50" cy="50" r="4" fill="#664E14" opacity="0.9" />
+  </svg>
+);
+
+// Gilded Botanical Olive & Eucalyptus Branch
+export const GildedOliveBranch: React.FC<{ size?: number; rotation?: number; className?: string }> = ({
+  size = 48,
+  rotation = 0,
+  className = '',
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 80 80"
+    style={{ transform: `rotate(${rotation}deg)` }}
+    className={`drop-shadow-[0_2px_8px_rgba(212,175,55,0.35)] ${className}`}
+  >
+    <path d="M12 68 Q40 40 68 12" stroke="#D4AF37" strokeWidth="1.4" strokeLinecap="round" />
+    <path d="M26 54 C16 50, 18 38, 28 42 C32 44, 34 52, 26 54 Z" fill="#D4AF37" fillOpacity="0.5" stroke="#F5D77F" strokeWidth="0.8" />
+    <path d="M38 42 C30 32, 36 22, 45 26 C48 30, 46 39, 38 42 Z" fill="#E5C16C" fillOpacity="0.55" stroke="#FFEAA7" strokeWidth="0.8" />
+    <path d="M50 30 C44 20, 52 14, 58 18 C61 22, 58 28, 50 30 Z" fill="#D4AF37" fillOpacity="0.5" stroke="#F5D77F" strokeWidth="0.8" />
+    <path d="M60 20 C58 12, 66 8, 70 12 C72 16, 68 20, 60 20 Z" fill="#E5C16C" fillOpacity="0.55" stroke="#FFEAA7" strokeWidth="0.8" />
+  </svg>
+);
+
+// High-End Gilded Corner Cluster (Gold Rose + Bud + Olive Branch)
+export const GildedFloralCornerCluster: React.FC<{
+  position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  size?: number;
+  className?: string;
+}> = ({ position, size = 96, className = '' }) => {
+  const getTransform = () => {
+    switch (position) {
+      case 'top-right': return 'scale-x-[-1]';
+      case 'bottom-left': return 'scale-y-[-1]';
+      case 'bottom-right': return 'scale-x-[-1] scale-y-[-1]';
+      case 'top-left':
+      default: return '';
+    }
+  };
+
+  return (
+    <div 
+      className={`pointer-events-none select-none z-10 ${getTransform()} ${className}`}
+      style={{ width: `${size}px`, height: `${size}px` }}
+      aria-hidden="true"
+    >
+      <div className="relative w-full h-full">
+        <div className="absolute -top-1 -left-2 opacity-90">
+          <GildedOliveBranch size={size * 0.75} rotation={-10} />
+        </div>
+        <div className="absolute top-5 left-5 opacity-80">
+          <GildedOliveBranch size={size * 0.58} rotation={50} />
+        </div>
+        <div className="absolute top-1 left-1">
+          <GildedGoldRose size={size * 0.58} rotation={15} />
+        </div>
+        <div className="absolute top-8 left-8">
+          <GildedGoldRose size={size * 0.36} rotation={65} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Gilded Arch Garland Crown (Drapes on Couple Arch)
+export const GildedArchFloralCrown: React.FC<{ className?: string; size?: number }> = ({ 
+  className = '',
+  size = 220
+}) => (
+  <div 
+    className={`pointer-events-none select-none flex items-center justify-center -space-x-2 drop-shadow-[0_6px_18px_rgba(212,175,55,0.4)] ${className}`}
+    style={{ width: `${size}px` }}
+    aria-hidden="true"
+  >
+    <GildedOliveBranch size={size * 0.22} rotation={-35} />
+    <GildedGoldRose size={size * 0.22} rotation={-15} />
+    <GildedGoldRose size={size * 0.32} rotation={0} className="z-10 -translate-y-1 scale-105" />
+    <GildedGoldRose size={size * 0.22} rotation={15} />
+    <GildedOliveBranch size={size * 0.22} rotation={75} />
+  </div>
+);
+
+// Golden Falling Petals Animation (Subtle Ambient Gold Breeze)
+export const GoldenFallingPetals: React.FC = () => {
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-20">
+      <style>{`
+        @keyframes fallAndSwayGold {
+          0% { transform: translateY(-40px) translateX(0px) rotate(0deg) scale(0.9); opacity: 0; }
+          15% { opacity: 0.85; }
+          50% { transform: translateY(50vh) translateX(30px) rotate(160deg) scale(1.05); opacity: 0.9; }
+          85% { opacity: 0.7; }
+          100% { transform: translateY(105vh) translateX(-20px) rotate(320deg) scale(0.95); opacity: 0; }
+        }
+      `}</style>
+      {[
+        { left: '6%', dur: '13s', delay: '0s', size: 15, rotate: '15deg' },
+        { left: '20%', dur: '17s', delay: '3.5s', size: 13, rotate: '-25deg' },
+        { left: '35%', dur: '15s', delay: '1s', size: 16, rotate: '45deg' },
+        { left: '50%', dur: '19s', delay: '5s', size: 12, rotate: '-10deg' },
+        { left: '65%', dur: '14s', delay: '2s', size: 16, rotate: '30deg' },
+        { left: '80%', dur: '18s', delay: '4s', size: 14, rotate: '-35deg' },
+        { left: '92%', dur: '16s', delay: '0.8s', size: 13, rotate: '20deg' },
+      ].map((p, idx) => (
+        <div
+          key={idx}
+          className="absolute pointer-events-none select-none drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
+          style={{
+            left: p.left,
+            top: '-30px',
+            animation: `fallAndSwayGold ${p.dur} ease-in-out infinite`,
+            animationDelay: p.delay,
+          }}
+        >
+          <svg width={p.size} height={p.size * 1.3} viewBox="0 0 24 32" fill="none" style={{ transform: `rotate(${p.rotate})` }}>
+            <path
+              d="M12 2 C18 6, 22 14, 20 22 C18 28, 12 30, 8 28 C3 25, 2 17, 6 10 C8 5, 10 2, 12 2 Z"
+              fill="url(#goldPetalGrad)"
+              stroke="#FFEAA7"
+              strokeWidth="0.75"
+              strokeOpacity="0.85"
+            />
+            <path d="M12 4 C13 12, 12 20, 10 26" stroke="#D4AF37" strokeWidth="0.6" strokeOpacity="0.7" strokeLinecap="round" />
+            <defs>
+              <linearGradient id="goldPetalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FFF9E6" stopOpacity="0.95" />
+                <stop offset="60%" stopColor="#F5D77F" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#C59B27" stopOpacity="0.8" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// =========================================================================
 // FLOATING GOLDEN STARDUST (Lightweight CSS Particles)
 // =========================================================================
 export const GoldenStardust: React.FC = () => {
@@ -357,6 +560,32 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
     }
   ];
 
+  // ScrollSpy to update active bottom navigation tab automatically on scroll
+  useEffect(() => {
+    const sectionMapping: Array<{ id: string; tab: typeof activeTab }> = [
+      { id: 'section-opening', tab: 'opening' },
+      { id: 'section-couple', tab: 'couple' },
+      { id: 'section-event', tab: 'event' },
+      { id: 'section-gallery', tab: 'gallery' },
+      { id: 'section-gift', tab: 'gift' },
+      { id: 'section-wishes', tab: 'wishes' },
+    ];
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY + 280;
+      for (let i = sectionMapping.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionMapping[i].id);
+        if (el && el.offsetTop <= scrollY) {
+          setActiveTab(sectionMapping[i].tab);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToSection = (id: string, tab: typeof activeTab) => {
     setActiveTab(tab);
     const element = document.getElementById(id);
@@ -374,8 +603,9 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_120%,rgba(212,175,55,0.08),rgba(10,11,13,0))]" />
       </div>
 
-      {/* Golden Floating Stardust */}
+      {/* Golden Floating Stardust & Falling Petals */}
       <GoldenStardust />
+      <GoldenFallingPetals />
 
       {/* Main Container */}
       <div className="relative z-10 max-w-xl mx-auto px-4 sm:px-6 pt-4 pb-28">
@@ -386,22 +616,28 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
         <section id="section-opening" className="min-h-[85vh] flex flex-col items-center justify-center pt-8 pb-12">
           
           <ScrollReveal animation="zoom-in" duration={850} initialVisible={true} className="w-full">
-            <div className="relative w-full rounded-[32px] p-4 sm:p-5 bg-gradient-to-b from-[#141519] via-[#0E0F12] to-[#121317] border border-[#D4AF37]/40 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(212,175,55,0.1)]">
+            <div className="relative w-full rounded-[32px] p-4 sm:p-5 bg-gradient-to-b from-[#141519] via-[#0E0F12] to-[#121317] border border-[#D4AF37]/40 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(212,175,55,0.1)] overflow-hidden">
               
               {/* Double Hairline Inner Border */}
               <div className="absolute inset-2 sm:inset-2.5 rounded-[26px] border border-[#F5D77F]/20 pointer-events-none" />
 
-              {/* Regal Four Corners */}
-              <div className="absolute top-3 left-3"><RegalCorner position="top-left" size={32} /></div>
-              <div className="absolute top-3 right-3"><RegalCorner position="top-right" size={32} /></div>
-              <div className="absolute bottom-3 left-3"><RegalCorner position="bottom-left" size={32} /></div>
-              <div className="absolute bottom-3 right-3"><RegalCorner position="bottom-right" size={32} /></div>
+              {/* Gilded Floral Corner Clusters */}
+              <div className="absolute -top-1 -left-1"><GildedFloralCornerCluster position="top-left" size={96} /></div>
+              <div className="absolute -top-1 -right-1"><GildedFloralCornerCluster position="top-right" size={96} /></div>
+              <div className="absolute -bottom-1 -left-1"><GildedFloralCornerCluster position="bottom-left" size={96} /></div>
+              <div className="absolute -bottom-1 -right-1"><GildedFloralCornerCluster position="bottom-right" size={96} /></div>
+
+              {/* Regal Four Corners (Hairline Nodes) */}
+              <div className="absolute top-3.5 left-3.5 opacity-60"><RegalCorner position="top-left" size={28} /></div>
+              <div className="absolute top-3.5 right-3.5 opacity-60"><RegalCorner position="top-right" size={28} /></div>
+              <div className="absolute bottom-3.5 left-3.5 opacity-60"><RegalCorner position="bottom-left" size={28} /></div>
+              <div className="absolute bottom-3.5 right-3.5 opacity-60"><RegalCorner position="bottom-right" size={28} /></div>
 
               {/* Content Inside Frame */}
               <div className="relative z-10 flex flex-col items-center text-center px-3 py-6 sm:py-8">
                 
                 {/* Top Badge: Walimatulurs / The Wedding Of */}
-                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#1A1B20] border border-[#D4AF37]/30 mb-5">
+                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#1A1B20] border border-[#D4AF37]/30 mb-5 shadow-xs">
                   <Sparkles size={12} className="text-[#F5D77F]" />
                   <span className="text-[10px] sm:text-xs font-serif uppercase tracking-[0.28em] text-[#E5C16C] font-semibold">
                     The Wedding Celebration
@@ -409,15 +645,29 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
                   <Sparkles size={12} className="text-[#F5D77F]" />
                 </div>
 
-                {/* Couple Prewedding Photo in Arch/Oval Gold Frame */}
-                <div className="relative w-44 h-56 sm:w-52 sm:h-64 rounded-full overflow-hidden p-1.5 bg-gradient-to-b from-[#F5D77F] via-[#D4AF37] to-[#8A6A1E] shadow-[0_10px_35px_rgba(0,0,0,0.7)] mb-6 group">
-                  <div className="w-full h-full rounded-full overflow-hidden relative">
-                    <img 
-                      src={couplePhoto} 
-                      alt={`${groomName} & ${brideName}`}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                {/* Couple Prewedding Photo in Arch/Oval Gold Frame with Gilded Floral Crown */}
+                <div className="relative mb-6">
+                  {/* Floral Crown Atop Frame */}
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-20">
+                    <GildedArchFloralCrown size={200} />
+                  </div>
+                  {/* Base Botanical Leaves */}
+                  <div className="absolute -bottom-2 -left-3 z-15 pointer-events-none">
+                    <GildedOliveBranch size={40} rotation={-15} />
+                  </div>
+                  <div className="absolute -bottom-2 -right-3 z-15 pointer-events-none">
+                    <GildedOliveBranch size={40} rotation={75} />
+                  </div>
+
+                  <div className="relative w-44 h-56 sm:w-52 sm:h-64 rounded-full overflow-hidden p-1.5 bg-gradient-to-b from-[#F5D77F] via-[#D4AF37] to-[#8A6A1E] shadow-[0_10px_35px_rgba(0,0,0,0.7)] group">
+                    <div className="w-full h-full rounded-full overflow-hidden relative">
+                      <img 
+                        src={couplePhoto} 
+                        alt={`${groomName} & ${brideName}`}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                    </div>
                   </div>
                 </div>
 
@@ -529,15 +779,18 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
 
           {/* Groom Card */}
           <ScrollReveal animation="slide-left" duration={800}>
-            <div className="relative rounded-3xl p-6 bg-gradient-to-b from-[#141519] to-[#0E0F12] border border-[#D4AF37]/35 shadow-lg flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden shrink-0 p-1 bg-gradient-to-tr from-[#D4AF37] via-[#FFF1BA] to-[#9F7824] shadow-md">
+            <div className="relative rounded-3xl p-6 bg-gradient-to-b from-[#141519] to-[#0E0F12] border border-[#D4AF37]/35 shadow-lg flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left overflow-hidden">
+              {/* Corner Floral Accent */}
+              <div className="absolute -top-1 -left-1"><GildedFloralCornerCluster position="top-left" size={68} /></div>
+
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden shrink-0 p-1 bg-gradient-to-tr from-[#D4AF37] via-[#FFF1BA] to-[#9F7824] shadow-md z-10">
                 <img 
                   src={groomPhoto} 
                   alt={groomFullName} 
                   className="w-full h-full object-cover rounded-full"
                 />
               </div>
-              <div className="space-y-1.5 flex-1">
+              <div className="space-y-1.5 flex-1 relative z-10">
                 <span className="inline-block px-3 py-0.5 rounded-full bg-[#1F2026] text-[#F5D77F] text-[10px] font-bold uppercase tracking-wider border border-[#D4AF37]/30">
                   Pengantin Pria
                 </span>
@@ -562,24 +815,31 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
             </div>
           </ScrollReveal>
 
-          {/* & Ampersand Divider */}
-          <div className="flex items-center justify-center">
-            <div className="w-10 h-10 rounded-full bg-[#18191E] border border-[#D4AF37]/40 flex items-center justify-center font-serif text-lg font-bold text-[#F5D77F] shadow-md">
+          {/* & Ampersand Divider with Gilded Roses */}
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-[#D4AF37]/40" />
+            <GildedGoldRose size={26} rotation={-20} />
+            <div className="w-10 h-10 rounded-full bg-[#18191E] border border-[#D4AF37]/50 flex items-center justify-center font-serif text-lg font-bold text-[#F5D77F] shadow-md">
               &amp;
             </div>
+            <GildedGoldRose size={26} rotation={20} />
+            <div className="w-10 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-[#D4AF37]/40" />
           </div>
 
           {/* Bride Card */}
           <ScrollReveal animation="slide-right" duration={800}>
-            <div className="relative rounded-3xl p-6 bg-gradient-to-b from-[#141519] to-[#0E0F12] border border-[#D4AF37]/35 shadow-lg flex flex-col sm:flex-row-reverse items-center gap-5 text-center sm:text-right">
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden shrink-0 p-1 bg-gradient-to-tr from-[#D4AF37] via-[#FFF1BA] to-[#9F7824] shadow-md">
+            <div className="relative rounded-3xl p-6 bg-gradient-to-b from-[#141519] to-[#0E0F12] border border-[#D4AF37]/35 shadow-lg flex flex-col sm:flex-row-reverse items-center gap-5 text-center sm:text-right overflow-hidden">
+              {/* Corner Floral Accent */}
+              <div className="absolute -top-1 -right-1"><GildedFloralCornerCluster position="top-right" size={68} /></div>
+
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden shrink-0 p-1 bg-gradient-to-tr from-[#D4AF37] via-[#FFF1BA] to-[#9F7824] shadow-md z-10">
                 <img 
                   src={bridePhoto} 
                   alt={brideFullName} 
                   className="w-full h-full object-cover rounded-full"
                 />
               </div>
-              <div className="space-y-1.5 flex-1">
+              <div className="space-y-1.5 flex-1 relative z-10">
                 <span className="inline-block px-3 py-0.5 rounded-full bg-[#1F2026] text-[#F5D77F] text-[10px] font-bold uppercase tracking-wider border border-[#D4AF37]/30">
                   Pengantin Wanita
                 </span>
@@ -1040,11 +1300,16 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
           </div>
 
           {/* Brand Watermark */}
-          <div className="pt-6 border-t border-stone-800/80 flex flex-col items-center gap-1 text-stone-500 text-[10px]">
-            <span>Crafted with Elegance by</span>
-            <div className="font-serif font-bold text-xs text-[#E5C16C] tracking-widest uppercase">
-              wdproduction.
-            </div>
+          <div className="pt-6 border-t border-stone-800/80 flex flex-col items-center gap-1.5 text-stone-500 text-[10px]">
+            <GildedGoldRose size={24} className="opacity-80" />
+            <a 
+              href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="font-serif font-bold text-[11px] text-[#E5C16C] hover:text-[#ffd778] tracking-[0.25em] uppercase transition-colors cursor-pointer"
+            >
+              WD DIGITAL INVITATION • PAKET STARTER
+            </a>
           </div>
 
         </footer>
@@ -1052,35 +1317,40 @@ export const NoirGoldTheme: React.FC<NoirGoldThemeProps> = ({
       </div>
 
       {/* ================================================================= */}
-      {/* FLOATING BOTTOM NAVIGATION BAR                                    */}
+      {/* FLOATING BOTTOM NAVIGATION BAR (Option A: Noir Gold Pill + ScrollSpy) */}
       {/* ================================================================= */}
-      <div className="fixed bottom-3 inset-x-0 z-40 flex justify-center px-4 pointer-events-none">
-        <div className="pointer-events-auto bg-[#141519]/90 backdrop-blur-md border border-[#D4AF37]/40 rounded-full px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-4 sm:gap-6">
-          {[
-            { id: 'section-opening', tab: 'opening', icon: Heart, label: 'Opening' },
-            { id: 'section-couple', tab: 'couple', icon: Sparkles, label: 'Mempelai' },
-            { id: 'section-event', tab: 'event', icon: Calendar, label: 'Acara' },
-            { id: 'section-gallery', tab: 'gallery', icon: Award, label: 'Galeri' },
-            { id: 'section-gift', tab: 'gift', icon: Gift, label: 'Hadiah' },
-            { id: 'section-wishes', tab: 'wishes', icon: MessageCircle, label: 'Ucapan' },
-          ].map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.tab;
-            return (
-              <button
-                key={item.tab}
-                onClick={() => scrollToSection(item.id, item.tab as any)}
-                className={`flex flex-col items-center gap-0.5 transition-all cursor-pointer ${
-                  isActive ? 'text-[#F5D77F] scale-110' : 'text-stone-400 hover:text-stone-200'
-                }`}
-              >
-                <Icon size={16} />
-                <span className="text-[9px] font-medium tracking-tight">{item.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-lg bg-[#141519]/95 backdrop-blur-lg border border-[#D4AF37]/50 rounded-full py-1.5 px-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(212,175,55,0.2)] flex items-center justify-between">
+        {[
+          { id: 'section-opening', tab: 'opening' as const, label: 'Sampul', icon: Calendar },
+          { id: 'section-couple', tab: 'couple' as const, label: 'Mempelai', icon: Heart },
+          { id: 'section-event', tab: 'event' as const, label: 'Acara', icon: Clock },
+          { id: 'section-gallery', tab: 'gallery' as const, label: 'Galeri', icon: Sparkles },
+          { id: 'section-gift', tab: 'gift' as const, label: 'Hadiah', icon: Gift },
+          { id: 'section-wishes', tab: 'wishes' as const, label: 'RSVP', icon: MessageCircle },
+        ].map((item) => {
+          const Icon = item.icon;
+          const isActive = activeTab === item.tab;
+          return (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id, item.tab)}
+              className={`relative flex flex-col items-center justify-center py-1.5 px-2.5 sm:px-3.5 rounded-full transition-all duration-300 cursor-pointer ${
+                isActive
+                  ? 'text-[#FFF1BA] bg-gradient-to-b from-[#2A2B35] to-[#181920] border border-[#D4AF37]/65 shadow-[0_0_14px_rgba(212,175,55,0.3)] font-bold -translate-y-0.5'
+                  : 'text-stone-400 hover:text-stone-200 hover:bg-white/5'
+              }`}
+            >
+              <Icon size={16} className={`transition-transform duration-300 ${isActive ? 'scale-110 text-[#F5D77F]' : ''}`} />
+              <span className={`text-[8px] sm:text-[9px] tracking-wider uppercase mt-0.5 font-medium ${isActive ? 'text-[#FFF1BA] font-bold' : ''}`}>
+                {item.label}
+              </span>
+              {isActive && (
+                <div className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[#F5D77F] shadow-[0_0_8px_rgba(245,215,127,0.9)]" />
+              )}
+            </button>
+          );
+        })}
+      </nav>
 
     </div>
   );

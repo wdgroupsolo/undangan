@@ -5,13 +5,13 @@ import {
   X, Navigation, 
   Clock, Sparkles, Compass, ShieldCheck,
   Crown, Star, Award, CreditCard, Send, Wifi,
-  Maximize2, Package, MessageCircle
+  Maximize2, Package, MessageCircle, QrCode, Download
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
 import { rsvpService, RSVPItem } from '../../../services/rsvpService';
-import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode } from '../../../utils/barcodePass';
+import { loadSavedBarcodePass, saveBarcodePass, clearBarcodePass, generateStableBarcodeCode } from '../../../utils/barcodePass';
 
 const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
   <svg 
@@ -818,8 +818,29 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
   const [isCopied, setIsCopied] = useState<string | null>(null);
   const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
 
+  // Guest Name from URL Query (?to=...)
+  const guestName = (() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const to = urlParams.get('to');
+      if (to && to.trim()) {
+        return decodeURIComponent(to.replace(/\+/g, ' ')).trim();
+      }
+    }
+    return invitation?.settings?.default_guest_name || 'Tamu Undangan';
+  })();
+
+  // Detect Demo Mode (?demo=true) or Demo Theme
+  const isDemo = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('demo') === 'true' ||
+    (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
+  );
+
+  // Check if Barcode is Active
+  const useBarcode = invitation?.settings?.use_barcode === true || isDemo;
+
   // RSVP Form State
-  const [rsvpName, setRsvpName] = useState('');
+  const [rsvpName, setRsvpName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [rsvpStatus, setRsvpStatus] = useState<'attending' | 'not_attending' | 'maybe'>('attending');
   const [rsvpGuests, setRsvpGuests] = useState(1);
   const [rsvpMessage, setRsvpMessage] = useState('');
@@ -828,7 +849,21 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
   const [_hasSubmittedRsvp, setHasSubmittedRsvp] = useState(false);
 
   // Barcode / Check-in Pass
-  const [savedPass, setSavedPass] = useState<any>(null);
+  const [savedPass, setSavedPass] = useState<any>(() => {
+    return loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'nirwana') || null;
+  });
+  const [showBarcodePreview, setShowBarcodePreview] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+
+  // Computed Active Barcode Pass to Display (Saved pass or preview)
+  const activeBarcodePass = savedPass || (showBarcodePreview ? {
+    name: (rsvpName.trim() || (guestName !== 'Tamu Undangan' ? guestName : '') || 'Bpk. Muhammad Ilham'),
+    code: generateStableBarcodeCode('NIRWANA', invitation?.id || invitation?.slug || 'SARANGAN', rsvpName.trim() || guestName || 'TAMU'),
+    attendance: rsvpStatus,
+    guests: rsvpGuests,
+    timestamp: new Date().toISOString(),
+    isDemo: isDemo,
+  } : null);
 
   // Dynamic names & defaults: always prioritize real client data from props/database
   const groomName = couple?.groom_nickname || (couple?.groom_full_name ? couple.groom_full_name.split(/[\s,]+/)[0] : '') || 'Steven';
@@ -872,7 +907,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
     return () => clearInterval(interval);
   }, [targetDateStr]);
 
-  // Load RSVP items
+  // Load RSVP items and Barcode Pass
   useEffect(() => {
     if (invitation?.id) {
       rsvpService.getRsvpsByInvitation(invitation.id).then(data => {
@@ -880,10 +915,13 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
       }).catch(err => {
         console.warn('Gagal memuat RSVP:', err);
       });
-      const pass = loadSavedBarcodePass(invitation.id);
+    }
+
+    if (useBarcode) {
+      const pass = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'nirwana');
       if (pass) setSavedPass(pass);
     }
-  }, [invitation?.id]);
+  }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
 
   // Scroll spy to update active bottom navigation link automatically
   useEffect(() => {
@@ -940,20 +978,24 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
 
       setRsvpItems(prev => [res, ...prev]);
 
-      if (rsvpStatus === 'attending' && invitation?.id) {
+      if (useBarcode && rsvpStatus === 'attending') {
         const pass = {
           name: rsvpName.trim(),
-          code: generateStableBarcodeCode('NIRWANA', invitation.id, rsvpName),
+          code: generateStableBarcodeCode('NIRWANA', invitation?.id || invitation?.slug || 'SARANGAN', rsvpName.trim(), savedPass?.code),
           attendance: rsvpStatus,
           guests: rsvpGuests,
           timestamp: new Date().toISOString(),
+          isDemo: isDemo,
         };
-        saveBarcodePass(pass, invitation.id);
+        saveBarcodePass(pass, invitation?.id, invitation?.slug, 'nirwana');
         setSavedPass(pass);
+        setShowBarcodePreview(true);
       }
 
       setHasSubmittedRsvp(true);
-      toast.success('Konfirmasi kehadiran & ucapan berhasil dikirim. Terima kasih!');
+      toast.success(useBarcode && rsvpStatus === 'attending' 
+        ? 'Konfirmasi berhasil dikirim! Tiket Barcode VIP Anda telah diterbitkan di bawah.' 
+        : 'Konfirmasi kehadiran & ucapan berhasil dikirim. Terima kasih!');
     } catch {
       toast.error('Gagal mengirim RSVP. Silakan coba kembali.');
     } finally {
@@ -2488,6 +2530,159 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                 </div>
               </ScrollReveal>
 
+              {/* VIP Barcode Announcement Card if active */}
+              {useBarcode && (
+                <ScrollReveal animation="fade-up" delay={80} duration={850}>
+                  <div className="w-full mb-6 p-4 rounded-2xl bg-gradient-to-r from-[#123125]/95 via-[#0B2018]/95 to-[#123125]/95 border border-[#C5A059]/70 shadow-[0_4px_20px_rgba(0,0,0,0.5)] text-center animate-in fade-in duration-300">
+                    <div className="flex items-center justify-center gap-1.5 text-[#E2C792] mb-1">
+                      <QrCode className="w-4 h-4 text-[#E2C792]" />
+                      <span className="text-[11px] font-serif font-bold tracking-[0.2em] uppercase text-[#FFF5D6]">
+                        SISTEM VIP PASS &amp; BARCODE AKTIF
+                      </span>
+                    </div>
+                    <p className="text-xs text-white/75 leading-relaxed font-sans max-w-md mx-auto">
+                      Setelah mengisi konfirmasi di bawah, sistem otomatis menerbitkan <strong>Tiket QR &amp; Barcode Resmi</strong> untuk discan resepsionis di lokasi Hotel Nirwana Sarangan.
+                    </p>
+                    <div className="mt-3 flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowBarcodePreview(prev => !prev)}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-serif font-semibold uppercase tracking-wider bg-[#C5A059]/25 hover:bg-[#C5A059]/40 text-[#E2C792] border border-[#C5A059]/60 transition-colors cursor-pointer"
+                      >
+                        <QrCode className="w-3.5 h-3.5" />
+                        <span>{activeBarcodePass ? (showBarcodePreview && !savedPass ? 'Sembunyikan Tiket' : 'Lihat Tiket Barcode') : 'Lihat Contoh Tiket Barcode'}</span>
+                      </button>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              )}
+
+              {/* VIP GUEST VERIFIED PASS (Holographic Card with Authentic QR & Barcode) */}
+              {activeBarcodePass && (
+                <ScrollReveal animation="zoom-in" delay={100} duration={850}>
+                  <div className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-6 sm:p-9 rounded-[32px] border-2 border-[#C5A059] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(197,160,89,0.35)] mb-12 text-center overflow-hidden">
+                    <div className="absolute inset-2 sm:inset-3 rounded-[24px] border border-[#C5A059]/35 pointer-events-none" />
+                    <NirwanaGoldCorner size={32} color="#E2C792" />
+
+                    {/* Top Crest Badge */}
+                    <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#C5A059]/20 text-xs text-[#E2C792] mb-3 border border-[#C5A059]/50 shadow-sm">
+                      <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
+                      <span className="font-serif tracking-widest font-bold uppercase text-[10.5px]">
+                        VIP GUEST PASS &amp; BARCODE PRESENSI
+                      </span>
+                    </div>
+
+                    <h3 className="font-serif text-2xl font-bold text-white mb-1 drop-shadow-sm">
+                      {activeBarcodePass.name}
+                    </h3>
+                    
+                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-sans font-semibold my-2 bg-gradient-to-r from-emerald-950/90 to-emerald-900/90 text-emerald-200 border border-emerald-400/50 shadow-sm">
+                      <span>✓</span>
+                      <span>
+                        {activeBarcodePass.attendance === 'not_attending' 
+                          ? 'Status: Berhalangan Hadir' 
+                          : `Terkonfirmasi Hadir (${activeBarcodePass.guests || 1} Tamu)`}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-[#E2C792] mb-4 font-serif">
+                      Hotel Nirwana Sarangan Resort • Magetan
+                    </p>
+
+                    {/* QR Code Container */}
+                    <div className="relative w-44 h-44 mx-auto bg-white p-2.5 rounded-2xl border-2 border-[#C5A059] shadow-md flex items-center justify-center my-3 overflow-hidden">
+                      <img 
+                        src={
+                          isDemo 
+                            ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('DEMO-TESTIMONIAL-PORTOFOLIO-LOCKED|DO-NOT-SCAN|CODE:WD-DEMO-TESTIMONI-88')}`
+                            : (invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'NIRWANA'}|GUEST:${activeBarcodePass.name}|ATT:${activeBarcodePass.attendance || 'attending'}|CODE:${activeBarcodePass.code}`)}`)
+                        }
+                        alt="QR Code Presensi"
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = '/qr-code.png';
+                        }}
+                      />
+                      {isDemo && (
+                        <div className="absolute inset-0 bg-red-950/45 backdrop-blur-[0.5px] flex flex-col items-center justify-center p-2 border-2 border-dashed border-red-500/80 rounded-lg m-1 select-none pointer-events-none">
+                          <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded shadow-lg -rotate-12 border border-white/60 text-center leading-tight">
+                            DEMO ONLY<br/><span className="text-[8.5px] font-bold">TIDAK BISA DI-SCAN</span>
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Authentic Barcode Graphic (Garis-Garis Barcode) */}
+                    <div className="relative my-3 px-4 py-2.5 bg-white rounded-xl border border-[#C5A059]/60 flex flex-col items-center shadow-md max-w-[240px] mx-auto overflow-hidden">
+                      <svg viewBox="0 0 160 32" className="w-full h-9 text-[#0A1F17]" preserveAspectRatio="none">
+                        {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
+                          idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
+                        ))}
+                      </svg>
+                      <span className="font-mono font-bold text-xs tracking-[0.25em] text-[#0A1F17] mt-1">
+                        {activeBarcodePass.code}
+                      </span>
+                      {isDemo && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
+                          <span className="bg-amber-600/90 text-white font-bold text-[9px] px-2 py-0.5 rounded tracking-widest uppercase shadow">
+                            BARCODE DEMO (TERKUNCI)
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <p className="text-xs text-white/75 mt-3 max-w-xs mx-auto leading-relaxed font-sans">
+                      Tunjukkan Barcode atau QR Code ini kepada resepsionis saat tiba di lokasi Hotel Nirwana Sarangan.
+                    </p>
+
+                    {/* Actions */}
+                    <div className="mt-5 pt-4 border-t border-[#C5A059]/30 flex flex-wrap items-center justify-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(activeBarcodePass.code);
+                          setCopiedCode(true);
+                          toast.success('Kode tiket berhasil disalin!');
+                          setTimeout(() => setCopiedCode(false), 2000);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all cursor-pointer"
+                      >
+                        {copiedCode ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                        <span>{copiedCode ? 'Tersalin' : 'Salin Kode'}</span>
+                      </button>
+
+                      <a
+                        href={invitation?.settings?.reservation_qr || `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(`INV:${invitation?.id || 'NIRWANA'}|GUEST:${activeBarcodePass.name}|ATT:${activeBarcodePass.attendance || 'attending'}|CODE:${activeBarcodePass.code}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download={`Barcode-Pass-${activeBarcodePass.name.replace(/\s+/g, '-')}.png`}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#C5A059]/30 hover:bg-[#C5A059]/40 border border-[#C5A059] text-[#FFF0D0] transition-all cursor-pointer"
+                      >
+                        <Download size={14} />
+                        <span>Unduh QR</span>
+                      </a>
+
+                      {savedPass && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (confirm('Apakah Anda ingin mengubah konfirmasi RSVP ini?')) {
+                              setSavedPass(null);
+                              setShowBarcodePreview(false);
+                              clearBarcodePass(invitation?.id, invitation?.slug, activeBarcodePass?.name || guestName, 'nirwana');
+                              toast.info('Silakan isi ulang form konfirmasi kehadiran.');
+                            }
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-red-950/40 hover:bg-red-900/50 border border-red-500/40 text-red-200 transition-all cursor-pointer"
+                        >
+                          <span>Ubah Konfirmasi</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </ScrollReveal>
+              )}
+
               {/* RSVP Form Card with Royal Emerald-Gold VIP Aesthetic */}
               <ScrollReveal animation="fade-up" delay={100} duration={900}>
                 <form onSubmit={handleSubmitRsvp} className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-7 sm:p-10 rounded-[32px] border-2 border-[#C5A059]/80 shadow-[0_25px_60px_rgba(0,0,0,0.6),0_0_35px_rgba(197,160,89,0.25)] mb-12 overflow-hidden">
@@ -2569,45 +2764,27 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
                       style={{ animation: 'goldShimmerSweep 2.5s ease-in-out infinite' }}
                     />
                     <div className="relative flex items-center justify-center gap-2">
-                      <Send className="w-4 h-4 text-[#0A1F17]" />
-                      <span>{isSubmittingRsvp ? 'Mengirim Konfirmasi...' : 'Kirim Konfirmasi & Doa Restu'}</span>
+                      {isSubmittingRsvp ? (
+                        <>
+                          <span className="inline-block w-4 h-4 border-2 border-[#0A1F17] border-t-transparent rounded-full animate-spin" />
+                          <span>Mengirim Konfirmasi...</span>
+                        </>
+                      ) : useBarcode ? (
+                        <>
+                          <span className="drop-shadow-sm font-bold tracking-[0.16em]">Dapatkan Tiket &amp; Barcode</span>
+                          <QrCode className="w-4 h-4 text-[#0A1F17] stroke-[2.5]" />
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 text-[#0A1F17]" />
+                          <span>Kirim Konfirmasi &amp; Doa Restu</span>
+                        </>
+                      )}
                     </div>
                   </button>
                 </div>
               </form>
               </ScrollReveal>
-
-              {/* VIP GUEST VERIFIED PASS (Holographic Card) */}
-              {savedPass && (
-                <ScrollReveal animation="zoom-in" delay={100} duration={850}>
-                  <div className="relative bg-gradient-to-br from-[#123125] via-[#0B2018] to-[#05110D] text-white p-7 rounded-3xl border-2 border-[#C5A059] shadow-2xl mb-12 text-center overflow-hidden">
-                  <div className="absolute inset-1.5 rounded-2xl border border-[#C5A059]/30 pointer-events-none" />
-                  <NirwanaGoldCorner size={28} color="#E2C792" />
-
-                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#C5A059]/20 text-xs text-[#E2C792] mb-3 border border-[#C5A059]/40">
-                    <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
-                    <span className="font-serif tracking-wider font-semibold uppercase text-[10px]">VIP Guest Pass Terverifikasi</span>
-                  </div>
-
-                  <h3 className="font-serif text-xl font-medium text-white mb-1">
-                    {savedPass.name || savedPass.guestName}
-                  </h3>
-                  <p className="text-xs text-[#E2C792] mb-4 font-serif">
-                    Jumlah Kehadiran: {savedPass.guests || savedPass.pax || 1} Orang • Hotel Nirwana Sarangan
-                  </p>
-
-                  <div className="bg-white p-3.5 rounded-2xl inline-block shadow-md">
-                    <div className="font-mono text-sm tracking-widest text-[#16382C] font-bold py-2 px-6 border-2 border-dashed border-[#C5A059] rounded-lg">
-                      {savedPass.code}
-                    </div>
-                  </div>
-
-                  <p className="text-[11px] text-white/70 mt-3 font-light">
-                    Tunjukkan barcode VIP ini kepada resepsionis saat tiba di lokasi Hotel Nirwana Sarangan.
-                  </p>
-                </div>
-                </ScrollReveal>
-              )}
 
               {/* LIST OF GUEST WISHES (Royal Registry Ledger) */}
               <ScrollReveal animation="fade-up" delay={140} duration={850}>
@@ -2746,7 +2923,7 @@ export const NirwanaSaranganTheme: React.FC<NirwanaSaranganThemeProps> = ({
               <div className="h-px w-6 sm:w-12 bg-gradient-to-l from-transparent to-[#C5A059]/30" />
             </div>
             <a 
-              href="https://www.instagram.com/wdgroupcompany" 
+              href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-[10px] sm:text-[11px] text-white/40 hover:text-[#E2C792] tracking-wider font-light transition-colors inline-block cursor-pointer"
