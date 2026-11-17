@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause, Heart, MapPin } from 'lucide-react';
+import { Mail, Disc, Sparkles, MailOpen, Crown, Play, Pause, Heart, MapPin, Moon, Star } from 'lucide-react';
 import { invitationService } from '../../services/invitationService';
 import { editorService, COUPLE_AGNI_PUTRI, COUPLE_DEMO_TESTIMONI, COUPLE_STEVEN_BUNGA, GALLERY_STEVEN_BUNGA, COUPLE_HAFIZ_SYAFIKA, COUPLE_YOGA_FATMA, COUPLE_AUDI_OVYOLA } from '../../services/editorService';
 import { BaseTheme } from './themes/BaseTheme';
@@ -29,6 +29,15 @@ import { TerracottaBohoTheme, BohoCorner, BohoFloralCornerCluster, BohoArchFlora
 import { SundaSigerTheme, SundaSigerCrown, RonceMelatiTitisan, SundaFloralCornerCluster, SundaArchCrown, SundaBatikWatermark } from './themes/SundaSigerTheme';
 import { MinangGadangTheme, MinangGonjongRoof, MinangSuntiangCrown, MinangRoyalSuntiangCrown, MinangCornerSongketCluster, MinangArchGonjong, MinangSongketWatermark, MinangRoyalOctagonFrame } from './themes/MinangGadangTheme';
 import { BaliKamasanTheme, BaliCandiBentarPortal, BaliKamasanCornerCluster, BaliPolengWatermark, BaliRoyalPradaFrame, BaliKambojaFlower, BaliMajesticPuraFrame, BaliKambojaCrownApex, BaliPenjorFlank, BaliCandiBentarTowerWing, BaliPadmaBase } from './themes/BaliKamasanTheme';
+import { 
+  MoroccanNightsTheme, 
+  MoroccanKhatimStar, 
+  MoroccanFanousLantern, 
+  MoroccanHorseshoeArch, 
+  MoroccanCornerArabesque, 
+  MoroccanZellijWatermark, 
+  FloatingSaharaStardust 
+} from './themes/MoroccanNightsTheme';
 import { CuratedThemeEngine, CURATED_THEMES } from './themes/CuratedThemeEngine';
 import { FallingSakuraPetals, SakuraCoverFrame, SakuraInvitationSurround } from './components/SakuraBlossoms';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
@@ -424,7 +433,8 @@ export const InvitationRenderer: React.FC = () => {
   const isSundaSiger = activeThemeSlug === 'sunda-siger' || activeThemeSlug === 'sunda' || activeThemeSlug === 'siger';
   const isMinangGadang = activeThemeSlug === 'minang-gadang' || activeThemeSlug === 'minang' || activeThemeSlug === 'rumah-gadang' || activeThemeSlug === 'gadang';
   const isBaliKamasan = activeThemeSlug === 'bali-kamasan' || activeThemeSlug === 'bali' || activeThemeSlug === 'kamasan';
-  const isCuratedTheme = Boolean(CURATED_THEMES[activeThemeSlug]) && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan;
+  const isMoroccanNights = activeThemeSlug === 'moroccan-nights' || activeThemeSlug === 'moroccan' || activeThemeSlug === 'arabian-nights';
+  const isCuratedTheme = Boolean(CURATED_THEMES[activeThemeSlug]) && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights;
   const curatedPreset = CURATED_THEMES[activeThemeSlug];
 
   const currentThemePrice = resolveThemePrice({
@@ -455,13 +465,14 @@ export const InvitationRenderer: React.FC = () => {
     activeThemeSlug === 'gadang' || 
     activeThemeSlug === 'bali-kamasan' || 
     activeThemeSlug === 'moroccan-nights' || 
+    isMoroccanNights ||
     isHafizSlug;
-  const isKualaLumpur = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && (activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug);
-  const isNoirGold = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isKualaLumpur && (activeThemeSlug === 'noir-gold' || activeThemeSlug === 'noir' || activeThemeSlug === 'noir-gold-elegance');
-  const isIvoryPearl = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isKualaLumpur && !isNoirGold && (activeThemeSlug === 'ivory-pearl' || activeThemeSlug === 'ivory' || activeThemeSlug === 'ivory-pearl-minimalist');
-  const isNirwanaSarangan = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isKualaLumpur && !isNoirGold && !isIvoryPearl && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
-  const isJogloMaroon = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
-  const isRoyalWayang = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
+  const isKualaLumpur = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && (activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug);
+  const isNoirGold = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isKualaLumpur && (activeThemeSlug === 'noir-gold' || activeThemeSlug === 'noir' || activeThemeSlug === 'noir-gold-elegance');
+  const isIvoryPearl = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isKualaLumpur && !isNoirGold && (activeThemeSlug === 'ivory-pearl' || activeThemeSlug === 'ivory' || activeThemeSlug === 'ivory-pearl-minimalist');
+  const isNirwanaSarangan = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isKualaLumpur && !isNoirGold && !isIvoryPearl && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
+  const isJogloMaroon = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
+  const isRoyalWayang = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
   const isSecretGarden = !isCuratedTheme && activeThemeSlug === 'secret-garden';
   const isRoyalElegance = !isCuratedTheme && activeThemeSlug === 'royal-elegance';
   const isMaroonGold = !isCuratedTheme && activeThemeSlug === 'maroon-gold';
@@ -545,7 +556,7 @@ export const InvitationRenderer: React.FC = () => {
     }
 
     // Untuk tema 50k (Starter) dan 70k (Adat & Heritage / International), TIDAK ADA animasi opening/video entrance portal setelah klik buka undangan
-    if (is50kTheme || is70kTheme || isCuratedTheme || isNoirGold || isKualaLumpur || isIvoryPearl || isRoseGold || isTerracottaBoho || isSundaSiger || isMinangGadang || isBaliKamasan) {
+    if (is50kTheme || is70kTheme || isCuratedTheme || isNoirGold || isKualaLumpur || isIvoryPearl || isRoseGold || isTerracottaBoho || isSundaSiger || isMinangGadang || isBaliKamasan || isMoroccanNights) {
       setIsCoverExiting(true);
       setTimeout(() => {
         setOpeningStage('opened');
@@ -664,6 +675,8 @@ export const InvitationRenderer: React.FC = () => {
                   ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-white/95 backdrop-blur-md border border-[#E1A83E] text-[#7A1822] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(122,24,34,0.25)]'
                 : isBaliKamasan
                   ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-white/95 backdrop-blur-md border border-[#E5B232] text-[#783A1E] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(120,58,30,0.25)]'
+                : isMoroccanNights
+                  ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#102242]/90 backdrop-blur-md border border-[#DE9B35] text-[#DE9B35] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(222,155,53,0.35)]'
                 : isTerracottaBoho
                   ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-white/90 backdrop-blur-md border border-[#DDBBAE] text-[#964B35] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(150,75,53,0.25)]'
                 : isRoseGold
@@ -821,6 +834,18 @@ export const InvitationRenderer: React.FC = () => {
               gallery={gallery || []}
               gifts={gifts || []}
               guestName={guestName}
+            />
+          ) : isMoroccanNights ? (
+            <MoroccanNightsTheme 
+              invitation={invitation}
+              couple={displayCouple}
+              events={events || []}
+              stories={stories || []}
+              gallery={gallery || []}
+              gifts={gifts || []}
+              music={music}
+              guestName={guestName}
+              isOpening={isVideoExiting || openingStage === 'opened'}
             />
         ) : isIvoryPearl ? (
             <IvoryPearlTheme 
@@ -1777,6 +1802,213 @@ export const InvitationRenderer: React.FC = () => {
                     <div className="relative flex items-center justify-center gap-2.5">
                       <MailOpen className="w-4 h-4 text-[#FCE59F]" />
                       <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-white">
+                        BUKA UNDANGAN
+                      </span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : isMoroccanNights ? (
+          /* Moroccan Arabian Nights: Grand Moorish Alhambra Palace Cover (Paket Heritage 70k) */
+          <div className={`fixed inset-0 z-50 overflow-hidden select-none bg-[#081224] transition-all duration-700 ease-out ${isCoverExiting ? 'opacity-0 scale-95 translate-y-[-24px] pointer-events-none' : 'opacity-100 scale-100 translate-y-0'}`}>
+            <style>{`
+              @keyframes moroccanGoldSweep {
+                0% { transform: translateX(-150%) skewX(-20deg); }
+                50%, 100% { transform: translateX(250%) skewX(-20deg); }
+              }
+              .moroccan-gold-sweep {
+                animation: moroccanGoldSweep 3.5s ease-in-out infinite;
+              }
+            `}</style>
+
+            {/* DESKTOP FIXED LEFT ASIDE (5/12 or 1/2 screen) */}
+            <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between items-center p-8 xl:p-12 overflow-hidden select-none bg-[#0B1A33] text-white border-r border-[#DE9B35]/40">
+              {/* Starry Night Sky & Panoramic Palace Backdrop */}
+              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                <img 
+                  src={coverImage} 
+                  alt={`${groomDisplayName} & ${brideDisplayName}`} 
+                  className="w-full h-full object-cover object-center filter brightness-90 scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#060D1A] via-[#0A172E]/90 to-[#0B1A33]/92" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(222,155,53,0.25)_0%,rgba(6,13,26,0.92)_75%)]" />
+                <MoroccanZellijWatermark className="opacity-[0.08]" />
+                <FloatingSaharaStardust />
+              </div>
+
+              {/* Hanging Moroccan Filigree Lanterns at Top */}
+              <div className="absolute top-0 left-0 right-0 z-10 flex justify-between px-6 pointer-events-none">
+                <MoroccanFanousLantern size={46} chainHeight={40} />
+                <MoroccanFanousLantern size={36} chainHeight={20} />
+                <div className="flex-1" />
+                <MoroccanFanousLantern size={38} chainHeight={28} />
+                <MoroccanFanousLantern size={50} chainHeight={50} />
+              </div>
+
+              {/* Gilded Inner Arch Frame Line */}
+              <div className="absolute inset-5 xl:inset-7 rounded-[36px] border border-[#DE9B35]/40 pointer-events-none z-10" />
+
+              {/* Central Content Column */}
+              <div className="relative z-20 w-full max-w-[440px] xl:max-w-[480px] mx-auto flex flex-col justify-between h-full py-2">
+                {/* TOP: Badges */}
+                <div className="w-full flex items-center justify-between">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#102242]/90 backdrop-blur-md border border-[#DE9B35]/70 shadow-lg text-[#FFF4D0] text-[10.5px] font-serif uppercase tracking-[0.2em]">
+                    <Moon className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
+                    <span>Walimatul 'Ursy</span>
+                  </div>
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#102242]/90 backdrop-blur-md border border-[#DE9B35]/70 shadow-lg text-[#FFF4D0] text-[10.5px] font-serif uppercase tracking-[0.2em]">
+                    <Star className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
+                    <span>Moroccan Royal</span>
+                  </div>
+                </div>
+
+                {/* CENTER: Couple Portrait & Recipient Guest Card */}
+                <div className="my-auto w-full flex flex-col items-center text-center py-4">
+                  <div className="relative mb-3">
+                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20">
+                      <MoroccanHorseshoeArch size={210} />
+                    </div>
+                    <div className="relative mx-auto w-44 h-56 xl:w-48 xl:h-64 rounded-t-[100px] rounded-b-2xl overflow-hidden border-2 border-[#DE9B35] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_25px_rgba(222,155,53,0.35)] p-1 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#102242] group">
+                      <div className="w-full h-full rounded-t-[94px] rounded-b-xl overflow-hidden relative">
+                        <img 
+                          src={coverImage} 
+                          alt={`${groomDisplayName} & ${brideDisplayName}`}
+                          className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#081224]/80 via-transparent to-transparent pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-2 mb-1 text-[#FFF4D0]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#DE9B35] animate-pulse" />
+                    <p className="text-[11px] tracking-[0.3em] uppercase font-serif font-semibold">
+                      THE WEDDING CELEBRATION OF
+                    </p>
+                    <Sparkles className="w-3.5 h-3.5 text-[#DE9B35] animate-pulse" />
+                  </div>
+
+                  <h1 className="font-serif text-3xl xl:text-4xl 2xl:text-5xl font-normal leading-[1.08] tracking-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0C2] to-[#DE9B35] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
+                    {groomDisplayName} <span className="text-xl xl:text-2xl text-[#DE9B35] font-light italic font-serif">&amp;</span> {brideDisplayName}
+                  </h1>
+
+                  <div className="w-24 h-0.5 mx-auto bg-gradient-to-r from-transparent via-[#DE9B35] to-transparent mb-3" />
+
+                  {/* Recipient Guest Card */}
+                  <div className="w-full relative p-3.5 xl:p-4 rounded-2xl bg-gradient-to-b from-[#102242]/95 via-[#0A172E]/98 to-[#060D1A]/98 backdrop-blur-md border border-[#DE9B35]/70 shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(222,155,53,0.3)] mb-3">
+                    <div className="absolute inset-1.5 rounded-xl border border-[#DE9B35]/30 pointer-events-none" />
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-semibold mb-0.5 text-center">
+                      Kepada Yth. Bapak/Ibu/Saudara/i :
+                    </p>
+                    <h2 className="text-lg xl:text-xl font-serif font-bold text-white tracking-wide text-center drop-shadow-sm my-0.5">
+                      {guestName}
+                    </h2>
+                    <p className="text-[9.5px] tracking-wider text-[#D1DCE8] text-center font-sans mt-0.5">
+                      Merupakan satu kehormatan atas kehadiran &amp; doa restu Anda
+                    </p>
+                  </div>
+                </div>
+
+                {/* BOTTOM: Date & Venue Info */}
+                <div className="w-full flex items-center justify-between text-xs text-[#D1DCE8] border-t border-[#DE9B35]/40 pt-3">
+                  <span className="font-serif tracking-wide text-[#FFF4D0] flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#DE9B35]" />
+                    Grand Sahara Pavilion
+                  </span>
+                  <span className="font-sans text-[#FFF4D0]">
+                    {new Date(invitation?.wedding_date || '2026-12-28').toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </span>
+                </div>
+              </div>
+            </aside>
+
+            {/* RIGHT PANEL: FULL-HEIGHT & FULL-WIDTH OF RIGHT COLUMN ON DESKTOP, FULLSCREEN ON MOBILE */}
+            <div className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto h-[100dvh] relative z-20 flex flex-col justify-between items-center text-center p-6 sm:p-8 bg-[#081224] lg:border-l lg:border-[#DE9B35]/40 shadow-2xl overflow-hidden">
+              {/* Background Ambient Radial Glow & Zellij Tile Watermark */}
+              <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(222,155,53,0.25)_0%,rgba(8,18,36,0.98)_70%)]" />
+              <MoroccanZellijWatermark className="opacity-[0.08]" />
+              <FloatingSaharaStardust />
+
+              {/* Hanging Lanterns on Right Mobile Column */}
+              <div className="absolute top-0 left-0 right-0 z-10 flex justify-between px-6 pointer-events-none">
+                <MoroccanFanousLantern size={40} chainHeight={28} />
+                <div className="flex-1" />
+                <MoroccanFanousLantern size={42} chainHeight={34} />
+              </div>
+
+              {/* 4 Corner Arabesque Filigree Clusters */}
+              <div className="absolute top-0 left-0"><MoroccanCornerArabesque position="top-left" size={80} /></div>
+              <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={80} /></div>
+              <div className="absolute bottom-0 left-0"><MoroccanCornerArabesque position="bottom-left" size={80} /></div>
+              <div className="absolute bottom-0 right-0"><MoroccanCornerArabesque position="bottom-right" size={80} /></div>
+
+              {/* Inner Content Centered */}
+              <div className="relative z-10 max-w-sm sm:max-w-md w-full h-full my-auto flex flex-col justify-between items-center py-2">
+                {/* TOP: "WALIMATUL'URSY MOROCCAN NIGHTS" */}
+                <div className="relative z-20 flex flex-col items-center pt-3 sm:pt-4">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/60 mb-2">
+                    <Moon className="w-3 h-3 text-[#DE9B35] fill-[#DE9B35]" />
+                    <span className="text-[10px] sm:text-[10.5px] tracking-[0.3em] uppercase text-[#FFF4D0] font-serif font-bold">
+                      WALIMATUL'URSY • MOROCCAN ROYAL
+                    </span>
+                    <Star className="w-3 h-3 text-[#DE9B35] fill-[#DE9B35]" />
+                  </div>
+                  <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-white mt-1">
+                    {groomDisplayName} <span className="font-light italic text-[#DE9B35]">&amp;</span> {brideDisplayName}
+                  </h1>
+                  <p className="text-[11px] font-sans tracking-[0.22em] uppercase text-[#D1DCE8] mt-1.5 font-medium">
+                    {new Date(invitation?.wedding_date || '2026-12-28').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+
+                {/* CENTER: Arched Couple Portrait Window with Alhambra Horseshoe Arch */}
+                <div className="relative z-20 my-auto py-2 flex flex-col items-center">
+                  <div className="relative mb-2">
+                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20">
+                      <MoroccanHorseshoeArch size={200} />
+                    </div>
+                    <div className="relative w-44 h-56 sm:w-50 sm:h-64 rounded-t-[100px] rounded-b-2xl overflow-hidden p-1.5 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#102242] shadow-[0_14px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(222,155,53,0.3)] group">
+                      <div className="w-full h-full rounded-t-[94px] rounded-b-xl overflow-hidden relative">
+                        <img 
+                          src={coverImage} 
+                          alt={`${groomDisplayName} & ${brideDisplayName}`}
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#081224]/75 via-transparent to-transparent pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="inline-flex items-center gap-2 mt-1 px-3.5 py-1 rounded-full bg-[#102242]/90 border border-[#DE9B35]/60 shadow-xs">
+                    <MoroccanKhatimStar size={14} />
+                    <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0] font-bold">
+                      Moroccan Arabian Nights
+                    </span>
+                  </div>
+                </div>
+
+                {/* BOTTOM: Recipient & Open Invitation Button */}
+                <div className="relative z-20 w-full flex flex-col items-center pb-3 sm:pb-4">
+                  <div className="w-full max-w-xs p-3 rounded-2xl bg-[#102242]/90 border border-[#DE9B35]/55 shadow-md mb-3.5">
+                    <span className="text-[10px] uppercase tracking-widest text-[#DE9B35] block mb-0.5 font-serif">
+                      Kepada Yth. Bapak/Ibu/Saudara/i:
+                    </span>
+                    <span className="font-serif text-sm font-bold text-white block truncate">
+                      {guestName}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleOpen}
+                    className="group relative w-full max-w-xs overflow-hidden rounded-full py-3.5 px-8 shadow-[0_12px_35px_rgba(222,155,53,0.4)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#DE9B35] via-[#E5B54F] to-[#C78726] border border-[#FFF4D0]"
+                  >
+                    {/* Golden Light Sweep Overlay */}
+                    <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent moroccan-gold-sweep pointer-events-none" />
+
+                    <div className="relative flex items-center justify-center gap-2.5">
+                      <MailOpen className="w-4 h-4 text-[#081224]" />
+                      <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#081224]">
                         BUKA UNDANGAN
                       </span>
                     </div>
