@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { 
   Heart, Calendar, Clock, MapPin, Copy, Check, Send, 
   Sparkles, Gift, MessageCircle, ChevronDown, 
-  ExternalLink, Bookmark, Crown, Video, Shirt, Info, Moon, Star
+  ExternalLink, Bookmark, Crown, Moon, Star
 } from 'lucide-react';
 
 export const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
@@ -123,13 +123,10 @@ export const MoroccanKhatimStar: React.FC<{ size?: number; color?: string; class
         <stop offset="100%" stopColor="#966012" />
       </linearGradient>
     </defs>
-    {/* Outer 8-pointed star created by two rotated squares */}
     <rect x="20" y="20" width="60" height="60" rx="4" stroke="url(#moroccanGoldGrad)" strokeWidth="2.5" fill="rgba(222,155,53,0.12)" />
     <rect x="20" y="20" width="60" height="60" rx="4" transform="rotate(45 50 50)" stroke="url(#moroccanGoldGrad)" strokeWidth="2.5" fill="rgba(222,155,53,0.12)" />
-    {/* Inner decorative octagon & floral star */}
     <circle cx="50" cy="50" r="16" stroke="url(#moroccanGoldGrad)" strokeWidth="1.8" fill="none" />
     <circle cx="50" cy="50" r="6" fill="url(#moroccanGoldGrad)" />
-    {/* 8 radiating spear points */}
     {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, idx) => (
       <path 
         key={idx} 
@@ -151,17 +148,14 @@ export const MoroccanFanousLantern: React.FC<{
   size = 56, 
   chainHeight = 40, 
   className = '',
-  glowColor = 'rgba(245,158,11,0.5)'
 }) => (
   <div className={`relative flex flex-col items-center ${className}`}>
-    {/* Hanging Chain */}
     {chainHeight > 0 && (
       <div 
         style={{ height: `${chainHeight}px` }} 
         className="w-[1.5px] bg-gradient-to-b from-[#FFF4D0]/80 via-[#DE9B35] to-[#966012]" 
       />
     )}
-    {/* Lantern Body */}
     <svg 
       width={size} 
       height={size * 1.5} 
@@ -184,31 +178,17 @@ export const MoroccanFanousLantern: React.FC<{
           <stop offset="100%" stopColor="#D97706" stopOpacity="0" />
         </radialGradient>
       </defs>
-
-      {/* Top Hanging Ring */}
       <circle cx="40" cy="8" r="6" stroke="url(#fanousBrass)" strokeWidth="2.5" fill="none" />
-      
-      {/* Onion Dome Top Spire */}
       <path d="M 40 14 C 40 14 36 22 30 26 L 50 26 C 44 22 40 14 40 14 Z" fill="url(#fanousBrass)" />
-      
-      {/* Upper Cap with Cutout Windows */}
       <path d="M 26 26 L 54 26 L 58 36 L 22 36 Z" fill="url(#fanousBrass)" stroke="#FFF4D0" strokeWidth="0.8" />
       <circle cx="34" cy="31" r="2" fill="#0A172E" />
       <circle cx="40" cy="31" r="2" fill="#0A172E" />
       <circle cx="46" cy="31" r="2" fill="#0A172E" />
-
-      {/* Glass Body with Moroccan Geometric Lattice */}
       <path d="M 22 36 L 58 36 L 66 76 L 50 96 L 30 96 L 14 76 Z" fill="#0D1F3C" stroke="url(#fanousBrass)" strokeWidth="2" />
-      
-      {/* Inner Glowing Amber Flame */}
       <circle cx="40" cy="62" r="20" fill="url(#lanternFlameGlow)" className="animate-pulse" style={{ animationDuration: '2.5s' }} />
       <ellipse cx="40" cy="62" rx="4" ry="9" fill="#FFFBEB" className="animate-pulse" style={{ animationDuration: '1.8s' }} />
-
-      {/* Intricate Filigree Moorish Window Frames on Glass */}
       <path d="M 40 36 L 40 96 M 22 36 L 30 96 M 58 36 L 50 96" stroke="url(#fanousBrass)" strokeWidth="1" strokeDasharray="3 2" />
       <path d="M 14 76 L 66 76" stroke="url(#fanousBrass)" strokeWidth="1.2" />
-
-      {/* Bottom Tapered Base & Finial */}
       <path d="M 30 96 L 50 96 L 44 108 L 36 108 Z" fill="url(#fanousBrass)" />
       <circle cx="40" cy="112" r="3.5" fill="url(#fanousBrass)" />
     </svg>
@@ -223,7 +203,6 @@ export const MoroccanHorseshoeArch: React.FC<{
 }> = ({ 
   size = 180, 
   className = '',
-  strokeColor = '#DE9B35'
 }) => (
   <svg 
     width={size} 
@@ -240,32 +219,21 @@ export const MoroccanHorseshoeArch: React.FC<{
         <stop offset="100%" stopColor="#966012" />
       </linearGradient>
     </defs>
-    {/* Outer Moorish Arch Keystone Peak */}
     <path 
       d="M 10 90 L 10 45 C 10 20 40 8 100 8 C 160 8 190 20 190 45 L 190 90" 
       stroke="url(#horseshoeGold)" 
       strokeWidth="3" 
       fill="none" 
     />
-    {/* Inner Scalloped Cusp Trim (Multifoil Arch) */}
     <path 
-      d="M 22 90 L 22 50 
-         C 22 42 30 38 38 34
-         C 46 30 56 26 70 22
-         C 84 18 94 16 100 16
-         C 106 16 116 18 130 22
-         C 144 26 154 30 162 34
-         C 170 38 178 42 178 50
-         L 178 90" 
+      d="M 22 90 L 22 50 C 22 42 30 38 38 34 C 46 30 56 26 70 22 C 84 18 94 16 100 16 C 106 16 116 18 130 22 C 144 26 154 30 162 34 C 170 38 178 42 178 50 L 178 90" 
       stroke="url(#horseshoeGold)" 
       strokeWidth="1.5" 
       strokeDasharray="4 3" 
       fill="none" 
     />
-    {/* Center Arabesque Finial Star */}
     <circle cx="100" cy="8" r="4.5" fill="url(#horseshoeGold)" />
     <path d="M 100 0 L 102 5 L 107 7 L 102 9 L 100 14 L 98 9 L 93 7 L 98 5 Z" fill="#FFF4D0" />
-    {/* Side Medallion Emblems */}
     <circle cx="22" cy="48" r="3" fill="url(#horseshoeGold)" />
     <circle cx="178" cy="48" r="3" fill="url(#horseshoeGold)" />
   </svg>
@@ -303,10 +271,8 @@ export const MoroccanCornerArabesque: React.FC<{
           <stop offset="100%" stopColor="#8C5B12" />
         </linearGradient>
       </defs>
-      {/* Outer corner L-border */}
       <path d="M 6 90 L 6 18 C 6 10 10 6 18 6 L 90 6" stroke="url(#cornerGoldGrad)" strokeWidth="2.5" fill="none" />
       <path d="M 14 80 L 14 24 C 14 18 18 14 24 14 L 80 14" stroke="url(#cornerGoldGrad)" strokeWidth="1" strokeDasharray="3 2" fill="none" />
-      {/* Corner Floral Arabesque Scroll */}
       <path d="M 18 18 C 28 28 32 46 22 56 C 14 64 26 72 32 64 C 40 52 50 50 64 32 C 72 26 64 14 56 22 C 46 32 28 28 18 18 Z" fill="rgba(222,155,53,0.18)" stroke="url(#cornerGoldGrad)" strokeWidth="1.2" />
       <circle cx="28" cy="28" r="4" fill="url(#cornerGoldGrad)" />
       <circle cx="10" cy="10" r="2.5" fill="#FFF4D0" />
@@ -333,16 +299,13 @@ export const MoroccanZellijWatermark: React.FC<{ className?: string }> = ({ clas
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <pattern id="moroccanZellijTile" width="80" height="80" patternUnits="userSpaceOnUse">
-          {/* Central 8-pointed star */}
           <rect x="20" y="20" width="40" height="40" stroke="#FFF7D6" strokeWidth="1.2" fill="none" />
           <rect x="20" y="20" width="40" height="40" transform="rotate(45 40 40)" stroke="#FFF7D6" strokeWidth="1.2" fill="none" />
-          {/* Radiating Moroccan tile lines */}
           <line x1="0" y1="40" x2="80" y2="40" stroke="#FFF7D6" strokeWidth="0.8" />
           <line x1="40" y1="0" x2="40" y2="80" stroke="#FFF7D6" strokeWidth="0.8" />
           <line x1="0" y1="0" x2="80" y2="80" stroke="#FFF7D6" strokeWidth="0.8" />
           <line x1="80" y1="0" x2="0" y2="80" stroke="#FFF7D6" strokeWidth="0.8" />
           <circle cx="40" cy="40" r="10" stroke="#FFF7D6" strokeWidth="0.8" fill="none" />
-          {/* 4 corner diamonds */}
           <polygon points="0,0 8,0 0,8" fill="#FFF7D6" />
           <polygon points="80,0 72,0 80,8" fill="#FFF7D6" />
           <polygon points="0,80 8,80 0,72" fill="#FFF7D6" />
@@ -403,6 +366,7 @@ export const MoroccanNightsTheme: React.FC<MoroccanNightsThemeProps> = ({
   guestName = 'Tamu Undangan',
 }) => {
   const [activeSection, setActiveSection] = useState('sampul');
+  const [adatTab, setAdatTab] = useState<'upacara' | 'cerita'>('upacara');
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
   const [copiedAddress, setCopiedAddress] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -513,19 +477,20 @@ export const MoroccanNightsTheme: React.FC<MoroccanNightsThemeProps> = ({
   };
 
   // Safe couple fields
-  const groomName = couple?.groom_name || 'Steven Pratama';
+  const groomName = couple?.groom_nickname || couple?.groom_name || 'Steven';
+  const brideName = couple?.bride_nickname || couple?.bride_name || 'Bunga';
   const groomFullName = couple?.groom_full_name || 'Steven Pratama, S.T.';
+  const brideFullName = couple?.bride_full_name || 'Bunga Citra Lestari, S.I.Kom.';
   const groomFather = couple?.groom_father || 'Bpk. Hendra Pratama';
   const groomMother = couple?.groom_mother || 'Ibu Dewi Sartika';
   const groomInstagram = couple?.groom_instagram || 'steven.pratama';
   const groomPhoto = couple?.groom_photo || couple?.groom_photo_url || '/photos/photo-1.jpg';
 
-  const brideName = couple?.bride_name || 'Bunga Citra';
-  const brideFullName = couple?.bride_full_name || 'Bunga Citra Lestari, S.I.Kom.';
   const brideFather = couple?.bride_father || 'Bpk. Gunawan Wibisono';
   const brideMother = couple?.bride_mother || 'Ibu Ratna Anggraini';
   const brideInstagram = couple?.bride_instagram || 'bungacitra';
   const bridePhoto = couple?.bride_photo || couple?.bride_photo_url || '/photos/photo-2.jpg';
+  const couplePhoto = couple?.cover_photo || couple?.cover_photo_url || bridePhoto;
 
   const weddingDateStr = new Date(invitation?.wedding_date || '2026-12-28').toLocaleDateString('id-ID', {
     weekday: 'long',
@@ -595,801 +560,994 @@ export const MoroccanNightsTheme: React.FC<MoroccanNightsThemeProps> = ({
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#081224] text-[#FFF9EF] font-sans selection:bg-[#DE9B35] selection:text-[#081224] overflow-x-hidden">
+    <div className="min-h-screen bg-[#081224] text-[#FFF9EF] font-sans relative selection:bg-[#DE9B35] selection:text-[#081224] overflow-x-hidden">
       {/* Background Ambience: Zellij Tile Pattern & Floating Sahara Stardust */}
       <MoroccanZellijWatermark />
       <FloatingSaharaStardust />
 
-      {/* TOP DECORATIVE HANGING LANTERNS */}
-      <div className="absolute top-0 left-0 right-0 z-10 flex justify-between px-4 sm:px-8 pointer-events-none">
-        <MoroccanFanousLantern size={48} chainHeight={45} className="hidden sm:flex" />
-        <MoroccanFanousLantern size={38} chainHeight={25} />
-        <div className="flex-1" />
-        <MoroccanFanousLantern size={42} chainHeight={35} />
-        <MoroccanFanousLantern size={52} chainHeight={55} className="hidden sm:flex" />
-      </div>
-
-      {/* =====================================================================
-          SECTION 1: HERO / COVER (SAMPUL)
-          ===================================================================== */}
-      <section id="sampul" className="relative min-h-[92vh] flex flex-col justify-center items-center text-center px-4 pt-20 pb-16">
-        {/* Subtle radial sapphire glow behind hero */}
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(222,155,53,0.18)_0%,rgba(8,18,36,0.95)_75%)] pointer-events-none" />
-
-        <ScrollReveal animation="fade-down" delay={100} className="relative z-10 max-w-lg mx-auto">
-          {/* Top Royal Arabesque Medallion */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#102242]/90 border border-[#DE9B35]/60 shadow-[0_4px_20px_rgba(222,155,53,0.25)] mb-4">
-            <Moon className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
-            <span className="text-[11px] font-serif uppercase tracking-[0.25em] text-[#FFF4D0] font-semibold">
-              Walimatul 'Ursy • Arabian Moroccan Royal
-            </span>
-            <Star className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
-          </div>
-
-          <h2 className="text-xs sm:text-sm font-serif uppercase tracking-[0.35em] text-[#DE9B35] mb-2 font-bold">
-            THE WEDDING CELEBRATION OF
-          </h2>
-
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9EF] via-[#FFF0C2] to-[#DE9B35] drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)] my-2">
-            {groomName} <span className="font-light italic text-[#DE9B35] text-3xl sm:text-4xl">&amp;</span> {brideName}
-          </h1>
-
-          <MoroccanDivider className="my-3" />
-
-          <p className="font-serif text-sm sm:text-base text-[#D1DCE8] tracking-widest mt-1">
-            {weddingDateStr}
-          </p>
-        </ScrollReveal>
-
-        {/* Arched Couple Portrait in Alhambra Horseshoe Arch */}
-        <ScrollReveal animation="zoom-in" delay={250} className="relative z-10 my-6">
-          <div className="relative mx-auto w-52 h-72 sm:w-60 sm:h-80">
-            {/* Top Arch SVG Crown */}
-            <div className="absolute -top-7 left-1/2 -translate-x-1/2 z-20">
-              <MoroccanHorseshoeArch size={240} />
-            </div>
-
-            {/* Glowing Moroccan Framed Photo Box */}
-            <div className="w-full h-full rounded-t-[110px] rounded-b-3xl overflow-hidden p-1.5 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#102242] shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_25px_rgba(222,155,53,0.3)] group">
-              <div className="w-full h-full rounded-t-[105px] rounded-b-2xl overflow-hidden relative">
-                <img 
-                  src={couple?.cover_photo || couple?.cover_photo_url || bridePhoto} 
-                  alt={`${groomName} & ${brideName}`}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#081224]/80 via-transparent to-transparent pointer-events-none" />
-              </div>
-            </div>
-          </div>
-        </ScrollReveal>
-
-        {/* Recipient Plaque */}
-        <ScrollReveal animation="fade-up" delay={350} className="relative z-10 max-w-sm w-full mx-auto">
-          <div className="p-4 rounded-2xl bg-[#102242]/90 border border-[#DE9B35]/50 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-md">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif block mb-1">
-              Kepada Yth. Bapak/Ibu/Saudara/i:
-            </span>
-            <p className="text-base sm:text-lg font-serif font-bold text-[#FFF9EF] tracking-wide">
-              {guestName}
-            </p>
-            <p className="text-[10px] text-[#A6B6C8] font-sans mt-0.5">
-              Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir dan memberikan doa restu.
-            </p>
-          </div>
-        </ScrollReveal>
-      </section>
-
-      {/* =====================================================================
-          SECTION 2: AYAT SUCI (SURAH AR-RUM : 21)
-          ===================================================================== */}
-      <section className="relative py-14 px-4 bg-[#0A172E]/90 border-y border-[#DE9B35]/30">
-        <div className="absolute top-0 left-0"><MoroccanCornerArabesque position="top-left" size={60} /></div>
-        <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={60} /></div>
-        <div className="absolute bottom-0 left-0"><MoroccanCornerArabesque position="bottom-left" size={60} /></div>
-        <div className="absolute bottom-0 right-0"><MoroccanCornerArabesque position="bottom-right" size={60} /></div>
-
-        <div className="max-w-2xl mx-auto text-center relative z-10">
-          <ScrollReveal animation="fade-up">
-            <p className="text-xl sm:text-2xl font-serif text-[#DE9B35] mb-4 tracking-wider leading-relaxed">
-              بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-            </p>
-
-            <p className="text-base sm:text-lg font-serif text-[#FFF4D0] leading-loose mb-4 px-2" dir="rtl">
-              وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
-            </p>
-
-            <MoroccanDivider className="my-3" />
-
-            <blockquote className="text-xs sm:text-sm text-[#D1DCE8] leading-relaxed italic font-serif px-4">
-              "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."
-            </blockquote>
-            <span className="inline-block mt-3 text-[11px] font-serif font-bold text-[#DE9B35] uppercase tracking-widest">
-              (QS. Ar-Rum : 21)
-            </span>
-          </ScrollReveal>
+      {/* =========================================================================
+          LEFT PANEL (DESKTOP ONLY: Fixed 42% / 50% Panel with Photo & Guest Name)
+          Signature 70k Layout Architecture matching Sunda Siger, Minang & Bali
+          ========================================================================= */}
+      <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between items-center p-8 xl:p-12 overflow-hidden select-none bg-[#0B1A33] text-white border-r border-[#DE9B35]/40 shadow-2xl">
+        {/* Panoramic Sahara & Moroccan Palace Backdrop */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <img 
+            src={couplePhoto} 
+            alt={`${groomName} & ${brideName}`} 
+            className="w-full h-full object-cover object-center filter brightness-90 scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#060D1A] via-[#0A172E]/85 to-[#0B1A33]/90" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(222,155,53,0.22)_0%,rgba(6,13,26,0.92)_75%)]" />
+          <MoroccanZellijWatermark className="opacity-[0.08]" />
         </div>
-      </section>
 
-      {/* =====================================================================
-          SECTION 3: MEMPELAI (THE HAPPY COUPLE)
-          ===================================================================== */}
-      <section id="mempelai" className="relative py-20 px-4 max-w-4xl mx-auto">
-        <ScrollReveal animation="fade-up" className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/50 mb-2">
-            <Crown className="w-3.5 h-3.5 text-[#DE9B35]" />
-            <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0]">
-              Sang Mempelai
-            </span>
+        {/* Hanging Brass Fanous Lanterns at Top */}
+        <div className="absolute top-0 left-0 right-0 z-10 flex justify-between px-6 pointer-events-none">
+          <MoroccanFanousLantern size={44} chainHeight={40} />
+          <MoroccanFanousLantern size={36} chainHeight={20} />
+          <div className="flex-1" />
+          <MoroccanFanousLantern size={38} chainHeight={28} />
+          <MoroccanFanousLantern size={48} chainHeight={50} />
+        </div>
+
+        {/* Gilded Inner Arch Frame Line */}
+        <div className="absolute inset-5 xl:inset-7 rounded-[32px] border border-[#DE9B35]/45 pointer-events-none z-10" />
+
+        {/* Central Content Column */}
+        <div className="relative z-20 w-full max-w-[440px] xl:max-w-[480px] mx-auto flex flex-col justify-between h-full py-1">
+          {/* TOP: Badges */}
+          <div className="w-full flex items-center justify-between">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#102242]/90 backdrop-blur-md border border-[#DE9B35]/70 shadow-lg text-[#FFF4D0] text-[10.5px] font-serif uppercase tracking-[0.2em]">
+              <Moon className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
+              <span>Walimatul 'Ursy</span>
+            </div>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#102242]/90 backdrop-blur-md border border-[#DE9B35]/70 shadow-lg text-[#FFF4D0] text-[10.5px] font-serif uppercase tracking-[0.2em]">
+              <Star className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
+              <span>Moroccan Royal</span>
+            </div>
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9EF] via-[#FFF0C2] to-[#DE9B35]">
-            Mempelai Pria &amp; Wanita
-          </h2>
-          <p className="text-xs sm:text-sm text-[#A6B6C8] max-w-md mx-auto mt-2">
-            Dengan penuh rasa syukur kepada Allah SWT, kami memperkenalkan kedua mempelai yang akan mengikat janji suci.
-          </p>
-        </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-14 items-center">
-          {/* GROOM CARD */}
-          <ScrollReveal animation="slide-right" delay={150}>
-            <div className="relative p-6 sm:p-8 rounded-[36px] bg-[#102242]/80 border border-[#DE9B35]/50 shadow-[0_16px_40px_rgba(0,0,0,0.5)] text-center group">
-              <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={48} /></div>
-              <div className="absolute bottom-0 left-0"><MoroccanCornerArabesque position="bottom-left" size={48} /></div>
-
-              {/* Groom Photo in Moorish Arch */}
-              <div className="relative mx-auto w-40 h-52 sm:w-44 sm:h-56 mb-5">
-                <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
-                  <MoroccanHorseshoeArch size={190} />
-                </div>
-                <div className="w-full h-full rounded-t-[90px] rounded-b-2xl overflow-hidden border-2 border-[#DE9B35] p-1 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#102242]">
+          {/* CENTER: Arched Couple Photo Frame + Names + Recipient + Countdown */}
+          <div className="my-auto w-full flex flex-col items-center text-center py-4">
+            <div className="relative mb-3">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20">
+                <MoroccanHorseshoeArch size={195} />
+              </div>
+              <div className="relative mx-auto w-40 h-52 xl:w-48 xl:h-60 rounded-t-[100px] rounded-b-2xl overflow-hidden border-2 border-[#DE9B35] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_25px_rgba(222,155,53,0.35)] p-1 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#102242] group">
+                <div className="w-full h-full rounded-t-[94px] rounded-b-xl overflow-hidden relative">
                   <img 
-                    src={groomPhoto} 
-                    alt={groomName}
-                    className="w-full h-full object-cover object-top rounded-t-[84px] rounded-b-xl group-hover:scale-105 transition-transform duration-700" 
+                    src={couplePhoto} 
+                    alt={`${groomName} & ${brideName}`}
+                    className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#081224]/80 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
+            </div>
 
-              <span className="text-[10.5px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-bold block mb-1">
-                Mempelai Pria
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-[#FFF9EF] mb-1">
-                {groomFullName}
-              </h3>
-              <p className="text-xs text-[#D1DCE8] leading-relaxed mb-4">
-                Putra tercinta dari <br />
-                <span className="font-semibold text-[#FFF4D0]">{groomFather}</span> &amp; <span className="font-semibold text-[#FFF4D0]">{groomMother}</span>
+            <div className="flex items-center justify-center gap-2 mb-1 text-[#FFF4D0]">
+              <Sparkles className="w-3.5 h-3.5 text-[#DE9B35] animate-pulse" />
+              <p className="text-[11px] tracking-[0.3em] uppercase font-serif font-semibold">
+                THE WEDDING CELEBRATION OF
               </p>
-
-              {groomInstagram && (
-                <a
-                  href={`https://instagram.com/${groomInstagram.replace('@', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#081224] border border-[#DE9B35]/60 text-[#FFF4D0] text-xs hover:bg-[#DE9B35] hover:text-[#081224] transition-all duration-300 shadow-sm"
-                >
-                  <InstagramIcon size={14} />
-                  <span>@{groomInstagram.replace('@', '')}</span>
-                </a>
-              )}
+              <Sparkles className="w-3.5 h-3.5 text-[#DE9B35] animate-pulse" />
             </div>
-          </ScrollReveal>
 
-          {/* BRIDE CARD */}
-          <ScrollReveal animation="slide-left" delay={250}>
-            <div className="relative p-6 sm:p-8 rounded-[36px] bg-[#102242]/80 border border-[#DE9B35]/50 shadow-[0_16px_40px_rgba(0,0,0,0.5)] text-center group">
-              <div className="absolute top-0 left-0"><MoroccanCornerArabesque position="top-left" size={48} /></div>
-              <div className="absolute bottom-0 right-0"><MoroccanCornerArabesque position="bottom-right" size={48} /></div>
+            <h1 className="font-serif text-3xl xl:text-4xl 2xl:text-5xl font-normal leading-[1.08] tracking-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF0C2] to-[#DE9B35] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
+              {groomName} <span className="text-xl xl:text-2xl text-[#DE9B35] font-light italic font-serif">&amp;</span> {brideName}
+            </h1>
 
-              {/* Bride Photo in Moorish Arch */}
-              <div className="relative mx-auto w-40 h-52 sm:w-44 sm:h-56 mb-5">
-                <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
-                  <MoroccanHorseshoeArch size={190} />
-                </div>
-                <div className="w-full h-full rounded-t-[90px] rounded-b-2xl overflow-hidden border-2 border-[#DE9B35] p-1 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#102242]">
-                  <img 
-                    src={bridePhoto} 
-                    alt={brideName}
-                    className="w-full h-full object-cover object-top rounded-t-[84px] rounded-b-xl group-hover:scale-105 transition-transform duration-700" 
-                  />
-                </div>
-              </div>
+            <div className="w-24 h-0.5 mx-auto bg-gradient-to-r from-transparent via-[#DE9B35] to-transparent mb-3" />
 
-              <span className="text-[10.5px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-bold block mb-1">
-                Mempelai Wanita
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-[#FFF9EF] mb-1">
-                {brideFullName}
-              </h3>
-              <p className="text-xs text-[#D1DCE8] leading-relaxed mb-4">
-                Putri tercinta dari <br />
-                <span className="font-semibold text-[#FFF4D0]">{brideFather}</span> &amp; <span className="font-semibold text-[#FFF4D0]">{brideMother}</span>
+            {/* Recipient Guest Card */}
+            <div className="w-full relative p-3.5 xl:p-4 rounded-2xl bg-gradient-to-b from-[#102242]/95 via-[#0A172E]/98 to-[#060D1A]/98 backdrop-blur-md border border-[#DE9B35]/70 shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(222,155,53,0.3)] mb-3">
+              <div className="absolute inset-1.5 rounded-xl border border-[#DE9B35]/30 pointer-events-none" />
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-semibold mb-0.5 text-center">
+                Kepada Yth. Bapak/Ibu/Saudara/i :
               </p>
-
-              {brideInstagram && (
-                <a
-                  href={`https://instagram.com/${brideInstagram.replace('@', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#081224] border border-[#DE9B35]/60 text-[#FFF4D0] text-xs hover:bg-[#DE9B35] hover:text-[#081224] transition-all duration-300 shadow-sm"
-                >
-                  <InstagramIcon size={14} />
-                  <span>@{brideInstagram.replace('@', '')}</span>
-                </a>
-              )}
+              <h2 className="text-lg xl:text-xl font-serif font-bold text-white tracking-wide text-center drop-shadow-sm my-0.5">
+                {guestName}
+              </h2>
+              <p className="text-[9.5px] tracking-wider text-[#D1DCE8] text-center font-sans mt-0.5">
+                Merupakan satu kehormatan atas kehadiran &amp; doa restu Anda
+              </p>
             </div>
-          </ScrollReveal>
-        </div>
-      </section>
 
-      {/* =====================================================================
-          SECTION 4: COUNTDOWN & SAVE THE DATE
-          ===================================================================== */}
-      <section className="relative py-16 px-4 bg-gradient-to-b from-[#081224] via-[#0D1F3C] to-[#081224] border-y border-[#DE9B35]/30 text-center">
-        <ScrollReveal animation="fade-up" className="max-w-xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/50 mb-2">
-            <Clock className="w-3.5 h-3.5 text-[#DE9B35]" />
-            <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0]">
-              Menghitung Hari Bahagia
+            {/* Live Countdown Timer */}
+            <div className="w-full grid grid-cols-4 gap-2 text-center">
+              {[
+                { label: 'Hari', val: timeLeft.days },
+                { label: 'Jam', val: timeLeft.hours },
+                { label: 'Menit', val: timeLeft.minutes },
+                { label: 'Detik', val: timeLeft.seconds },
+              ].map((item, idx) => (
+                <div key={idx} className="p-2 rounded-xl bg-gradient-to-b from-[#102242]/90 to-[#0A172E]/95 backdrop-blur-md border border-[#DE9B35]/60 shadow-md">
+                  <span className="block text-lg xl:text-xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF4D0] to-[#DE9B35]">
+                    {String(item.val).padStart(2, '0')}
+                  </span>
+                  <span className="text-[9px] uppercase tracking-widest text-[#D1DCE8] font-sans">
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* BOTTOM: Date & Venue Info */}
+          <div className="w-full flex items-center justify-between text-xs text-[#D1DCE8] border-t border-[#DE9B35]/40 pt-3">
+            <span className="font-serif tracking-wide text-[#FFF4D0] flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-[#DE9B35]" />
+              Grand Sahara Pavilion
             </span>
+            <span className="font-sans text-[#FFF4D0]">Bandung, Jawa Barat</span>
           </div>
-
-          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#FFF9EF] mb-2">
-            Save The Date
-          </h2>
-          <p className="text-xs sm:text-sm text-[#A6B6C8] mb-8">
-            Kami menantikan kehadiran dan doa restu Anda dalam hitungan waktu:
-          </p>
-
-          {/* 4 Moroccan Brass Countdown Tiles */}
-          <div className="grid grid-cols-4 gap-3 sm:gap-4 max-w-md mx-auto mb-8">
-            {[
-              { label: 'Hari', value: timeLeft.days },
-              { label: 'Jam', value: timeLeft.hours },
-              { label: 'Menit', value: timeLeft.minutes },
-              { label: 'Detik', value: timeLeft.seconds },
-            ].map((item, idx) => (
-              <div 
-                key={idx}
-                className="relative p-3 sm:p-4 rounded-2xl bg-[#102242]/90 border border-[#DE9B35]/60 shadow-[0_8px_25px_rgba(0,0,0,0.6)] backdrop-blur-md"
-              >
-                <div className="text-2xl sm:text-3xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFF4D0] to-[#DE9B35]">
-                  {String(item.value).padStart(2, '0')}
-                </div>
-                <div className="text-[10px] sm:text-xs font-serif uppercase tracking-widest text-[#D1DCE8] mt-1">
-                  {item.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Add to Google Calendar Button */}
-          <a
-            href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`The Wedding of ${groomName} & ${brideName}`)}&dates=${invitation?.wedding_date ? new Date(invitation.wedding_date).toISOString().replace(/-|:|\.\d\d\d/g, "") : '20261228T010000Z'}/${invitation?.wedding_date ? new Date(invitation.wedding_date).toISOString().replace(/-|:|\.\d\d\d/g, "") : '20261228T070000Z'}&details=${encodeURIComponent(`Walimatul 'Ursy ${groomFullName} & ${brideFullName}. Kami sangat menantikan kehadiran Anda!`)}&location=${encodeURIComponent(akadEvent.venue_name || 'Grand Sahara Ballroom')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-[#DE9B35] via-[#E5B54F] to-[#C78726] text-[#081224] text-xs font-serif font-bold uppercase tracking-wider shadow-[0_6px_25px_rgba(222,155,53,0.35)] hover:scale-105 active:scale-95 transition-all duration-300"
-          >
-            <Calendar className="w-4 h-4 text-[#081224]" />
-            <span>Simpan ke Google Calendar</span>
-          </a>
-        </ScrollReveal>
-      </section>
-
-      {/* =====================================================================
-          SECTION 5: RANGKAIAN ACARA (WEDDING EVENTS)
-          ===================================================================== */}
-      <section id="acara" className="relative py-20 px-4 max-w-4xl mx-auto">
-        <ScrollReveal animation="fade-up" className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/50 mb-2">
-            <Calendar className="w-3.5 h-3.5 text-[#DE9B35]" />
-            <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0]">
-              Waktu &amp; Tempat Acara
-            </span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9EF] via-[#FFF0C2] to-[#DE9B35]">
-            Rangkaian Acara Walimah
-          </h2>
-          <p className="text-xs sm:text-sm text-[#A6B6C8] max-w-md mx-auto mt-2">
-            InsyaAllah seluruh rangkaian acara akad dan resepsi diselenggarakan dengan penuh keberkahan:
-          </p>
-        </ScrollReveal>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* AKAD NIKAH CARD */}
-          <ScrollReveal animation="fade-up" delay={150}>
-            <div className="relative p-6 sm:p-8 rounded-[32px] bg-[#102242]/85 border border-[#DE9B35]/50 shadow-[0_16px_40px_rgba(0,0,0,0.5)] flex flex-col justify-between h-full group">
-              <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={44} /></div>
-              
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-[#081224] border border-[#DE9B35]/60 flex items-center justify-center text-[#DE9B35] mb-4 shadow-inner">
-                  <Bookmark className="w-6 h-6" />
-                </div>
-                <span className="text-[10.5px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-bold block mb-1">
-                  Ijab Qabul &amp; Khutbah Nikah
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#FFF9EF] mb-4">
-                  {akadEvent.title}
-                </h3>
-
-                <div className="space-y-3 text-xs sm:text-sm text-[#D1DCE8] mb-6">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-4 h-4 text-[#DE9B35] shrink-0" />
-                    <span>{weddingDateStr}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-4 h-4 text-[#DE9B35] shrink-0" />
-                    <span>Pukul {akadEvent.start_time} - {akadEvent.end_time} WIB</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-4 h-4 text-[#DE9B35] shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-[#FFF4D0]">{akadEvent.venue_name}</p>
-                      <p className="text-[11px] text-[#A6B6C8] mt-0.5 leading-relaxed">{akadEvent.venue_address}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {akadEvent.maps_url && (
-                <a
-                  href={akadEvent.maps_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#081224] hover:bg-[#DE9B35] text-[#FFF4D0] hover:text-[#081224] border border-[#DE9B35]/60 text-xs font-serif font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300"
-                >
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>Petunjuk Arah Google Maps</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              )}
-            </div>
-          </ScrollReveal>
-
-          {/* RESEPSI CARD */}
-          <ScrollReveal animation="fade-up" delay={250}>
-            <div className="relative p-6 sm:p-8 rounded-[32px] bg-[#102242]/85 border border-[#DE9B35]/50 shadow-[0_16px_40px_rgba(0,0,0,0.5)] flex flex-col justify-between h-full group">
-              <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={44} /></div>
-              
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-[#081224] border border-[#DE9B35]/60 flex items-center justify-center text-[#DE9B35] mb-4 shadow-inner">
-                  <Sparkles className="w-6 h-6" />
-                </div>
-                <span className="text-[10.5px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-bold block mb-1">
-                  Jamuan Walimatul 'Ursy
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#FFF9EF] mb-4">
-                  {resepsiEvent.title}
-                </h3>
-
-                <div className="space-y-3 text-xs sm:text-sm text-[#D1DCE8] mb-6">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-4 h-4 text-[#DE9B35] shrink-0" />
-                    <span>{weddingDateStr}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-4 h-4 text-[#DE9B35] shrink-0" />
-                    <span>Pukul {resepsiEvent.start_time} - {resepsiEvent.end_time} WIB</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-4 h-4 text-[#DE9B35] shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-[#FFF4D0]">{resepsiEvent.venue_name}</p>
-                      <p className="text-[11px] text-[#A6B6C8] mt-0.5 leading-relaxed">{resepsiEvent.venue_address}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {resepsiEvent.maps_url && (
-                <a
-                  href={resepsiEvent.maps_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#081224] hover:bg-[#DE9B35] text-[#FFF4D0] hover:text-[#081224] border border-[#DE9B35]/60 text-xs font-serif font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300"
-                >
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>Petunjuk Arah Google Maps</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              )}
-            </div>
-          </ScrollReveal>
         </div>
-      </section>
+      </aside>
 
-      {/* =====================================================================
-          SECTION 6: KISAH CINTA (LOVE STORY)
-          ===================================================================== */}
-      <section id="cerita" className="relative py-20 px-4 bg-[#0A172E]/70 border-y border-[#DE9B35]/30">
-        <div className="max-w-3xl mx-auto">
-          <ScrollReveal animation="fade-up" className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/50 mb-2">
-              <Heart className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
-              <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0]">
-                Kisah &amp; Jejak Kasih
-              </span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9EF] via-[#FFF0C2] to-[#DE9B35]">
-              Perjalanan Cinta Kami
-            </h2>
-            <p className="text-xs sm:text-sm text-[#A6B6C8] max-w-md mx-auto mt-2">
-              Bagaimana takdir mempertemukan kami dalam rangkaian babak berharga:
+      {/* =========================================================================
+          RIGHT PANEL (DESKTOP: Scrollable 58% / 50% Column, MOBILE: Fullscreen Feed)
+          Signature 70k Layout Architecture on Warm Royal Moroccan Stationery
+          ========================================================================= */}
+      <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen relative z-10 bg-[#FAF7F2] pb-24 shadow-2xl lg:border-l lg:border-[#DE9B35]/35">
+        
+        {/* =====================================================================
+            SECTION 1: HERO / SAMPUL
+            ===================================================================== */}
+        <section id="sampul" className="relative w-full min-h-[100dvh] flex flex-col justify-between items-center text-center p-6 sm:p-8 bg-[#FAF7F2] border-b border-[#DE9B35]/30 overflow-hidden">
+          {/* Background Ambient Radial Glow & Zellij Tile Watermark */}
+          <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(222,155,53,0.18)_0%,rgba(250,247,242,0.98)_70%)]" />
+          <MoroccanZellijWatermark className="opacity-[0.06]" />
+
+          {/* 4 Corner Arabesque Filigree Clusters */}
+          <div className="absolute top-0 left-0"><MoroccanCornerArabesque position="top-left" size={96} /></div>
+          <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={96} /></div>
+          <div className="absolute bottom-0 left-0"><MoroccanCornerArabesque position="bottom-left" size={96} /></div>
+          <div className="absolute bottom-0 right-0"><MoroccanCornerArabesque position="bottom-right" size={96} /></div>
+
+          {/* Top Headline */}
+          <ScrollReveal animation="fade-down" delay={100} className="relative z-10 pt-4 max-w-md mx-auto w-full">
+            <span className="text-[10px] sm:text-xs tracking-[0.34em] uppercase text-[#DE9B35] font-serif font-bold">
+              WALIMATUL'URSY ADAT MAROKO
+            </span>
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#0B1A33] mt-2">
+              {groomName} <span className="font-light italic text-[#DE9B35]">&amp;</span> {brideName}
+            </h1>
+            <p className="text-[11px] font-sans tracking-[0.24em] uppercase text-[#705A42] mt-1.5 font-medium">
+              {weddingDateStr}
             </p>
           </ScrollReveal>
 
-          <div className="relative pl-6 sm:pl-8 border-l-2 border-[#DE9B35]/50 space-y-10 my-4 ml-4 sm:ml-8">
-            {defaultStories.map((story, idx) => (
-              <ScrollReveal key={idx} animation="fade-up" delay={idx * 150}>
-                <div className="relative group">
-                  {/* Glowing 8-Pointed Star Node on Timeline */}
-                  <div className="absolute -left-[37px] sm:-left-[45px] top-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#081224] border-2 border-[#DE9B35] flex items-center justify-center text-[#DE9B35] shadow-[0_0_12px_rgba(222,155,53,0.5)]">
-                    <MoroccanKhatimStar size={16} />
-                  </div>
-
-                  <div className="p-5 sm:p-6 rounded-2xl bg-[#102242]/80 border border-[#DE9B35]/40 shadow-lg">
-                    <span className="inline-block px-3 py-1 rounded-full bg-[#081224] text-[#DE9B35] text-xs font-serif font-bold tracking-wider mb-2">
-                      {story.year}
-                    </span>
-                    <h3 className="font-serif text-lg sm:text-xl font-bold text-[#FFF9EF] mb-2">
-                      {story.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#D1DCE8] leading-relaxed font-sans">
-                      {story.story}
-                    </p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =====================================================================
-          SECTION 7: GALERI FOTO (MOMEN BAHAGIA)
-          ===================================================================== */}
-      <section id="galeri" className="relative py-20 px-4 max-w-4xl mx-auto">
-        <ScrollReveal animation="fade-up" className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/50 mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-[#DE9B35]" />
-            <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0]">
-              Potret Kebahagiaan
-            </span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9EF] via-[#FFF0C2] to-[#DE9B35]">
-            Galeri Mempelai
-          </h2>
-          <p className="text-xs sm:text-sm text-[#A6B6C8] max-w-md mx-auto mt-2">
-            Setiap detik yang terabadikan dalam lembaran kenangan indah kami:
-          </p>
-        </ScrollReveal>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-          {defaultGallery.map((img, idx) => (
-            <ScrollReveal key={idx} animation="zoom-in" delay={idx * 100}>
-              <div 
-                onClick={() => setSelectedImage(img.image_url)}
-                className="group relative h-48 sm:h-64 rounded-2xl overflow-hidden cursor-pointer border border-[#DE9B35]/40 shadow-md p-1 bg-[#102242]"
-              >
-                <div className="w-full h-full rounded-xl overflow-hidden relative">
+          {/* Arched Couple Photo Window with Alhambra Horseshoe Arch */}
+          <ScrollReveal animation="zoom-in" delay={200} className="relative z-10 my-auto py-3 flex flex-col items-center">
+            <div className="relative mb-2">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20">
+                <MoroccanHorseshoeArch size={195} />
+              </div>
+              <div className="relative w-44 h-56 sm:w-50 sm:h-64 rounded-t-[100px] rounded-b-2xl overflow-hidden p-1.5 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#0B1A33] shadow-[0_14px_35px_rgba(11,26,51,0.22)] group">
+                <div className="w-full h-full rounded-t-[94px] rounded-b-xl overflow-hidden relative">
                   <img 
-                    src={img.image_url} 
-                    alt={img.caption || `Galeri Foto ${idx + 1}`}
-                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700" 
+                    src={couplePhoto} 
+                    alt={`${groomName} & ${brideName}`}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#081224]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                    <span className="text-[11px] text-[#FFF4D0] font-serif italic line-clamp-1">
-                      {img.caption || 'Momen Indah Kami'}
-                    </span>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
-            </ScrollReveal>
-          ))}
-        </div>
-
-        {/* LIGHTBOX MODAL */}
-        {selectedImage && createPortal(
-          <div 
-            onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
-          >
-            <div className="relative max-w-2xl w-full max-h-[85vh] rounded-3xl overflow-hidden border-2 border-[#DE9B35] shadow-2xl">
-              <img 
-                src={selectedImage} 
-                alt="Enlarged gallery view" 
-                className="w-full h-auto object-contain max-h-[80vh]"
-              />
-              <button 
-                onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#081224]/80 border border-[#DE9B35] text-white flex items-center justify-center text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
             </div>
-          </div>,
-          document.body
-        )}
-      </section>
+            <div className="inline-flex items-center gap-2 mt-1 px-3.5 py-1 rounded-full bg-white/95 border border-[#DE9B35]/50 shadow-xs">
+              <Moon className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
+              <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#0B1A33] font-bold">
+                Moroccan Arabian Nights
+              </span>
+              <Star className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
+            </div>
+          </ScrollReveal>
 
-      {/* =====================================================================
-          SECTION 8: TANDA KASIH (WEDDING GIFT / AMPLOP DIGITAL)
-          ===================================================================== */}
-      <section id="hadiah" className="relative py-20 px-4 bg-[#0A172E]/80 border-y border-[#DE9B35]/30">
-        <div className="max-w-2xl mx-auto text-center">
-          <ScrollReveal animation="fade-up" className="mb-12">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/50 mb-2">
-              <Gift className="w-3.5 h-3.5 text-[#DE9B35]" />
-              <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0]">
-                Tanda Kasih &amp; Kado
+          {/* Recipient & Countdown Cards & Scroll Down Prompt */}
+          <ScrollReveal animation="fade-up" delay={300} className="relative z-10 w-full flex flex-col items-center pb-4">
+            <div className="w-full max-w-xs p-3 rounded-2xl bg-white/95 border border-[#DE9B35]/40 shadow-xs mb-4 text-center">
+              <span className="text-[10px] uppercase tracking-widest text-[#705A42] block mb-0.5 font-serif">
+                Kepada Yth. Bapak/Ibu/Saudara/i:
+              </span>
+              <span className="font-serif text-sm font-bold text-[#0B1A33] block truncate">
+                {guestName}
               </span>
             </div>
-            <h2 className="font-serif text-3xl sm:text-4xl font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9EF] via-[#FFF0C2] to-[#DE9B35]">
-              Amplop Digital &amp; Kado Fisik
-            </h2>
-            <p className="text-xs sm:text-sm text-[#A6B6C8] max-w-md mx-auto mt-2">
-              Doa restu Anda adalah karunia terindah bagi kami. Bagi yang berkenan memberikan tanda kasih, dapat disalurkan melalui:
-            </p>
-          </ScrollReveal>
 
-          {/* BANK ACCOUNTS */}
-          <div className="space-y-4 mb-8">
-            {defaultGifts.map((gift, idx) => (
-              <ScrollReveal key={idx} animation="fade-up" delay={idx * 150}>
-                <div className="relative p-5 sm:p-6 rounded-2xl bg-[#102242]/90 border border-[#DE9B35]/60 shadow-lg text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div>
-                    <span className="text-[11px] font-serif uppercase tracking-widest text-[#DE9B35] font-bold block mb-1">
-                      {gift.bank_name}
-                    </span>
-                    <p className="font-mono text-xl sm:text-2xl font-bold text-[#FFF4D0] tracking-wider my-0.5">
-                      {gift.account_number}
-                    </p>
-                    <p className="text-xs text-[#D1DCE8]">
-                      a.n {gift.account_name}
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => handleCopyAccount(gift.account_number)}
-                    className="self-start sm:self-center px-4 py-2 rounded-xl bg-[#081224] hover:bg-[#DE9B35] text-[#FFF4D0] hover:text-[#081224] border border-[#DE9B35]/60 text-xs font-serif font-bold tracking-wider flex items-center gap-2 transition-all duration-300 shadow-sm cursor-pointer"
-                  >
-                    {copiedAccount === gift.account_number ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Tersalin!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Salin No Rekening</span>
-                      </>
-                    )}
-                  </button>
+            {/* Countdown Cards */}
+            <div className="grid grid-cols-4 gap-2 w-full max-w-xs">
+              {[
+                { label: 'HARI', val: timeLeft.days },
+                { label: 'JAM', val: timeLeft.hours },
+                { label: 'MENIT', val: timeLeft.minutes },
+                { label: 'DETIK', val: timeLeft.seconds },
+              ].map((item, idx) => (
+                <div key={idx} className="bg-white rounded-xl p-2 border border-[#DE9B35]/40 text-center shadow-xs">
+                  <span className="block font-serif text-base sm:text-lg font-bold text-[#0B1A33]">
+                    {String(item.val).padStart(2, '0')}
+                  </span>
+                  <span className="text-[9px] font-sans tracking-wider uppercase text-[#705A42]">
+                    {item.label}
+                  </span>
                 </div>
-              </ScrollReveal>
-            ))}
-          </div>
-
-          {/* PHYSICAL GIFT ADDRESS */}
-          <ScrollReveal animation="fade-up" delay={300}>
-            <div className="p-5 sm:p-6 rounded-2xl bg-[#102242]/70 border border-[#DE9B35]/40 text-left">
-              <div className="flex items-center gap-2 text-[#DE9B35] mb-2">
-                <MapPin className="w-4 h-4" />
-                <span className="text-xs font-serif uppercase tracking-wider font-bold">Kirim Kado Fisik</span>
-              </div>
-              <p className="text-xs sm:text-sm text-[#D1DCE8] leading-relaxed mb-3">
-                Kediaman Mempelai: <br />
-                <span className="font-semibold text-[#FFF9EF]">Kompleks Royal Andalusia Garden Blok B8 No. 12, Jawa Barat 40182</span>
-              </p>
-              <button
-                onClick={() => handleCopyAddress('Kompleks Royal Andalusia Garden Blok B8 No. 12, Jawa Barat 40182')}
-                className="px-3.5 py-1.5 rounded-lg bg-[#081224] text-[#FFF4D0] hover:bg-[#DE9B35] hover:text-[#081224] border border-[#DE9B35]/60 text-xs font-serif transition-colors flex items-center gap-2 cursor-pointer"
-              >
-                {copiedAddress ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Alamat Tersalin!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>Salin Alamat</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* =====================================================================
-          SECTION 9: RSVP & BUKU DOA TAMU (GUESTBOOK)
-          ===================================================================== */}
-      <section id="rsvp" className="relative py-20 px-4 max-w-3xl mx-auto">
-        <ScrollReveal animation="fade-up" className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/50 mb-2">
-            <MessageCircle className="w-3.5 h-3.5 text-[#DE9B35]" />
-            <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0]">
-              Konfirmasi Kehadiran &amp; Doa
-            </span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9EF] via-[#FFF0C2] to-[#DE9B35]">
-            RSVP &amp; Buku Doa Tamu
-          </h2>
-          <p className="text-xs sm:text-sm text-[#A6B6C8] max-w-md mx-auto mt-2">
-            Mohon konfirmasikan kehadiran Anda dan sampaikan untaian doa restu untuk kedua mempelai:
-          </p>
-        </ScrollReveal>
-
-        {/* RSVP FORM */}
-        <ScrollReveal animation="fade-up" delay={150}>
-          <form 
-            onSubmit={handleRsvpSubmit}
-            className="p-6 sm:p-8 rounded-[32px] bg-[#102242]/90 border border-[#DE9B35]/60 shadow-[0_16px_40px_rgba(0,0,0,0.6)] mb-12 space-y-4"
-          >
-            <div>
-              <label className="text-xs font-serif uppercase tracking-wider text-[#DE9B35] font-bold block mb-1.5">
-                Nama Lengkap
-              </label>
-              <input
-                type="text"
-                required
-                value={rsvpName}
-                onChange={(e) => setRsvpName(e.target.value)}
-                placeholder="Tuliskan nama Anda..."
-                className="w-full px-4 py-2.5 rounded-xl bg-[#081224] border border-[#DE9B35]/40 text-[#FFF9EF] text-sm focus:outline-none focus:border-[#DE9B35]"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-serif uppercase tracking-wider text-[#DE9B35] font-bold block mb-1.5">
-                Konfirmasi Kehadiran
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { value: 'hadir', label: 'Hadir' },
-                  { value: 'tidak_hadir', label: 'Tidak Hadir' },
-                  { value: 'ragu', label: 'Ragu-ragu' },
-                ].map((opt) => (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => setRsvpStatus(opt.value as any)}
-                    className={`py-2 px-2 rounded-xl text-xs font-serif font-semibold border transition-all cursor-pointer ${
-                      rsvpStatus === opt.value
-                        ? 'bg-[#DE9B35] text-[#081224] border-[#DE9B35] shadow-md'
-                        : 'bg-[#081224] text-[#D1DCE8] border-[#DE9B35]/40 hover:border-[#DE9B35]'
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {rsvpStatus === 'hadir' && (
-              <div>
-                <label className="text-xs font-serif uppercase tracking-wider text-[#DE9B35] font-bold block mb-1.5">
-                  Jumlah Tamu (Pax)
-                </label>
-                <select
-                  value={rsvpGuests}
-                  onChange={(e) => setRsvpGuests(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#081224] border border-[#DE9B35]/40 text-[#FFF9EF] text-sm focus:outline-none focus:border-[#DE9B35]"
-                >
-                  <option value="1">1 Orang</option>
-                  <option value="2">2 Orang</option>
-                  <option value="3">3 Orang</option>
-                  <option value="4">4 Orang</option>
-                </select>
-              </div>
-            )}
-
-            <div>
-              <label className="text-xs font-serif uppercase tracking-wider text-[#DE9B35] font-bold block mb-1.5">
-                Ucapan &amp; Doa Restu
-              </label>
-              <textarea
-                required
-                rows={3}
-                value={rsvpWishes}
-                onChange={(e) => setRsvpWishes(e.target.value)}
-                placeholder="Tuliskan doa restu untuk kedua mempelai..."
-                className="w-full px-4 py-2.5 rounded-xl bg-[#081224] border border-[#DE9B35]/40 text-[#FFF9EF] text-sm focus:outline-none focus:border-[#DE9B35] resize-none"
-              />
+              ))}
             </div>
 
             <button
-              type="submit"
-              className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#DE9B35] via-[#E5B54F] to-[#C78726] text-[#081224] text-xs font-serif font-bold uppercase tracking-widest shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              onClick={() => scrollToSection('ayat')}
+              className="mt-4 flex flex-col items-center gap-1 text-[#0B1A33] opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
             >
-              <Send className="w-3.5 h-3.5" />
-              <span>Kirim Konfirmasi &amp; Doa</span>
+              <span className="text-[9px] tracking-widest uppercase font-serif font-semibold text-[#8C6326]">GULIR KE BAWAH</span>
+              <ChevronDown className="w-4 h-4 animate-bounce text-[#DE9B35]" />
             </button>
+          </ScrollReveal>
+        </section>
 
-            {rsvpSubmitted && (
-              <p className="text-xs text-center text-emerald-400 font-serif mt-2">
-                Terima kasih! Konfirmasi dan doa restu Anda telah berhasil terkirim.
+        {/* =====================================================================
+            SECTION 2: AYAT SUCI (AL-QUR'AN SURAH AR-RUM : 21)
+            ===================================================================== */}
+        <section id="ayat" className="relative p-6 sm:p-10 bg-[#FAF7F2] border-b border-[#DE9B35]/30">
+          <div className="absolute top-0 left-0"><MoroccanCornerArabesque position="top-left" size={54} /></div>
+          <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={54} /></div>
+
+          <div className="max-w-xl mx-auto text-center relative z-10">
+            <ScrollReveal animation="fade-up">
+              <p className="text-xl sm:text-2xl font-serif text-[#DE9B35] mb-3 tracking-wider leading-relaxed">
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
               </p>
-            )}
-          </form>
-        </ScrollReveal>
 
-        {/* WISHES LIST */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-serif uppercase tracking-widest text-[#DE9B35] font-bold mb-4">
-            Untaian Doa Selamat ({wishesList.length})
-          </h3>
-          {wishesList.map((item, idx) => (
-            <div 
-              key={idx}
-              className="p-4 rounded-2xl bg-[#102242]/70 border border-[#DE9B35]/30 space-y-1"
-            >
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-serif font-bold text-[#FFF4D0]">{item.name}</span>
-                <span className="text-[10px] text-[#8C9EB2]">{item.time}</span>
-              </div>
-              <p className="text-xs text-[#D1DCE8] leading-relaxed font-sans">
-                {item.wishes}
+              <p className="text-base sm:text-lg font-serif text-[#0B1A33] leading-loose mb-3 px-2" dir="rtl">
+                وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
               </p>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      {/* =====================================================================
-          SECTION 10: DO'A PENUTUP & FOOTER
-          ===================================================================== */}
-      <footer className="relative py-16 px-4 bg-[#060D1A] border-t border-[#DE9B35]/40 text-center">
-        <ScrollReveal animation="fade-up" className="max-w-md mx-auto space-y-4">
-          <MoroccanKhatimStar size={36} />
-          
-          <h3 className="font-serif text-2xl font-bold text-[#FFF9EF]">
-            Terima Kasih
-          </h3>
-          <p className="text-xs sm:text-sm text-[#D1DCE8] leading-relaxed">
-            Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu bagi kami.
-          </p>
+              <MoroccanDivider className="my-2" />
 
-          <p className="text-xs font-serif text-[#DE9B35] italic">
-            "Jazakumullahu Khairan Katsiran"
-          </p>
-
-          <div className="pt-4 border-t border-[#DE9B35]/20">
-            <p className="font-serif text-sm font-semibold text-[#FFF4D0]">
-              Kami yang berbahagia,
-            </p>
-            <p className="font-serif text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF9EF] to-[#DE9B35] mt-1">
-              {groomName} &amp; {brideName}
-            </p>
-            <p className="text-[10px] text-[#8C9EB2] mt-1">
-              Beserta segenap keluarga besar kedua belah pihak
-            </p>
+              <blockquote className="text-xs sm:text-[13px] text-[#59493E] leading-relaxed italic font-serif px-2">
+                "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."
+              </blockquote>
+              <span className="inline-block mt-2 text-[11px] font-serif font-bold text-[#DE9B35] uppercase tracking-widest">
+                (QS. Ar-Rum : 21)
+              </span>
+            </ScrollReveal>
           </div>
+        </section>
 
-          <div className="pt-6">
+        {/* =====================================================================
+            SECTION 3: MEMPELAI (THE HAPPY COUPLE)
+            ===================================================================== */}
+        <section id="mempelai" className="relative p-6 sm:p-10 bg-[#FAF7F2] border-b border-[#DE9B35]/30">
+          <div className="max-w-xl mx-auto w-full relative z-10">
+            <ScrollReveal animation="fade-up" className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/95 border border-[#DE9B35]/50 shadow-xs mb-2">
+                <Crown className="w-3.5 h-3.5 text-[#DE9B35]" />
+                <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#0B1A33]">
+                  Sang Mempelai
+                </span>
+              </div>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0B1A33]">
+                Kedua Mempelai
+              </h2>
+              <MoroccanDivider className="my-2" />
+              <p className="text-xs text-[#705A42] max-w-sm mx-auto">
+                Dengan memohon rahmat dan ridho Allah SWT, kami menyatukan dua hati dalam ikatan suci pernikahan.
+              </p>
+            </ScrollReveal>
+
+            {/* Groom & Bride Cards */}
+            <div className="space-y-8">
+              {/* GROOM CARD */}
+              <ScrollReveal animation="fade-up" delay={150} className="p-6 rounded-[28px] bg-white/95 border border-[#DE9B35]/40 shadow-sm text-center relative group">
+                <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={44} /></div>
+                
+                <div className="relative mx-auto w-36 h-48 sm:w-40 sm:h-52 mb-4">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
+                    <MoroccanHorseshoeArch size={170} />
+                  </div>
+                  <div className="w-full h-full rounded-t-[84px] rounded-b-2xl overflow-hidden border-2 border-[#DE9B35] p-1 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#0B1A33]">
+                    <img 
+                      src={groomPhoto} 
+                      alt={groomName}
+                      className="w-full h-full object-cover object-top rounded-t-[80px] rounded-b-xl group-hover:scale-105 transition-transform duration-700" 
+                    />
+                  </div>
+                </div>
+
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-bold block mb-1">
+                  Mempelai Pria
+                </span>
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0B1A33] mb-1">
+                  {groomFullName}
+                </h3>
+                <p className="text-xs text-[#59493E] leading-relaxed mb-3">
+                  Putra tercinta dari <br />
+                  <span className="font-semibold text-[#0B1A33]">{groomFather}</span> &amp; <span className="font-semibold text-[#0B1A33]">{groomMother}</span>
+                </p>
+
+                {groomInstagram && (
+                  <a
+                    href={`https://instagram.com/${groomInstagram.replace('@', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#DE9B35]/60 text-[#0B1A33] text-xs hover:bg-[#0B1A33] hover:text-[#FFF4D0] transition-all shadow-xs"
+                  >
+                    <InstagramIcon size={13} />
+                    <span>@{groomInstagram.replace('@', '')}</span>
+                  </a>
+                )}
+              </ScrollReveal>
+
+              {/* Heart Connector */}
+              <div className="flex items-center justify-center my-2">
+                <div className="w-12 h-[1px] bg-[#DE9B35]/60" />
+                <div className="mx-3 w-9 h-9 rounded-full bg-white border border-[#DE9B35] flex items-center justify-center shadow-xs">
+                  <Heart className="w-4 h-4 text-[#DE9B35] fill-[#DE9B35]/40" />
+                </div>
+                <div className="w-12 h-[1px] bg-[#DE9B35]/60" />
+              </div>
+
+              {/* BRIDE CARD */}
+              <ScrollReveal animation="fade-up" delay={250} className="p-6 rounded-[28px] bg-white/95 border border-[#DE9B35]/40 shadow-sm text-center relative group">
+                <div className="absolute top-0 left-0"><MoroccanCornerArabesque position="top-left" size={44} /></div>
+                
+                <div className="relative mx-auto w-36 h-48 sm:w-40 sm:h-52 mb-4">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
+                    <MoroccanHorseshoeArch size={170} />
+                  </div>
+                  <div className="w-full h-full rounded-t-[84px] rounded-b-2xl overflow-hidden border-2 border-[#DE9B35] p-1 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#0B1A33]">
+                    <img 
+                      src={bridePhoto} 
+                      alt={brideName}
+                      className="w-full h-full object-cover object-top rounded-t-[80px] rounded-b-xl group-hover:scale-105 transition-transform duration-700" 
+                    />
+                  </div>
+                </div>
+
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-bold block mb-1">
+                  Mempelai Wanita
+                </span>
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0B1A33] mb-1">
+                  {brideFullName}
+                </h3>
+                <p className="text-xs text-[#59493E] leading-relaxed mb-3">
+                  Putri tercinta dari <br />
+                  <span className="font-semibold text-[#0B1A33]">{brideFather}</span> &amp; <span className="font-semibold text-[#0B1A33]">{brideMother}</span>
+                </p>
+
+                {brideInstagram && (
+                  <a
+                    href={`https://instagram.com/${brideInstagram.replace('@', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#DE9B35]/60 text-[#0B1A33] text-xs hover:bg-[#0B1A33] hover:text-[#FFF4D0] transition-all shadow-xs"
+                  >
+                    <InstagramIcon size={13} />
+                    <span>@{brideInstagram.replace('@', '')}</span>
+                  </a>
+                )}
+              </ScrollReveal>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================================
+            SECTION 4: TRADISI ADAT & KISAH CINTA (TABBED - 70K SIGNATURE)
+            ===================================================================== */}
+        <section id="cerita" className="relative p-6 sm:p-10 bg-[#FAF7F2] border-b border-[#DE9B35]/30">
+          <div className="max-w-xl mx-auto w-full relative z-10">
+            <ScrollReveal animation="fade-up" className="text-center">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#DE9B35] font-serif font-bold">
+                TRADISI ARABIAN &amp; JEJAK KASIH
+              </span>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0B1A33] mt-1">
+                Adat &amp; Kisah Cinta
+              </h2>
+              <MoroccanDivider className="my-2" />
+
+              {/* Tab Switcher: Tradisi Adat vs Kisah Cinta */}
+              <div className="flex items-center justify-center gap-1.5 p-1 rounded-full bg-white border border-[#DE9B35]/45 max-w-xs mx-auto shadow-xs my-4">
+                <button
+                  type="button"
+                  onClick={() => setAdatTab('upacara')}
+                  className={`flex-1 py-1.5 px-3 rounded-full text-[11px] font-serif font-bold tracking-wider uppercase transition-all cursor-pointer ${
+                    adatTab === 'upacara'
+                      ? 'bg-[#0B1A33] text-[#FFF4D0] shadow-xs'
+                      : 'text-[#705A42] hover:text-[#0B1A33]'
+                  }`}
+                >
+                  Tradisi Adat
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAdatTab('cerita')}
+                  className={`flex-1 py-1.5 px-3 rounded-full text-[11px] font-serif font-bold tracking-wider uppercase transition-all cursor-pointer ${
+                    adatTab === 'cerita'
+                      ? 'bg-[#0B1A33] text-[#FFF4D0] shadow-xs'
+                      : 'text-[#705A42] hover:text-[#0B1A33]'
+                  }`}
+                >
+                  Kisah Cinta
+                </button>
+              </div>
+            </ScrollReveal>
+
+            {/* TAB CONTENT 1: 4 TRADISI PERNIKAHAN MOROCCAN ARABIAN (70K SIGNATURE) */}
+            {adatTab === 'upacara' && (
+              <div className="mt-6 space-y-4">
+                {[
+                  {
+                    step: 'I',
+                    title: 'Malam Henna (Laylat al-Henna)',
+                    sub: 'Simbol Keindahan & Doa Keberkahan',
+                    meaning: 'Malam sakral sebelum hari pernikahan di mana jemari kedua mempelai dihiasi ukiran daun henna bermotif Arabesque sebagai simbol doa keselamatan, cinta tulus, dan penolak bala.',
+                    symbol: 'Daun Henna Arabesque, Lilin Tembaga'
+                  },
+                  {
+                    step: 'II',
+                    title: 'Ijab Qabul & Walimatul \'Ursy',
+                    sub: 'Ikrar Agung Sesuai Syariat',
+                    meaning: 'Pengucapan akad nikah yang suci dan penyerahan mahar di hadapan penghulu dan para saksi, disusul jamuan makan walimah untuk membagi kegembiraan bersama para tamu tercinta.',
+                    symbol: 'Khutbah Nikah, Mushaf Al-Qur\'an, Sajadah Sutra'
+                  },
+                  {
+                    step: 'III',
+                    title: 'Prosesi Amaria (Tandu Kerajaan)',
+                    sub: 'Penghormatan Istana Andalusia',
+                    meaning: 'Kedua mempelai diarak memasuki ruangan resepsi di atas tandu Amaria berukir emas khas kesultanan Maghribi, diiringi irama tabuhan rebana dan alunan qasidah istana.',
+                    symbol: 'Tandu Amaria Emas, Gaun Kaftan Takchita'
+                  },
+                  {
+                    step: 'IV',
+                    title: 'Jamuan Teh Mint & Sajian Barakah',
+                    sub: 'Kehangatan & Kerukunan Silaturahmi',
+                    meaning: 'Penyajian teh mint hangat (Maghrebi Mint Tea) yang dituangkan tinggi dari teko perak sebagai perlambang kemurahan hati, kerukunan antarkeluarga, dan doa manisnya kehidupan berumah tangga.',
+                    symbol: 'Teko Perak Maroko, Gelas Kristal Berukir'
+                  }
+                ].map((item, idx) => (
+                  <ScrollReveal key={idx} animation="fade-up" delay={idx * 80} className="p-4 sm:p-5 rounded-2xl bg-white/95 border border-[#DE9B35]/40 shadow-xs hover:border-[#DE9B35] transition-all">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-8 h-8 rounded-full bg-[#DE9B35] text-[#0B1A33] shrink-0 flex items-center justify-center font-serif font-bold text-xs shadow-xs">
+                        {item.step}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center justify-between gap-1 mb-0.5">
+                          <h4 className="font-serif text-base font-bold text-[#0B1A33]">
+                            {item.title}
+                          </h4>
+                          <span className="text-[9.5px] uppercase tracking-wider text-[#DE9B35] font-serif font-semibold">
+                            Tradisi Maroko
+                          </span>
+                        </div>
+                        <p className="text-[11px] font-serif text-[#8C6326] font-semibold italic mb-1.5">
+                          {item.sub}
+                        </p>
+                        <p className="text-xs text-[#59493E] leading-relaxed mb-2">
+                          {item.meaning}
+                        </p>
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FAF7F2] text-[10px] text-[#705A42] font-sans border border-[#DE9B35]/30">
+                          <Sparkles className="w-3 h-3 text-[#DE9B35]" />
+                          <span>Simbol: {item.symbol}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            )}
+
+            {/* TAB CONTENT 2: TIMELINE KISAH CINTA */}
+            {adatTab === 'cerita' && (
+              <div className="mt-6 relative pl-6 border-l-2 border-[#DE9B35]/50 space-y-6 ml-3">
+                {defaultStories.map((item, idx) => (
+                  <ScrollReveal key={idx} animation="fade-up" delay={idx * 100} className="relative group">
+                    <div className="absolute -left-[33px] top-1 w-6 h-6 rounded-full bg-white border-2 border-[#DE9B35] flex items-center justify-center text-[#DE9B35] shadow-xs">
+                      <Heart className="w-3 h-3 fill-[#DE9B35]" />
+                    </div>
+                    <div className="p-4 rounded-2xl bg-white/95 border border-[#DE9B35]/40 shadow-xs">
+                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#FAF7F2] text-[#DE9B35] text-[10px] font-bold tracking-wider font-serif mb-1 border border-[#DE9B35]/30">
+                        {item.year}
+                      </span>
+                      <h4 className="font-serif text-base font-bold text-[#0B1A33]">
+                        {item.title}
+                      </h4>
+                      <p className="text-xs text-[#59493E] leading-relaxed mt-1">
+                        {item.story}
+                      </p>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* =====================================================================
+            SECTION 5: SAVE THE DATE & COUNTDOWN
+            ===================================================================== */}
+        <section className="relative p-6 sm:p-10 bg-[#FAF7F2] border-b border-[#DE9B35]/30 text-center">
+          <ScrollReveal animation="fade-up" className="max-w-md mx-auto">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#DE9B35] font-serif font-bold block mb-1">
+              SAVE THE DATE
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0B1A33] mb-2">
+              Menghitung Hari
+            </h2>
+            <p className="text-xs text-[#705A42] mb-6">
+              InsyaAllah akad dan walimah diselenggarakan dalam hitungan waktu:
+            </p>
+
+            {/* Countdown Cards */}
+            <div className="grid grid-cols-4 gap-2.5 max-w-xs mx-auto mb-6">
+              {[
+                { label: 'Hari', value: timeLeft.days },
+                { label: 'Jam', value: timeLeft.hours },
+                { label: 'Menit', value: timeLeft.minutes },
+                { label: 'Detik', value: timeLeft.seconds },
+              ].map((item, idx) => (
+                <div key={idx} className="p-2.5 rounded-xl bg-white border border-[#DE9B35]/50 shadow-xs">
+                  <div className="text-xl sm:text-2xl font-serif font-bold text-[#0B1A33]">
+                    {String(item.value).padStart(2, '0')}
+                  </div>
+                  <div className="text-[9.5px] font-serif uppercase tracking-widest text-[#705A42] mt-0.5">
+                    {item.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Add to Google Calendar Button */}
             <a
-              href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6"
+              href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`The Wedding of ${groomName} & ${brideName}`)}&dates=${invitation?.wedding_date ? new Date(invitation.wedding_date).toISOString().replace(/-|:|\.\d\d\d/g, "") : '20261228T010000Z'}/${invitation?.wedding_date ? new Date(invitation.wedding_date).toISOString().replace(/-|:|\.\d\d\d/g, "") : '20261228T070000Z'}&details=${encodeURIComponent(`Walimatul 'Ursy ${groomFullName} & ${brideFullName}. Kami menantikan kehadiran Anda!`)}&location=${encodeURIComponent(akadEvent.venue_name || 'Grand Sahara Pavilion')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#102242] border border-[#DE9B35]/40 text-[10px] font-serif uppercase tracking-widest text-[#D1DCE8] hover:text-[#DE9B35] hover:border-[#DE9B35] transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#0B1A33] via-[#162D55] to-[#0B1A33] text-[#FFF4D0] text-xs font-serif font-bold uppercase tracking-wider shadow-md border border-[#DE9B35] hover:scale-105 active:scale-95 transition-all"
             >
-              <span>Digital Invitation Powered by</span>
-              <span className="font-bold text-[#DE9B35]">WD Group</span>
+              <Calendar className="w-3.5 h-3.5 text-[#DE9B35]" />
+              <span>Simpan ke Google Calendar</span>
             </a>
+          </ScrollReveal>
+        </section>
+
+        {/* =====================================================================
+            SECTION 6: RANGKAIAN ACARA (WEDDING EVENTS)
+            ===================================================================== */}
+        <section id="acara" className="relative p-6 sm:p-10 bg-[#FAF7F2] border-b border-[#DE9B35]/30">
+          <div className="max-w-xl mx-auto w-full relative z-10">
+            <ScrollReveal animation="fade-up" className="text-center mb-8">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#DE9B35] font-serif font-bold block mb-1">
+                WAKTU &amp; TEMPAT
+              </span>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0B1A33]">
+                Rangkaian Acara Walimah
+              </h2>
+              <MoroccanDivider className="my-2" />
+            </ScrollReveal>
+
+            <div className="space-y-6">
+              {/* AKAD NIKAH CARD */}
+              <ScrollReveal animation="fade-up" delay={100} className="p-6 rounded-[28px] bg-white/95 border border-[#DE9B35]/40 shadow-sm relative">
+                <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={40} /></div>
+                
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-bold block mb-1">
+                  Ijab Qabul &amp; Khutbah Nikah
+                </span>
+                <h3 className="font-serif text-xl font-bold text-[#0B1A33] mb-3">
+                  {akadEvent.title}
+                </h3>
+
+                <div className="space-y-2 text-xs text-[#59493E] mb-4">
+                  <div className="flex items-center gap-2.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#DE9B35] shrink-0" />
+                    <span>{weddingDateStr}</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Clock className="w-3.5 h-3.5 text-[#DE9B35] shrink-0" />
+                    <span>Pukul {akadEvent.start_time} - {akadEvent.end_time} WIB</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#DE9B35] shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-[#0B1A33]">{akadEvent.venue_name}</p>
+                      <p className="text-[10.5px] text-[#705A42] mt-0.5">{akadEvent.venue_address}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {akadEvent.maps_url && (
+                  <a
+                    href={akadEvent.maps_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 px-3 rounded-xl bg-[#FAF7F2] hover:bg-[#0B1A33] text-[#0B1A33] hover:text-[#FFF4D0] border border-[#DE9B35]/60 text-xs font-serif font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <MapPin className="w-3 h-3 text-[#DE9B35]" />
+                    <span>Petunjuk Arah Google Maps</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+              </ScrollReveal>
+
+              {/* RESEPSI CARD */}
+              <ScrollReveal animation="fade-up" delay={200} className="p-6 rounded-[28px] bg-white/95 border border-[#DE9B35]/40 shadow-sm relative">
+                <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={40} /></div>
+                
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-bold block mb-1">
+                  Jamuan Walimatul 'Ursy
+                </span>
+                <h3 className="font-serif text-xl font-bold text-[#0B1A33] mb-3">
+                  {resepsiEvent.title}
+                </h3>
+
+                <div className="space-y-2 text-xs text-[#59493E] mb-4">
+                  <div className="flex items-center gap-2.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#DE9B35] shrink-0" />
+                    <span>{weddingDateStr}</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Clock className="w-3.5 h-3.5 text-[#DE9B35] shrink-0" />
+                    <span>Pukul {resepsiEvent.start_time} - {resepsiEvent.end_time} WIB</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#DE9B35] shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-[#0B1A33]">{resepsiEvent.venue_name}</p>
+                      <p className="text-[10.5px] text-[#705A42] mt-0.5">{resepsiEvent.venue_address}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {resepsiEvent.maps_url && (
+                  <a
+                    href={resepsiEvent.maps_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 px-3 rounded-xl bg-[#FAF7F2] hover:bg-[#0B1A33] text-[#0B1A33] hover:text-[#FFF4D0] border border-[#DE9B35]/60 text-xs font-serif font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <MapPin className="w-3 h-3 text-[#DE9B35]" />
+                    <span>Petunjuk Arah Google Maps</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+              </ScrollReveal>
+            </div>
           </div>
-        </ScrollReveal>
-      </footer>
+        </section>
+
+        {/* =====================================================================
+            SECTION 7: GALERI FOTO (MOMEN BAHAGIA)
+            ===================================================================== */}
+        <section id="galeri" className="relative p-6 sm:p-10 bg-[#FAF7F2] border-b border-[#DE9B35]/30">
+          <div className="max-w-xl mx-auto w-full relative z-10">
+            <ScrollReveal animation="fade-up" className="text-center mb-8">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#DE9B35] font-serif font-bold block mb-1">
+                POTRET KENANGAN
+              </span>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0B1A33]">
+                Galeri Mempelai
+              </h2>
+              <MoroccanDivider className="my-2" />
+            </ScrollReveal>
+
+            <div className="grid grid-cols-2 gap-3">
+              {defaultGallery.map((img, idx) => (
+                <ScrollReveal key={idx} animation="zoom-in" delay={idx * 80}>
+                  <div 
+                    onClick={() => setSelectedImage(img.image_url)}
+                    className="group relative h-44 sm:h-56 rounded-2xl overflow-hidden cursor-pointer border border-[#DE9B35]/40 shadow-xs p-1 bg-white"
+                  >
+                    <div className="w-full h-full rounded-xl overflow-hidden relative">
+                      <img 
+                        src={img.image_url} 
+                        alt={img.caption || `Foto ${idx + 1}`}
+                        className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                        <span className="text-[10px] text-white font-serif italic line-clamp-1">
+                          {img.caption || 'Momen Indah Kami'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+
+            {/* LIGHTBOX MODAL */}
+            {selectedImage && createPortal(
+              <div 
+                onClick={() => setSelectedImage(null)}
+                className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+              >
+                <div className="relative max-w-xl w-full max-h-[85vh] rounded-3xl overflow-hidden border-2 border-[#DE9B35] shadow-2xl">
+                  <img 
+                    src={selectedImage} 
+                    alt="Enlarged view" 
+                    className="w-full h-auto object-contain max-h-[80vh]"
+                  />
+                  <button 
+                    onClick={() => setSelectedImage(null)}
+                    className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#0B1A33]/80 border border-[#DE9B35] text-white flex items-center justify-center text-sm font-bold cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>,
+              document.body
+            )}
+          </div>
+        </section>
+
+        {/* =====================================================================
+            SECTION 8: TANDA KASIH (AMPLOP DIGITAL & KADO)
+            ===================================================================== */}
+        <section id="hadiah" className="relative p-6 sm:p-10 bg-[#FAF7F2] border-b border-[#DE9B35]/30">
+          <div className="max-w-xl mx-auto w-full text-center relative z-10">
+            <ScrollReveal animation="fade-up" className="mb-8">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#DE9B35] font-serif font-bold block mb-1">
+                TANDA KASIH
+              </span>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0B1A33]">
+                Amplop Digital &amp; Kado
+              </h2>
+              <MoroccanDivider className="my-2" />
+              <p className="text-xs text-[#705A42] max-w-sm mx-auto">
+                Bagi yang berkenan memberikan tanda kasih dan hadiah pernikahan:
+              </p>
+            </ScrollReveal>
+
+            <div className="space-y-3.5 mb-6">
+              {defaultGifts.map((gift, idx) => (
+                <ScrollReveal key={idx} animation="fade-up" delay={idx * 100}>
+                  <div className="p-5 rounded-2xl bg-white/95 border border-[#DE9B35]/40 shadow-xs text-left flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <span className="text-[10px] font-serif uppercase tracking-widest text-[#DE9B35] font-bold block mb-0.5">
+                        {gift.bank_name}
+                      </span>
+                      <p className="font-mono text-lg sm:text-xl font-bold text-[#0B1A33] tracking-wider my-0.5">
+                        {gift.account_number}
+                      </p>
+                      <p className="text-xs text-[#59493E]">
+                        a.n {gift.account_name}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => handleCopyAccount(gift.account_number)}
+                      className="self-start sm:self-center px-3.5 py-1.5 rounded-xl bg-[#0B1A33] hover:bg-[#DE9B35] text-[#FFF4D0] hover:text-[#0B1A33] border border-[#DE9B35]/60 text-xs font-serif font-bold tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      {copiedAccount === gift.account_number ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Tersalin!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Salin No Rek</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+
+            {/* Physical Gift Address */}
+            <ScrollReveal animation="fade-up" delay={200}>
+              <div className="p-4 rounded-2xl bg-white/95 border border-[#DE9B35]/40 shadow-xs text-left">
+                <div className="flex items-center gap-2 text-[#DE9B35] mb-1">
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span className="text-xs font-serif uppercase tracking-wider font-bold">Kirim Kado Fisik</span>
+                </div>
+                <p className="text-xs text-[#59493E] leading-relaxed mb-2.5">
+                  Kediaman Mempelai: <br />
+                  <span className="font-semibold text-[#0B1A33]">Kompleks Royal Andalusia Garden Blok B8 No. 12, Jawa Barat 40182</span>
+                </p>
+                <button
+                  onClick={() => handleCopyAddress('Kompleks Royal Andalusia Garden Blok B8 No. 12, Jawa Barat 40182')}
+                  className="px-3 py-1 rounded-lg bg-[#FAF7F2] text-[#0B1A33] hover:bg-[#0B1A33] hover:text-[#FFF4D0] border border-[#DE9B35]/60 text-xs font-serif transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  {copiedAddress ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Alamat Tersalin!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-[#DE9B35]" />
+                      <span>Salin Alamat</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* =====================================================================
+            SECTION 9: RSVP & BUKU DOA TAMU
+            ===================================================================== */}
+        <section id="rsvp" className="relative p-6 sm:p-10 bg-[#FAF7F2] border-b border-[#DE9B35]/30">
+          <div className="max-w-xl mx-auto w-full relative z-10">
+            <ScrollReveal animation="fade-up" className="text-center mb-8">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#DE9B35] font-serif font-bold block mb-1">
+                KONFIRMASI &amp; DOA
+              </span>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0B1A33]">
+                RSVP &amp; Buku Doa
+              </h2>
+              <MoroccanDivider className="my-2" />
+            </ScrollReveal>
+
+            {/* RSVP Form */}
+            <ScrollReveal animation="fade-up" delay={100}>
+              <form 
+                onSubmit={handleRsvpSubmit}
+                className="p-5 sm:p-6 rounded-[24px] bg-white/95 border border-[#DE9B35]/40 shadow-xs mb-8 space-y-3.5"
+              >
+                <div>
+                  <label className="text-xs font-serif uppercase tracking-wider text-[#0B1A33] font-bold block mb-1">
+                    Nama Lengkap
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={rsvpName}
+                    onChange={(e) => setRsvpName(e.target.value)}
+                    placeholder="Tuliskan nama Anda..."
+                    className="w-full px-3.5 py-2 rounded-xl bg-[#FAF7F2] border border-[#DE9B35]/40 text-[#0B1A33] placeholder:text-[#9AA8B6] text-xs focus:outline-none focus:border-[#DE9B35]"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-serif uppercase tracking-wider text-[#0B1A33] font-bold block mb-1">
+                    Konfirmasi Kehadiran
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { value: 'hadir', label: 'Hadir' },
+                      { value: 'tidak_hadir', label: 'Tidak Hadir' },
+                      { value: 'ragu', label: 'Ragu-ragu' },
+                    ].map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setRsvpStatus(opt.value as any)}
+                        className={`py-1.5 px-2 rounded-xl text-xs font-serif font-semibold border transition-all cursor-pointer ${
+                          rsvpStatus === opt.value
+                            ? 'bg-[#0B1A33] text-[#FFF4D0] border-[#0B1A33] shadow-xs'
+                            : 'bg-[#FAF7F2] text-[#59493E] border-[#DE9B35]/40 hover:border-[#DE9B35]'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {rsvpStatus === 'hadir' && (
+                  <div>
+                    <label className="text-xs font-serif uppercase tracking-wider text-[#0B1A33] font-bold block mb-1">
+                      Jumlah Tamu (Pax)
+                    </label>
+                    <select
+                      value={rsvpGuests}
+                      onChange={(e) => setRsvpGuests(e.target.value)}
+                      className="w-full px-3.5 py-2 rounded-xl bg-[#FAF7F2] border border-[#DE9B35]/40 text-[#0B1A33] text-xs focus:outline-none focus:border-[#DE9B35]"
+                    >
+                      <option value="1">1 Orang</option>
+                      <option value="2">2 Orang</option>
+                      <option value="3">3 Orang</option>
+                      <option value="4">4 Orang</option>
+                    </select>
+                  </div>
+                )}
+
+                <div>
+                  <label className="text-xs font-serif uppercase tracking-wider text-[#0B1A33] font-bold block mb-1">
+                    Untaian Doa Restu
+                  </label>
+                  <textarea
+                    required
+                    rows={3}
+                    value={rsvpWishes}
+                    onChange={(e) => setRsvpWishes(e.target.value)}
+                    placeholder="Tuliskan ucapan dan doa restu..."
+                    className="w-full px-3.5 py-2 rounded-xl bg-[#FAF7F2] border border-[#DE9B35]/40 text-[#0B1A33] placeholder:text-[#9AA8B6] text-xs focus:outline-none focus:border-[#DE9B35] resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-2.5 px-5 rounded-xl bg-gradient-to-r from-[#0B1A33] via-[#162D55] to-[#0B1A33] border border-[#DE9B35] text-[#FFF4D0] text-xs font-serif font-bold uppercase tracking-widest shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <Send className="w-3.5 h-3.5 text-[#DE9B35]" />
+                  <span>Kirim Konfirmasi &amp; Doa</span>
+                </button>
+
+                {rsvpSubmitted && (
+                  <p className="text-xs text-center text-emerald-600 font-serif mt-1.5">
+                    Terima kasih! Konfirmasi dan doa restu Anda telah terkirim.
+                  </p>
+                )}
+              </form>
+            </ScrollReveal>
+
+            {/* Wishes List */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-serif uppercase tracking-widest text-[#DE9B35] font-bold mb-3">
+                Untaian Doa Selamat ({wishesList.length})
+              </h3>
+              {wishesList.map((item, idx) => (
+                <div key={idx} className="p-3.5 rounded-2xl bg-white/90 border border-[#DE9B35]/30 space-y-0.5 shadow-xs">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-serif font-bold text-[#0B1A33]">{item.name}</span>
+                    <span className="text-[10px] text-[#8C6326]">{item.time}</span>
+                  </div>
+                  <p className="text-xs text-[#59493E] leading-relaxed font-sans">
+                    {item.wishes}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================================
+            SECTION 10: DO'A PENUTUP & FOOTER
+            ===================================================================== */}
+        <footer className="relative py-14 px-6 bg-[#0B1A33] border-t border-[#DE9B35]/40 text-center text-white">
+          <ScrollReveal animation="fade-up" className="max-w-md mx-auto space-y-3.5">
+            <MoroccanKhatimStar size={32} />
+            
+            <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
+              Terima Kasih
+            </h3>
+            <p className="text-xs text-[#D1DCE8] leading-relaxed">
+              Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu.
+            </p>
+
+            <p className="text-xs font-serif text-[#DE9B35] italic">
+              "Jazakumullahu Khairan Katsiran"
+            </p>
+
+            <div className="pt-3 border-t border-[#DE9B35]/20">
+              <p className="font-serif text-xs font-semibold text-[#FFF4D0]">
+                Kami yang berbahagia,
+              </p>
+              <p className="font-serif text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-[#DE9B35] mt-0.5">
+                {groomName} &amp; {brideName}
+              </p>
+              <p className="text-[9.5px] text-[#A6B6C8] mt-0.5">
+                Beserta segenap keluarga besar kedua belah pihak
+              </p>
+            </div>
+
+            <div className="pt-4">
+              <a
+                href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/40 text-[9.5px] font-serif uppercase tracking-widest text-[#D1DCE8] hover:text-[#DE9B35] transition-colors"
+              >
+                <span>Digital Invitation Powered by</span>
+                <span className="font-bold text-[#DE9B35]">WD Group</span>
+              </a>
+            </div>
+          </ScrollReveal>
+        </footer>
+      </main>
 
       {/* =====================================================================
           BOTTOM FLOATING NAVIGATION DOCK
+          Positioned on the right scrollable column on desktop (70k Signature)
           ===================================================================== */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 max-w-fit px-3 py-2 rounded-full bg-[#081224]/90 backdrop-blur-md border border-[#DE9B35]/60 shadow-[0_8px_30px_rgba(0,0,0,0.7)] flex items-center gap-1.5 sm:gap-2">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:left-auto lg:right-[calc(29.16vw-165px)] xl:right-[calc(25vw-165px)] z-40 max-w-fit px-3 py-2 rounded-full bg-[#0B1A33]/92 backdrop-blur-md border border-[#DE9B35]/60 shadow-[0_8px_30px_rgba(11,26,51,0.5)] flex items-center gap-1.5 sm:gap-2">
         {[
           { id: 'sampul', label: 'Sampul' },
           { id: 'mempelai', label: 'Mempelai' },
+          { id: 'cerita', label: 'Tradisi' },
           { id: 'acara', label: 'Acara' },
-          { id: 'cerita', label: 'Cerita' },
           { id: 'galeri', label: 'Galeri' },
           { id: 'hadiah', label: 'Hadiah' },
           { id: 'rsvp', label: 'RSVP' },
@@ -1399,7 +1557,7 @@ export const MoroccanNightsTheme: React.FC<MoroccanNightsThemeProps> = ({
             onClick={() => scrollToSection(item.id)}
             className={`px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-serif uppercase tracking-wider transition-all duration-200 cursor-pointer ${
               activeSection === item.id
-                ? 'bg-[#DE9B35] text-[#081224] font-bold shadow-sm'
+                ? 'bg-[#DE9B35] text-[#0B1A33] font-bold shadow-xs'
                 : 'text-[#D1DCE8] hover:text-[#FFF4D0]'
             }`}
           >
@@ -1410,4 +1568,3 @@ export const MoroccanNightsTheme: React.FC<MoroccanNightsThemeProps> = ({
     </div>
   );
 };
-

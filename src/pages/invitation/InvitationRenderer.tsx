@@ -1824,7 +1824,7 @@ export const InvitationRenderer: React.FC = () => {
             `}</style>
 
             {/* DESKTOP FIXED LEFT ASIDE (5/12 or 1/2 screen) - VISUAL STAGE & WEDDING PORTRAIT */}
-            <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between items-center p-8 xl:p-12 overflow-hidden select-none bg-[#0B1A33] text-white border-r border-[#DE9B35]/40">
+            <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between items-center p-8 xl:p-12 overflow-hidden select-none bg-[#0B1A33] text-white border-r border-[#DE9B35]/40 shadow-2xl">
               {/* Starry Night Sky & Panoramic Palace Backdrop */}
               <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                 <img 
@@ -1896,14 +1896,18 @@ export const InvitationRenderer: React.FC = () => {
 
                   <div className="w-24 h-0.5 mx-auto bg-gradient-to-r from-transparent via-[#DE9B35] to-transparent mb-3" />
 
-                  {/* Poetic Islamic Verse Blessing (Replaces duplicate recipient card) */}
-                  <div className="w-full relative p-3.5 xl:p-4 rounded-2xl bg-gradient-to-b from-[#102242]/90 via-[#0A172E]/95 to-[#060D1A]/95 backdrop-blur-md border border-[#DE9B35]/50 shadow-[0_16px_40px_rgba(0,0,0,0.65)] mb-1">
-                    <p className="text-xs xl:text-[13px] font-serif italic text-[#FFF4D0] leading-relaxed">
-                      "Dan di antara tanda-tanda kebesaran-Nya diciptakan-Nya pasangan hidup bagimu dari jenismu sendiri agar kamu merasa tenteram..."
+                  {/* Recipient Guest Card */}
+                  <div className="w-full relative p-3.5 xl:p-4 rounded-2xl bg-gradient-to-b from-[#102242]/95 via-[#0A172E]/98 to-[#060D1A]/98 backdrop-blur-md border border-[#DE9B35]/70 shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(222,155,53,0.3)] mb-2">
+                    <div className="absolute inset-1.5 rounded-xl border border-[#DE9B35]/30 pointer-events-none" />
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif font-semibold mb-0.5 text-center">
+                      Kepada Yth. Bapak/Ibu/Saudara/i :
                     </p>
-                    <span className="inline-block text-[10px] uppercase tracking-[0.2em] text-[#DE9B35] font-serif font-bold mt-1.5">
-                      (QS. Ar-Rum : 21)
-                    </span>
+                    <h2 className="text-lg xl:text-xl font-serif font-bold text-white tracking-wide text-center drop-shadow-sm my-0.5">
+                      {guestName}
+                    </h2>
+                    <p className="text-[9.5px] tracking-wider text-[#D1DCE8] text-center font-sans mt-0.5">
+                      Merupakan satu kehormatan atas kehadiran &amp; doa restu Anda
+                    </p>
                   </div>
                 </div>
 
@@ -1920,127 +1924,77 @@ export const InvitationRenderer: React.FC = () => {
               </div>
             </aside>
 
-            {/* RIGHT PANEL: OFFICIAL ROYAL INVITATION CARD & GUEST RECEPTION */}
-            <div className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto h-[100dvh] relative z-20 flex flex-col justify-between items-center text-center p-6 sm:p-8 bg-[#081224] lg:border-l lg:border-[#DE9B35]/40 shadow-2xl overflow-hidden">
+            {/* RIGHT PANEL: OFFICIAL ROYAL INVITATION CARD ON WARM IVORY STATIONERY */}
+            <div className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto h-[100dvh] relative z-20 flex flex-col justify-between items-center text-center p-6 sm:p-8 bg-[#FAF7F2] lg:border-l lg:border-[#DE9B35]/35 shadow-2xl overflow-hidden">
               {/* Background Ambient Radial Glow & Zellij Tile Watermark */}
-              <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(222,155,53,0.25)_0%,rgba(8,18,36,0.98)_70%)]" />
-              <MoroccanZellijWatermark className="opacity-[0.08]" />
-              <FloatingSaharaStardust />
-
-              {/* Hanging Lanterns on Right Mobile Column */}
-              <div className="absolute top-0 left-0 right-0 z-10 flex justify-between px-6 pointer-events-none">
-                <MoroccanFanousLantern size={40} chainHeight={28} />
-                <div className="flex-1" />
-                <MoroccanFanousLantern size={42} chainHeight={34} />
-              </div>
+              <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(222,155,53,0.18)_0%,rgba(250,247,242,0.98)_70%)]" />
+              <MoroccanZellijWatermark className="opacity-[0.06]" />
 
               {/* 4 Corner Arabesque Filigree Clusters */}
-              <div className="absolute top-0 left-0"><MoroccanCornerArabesque position="top-left" size={80} /></div>
-              <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={80} /></div>
-              <div className="absolute bottom-0 left-0"><MoroccanCornerArabesque position="bottom-left" size={80} /></div>
-              <div className="absolute bottom-0 right-0"><MoroccanCornerArabesque position="bottom-right" size={80} /></div>
+              <div className="absolute top-0 left-0"><MoroccanCornerArabesque position="top-left" size={96} /></div>
+              <div className="absolute top-0 right-0"><MoroccanCornerArabesque position="top-right" size={96} /></div>
+              <div className="absolute bottom-0 left-0"><MoroccanCornerArabesque position="bottom-left" size={96} /></div>
+              <div className="absolute bottom-0 right-0"><MoroccanCornerArabesque position="bottom-right" size={96} /></div>
 
               {/* Inner Content Centered */}
               <div className="relative z-10 max-w-sm sm:max-w-md w-full h-full my-auto flex flex-col justify-between items-center py-2">
-                {/* TOP: "UNDANGAN PERNIKAHAN DIGITAL" */}
+                {/* TOP: "WALIMATUL'URSY ADAT MAROKO" */}
                 <div className="relative z-20 flex flex-col items-center pt-3 sm:pt-4">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#102242] border border-[#DE9B35]/60 mb-2">
-                    <Moon className="w-3 h-3 text-[#DE9B35] fill-[#DE9B35]" />
-                    <span className="text-[10px] sm:text-[10.5px] tracking-[0.3em] uppercase text-[#FFF4D0] font-serif font-bold">
-                      UNDANGAN PERNIKAHAN RESMI
-                    </span>
-                    <Star className="w-3 h-3 text-[#DE9B35] fill-[#DE9B35]" />
-                  </div>
-                  <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-white mt-1">
+                  <span className="text-[10.5px] sm:text-xs tracking-[0.34em] uppercase text-[#DE9B35] font-serif font-bold">
+                    WALIMATUL'URSY ADAT MAROKO
+                  </span>
+                  <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#0B1A33] mt-1.5">
                     {groomDisplayName} <span className="font-light italic text-[#DE9B35]">&amp;</span> {brideDisplayName}
                   </h1>
-                  <p className="text-[11px] font-sans tracking-[0.22em] uppercase text-[#D1DCE8] mt-1.5 font-medium">
+                  <p className="text-[11px] font-sans tracking-[0.22em] uppercase text-[#705A42] mt-1.5 font-medium">
                     {new Date(invitation?.wedding_date || '2026-12-28').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                   </p>
                 </div>
 
-                {/* CENTER: DESKTOP ONLY -> Royal Moroccan Wax Seal Monogram */}
-                <div className="hidden lg:flex flex-col items-center justify-center my-auto py-2">
-                  <div className="relative w-36 h-36 flex items-center justify-center">
-                    {/* Rotating Outer Arabesque Ring */}
-                    <div className="absolute inset-0 rounded-full border border-[#DE9B35]/40 animate-spin" style={{ animationDuration: '30s' }} />
-                    <div className="absolute inset-2 rounded-full border border-dashed border-[#FFF4D0]/30" />
-                    
-                    {/* 8-Pointed Khatim Star Backing */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <MoroccanKhatimStar size={130} className="opacity-90" />
-                    </div>
-
-                    {/* Center Deep Navy Wax Seal with Gold Monogram */}
-                    <div className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-b from-[#122547] via-[#0D1C38] to-[#060D1A] border-2 border-[#FFF4D0] shadow-[0_8px_30px_rgba(222,155,53,0.45),inset_0_2px_8px_rgba(255,255,255,0.2)] flex flex-col items-center justify-center text-center">
-                      <Crown className="w-4 h-4 text-[#DE9B35] mb-0.5 drop-shadow-sm" />
-                      <span className="font-serif text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#FFF4D0] via-[#FFD77F] to-[#DE9B35]">
-                        {groomDisplayName.charAt(0)}&amp;{brideDisplayName.charAt(0)}
-                      </span>
-                      <span className="text-[7.5px] uppercase tracking-[0.25em] text-[#DE9B35] font-serif mt-0.5">
-                        ROYAL SEAL
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#102242]/90 border border-[#DE9B35]/60 shadow-xs">
-                    <Moon className="w-3 h-3 text-[#DE9B35] fill-[#DE9B35]" />
-                    <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0] font-bold">
-                      Moroccan Arabian Nights
-                    </span>
-                    <Star className="w-3 h-3 text-[#DE9B35] fill-[#DE9B35]" />
-                  </div>
-                </div>
-
-                {/* CENTER: MOBILE ONLY -> Arched Couple Portrait Window (Only shown on mobile where left panel is hidden) */}
-                <div className="flex lg:hidden relative z-20 my-auto py-2 flex-col items-center">
+                {/* CENTER: Arched Couple Portrait Window with Moorish Horseshoe Arch */}
+                <div className="relative z-20 my-auto py-2 flex flex-col items-center">
                   <div className="relative mb-2">
                     <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20">
-                      <MoroccanHorseshoeArch size={200} />
+                      <MoroccanHorseshoeArch size={195} />
                     </div>
-                    <div className="relative w-44 h-56 sm:w-50 sm:h-64 rounded-t-[100px] rounded-b-2xl overflow-hidden p-1.5 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#102242] shadow-[0_14px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(222,155,53,0.3)] group">
+                    <div className="relative w-44 h-56 sm:w-50 sm:h-64 rounded-t-[100px] rounded-b-2xl overflow-hidden p-1.5 bg-gradient-to-b from-[#FFF4D0] via-[#DE9B35] to-[#0B1A33] shadow-[0_14px_35px_rgba(11,26,51,0.22)] group">
                       <div className="w-full h-full rounded-t-[94px] rounded-b-xl overflow-hidden relative">
                         <img 
                           src={coverImage} 
                           alt={`${groomDisplayName} & ${brideDisplayName}`}
                           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" 
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#081224]/75 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                       </div>
                     </div>
                   </div>
-                  <div className="inline-flex items-center gap-2 mt-1 px-3.5 py-1 rounded-full bg-[#102242]/90 border border-[#DE9B35]/60 shadow-xs">
-                    <MoroccanKhatimStar size={14} />
-                    <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#FFF4D0] font-bold">
+                  <div className="inline-flex items-center gap-2 mt-1 px-3.5 py-1 rounded-full bg-white/95 border border-[#DE9B35]/50 shadow-xs">
+                    <Moon className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
+                    <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#0B1A33] font-bold">
                       Moroccan Arabian Nights
                     </span>
+                    <Star className="w-3.5 h-3.5 text-[#DE9B35] fill-[#DE9B35]" />
                   </div>
                 </div>
 
                 {/* BOTTOM: Recipient & Open Invitation Button */}
                 <div className="relative z-20 w-full flex flex-col items-center pb-3 sm:pb-4">
-                  <div className="w-full max-w-xs p-3.5 rounded-2xl bg-[#102242]/95 border border-[#DE9B35]/60 shadow-md mb-3.5">
-                    <span className="text-[10px] uppercase tracking-widest text-[#DE9B35] block mb-1 font-serif font-semibold">
+                  <div className="w-full max-w-xs p-3 rounded-2xl bg-white/95 border border-[#DE9B35]/45 shadow-xs mb-3.5">
+                    <span className="text-[10px] uppercase tracking-widest text-[#705A42] block mb-0.5">
                       Kepada Yth. Bapak/Ibu/Saudara/i:
                     </span>
-                    <span className="font-serif text-base sm:text-lg font-bold text-white block truncate mb-1">
+                    <span className="font-serif text-sm font-bold text-[#0B1A33] block truncate">
                       {guestName}
-                    </span>
-                    <span className="text-[9.5px] text-[#A6B6C8] block leading-relaxed font-sans">
-                      Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran &amp; doa restu Anda
                     </span>
                   </div>
 
                   <button
                     onClick={handleOpen}
-                    className="group relative w-full max-w-xs overflow-hidden rounded-full py-3.5 px-8 shadow-[0_12px_35px_rgba(222,155,53,0.4)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#DE9B35] via-[#E5B54F] to-[#C78726] border border-[#FFF4D0]"
+                    className="group relative w-full max-w-xs overflow-hidden rounded-full py-3.5 px-8 shadow-[0_10px_30px_rgba(11,26,51,0.35)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer bg-gradient-to-r from-[#0B1A33] via-[#162D55] to-[#0B1A33] border border-[#DE9B35]"
                   >
-                    {/* Golden Light Sweep Overlay */}
-                    <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent moroccan-gold-sweep pointer-events-none" />
-
-                    <div className="relative flex items-center justify-center gap-2.5">
-                      <MailOpen className="w-4 h-4 text-[#081224]" />
-                      <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#081224]">
+                    <div className="relative flex items-center justify-center gap-2">
+                      <MailOpen className="w-4 h-4 text-[#FFF4D0]" />
+                      <span className="text-xs font-serif font-bold uppercase tracking-[0.25em] text-[#FFF4D0]">
                         BUKA UNDANGAN
                       </span>
                     </div>
