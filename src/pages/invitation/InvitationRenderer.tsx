@@ -101,7 +101,7 @@ export const InvitationRenderer: React.FC = () => {
 
   const getThemeDefaultMusic = (themeSlug?: string) => {
     if (isAudiOvyolaSlug) {
-      return '/music/tiara-andini-tulang-dan-nadi.mp3';
+      return '/music/tiara-andini-tulang-dan-nadi-reff.mp3';
     }
     if (isAgniSlug) {
       return '/music/landon-pigg-falling-in-love.mp3';

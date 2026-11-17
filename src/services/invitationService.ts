@@ -332,8 +332,8 @@ export const INVITATION_AUDI_OVYOLA: Invitation & { theme?: any; client?: any } 
       }
     ],
     color_concept: 'Hitam & Emas (Royal Wayang Gold)',
-    music_title: 'Tiara Andini - Tulang dan Nadi (Original Instrumental with Backing Vocals)',
-    music_url: '/music/tiara-andini-tulang-dan-nadi.mp3',
+    music_title: 'Tiara Andini - Tulang dan Nadi (Reff Version)',
+    music_url: '/music/tiara-andini-tulang-dan-nadi-reff.mp3',
     quote: 'Apa yang menjadi takdirmu, maka akan mencari jalan untuk menemukan mu.',
     quote_source: 'Untaian Doa & Harapan',
     show_akad: true,

@@ -65,8 +65,8 @@ export const MUSIC_AGNI_PUTRI = {
 export const MUSIC_AUDI_OVYOLA = {
   id: '77000000-0000-0000-0000-000000000010',
   invitation_id: 'e7000000-0000-0000-0000-000000000007',
-  music_name: 'Tiara Andini - Tulang dan Nadi (Original Instrumental with Backing Vocals)',
-  music_url: '/music/tiara-andini-tulang-dan-nadi.mp3',
+  music_name: 'Tiara Andini - Tulang dan Nadi (Reff Version)',
+  music_url: '/music/tiara-andini-tulang-dan-nadi-reff.mp3',
   autoplay: true,
   loop: true
 };
