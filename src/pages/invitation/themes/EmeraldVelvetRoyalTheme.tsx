@@ -181,21 +181,28 @@ export const ScrollReveal: React.FC<{
   duration?: number;
   className?: string;
   once?: boolean;
-}> = ({ children, animation = 'fade-up', delay = 0, duration = 800, className = '', once = true }) => {
+}> = ({ children, animation = 'fade-up', delay = 0, duration = 850, className = '', once = true }) => {
   const [hasRevealed, setHasRevealed] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (hasRevealed) return;
 
-    const rect = el.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < windowHeight && rect.bottom > 0) {
-      setHasRevealed(true);
-      return;
-    }
+    if (hasRevealed && once) return;
+
+    const checkVisibility = () => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top < windowHeight - 30 && rect.bottom > 30) {
+        setHasRevealed(true);
+        return true;
+      }
+      return false;
+    };
+
+    // Check immediately on mount
+    if (checkVisibility() && once) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -204,28 +211,44 @@ export const ScrollReveal: React.FC<{
           if (once) observer.unobserve(el);
         }
       },
-      { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
+      { 
+        threshold: 0.05, 
+        rootMargin: '0px 0px -30px 0px' 
+      }
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    // Fast event-driven scroll fallback
+    const handleScroll = () => {
+      if (checkVisibility() && once) {
+        window.removeEventListener('scroll', handleScroll);
+        observer.disconnect();
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [hasRevealed, once]);
 
   const getAnimClass = () => {
     if (!hasRevealed) {
       switch (animation) {
         case 'fade-up':
-          return 'opacity-0 translate-y-8 scale-[0.99]';
+          return 'opacity-0 translate-y-12 scale-[0.96]';
         case 'fade-down':
-          return 'opacity-0 -translate-y-8 scale-[0.99]';
+          return 'opacity-0 -translate-y-12 scale-[0.96]';
         case 'zoom-in':
-          return 'opacity-0 scale-[0.95]';
+          return 'opacity-0 scale-[0.90]';
         case 'slide-left':
-          return 'opacity-0 -translate-x-8';
+          return 'opacity-0 -translate-x-12';
         case 'slide-right':
-          return 'opacity-0 translate-x-8';
+          return 'opacity-0 translate-x-12';
         case 'arch-reveal':
-          return 'opacity-0 translate-y-8 scale-[0.97]';
+          return 'opacity-0 translate-y-14 scale-[0.95]';
         case 'fade-in':
         default:
           return 'opacity-0';
@@ -237,7 +260,7 @@ export const ScrollReveal: React.FC<{
   return (
     <div
       ref={ref}
-      className={`transition-all will-change-transform ${getAnimClass()} ${className}`}
+      className={`transition-all will-change-transform will-change-opacity ${getAnimClass()} ${className}`}
       style={{
         transitionDuration: `${duration}ms`,
         transitionDelay: hasRevealed ? `${delay}ms` : '0ms',
@@ -527,17 +550,59 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const [selectedSwatch, setSelectedSwatch] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
+  // Scroll spy & real-time progress tracker
   useEffect(() => {
+    const sectionIds = [
+      'cover',
+      'couple',
+      'event',
+      'dresscode',
+      'concierge',
+      'story',
+      'gallery',
+      'souvenir',
+      'gift',
+      'pass'
+    ];
+
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        const current = (window.scrollY / totalHeight) * 100;
+      // 1. Calculate scroll progress (0 - 100%)
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        const current = (window.scrollY / docHeight) * 100;
         setScrollProgress(Math.min(100, Math.max(0, current)));
       }
+
+      // 2. Active Section Spy
+      const triggerY = window.innerHeight * 0.42;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const id = sectionIds[i];
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= triggerY && rect.bottom >= 80) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
+    // Run immediately on mount
+    handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    setActiveSection(id);
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   // Guest Name Resolution
   const guestName = (() => {
@@ -778,12 +843,15 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   return (
     <div className="relative w-full min-h-screen bg-[#041610] text-[#F5FFF9] font-sans selection:bg-[#ECC880] selection:text-[#041610] overflow-x-hidden">
       
-      {/* Royal Gold Scroll Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-[3px] z-50 pointer-events-none bg-black/20">
+      {/* Royal Gold Scroll Progress Bar with Travelling Diamond Star */}
+      <div className="fixed top-0 left-0 right-0 h-[3px] z-50 pointer-events-none bg-black/40">
         <div 
-          className="h-full bg-gradient-to-r from-[#8C6D2B] via-[#ECC880] to-[#FFFDF0] transition-all duration-150 shadow-[0_0_10px_rgba(236,200,128,0.9)]"
+          className="relative h-full bg-gradient-to-r from-[#8C6D2B] via-[#ECC880] to-[#FFFDF0] transition-all duration-150 shadow-[0_0_12px_rgba(236,200,128,0.95)]"
           style={{ width: `${scrollProgress}%` }}
-        />
+        >
+          {/* Diamond Star Glow Head at the tip of progress */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3.5 h-3.5 rotate-45 bg-[#FFFDF0] border border-[#ECC880] shadow-[0_0_8px_#ECC880,0_0_14px_rgba(255,255,255,0.9)] rounded-[1px]" />
+        </div>
       </div>
 
       {/* Background Ambience & Cascading 24K Gold Particles */}
@@ -935,8 +1003,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 1. HERO COVER SECTION (Warm Imperial Ivory & 24K Gold Folio)            */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="cover" className="relative text-center py-10 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 max-w-2xl mx-auto">
+        <section id="cover" className="relative text-center py-10 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 max-w-2xl mx-auto">
             {/* Tactile Banknote Guilloché Watermark */}
             <GuillocheParchmentWatermark opacity={0.08} />
 
@@ -1048,13 +1115,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </div>
             </ScrollReveal>
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 2. COUPLE PRESENTATION SECTION (Royal Illuminated Diptych)               */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="couple" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="couple" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -1162,13 +1227,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </ScrollReveal>
             </div>
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 3. EVENT AGENDA SECTION (Royal Banquet Decree)                           */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="event" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="event" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -1249,13 +1312,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               ))}
             </div>
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* ROYAL DRESS CODE & PALETTE CONCIERGE                                      */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="dresscode" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="dresscode" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             {/* Tactile Banknote Guilloché Rosette */}
             <GuillocheParchmentWatermark opacity={0.08} />
 
@@ -1423,13 +1484,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </div>
             </ScrollReveal>
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* VVIP CONCIERGE & VALET SERVICE SECTION                                    */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="concierge" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="concierge" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -1540,13 +1599,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </div>
             </ScrollReveal>
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 4. INTERACTIVE LOVE STORY JOURNEY (Royal Illuminated Chronicle)            */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="story" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="story" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -1596,13 +1653,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               ))}
             </div>
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 5. PHOTO MASONRY GALLERY & FULL LIGHTBOX                                */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="gallery" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="gallery" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -1674,7 +1729,6 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               ))}
             </div>
           </section>
-        </ScrollReveal>
 
         {/* Lightbox Modal */}
         {selectedPhoto && (
@@ -1700,8 +1754,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* BESPOKE ROYAL SOUVENIR PREVIEW                                            */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="souvenir" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="souvenir" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -1756,13 +1809,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </div>
             </ScrollReveal>
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 6. WEDDING GIFT & EMV SMART DEBIT CARD                                   */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="gift" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="gift" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -1903,13 +1954,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </ScrollReveal>
             )}
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 7. VIP GUEST CHECK-IN PASS & RSVP LIVE WISHES                           */}
         {/* ========================================================================= */}
-        <ScrollReveal animation="arch-reveal" duration={950}>
-          <section id="pass" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="pass" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -2136,7 +2185,6 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </div>
             </ScrollReveal>
           </section>
-        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 8. CLOSING & FOOTER                                                      */}
@@ -2159,9 +2207,9 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         </main>
       </div>
 
-      {/* Floating Bottom Navigation Bar */}
+      {/* Floating Bottom Navigation Bar with Dynamic Royal Gold Pill Dock */}
       <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-2 pointer-events-auto">
-        <div className="bg-[#041610]/92 backdrop-blur-md border border-[#ECC880]/50 rounded-full py-1.5 px-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex items-center justify-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar">
+        <div className="bg-[#041610]/95 backdrop-blur-xl border border-[#ECC880]/60 rounded-full py-1.5 px-2 sm:px-3 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(236,200,128,0.3)] flex items-center justify-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar">
           {[
             { id: 'cover', label: 'Cover', icon: Sparkles },
             { id: 'couple', label: 'Mempelai', icon: User },
@@ -2170,7 +2218,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             { id: 'concierge', label: 'VVIP', icon: Crown },
             { id: 'story', label: 'Cerita', icon: Heart },
             { id: 'gallery', label: 'Galeri', icon: Maximize2 },
-            { id: 'souvenir', label: 'Cinderamata', icon: Gem },
+            { id: 'souvenir', label: 'Souvenir', icon: Gem },
             { id: 'gift', label: 'Kado', icon: CreditCard },
             { id: 'pass', label: 'RSVP', icon: QrCode },
           ].map(item => {
@@ -2180,15 +2228,20 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                onClick={() => setActiveSection(item.id)}
-                className={`p-2 rounded-full flex flex-col items-center justify-center transition-all ${
+                onClick={(e) => handleNavClick(e, item.id)}
+                className={`transition-all duration-300 flex items-center gap-1.5 rounded-full cursor-pointer select-none ${
                   isActive 
-                    ? 'text-[#041610] bg-[#ECC880] shadow-sm font-bold scale-105' 
-                    : 'text-[#ECC880]/80 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] px-3 sm:px-3.5 py-1.5 font-serif font-bold text-xs shadow-[0_0_15px_rgba(236,200,128,0.75)] scale-105' 
+                    : 'text-[#ECC880]/75 hover:text-white hover:bg-white/10 p-2 text-xs'
                 }`}
                 title={item.label}
               >
-                <IconComponent size={15} />
+                <IconComponent size={15} className={isActive ? 'text-[#041610]' : 'text-[#ECC880]'} />
+                {isActive && (
+                  <span className="text-[11px] font-bold tracking-wide whitespace-nowrap animate-fade-in">
+                    {item.label}
+                  </span>
+                )}
               </a>
             );
           })}
