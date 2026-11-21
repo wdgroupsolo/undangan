@@ -917,47 +917,79 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       <div className="flex flex-col lg:flex-row min-h-screen">
 
         {/* DESKTOP LEFT ASIDE (Fixed on Large Screens) */}
-        <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-6 xl:p-10 overflow-hidden bg-[#041610] border-r border-[#ECC880]/30 shadow-2xl">
-          {/* Background image & deep velvet atmosphere */}
+        <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-6 xl:p-8 2xl:p-10 overflow-hidden bg-[#041610] border-r border-[#ECC880]/30 shadow-2xl select-none">
+          {/* Background image with cinematic warm royal vignette */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out hover:scale-105"
             style={{ backgroundImage: `url(${couple?.cover_photo_url || couple?.cover_photo || '/photos/photo-3.jpg'})` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#041610] via-[#041610]/80 via-60% to-[#041610]/70" />
-          <GuillocheVelvetWatermark opacity={0.06} />
-          <FloatingEmeraldStardust count={14} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#041610] via-[#041610]/75 via-55% to-[#041610]/40" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(4,22,16,0.6)_70%,rgba(4,22,16,0.95)_100%)] pointer-events-none" />
+          
+          {/* Architectural Gilded Hairline Frames & Acanthus Corner Ornaments */}
+          <div className="absolute inset-3 sm:inset-4 xl:inset-5 rounded-3xl border border-[#ECC880]/30 pointer-events-none z-15" />
+          <div className="absolute inset-4 sm:inset-5 xl:inset-6 rounded-2xl border border-[#ECC880]/15 pointer-events-none z-15" />
+          <EmeraldGoldCorner size={40} color="#ECC880" />
 
-          {/* Top Aside Header */}
-          <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#041610]/85 border border-[#ECC880]/50 text-[#ECC880] text-[10.5px] tracking-[0.25em] uppercase font-serif font-bold shadow-md">
+          <GuillocheVelvetWatermark opacity={0.06} />
+          <FloatingEmeraldStardust count={18} />
+
+          {/* Top Aside Header Bar */}
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#041610]/85 backdrop-blur-md border border-[#ECC880]/50 text-[#ECC880] text-[10.5px] tracking-[0.25em] uppercase font-serif font-bold shadow-md">
               <Crown className="w-3.5 h-3.5 text-[#ECC880]" />
               <span>THE ROYAL MASTERPIECE</span>
             </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#041610]/80 backdrop-blur-md border border-[#ECC880]/35 text-[#ECC880] text-[9.5px] font-serif tracking-widest uppercase shadow-xs">
+              <ShieldCheck className="w-3 h-3 text-[#ECC880]" />
+              <span>SULTAN EDITION</span>
+            </div>
           </div>
 
-          {/* Center Couple Profile & Monogram */}
+          {/* Center Couple Profile, VIP Badge & Monogram */}
           <div className="relative z-10 my-auto text-left py-2 sm:py-3">
-            <EmeraldRoyalCrest initials={coupleInitials} size="md" className="!items-start mb-3 sm:mb-4" />
-            <span className="text-[11px] font-serif uppercase tracking-[0.3em] text-[#ECC880] font-semibold block mb-1.5">
+            {/* VIP Guest Recognition Cartouche */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-[#0d3827]/90 via-[#072318]/95 to-[#041610]/98 border border-[#ECC880]/60 shadow-lg text-white mb-2.5">
+              <Crown className="w-3 h-3 text-[#ECC880]" />
+              <span className="text-[10px] uppercase tracking-wider text-[#ECC880]/85 font-serif font-medium">Spesial Untuk:</span>
+              <span className="text-xs font-serif font-bold text-[#FFF8E2] tracking-wide">{guestName}</span>
+              <span className="text-[8px] bg-gradient-to-r from-[#ECC880] to-[#C5A059] text-[#041610] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-xs">VIP</span>
+            </div>
+
+            <EmeraldRoyalCrest initials={coupleInitials} size="md" className="!items-start mb-2.5" />
+            
+            <span className="text-[10.5px] font-serif uppercase tracking-[0.3em] text-[#ECC880] font-semibold block mb-1">
               THE WEDDING CELEBRATION OF
             </span>
-            <h1 className="font-serif text-3xl xl:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E2] via-[#ECC880] to-[#E2C792] drop-shadow-md">
+            <h1 className="font-serif text-3xl xl:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E2] via-[#ECC880] to-[#E2C792] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
               {groomName} &amp; {brideName}
             </h1>
-            <p className="font-serif italic text-xs xl:text-sm text-[#A0C4B4] mt-1.5">
-              Senin, 12 Oktober 2026 • Solo, Jawa Tengah
-            </p>
-            <div className="w-20 h-0.5 bg-gradient-to-r from-[#ECC880] to-transparent my-3 sm:my-4" />
-            <p className="text-xs text-white/80 max-w-sm leading-relaxed font-light">
-              Menyatukan dua hati dan keluarga dalam ikatan suci pernikahan yang agung dan penuh berkah.
+            
+            <div className="flex items-center gap-2 text-xs xl:text-sm text-[#A0C4B4] mt-1.5 font-serif">
+              <Calendar className="w-3.5 h-3.5 text-[#ECC880] shrink-0" />
+              <span>Senin, 12 Oktober 2026</span>
+              <span className="text-[#ECC880]/60">•</span>
+              <MapPin className="w-3.5 h-3.5 text-[#ECC880] shrink-0" />
+              <span>Solo, Jawa Tengah</span>
+            </div>
+            
+            <div className="w-20 h-0.5 bg-gradient-to-r from-[#ECC880] via-[#ECC880]/60 to-transparent my-2.5 sm:my-3" />
+            <p className="text-xs text-white/85 max-w-sm leading-relaxed font-light">
+              Menyatukan dua insan dalam ikatan suci pernikahan berbalut tradisi luhur dan keagungan bernuansa Emerald &amp; Gold.
             </p>
 
-            {/* Aside Live Countdown Card */}
-            <div className="relative p-3.5 sm:p-4 rounded-2xl bg-gradient-to-b from-[#082319]/90 via-[#051C14]/95 to-[#041610]/98 backdrop-blur-md border border-[#ECC880]/50 shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(236,200,128,0.2)] text-center max-w-sm mt-4 sm:mt-5">
+            {/* Aside Live Countdown Card with Calendar & Maps Actions */}
+            <div className="relative p-3.5 sm:p-4 rounded-2xl bg-gradient-to-b from-[#082319]/90 via-[#051C14]/95 to-[#041610]/98 backdrop-blur-md border border-[#ECC880]/50 shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(236,200,128,0.2)] text-center max-w-sm mt-3 sm:mt-4">
               <div className="absolute inset-1 rounded-xl border border-[#ECC880]/20 pointer-events-none" />
-              <span className="text-[9.5px] tracking-[0.25em] font-serif uppercase text-[#ECC880] block mb-2 font-bold">
-                ✦ HITUNG MUNDUR HARI SAKRAL ✦
-              </span>
+              <div className="flex items-center justify-between mb-2 px-1">
+                <span className="text-[9.5px] tracking-[0.25em] font-serif uppercase text-[#ECC880] font-bold flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-[#ECC880]" />
+                  <span>HITUNG MUNDUR HARI SAKRAL</span>
+                </span>
+                <span className="text-[9px] text-[#A0C4B4] font-serif italic">Solo, Jateng</span>
+              </div>
+
               <div className="grid grid-cols-4 gap-2">
                 {[
                   { label: 'HARI', val: timeLeft.days },
@@ -965,23 +997,61 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   { label: 'MENIT', val: timeLeft.minutes },
                   { label: 'DETIK', val: timeLeft.seconds },
                 ].map((tile, idx) => (
-                  <div key={idx} className="bg-black/40 rounded-xl p-2 border border-[#ECC880]/30 text-center shadow-inner">
-                    <span className="font-serif text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] to-[#ECC880] block leading-tight">
+                  <div key={idx} className="bg-gradient-to-b from-[#041610]/95 via-black/80 to-[#041610]/95 rounded-xl p-2 border border-[#ECC880]/35 text-center shadow-inner relative group hover:border-[#ECC880] transition-colors">
+                    <span className="font-serif text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] via-[#ECC880] to-[#C5A059] block leading-tight">
                       {String(tile.val).padStart(2, '0')}
                     </span>
-                    <span className="text-[7.5px] font-sans tracking-widest text-[#ECC880]/90 uppercase">
+                    <span className="text-[7.5px] font-sans tracking-widest text-[#ECC880]/90 uppercase font-semibold">
                       {tile.label}
                     </span>
                   </div>
                 ))}
               </div>
+
+              {/* Quick Actions for Desktop Viewers */}
+              <div className="grid grid-cols-2 gap-2 mt-3 pt-2.5 border-t border-[#ECC880]/20">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const ev = displayEvents[0];
+                    setCalendarModalEvent({
+                      title: `The Wedding of ${groomName} & ${brideName}`,
+                      description: `Menghadiri pernikahan suci ${groomFullName} & ${brideFullName}. ${ev?.location || 'Grand Ballroom Sahara Hotel'}.`,
+                      location: ev?.location || 'Grand Ballroom Sahara Hotel, Solo',
+                      eventDate: ev?.date || '2026-10-12',
+                      startTime: ev?.start_time || '08:00',
+                      endTime: ev?.end_time || '14:00',
+                    });
+                  }}
+                  className="inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-[#ECC880]/15 hover:bg-[#ECC880]/25 border border-[#ECC880]/50 text-[#ECC880] text-[10px] font-serif font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs active:scale-95"
+                >
+                  <Calendar className="w-3 h-3 text-[#ECC880]" />
+                  <span>Simpan Tanggal</span>
+                </button>
+
+                <a
+                  href={displayEvents[0]?.map_url || displayEvents[0]?.google_maps_url || 'https://maps.google.com'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-[#ECC880]/15 hover:bg-[#ECC880]/25 border border-[#ECC880]/50 text-[#ECC880] text-[10px] font-serif font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs active:scale-95"
+                >
+                  <Navigation className="w-3 h-3 text-[#ECC880]" />
+                  <span>Petunjuk Arah</span>
+                </a>
+              </div>
             </div>
           </div>
 
           {/* Bottom Venue Footer */}
-          <div className="relative z-10 flex items-center justify-between text-xs text-[#A0C4B4] pt-3 sm:pt-4 border-t border-[#ECC880]/20">
-            <span className="font-serif text-white/90">Grand Ballroom Sahara Hotel</span>
-            <span className="text-[#ECC880] font-serif font-bold tracking-wider">WD Royal Masterpiece</span>
+          <div className="relative z-10 flex items-center justify-between text-xs text-[#A0C4B4] pt-3 border-t border-[#ECC880]/25">
+            <div className="flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-[#ECC880] shrink-0" />
+              <span className="font-serif text-white/90 text-[11px] sm:text-xs">Grand Ballroom Sahara Hotel</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#ECC880] shrink-0" />
+              <span className="text-[#ECC880] font-serif font-bold tracking-wider text-[10px] sm:text-xs">WD Royal Masterpiece</span>
+            </div>
           </div>
         </aside>
 
