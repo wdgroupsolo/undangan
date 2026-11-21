@@ -173,6 +173,145 @@ export const EmeraldRoyalCrest: React.FC<{ initials: string; size?: 'sm' | 'md' 
   );
 };
 
+// Smooth Royal Scroll Reveal with Spring Easing & Intersectional Observer
+export const ScrollReveal: React.FC<{
+  children: React.ReactNode;
+  animation?: 'fade-up' | 'fade-down' | 'zoom-in' | 'slide-left' | 'slide-right' | 'arch-reveal' | 'fade-in';
+  delay?: number;
+  duration?: number;
+  className?: string;
+  once?: boolean;
+}> = ({ children, animation = 'fade-up', delay = 0, duration = 800, className = '', once = true }) => {
+  const [hasRevealed, setHasRevealed] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (hasRevealed) return;
+
+    const rect = el.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < windowHeight && rect.bottom > 0) {
+      setHasRevealed(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasRevealed(true);
+          if (once) observer.unobserve(el);
+        }
+      },
+      { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasRevealed, once]);
+
+  const getAnimClass = () => {
+    if (!hasRevealed) {
+      switch (animation) {
+        case 'fade-up':
+          return 'opacity-0 translate-y-8 scale-[0.99]';
+        case 'fade-down':
+          return 'opacity-0 -translate-y-8 scale-[0.99]';
+        case 'zoom-in':
+          return 'opacity-0 scale-[0.95]';
+        case 'slide-left':
+          return 'opacity-0 -translate-x-8';
+        case 'slide-right':
+          return 'opacity-0 translate-x-8';
+        case 'arch-reveal':
+          return 'opacity-0 translate-y-8 scale-[0.97]';
+        case 'fade-in':
+        default:
+          return 'opacity-0';
+      }
+    }
+    return 'opacity-100 translate-y-0 translate-x-0 scale-100';
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all will-change-transform ${getAnimClass()} ${className}`}
+      style={{
+        transitionDuration: `${duration}ms`,
+        transitionDelay: hasRevealed ? `${delay}ms` : '0ms',
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+// Cascading 24K Gold Foil Flakes & Twinkling Diamond Stars
+export const FallingEmeraldGoldParticles: React.FC<{ count?: number; className?: string }> = ({ count = 16, className = '' }) => {
+  const particles = [
+    { left: '4%', duration: '14s', delay: '0s', size: 14, type: 'foil', rot: 45 },
+    { left: '15%', duration: '18s', delay: '2.5s', size: 18, type: 'star', rot: 0 },
+    { left: '26%', duration: '16s', delay: '1.2s', size: 12, type: 'foil', rot: 120 },
+    { left: '42%', duration: '20s', delay: '4.8s', size: 20, type: 'star', rot: 15 },
+    { left: '58%', duration: '15s', delay: '3.1s', size: 16, type: 'foil', rot: 210 },
+    { left: '71%', duration: '19s', delay: '6.4s', size: 14, type: 'star', rot: 0 },
+    { left: '85%', duration: '17s', delay: '1.8s', size: 13, type: 'foil', rot: 75 },
+    { left: '94%', duration: '21s', delay: '7.5s', size: 16, type: 'foil', rot: 160 },
+    { left: '21%', duration: '17.5s', delay: '8.8s', size: 15, type: 'star', rot: 30 },
+    { left: '52%', duration: '16.5s', delay: '10.2s', size: 14, type: 'foil', rot: 290 },
+    { left: '67%', duration: '22s', delay: '8.5s', size: 18, type: 'star', rot: 0 },
+    { left: '80%', duration: '18.5s', delay: '11.1s', size: 12, type: 'foil', rot: 95 },
+  ].slice(0, count);
+
+  return (
+    <div className={`pointer-events-none fixed inset-0 z-15 overflow-hidden select-none ${className}`}>
+      {particles.map((p, i) => (
+        <div
+          key={i}
+          className="absolute"
+          style={{
+            top: '-35px',
+            left: p.left,
+            animation: `goldParticleDrift ${p.duration} linear infinite`,
+            animationDelay: p.delay,
+            transformOrigin: 'center center',
+          }}
+        >
+          {p.type === 'star' ? (
+            <svg 
+              width={p.size} 
+              height={p.size} 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              style={{
+                animation: 'starTwinkle 3.2s ease-in-out infinite alternate',
+                filter: 'drop-shadow(0 0 5px rgba(236,200,128,0.9))'
+              }}
+            >
+              <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" fill="#FFEAA7" />
+              <circle cx="12" cy="12" r="2" fill="#FFFFFF" />
+            </svg>
+          ) : (
+            <div 
+              style={{
+                width: p.size,
+                height: p.size * 0.75,
+                borderRadius: '2px',
+                background: 'linear-gradient(135deg, #FFFDF0 0%, #ECC880 40%, #C5A059 70%, #8C6D2B 100%)',
+                animation: `goldFoilTumble ${parseFloat(p.duration) * 0.3}s ease-in-out infinite alternate`,
+                boxShadow: '0 0 8px rgba(236,200,128,0.5)',
+              }}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
 // Banknote Guilloché Rosette Parchment Watermark for Warm Ivory Cards
 export const GuillocheParchmentWatermark: React.FC<{ opacity?: number; className?: string }> = ({
   opacity = 0.08,
@@ -386,6 +525,19 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
   const [attireGender, setAttireGender] = useState<'gentlemen' | 'ladies'>('gentlemen');
   const [selectedSwatch, setSelectedSwatch] = useState<string | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const current = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, current)));
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Guest Name Resolution
   const guestName = (() => {
@@ -626,25 +778,67 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   return (
     <div className="relative w-full min-h-screen bg-[#041610] text-[#F5FFF9] font-sans selection:bg-[#ECC880] selection:text-[#041610] overflow-x-hidden">
       
-      {/* Background Ambience */}
+      {/* Royal Gold Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 h-[3px] z-50 pointer-events-none bg-black/20">
+        <div 
+          className="h-full bg-gradient-to-r from-[#8C6D2B] via-[#ECC880] to-[#FFFDF0] transition-all duration-150 shadow-[0_0_10px_rgba(236,200,128,0.9)]"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      {/* Background Ambience & Cascading 24K Gold Particles */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#041610] via-[#08231A] to-[#041610]" />
         <GuillocheVelvetWatermark opacity={0.05} />
         <FloatingEmeraldStardust count={20} />
+        <FallingEmeraldGoldParticles count={16} />
       </div>
 
       <style>{`
+        @keyframes goldParticleDrift {
+          0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+          12% { opacity: 0.95; }
+          88% { opacity: 0.85; }
+          100% { transform: translateY(115vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes starTwinkle {
+          0% { transform: scale(0.7) rotate(0deg); opacity: 0.35; }
+          50% { transform: scale(1.35) rotate(45deg); opacity: 1; }
+          100% { transform: scale(0.7) rotate(90deg); opacity: 0.35; }
+        }
+        @keyframes goldFoilTumble {
+          0% { transform: rotate3d(1, 1, 0, 0deg) scale(0.85); }
+          50% { transform: rotate3d(1, 0.5, 1, 180deg) scale(1.2); }
+          100% { transform: rotate3d(0.5, 1, 0.5, 360deg) scale(0.85); }
+        }
         @keyframes royalBranchSway {
           0% { transform: rotate(0deg) translateY(0px); }
-          100% { transform: rotate(1.8deg) translateY(-2px); }
+          100% { transform: rotate(2.2deg) translateY(-3px); }
         }
         @keyframes goldShimmerSweep {
           0% { transform: translateX(-150%) skewX(-20deg); }
-          40%, 100% { transform: translateX(350%) skewX(-20deg); }
+          35%, 100% { transform: translateX(350%) skewX(-20deg); }
         }
         @keyframes ambientAuraPulse {
-          0%, 100% { transform: scale(1); opacity: 0.12; }
-          50% { transform: scale(1.15); opacity: 0.28; }
+          0%, 100% { transform: scale(1); opacity: 0.15; }
+          50% { transform: scale(1.18); opacity: 0.32; }
+        }
+        @keyframes photoAuraPulse {
+          0% { box-shadow: 0 0 15px rgba(236, 200, 128, 0.4), 0 15px 35px rgba(4, 22, 16, 0.5); }
+          100% { box-shadow: 0 0 35px rgba(255, 235, 175, 0.8), 0 20px 45px rgba(4, 22, 16, 0.7); }
+        }
+        @keyframes crestGleam {
+          0%, 100% { filter: drop-shadow(0 0 3px rgba(236, 200, 128, 0.3)); }
+          50% { filter: drop-shadow(0 0 14px rgba(255, 235, 175, 0.9)); }
+        }
+        @keyframes royalFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        @keyframes cardScanline {
+          0% { transform: translateY(-100%); opacity: 0; }
+          50% { opacity: 0.85; }
+          100% { transform: translateY(220%); opacity: 0; }
         }
       `}</style>
 
@@ -741,672 +935,746 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 1. HERO COVER SECTION (Warm Imperial Ivory & 24K Gold Folio)            */}
         {/* ========================================================================= */}
-        <section id="cover" className="relative text-center py-10 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 max-w-2xl mx-auto">
-          {/* Tactile Banknote Guilloché Watermark */}
-          <GuillocheParchmentWatermark opacity={0.08} />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="cover" className="relative text-center py-10 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 max-w-2xl mx-auto">
+            {/* Tactile Banknote Guilloché Watermark */}
+            <GuillocheParchmentWatermark opacity={0.08} />
 
-          {/* Inset Gold Dashed & Hairline Frames */}
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <div className="absolute inset-5 sm:inset-6 rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
+            {/* Inset Gold Dashed & Hairline Frames */}
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-5 sm:inset-6 rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
 
-          {/* Gilded Victorian Acanthus Corners */}
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+            {/* Gilded Victorian Acanthus Corners */}
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          {/* Gold Shimmer Sweep Light Animation */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[36px]">
-            <div 
-              className="absolute inset-y-0 w-36 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none -translate-x-full"
-              style={{ animation: 'goldShimmerSweep 6s ease-in-out infinite' }}
-            />
-          </div>
+            {/* Gold Shimmer Sweep Light Animation */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[36px]">
+              <div 
+                className="absolute inset-y-0 w-36 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none -translate-x-full"
+                style={{ animation: 'goldShimmerSweep 6s ease-in-out infinite' }}
+              />
+            </div>
 
-          {/* 3D Sculpted Emerald & Gold Wax Seal Monogram */}
-          <div className="relative z-10 my-2">
-            <EmeraldRoyalWaxSeal initials={coupleInitials} size="md" showWreath={true} />
-          </div>
-
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.3em] uppercase font-serif font-bold shadow-xs mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>THE ROYAL SACRED CELEBRATION</span>
-            <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
-          </div>
-
-          {/* Couple Arch Portrait with Flanking Gilded Botanical Flourishes */}
-          <div className="relative w-48 h-64 sm:w-56 sm:h-74 mx-auto my-5 z-10">
-            <GildedEmeraldAcanthusFlourish side="left" />
-            <GildedEmeraldAcanthusFlourish side="right" />
-
-            <div className="w-full h-full rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B] shadow-[0_20px_50px_rgba(4,22,16,0.35)] group">
-              <div className="w-full h-full rounded-t-full rounded-b-xl overflow-hidden relative">
-                <img 
-                  src={couple?.cover_photo_url || couple?.cover_photo || '/photos/photo-3.jpg'} 
-                  alt={`${groomName} & ${brideName}`} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/70 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute inset-0 ring-1 ring-inset ring-[#ECC880]/50 rounded-t-full rounded-b-xl pointer-events-none" />
+            {/* 3D Sculpted Emerald & Gold Wax Seal Monogram */}
+            <ScrollReveal animation="zoom-in" delay={150}>
+              <div className="relative z-10 my-2">
+                <EmeraldRoyalWaxSeal initials={coupleInitials} size="md" showWreath={true} />
               </div>
-            </div>
-          </div>
+            </ScrollReveal>
 
-          {/* Grand Couple Headline in Rich Emerald Foil Gradient */}
-          <h1 className="relative z-10 font-serif text-3xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-[#1C4736] via-[#103023] to-[#081F16] drop-shadow-xs mt-3">
-            {groomName} &amp; {brideName}
-          </h1>
+            <ScrollReveal animation="fade-down" delay={200}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.3em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                <span>THE ROYAL SACRED CELEBRATION</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+              </div>
+            </ScrollReveal>
 
-          <p className="relative z-10 font-serif italic text-sm text-[#5B7569] mt-2 font-medium">
-            Senin, 12 Oktober 2026 • Grand Ballroom Sahara
-          </p>
+            {/* Couple Arch Portrait with Flanking Gilded Botanical Flourishes */}
+            <ScrollReveal animation="zoom-in" delay={250} duration={900}>
+              <div className="relative w-48 h-64 sm:w-56 sm:h-74 mx-auto my-5 z-10">
+                <GildedEmeraldAcanthusFlourish side="left" />
+                <GildedEmeraldAcanthusFlourish side="right" />
 
-          <RoyalCalligraphicDivider className="my-3 relative z-10" />
-
-          {/* VIP Guest Invitation Cartouche on Ivory */}
-          <div className="relative z-10 my-4 mx-auto max-w-sm p-4 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/60 shadow-xs text-center">
-            <span className="text-[10px] tracking-widest uppercase font-serif text-[#8C6D2B] font-semibold block">
-              KEPADA YTH. BAPAK/IBU/SAUDARA/I :
-            </span>
-            <div className="text-lg font-serif font-bold text-[#103023] mt-1">
-              {guestName}
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#103023] text-[#ECC880] text-[10px] font-serif font-bold mt-2 border border-[#ECC880]/50 shadow-xs">
-              <Crown className="w-3 h-3 text-[#ECC880]" />
-              <span>Tamu Undangan VIP</span>
-            </div>
-          </div>
-
-          {/* Opulent 24K Royal Chronometer Vault */}
-          <div className="relative z-10 mt-6 pt-5 border-t border-[#ECC880]/30 max-w-md mx-auto">
-            <span className="text-[10px] tracking-[0.25em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
-              HITUNG MUNDUR MENUJU HARI SAKRAL
-            </span>
-            <div className="grid grid-cols-4 gap-2.5">
-              {[
-                { label: 'HARI', val: timeLeft.days },
-                { label: 'JAM', val: timeLeft.hours },
-                { label: 'MENIT', val: timeLeft.minutes },
-                { label: 'DETIK', val: timeLeft.seconds },
-              ].map((tile, idx) => (
-                <div key={idx} className="bg-gradient-to-br from-[#0C241B] via-[#071912] to-[#04120D] rounded-2xl p-2.5 border border-[#ECC880]/60 text-center shadow-md">
-                  <span className="font-serif text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] to-[#ECC880] block leading-tight">
-                    {String(tile.val).padStart(2, '0')}
-                  </span>
-                  <span className="text-[8px] font-sans tracking-widest text-[#ECC880] uppercase">
-                    {tile.label}
-                  </span>
+                <div 
+                  className="w-full h-full rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B] shadow-[0_20px_50px_rgba(4,22,16,0.35)] group"
+                  style={{ animation: 'photoAuraPulse 4s ease-in-out infinite alternate' }}
+                >
+                  <div className="w-full h-full rounded-t-full rounded-b-xl overflow-hidden relative">
+                    <img 
+                      src={couple?.cover_photo_url || couple?.cover_photo || '/photos/photo-3.jpg'} 
+                      alt={`${groomName} & ${brideName}`} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/70 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 ring-1 ring-inset ring-[#ECC880]/50 rounded-t-full rounded-b-xl pointer-events-none" />
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
+              </div>
+            </ScrollReveal>
+
+            {/* Grand Couple Headline in Rich Emerald Foil Gradient */}
+            <ScrollReveal animation="fade-up" delay={300}>
+              <h1 className="relative z-10 font-serif text-3xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-[#1C4736] via-[#103023] to-[#081F16] drop-shadow-xs mt-3">
+                {groomName} &amp; {brideName}
+              </h1>
+
+              <p className="relative z-10 font-serif italic text-sm text-[#5B7569] mt-2 font-medium">
+                Senin, 12 Oktober 2026 • Grand Ballroom Sahara
+              </p>
+
+              <RoyalCalligraphicDivider className="my-3 relative z-10" />
+            </ScrollReveal>
+
+            {/* VIP Guest Invitation Cartouche on Ivory */}
+            <ScrollReveal animation="fade-up" delay={350}>
+              <div className="relative z-10 my-4 mx-auto max-w-sm p-4 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/60 shadow-xs text-center">
+                <span className="text-[10px] tracking-widest uppercase font-serif text-[#8C6D2B] font-semibold block">
+                  KEPADA YTH. BAPAK/IBU/SAUDARA/I :
+                </span>
+                <div className="text-lg font-serif font-bold text-[#103023] mt-1">
+                  {guestName}
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#103023] text-[#ECC880] text-[10px] font-serif font-bold mt-2 border border-[#ECC880]/50 shadow-xs">
+                  <Crown className="w-3 h-3 text-[#ECC880]" />
+                  <span>Tamu Undangan VIP</span>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Opulent 24K Royal Chronometer Vault */}
+            <ScrollReveal animation="fade-up" delay={400}>
+              <div className="relative z-10 mt-6 pt-5 border-t border-[#ECC880]/30 max-w-md mx-auto">
+                <span className="text-[10px] tracking-[0.25em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
+                  ✦ HITUNG MUNDUR MENUJU HARI SAKRAL ✦
+                </span>
+                <div className="grid grid-cols-4 gap-2.5">
+                  {[
+                    { label: 'HARI', val: timeLeft.days },
+                    { label: 'JAM', val: timeLeft.hours },
+                    { label: 'MENIT', val: timeLeft.minutes },
+                    { label: 'DETIK', val: timeLeft.seconds },
+                  ].map((tile, idx) => (
+                    <div key={idx} className="bg-gradient-to-br from-[#0C241B] via-[#071912] to-[#04120D] rounded-2xl p-2.5 border border-[#ECC880]/60 text-center shadow-md">
+                      <span className="font-serif text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] to-[#ECC880] block leading-tight">
+                        {String(tile.val).padStart(2, '0')}
+                      </span>
+                      <span className="text-[8px] font-sans tracking-widest text-[#ECC880] uppercase">
+                        {tile.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollReveal>
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 2. COUPLE PRESENTATION SECTION (Royal Illuminated Diptych)               */}
         {/* ========================================================================= */}
-        <section id="couple" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          <GuillocheParchmentWatermark opacity={0.08} />
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="couple" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          {/* Gilded Bismillah Cartouche */}
-          <div className="relative z-10 inline-block my-2">
-            <div className="px-6 sm:px-8 py-3 rounded-full bg-gradient-to-r from-[#0C241B] via-[#163D2E] to-[#0C241B] border-2 border-[#ECC880] shadow-md flex items-center justify-center">
-              <span className="text-xl sm:text-2xl font-serif text-[#FFF8E2] tracking-widest">
-                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-              </span>
-            </div>
-          </div>
-
-          {/* Ayat Panel */}
-          <div className="max-w-md mx-auto my-6 p-5 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/50 relative z-10">
-            <p className="font-serif italic text-xs sm:text-sm text-[#15382B] leading-relaxed">
-              &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.&rdquo;
-            </p>
-            <span className="text-[10px] font-serif tracking-widest text-[#8C6D2B] uppercase block mt-2 font-bold">
-              (QS. AR-RUM : 21)
-            </span>
-          </div>
-
-          <RoyalCalligraphicDivider className="my-4 relative z-10" />
-
-          {/* Couple Diptych Showcase */}
-          <div className="space-y-6 max-w-md mx-auto relative z-10 mt-6">
-            {/* Groom Card */}
-            <div className="relative p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-lg overflow-hidden">
-              <GuillocheVelvetWatermark opacity={0.06} />
-              <div className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]">
-                <img src={groomPhoto} alt={groomName} className="w-full h-full object-cover rounded-t-full rounded-b-xl" />
+            {/* Gilded Bismillah Cartouche */}
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-block my-2">
+                <div className="px-6 sm:px-8 py-3 rounded-full bg-gradient-to-r from-[#0C241B] via-[#163D2E] to-[#0C241B] border-2 border-[#ECC880] shadow-md flex items-center justify-center">
+                  <span className="text-xl sm:text-2xl font-serif text-[#FFF8E2] tracking-widest">
+                    بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                  </span>
+                </div>
               </div>
-              <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
-                MEMPELAI PRIA
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-[#FFF8E2]">
-                {groomFullName}
-              </h3>
-              <p className="text-xs text-[#A0C4B4] mt-1 font-sans">
-                {groomParents}
-              </p>
-              {couple?.groom_instagram && (
-                <a 
-                  href={`https://instagram.com/${couple.groom_instagram.replace('@', '')}`}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-[11px] font-sans font-bold mt-3 shadow-xs transition-colors"
-                >
-                  <InstagramIcon size={13} />
-                  <span>{couple.groom_instagram}</span>
-                </a>
-              )}
-            </div>
+            </ScrollReveal>
 
-            {/* Heart Divider */}
-            <div className="flex items-center justify-center gap-3 my-2 text-[#ECC880]">
-              <div className="w-16 h-px bg-gradient-to-r from-transparent to-[#ECC880]" />
-              <Heart className="w-6 h-6 text-[#ECC880] fill-[#ECC880]/30" />
-              <div className="w-16 h-px bg-gradient-to-l from-transparent to-[#ECC880]" />
-            </div>
-
-            {/* Bride Card */}
-            <div className="relative p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-lg overflow-hidden">
-              <GuillocheVelvetWatermark opacity={0.06} />
-              <div className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]">
-                <img src={bridePhoto} alt={brideName} className="w-full h-full object-cover rounded-t-full rounded-b-xl" />
+            {/* Ayat Panel */}
+            <ScrollReveal animation="fade-up" delay={150}>
+              <div className="max-w-md mx-auto my-6 p-5 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/50 relative z-10">
+                <p className="font-serif italic text-xs sm:text-sm text-[#15382B] leading-relaxed">
+                  &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.&rdquo;
+                </p>
+                <span className="text-[10px] font-serif tracking-widest text-[#8C6D2B] uppercase block mt-2 font-bold">
+                  (QS. AR-RUM : 21)
+                </span>
               </div>
-              <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
-                MEMPELAI WANITA
-              </span>
-              <h3 className="font-serif text-2xl font-bold text-[#FFF8E2]">
-                {brideFullName}
-              </h3>
-              <p className="text-xs text-[#A0C4B4] mt-1 font-sans">
-                {brideParents}
-              </p>
-              {couple?.bride_instagram && (
-                <a 
-                  href={`https://instagram.com/${couple.bride_instagram.replace('@', '')}`}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-[11px] font-sans font-bold mt-3 shadow-xs transition-colors"
-                >
-                  <InstagramIcon size={13} />
-                  <span>{couple.bride_instagram}</span>
-                </a>
-              )}
+            </ScrollReveal>
+
+            <RoyalCalligraphicDivider className="my-4 relative z-10" />
+
+            {/* Couple Diptych Showcase */}
+            <div className="space-y-6 max-w-md mx-auto relative z-10 mt-6">
+              {/* Groom Card */}
+              <ScrollReveal animation="slide-left" delay={180} duration={900}>
+                <div className="relative p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-xl overflow-hidden hover:scale-[1.01] transition-transform">
+                  <GuillocheVelvetWatermark opacity={0.06} />
+                  <div 
+                    className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]"
+                    style={{ animation: 'photoAuraPulse 3.5s ease-in-out infinite alternate' }}
+                  >
+                    <img src={groomPhoto} alt={groomName} className="w-full h-full object-cover rounded-t-full rounded-b-xl" />
+                  </div>
+                  <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
+                    MEMPELAI PRIA
+                  </span>
+                  <h3 className="font-serif text-2xl font-bold text-[#FFF8E2]">
+                    {groomFullName}
+                  </h3>
+                  <p className="text-xs text-[#A0C4B4] mt-1 font-sans">
+                    {groomParents}
+                  </p>
+                  {couple?.groom_instagram && (
+                    <a 
+                      href={`https://instagram.com/${couple.groom_instagram.replace('@', '')}`}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[11px] font-sans font-bold mt-3 shadow-md transition-all hover:scale-105 active:scale-95"
+                    >
+                      <InstagramIcon size={13} />
+                      <span>{couple.groom_instagram}</span>
+                    </a>
+                  )}
+                </div>
+              </ScrollReveal>
+
+              {/* Heart Divider */}
+              <ScrollReveal animation="zoom-in" delay={220}>
+                <div className="flex items-center justify-center gap-3 my-2 text-[#ECC880]">
+                  <div className="w-16 h-px bg-gradient-to-r from-transparent to-[#ECC880]" />
+                  <Heart className="w-6 h-6 text-[#ECC880] fill-[#ECC880]/30 animate-pulse" />
+                  <div className="w-16 h-px bg-gradient-to-l from-transparent to-[#ECC880]" />
+                </div>
+              </ScrollReveal>
+
+              {/* Bride Card */}
+              <ScrollReveal animation="slide-right" delay={260} duration={900}>
+                <div className="relative p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-xl overflow-hidden hover:scale-[1.01] transition-transform">
+                  <GuillocheVelvetWatermark opacity={0.06} />
+                  <div 
+                    className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]"
+                    style={{ animation: 'photoAuraPulse 3.5s ease-in-out infinite alternate 1.5s' }}
+                  >
+                    <img src={bridePhoto} alt={brideName} className="w-full h-full object-cover rounded-t-full rounded-b-xl" />
+                  </div>
+                  <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
+                    MEMPELAI WANITA
+                  </span>
+                  <h3 className="font-serif text-2xl font-bold text-[#FFF8E2]">
+                    {brideFullName}
+                  </h3>
+                  <p className="text-xs text-[#A0C4B4] mt-1 font-sans">
+                    {brideParents}
+                  </p>
+                  {couple?.bride_instagram && (
+                    <a 
+                      href={`https://instagram.com/${couple.bride_instagram.replace('@', '')}`}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[11px] font-sans font-bold mt-3 shadow-md transition-all hover:scale-105 active:scale-95"
+                    >
+                      <InstagramIcon size={13} />
+                      <span>{couple.bride_instagram}</span>
+                    </a>
+                  )}
+                </div>
+              </ScrollReveal>
             </div>
-          </div>
-        </section>
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 3. EVENT AGENDA SECTION (Royal Banquet Decree)                           */}
         {/* ========================================================================= */}
-        <section id="event" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          <GuillocheParchmentWatermark opacity={0.08} />
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="event" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-            <Calendar className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>ROYAL BANQUET DECREE</span>
-          </div>
+            <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+              <Calendar className="w-3.5 h-3.5 text-[#C5A059]" />
+              <span>ROYAL BANQUET DECREE</span>
+            </div>
 
-          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-            Rangkaian Acara Sakral
-          </h2>
-          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-6">
-            Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada prosesi sakral kami.
-          </p>
+            <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+              Rangkaian Acara Sakral
+            </h2>
+            <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-6">
+              Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada prosesi sakral kami.
+            </p>
 
-          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+            <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
 
-          <div className="space-y-6 max-w-md mx-auto relative z-10">
-            {displayEvents.map((ev, idx) => (
-              <div key={idx} className="p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center relative overflow-hidden shadow-xl text-white">
-                <GuillocheVelvetWatermark opacity={0.06} />
-                <div className="absolute top-0 right-0 px-4 py-1 rounded-bl-xl bg-[#ECC880] text-[#041610] text-[10px] font-serif font-bold uppercase tracking-wider">
-                  {ev.event_type}
-                </div>
+            <div className="space-y-6 max-w-md mx-auto relative z-10">
+              {displayEvents.map((ev, idx) => (
+                <ScrollReveal key={idx} animation="fade-up" delay={idx * 150} duration={850}>
+                  <div className="p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center relative overflow-hidden shadow-xl text-white">
+                    <GuillocheVelvetWatermark opacity={0.06} />
+                    <div className="absolute top-0 right-0 px-4 py-1 rounded-bl-xl bg-[#ECC880] text-[#041610] text-[10px] font-serif font-bold uppercase tracking-wider">
+                      {ev.event_type}
+                    </div>
 
-                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#ECC880] mt-2 mb-3">
-                  {ev.event_name}
-                </h3>
+                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#ECC880] mt-2 mb-3">
+                      {ev.event_name}
+                    </h3>
 
-                <div className="flex items-center justify-center gap-2 text-sm text-[#FFF8E2] mb-1 font-serif">
-                  <Calendar className="w-4 h-4 text-[#ECC880]" />
-                  <span>{ev.date}</span>
-                </div>
+                    <div className="flex items-center justify-center gap-2 text-sm text-[#FFF8E2] mb-1 font-serif">
+                      <Calendar className="w-4 h-4 text-[#ECC880]" />
+                      <span>{ev.date}</span>
+                    </div>
 
-                <div className="flex items-center justify-center gap-2 text-xs text-[#A0C4B4] mb-4">
-                  <Clock className="w-3.5 h-3.5 text-[#ECC880]" />
-                  <span>{ev.start_time} - {ev.end_time} WIB</span>
-                </div>
+                    <div className="flex items-center justify-center gap-2 text-xs text-[#A0C4B4] mb-4">
+                      <Clock className="w-3.5 h-3.5 text-[#ECC880]" />
+                      <span>{ev.start_time} - {ev.end_time} WIB</span>
+                    </div>
 
-                <div className="pt-3 border-t border-[#ECC880]/20 text-xs text-white/80 mb-5 leading-relaxed">
-                  <strong className="block text-white font-serif text-sm mb-1">{ev.location}</strong>
-                  {ev.address}
-                </div>
+                    <div className="pt-3 border-t border-[#ECC880]/20 text-xs text-white/80 mb-5 leading-relaxed">
+                      <strong className="block text-white font-serif text-sm mb-1">{ev.location}</strong>
+                      {ev.address}
+                    </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5">
-                  <a
-                    href={ev.map_url || 'https://maps.google.com'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
-                  >
-                    <MapPin className="w-3.5 h-3.5" />
-                    <span>Petunjuk Lokasi Maps</span>
-                  </a>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5">
+                      <a
+                        href={ev.map_url || 'https://maps.google.com'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
+                      >
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>Petunjuk Lokasi Maps</span>
+                      </a>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCalendarModalEvent({
-                        title: `Pernikahan ${groomName} & ${brideName} - ${ev.event_name}`,
-                        description: `Pernikahan agung ${groomFullName} & ${brideFullName} bertempat di ${ev.location}`,
-                        location: `${ev.location}, ${ev.address}`,
-                        eventDate: ev.date,
-                        startTime: ev.start_time,
-                        endTime: ev.end_time
-                      });
-                    }}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/60 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors"
-                  >
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>Simpan Kalender</span>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCalendarModalEvent({
+                            title: `Pernikahan ${groomName} & ${brideName} - ${ev.event_name}`,
+                            description: `Pernikahan agung ${groomFullName} & ${brideFullName} bertempat di ${ev.location}`,
+                            location: `${ev.location}, ${ev.address}`,
+                            eventDate: ev.date,
+                            startTime: ev.start_time,
+                            endTime: ev.end_time
+                          });
+                        }}
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/60 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors cursor-pointer"
+                      >
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>Simpan Kalender</span>
+                      </button>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* ROYAL DRESS CODE & PALETTE CONCIERGE                                      */}
         {/* ========================================================================= */}
-        <section id="dresscode" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          {/* Tactile Banknote Guilloché Rosette */}
-          <GuillocheParchmentWatermark opacity={0.08} />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="dresscode" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            {/* Tactile Banknote Guilloché Rosette */}
+            <GuillocheParchmentWatermark opacity={0.08} />
 
-          {/* Inset Gold Dashed & Hairline Frames */}
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <div className="absolute inset-5 sm:inset-6 rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+            {/* Inset Gold Dashed & Hairline Frames */}
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-5 sm:inset-6 rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-            <Shirt className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>PANDUAN BUSANA RESMI</span>
-          </div>
-
-          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-            Royal Attire &amp; Dress Code
-          </h2>
-
-          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-            Untuk menyempurnakan suasana agung pesta malam kerajaan, kami mengundang para tamu kehormatan untuk mengenakan busana bertema <strong>Royal Black Tie &amp; Emerald Velvet</strong>.
-          </p>
-
-          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
-
-          {/* Gender Tab Switcher */}
-          <div className="relative z-10 flex items-center justify-center gap-2 mb-6">
-            <button
-              type="button"
-              onClick={() => setAttireGender('gentlemen')}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
-                attireGender === 'gentlemen'
-                  ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880]'
-                  : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
-              }`}
-            >
-              <User size={14} />
-              <span>Tamu Pria (Gentlemen)</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setAttireGender('ladies')}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
-                attireGender === 'ladies'
-                  ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880]'
-                  : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
-              }`}
-            >
-              <Users size={14} />
-              <span>Tamu Wanita (Ladies)</span>
-            </button>
-          </div>
-
-          {/* Attire Guide Card */}
-          <div className="relative z-10 p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left max-w-md mx-auto shadow-xl mb-8 text-white overflow-hidden">
-            <GuillocheVelvetWatermark opacity={0.06} />
-
-            {attireGender === 'gentlemen' ? (
-              <div className="space-y-4 relative z-10">
-                <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
-                    <Shirt size={17} />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
-                      Setelan Jas Formal / Batik Tulis Sutra
-                    </h4>
-                    <p className="text-xs text-[#A0C4B4] leading-relaxed">
-                      Black tie tuxedo, formal suit berwarna emerald gelap atau hitam arang, atau kemeja batik tulis sutra motif klasik lengan panjang.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
-                  <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
-                    <Gem size={17} />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
-                      Aksesoris &amp; Sepatu
-                    </h4>
-                    <p className="text-xs text-[#A0C4B4] leading-relaxed">
-                      Dasi kupu-kupu atau dasi sutra warna emas/champagne, serta sepatu pantofel formal berbahan kulit mengkilap.
-                    </p>
-                  </div>
-                </div>
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Shirt className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>PANDUAN BUSANA RESMI</span>
               </div>
-            ) : (
-              <div className="space-y-4 relative z-10">
-                <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
-                    <Shirt size={17} />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
-                      Gaun Malam Velvet / Kebaya Mewah
-                    </h4>
-                    <p className="text-xs text-[#A0C4B4] leading-relaxed">
-                      Evening gown berbahan beludru (velvet) emerald, gaun satin sutra elegan, atau kebaya modern bertabur payet benang emas.
-                    </p>
-                  </div>
-                </div>
 
-                <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
-                  <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
-                    <Sparkles size={17} />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
-                      Aksesoris &amp; Tata Rias
-                    </h4>
-                    <p className="text-xs text-[#A0C4B4] leading-relaxed">
-                      Clutch bag bernuansa emas/emerald, perhiasan emas atau mutiara, serta sepatu heels atau selop pesta yang anggun.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+                Royal Attire &amp; Dress Code
+              </h2>
 
-            {/* Etiquette Alert */}
-            <div className="mt-4 pt-3 border-t border-[#ECC880]/20 flex items-center gap-2.5 text-[11px] text-[#ECC880] relative z-10">
-              <Info size={14} className="flex-shrink-0 text-[#ECC880]" />
-              <span>Dimohon tidak mengenakan busana dominan putih polos demi menghormati gaun pengantin.</span>
-            </div>
-          </div>
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+                Untuk menyempurnakan suasana agung pesta malam kerajaan, kami mengundang para tamu kehormatan untuk mengenakan busana bertema <strong>Royal Black Tie &amp; Emerald Velvet</strong>.
+              </p>
 
-          {/* Interactive Official Color Palette Swatches */}
-          <div className="max-w-md mx-auto relative z-10">
-            <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
-              ✦ PALET WARNA RESMI PERAYAAN ✦
-            </span>
-            <div className="grid grid-cols-4 gap-2.5">
-              {[
-                { hex: '#041610', name: 'Imperial Emerald', desc: 'Warna utama beludru pekat' },
-                { hex: '#0D3B2E', name: 'Royal Pine', desc: 'Aksen hijau hutan bangsawan' },
-                { hex: '#ECC880', name: '24K Gold', desc: 'Sentuhan bordir & perhiasan' },
-                { hex: '#FDFBF7', name: 'Imperial Ivory', desc: 'Aksen sutra kemeja & mutiara' },
-              ].map((swatch, idx) => (
-                <div 
-                  key={idx}
-                  onClick={() => {
-                    setSelectedSwatch(swatch.name);
-                    toast.info(`${swatch.name} (${swatch.hex}): ${swatch.desc}`);
-                  }}
-                  className="cursor-pointer group flex flex-col items-center p-2.5 rounded-2xl bg-white/90 border border-[#ECC880] hover:border-[#8C6D2B] transition-all hover:scale-105 shadow-sm"
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
+            </ScrollReveal>
+
+            {/* Gender Tab Switcher */}
+            <ScrollReveal animation="fade-up" delay={150}>
+              <div className="relative z-10 flex items-center justify-center gap-2 mb-6">
+                <button
+                  type="button"
+                  onClick={() => setAttireGender('gentlemen')}
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
+                    attireGender === 'gentlemen'
+                      ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880]'
+                      : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
+                  }`}
                 >
-                  <div 
-                    className="w-10 h-10 rounded-full border-2 border-[#ECC880] shadow-md mb-1.5 transition-transform group-hover:scale-110"
-                    style={{ backgroundColor: swatch.hex }}
-                  />
-                  <span className="font-serif text-[10px] text-[#103023] font-bold block truncate max-w-full">
-                    {swatch.name}
-                  </span>
-                  <span className="font-mono text-[8px] text-[#8C6D2B] font-semibold">
-                    {swatch.hex}
-                  </span>
+                  <User size={14} />
+                  <span>Tamu Pria (Gentlemen)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAttireGender('ladies')}
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
+                    attireGender === 'ladies'
+                      ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880]'
+                      : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
+                  }`}
+                >
+                  <Users size={14} />
+                  <span>Tamu Wanita (Ladies)</span>
+                </button>
+              </div>
+            </ScrollReveal>
+
+            {/* Attire Guide Card */}
+            <ScrollReveal animation="fade-up" delay={200} duration={850}>
+              <div className="relative z-10 p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left max-w-md mx-auto shadow-xl mb-8 text-white overflow-hidden">
+                <GuillocheVelvetWatermark opacity={0.06} />
+
+                {attireGender === 'gentlemen' ? (
+                  <div className="space-y-4 relative z-10">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                        <Shirt size={17} />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
+                          Setelan Jas Formal / Batik Tulis Sutra
+                        </h4>
+                        <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                          Black tie tuxedo, formal suit berwarna emerald gelap atau hitam arang, atau kemeja batik tulis sutra motif klasik lengan panjang.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
+                      <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                        <Gem size={17} />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
+                          Aksesoris &amp; Sepatu
+                        </h4>
+                        <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                          Dasi kupu-kupu atau dasi sutra warna emas/champagne, serta sepatu pantofel formal berbahan kulit mengkilap.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4 relative z-10">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                        <Shirt size={17} />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
+                          Gaun Malam Velvet / Kebaya Mewah
+                        </h4>
+                        <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                          Evening gown berbahan beludru (velvet) emerald, gaun satin sutra elegan, atau kebaya modern bertabur payet benang emas.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
+                      <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                        <Sparkles size={17} />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
+                          Aksesoris &amp; Tata Rias
+                        </h4>
+                        <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                          Clutch bag bernuansa emas/emerald, perhiasan emas atau mutiara, serta sepatu heels atau selop pesta yang anggun.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Etiquette Alert */}
+                <div className="mt-4 pt-3 border-t border-[#ECC880]/20 flex items-center gap-2.5 text-[11px] text-[#ECC880] relative z-10">
+                  <Info size={14} className="flex-shrink-0 text-[#ECC880]" />
+                  <span>Dimohon tidak mengenakan busana dominan putih polos demi menghormati gaun pengantin.</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
+              </div>
+            </ScrollReveal>
+
+            {/* Interactive Official Color Palette Swatches */}
+            <ScrollReveal animation="zoom-in" delay={250}>
+              <div className="max-w-md mx-auto relative z-10">
+                <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
+                  ✦ PALET WARNA RESMI PERAYAAN ✦
+                </span>
+                <div className="grid grid-cols-4 gap-2.5">
+                  {[
+                    { hex: '#041610', name: 'Imperial Emerald', desc: 'Warna utama beludru pekat' },
+                    { hex: '#0D3B2E', name: 'Royal Pine', desc: 'Aksen hijau hutan bangsawan' },
+                    { hex: '#ECC880', name: '24K Gold', desc: 'Sentuhan bordir & perhiasan' },
+                    { hex: '#FDFBF7', name: 'Imperial Ivory', desc: 'Aksen sutra kemeja & mutiara' },
+                  ].map((swatch, idx) => (
+                    <div 
+                      key={idx}
+                      onClick={() => {
+                        setSelectedSwatch(swatch.name);
+                        toast.info(`${swatch.name} (${swatch.hex}): ${swatch.desc}`);
+                      }}
+                      className="cursor-pointer group flex flex-col items-center p-2.5 rounded-2xl bg-white/90 border border-[#ECC880] hover:border-[#8C6D2B] transition-all hover:scale-105 shadow-sm"
+                    >
+                      <div 
+                        className="w-10 h-10 rounded-full border-2 border-[#ECC880] shadow-md mb-1.5 transition-transform group-hover:scale-110"
+                        style={{ backgroundColor: swatch.hex }}
+                      />
+                      <span className="font-serif text-[10px] text-[#103023] font-bold block truncate max-w-full">
+                        {swatch.name}
+                      </span>
+                      <span className="font-mono text-[8px] text-[#8C6D2B] font-semibold">
+                        {swatch.hex}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollReveal>
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* VVIP CONCIERGE & VALET SERVICE SECTION                                    */}
         {/* ========================================================================= */}
-        <section id="concierge" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          <GuillocheParchmentWatermark opacity={0.08} />
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="concierge" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-            <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>FASILITAS SULTAN &amp; LAYANAN KHUSUS</span>
-          </div>
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>FASILITAS SULTAN &amp; LAYANAN KHUSUS</span>
+              </div>
 
-          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-            Layanan &amp; Protokol Tamu VVIP
-          </h2>
+              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+                Layanan &amp; Protokol Tamu VVIP
+              </h2>
 
-          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-            Sebagai tamu kehormatan, Anda berhak menikmati serangkaian fasilitas eksklusif yang telah disiapkan khusus oleh keluarga kedua mempelai.
-          </p>
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+                Sebagai tamu kehormatan, Anda berhak menikmati serangkaian fasilitas eksklusif yang telah disiapkan khusus oleh keluarga kedua mempelai.
+              </p>
 
-          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+            </ScrollReveal>
 
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-md sm:max-w-xl mx-auto mb-8 text-left">
-            {/* Perk 1: Valet */}
-            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white">
-              <GuillocheVelvetWatermark opacity={0.06} />
-              <div className="relative z-10">
-                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
-                  <Car size={18} />
+            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-md sm:max-w-xl mx-auto mb-8 text-left">
+              {/* Perk 1: Valet */}
+              <ScrollReveal animation="fade-up" delay={150}>
+                <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white h-full">
+                  <GuillocheVelvetWatermark opacity={0.06} />
+                  <div className="relative z-10">
+                    <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
+                      <Car size={18} />
+                    </div>
+                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
+                      Valet Parking Gratis
+                    </h4>
+                    <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
+                      Layanan parkir valet khusus tanpa biaya di Lobby Barat. Tunjukkan tiket VIP QR Pass Anda kepada petugas.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
+                    ✓ Bebas Antrean Parkir
+                  </div>
                 </div>
-                <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
-                  Valet Parking Gratis
-                </h4>
-                <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
-                  Layanan parkir valet khusus tanpa biaya di Lobby Barat. Tunjukkan tiket VIP QR Pass Anda kepada petugas.
-                </p>
-              </div>
-              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
-                ✓ Bebas Antrean Parkir
-              </div>
+              </ScrollReveal>
+
+              {/* Perk 2: Private Table */}
+              <ScrollReveal animation="fade-up" delay={250}>
+                <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white h-full">
+                  <GuillocheVelvetWatermark opacity={0.06} />
+                  <div className="relative z-10">
+                    <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
+                      <Crown size={18} />
+                    </div>
+                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
+                      Royal Table 01
+                    </h4>
+                    <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
+                      Tempat duduk sofa VIP di baris utama dengan layanan hidangan pribadi oleh waiter &amp; butler pesta.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
+                    ✓ Emerald Suite Table
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              {/* Perk 3: Fast-Track QR */}
+              <ScrollReveal animation="fade-up" delay={350}>
+                <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white h-full">
+                  <GuillocheVelvetWatermark opacity={0.06} />
+                  <div className="relative z-10">
+                    <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
+                      <QrCode size={18} />
+                    </div>
+                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
+                      Fast-Track Presensi
+                    </h4>
+                    <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
+                      Pintu masuk prioritas dengan pemindaian barcode instan untuk pengambilan souvenir dan pengantaran ke meja tamu.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
+                    ✓ Pintu Masuk Barat VVIP
+                  </div>
+                </div>
+              </ScrollReveal>
             </div>
 
-            {/* Perk 2: Private Table */}
-            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white">
-              <GuillocheVelvetWatermark opacity={0.06} />
-              <div className="relative z-10">
-                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
-                  <Crown size={18} />
-                </div>
-                <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
-                  Royal Table 01
-                </h4>
-                <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
-                  Tempat duduk sofa VIP di baris utama dengan layanan hidangan pribadi oleh waiter &amp; butler pesta.
-                </p>
+            {/* Concierge Action Buttons */}
+            <ScrollReveal animation="fade-up" delay={400}>
+              <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto">
+                <a
+                  href="https://maps.google.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
+                >
+                  <Navigation size={14} />
+                  <span>Rute Jalur Drop-Off VVIP</span>
+                </a>
+                <a
+                  href={`https://wa.me/6285707909415?text=${encodeURIComponent(`Halo Concierge Wedding Steven & Bunga, saya ${guestName} ingin menanyakan info perihal kedatangan tamu VVIP.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/60 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors"
+                >
+                  <MessageCircle size={14} />
+                  <span>Hubungi Concierge Tamu</span>
+                </a>
               </div>
-              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
-                ✓ Emerald Suite Table
-              </div>
-            </div>
-
-            {/* Perk 3: Fast-Track QR */}
-            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white">
-              <GuillocheVelvetWatermark opacity={0.06} />
-              <div className="relative z-10">
-                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
-                  <QrCode size={18} />
-                </div>
-                <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
-                  Fast-Track Presensi
-                </h4>
-                <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
-                  Pintu masuk prioritas dengan pemindaian barcode instan untuk pengambilan souvenir dan pengantaran ke meja tamu.
-                </p>
-              </div>
-              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
-                ✓ Pintu Masuk Barat VVIP
-              </div>
-            </div>
-          </div>
-
-          {/* Concierge Action Buttons */}
-          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto">
-            <a
-              href="https://maps.google.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
-            >
-              <Navigation size={14} />
-              <span>Rute Jalur Drop-Off VVIP</span>
-            </a>
-            <a
-              href={`https://wa.me/6285707909415?text=${encodeURIComponent(`Halo Concierge Wedding Steven & Bunga, saya ${guestName} ingin menanyakan info perihal kedatangan tamu VVIP.`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/60 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors"
-            >
-              <MessageCircle size={14} />
-              <span>Hubungi Concierge Tamu</span>
-            </a>
-          </div>
-        </section>
+            </ScrollReveal>
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 4. INTERACTIVE LOVE STORY JOURNEY (Royal Illuminated Chronicle)            */}
         {/* ========================================================================= */}
-        <section id="story" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          <GuillocheParchmentWatermark opacity={0.08} />
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="story" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-            <Heart className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>OUR LOVE CHRONICLE</span>
-          </div>
-
-          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-            Kisah Cinta &amp; Janji Abadi
-          </h2>
-
-          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-            Perjalanan dua jiwa yang dipertemukan takdir dan dipersatukan dalam ikatan suci pernikahan.
-          </p>
-
-          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
-
-          <div className="space-y-6 max-w-md mx-auto text-left relative z-10">
-            {displayStories.map((st, idx) => (
-              <div key={idx} className="relative p-5 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] flex flex-col sm:flex-row gap-4 items-center sm:items-start shadow-xl text-white overflow-hidden">
-                <GuillocheVelvetWatermark opacity={0.06} />
-
-                {st.image_url && (
-                  <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-[#ECC880]/70 flex-shrink-0 shadow-md relative z-10">
-                    <img src={st.image_url} alt={st.title} className="w-full h-full object-cover" />
-                  </div>
-                )}
-                <div className="relative z-10">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[9.5px] font-serif font-bold tracking-widest text-[#ECC880] uppercase mb-1.5 border border-[#ECC880]/40">
-                    <Crown size={11} className="text-[#ECC880]" />
-                    <span>{st.date}</span>
-                  </div>
-                  <h3 className="font-serif text-base font-bold text-[#FFF8E2] mb-1.5">
-                    {st.title}
-                  </h3>
-                  <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
-                    {st.story}
-                  </p>
-                </div>
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Heart className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>OUR LOVE CHRONICLE</span>
               </div>
-            ))}
-          </div>
-        </section>
+
+              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+                Kisah Cinta &amp; Janji Abadi
+              </h2>
+
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+                Perjalanan dua jiwa yang dipertemukan takdir dan dipersatukan dalam ikatan suci pernikahan.
+              </p>
+
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+            </ScrollReveal>
+
+            <div className="space-y-6 max-w-md mx-auto text-left relative z-10">
+              {displayStories.map((st, idx) => (
+                <ScrollReveal key={idx} animation="fade-up" delay={idx * 140} duration={850}>
+                  <div className="relative p-5 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] flex flex-col sm:flex-row gap-4 items-center sm:items-start shadow-xl text-white overflow-hidden">
+                    <GuillocheVelvetWatermark opacity={0.06} />
+
+                    {st.image_url && (
+                      <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-[#ECC880]/70 flex-shrink-0 shadow-md relative z-10">
+                        <img src={st.image_url} alt={st.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    <div className="relative z-10">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[9.5px] font-serif font-bold tracking-widest text-[#ECC880] uppercase mb-1.5 border border-[#ECC880]/40">
+                        <Crown size={11} className="text-[#ECC880]" />
+                        <span>{st.date}</span>
+                      </div>
+                      <h3 className="font-serif text-base font-bold text-[#FFF8E2] mb-1.5">
+                        {st.title}
+                      </h3>
+                      <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
+                        {st.story}
+                      </p>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 5. PHOTO MASONRY GALLERY & FULL LIGHTBOX                                */}
         {/* ========================================================================= */}
-        <section id="gallery" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          <GuillocheParchmentWatermark opacity={0.08} />
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="gallery" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>MOMEN BAHAGIA</span>
-          </div>
-
-          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-            Galeri Momen Berharga
-          </h2>
-
-          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-            Potret kebahagiaan dan kehangatan romansa cinta kami yang terabadikan abadi.
-          </p>
-
-          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
-
-          {/* Gallery Category Tabs */}
-          <div className="relative z-10 flex items-center justify-center gap-1.5 max-w-sm mx-auto mb-6 flex-wrap">
-            {[
-              { id: 'all', label: 'Semua' },
-              { id: 'prewedding', label: 'Prewedding' },
-              { id: 'ceremony', label: 'Seremonial' },
-              { id: 'reception', label: 'Romansa' },
-            ].map(tab => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveGalleryTab(tab.id as any)}
-                className={`px-3.5 py-1.5 rounded-full text-[11px] font-serif transition-all cursor-pointer shadow-xs ${
-                  activeGalleryTab === tab.id
-                    ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
-                    : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Photo Masonry Grid */}
-          <div className="relative z-10 grid grid-cols-2 gap-3 max-w-lg mx-auto">
-            {displayGallery.map((img, idx) => (
-              <div 
-                key={idx}
-                onClick={() => setSelectedPhoto(img.image_url)}
-                className={`relative group rounded-2xl overflow-hidden border-2 border-[#ECC880]/70 cursor-pointer shadow-lg aspect-[3/4] ${
-                  idx % 3 === 0 ? 'col-span-2 aspect-[16/10]' : ''
-                }`}
-              >
-                <img 
-                  src={img.image_url} 
-                  alt={img.caption || `Galeri ${idx + 1}`} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                  <span className="text-xs text-[#FFF8E2] font-serif italic truncate">
-                    {img.caption || 'Steven & Bunga'}
-                  </span>
-                </div>
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>MOMEN BAHAGIA</span>
               </div>
-            ))}
-          </div>
-        </section>
+
+              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+                Galeri Momen Berharga
+              </h2>
+
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+                Potret kebahagiaan dan kehangatan romansa cinta kami yang terabadikan abadi.
+              </p>
+
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
+            </ScrollReveal>
+
+            {/* Gallery Category Tabs */}
+            <ScrollReveal animation="fade-down" delay={150}>
+              <div className="relative z-10 flex items-center justify-center gap-1.5 max-w-sm mx-auto mb-6 flex-wrap">
+                {[
+                  { id: 'all', label: 'Semua' },
+                  { id: 'prewedding', label: 'Prewedding' },
+                  { id: 'ceremony', label: 'Seremonial' },
+                  { id: 'reception', label: 'Romansa' },
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActiveGalleryTab(tab.id as any)}
+                    className={`px-3.5 py-1.5 rounded-full text-[11px] font-serif transition-all cursor-pointer shadow-xs ${
+                      activeGalleryTab === tab.id
+                        ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
+                        : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </ScrollReveal>
+
+            {/* Photo Masonry Grid */}
+            <div className="relative z-10 grid grid-cols-2 gap-3 max-w-lg mx-auto">
+              {displayGallery.map((img, idx) => (
+                <ScrollReveal key={idx} animation="zoom-in" delay={(idx % 4) * 80} duration={750}>
+                  <div 
+                    onClick={() => setSelectedPhoto(img.image_url)}
+                    className={`relative group rounded-2xl overflow-hidden border-2 border-[#ECC880]/70 cursor-pointer shadow-lg aspect-[3/4] ${
+                      idx % 3 === 0 ? 'col-span-2 aspect-[16/10]' : ''
+                    }`}
+                  >
+                    <img 
+                      src={img.image_url} 
+                      alt={img.caption || `Galeri ${idx + 1}`} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                      <span className="text-xs text-[#FFF8E2] font-serif italic truncate">
+                        {img.caption || 'Steven & Bunga'}
+                      </span>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </section>
+        </ScrollReveal>
 
         {/* Lightbox Modal */}
         {selectedPhoto && (
@@ -1432,427 +1700,461 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* BESPOKE ROYAL SOUVENIR PREVIEW                                            */}
         {/* ========================================================================= */}
-        <section id="souvenir" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          <GuillocheParchmentWatermark opacity={0.08} />
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="souvenir" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-            <Gift className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>CINDERAMATA EKSKLUSIF</span>
-          </div>
-
-          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-            Royal Wedding Favors
-          </h2>
-
-          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-            Sebagai wujud penghargaan atas kehadiran Anda, sebuah kenang-kenangan eksklusif berukir monogram resmi kedua mempelai telah disiapkan di meja registrasi.
-          </p>
-
-          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
-
-          <div className="p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-md mx-auto text-left shadow-xl relative overflow-hidden text-white">
-            <GuillocheVelvetWatermark opacity={0.06} />
-
-            <div className="flex flex-col sm:flex-row items-center gap-5 relative z-10">
-              <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#ECC880]/20 to-[#041610] border-2 border-[#ECC880] flex flex-col items-center justify-center flex-shrink-0 shadow-inner">
-                <Crown className="w-10 h-10 text-[#ECC880] mb-1" />
-                <span className="font-serif text-[10px] font-bold text-[#ECC880] tracking-widest uppercase">
-                  SULTAN GIFT
-                </span>
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Gift className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>CINDERAMATA EKSKLUSIF</span>
               </div>
 
-              <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] text-[9.5px] font-serif font-semibold mb-2 border border-[#ECC880]/40">
-                  <Star size={10} className="fill-[#ECC880]" />
-                  <span>Limited Edition Keepsake</span>
+              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+                Royal Wedding Favors
+              </h2>
+
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+                Sebagai wujud penghargaan atas kehadiran Anda, sebuah kenang-kenangan eksklusif berukir monogram resmi kedua mempelai telah disiapkan di meja registrasi.
+              </p>
+
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+            </ScrollReveal>
+
+            <ScrollReveal animation="zoom-in" delay={180} duration={850}>
+              <div className="p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-md mx-auto text-left shadow-xl relative overflow-hidden text-white">
+                <GuillocheVelvetWatermark opacity={0.06} />
+
+                <div className="flex flex-col sm:flex-row items-center gap-5 relative z-10">
+                  <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#ECC880]/20 to-[#041610] border-2 border-[#ECC880] flex flex-col items-center justify-center flex-shrink-0 shadow-inner">
+                    <Crown className="w-10 h-10 text-[#ECC880] mb-1" />
+                    <span className="font-serif text-[10px] font-bold text-[#ECC880] tracking-widest uppercase">
+                      SULTAN GIFT
+                    </span>
+                  </div>
+
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] text-[9.5px] font-serif font-semibold mb-2 border border-[#ECC880]/40">
+                      <Star size={10} className="fill-[#ECC880]" />
+                      <span>Limited Edition Keepsake</span>
+                    </div>
+                    <h4 className="font-serif text-base font-bold text-[#FFF8E2] mb-1.5">
+                      Bespoke Scented Wax Diffuser &amp; Royal Monogram Box
+                    </h4>
+                    <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
+                      Aromaterapi beraroma kayu cendana &amp; melati keraton khas Jawa dalam kotak beludru hijau zamrud dengan cap segel emas Steven &amp; Bunga.
+                    </p>
+                  </div>
                 </div>
-                <h4 className="font-serif text-base font-bold text-[#FFF8E2] mb-1.5">
-                  Bespoke Scented Wax Diffuser &amp; Royal Monogram Box
-                </h4>
-                <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
-                  Aromaterapi beraroma kayu cendana &amp; melati keraton khas Jawa dalam kotak beludru hijau zamrud dengan cap segel emas Steven &amp; Bunga.
-                </p>
-              </div>
-            </div>
 
-            <div className="mt-5 pt-3 border-t border-[#ECC880]/20 flex items-center justify-between text-[11px] text-[#ECC880] relative z-10 font-serif">
-              <span>Pengambilan: VVIP Reception Desk</span>
-              <span className="font-bold">1 Tamu = 1 Gift Box</span>
-            </div>
-          </div>
-        </section>
+                <div className="mt-5 pt-3 border-t border-[#ECC880]/20 flex items-center justify-between text-[11px] text-[#ECC880] relative z-10 font-serif">
+                  <span>Pengambilan: VVIP Reception Desk</span>
+                  <span className="font-bold">1 Tamu = 1 Gift Box</span>
+                </div>
+              </div>
+            </ScrollReveal>
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 6. WEDDING GIFT & EMV SMART DEBIT CARD                                   */}
         {/* ========================================================================= */}
-        <section id="gift" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          <GuillocheParchmentWatermark opacity={0.08} />
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="gift" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-            <Gift className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>TANDA KASIH &amp; KADO DIGITAL</span>
-          </div>
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Gift className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>TANDA KASIH &amp; KADO DIGITAL</span>
+              </div>
 
-          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-            Amplop Digital &amp; Hadiah
-          </h2>
+              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+                Amplop Digital &amp; Hadiah
+              </h2>
 
-          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-            Doa restu Anda merupakan karunia terindah bagi kami. Namun jika Anda hendak memberikan tanda kasih, dapat melalui rekening eksklusif di bawah ini.
-          </p>
-
-          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
-
-          {/* Tab Selector */}
-          <div className="relative z-10 flex items-center justify-center gap-2 mb-8">
-            <button
-              type="button"
-              onClick={() => setGiftTab('transfer')}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
-                giftTab === 'transfer'
-                  ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
-                  : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
-              }`}
-            >
-              <CreditCard size={14} />
-              <span>Transfer Bank &amp; QRIS</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setGiftTab('physical')}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
-                giftTab === 'physical'
-                  ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
-                  : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
-              }`}
-            >
-              <Package size={14} />
-              <span>Kirim Kado Fisik</span>
-            </button>
-          </div>
-
-          {giftTab === 'transfer' ? (
-            <div className="space-y-6 max-w-sm mx-auto relative z-10">
-              {displayGifts.map((gift, idx) => (
-                <div 
-                  key={idx}
-                  className="relative p-6 rounded-3xl bg-gradient-to-br from-[#0c3324] via-[#08261a] to-[#041610] border-2 border-[#ECC880] shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(236,200,128,0.25)] text-left overflow-hidden text-white"
-                >
-                  <GuillocheVelvetWatermark opacity={0.08} />
-
-                  {/* Header Card: Bank & Chip */}
-                  <div className="flex items-center justify-between mb-6 relative z-10">
-                    <div className="flex items-center gap-2">
-                      <span className="font-serif font-bold text-lg tracking-wider text-[#FFF8E2]">
-                        {gift.bank_name}
-                      </span>
-                      <span className="text-[9px] tracking-widest font-mono uppercase px-2 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] border border-[#ECC880]/40">
-                        PRIORITY
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <Wifi size={16} className="text-[#ECC880] rotate-90 opacity-80" />
-                      <EMVGoldSmartChip />
-                    </div>
-                  </div>
-
-                  {/* Card Number */}
-                  <div className="mb-4 relative z-10">
-                    <span className="text-[10px] font-serif uppercase tracking-widest text-[#ECC880]/80 block">
-                      NOMOR REKENING PRIORITAS
-                    </span>
-                    <div className="font-mono text-xl sm:text-2xl font-bold tracking-widest text-[#FFF8E2] mt-0.5">
-                      {gift.account_number}
-                    </div>
-                  </div>
-
-                  {/* Card Holder & Copy Button */}
-                  <div className="flex items-center justify-between pt-3 border-t border-[#ECC880]/20 relative z-10">
-                    <div>
-                      <span className="text-[9px] font-sans uppercase tracking-wider text-[#A0C4B4] block">
-                        ATAS NAMA
-                      </span>
-                      <span className="font-serif text-xs font-semibold text-white">
-                        {gift.account_name}
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(gift.account_number.replace(/\s+/g, ''), gift.id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[11px] font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
-                    >
-                      {isCopied === gift.id ? (
-                        <>
-                          <Check size={12} className="text-[#041610]" />
-                          <span>Tersalin</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy size={12} className="text-[#041610]" />
-                          <span>Salin No. Rek</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="relative z-10 p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-sm mx-auto text-center shadow-xl text-white">
-              <Package className="w-8 h-8 text-[#ECC880] mx-auto mb-3" />
-              <h4 className="font-serif text-base font-bold text-[#FFF8E2] mb-1">
-                Alamat Kirim Hadiah Fisik
-              </h4>
-              <p className="text-xs text-[#A0C4B4] leading-relaxed mb-4 font-sans">
-                {couple?.gift_address || 'Jl. Slamet Riyadi No. 120, Solo, Jawa Tengah (Kediaman Mempelai)'}
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+                Doa restu Anda merupakan karunia terindah bagi kami. Namun jika Anda hendak memberikan tanda kasih, dapat melalui rekening eksklusif di bawah ini.
               </p>
-              <button
-                type="button"
-                onClick={() => handleCopy(couple?.gift_address || 'Jl. Slamet Riyadi No. 120, Solo, Jawa Tengah', 'addr')}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all cursor-pointer shadow-md"
-              >
-                {isCopied === 'addr' ? <Check size={14} /> : <Copy size={14} />}
-                <span>{isCopied === 'addr' ? 'Alamat Tersalin' : 'Salin Alamat Lengkap'}</span>
-              </button>
-            </div>
-          )}
-        </section>
+
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
+            </ScrollReveal>
+
+            {/* Tab Selector */}
+            <ScrollReveal animation="fade-up" delay={150}>
+              <div className="relative z-10 flex items-center justify-center gap-2 mb-8">
+                <button
+                  type="button"
+                  onClick={() => setGiftTab('transfer')}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
+                    giftTab === 'transfer'
+                      ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
+                      : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
+                  }`}
+                >
+                  <CreditCard size={14} />
+                  <span>Transfer Bank &amp; QRIS</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setGiftTab('physical')}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
+                    giftTab === 'physical'
+                      ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
+                      : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
+                  }`}
+                >
+                  <Package size={14} />
+                  <span>Kirim Kado Fisik</span>
+                </button>
+              </div>
+            </ScrollReveal>
+
+            {giftTab === 'transfer' ? (
+              <div className="space-y-6 max-w-sm mx-auto relative z-10">
+                {displayGifts.map((gift, idx) => (
+                  <ScrollReveal key={idx} animation="zoom-in" delay={idx * 150} duration={850}>
+                    <div className="relative p-6 rounded-3xl bg-gradient-to-br from-[#0c3324] via-[#08261a] to-[#041610] border-2 border-[#ECC880] shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(236,200,128,0.25)] text-left overflow-hidden text-white hover:scale-[1.02] transition-transform">
+                      <GuillocheVelvetWatermark opacity={0.08} />
+
+                      {/* Header Card: Bank & Chip */}
+                      <div className="flex items-center justify-between mb-6 relative z-10">
+                        <div className="flex items-center gap-2">
+                          <span className="font-serif font-bold text-lg tracking-wider text-[#FFF8E2]">
+                            {gift.bank_name}
+                          </span>
+                          <span className="text-[9px] tracking-widest font-mono uppercase px-2 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] border border-[#ECC880]/40">
+                            PRIORITY
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2.5">
+                          <Wifi size={16} className="text-[#ECC880] rotate-90 opacity-80" />
+                          <EMVGoldSmartChip />
+                        </div>
+                      </div>
+
+                      {/* Card Number */}
+                      <div className="mb-4 relative z-10">
+                        <span className="text-[10px] font-serif uppercase tracking-widest text-[#ECC880]/80 block">
+                          NOMOR REKENING PRIORITAS
+                        </span>
+                        <div className="font-mono text-xl sm:text-2xl font-bold tracking-widest text-[#FFF8E2] mt-0.5">
+                          {gift.account_number}
+                        </div>
+                      </div>
+
+                      {/* Card Holder & Copy Button */}
+                      <div className="flex items-center justify-between pt-3 border-t border-[#ECC880]/20 relative z-10">
+                        <div>
+                          <span className="text-[9px] font-sans uppercase tracking-wider text-[#A0C4B4] block">
+                            ATAS NAMA
+                          </span>
+                          <span className="font-serif text-xs font-semibold text-white">
+                            {gift.account_name}
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(gift.account_number.replace(/\s+/g, ''), gift.id)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[11px] font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
+                        >
+                          {isCopied === gift.id ? (
+                            <>
+                              <Check size={12} className="text-[#041610]" />
+                              <span>Tersalin</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy size={12} className="text-[#041610]" />
+                              <span>Salin No. Rek</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            ) : (
+              <ScrollReveal animation="zoom-in" delay={150}>
+                <div className="relative z-10 p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-sm mx-auto text-center shadow-xl text-white">
+                  <Package className="w-8 h-8 text-[#ECC880] mx-auto mb-3" />
+                  <h4 className="font-serif text-base font-bold text-[#FFF8E2] mb-1">
+                    Alamat Kirim Hadiah Fisik
+                  </h4>
+                  <p className="text-xs text-[#A0C4B4] leading-relaxed mb-4 font-sans">
+                    {couple?.gift_address || 'Jl. Slamet Riyadi No. 120, Solo, Jawa Tengah (Kediaman Mempelai)'}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(couple?.gift_address || 'Jl. Slamet Riyadi No. 120, Solo, Jawa Tengah', 'addr')}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all cursor-pointer shadow-md"
+                  >
+                    {isCopied === 'addr' ? <Check size={14} /> : <Copy size={14} />}
+                    <span>{isCopied === 'addr' ? 'Alamat Tersalin' : 'Salin Alamat Lengkap'}</span>
+                  </button>
+                </div>
+              </ScrollReveal>
+            )}
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 7. VIP GUEST CHECK-IN PASS & RSVP LIVE WISHES                           */}
         {/* ========================================================================= */}
-        <section id="pass" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-          <GuillocheParchmentWatermark opacity={0.08} />
-          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-          <EmeraldGoldCorner size={56} color="#ECC880" />
+        <ScrollReveal animation="arch-reveal" duration={950}>
+          <section id="pass" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-            <QrCode className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>VIP PASS &amp; CHECK-IN PRESENSI</span>
-          </div>
-
-          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-            Konfirmasi Kehadiran &amp; Tiket VIP
-          </h2>
-
-          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-            Sistem otomatis menerbitkan <strong>Tiket QR Resmi</strong> untuk discan petugas saat tiba di lokasi resepsi.
-          </p>
-
-          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
-
-          {/* Toggle View Pass Ticket */}
-          <div className="mb-6 relative z-10">
-            <button
-              type="button"
-              onClick={() => setShowBarcodePreview(prev => !prev)}
-              className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-serif font-bold tracking-wider uppercase bg-[#041610] hover:bg-[#08261C] text-[#ECC880] border border-[#ECC880]/60 transition-colors cursor-pointer shadow-md"
-            >
-              <QrCode size={14} />
-              <span>{activeBarcodePass ? (showBarcodePreview && !savedPass ? 'Tutup Tiket' : 'Tampilkan Tiket VIP Pass') : 'Lihat Contoh Tiket VIP'}</span>
-            </button>
-          </div>
-
-          {/* VIP GUEST VERIFIED PASS CARD */}
-          {activeBarcodePass && (
-            <div className="relative bg-gradient-to-br from-[#0c3324] via-[#072017] to-[#041610] text-white p-6 sm:p-8 rounded-[32px] border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(236,200,128,0.35)] mb-10 text-center overflow-hidden max-w-sm mx-auto z-10">
-              <EmeraldGoldCorner size={28} color="#ECC880" />
-              <GuillocheVelvetWatermark opacity={0.09} />
-
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ECC880]/20 text-[10px] text-[#ECC880] mb-3 border border-[#ECC880]/50">
-                <Crown size={12} className="text-[#ECC880]" />
-                <span className="font-serif tracking-widest font-bold uppercase">
-                  ROYAL VIP ACCESS PASS
-                </span>
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <QrCode className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>VIP PASS &amp; CHECK-IN PRESENSI</span>
               </div>
 
-              <h3 className="font-serif text-xl font-bold text-white mb-1">
-                {activeBarcodePass.name}
-              </h3>
+              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+                Konfirmasi Kehadiran &amp; Tiket VIP
+              </h2>
 
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-sans font-semibold my-2 bg-emerald-950/90 text-emerald-200 border border-emerald-400/50">
-                <span>✓ Terkonfirmasi Hadir ({activeBarcodePass.guests || 1} Tamu)</span>
-              </div>
-
-              <p className="text-[11px] text-[#ECC880] mb-3 font-serif">
-                Grand Ballroom Sahara Hotel • Solo
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+                Sistem otomatis menerbitkan <strong>Tiket QR Resmi</strong> untuk discan petugas saat tiba di lokasi resepsi.
               </p>
 
-              {/* Sultan VVIP Seating & Gate Info */}
-              <div className="grid grid-cols-2 gap-2 my-3 max-w-xs mx-auto text-left">
-                <div className="p-2 rounded-xl bg-[#041610]/80 border border-[#ECC880]/30 shadow-inner">
-                  <span className="text-[8px] text-[#A0C4B4] block uppercase font-sans">Meja Jamuan</span>
-                  <span className="text-[11px] font-serif font-bold text-[#ECC880] truncate block">Table 01 - Emerald</span>
-                </div>
-                <div className="p-2 rounded-xl bg-[#041610]/80 border border-[#ECC880]/30 shadow-inner">
-                  <span className="text-[8px] text-[#A0C4B4] block uppercase font-sans">Pintu Akses</span>
-                  <span className="text-[11px] font-serif font-bold text-[#ECC880] truncate block">Lobby Barat Valet</span>
-                </div>
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
+            </ScrollReveal>
+
+            {/* Toggle View Pass Ticket */}
+            <ScrollReveal animation="fade-up" delay={150}>
+              <div className="mb-6 relative z-10">
+                <button
+                  type="button"
+                  onClick={() => setShowBarcodePreview(prev => !prev)}
+                  className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-serif font-bold tracking-wider uppercase bg-[#041610] hover:bg-[#08261C] text-[#ECC880] border border-[#ECC880]/60 transition-colors cursor-pointer shadow-md"
+                >
+                  <QrCode size={14} />
+                  <span>{activeBarcodePass ? (showBarcodePreview && !savedPass ? 'Tutup Tiket' : 'Tampilkan Tiket VIP Pass') : 'Lihat Contoh Tiket VIP'}</span>
+                </button>
               </div>
+            </ScrollReveal>
 
-              {/* QR Code Graphic */}
-              <div className="w-36 h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-[#ECC880] shadow-md flex items-center justify-center my-3">
-                <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'EMERALD'}|GUEST:${activeBarcodePass.name}|ATT:attending|CODE:${activeBarcodePass.code}`)}`}
-                  alt="QR Code Tiket"
-                  className="w-full h-full object-contain"
-                />
-              </div>
+            {/* VIP GUEST VERIFIED PASS CARD */}
+            {activeBarcodePass && (
+              <ScrollReveal animation="zoom-in" delay={180} duration={850}>
+                <div className="relative bg-gradient-to-br from-[#0c3324] via-[#072017] to-[#041610] text-white p-6 sm:p-8 rounded-[32px] border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(236,200,128,0.35)] mb-10 text-center overflow-hidden max-w-sm mx-auto z-10">
+                  <EmeraldGoldCorner size={28} color="#ECC880" />
+                  <GuillocheVelvetWatermark opacity={0.09} />
 
-              <span className="font-mono text-xs text-[#ECC880] tracking-widest block mb-4">
-                {activeBarcodePass.code}
-              </span>
-
-              <button
-                type="button"
-                onClick={handleSavePass}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
-              >
-                <Download size={14} />
-                <span>Simpan Tiket ke Galeri</span>
-              </button>
-            </div>
-          )}
-
-          {/* RSVP Submission Form */}
-          <form onSubmit={handleRsvpSubmit} className="relative z-10 max-w-md mx-auto p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left shadow-xl text-white">
-            <h4 className="font-serif text-lg font-bold text-[#FFF8E2] text-center mb-4">
-              Formulir RSVP Kehadiran
-            </h4>
-
-            <div className="mb-4">
-              <label className="text-xs font-serif text-[#ECC880] block mb-1">
-                Nama Lengkap Anda
-              </label>
-              <input 
-                type="text" 
-                value={rsvpName}
-                onChange={e => setRsvpName(e.target.value)}
-                placeholder="Masukkan nama lengkap..."
-                className="w-full px-4 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/40 text-white text-xs focus:outline-hidden focus:border-[#ECC880]"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="text-xs font-serif text-[#ECC880] block mb-1">
-                Konfirmasi Kehadiran
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { id: 'attending', label: 'Hadir' },
-                  { id: 'uncertain', label: 'Ragu-ragu' },
-                  { id: 'not_attending', label: 'Berhalangan' },
-                ].map(opt => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => setRsvpStatus(opt.id as any)}
-                    className={`py-2 rounded-xl text-xs font-serif transition-all cursor-pointer ${
-                      rsvpStatus === opt.id
-                        ? 'bg-[#ECC880] text-[#041610] font-bold shadow-xs'
-                        : 'bg-[#041610] text-[#A0C4B4] border border-[#ECC880]/30'
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-4">
-              <label className="text-xs font-serif text-[#ECC880] block mb-1">
-                Jumlah Tamu Hadir
-              </label>
-              <select
-                value={rsvpCount}
-                onChange={e => setRsvpCount(Number(e.target.value))}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/40 text-white text-xs focus:outline-hidden focus:border-[#ECC880]"
-              >
-                <option value={1}>1 Orang</option>
-                <option value={2}>2 Orang</option>
-                <option value={3}>3 Orang</option>
-                <option value={4}>4 Orang</option>
-              </select>
-            </div>
-
-            <div className="mb-5">
-              <label className="text-xs font-serif text-[#ECC880] block mb-1">
-                Ucapan Doa &amp; Harapan
-              </label>
-              <textarea
-                rows={3}
-                value={rsvpMessage}
-                onChange={e => setRsvpMessage(e.target.value)}
-                placeholder="Tuliskan ucapan dan doa restu untuk kedua mempelai..."
-                className="w-full px-4 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/40 text-white text-xs focus:outline-hidden focus:border-[#ECC880] resize-none"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmittingRsvp}
-              className="w-full py-3 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-            >
-              {isSubmittingRsvp ? (
-                <span>Mengirim Konfirmasi...</span>
-              ) : (
-                <>
-                  <Send size={14} />
-                  <span>Kirim Konfirmasi &amp; Terbitkan Tiket</span>
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Live Guestbook Wishes List */}
-          <div className="mt-10 max-w-md mx-auto text-left relative z-10">
-            <h4 className="font-serif text-base font-bold text-[#103023] mb-4 flex items-center gap-2">
-              <MessageCircle size={16} className="text-[#8C6D2B]" />
-              <span>Untaian Doa &amp; Ucapan ({wishes.length})</span>
-            </h4>
-
-            <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
-              {wishes.map(w => (
-                <div key={w.id} className="p-4 rounded-2xl bg-white/90 border border-[#ECC880]/60 text-xs shadow-xs">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-serif font-bold text-[#103023] text-sm">
-                      {w.name}
-                    </span>
-                    <span className="text-[10px] text-[#5B7569]">
-                      {w.date}
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ECC880]/20 text-[10px] text-[#ECC880] mb-3 border border-[#ECC880]/50">
+                    <Crown size={12} className="text-[#ECC880]" />
+                    <span className="font-serif tracking-widest font-bold uppercase">
+                      ROYAL VIP ACCESS PASS
                     </span>
                   </div>
-                  <p className="text-[#364B42] leading-relaxed font-sans">
-                    {w.message}
+
+                  <h3 className="font-serif text-xl font-bold text-white mb-1">
+                    {activeBarcodePass.name}
+                  </h3>
+
+                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-sans font-semibold my-2 bg-emerald-950/90 text-emerald-200 border border-emerald-400/50">
+                    <span>✓ Terkonfirmasi Hadir ({activeBarcodePass.guests || 1} Tamu)</span>
+                  </div>
+
+                  <p className="text-[11px] text-[#ECC880] mb-3 font-serif">
+                    Grand Ballroom Sahara Hotel • Solo
                   </p>
+
+                  {/* Sultan VVIP Seating & Gate Info */}
+                  <div className="grid grid-cols-2 gap-2 my-3 max-w-xs mx-auto text-left">
+                    <div className="p-2 rounded-xl bg-[#041610]/80 border border-[#ECC880]/30 shadow-inner">
+                      <span className="text-[8px] text-[#A0C4B4] block uppercase font-sans">Meja Jamuan</span>
+                      <span className="text-[11px] font-serif font-bold text-[#ECC880] truncate block">Table 01 - Emerald</span>
+                    </div>
+                    <div className="p-2 rounded-xl bg-[#041610]/80 border border-[#ECC880]/30 shadow-inner">
+                      <span className="text-[8px] text-[#A0C4B4] block uppercase font-sans">Pintu Akses</span>
+                      <span className="text-[11px] font-serif font-bold text-[#ECC880] truncate block">Lobby Barat Valet</span>
+                    </div>
+                  </div>
+
+                  {/* QR Code Graphic with Laser Scanline Animation */}
+                  <div className="relative w-36 h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-[#ECC880] shadow-md flex items-center justify-center my-3 overflow-hidden">
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'EMERALD'}|GUEST:${activeBarcodePass.name}|ATT:attending|CODE:${activeBarcodePass.code}`)}`}
+                      alt="QR Code Tiket"
+                      className="w-full h-full object-contain"
+                    />
+                    {/* Laser Scanline */}
+                    <div 
+                      className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent pointer-events-none"
+                      style={{ animation: 'cardScanline 2.5s ease-in-out infinite' }}
+                    />
+                  </div>
+
+                  <span className="font-mono text-xs text-[#ECC880] tracking-widest block mb-4">
+                    {activeBarcodePass.code}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={handleSavePass}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
+                  >
+                    <Download size={14} />
+                    <span>Simpan Tiket ke Galeri</span>
+                  </button>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
+              </ScrollReveal>
+            )}
+
+            {/* RSVP Submission Form */}
+            <ScrollReveal animation="fade-up" delay={200} duration={850}>
+              <form onSubmit={handleRsvpSubmit} className="relative z-10 max-w-md mx-auto p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left shadow-xl text-white">
+                <h4 className="font-serif text-lg font-bold text-[#FFF8E2] text-center mb-4">
+                  Formulir RSVP Kehadiran
+                </h4>
+
+                <div className="mb-4">
+                  <label className="text-xs font-serif text-[#ECC880] block mb-1">
+                    Nama Lengkap Anda
+                  </label>
+                  <input 
+                    type="text" 
+                    value={rsvpName}
+                    onChange={e => setRsvpName(e.target.value)}
+                    placeholder="Masukkan nama lengkap..."
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/40 text-white text-xs focus:outline-hidden focus:border-[#ECC880]"
+                    required
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-xs font-serif text-[#ECC880] block mb-1">
+                    Konfirmasi Kehadiran
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: 'attending', label: 'Hadir' },
+                      { id: 'uncertain', label: 'Ragu-ragu' },
+                      { id: 'not_attending', label: 'Berhalangan' },
+                    ].map(opt => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setRsvpStatus(opt.id as any)}
+                        className={`py-2 rounded-xl text-xs font-serif transition-all cursor-pointer ${
+                          rsvpStatus === opt.id
+                            ? 'bg-[#ECC880] text-[#041610] font-bold shadow-xs'
+                            : 'bg-[#041610] text-[#A0C4B4] border border-[#ECC880]/30'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-xs font-serif text-[#ECC880] block mb-1">
+                    Jumlah Tamu Hadir
+                  </label>
+                  <select
+                    value={rsvpCount}
+                    onChange={e => setRsvpCount(Number(e.target.value))}
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/40 text-white text-xs focus:outline-hidden focus:border-[#ECC880]"
+                  >
+                    <option value={1}>1 Orang</option>
+                    <option value={2}>2 Orang</option>
+                    <option value={3}>3 Orang</option>
+                    <option value={4}>4 Orang</option>
+                  </select>
+                </div>
+
+                <div className="mb-5">
+                  <label className="text-xs font-serif text-[#ECC880] block mb-1">
+                    Ucapan Doa &amp; Harapan
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={rsvpMessage}
+                    onChange={e => setRsvpMessage(e.target.value)}
+                    placeholder="Tuliskan ucapan dan doa restu untuk kedua mempelai..."
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/40 text-white text-xs focus:outline-hidden focus:border-[#ECC880] resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmittingRsvp}
+                  className="w-full py-3 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {isSubmittingRsvp ? (
+                    <span>Mengirim Konfirmasi...</span>
+                  ) : (
+                    <>
+                      <Send size={14} />
+                      <span>Kirim Konfirmasi &amp; Terbitkan Tiket</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            </ScrollReveal>
+
+            {/* Live Guestbook Wishes List */}
+            <ScrollReveal animation="fade-up" delay={250}>
+              <div className="mt-10 max-w-md mx-auto text-left relative z-10">
+                <h4 className="font-serif text-base font-bold text-[#103023] mb-4 flex items-center gap-2">
+                  <MessageCircle size={16} className="text-[#8C6D2B]" />
+                  <span>Untaian Doa &amp; Ucapan ({wishes.length})</span>
+                </h4>
+
+                <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
+                  {wishes.map((w, idx) => (
+                    <ScrollReveal key={w.id} animation="fade-up" delay={(idx % 4) * 60}>
+                      <div className="p-4 rounded-2xl bg-white/90 border border-[#ECC880]/60 text-xs shadow-xs">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="font-serif font-bold text-[#103023] text-sm">
+                            {w.name}
+                          </span>
+                          <span className="text-[10px] text-[#5B7569]">
+                            {w.date}
+                          </span>
+                        </div>
+                        <p className="text-[#364B42] leading-relaxed font-sans">
+                          {w.message}
+                        </p>
+                      </div>
+                    </ScrollReveal>
+                  ))}
+                </div>
+              </div>
+            </ScrollReveal>
+          </section>
+        </ScrollReveal>
 
         {/* ========================================================================= */}
         {/* 8. CLOSING & FOOTER                                                      */}
         {/* ========================================================================= */}
-        <footer className="text-center py-8">
-          <EmeraldRoyalCrest initials={coupleInitials} size="sm" className="mb-3" />
-          <p className="font-serif text-sm text-[#A0C4B4] italic max-w-sm mx-auto mb-2">
-            Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
-          </p>
-          <div className="font-serif text-lg font-bold text-[#FFF8E2] mt-3">
-            {groomName} &amp; {brideName}
-          </div>
-          <span className="text-[10px] font-serif tracking-[0.2em] text-[#ECC880]/70 uppercase block mt-1">
-            WD DIGITAL INVITATION • MASTERPIECE ROYAL EDITION
-          </span>
-        </footer>
+        <ScrollReveal animation="fade-up" duration={900}>
+          <footer className="text-center py-8">
+            <EmeraldRoyalCrest initials={coupleInitials} size="sm" className="mb-3" />
+            <p className="font-serif text-sm text-[#A0C4B4] italic max-w-sm mx-auto mb-2">
+              Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
+            </p>
+            <div className="font-serif text-lg font-bold text-[#FFF8E2] mt-3">
+              {groomName} &amp; {brideName}
+            </div>
+            <span className="text-[10px] font-serif tracking-[0.2em] text-[#ECC880]/70 uppercase block mt-1">
+              WD DIGITAL INVITATION • MASTERPIECE ROYAL EDITION
+            </span>
+          </footer>
+        </ScrollReveal>
 
         </main>
       </div>
