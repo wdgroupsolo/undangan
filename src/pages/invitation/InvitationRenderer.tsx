@@ -524,7 +524,7 @@ export const InvitationRenderer: React.FC = () => {
       animTimeoutRef.current = null;
     }
     setIsVideoExiting(true);
-    const exitDelay = isNirwanaSarangan ? 150 : 1000;
+    const exitDelay = (isNirwanaSarangan || isEmeraldVelvet) ? 180 : 1000;
     setTimeout(() => {
       setOpeningStage('opened');
       setIsVideoExiting(false);
