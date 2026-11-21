@@ -2281,8 +2281,8 @@ export const InvitationRenderer: React.FC = () => {
           </div>
         </div>
         ) : isEmeraldVelvet ? (
-          /* Royal Emerald Velvet Masterpiece Cover */
-          <div className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none bg-[#041610] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          /* Royal Emerald Velvet Masterpiece Cover - Split Desktop Card (Right 58%/50% on Desktop, 100% on Mobile) */
+          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#ECC880]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#041610] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             {/* Desktop Scenic Background - Velvet Ballroom Panorama */}
             <div className="absolute inset-0 z-0 pointer-events-none">
               <img 

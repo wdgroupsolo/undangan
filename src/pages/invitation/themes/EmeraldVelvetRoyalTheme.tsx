@@ -173,6 +173,188 @@ export const EmeraldRoyalCrest: React.FC<{ initials: string; size?: 'sm' | 'md' 
   );
 };
 
+// Banknote Guilloché Rosette Parchment Watermark for Warm Ivory Cards
+export const GuillocheParchmentWatermark: React.FC<{ opacity?: number; className?: string }> = ({
+  opacity = 0.08,
+  className = ''
+}) => (
+  <div 
+    className={`absolute inset-0 pointer-events-none overflow-hidden rounded-3xl select-none z-0 ${className}`}
+    style={{ opacity }}
+  >
+    <svg viewBox="0 0 400 600" fill="none" className="w-full h-full text-[#C5A059]">
+      <g stroke="currentColor" strokeWidth="0.8">
+        <circle cx="200" cy="300" r="140" strokeDasharray="3 3" />
+        <circle cx="200" cy="300" r="110" />
+        <circle cx="200" cy="300" r="80" strokeDasharray="4 2" />
+        <circle cx="200" cy="300" r="50" />
+        <ellipse cx="200" cy="300" rx="90" ry="30" transform="rotate(0 200 300)" />
+        <ellipse cx="200" cy="300" rx="90" ry="30" transform="rotate(30 200 300)" />
+        <ellipse cx="200" cy="300" rx="90" ry="30" transform="rotate(60 200 300)" />
+        <ellipse cx="200" cy="300" rx="90" ry="30" transform="rotate(90 200 300)" />
+        <ellipse cx="200" cy="300" rx="90" ry="30" transform="rotate(120 200 300)" />
+        <ellipse cx="200" cy="300" rx="90" ry="30" transform="rotate(150 200 300)" />
+        <path d="M40 80 Q200 20 360 80" strokeWidth="1" />
+        <path d="M40 520 Q200 580 360 520" strokeWidth="1" />
+      </g>
+    </svg>
+  </div>
+);
+
+// Royal Calligraphic Flourish Underline (Symmetrical Spiraling Ribbon with Diamond Jewel)
+export const RoyalCalligraphicDivider: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`flex items-center justify-center w-full max-w-[280px] mx-auto select-none ${className}`}>
+    <svg viewBox="0 0 280 28" fill="none" className="w-full h-auto drop-shadow-xs">
+      <defs>
+        <linearGradient id="calliGoldGradEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FFFDF2" />
+          <stop offset="30%" stopColor="#E8CD8C" />
+          <stop offset="70%" stopColor="#ECC880" />
+          <stop offset="100%" stopColor="#8C6D2B" />
+        </linearGradient>
+      </defs>
+      {/* Center 4-Point Diamond Jewel */}
+      <path d="M140 6 L143.5 14 L140 22 L136.5 14 Z" fill="url(#calliGoldGradEmerald)" />
+      <circle cx="140" cy="14" r="1.5" fill="#FFFDF5" />
+      <circle cx="130" cy="14" r="1.8" fill="url(#calliGoldGradEmerald)" />
+      <circle cx="150" cy="14" r="1.8" fill="url(#calliGoldGradEmerald)" />
+
+      {/* Left Calligraphic Swirl */}
+      <path d="M124 14 C105 14, 85 8, 65 14 C52 18, 44 12, 38 6 C32 0, 24 4, 26 12 C28 20, 38 22, 48 18 C60 14, 75 16, 95 14" stroke="url(#calliGoldGradEmerald)" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="28" cy="10" r="1.5" fill="url(#calliGoldGradEmerald)" />
+      <path d="M20 14 L6 14" stroke="url(#calliGoldGradEmerald)" strokeWidth="0.8" strokeLinecap="round" />
+      <circle cx="2" cy="14" r="1.2" fill="url(#calliGoldGradEmerald)" />
+
+      {/* Right Calligraphic Swirl */}
+      <path d="M156 14 C175 14, 195 8, 215 14 C228 18, 236 12, 242 6 C248 0, 256 4, 254 12 C252 20, 242 22, 232 18 C220 14, 205 16, 185 14" stroke="url(#calliGoldGradEmerald)" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="252" cy="10" r="1.5" fill="url(#calliGoldGradEmerald)" />
+      <path d="M260 14 L274 14" stroke="url(#calliGoldGradEmerald)" strokeWidth="0.8" strokeLinecap="round" />
+      <circle cx="278" cy="14" r="1.2" fill="url(#calliGoldGradEmerald)" />
+    </svg>
+  </div>
+);
+
+// Imperial Royal Emerald & 24K Gold Monogram Wax Seal with Sculpted Laurel Wreath & Crown
+export const EmeraldRoyalWaxSeal: React.FC<{ initials: string; size?: 'sm' | 'md' | 'lg'; showWreath?: boolean }> = ({ 
+  initials, 
+  size = 'md',
+  showWreath = true 
+}) => {
+  const dim = size === 'sm' ? 'w-13 h-13 text-sm' : size === 'lg' ? 'w-22 h-22 text-2xl' : 'w-18 h-18 text-xl';
+  return (
+    <div className="relative inline-flex items-center justify-center select-none my-3 group">
+      {/* Outer Golden Aura Halo */}
+      <div className="absolute -inset-3 rounded-full bg-gradient-to-r from-[#ECC880]/25 via-[#FFE7A8]/30 to-[#ECC880]/25 blur-xl animate-pulse pointer-events-none" />
+      
+      {/* Handcrafted Sculpted Laurel Wreath with Crown Pediment */}
+      {showWreath && (
+        <div className="absolute -inset-6 sm:-inset-7 pointer-events-none z-0">
+          <svg viewBox="0 0 140 140" fill="none" className="w-full h-full opacity-90">
+            <defs>
+              <linearGradient id="emeraldWreathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FFF9E8" />
+                <stop offset="25%" stopColor="#E2C792" />
+                <stop offset="65%" stopColor="#ECC880" />
+                <stop offset="100%" stopColor="#8C6D2B" />
+              </linearGradient>
+            </defs>
+
+            {/* Top Crown Pediment */}
+            <g transform="translate(56, 4) scale(0.7)">
+              <path d="M5 24 L8 9 L17 19 L25 4 L33 19 L42 9 L45 24 Z" fill="url(#emeraldWreathGrad)" stroke="#8C6D2B" strokeWidth="0.8" />
+              <circle cx="25" cy="4" r="2.5" fill="#FFF9E8" />
+              <circle cx="8" cy="9" r="2" fill="#FFF9E8" />
+              <circle cx="42" cy="9" r="2" fill="#FFF9E8" />
+              <rect x="5" y="24" width="40" height="3" rx="1.5" fill="url(#emeraldWreathGrad)" />
+            </g>
+
+            {/* Left Laurel Branch */}
+            <g>
+              <path d="M70 128 C45 125, 20 102, 22 68 C24 45, 38 28, 55 18" stroke="url(#emeraldWreathGrad)" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M22 68 C14 62, 10 50, 15 44 C20 48, 22 58, 22 68 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M22 68 C26 58, 32 50, 36 55 C32 62, 26 66, 22 68 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
+              <path d="M28 88 C18 84, 14 74, 18 68 C24 72, 26 80, 28 88 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M28 88 C32 80, 38 72, 42 77 C38 83, 32 87, 28 88 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
+              <path d="M38 106 C28 104, 24 96, 28 90 C34 94, 36 100, 38 106 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M38 106 C42 98, 48 92, 52 96 C48 102, 42 105, 38 106 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
+              <path d="M53 120 C43 120, 38 114, 42 108 C48 112, 50 116, 53 120 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M26 48 C22 38, 24 28, 30 24 C34 30, 32 40, 26 48 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M38 34 C34 24, 38 16, 44 14 C46 22, 42 30, 38 34 Z" fill="url(#emeraldWreathGrad)" />
+            </g>
+
+            {/* Right Laurel Branch */}
+            <g transform="translate(140, 0) scale(-1, 1)">
+              <path d="M70 128 C45 125, 20 102, 22 68 C24 45, 38 28, 55 18" stroke="url(#emeraldWreathGrad)" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M22 68 C14 62, 10 50, 15 44 C20 48, 22 58, 22 68 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M22 68 C26 58, 32 50, 36 55 C32 62, 26 66, 22 68 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
+              <path d="M28 88 C18 84, 14 74, 18 68 C24 72, 26 80, 28 88 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M28 88 C32 80, 38 72, 42 77 C38 83, 32 87, 28 88 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
+              <path d="M38 106 C28 104, 24 96, 28 90 C34 94, 36 100, 38 106 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M38 106 C42 98, 48 92, 52 96 C48 102, 42 105, 38 106 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
+              <path d="M53 120 C43 120, 38 114, 42 108 C48 112, 50 116, 53 120 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M26 48 C22 38, 24 28, 30 24 C34 30, 32 40, 26 48 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M38 34 C34 24, 38 16, 44 14 C46 22, 42 30, 38 34 Z" fill="url(#emeraldWreathGrad)" />
+            </g>
+
+            {/* Bottom Silk Ribbon Knot */}
+            <g transform="translate(62, 122)">
+              <ellipse cx="8" cy="4" rx="4" ry="3" fill="url(#emeraldWreathGrad)" />
+              <path d="M4 4 C-2 7, -8 12, -7 16 C-2 15, 2 8, 4 4 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M12 4 C18 7, 24 12, 23 16 C18 15, 14 8, 12 4 Z" fill="url(#emeraldWreathGrad)" />
+            </g>
+          </svg>
+        </div>
+      )}
+
+      {/* Realistic 3D Hot-Wax Stamped Disc (Emerald Velvet Tone) */}
+      <div className={`${dim} rounded-full bg-gradient-to-br from-[#1E5243] via-[#12352B] to-[#0A1F18] shadow-[0_12px_32px_rgba(4,22,16,0.65),inset_0_2px_5px_rgba(255,255,255,0.4),inset_0_-4px_8px_rgba(0,0,0,0.8)] flex items-center justify-center border-2 border-[#ECC880]/80 relative transition-transform duration-500 group-hover:scale-105 z-10`}>
+        {/* Inner Debossed 24K Gold Rope Ring */}
+        <div className="w-[80%] h-[80%] rounded-full border border-dashed border-[#ECC880]/80 shadow-[inset_0_3px_6px_rgba(0,0,0,0.75)] flex items-center justify-center bg-[#071F17]/95">
+          <div className="w-[88%] h-[88%] rounded-full border border-[#ECC880]/40 flex items-center justify-center">
+            <span className="font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] via-[#ECC880] to-[#B89045] tracking-widest drop-shadow-[0_2px_3px_rgba(0,0,0,0.95)]">
+              {initials}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Royal Gilded Botanical Arch Garland
+export const GildedEmeraldAcanthusFlourish: React.FC<{ side: 'left' | 'right'; className?: string }> = ({ side, className = '' }) => {
+  const isRight = side === 'right';
+  return (
+    <div 
+      className={`absolute top-0 ${isRight ? '-right-6 sm:-right-8 scale-x-[-1]' : '-left-6 sm:-left-8'} pointer-events-none z-25 w-20 sm:w-26 h-36 sm:h-46 ${className}`}
+      style={{
+        filter: 'drop-shadow(0 6px 14px rgba(4, 22, 16, 0.35))',
+        animation: `royalBranchSway ${isRight ? '8s' : '7s'} ease-in-out infinite alternate`,
+      }}
+    >
+      <svg viewBox="0 0 90 150" fill="none" className="w-full h-full">
+        <defs>
+          <linearGradient id={`emeraldGoldLeaf_${side}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFF9E8" />
+            <stop offset="30%" stopColor="#E5CBA0" />
+            <stop offset="70%" stopColor="#ECC880" />
+            <stop offset="100%" stopColor="#8C6D2B" />
+          </linearGradient>
+        </defs>
+        <path d="M10 145 C18 100, 38 55, 78 12" stroke={`url(#emeraldGoldLeaf_${side})`} strokeWidth="2.8" strokeLinecap="round" />
+        <g>
+          <path d="M78 12 C85 6, 88 1, 90 0 C87 6, 83 14, 78 12 Z" fill={`url(#emeraldGoldLeaf_${side})`} />
+          <path d="M78 12 C72 5, 65 3, 60 4 C66 7, 73 10, 78 12 Z" fill={`url(#emeraldGoldLeaf_${side})`} opacity="0.95" />
+          <path d="M68 32 C78 24, 88 23, 90 26 C84 31, 74 34, 68 32 Z" fill={`url(#emeraldGoldLeaf_${side})`} />
+          <path d="M68 32 C76 36, 82 43, 84 50 C78 46, 72 40, 68 32 Z" fill={`url(#emeraldGoldLeaf_${side})`} opacity="0.9" />
+          <circle cx="71" cy="27" r="2.5" fill="#FFF9E8" stroke="#8C6D2B" strokeWidth="0.5" />
+          <circle cx="76" cy="30" r="2" fill="#ECC880" />
+        </g>
+      </svg>
+    </div>
+  );
+};
+
 export interface EmeraldVelvetRoyalThemeProps {
   invitation: any;
   couple: any;
@@ -451,6 +633,21 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         <FloatingEmeraldStardust count={20} />
       </div>
 
+      <style>{`
+        @keyframes royalBranchSway {
+          0% { transform: rotate(0deg) translateY(0px); }
+          100% { transform: rotate(1.8deg) translateY(-2px); }
+        }
+        @keyframes goldShimmerSweep {
+          0% { transform: translateX(-150%) skewX(-20deg); }
+          40%, 100% { transform: translateX(350%) skewX(-20deg); }
+        }
+        @keyframes ambientAuraPulse {
+          0%, 100% { transform: scale(1); opacity: 0.12; }
+          50% { transform: scale(1.15); opacity: 0.28; }
+        }
+      `}</style>
+
       {/* DESKTOP SPLIT LAYOUT CONTAINER */}
       <div className="flex flex-col lg:flex-row min-h-screen">
 
@@ -542,67 +739,95 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen bg-[#041610] relative z-10 px-4 sm:px-8 xl:px-12 py-8 pb-36">
         
         {/* ========================================================================= */}
-        {/* 1. HERO COVER SECTION                                                    */}
+        {/* 1. HERO COVER SECTION (Warm Imperial Ivory & 24K Gold Folio)            */}
         {/* ========================================================================= */}
-        <section id="cover" className="relative text-center py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={36} color="#ECC880" />
-          
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-6">
-            <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
-            <span>ROYAL WEDDING CELEBRATION</span>
-            <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
+        <section id="cover" className="relative text-center py-10 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 max-w-2xl mx-auto">
+          {/* Tactile Banknote Guilloché Watermark */}
+          <GuillocheParchmentWatermark opacity={0.08} />
+
+          {/* Inset Gold Dashed & Hairline Frames */}
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <div className="absolute inset-5 sm:inset-6 rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
+
+          {/* Gilded Victorian Acanthus Corners */}
+          <EmeraldGoldCorner size={56} color="#ECC880" />
+
+          {/* Gold Shimmer Sweep Light Animation */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[36px]">
+            <div 
+              className="absolute inset-y-0 w-36 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none -translate-x-full"
+              style={{ animation: 'goldShimmerSweep 6s ease-in-out infinite' }}
+            />
           </div>
 
-          <EmeraldRoyalCrest initials={coupleInitials} size="lg" className="my-4" />
+          {/* 3D Sculpted Emerald & Gold Wax Seal Monogram */}
+          <div className="relative z-10 my-2">
+            <EmeraldRoyalWaxSeal initials={coupleInitials} size="md" showWreath={true} />
+          </div>
 
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E2] via-[#ECC880] to-[#E2C792] drop-shadow-md mt-4">
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.3em] uppercase font-serif font-bold shadow-xs mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
+            <span>THE ROYAL SACRED CELEBRATION</span>
+            <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
+          </div>
+
+          {/* Couple Arch Portrait with Flanking Gilded Botanical Flourishes */}
+          <div className="relative w-48 h-64 sm:w-56 sm:h-74 mx-auto my-5 z-10">
+            <GildedEmeraldAcanthusFlourish side="left" />
+            <GildedEmeraldAcanthusFlourish side="right" />
+
+            <div className="w-full h-full rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B] shadow-[0_20px_50px_rgba(4,22,16,0.35)] group">
+              <div className="w-full h-full rounded-t-full rounded-b-xl overflow-hidden relative">
+                <img 
+                  src={couple?.cover_photo_url || couple?.cover_photo || '/photos/photo-3.jpg'} 
+                  alt={`${groomName} & ${brideName}`} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/70 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 ring-1 ring-inset ring-[#ECC880]/50 rounded-t-full rounded-b-xl pointer-events-none" />
+              </div>
+            </div>
+          </div>
+
+          {/* Grand Couple Headline in Rich Emerald Foil Gradient */}
+          <h1 className="relative z-10 font-serif text-3xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-[#1C4736] via-[#103023] to-[#081F16] drop-shadow-xs mt-3">
             {groomName} &amp; {brideName}
           </h1>
 
-          <p className="font-serif italic text-sm text-[#A0C4B4] mt-3">
-            Senin, 12 Oktober 2026
+          <p className="relative z-10 font-serif italic text-sm text-[#5B7569] mt-2 font-medium">
+            Senin, 12 Oktober 2026 • Grand Ballroom Sahara
           </p>
 
-          {/* Couple Arch Portrait in Right Folio Cover */}
-          <div className="relative w-44 h-60 sm:w-52 sm:h-68 mx-auto my-6 rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] p-1 bg-gradient-to-b from-[#ECC880]/40 via-[#ECC880]/10 to-[#041610] shadow-[0_15px_35px_rgba(0,0,0,0.7)] group">
-            <div className="w-full h-full rounded-t-full rounded-b-xl overflow-hidden relative">
-              <img 
-                src={couple?.cover_photo_url || couple?.cover_photo || '/photos/photo-3.jpg'} 
-                alt={`${groomName} & ${brideName}`} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/80 via-transparent to-transparent pointer-events-none" />
-            </div>
-          </div>
+          <RoyalCalligraphicDivider className="my-3 relative z-10" />
 
-          {/* Guest Greeting Card */}
-          <div className="mt-8 mx-auto max-w-sm p-4 rounded-2xl bg-[#041610]/90 border border-[#ECC880]/40 shadow-inner text-center">
-            <span className="text-[10px] tracking-widest uppercase font-serif text-[#A0C4B4]">
+          {/* VIP Guest Invitation Cartouche on Ivory */}
+          <div className="relative z-10 my-4 mx-auto max-w-sm p-4 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/60 shadow-xs text-center">
+            <span className="text-[10px] tracking-widest uppercase font-serif text-[#8C6D2B] font-semibold block">
               KEPADA YTH. BAPAK/IBU/SAUDARA/I :
             </span>
-            <div className="text-lg font-serif font-bold text-white mt-1 drop-shadow-xs">
+            <div className="text-lg font-serif font-bold text-[#103023] mt-1">
               {guestName}
             </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#ECC880]/15 text-[#ECC880] text-[10px] font-serif font-semibold mt-2 border border-[#ECC880]/30">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#103023] text-[#ECC880] text-[10px] font-serif font-bold mt-2 border border-[#ECC880]/50 shadow-xs">
               <Crown className="w-3 h-3 text-[#ECC880]" />
               <span>Tamu Undangan VIP</span>
             </div>
           </div>
 
-          {/* Live Countdown Timer 4-Tile */}
-          <div className="mt-8 pt-6 border-t border-[#ECC880]/20">
-            <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#ECC880] block mb-3 font-semibold">
-              HITUNG MUNDUR HARI BAHAGIA
+          {/* Opulent 24K Royal Chronometer Vault */}
+          <div className="relative z-10 mt-6 pt-5 border-t border-[#ECC880]/30 max-w-md mx-auto">
+            <span className="text-[10px] tracking-[0.25em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
+              HITUNG MUNDUR MENUJU HARI SAKRAL
             </span>
-            <div className="grid grid-cols-4 gap-2 max-w-xs mx-auto">
+            <div className="grid grid-cols-4 gap-2.5">
               {[
                 { label: 'HARI', val: timeLeft.days },
                 { label: 'JAM', val: timeLeft.hours },
                 { label: 'MENIT', val: timeLeft.minutes },
                 { label: 'DETIK', val: timeLeft.seconds },
               ].map((tile, idx) => (
-                <div key={idx} className="bg-[#051C14] rounded-xl p-2 border border-[#ECC880]/30 text-center shadow-xs">
-                  <span className="font-serif text-xl sm:text-2xl font-bold text-[#FFF8E2] block leading-tight">
+                <div key={idx} className="bg-gradient-to-br from-[#0C241B] via-[#071912] to-[#04120D] rounded-2xl p-2.5 border border-[#ECC880]/60 text-center shadow-md">
+                  <span className="font-serif text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] to-[#ECC880] block leading-tight">
                     {String(tile.val).padStart(2, '0')}
                   </span>
                   <span className="text-[8px] font-sans tracking-widest text-[#ECC880] uppercase">
@@ -615,29 +840,46 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         </section>
 
         {/* ========================================================================= */}
-        {/* 2. COUPLE PRESENTATION SECTION                                           */}
+        {/* 2. COUPLE PRESENTATION SECTION (Royal Illuminated Diptych)               */}
         {/* ========================================================================= */}
-        <section id="couple" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="couple" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          <GuillocheParchmentWatermark opacity={0.08} />
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          {/* Ayat / Holy Verse */}
-          <div className="max-w-md mx-auto mb-10">
-            <p className="font-serif italic text-xs sm:text-sm text-[#ECC880] leading-relaxed">
+          {/* Gilded Bismillah Cartouche */}
+          <div className="relative z-10 inline-block my-2">
+            <div className="px-6 sm:px-8 py-3 rounded-full bg-gradient-to-r from-[#0C241B] via-[#163D2E] to-[#0C241B] border-2 border-[#ECC880] shadow-md flex items-center justify-center">
+              <span className="text-xl sm:text-2xl font-serif text-[#FFF8E2] tracking-widest">
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+              </span>
+            </div>
+          </div>
+
+          {/* Ayat Panel */}
+          <div className="max-w-md mx-auto my-6 p-5 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/50 relative z-10">
+            <p className="font-serif italic text-xs sm:text-sm text-[#15382B] leading-relaxed">
               &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.&rdquo;
             </p>
-            <span className="text-[10px] font-serif tracking-widest text-[#A0C4B4] uppercase block mt-2 font-bold">
+            <span className="text-[10px] font-serif tracking-widest text-[#8C6D2B] uppercase block mt-2 font-bold">
               (QS. AR-RUM : 21)
             </span>
           </div>
 
-          <div className="space-y-8">
+          <RoyalCalligraphicDivider className="my-4 relative z-10" />
+
+          {/* Couple Diptych Showcase */}
+          <div className="space-y-6 max-w-md mx-auto relative z-10 mt-6">
             {/* Groom Card */}
-            <div className="relative p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 max-w-md mx-auto shadow-md">
-              <div className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-lg mb-4">
-                <img src={groomPhoto} alt={groomName} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/80 via-transparent to-transparent" />
+            <div className="relative p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-lg overflow-hidden">
+              <GuillocheVelvetWatermark opacity={0.06} />
+              <div className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]">
+                <img src={groomPhoto} alt={groomName} className="w-full h-full object-cover rounded-t-full rounded-b-xl" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-[#FFF8E2]">
+              <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
+                MEMPELAI PRIA
+              </span>
+              <h3 className="font-serif text-2xl font-bold text-[#FFF8E2]">
                 {groomFullName}
               </h3>
               <p className="text-xs text-[#A0C4B4] mt-1 font-sans">
@@ -648,7 +890,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   href={`https://instagram.com/${couple.groom_instagram.replace('@', '')}`}
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ECC880]/15 hover:bg-[#ECC880]/30 text-[#ECC880] text-[11px] font-sans font-medium mt-3 border border-[#ECC880]/40 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-[11px] font-sans font-bold mt-3 shadow-xs transition-colors"
                 >
                   <InstagramIcon size={13} />
                   <span>{couple.groom_instagram}</span>
@@ -656,19 +898,23 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               )}
             </div>
 
+            {/* Heart Divider */}
             <div className="flex items-center justify-center gap-3 my-2 text-[#ECC880]">
               <div className="w-16 h-px bg-gradient-to-r from-transparent to-[#ECC880]" />
-              <Heart className="w-5 h-5 text-[#ECC880] fill-[#ECC880]/30" />
+              <Heart className="w-6 h-6 text-[#ECC880] fill-[#ECC880]/30" />
               <div className="w-16 h-px bg-gradient-to-l from-transparent to-[#ECC880]" />
             </div>
 
             {/* Bride Card */}
-            <div className="relative p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 max-w-md mx-auto shadow-md">
-              <div className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-lg mb-4">
-                <img src={bridePhoto} alt={brideName} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/80 via-transparent to-transparent" />
+            <div className="relative p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-lg overflow-hidden">
+              <GuillocheVelvetWatermark opacity={0.06} />
+              <div className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]">
+                <img src={bridePhoto} alt={brideName} className="w-full h-full object-cover rounded-t-full rounded-b-xl" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-[#FFF8E2]">
+              <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
+                MEMPELAI WANITA
+              </span>
+              <h3 className="font-serif text-2xl font-bold text-[#FFF8E2]">
                 {brideFullName}
               </h3>
               <p className="text-xs text-[#A0C4B4] mt-1 font-sans">
@@ -679,7 +925,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   href={`https://instagram.com/${couple.bride_instagram.replace('@', '')}`}
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ECC880]/15 hover:bg-[#ECC880]/30 text-[#ECC880] text-[11px] font-sans font-medium mt-3 border border-[#ECC880]/40 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-[11px] font-sans font-bold mt-3 shadow-xs transition-colors"
                 >
                   <InstagramIcon size={13} />
                   <span>{couple.bride_instagram}</span>
@@ -690,32 +936,40 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         </section>
 
         {/* ========================================================================= */}
-        {/* 3. EVENT AGENDA SECTION                                                  */}
+        {/* 3. EVENT AGENDA SECTION (Royal Banquet Decree)                           */}
         {/* ========================================================================= */}
-        <section id="event" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="event" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          <GuillocheParchmentWatermark opacity={0.08} />
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
-            <Calendar className="w-3.5 h-3.5 text-[#ECC880]" />
-            <span>RANGKAIAN ACARA</span>
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <Calendar className="w-3.5 h-3.5 text-[#C5A059]" />
+            <span>ROYAL BANQUET DECREE</span>
           </div>
 
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-8">
-            Waktu &amp; Tempat Resepsi
+          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+            Rangkaian Acara Sakral
           </h2>
+          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-6">
+            Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada prosesi sakral kami.
+          </p>
 
-          <div className="space-y-6 max-w-md mx-auto">
+          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+
+          <div className="space-y-6 max-w-md mx-auto relative z-10">
             {displayEvents.map((ev, idx) => (
-              <div key={idx} className="p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 text-center relative overflow-hidden shadow-md">
-                <div className="absolute top-0 right-0 px-4 py-1 rounded-bl-xl bg-[#ECC880]/20 border-b border-l border-[#ECC880]/40 text-[#ECC880] text-[10px] font-serif font-bold uppercase">
+              <div key={idx} className="p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center relative overflow-hidden shadow-xl text-white">
+                <GuillocheVelvetWatermark opacity={0.06} />
+                <div className="absolute top-0 right-0 px-4 py-1 rounded-bl-xl bg-[#ECC880] text-[#041610] text-[10px] font-serif font-bold uppercase tracking-wider">
                   {ev.event_type}
                 </div>
 
-                <h3 className="font-serif text-xl font-bold text-[#ECC880] mt-2 mb-3">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#ECC880] mt-2 mb-3">
                   {ev.event_name}
                 </h3>
 
-                <div className="flex items-center justify-center gap-2 text-sm text-white/90 mb-1">
+                <div className="flex items-center justify-center gap-2 text-sm text-[#FFF8E2] mb-1 font-serif">
                   <Calendar className="w-4 h-4 text-[#ECC880]" />
                   <span>{ev.date}</span>
                 </div>
@@ -730,15 +984,15 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   {ev.address}
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5">
                   <a
                     href={ev.map_url || 'https://maps.google.com'}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-xs"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
                   >
                     <MapPin className="w-3.5 h-3.5" />
-                    <span>Petunjuk Lokasi</span>
+                    <span>Petunjuk Lokasi Maps</span>
                   </a>
 
                   <button
@@ -753,7 +1007,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                         endTime: ev.end_time
                       });
                     }}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/50 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/60 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors"
                   >
                     <Calendar className="w-3.5 h-3.5" />
                     <span>Simpan Kalender</span>
@@ -767,31 +1021,39 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* ROYAL DRESS CODE & PALETTE CONCIERGE                                      */}
         {/* ========================================================================= */}
-        <section id="dresscode" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="dresscode" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          {/* Tactile Banknote Guilloché Rosette */}
+          <GuillocheParchmentWatermark opacity={0.08} />
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
-            <Shirt className="w-3.5 h-3.5 text-[#ECC880]" />
+          {/* Inset Gold Dashed & Hairline Frames */}
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <div className="absolute inset-5 sm:inset-6 rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
+
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <Shirt className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>PANDUAN BUSANA RESMI</span>
           </div>
 
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-3">
+          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
             Royal Attire &amp; Dress Code
           </h2>
 
-          <p className="text-xs text-[#A0C4B4] max-w-md mx-auto mb-6 font-light">
+          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
             Untuk menyempurnakan suasana agung pesta malam kerajaan, kami mengundang para tamu kehormatan untuk mengenakan busana bertema <strong>Royal Black Tie &amp; Emerald Velvet</strong>.
           </p>
 
+          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
+
           {/* Gender Tab Switcher */}
-          <div className="flex items-center justify-center gap-2 mb-6">
+          <div className="relative z-10 flex items-center justify-center gap-2 mb-6">
             <button
               type="button"
               onClick={() => setAttireGender('gentlemen')}
-              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-serif font-bold transition-all cursor-pointer ${
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
                 attireGender === 'gentlemen'
-                  ? 'bg-[#ECC880] text-[#041610] shadow-md'
-                  : 'bg-[#051C14] text-[#A0C4B4] border border-[#ECC880]/30 hover:text-white'
+                  ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880]'
+                  : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
               }`}
             >
               <User size={14} />
@@ -800,10 +1062,10 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             <button
               type="button"
               onClick={() => setAttireGender('ladies')}
-              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-serif font-bold transition-all cursor-pointer ${
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
                 attireGender === 'ladies'
-                  ? 'bg-[#ECC880] text-[#041610] shadow-md'
-                  : 'bg-[#051C14] text-[#A0C4B4] border border-[#ECC880]/30 hover:text-white'
+                  ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880]'
+                  : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
               }`}
             >
               <Users size={14} />
@@ -812,15 +1074,17 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           </div>
 
           {/* Attire Guide Card */}
-          <div className="p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 text-left max-w-md mx-auto shadow-md mb-8">
+          <div className="relative z-10 p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left max-w-md mx-auto shadow-xl mb-8 text-white overflow-hidden">
+            <GuillocheVelvetWatermark opacity={0.06} />
+
             {attireGender === 'gentlemen' ? (
-              <div className="space-y-4">
+              <div className="space-y-4 relative z-10">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center flex-shrink-0 text-[#ECC880]">
-                    <Shirt size={16} />
+                  <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                    <Shirt size={17} />
                   </div>
                   <div>
-                    <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
                       Setelan Jas Formal / Batik Tulis Sutra
                     </h4>
                     <p className="text-xs text-[#A0C4B4] leading-relaxed">
@@ -830,11 +1094,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
 
                 <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
-                  <div className="w-8 h-8 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center flex-shrink-0 text-[#ECC880]">
-                    <Gem size={16} />
+                  <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                    <Gem size={17} />
                   </div>
                   <div>
-                    <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
                       Aksesoris &amp; Sepatu
                     </h4>
                     <p className="text-xs text-[#A0C4B4] leading-relaxed">
@@ -844,13 +1108,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-4 relative z-10">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center flex-shrink-0 text-[#ECC880]">
-                    <Shirt size={16} />
+                  <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                    <Shirt size={17} />
                   </div>
                   <div>
-                    <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
                       Gaun Malam Velvet / Kebaya Mewah
                     </h4>
                     <p className="text-xs text-[#A0C4B4] leading-relaxed">
@@ -860,11 +1124,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
 
                 <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
-                  <div className="w-8 h-8 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center flex-shrink-0 text-[#ECC880]">
-                    <Sparkles size={16} />
+                  <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                    <Sparkles size={17} />
                   </div>
                   <div>
-                    <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                    <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
                       Aksesoris &amp; Tata Rias
                     </h4>
                     <p className="text-xs text-[#A0C4B4] leading-relaxed">
@@ -876,16 +1140,16 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             )}
 
             {/* Etiquette Alert */}
-            <div className="mt-4 pt-3 border-t border-[#ECC880]/20 flex items-center gap-2.5 text-[11px] text-[#ECC880]">
-              <Info size={14} className="flex-shrink-0" />
+            <div className="mt-4 pt-3 border-t border-[#ECC880]/20 flex items-center gap-2.5 text-[11px] text-[#ECC880] relative z-10">
+              <Info size={14} className="flex-shrink-0 text-[#ECC880]" />
               <span>Dimohon tidak mengenakan busana dominan putih polos demi menghormati gaun pengantin.</span>
             </div>
           </div>
 
           {/* Interactive Official Color Palette Swatches */}
-          <div className="max-w-md mx-auto">
-            <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#ECC880] block mb-3 font-semibold">
-              PALET WARNA RESMI PERAYAAN
+          <div className="max-w-md mx-auto relative z-10">
+            <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
+              ✦ PALET WARNA RESMI PERAYAAN ✦
             </span>
             <div className="grid grid-cols-4 gap-2.5">
               {[
@@ -900,16 +1164,16 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     setSelectedSwatch(swatch.name);
                     toast.info(`${swatch.name} (${swatch.hex}): ${swatch.desc}`);
                   }}
-                  className="cursor-pointer group flex flex-col items-center p-2 rounded-2xl bg-[#051C14] border border-[#ECC880]/30 hover:border-[#ECC880] transition-all hover:scale-105 shadow-xs"
+                  className="cursor-pointer group flex flex-col items-center p-2.5 rounded-2xl bg-white/90 border border-[#ECC880] hover:border-[#8C6D2B] transition-all hover:scale-105 shadow-sm"
                 >
                   <div 
-                    className="w-10 h-10 rounded-full border-2 border-white/20 shadow-md mb-1.5 transition-transform group-hover:ring-2 ring-[#ECC880]"
+                    className="w-10 h-10 rounded-full border-2 border-[#ECC880] shadow-md mb-1.5 transition-transform group-hover:scale-110"
                     style={{ backgroundColor: swatch.hex }}
                   />
-                  <span className="font-serif text-[10px] text-white font-bold block truncate max-w-full">
+                  <span className="font-serif text-[10px] text-[#103023] font-bold block truncate max-w-full">
                     {swatch.name}
                   </span>
-                  <span className="font-mono text-[8px] text-[#ECC880]">
+                  <span className="font-mono text-[8px] text-[#8C6D2B] font-semibold">
                     {swatch.hex}
                   </span>
                 </div>
@@ -921,27 +1185,32 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* VVIP CONCIERGE & VALET SERVICE SECTION                                    */}
         {/* ========================================================================= */}
-        <section id="concierge" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="concierge" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          <GuillocheParchmentWatermark opacity={0.08} />
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
-            <Crown className="w-3.5 h-3.5 text-[#ECC880]" />
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>FASILITAS SULTAN &amp; LAYANAN KHUSUS</span>
           </div>
 
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-3">
+          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
             Layanan &amp; Protokol Tamu VVIP
           </h2>
 
-          <p className="text-xs text-[#A0C4B4] max-w-md mx-auto mb-8 font-light">
+          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
             Sebagai tamu kehormatan, Anda berhak menikmati serangkaian fasilitas eksklusif yang telah disiapkan khusus oleh keluarga kedua mempelai.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-md sm:max-w-xl mx-auto mb-8 text-left">
+          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-md sm:max-w-xl mx-auto mb-8 text-left">
             {/* Perk 1: Valet */}
-            <div className="p-4 rounded-2xl bg-[#051C14]/90 border border-[#ECC880]/40 shadow-sm relative overflow-hidden flex flex-col justify-between">
-              <div>
-                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center text-[#ECC880] mb-3">
+            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white">
+              <GuillocheVelvetWatermark opacity={0.06} />
+              <div className="relative z-10">
+                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
                   <Car size={18} />
                 </div>
                 <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
@@ -951,15 +1220,16 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   Layanan parkir valet khusus tanpa biaya di Lobby Barat. Tunjukkan tiket VIP QR Pass Anda kepada petugas.
                 </p>
               </div>
-              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold">
+              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
                 ✓ Bebas Antrean Parkir
               </div>
             </div>
 
             {/* Perk 2: Private Table */}
-            <div className="p-4 rounded-2xl bg-[#051C14]/90 border border-[#ECC880]/40 shadow-sm relative overflow-hidden flex flex-col justify-between">
-              <div>
-                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center text-[#ECC880] mb-3">
+            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white">
+              <GuillocheVelvetWatermark opacity={0.06} />
+              <div className="relative z-10">
+                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
                   <Crown size={18} />
                 </div>
                 <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
@@ -969,15 +1239,16 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   Tempat duduk sofa VIP di baris utama dengan layanan hidangan pribadi oleh waiter &amp; butler pesta.
                 </p>
               </div>
-              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold">
+              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
                 ✓ Emerald Suite Table
               </div>
             </div>
 
             {/* Perk 3: Fast-Track QR */}
-            <div className="p-4 rounded-2xl bg-[#051C14]/90 border border-[#ECC880]/40 shadow-sm relative overflow-hidden flex flex-col justify-between">
-              <div>
-                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center text-[#ECC880] mb-3">
+            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-md relative overflow-hidden flex flex-col justify-between text-white">
+              <GuillocheVelvetWatermark opacity={0.06} />
+              <div className="relative z-10">
+                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center text-[#ECC880] mb-3">
                   <QrCode size={18} />
                 </div>
                 <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
@@ -987,19 +1258,19 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   Pintu masuk prioritas dengan pemindaian barcode instan untuk pengambilan souvenir dan pengantaran ke meja tamu.
                 </p>
               </div>
-              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold">
+              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
                 ✓ Pintu Masuk Barat VVIP
               </div>
             </div>
           </div>
 
           {/* Concierge Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto">
+          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto">
             <a
               href="https://maps.google.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
             >
               <Navigation size={14} />
               <span>Rute Jalur Drop-Off VVIP</span>
@@ -1008,7 +1279,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               href={`https://wa.me/6285707909415?text=${encodeURIComponent(`Halo Concierge Wedding Steven & Bunga, saya ${guestName} ingin menanyakan info perihal kedatangan tamu VVIP.`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/50 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/60 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors"
             >
               <MessageCircle size={14} />
               <span>Hubungi Concierge Tamu</span>
@@ -1017,33 +1288,44 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         </section>
 
         {/* ========================================================================= */}
-        {/* 4. INTERACTIVE LOVE STORY JOURNEY                                        */}
+        {/* 4. INTERACTIVE LOVE STORY JOURNEY (Royal Illuminated Chronicle)            */}
         {/* ========================================================================= */}
-        <section id="story" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="story" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          <GuillocheParchmentWatermark opacity={0.08} />
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
-            <Heart className="w-3.5 h-3.5 text-[#ECC880]" />
-            <span>OUR LOVE JOURNEY</span>
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <Heart className="w-3.5 h-3.5 text-[#C5A059]" />
+            <span>OUR LOVE CHRONICLE</span>
           </div>
 
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-8">
+          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
             Kisah Cinta &amp; Janji Abadi
           </h2>
 
-          <div className="space-y-6 max-w-md mx-auto text-left">
+          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+            Perjalanan dua jiwa yang dipertemukan takdir dan dipersatukan dalam ikatan suci pernikahan.
+          </p>
+
+          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+
+          <div className="space-y-6 max-w-md mx-auto text-left relative z-10">
             {displayStories.map((st, idx) => (
-              <div key={idx} className="relative p-5 rounded-2xl bg-[#051C14]/90 border border-[#ECC880]/30 flex flex-col sm:flex-row gap-4 items-center sm:items-start shadow-md">
+              <div key={idx} className="relative p-5 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] flex flex-col sm:flex-row gap-4 items-center sm:items-start shadow-xl text-white overflow-hidden">
+                <GuillocheVelvetWatermark opacity={0.06} />
+
                 {st.image_url && (
-                  <div className="w-24 h-24 rounded-xl overflow-hidden border border-[#ECC880]/50 flex-shrink-0 shadow-sm">
+                  <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-[#ECC880]/70 flex-shrink-0 shadow-md relative z-10">
                     <img src={st.image_url} alt={st.title} className="w-full h-full object-cover" />
                   </div>
                 )}
-                <div>
-                  <span className="text-[10px] font-serif font-bold tracking-widest text-[#ECC880] uppercase block mb-1">
-                    {st.date}
-                  </span>
-                  <h3 className="font-serif text-base font-bold text-white mb-1.5">
+                <div className="relative z-10">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[9.5px] font-serif font-bold tracking-widest text-[#ECC880] uppercase mb-1.5 border border-[#ECC880]/40">
+                    <Crown size={11} className="text-[#ECC880]" />
+                    <span>{st.date}</span>
+                  </div>
+                  <h3 className="font-serif text-base font-bold text-[#FFF8E2] mb-1.5">
                     {st.title}
                   </h3>
                   <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
@@ -1058,20 +1340,28 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 5. PHOTO MASONRY GALLERY & FULL LIGHTBOX                                */}
         {/* ========================================================================= */}
-        <section id="gallery" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="gallery" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          <GuillocheParchmentWatermark opacity={0.08} />
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>MOMEN BAHAGIA</span>
           </div>
 
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-6">
+          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
             Galeri Momen Berharga
           </h2>
 
+          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+            Potret kebahagiaan dan kehangatan romansa cinta kami yang terabadikan abadi.
+          </p>
+
+          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
+
           {/* Gallery Category Tabs */}
-          <div className="flex items-center justify-center gap-1.5 max-w-sm mx-auto mb-6 flex-wrap">
+          <div className="relative z-10 flex items-center justify-center gap-1.5 max-w-sm mx-auto mb-6 flex-wrap">
             {[
               { id: 'all', label: 'Semua' },
               { id: 'prewedding', label: 'Prewedding' },
@@ -1082,10 +1372,10 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveGalleryTab(tab.id as any)}
-                className={`px-3 py-1 rounded-full text-[11px] font-serif transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-[11px] font-serif transition-all cursor-pointer shadow-xs ${
                   activeGalleryTab === tab.id
-                    ? 'bg-[#ECC880] text-[#041610] font-bold shadow-xs'
-                    : 'bg-[#051C14] text-[#A0C4B4] border border-[#ECC880]/30 hover:border-[#ECC880]'
+                    ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
+                    : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
                 }`}
               >
                 {tab.label}
@@ -1094,19 +1384,19 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           </div>
 
           {/* Photo Masonry Grid */}
-          <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+          <div className="relative z-10 grid grid-cols-2 gap-3 max-w-lg mx-auto">
             {displayGallery.map((img, idx) => (
               <div 
                 key={idx}
                 onClick={() => setSelectedPhoto(img.image_url)}
-                className={`relative group rounded-2xl overflow-hidden border border-[#ECC880]/40 cursor-pointer shadow-md aspect-[3/4] ${
+                className={`relative group rounded-2xl overflow-hidden border-2 border-[#ECC880]/70 cursor-pointer shadow-lg aspect-[3/4] ${
                   idx % 3 === 0 ? 'col-span-2 aspect-[16/10]' : ''
                 }`}
               >
                 <img 
                   src={img.image_url} 
                   alt={img.caption || `Galeri ${idx + 1}`} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
                   <span className="text-xs text-[#FFF8E2] font-serif italic truncate">
@@ -1127,7 +1417,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             <button 
               type="button"
               onClick={() => setSelectedPhoto(null)}
-              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-[#041610] border border-[#ECC880] text-[#ECC880] flex items-center justify-center cursor-pointer"
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-[#041610] border border-[#ECC880] text-[#ECC880] flex items-center justify-center cursor-pointer shadow-lg"
             >
               <X size={20} />
             </button>
@@ -1142,27 +1432,31 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* BESPOKE ROYAL SOUVENIR PREVIEW                                            */}
         {/* ========================================================================= */}
-        <section id="souvenir" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="souvenir" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          <GuillocheParchmentWatermark opacity={0.08} />
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
-            <Gift className="w-3.5 h-3.5 text-[#ECC880]" />
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <Gift className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>CINDERAMATA EKSKLUSIF</span>
           </div>
 
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-3">
+          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
             Royal Wedding Favors
           </h2>
 
-          <p className="text-xs text-[#A0C4B4] max-w-md mx-auto mb-6 font-light">
+          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
             Sebagai wujud penghargaan atas kehadiran Anda, sebuah kenang-kenangan eksklusif berukir monogram resmi kedua mempelai telah disiapkan di meja registrasi.
           </p>
 
-          <div className="p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 max-w-md mx-auto text-left shadow-lg relative overflow-hidden">
+          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+
+          <div className="p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-md mx-auto text-left shadow-xl relative overflow-hidden text-white">
             <GuillocheVelvetWatermark opacity={0.06} />
 
             <div className="flex flex-col sm:flex-row items-center gap-5 relative z-10">
-              <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#ECC880]/20 to-[#041610] border-2 border-[#ECC880]/60 flex flex-col items-center justify-center flex-shrink-0 shadow-inner">
+              <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#ECC880]/20 to-[#041610] border-2 border-[#ECC880] flex flex-col items-center justify-center flex-shrink-0 shadow-inner">
                 <Crown className="w-10 h-10 text-[#ECC880] mb-1" />
                 <span className="font-serif text-[10px] font-bold text-[#ECC880] tracking-widest uppercase">
                   SULTAN GIFT
@@ -1170,11 +1464,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </div>
 
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/15 text-[#ECC880] text-[9px] font-serif font-semibold mb-2 border border-[#ECC880]/30">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] text-[9.5px] font-serif font-semibold mb-2 border border-[#ECC880]/40">
                   <Star size={10} className="fill-[#ECC880]" />
                   <span>Limited Edition Keepsake</span>
                 </div>
-                <h4 className="font-serif text-base font-bold text-white mb-1.5">
+                <h4 className="font-serif text-base font-bold text-[#FFF8E2] mb-1.5">
                   Bespoke Scented Wax Diffuser &amp; Royal Monogram Box
                 </h4>
                 <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
@@ -1193,31 +1487,35 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 6. WEDDING GIFT & EMV SMART DEBIT CARD                                   */}
         {/* ========================================================================= */}
-        <section id="gift" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="gift" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          <GuillocheParchmentWatermark opacity={0.08} />
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
-            <Gift className="w-3.5 h-3.5 text-[#ECC880]" />
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <Gift className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>TANDA KASIH &amp; KADO DIGITAL</span>
           </div>
 
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-3">
+          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
             Amplop Digital &amp; Hadiah
           </h2>
 
-          <p className="text-xs text-[#A0C4B4] max-w-md mx-auto mb-6 font-light">
+          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
             Doa restu Anda merupakan karunia terindah bagi kami. Namun jika Anda hendak memberikan tanda kasih, dapat melalui rekening eksklusif di bawah ini.
           </p>
 
+          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
+
           {/* Tab Selector */}
-          <div className="flex items-center justify-center gap-2 mb-8">
+          <div className="relative z-10 flex items-center justify-center gap-2 mb-8">
             <button
               type="button"
               onClick={() => setGiftTab('transfer')}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
                 giftTab === 'transfer'
-                  ? 'bg-[#ECC880] text-[#041610] font-bold shadow-md'
-                  : 'bg-[#051C14] text-[#A0C4B4] border border-[#ECC880]/30'
+                  ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
+                  : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
               }`}
             >
               <CreditCard size={14} />
@@ -1227,10 +1525,10 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             <button
               type="button"
               onClick={() => setGiftTab('physical')}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
                 giftTab === 'physical'
-                  ? 'bg-[#ECC880] text-[#041610] font-bold shadow-md'
-                  : 'bg-[#051C14] text-[#A0C4B4] border border-[#ECC880]/30'
+                  ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
+                  : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
               }`}
             >
               <Package size={14} />
@@ -1239,11 +1537,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           </div>
 
           {giftTab === 'transfer' ? (
-            <div className="space-y-6 max-w-sm mx-auto">
+            <div className="space-y-6 max-w-sm mx-auto relative z-10">
               {displayGifts.map((gift, idx) => (
                 <div 
                   key={idx}
-                  className="relative p-6 rounded-3xl bg-gradient-to-br from-[#0c3324] via-[#08261a] to-[#041610] border-2 border-[#ECC880] shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(236,200,128,0.25)] text-left overflow-hidden"
+                  className="relative p-6 rounded-3xl bg-gradient-to-br from-[#0c3324] via-[#08261a] to-[#041610] border-2 border-[#ECC880] shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(236,200,128,0.25)] text-left overflow-hidden text-white"
                 >
                   <GuillocheVelvetWatermark opacity={0.08} />
 
@@ -1287,7 +1585,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     <button
                       type="button"
                       onClick={() => handleCopy(gift.account_number.replace(/\s+/g, ''), gift.id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-[11px] font-serif font-bold tracking-wider uppercase transition-all shadow-xs cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[11px] font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
                     >
                       {isCopied === gift.id ? (
                         <>
@@ -1306,7 +1604,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               ))}
             </div>
           ) : (
-            <div className="p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 max-w-sm mx-auto text-center shadow-md">
+            <div className="relative z-10 p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-sm mx-auto text-center shadow-xl text-white">
               <Package className="w-8 h-8 text-[#ECC880] mx-auto mb-3" />
               <h4 className="font-serif text-base font-bold text-[#FFF8E2] mb-1">
                 Alamat Kirim Hadiah Fisik
@@ -1317,7 +1615,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               <button
                 type="button"
                 onClick={() => handleCopy(couple?.gift_address || 'Jl. Slamet Riyadi No. 120, Solo, Jawa Tengah', 'addr')}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#ECC880] text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all cursor-pointer shadow-md"
               >
                 {isCopied === 'addr' ? <Check size={14} /> : <Copy size={14} />}
                 <span>{isCopied === 'addr' ? 'Alamat Tersalin' : 'Salin Alamat Lengkap'}</span>
@@ -1329,28 +1627,32 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 7. VIP GUEST CHECK-IN PASS & RSVP LIVE WISHES                           */}
         {/* ========================================================================= */}
-        <section id="pass" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
-          <EmeraldGoldCorner size={32} color="#ECC880" />
+        <section id="pass" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+          <GuillocheParchmentWatermark opacity={0.08} />
+          <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+          <EmeraldGoldCorner size={56} color="#ECC880" />
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
-            <QrCode className="w-3.5 h-3.5 text-[#ECC880]" />
+          <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <QrCode className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>VIP PASS &amp; CHECK-IN PRESENSI</span>
           </div>
 
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-3">
+          <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
             Konfirmasi Kehadiran &amp; Tiket VIP
           </h2>
 
-          <p className="text-xs text-[#A0C4B4] max-w-md mx-auto mb-8 font-light">
+          <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
             Sistem otomatis menerbitkan <strong>Tiket QR Resmi</strong> untuk discan petugas saat tiba di lokasi resepsi.
           </p>
 
+          <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
+
           {/* Toggle View Pass Ticket */}
-          <div className="mb-6">
+          <div className="mb-6 relative z-10">
             <button
               type="button"
               onClick={() => setShowBarcodePreview(prev => !prev)}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-serif font-bold tracking-wider uppercase bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] border border-[#ECC880]/50 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-serif font-bold tracking-wider uppercase bg-[#041610] hover:bg-[#08261C] text-[#ECC880] border border-[#ECC880]/60 transition-colors cursor-pointer shadow-md"
             >
               <QrCode size={14} />
               <span>{activeBarcodePass ? (showBarcodePreview && !savedPass ? 'Tutup Tiket' : 'Tampilkan Tiket VIP Pass') : 'Lihat Contoh Tiket VIP'}</span>
@@ -1359,7 +1661,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
           {/* VIP GUEST VERIFIED PASS CARD */}
           {activeBarcodePass && (
-            <div className="relative bg-gradient-to-br from-[#0c3324] via-[#072017] to-[#041610] text-white p-6 sm:p-8 rounded-[32px] border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(236,200,128,0.35)] mb-10 text-center overflow-hidden max-w-sm mx-auto">
+            <div className="relative bg-gradient-to-br from-[#0c3324] via-[#072017] to-[#041610] text-white p-6 sm:p-8 rounded-[32px] border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(236,200,128,0.35)] mb-10 text-center overflow-hidden max-w-sm mx-auto z-10">
               <EmeraldGoldCorner size={28} color="#ECC880" />
               <GuillocheVelvetWatermark opacity={0.09} />
 
@@ -1410,7 +1712,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               <button
                 type="button"
                 onClick={handleSavePass}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
               >
                 <Download size={14} />
                 <span>Simpan Tiket ke Galeri</span>
@@ -1419,7 +1721,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           )}
 
           {/* RSVP Submission Form */}
-          <form onSubmit={handleRsvpSubmit} className="max-w-md mx-auto p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 text-left shadow-md">
+          <form onSubmit={handleRsvpSubmit} className="relative z-10 max-w-md mx-auto p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left shadow-xl text-white">
             <h4 className="font-serif text-lg font-bold text-[#FFF8E2] text-center mb-4">
               Formulir RSVP Kehadiran
             </h4>
@@ -1496,7 +1798,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             <button
               type="submit"
               disabled={isSubmittingRsvp}
-              className="w-full py-3 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
             >
               {isSubmittingRsvp ? (
                 <span>Mengirim Konfirmasi...</span>
@@ -1510,24 +1812,24 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           </form>
 
           {/* Live Guestbook Wishes List */}
-          <div className="mt-10 max-w-md mx-auto text-left">
-            <h4 className="font-serif text-base font-bold text-[#ECC880] mb-4 flex items-center gap-2">
-              <MessageCircle size={16} />
+          <div className="mt-10 max-w-md mx-auto text-left relative z-10">
+            <h4 className="font-serif text-base font-bold text-[#103023] mb-4 flex items-center gap-2">
+              <MessageCircle size={16} className="text-[#8C6D2B]" />
               <span>Untaian Doa &amp; Ucapan ({wishes.length})</span>
             </h4>
 
             <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
               {wishes.map(w => (
-                <div key={w.id} className="p-4 rounded-2xl bg-[#051C14]/90 border border-[#ECC880]/20 text-xs">
+                <div key={w.id} className="p-4 rounded-2xl bg-white/90 border border-[#ECC880]/60 text-xs shadow-xs">
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-serif font-bold text-white text-sm">
+                    <span className="font-serif font-bold text-[#103023] text-sm">
                       {w.name}
                     </span>
-                    <span className="text-[10px] text-[#A0C4B4]">
+                    <span className="text-[10px] text-[#5B7569]">
                       {w.date}
                     </span>
                   </div>
-                  <p className="text-[#A0C4B4] leading-relaxed font-sans">
+                  <p className="text-[#364B42] leading-relaxed font-sans">
                     {w.message}
                   </p>
                 </div>
