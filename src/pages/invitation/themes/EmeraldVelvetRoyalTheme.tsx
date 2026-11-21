@@ -914,7 +914,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       <div className="flex flex-col lg:flex-row min-h-screen">
 
         {/* DESKTOP LEFT ASIDE (Fixed on Large Screens) */}
-        <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-8 xl:p-12 overflow-hidden bg-[#041610] border-r border-[#ECC880]/30 shadow-2xl">
+        <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-6 xl:p-10 overflow-hidden bg-[#041610] border-r border-[#ECC880]/30 shadow-2xl">
           {/* Background image & deep velvet atmosphere */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out hover:scale-105"
@@ -926,74 +926,59 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
           {/* Top Aside Header */}
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/85 border border-[#ECC880]/50 text-[#ECC880] text-[11px] tracking-[0.25em] uppercase font-serif font-bold shadow-md">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#041610]/85 border border-[#ECC880]/50 text-[#ECC880] text-[10.5px] tracking-[0.25em] uppercase font-serif font-bold shadow-md">
               <Crown className="w-3.5 h-3.5 text-[#ECC880]" />
               <span>THE ROYAL MASTERPIECE</span>
             </div>
           </div>
 
           {/* Center Couple Profile & Monogram */}
-          <div className="relative z-10 my-auto text-left py-6">
-            <EmeraldRoyalCrest initials={coupleInitials} size="lg" className="!items-start mb-6" />
-            <span className="text-xs font-serif uppercase tracking-[0.3em] text-[#ECC880] font-semibold block mb-2">
+          <div className="relative z-10 my-auto text-left py-2 sm:py-3">
+            <EmeraldRoyalCrest initials={coupleInitials} size="md" className="!items-start mb-3 sm:mb-4" />
+            <span className="text-[11px] font-serif uppercase tracking-[0.3em] text-[#ECC880] font-semibold block mb-1.5">
               THE WEDDING CELEBRATION OF
             </span>
-            <h1 className="font-serif text-4xl xl:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E2] via-[#ECC880] to-[#E2C792] drop-shadow-md">
+            <h1 className="font-serif text-3xl xl:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E2] via-[#ECC880] to-[#E2C792] drop-shadow-md">
               {groomName} &amp; {brideName}
             </h1>
-            <p className="font-serif italic text-sm xl:text-base text-[#A0C4B4] mt-2">
+            <p className="font-serif italic text-xs xl:text-sm text-[#A0C4B4] mt-1.5">
               Senin, 12 Oktober 2026 • Solo, Jawa Tengah
             </p>
-            <div className="w-24 h-0.5 bg-gradient-to-r from-[#ECC880] to-transparent my-6" />
+            <div className="w-20 h-0.5 bg-gradient-to-r from-[#ECC880] to-transparent my-3 sm:my-4" />
             <p className="text-xs text-white/80 max-w-sm leading-relaxed font-light">
               Menyatukan dua hati dan keluarga dalam ikatan suci pernikahan yang agung dan penuh berkah.
             </p>
 
-            {/* Aside Live Countdown */}
-            <div className="mt-8 pt-6 border-t border-[#ECC880]/30 max-w-sm">
-              <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#ECC880] block mb-3 font-semibold">
-                HITUNG MUNDUR MENUJU HARI SAKRAL
+            {/* Aside Live Countdown Card */}
+            <div className="relative p-3.5 sm:p-4 rounded-2xl bg-gradient-to-b from-[#082319]/90 via-[#051C14]/95 to-[#041610]/98 backdrop-blur-md border border-[#ECC880]/50 shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(236,200,128,0.2)] text-center max-w-sm mt-4 sm:mt-5">
+              <div className="absolute inset-1 rounded-xl border border-[#ECC880]/20 pointer-events-none" />
+              <span className="text-[9.5px] tracking-[0.25em] font-serif uppercase text-[#ECC880] block mb-2 font-bold">
+                ✦ HITUNG MUNDUR HARI SAKRAL ✦
               </span>
-              <div className="grid grid-cols-4 gap-2.5">
+              <div className="grid grid-cols-4 gap-2">
                 {[
                   { label: 'HARI', val: timeLeft.days },
                   { label: 'JAM', val: timeLeft.hours },
                   { label: 'MENIT', val: timeLeft.minutes },
                   { label: 'DETIK', val: timeLeft.seconds },
                 ].map((tile, idx) => (
-                  <div key={idx} className="bg-[#051C14]/90 rounded-xl p-2.5 border border-[#ECC880]/40 text-center shadow-md">
-                    <span className="font-serif text-2xl font-bold text-[#FFF8E2] block leading-tight">
+                  <div key={idx} className="bg-black/40 rounded-xl p-2 border border-[#ECC880]/30 text-center shadow-inner">
+                    <span className="font-serif text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] to-[#ECC880] block leading-tight">
                       {String(tile.val).padStart(2, '0')}
                     </span>
-                    <span className="text-[8px] font-sans tracking-widest text-[#ECC880] uppercase">
+                    <span className="text-[7.5px] font-sans tracking-widest text-[#ECC880]/90 uppercase">
                       {tile.label}
                     </span>
                   </div>
                 ))}
               </div>
-
-              {/* Sultan VIP Perks Badge Row */}
-              <div className="mt-6 pt-4 border-t border-[#ECC880]/20 grid grid-cols-3 gap-2 text-center">
-                <div className="p-2 rounded-xl bg-[#051C14]/80 border border-[#ECC880]/30 shadow-xs">
-                  <Car className="w-4 h-4 text-[#ECC880] mx-auto mb-1" />
-                  <span className="text-[9px] text-white/90 block font-serif font-medium">Free Valet</span>
-                </div>
-                <div className="p-2 rounded-xl bg-[#051C14]/80 border border-[#ECC880]/30 shadow-xs">
-                  <Shirt className="w-4 h-4 text-[#ECC880] mx-auto mb-1" />
-                  <span className="text-[9px] text-white/90 block font-serif font-medium">Black Tie</span>
-                </div>
-                <div className="p-2 rounded-xl bg-[#051C14]/80 border border-[#ECC880]/30 shadow-xs">
-                  <Crown className="w-4 h-4 text-[#ECC880] mx-auto mb-1" />
-                  <span className="text-[9px] text-white/90 block font-serif font-medium">VVIP Table</span>
-                </div>
-              </div>
             </div>
           </div>
 
           {/* Bottom Venue Footer */}
-          <div className="relative z-10 flex items-center justify-between text-xs text-[#A0C4B4] pt-6 border-t border-[#ECC880]/20">
-            <span>Grand Ballroom Sahara Hotel</span>
-            <span className="text-[#ECC880] font-serif font-bold">WD Royal Edition</span>
+          <div className="relative z-10 flex items-center justify-between text-xs text-[#A0C4B4] pt-3 sm:pt-4 border-t border-[#ECC880]/20">
+            <span className="font-serif text-white/90">Grand Ballroom Sahara Hotel</span>
+            <span className="text-[#ECC880] font-serif font-bold tracking-wider">WD Royal Masterpiece</span>
           </div>
         </aside>
 
