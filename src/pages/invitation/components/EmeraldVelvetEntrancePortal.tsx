@@ -15,6 +15,7 @@ export const EmeraldVelvetEntrancePortal: React.FC<EmeraldVelvetEntrancePortalPr
   guestName = 'Tamu Undangan',
   groomName = 'Steven',
   brideName = 'Bunga',
+  coverImage,
   weddingDate = 'Senin, 12 Oktober 2026'
 }) => {
   // Animation stages: 'intro' -> 'unlocking' -> 'opening' -> 'gliding' -> 'exiting'
