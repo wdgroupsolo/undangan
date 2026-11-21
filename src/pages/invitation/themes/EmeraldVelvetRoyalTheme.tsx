@@ -161,10 +161,10 @@ export const EmeraldRoyalCrest: React.FC<{ initials: string; size?: 'sm' | 'md' 
   const textSz = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-xl' : 'text-sm';
   return (
     <div className={`relative flex flex-col items-center justify-center ${className}`}>
-      <div className={`${dim} rounded-full bg-gradient-to-br from-[#ECC880] via-[#C5A059] to-[#8C6D2B] p-[2px] shadow-[0_4px_16px_rgba(0,0,0,0.5)]`}>
-        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#0c3123] via-[#072117] to-[#04150E] flex flex-col items-center justify-center border border-[#ECC880]/60 text-[#ECC880]">
-          <Crown className="w-4 h-4 text-[#ECC880] mb-0.5" />
-          <span className={`font-serif font-bold tracking-widest text-[#FFF8E2] ${textSz}`}>
+      <div className={`${dim} rounded-full bg-gradient-to-br from-[#ECC880] via-[#C5A059] to-[#8C6D2B] p-[2px] shadow-[0_4px_16px_rgba(0,0,0,0.5)] shrink-0`}>
+        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#0c3123] via-[#072117] to-[#04150E] flex flex-col items-center justify-center border border-[#ECC880]/60 text-[#ECC880] px-1">
+          <Crown className="w-4 h-4 text-[#ECC880] mb-0.5 shrink-0" />
+          <span className={`font-serif font-bold tracking-widest text-[#FFF8E2] whitespace-nowrap select-none ${textSz}`}>
             {initials}
           </span>
         </div>
@@ -194,7 +194,7 @@ export const ScrollReveal: React.FC<{
     const checkVisibility = () => {
       const rect = el.getBoundingClientRect();
       const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      if (rect.top < windowHeight - 30 && rect.bottom > 30) {
+      if (rect.top < windowHeight - 10 && rect.bottom > 10) {
         setHasRevealed(true);
         return true;
       }
@@ -202,7 +202,7 @@ export const ScrollReveal: React.FC<{
     };
 
     // Check immediately on mount
-    if (checkVisibility() && once) return;
+    checkVisibility();
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -212,8 +212,8 @@ export const ScrollReveal: React.FC<{
         }
       },
       { 
-        threshold: 0.05, 
-        rootMargin: '0px 0px -30px 0px' 
+        threshold: 0.02, 
+        rootMargin: '20px 0px 20px 0px' 
       }
     );
 
@@ -402,7 +402,10 @@ export const EmeraldRoyalWaxSeal: React.FC<{ initials: string; size?: 'sm' | 'md
   size = 'md',
   showWreath = true 
 }) => {
-  const dim = size === 'sm' ? 'w-13 h-13 text-sm' : size === 'lg' ? 'w-22 h-22 text-2xl' : 'w-18 h-18 text-xl';
+  const dim = size === 'sm' ? 'w-16 h-16' : size === 'lg' ? 'w-24 h-24' : 'w-20 h-20';
+  const fontSz = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-base sm:text-lg' : 'text-sm sm:text-base';
+  const wreathInset = size === 'sm' ? '-inset-8' : size === 'lg' ? '-inset-12' : '-inset-10';
+
   return (
     <div className="relative inline-flex items-center justify-center select-none my-3 group">
       {/* Outer Golden Aura Halo */}
@@ -410,7 +413,7 @@ export const EmeraldRoyalWaxSeal: React.FC<{ initials: string; size?: 'sm' | 'md
       
       {/* Handcrafted Sculpted Laurel Wreath with Crown Pediment */}
       {showWreath && (
-        <div className="absolute -inset-6 sm:-inset-7 pointer-events-none z-0">
+        <div className={`absolute ${wreathInset} pointer-events-none z-0 flex items-center justify-center`}>
           <svg viewBox="0 0 140 140" fill="none" className="w-full h-full opacity-90">
             <defs>
               <linearGradient id="emeraldWreathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -422,7 +425,7 @@ export const EmeraldRoyalWaxSeal: React.FC<{ initials: string; size?: 'sm' | 'md
             </defs>
 
             {/* Top Crown Pediment */}
-            <g transform="translate(56, 4) scale(0.7)">
+            <g transform="translate(56, 12) scale(0.7)">
               <path d="M5 24 L8 9 L17 19 L25 4 L33 19 L42 9 L45 24 Z" fill="url(#emeraldWreathGrad)" stroke="#8C6D2B" strokeWidth="0.8" />
               <circle cx="25" cy="4" r="2.5" fill="#FFF9E8" />
               <circle cx="8" cy="9" r="2" fill="#FFF9E8" />
@@ -432,7 +435,7 @@ export const EmeraldRoyalWaxSeal: React.FC<{ initials: string; size?: 'sm' | 'md
 
             {/* Left Laurel Branch */}
             <g>
-              <path d="M70 128 C45 125, 20 102, 22 68 C24 45, 38 28, 55 18" stroke="url(#emeraldWreathGrad)" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M70 128 C45 125, 20 102, 22 68 C24 45, 36 28, 52 24" stroke="url(#emeraldWreathGrad)" strokeWidth="1.8" strokeLinecap="round" />
               <path d="M22 68 C14 62, 10 50, 15 44 C20 48, 22 58, 22 68 Z" fill="url(#emeraldWreathGrad)" />
               <path d="M22 68 C26 58, 32 50, 36 55 C32 62, 26 66, 22 68 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
               <path d="M28 88 C18 84, 14 74, 18 68 C24 72, 26 80, 28 88 Z" fill="url(#emeraldWreathGrad)" />
@@ -441,12 +444,12 @@ export const EmeraldRoyalWaxSeal: React.FC<{ initials: string; size?: 'sm' | 'md
               <path d="M38 106 C42 98, 48 92, 52 96 C48 102, 42 105, 38 106 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
               <path d="M53 120 C43 120, 38 114, 42 108 C48 112, 50 116, 53 120 Z" fill="url(#emeraldWreathGrad)" />
               <path d="M26 48 C22 38, 24 28, 30 24 C34 30, 32 40, 26 48 Z" fill="url(#emeraldWreathGrad)" />
-              <path d="M38 34 C34 24, 38 16, 44 14 C46 22, 42 30, 38 34 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M38 34 C35 27, 40 20, 48 20 C49 26, 44 32, 38 34 Z" fill="url(#emeraldWreathGrad)" />
             </g>
 
             {/* Right Laurel Branch */}
             <g transform="translate(140, 0) scale(-1, 1)">
-              <path d="M70 128 C45 125, 20 102, 22 68 C24 45, 38 28, 55 18" stroke="url(#emeraldWreathGrad)" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M70 128 C45 125, 20 102, 22 68 C24 45, 36 28, 52 24" stroke="url(#emeraldWreathGrad)" strokeWidth="1.8" strokeLinecap="round" />
               <path d="M22 68 C14 62, 10 50, 15 44 C20 48, 22 58, 22 68 Z" fill="url(#emeraldWreathGrad)" />
               <path d="M22 68 C26 58, 32 50, 36 55 C32 62, 26 66, 22 68 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
               <path d="M28 88 C18 84, 14 74, 18 68 C24 72, 26 80, 28 88 Z" fill="url(#emeraldWreathGrad)" />
@@ -455,7 +458,7 @@ export const EmeraldRoyalWaxSeal: React.FC<{ initials: string; size?: 'sm' | 'md
               <path d="M38 106 C42 98, 48 92, 52 96 C48 102, 42 105, 38 106 Z" fill="url(#emeraldWreathGrad)" opacity="0.9" />
               <path d="M53 120 C43 120, 38 114, 42 108 C48 112, 50 116, 53 120 Z" fill="url(#emeraldWreathGrad)" />
               <path d="M26 48 C22 38, 24 28, 30 24 C34 30, 32 40, 26 48 Z" fill="url(#emeraldWreathGrad)" />
-              <path d="M38 34 C34 24, 38 16, 44 14 C46 22, 42 30, 38 34 Z" fill="url(#emeraldWreathGrad)" />
+              <path d="M38 34 C35 27, 40 20, 48 20 C49 26, 44 32, 38 34 Z" fill="url(#emeraldWreathGrad)" />
             </g>
 
             {/* Bottom Silk Ribbon Knot */}
@@ -469,11 +472,11 @@ export const EmeraldRoyalWaxSeal: React.FC<{ initials: string; size?: 'sm' | 'md
       )}
 
       {/* Realistic 3D Hot-Wax Stamped Disc (Emerald Velvet Tone) */}
-      <div className={`${dim} rounded-full bg-gradient-to-br from-[#1E5243] via-[#12352B] to-[#0A1F18] shadow-[0_12px_32px_rgba(4,22,16,0.65),inset_0_2px_5px_rgba(255,255,255,0.4),inset_0_-4px_8px_rgba(0,0,0,0.8)] flex items-center justify-center border-2 border-[#ECC880]/80 relative transition-transform duration-500 group-hover:scale-105 z-10`}>
+      <div className={`${dim} rounded-full bg-gradient-to-br from-[#1E5243] via-[#12352B] to-[#0A1F18] shadow-[0_12px_32px_rgba(4,22,16,0.65),inset_0_2px_5px_rgba(255,255,255,0.4),inset_0_-4px_8px_rgba(0,0,0,0.8)] flex items-center justify-center border-2 border-[#ECC880]/80 relative transition-transform duration-500 group-hover:scale-105 z-10 shrink-0`}>
         {/* Inner Debossed 24K Gold Rope Ring */}
-        <div className="w-[80%] h-[80%] rounded-full border border-dashed border-[#ECC880]/80 shadow-[inset_0_3px_6px_rgba(0,0,0,0.75)] flex items-center justify-center bg-[#071F17]/95">
-          <div className="w-[88%] h-[88%] rounded-full border border-[#ECC880]/40 flex items-center justify-center">
-            <span className="font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] via-[#ECC880] to-[#B89045] tracking-widest drop-shadow-[0_2px_3px_rgba(0,0,0,0.95)]">
+        <div className="w-[82%] h-[82%] rounded-full border border-dashed border-[#ECC880]/80 shadow-[inset_0_3px_6px_rgba(0,0,0,0.75)] flex items-center justify-center bg-[#071F17]/95">
+          <div className="w-[88%] h-[88%] rounded-full border border-[#ECC880]/40 flex items-center justify-center px-1">
+            <span className={`font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] via-[#ECC880] to-[#B89045] tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)] whitespace-nowrap select-none shrink-0 ${fontSz}`}>
               {initials}
             </span>
           </div>
@@ -1009,7 +1012,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* 3D Sculpted Emerald & Gold Wax Seal Monogram */}
             <ScrollReveal animation="zoom-in" delay={150}>
-              <div className="relative z-10 my-2">
+              <div className="relative z-10 my-4 sm:my-5">
                 <EmeraldRoyalWaxSeal initials={coupleInitials} size="md" showWreath={true} />
               </div>
             </ScrollReveal>

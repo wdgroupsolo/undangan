@@ -233,8 +233,8 @@ export const EmeraldVelvetEntrancePortal: React.FC<EmeraldVelvetEntrancePortalPr
             {/* Wax Seal Disk */}
             <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full flex items-center justify-center bg-gradient-to-br from-[#ECC880] via-[#C5A059] to-[#8C6D2B] p-1 shadow-[0_12px_32px_rgba(0,0,0,0.9),0_0_24px_rgba(236,200,128,0.5)] border-2 border-[#FFF8DE]">
               <div className="w-full h-full rounded-full bg-gradient-to-br from-[#0c3123] via-[#072117] to-[#04150E] flex flex-col items-center justify-center border border-[#ECC880]/70 text-[#ECC880] p-2 text-center">
-                <Crown className="w-5 h-5 text-[#ECC880] mb-0.5 drop-shadow-sm" />
-                <span className="font-serif text-lg sm:text-xl font-bold tracking-widest text-[#FFF6DC] drop-shadow-md">
+                <Crown className="w-5 h-5 text-[#ECC880] mb-0.5 drop-shadow-sm shrink-0" />
+                <span className="font-serif text-lg sm:text-xl font-bold tracking-widest text-[#FFF6DC] drop-shadow-md whitespace-nowrap select-none">
                   {groomInitial} &amp; {brideInitial}
                 </span>
                 <span className="text-[8px] font-sans uppercase tracking-[0.2em] text-[#ECC880]/90 font-medium">
