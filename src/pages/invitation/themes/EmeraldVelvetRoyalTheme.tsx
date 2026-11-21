@@ -6,7 +6,7 @@ import {
   Clock, Sparkles, ShieldCheck,
   Crown, Star, Award, CreditCard, Send,
   Maximize2, Package, MessageCircle, QrCode, Download, ExternalLink,
-  Heart, User, Users
+  Heart, User, Users, Shirt, Car, Wifi, Info, CheckCircle2, Compass, Gem
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -202,6 +202,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const [giftTab, setGiftTab] = useState<'transfer' | 'physical'>('transfer');
   const [isCopied, setIsCopied] = useState<string | null>(null);
   const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
+  const [attireGender, setAttireGender] = useState<'gentlemen' | 'ladies'>('gentlemen');
+  const [selectedSwatch, setSelectedSwatch] = useState<string | null>(null);
 
   // Guest Name Resolution
   const guestName = (() => {
@@ -510,6 +512,22 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   </div>
                 ))}
               </div>
+
+              {/* Sultan VIP Perks Badge Row */}
+              <div className="mt-6 pt-4 border-t border-[#ECC880]/20 grid grid-cols-3 gap-2 text-center">
+                <div className="p-2 rounded-xl bg-[#051C14]/80 border border-[#ECC880]/30 shadow-xs">
+                  <Car className="w-4 h-4 text-[#ECC880] mx-auto mb-1" />
+                  <span className="text-[9px] text-white/90 block font-serif font-medium">Free Valet</span>
+                </div>
+                <div className="p-2 rounded-xl bg-[#051C14]/80 border border-[#ECC880]/30 shadow-xs">
+                  <Shirt className="w-4 h-4 text-[#ECC880] mx-auto mb-1" />
+                  <span className="text-[9px] text-white/90 block font-serif font-medium">Black Tie</span>
+                </div>
+                <div className="p-2 rounded-xl bg-[#051C14]/80 border border-[#ECC880]/30 shadow-xs">
+                  <Crown className="w-4 h-4 text-[#ECC880] mx-auto mb-1" />
+                  <span className="text-[9px] text-white/90 block font-serif font-medium">VVIP Table</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -747,6 +765,258 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         </section>
 
         {/* ========================================================================= */}
+        {/* ROYAL DRESS CODE & PALETTE CONCIERGE                                      */}
+        {/* ========================================================================= */}
+        <section id="dresscode" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
+          <EmeraldGoldCorner size={32} color="#ECC880" />
+
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
+            <Shirt className="w-3.5 h-3.5 text-[#ECC880]" />
+            <span>PANDUAN BUSANA RESMI</span>
+          </div>
+
+          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-3">
+            Royal Attire &amp; Dress Code
+          </h2>
+
+          <p className="text-xs text-[#A0C4B4] max-w-md mx-auto mb-6 font-light">
+            Untuk menyempurnakan suasana agung pesta malam kerajaan, kami mengundang para tamu kehormatan untuk mengenakan busana bertema <strong>Royal Black Tie &amp; Emerald Velvet</strong>.
+          </p>
+
+          {/* Gender Tab Switcher */}
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <button
+              type="button"
+              onClick={() => setAttireGender('gentlemen')}
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-serif font-bold transition-all cursor-pointer ${
+                attireGender === 'gentlemen'
+                  ? 'bg-[#ECC880] text-[#041610] shadow-md'
+                  : 'bg-[#051C14] text-[#A0C4B4] border border-[#ECC880]/30 hover:text-white'
+              }`}
+            >
+              <User size={14} />
+              <span>Tamu Pria (Gentlemen)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setAttireGender('ladies')}
+              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-serif font-bold transition-all cursor-pointer ${
+                attireGender === 'ladies'
+                  ? 'bg-[#ECC880] text-[#041610] shadow-md'
+                  : 'bg-[#051C14] text-[#A0C4B4] border border-[#ECC880]/30 hover:text-white'
+              }`}
+            >
+              <Users size={14} />
+              <span>Tamu Wanita (Ladies)</span>
+            </button>
+          </div>
+
+          {/* Attire Guide Card */}
+          <div className="p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 text-left max-w-md mx-auto shadow-md mb-8">
+            {attireGender === 'gentlemen' ? (
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center flex-shrink-0 text-[#ECC880]">
+                    <Shirt size={16} />
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                      Setelan Jas Formal / Batik Tulis Sutra
+                    </h4>
+                    <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                      Black tie tuxedo, formal suit berwarna emerald gelap atau hitam arang, atau kemeja batik tulis sutra motif klasik lengan panjang.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
+                  <div className="w-8 h-8 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center flex-shrink-0 text-[#ECC880]">
+                    <Gem size={16} />
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                      Aksesoris &amp; Sepatu
+                    </h4>
+                    <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                      Dasi kupu-kupu atau dasi sutra warna emas/champagne, serta sepatu pantofel formal berbahan kulit mengkilap.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center flex-shrink-0 text-[#ECC880]">
+                    <Shirt size={16} />
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                      Gaun Malam Velvet / Kebaya Mewah
+                    </h4>
+                    <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                      Evening gown berbahan beludru (velvet) emerald, gaun satin sutra elegan, atau kebaya modern bertabur payet benang emas.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
+                  <div className="w-8 h-8 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center flex-shrink-0 text-[#ECC880]">
+                    <Sparkles size={16} />
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                      Aksesoris &amp; Tata Rias
+                    </h4>
+                    <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                      Clutch bag bernuansa emas/emerald, perhiasan emas atau mutiara, serta sepatu heels atau selop pesta yang anggun.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Etiquette Alert */}
+            <div className="mt-4 pt-3 border-t border-[#ECC880]/20 flex items-center gap-2.5 text-[11px] text-[#ECC880]">
+              <Info size={14} className="flex-shrink-0" />
+              <span>Dimohon tidak mengenakan busana dominan putih polos demi menghormati gaun pengantin.</span>
+            </div>
+          </div>
+
+          {/* Interactive Official Color Palette Swatches */}
+          <div className="max-w-md mx-auto">
+            <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#ECC880] block mb-3 font-semibold">
+              PALET WARNA RESMI PERAYAAN
+            </span>
+            <div className="grid grid-cols-4 gap-2.5">
+              {[
+                { hex: '#041610', name: 'Imperial Emerald', desc: 'Warna utama beludru pekat' },
+                { hex: '#0D3B2E', name: 'Royal Pine', desc: 'Aksen hijau hutan bangsawan' },
+                { hex: '#ECC880', name: '24K Gold', desc: 'Sentuhan bordir & perhiasan' },
+                { hex: '#FDFBF7', name: 'Imperial Ivory', desc: 'Aksen sutra kemeja & mutiara' },
+              ].map((swatch, idx) => (
+                <div 
+                  key={idx}
+                  onClick={() => {
+                    setSelectedSwatch(swatch.name);
+                    toast.info(`${swatch.name} (${swatch.hex}): ${swatch.desc}`);
+                  }}
+                  className="cursor-pointer group flex flex-col items-center p-2 rounded-2xl bg-[#051C14] border border-[#ECC880]/30 hover:border-[#ECC880] transition-all hover:scale-105 shadow-xs"
+                >
+                  <div 
+                    className="w-10 h-10 rounded-full border-2 border-white/20 shadow-md mb-1.5 transition-transform group-hover:ring-2 ring-[#ECC880]"
+                    style={{ backgroundColor: swatch.hex }}
+                  />
+                  <span className="font-serif text-[10px] text-white font-bold block truncate max-w-full">
+                    {swatch.name}
+                  </span>
+                  <span className="font-mono text-[8px] text-[#ECC880]">
+                    {swatch.hex}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* VVIP CONCIERGE & VALET SERVICE SECTION                                    */}
+        {/* ========================================================================= */}
+        <section id="concierge" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
+          <EmeraldGoldCorner size={32} color="#ECC880" />
+
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
+            <Crown className="w-3.5 h-3.5 text-[#ECC880]" />
+            <span>FASILITAS SULTAN &amp; LAYANAN KHUSUS</span>
+          </div>
+
+          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-3">
+            Layanan &amp; Protokol Tamu VVIP
+          </h2>
+
+          <p className="text-xs text-[#A0C4B4] max-w-md mx-auto mb-8 font-light">
+            Sebagai tamu kehormatan, Anda berhak menikmati serangkaian fasilitas eksklusif yang telah disiapkan khusus oleh keluarga kedua mempelai.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-md sm:max-w-xl mx-auto mb-8 text-left">
+            {/* Perk 1: Valet */}
+            <div className="p-4 rounded-2xl bg-[#051C14]/90 border border-[#ECC880]/40 shadow-sm relative overflow-hidden flex flex-col justify-between">
+              <div>
+                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center text-[#ECC880] mb-3">
+                  <Car size={18} />
+                </div>
+                <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
+                  Valet Parking Gratis
+                </h4>
+                <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
+                  Layanan parkir valet khusus tanpa biaya di Lobby Barat. Tunjukkan tiket VIP QR Pass Anda kepada petugas.
+                </p>
+              </div>
+              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold">
+                ✓ Bebas Antrean Parkir
+              </div>
+            </div>
+
+            {/* Perk 2: Private Table */}
+            <div className="p-4 rounded-2xl bg-[#051C14]/90 border border-[#ECC880]/40 shadow-sm relative overflow-hidden flex flex-col justify-between">
+              <div>
+                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center text-[#ECC880] mb-3">
+                  <Crown size={18} />
+                </div>
+                <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
+                  Royal Table 01
+                </h4>
+                <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
+                  Tempat duduk sofa VIP di baris utama dengan layanan hidangan pribadi oleh waiter &amp; butler pesta.
+                </p>
+              </div>
+              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold">
+                ✓ Emerald Suite Table
+              </div>
+            </div>
+
+            {/* Perk 3: Fast-Track QR */}
+            <div className="p-4 rounded-2xl bg-[#051C14]/90 border border-[#ECC880]/40 shadow-sm relative overflow-hidden flex flex-col justify-between">
+              <div>
+                <div className="w-9 h-9 rounded-xl bg-[#ECC880]/15 border border-[#ECC880]/40 flex items-center justify-center text-[#ECC880] mb-3">
+                  <QrCode size={18} />
+                </div>
+                <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-1">
+                  Fast-Track Presensi
+                </h4>
+                <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
+                  Pintu masuk prioritas dengan pemindaian barcode instan untuk pengambilan souvenir dan pengantaran ke meja tamu.
+                </p>
+              </div>
+              <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold">
+                ✓ Pintu Masuk Barat VVIP
+              </div>
+            </div>
+          </div>
+
+          {/* Concierge Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto">
+            <a
+              href="https://maps.google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#ECC880] hover:bg-[#D4AF37] text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
+            >
+              <Navigation size={14} />
+              <span>Rute Jalur Drop-Off VVIP</span>
+            </a>
+            <a
+              href={`https://wa.me/6285707909415?text=${encodeURIComponent(`Halo Concierge Wedding Steven & Bunga, saya ${guestName} ingin menanyakan info perihal kedatangan tamu VVIP.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/50 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors"
+            >
+              <MessageCircle size={14} />
+              <span>Hubungi Concierge Tamu</span>
+            </a>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
         {/* 4. INTERACTIVE LOVE STORY JOURNEY                                        */}
         {/* ========================================================================= */}
         <section id="story" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
@@ -870,6 +1140,57 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         )}
 
         {/* ========================================================================= */}
+        {/* BESPOKE ROYAL SOUVENIR PREVIEW                                            */}
+        {/* ========================================================================= */}
+        <section id="souvenir" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
+          <EmeraldGoldCorner size={32} color="#ECC880" />
+
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
+            <Gift className="w-3.5 h-3.5 text-[#ECC880]" />
+            <span>CINDERAMATA EKSKLUSIF</span>
+          </div>
+
+          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#FFF8E2] mb-3">
+            Royal Wedding Favors
+          </h2>
+
+          <p className="text-xs text-[#A0C4B4] max-w-md mx-auto mb-6 font-light">
+            Sebagai wujud penghargaan atas kehadiran Anda, sebuah kenang-kenangan eksklusif berukir monogram resmi kedua mempelai telah disiapkan di meja registrasi.
+          </p>
+
+          <div className="p-6 rounded-3xl bg-[#051C14]/90 border border-[#ECC880]/40 max-w-md mx-auto text-left shadow-lg relative overflow-hidden">
+            <GuillocheVelvetWatermark opacity={0.06} />
+
+            <div className="flex flex-col sm:flex-row items-center gap-5 relative z-10">
+              <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#ECC880]/20 to-[#041610] border-2 border-[#ECC880]/60 flex flex-col items-center justify-center flex-shrink-0 shadow-inner">
+                <Crown className="w-10 h-10 text-[#ECC880] mb-1" />
+                <span className="font-serif text-[10px] font-bold text-[#ECC880] tracking-widest uppercase">
+                  SULTAN GIFT
+                </span>
+              </div>
+
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/15 text-[#ECC880] text-[9px] font-serif font-semibold mb-2 border border-[#ECC880]/30">
+                  <Star size={10} className="fill-[#ECC880]" />
+                  <span>Limited Edition Keepsake</span>
+                </div>
+                <h4 className="font-serif text-base font-bold text-white mb-1.5">
+                  Bespoke Scented Wax Diffuser &amp; Royal Monogram Box
+                </h4>
+                <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
+                  Aromaterapi beraroma kayu cendana &amp; melati keraton khas Jawa dalam kotak beludru hijau zamrud dengan cap segel emas Steven &amp; Bunga.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 pt-3 border-t border-[#ECC880]/20 flex items-center justify-between text-[11px] text-[#ECC880] relative z-10 font-serif">
+              <span>Pengambilan: VVIP Reception Desk</span>
+              <span className="font-bold">1 Tamu = 1 Gift Box</span>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
         {/* 6. WEDDING GIFT & EMV SMART DEBIT CARD                                   */}
         {/* ========================================================================= */}
         <section id="gift" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
@@ -928,10 +1249,18 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
                   {/* Header Card: Bank & Chip */}
                   <div className="flex items-center justify-between mb-6 relative z-10">
-                    <span className="font-serif font-bold text-lg tracking-wider text-[#FFF8E2]">
-                      {gift.bank_name}
-                    </span>
-                    <EMVGoldSmartChip />
+                    <div className="flex items-center gap-2">
+                      <span className="font-serif font-bold text-lg tracking-wider text-[#FFF8E2]">
+                        {gift.bank_name}
+                      </span>
+                      <span className="text-[9px] tracking-widest font-mono uppercase px-2 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] border border-[#ECC880]/40">
+                        PRIORITY
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <Wifi size={16} className="text-[#ECC880] rotate-90 opacity-80" />
+                      <EMVGoldSmartChip />
+                    </div>
                   </div>
 
                   {/* Card Number */}
@@ -1052,6 +1381,18 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               <p className="text-[11px] text-[#ECC880] mb-3 font-serif">
                 Grand Ballroom Sahara Hotel • Solo
               </p>
+
+              {/* Sultan VVIP Seating & Gate Info */}
+              <div className="grid grid-cols-2 gap-2 my-3 max-w-xs mx-auto text-left">
+                <div className="p-2 rounded-xl bg-[#041610]/80 border border-[#ECC880]/30 shadow-inner">
+                  <span className="text-[8px] text-[#A0C4B4] block uppercase font-sans">Meja Jamuan</span>
+                  <span className="text-[11px] font-serif font-bold text-[#ECC880] truncate block">Table 01 - Emerald</span>
+                </div>
+                <div className="p-2 rounded-xl bg-[#041610]/80 border border-[#ECC880]/30 shadow-inner">
+                  <span className="text-[8px] text-[#A0C4B4] block uppercase font-sans">Pintu Akses</span>
+                  <span className="text-[11px] font-serif font-bold text-[#ECC880] truncate block">Lobby Barat Valet</span>
+                </div>
+              </div>
 
               {/* QR Code Graphic */}
               <div className="w-36 h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-[#ECC880] shadow-md flex items-center justify-center my-3">
@@ -1215,15 +1556,18 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       </div>
 
       {/* Floating Bottom Navigation Bar */}
-      <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-sm w-auto px-4 pointer-events-auto">
-        <div className="bg-[#041610]/90 backdrop-blur-md border border-[#ECC880]/50 rounded-full py-2 px-3 shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex items-center justify-between gap-1">
+      <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-2 pointer-events-auto">
+        <div className="bg-[#041610]/92 backdrop-blur-md border border-[#ECC880]/50 rounded-full py-1.5 px-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex items-center justify-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar">
           {[
             { id: 'cover', label: 'Cover', icon: Sparkles },
             { id: 'couple', label: 'Mempelai', icon: User },
             { id: 'event', label: 'Acara', icon: Calendar },
+            { id: 'dresscode', label: 'Busana', icon: Shirt },
+            { id: 'concierge', label: 'VVIP', icon: Crown },
             { id: 'story', label: 'Cerita', icon: Heart },
             { id: 'gallery', label: 'Galeri', icon: Maximize2 },
-            { id: 'gift', label: 'Kado', icon: Gift },
+            { id: 'souvenir', label: 'Cinderamata', icon: Gem },
+            { id: 'gift', label: 'Kado', icon: CreditCard },
             { id: 'pass', label: 'RSVP', icon: QrCode },
           ].map(item => {
             const IconComponent = item.icon;
@@ -1235,8 +1579,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 onClick={() => setActiveSection(item.id)}
                 className={`p-2 rounded-full flex flex-col items-center justify-center transition-all ${
                   isActive 
-                    ? 'text-[#041610] bg-[#ECC880] shadow-sm' 
-                    : 'text-[#ECC880] hover:text-white'
+                    ? 'text-[#041610] bg-[#ECC880] shadow-sm font-bold scale-105' 
+                    : 'text-[#ECC880]/80 hover:text-white hover:bg-white/5'
                 }`}
                 title={item.label}
               >
