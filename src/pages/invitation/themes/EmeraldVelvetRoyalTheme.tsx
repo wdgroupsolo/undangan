@@ -546,6 +546,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const [activeSection, setActiveSection] = useState('cover');
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [activeGalleryTab, setActiveGalleryTab] = useState<'all' | 'prewedding' | 'ceremony' | 'reception'>('all');
+  const [activeGalleryIdx, setActiveGalleryIdx] = useState(0);
   const [giftTab, setGiftTab] = useState<'transfer' | 'physical'>('transfer');
   const [isCopied, setIsCopied] = useState<string | null>(null);
   const [calendarModalEvent, setCalendarModalEvent] = useState<CalendarEventData | null>(null);
@@ -631,17 +632,60 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const bridePhoto = couple?.bride_photo_url || couple?.bride_photo || '/photos/photo-4.jpg';
   const coupleInitials = `${groomName.charAt(0)} & ${brideName.charAt(0)}`;
 
-  // Default Photos fallback
-  const displayGallery = (gallery && gallery.length > 0) ? gallery : [
-    { id: '1', image_url: '/photos/photo-1.jpg', caption: 'Kebersamaan & Tawa Bahagia' },
-    { id: '2', image_url: '/photos/photo-3.jpg', caption: 'Romansa Kasih Steven & Bunga' },
-    { id: '3', image_url: '/photos/photo-4.jpg', caption: 'Pesona Anggun Mempelai Putri' },
-    { id: '4', image_url: '/photos/photo-5.jpg', caption: 'Genggaman Menuju Masa Depan' },
-    { id: '5', image_url: '/photos/photo-6.jpg', caption: 'Senyum Bahagia Hari Sakral' },
-    { id: '6', image_url: '/photos/photo-7.jpg', caption: 'Ketulusan Hati Mempelai Pria' },
-    { id: '7', image_url: '/photos/photo-8.jpg', caption: 'Langkah Menuju Janji Suci' },
-    { id: '8', image_url: '/photos/photo-9.jpg', caption: 'Menuju Pelaminan Bahagia' },
+  // Default Photos fallback with bespoke royal categories
+  const rawGallery = (gallery && gallery.length > 0) ? gallery : [
+    { id: '1', image_url: '/photos/photo-1.jpg', caption: 'Kebersamaan & Tawa Bahagia', category: 'prewedding' },
+    { id: '2', image_url: '/photos/photo-3.jpg', caption: 'Romansa Kasih Steven & Bunga', category: 'prewedding' },
+    { id: '3', image_url: '/photos/photo-4.jpg', caption: 'Pesona Anggun Mempelai Putri', category: 'ceremony' },
+    { id: '4', image_url: '/photos/photo-5.jpg', caption: 'Genggaman Menuju Masa Depan', category: 'reception' },
+    { id: '5', image_url: '/photos/photo-6.jpg', caption: 'Senyum Bahagia Hari Sakral', category: 'ceremony' },
+    { id: '6', image_url: '/photos/photo-7.jpg', caption: 'Ketulusan Hati Mempelai Pria', category: 'prewedding' },
+    { id: '7', image_url: '/photos/photo-8.jpg', caption: 'Langkah Menuju Janji Suci', category: 'ceremony' },
+    { id: '8', image_url: '/photos/photo-9.jpg', caption: 'Menuju Pelaminan Bahagia', category: 'reception' },
   ];
+
+  const normalizedGallery = rawGallery.map((item: any, idx: number) => ({
+    ...item,
+    category: item.category || (idx % 3 === 0 ? 'prewedding' : idx % 3 === 1 ? 'ceremony' : 'reception')
+  }));
+
+  const filteredGallery = activeGalleryTab === 'all' 
+    ? normalizedGallery 
+    : normalizedGallery.filter((item: any) => item.category === activeGalleryTab);
+
+  const displayGallery = filteredGallery.length > 0 ? filteredGallery : normalizedGallery;
+
+  const safeGalleryIdx = displayGallery.length > 0 
+    ? ((activeGalleryIdx % displayGallery.length) + displayGallery.length) % displayGallery.length 
+    : 0;
+  const currentShowcasePhoto = displayGallery[safeGalleryIdx] || displayGallery[0] || {
+    image_url: '/photos/photo-3.jpg',
+    caption: `Romansa Kasih ${groomName} & ${brideName}`
+  };
+
+  // Keyboard navigation for full lightbox modal
+  useEffect(() => {
+    if (!selectedPhoto) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedPhoto(null);
+      } else if (e.key === 'ArrowLeft') {
+        setActiveGalleryIdx((prev) => {
+          const next = prev > 0 ? prev - 1 : displayGallery.length - 1;
+          setSelectedPhoto(displayGallery[next]?.image_url || null);
+          return next;
+        });
+      } else if (e.key === 'ArrowRight') {
+        setActiveGalleryIdx((prev) => {
+          const next = prev < displayGallery.length - 1 ? prev + 1 : 0;
+          setSelectedPhoto(displayGallery[next]?.image_url || null);
+          return next;
+        });
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhoto, displayGallery]);
 
   // Love Story default fallback
   const displayStories = (stories && stories.length > 0) ? stories : [
@@ -1715,7 +1759,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 5. PHOTO MASONRY GALLERY & FULL LIGHTBOX                                */}
         {/* ========================================================================= */}
-        <section id="gallery" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="gallery" className="relative pt-12 pb-16 sm:pb-20 px-4 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-20 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
             <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
@@ -1739,75 +1783,208 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Gallery Category Tabs */}
             <ScrollReveal animation="fade-down" delay={150}>
-              <div className="relative z-10 flex items-center justify-center gap-1.5 max-w-sm mx-auto mb-6 flex-wrap">
+              <div className="relative z-10 flex items-center justify-center gap-1.5 max-w-md mx-auto mb-7 flex-wrap">
                 {[
-                  { id: 'all', label: 'Semua' },
-                  { id: 'prewedding', label: 'Prewedding' },
-                  { id: 'ceremony', label: 'Seremonial' },
-                  { id: 'reception', label: 'Romansa' },
+                  { id: 'all', label: 'Semua', count: normalizedGallery.length },
+                  { id: 'prewedding', label: 'Prewedding', count: normalizedGallery.filter((g: any) => g.category === 'prewedding').length },
+                  { id: 'ceremony', label: 'Seremonial', count: normalizedGallery.filter((g: any) => g.category === 'ceremony').length },
+                  { id: 'reception', label: 'Romansa', count: normalizedGallery.filter((g: any) => g.category === 'reception').length },
                 ].map(tab => (
                   <button
                     key={tab.id}
                     type="button"
-                    onClick={() => setActiveGalleryTab(tab.id as any)}
-                    className={`px-3.5 py-1.5 rounded-full text-[11px] font-serif transition-all cursor-pointer shadow-xs ${
+                    onClick={() => {
+                      setActiveGalleryTab(tab.id as any);
+                      setActiveGalleryIdx(0);
+                    }}
+                    className={`px-3 sm:px-4 py-1.5 rounded-full text-[11px] font-serif transition-all cursor-pointer shadow-xs inline-flex items-center gap-1.5 ${
                       activeGalleryTab === tab.id
-                        ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
-                        : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
+                        ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold shadow-md scale-102'
+                        : 'bg-white/85 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023] hover:border-[#ECC880]'
                     }`}
                   >
-                    {tab.label}
+                    <span>{tab.label}</span>
+                    <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono ${
+                      activeGalleryTab === tab.id 
+                        ? 'bg-[#ECC880]/20 text-[#ECC880]' 
+                        : 'bg-[#103023]/10 text-[#5B7569]'
+                    }`}>
+                      {tab.count}
+                    </span>
                   </button>
                 ))}
               </div>
             </ScrollReveal>
 
-            {/* Photo Masonry Grid */}
-            <div className="relative z-10 grid grid-cols-2 gap-3 max-w-lg mx-auto">
-              {displayGallery.map((img, idx) => (
-                <ScrollReveal key={idx} animation="zoom-in" delay={(idx % 4) * 80} duration={750}>
-                  <div 
-                    onClick={() => setSelectedPhoto(img.image_url)}
-                    className={`relative group rounded-2xl overflow-hidden border-2 border-[#ECC880]/70 cursor-pointer shadow-lg aspect-[3/4] ${
-                      idx % 3 === 0 ? 'col-span-2 aspect-[16/10]' : ''
-                    }`}
-                  >
-                    <img 
-                      src={img.image_url} 
-                      alt={img.caption || `Galeri ${idx + 1}`} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                      <span className="text-xs text-[#FFF8E2] font-serif italic truncate">
-                        {img.caption || 'Steven & Bunga'}
-                      </span>
+            {/* Royal Masterpiece Featured Showcase (Cinema Mode) */}
+            <ScrollReveal animation="zoom-in" delay={180} duration={800}>
+              <div className="relative max-w-xl mx-auto mb-6">
+                {/* Outer Gilded Royal Frame */}
+                <div className="relative p-2 sm:p-2.5 rounded-3xl bg-gradient-to-b from-[#E2C792]/50 via-[#C5A059]/30 to-[#8C6D2B]/50 border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.45),0_0_30px_rgba(236,200,128,0.25)]">
+                  <div className="relative rounded-2xl overflow-hidden bg-[#0A1B14] group">
+                    <EmeraldGoldCorner size={40} className="pointer-events-none" />
+
+                    {/* Top Badges Bar: Photo Counter & Quick Enlarge */}
+                    <div className="absolute top-3 inset-x-3 sm:top-3.5 sm:inset-x-3.5 z-20 flex items-center justify-between pointer-events-none">
+                      <div className="pointer-events-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#041610]/85 backdrop-blur-md border border-[#ECC880]/70 text-[#FFF8E2] text-[10px] sm:text-[11px] font-serif shadow-md">
+                        <Sparkles className="w-3 h-3 text-[#ECC880] animate-pulse" />
+                        <span>Foto {safeGalleryIdx + 1} dari {displayGallery.length}</span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPhoto(currentShowcasePhoto.image_url)}
+                        className="pointer-events-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#041610]/85 hover:bg-[#ECC880] backdrop-blur-md border border-[#ECC880]/70 text-[#FFF8E2] hover:text-[#041610] text-[10px] sm:text-[11px] font-serif transition-all shadow-md group/zoom cursor-pointer"
+                        title="Lihat Layar Penuh"
+                      >
+                        <Maximize2 className="w-3 h-3 text-[#ECC880] group-hover/zoom:text-[#041610] transition-colors" />
+                        <span className="hidden sm:inline font-medium">Perbesar</span>
+                      </button>
+                    </div>
+
+                    {/* Main Showcase Image */}
+                    <div 
+                      onClick={() => setSelectedPhoto(currentShowcasePhoto.image_url)}
+                      className="relative aspect-[16/10] sm:aspect-[16/9] w-full cursor-pointer overflow-hidden flex items-center justify-center bg-black/40"
+                    >
+                      <img 
+                        key={currentShowcasePhoto.id || safeGalleryIdx}
+                        src={currentShowcasePhoto.image_url} 
+                        alt={currentShowcasePhoto.caption || `Galeri ${safeGalleryIdx + 1}`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/95 via-[#041610]/30 to-black/30 pointer-events-none" />
+                    </div>
+
+                    {/* Navigation Arrow: Prev */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveGalleryIdx(prev => (prev > 0 ? prev - 1 : displayGallery.length - 1));
+                      }}
+                      aria-label="Foto Sebelumnya"
+                      className="absolute left-2.5 sm:left-3.5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#041610]/85 hover:bg-[#ECC880] backdrop-blur-md border border-[#ECC880]/80 text-[#FFF8E2] hover:text-[#041610] flex items-center justify-center transition-all shadow-xl hover:scale-110 active:scale-95 z-20 cursor-pointer"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+
+                    {/* Navigation Arrow: Next */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveGalleryIdx(prev => (prev < displayGallery.length - 1 ? prev + 1 : 0));
+                      }}
+                      aria-label="Foto Selanjutnya"
+                      className="absolute right-2.5 sm:right-3.5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#041610]/85 hover:bg-[#ECC880] backdrop-blur-md border border-[#ECC880]/80 text-[#FFF8E2] hover:text-[#041610] flex items-center justify-center transition-all shadow-xl hover:scale-110 active:scale-95 z-20 cursor-pointer"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+
+                    {/* Gilded Caption Overlay Banner */}
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#041610] via-[#041610]/85 to-transparent pt-7 pb-3 px-4 text-center pointer-events-none">
+                      <p className="font-serif text-xs sm:text-sm text-transparent bg-clip-text bg-gradient-to-r from-[#FFFDF2] via-[#ECC880] to-[#E2C792] font-semibold tracking-wide">
+                        ✦ {currentShowcasePhoto.caption || `Romansa Kasih ${groomName} & ${brideName}`} ✦
+                      </p>
+                      <p className="text-[10px] text-[#ECC880]/70 tracking-widest uppercase font-serif mt-0.5">
+                        Ketuk foto untuk melihat layar penuh
+                      </p>
                     </div>
                   </div>
-                </ScrollReveal>
-              ))}
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Horizontal Filmstrip Ribbon */}
+            <div className="relative z-10 max-w-xl mx-auto mb-8">
+              <div className="flex items-center justify-start sm:justify-center gap-2 sm:gap-2.5 py-1 px-1 overflow-x-auto no-scrollbar scroll-smooth">
+                {displayGallery.map((item: any, idx: number) => {
+                  const isActive = idx === safeGalleryIdx;
+                  return (
+                    <button
+                      key={item.id || idx}
+                      type="button"
+                      onClick={() => setActiveGalleryIdx(idx)}
+                      className={`relative flex-shrink-0 w-13 h-16 sm:w-15 sm:h-20 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 ${
+                        isActive
+                          ? 'border-2 border-[#ECC880] scale-105 shadow-[0_0_14px_rgba(236,200,128,0.7)] ring-2 ring-[#ECC880]/60 opacity-100 z-10'
+                          : 'border border-[#ECC880]/50 opacity-60 hover:opacity-100 hover:border-[#ECC880] hover:scale-102'
+                      }`}
+                    >
+                      <img 
+                        src={item.image_url} 
+                        alt={item.caption || `Thumbnail ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      {isActive && (
+                        <div className="absolute inset-0 bg-[#ECC880]/15 pointer-events-none ring-1 ring-inset ring-[#ECC880]" />
+                      )}
+                      <div className="absolute bottom-1 right-1 px-1 rounded bg-[#041610]/80 text-[8px] sm:text-[9px] font-mono text-[#ECC880] leading-tight">
+                        {idx + 1}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Full Gilded Photo Mosaic Grid */}
+            <div className="relative z-10 max-w-lg mx-auto mb-4 flex items-center justify-between text-left px-1">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#ECC880]" />
+                <h3 className="font-serif text-xs sm:text-sm font-bold text-[#103023] uppercase tracking-wider">
+                  Koleksi Potret Terpilih
+                </h3>
+              </div>
+              <span className="text-[10px] font-serif text-[#8C6D2B] bg-[#041610]/5 px-2.5 py-0.5 rounded-full border border-[#ECC880]/40">
+                {displayGallery.length} Potret
+              </span>
+            </div>
+
+            {/* Balanced 2-Column Photo Grid (Uniform Aspect Ratio, Zero Gaps) */}
+            <div className="relative z-10 grid grid-cols-2 gap-3 sm:gap-3.5 max-w-lg mx-auto">
+              {displayGallery.map((img: any, idx: number) => {
+                const isSelected = idx === safeGalleryIdx;
+                return (
+                  <ScrollReveal key={img.id || idx} animation="zoom-in" delay={(idx % 4) * 70} duration={600}>
+                    <div 
+                      onClick={() => {
+                        setActiveGalleryIdx(idx);
+                        setSelectedPhoto(img.image_url);
+                      }}
+                      className={`relative group rounded-2xl overflow-hidden border-2 cursor-pointer shadow-md transition-all duration-300 aspect-[4/5] ${
+                        isSelected
+                          ? 'border-[#ECC880] ring-2 ring-[#ECC880]/70 shadow-[0_4px_20px_rgba(236,200,128,0.4)]'
+                          : 'border-[#ECC880]/70 hover:border-[#ECC880] hover:shadow-lg'
+                      }`}
+                    >
+                      <img 
+                        src={img.image_url} 
+                        alt={img.caption || `Galeri ${idx + 1}`} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      
+                      {/* Permanent Gilded Footnote Bar */}
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#041610]/95 via-[#041610]/60 to-transparent pt-6 pb-2.5 px-2.5 text-left flex items-end justify-between">
+                        <div className="min-w-0 pr-1">
+                          <p className="text-[10px] sm:text-xs text-[#FFF8E2] font-serif italic truncate">
+                            {img.caption || 'Steven & Bunga'}
+                          </p>
+                          <span className="text-[9px] text-[#ECC880]/80 font-serif uppercase tracking-wider block">
+                            {img.category === 'prewedding' ? 'Prewedding' : img.category === 'ceremony' ? 'Seremonial' : 'Romansa'}
+                          </span>
+                        </div>
+                        <div className="w-5 h-5 rounded-full bg-[#ECC880]/20 flex items-center justify-center flex-shrink-0 text-[#ECC880] opacity-80 group-hover:opacity-100 group-hover:bg-[#ECC880] group-hover:text-[#041610] transition-all">
+                          <Maximize2 className="w-2.5 h-2.5" />
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                );
+              })}
             </div>
           </section>
-
-        {/* Lightbox Modal */}
-        {selectedPhoto && (
-          <div 
-            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 backdrop-blur-md"
-            onClick={() => setSelectedPhoto(null)}
-          >
-            <button 
-              type="button"
-              onClick={() => setSelectedPhoto(null)}
-              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-[#041610] border border-[#ECC880] text-[#ECC880] flex items-center justify-center cursor-pointer shadow-lg"
-            >
-              <X size={20} />
-            </button>
-            <img 
-              src={selectedPhoto} 
-              alt="Zoomed Galeri" 
-              className="max-w-full max-h-[85vh] rounded-2xl border-2 border-[#ECC880] shadow-2xl object-contain"
-            />
-          </div>
-        )}
 
         {/* ========================================================================= */}
         {/* BESPOKE ROYAL SOUVENIR PREVIEW                                            */}
@@ -2266,7 +2443,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       </div>
 
       {/* Floating Bottom Navigation Bar with Dynamic Royal Gold Pill Dock */}
-      <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-2 pointer-events-auto">
+      <nav className={`fixed bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-2 pointer-events-auto transition-opacity duration-300 ${selectedPhoto ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
         <div className="bg-[#041610]/95 backdrop-blur-xl border border-[#ECC880]/60 rounded-full py-1.5 px-2 sm:px-3 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(236,200,128,0.3)] flex items-center justify-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar">
           {[
             { id: 'cover', label: 'Cover', icon: Sparkles },
@@ -2305,6 +2482,79 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           })}
         </div>
       </nav>
+
+      {/* Fullscreen Lightbox Modal with Full Carousel Controls & Keyboard Support */}
+      {selectedPhoto && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-3 sm:p-6 backdrop-blur-md"
+          onClick={() => setSelectedPhoto(null)}
+        >
+          {/* Close Button */}
+          <button 
+            type="button"
+            onClick={() => setSelectedPhoto(null)}
+            className="absolute top-5 right-5 w-10 h-10 rounded-full bg-[#041610]/90 border border-[#ECC880] text-[#ECC880] hover:bg-[#ECC880] hover:text-[#041610] flex items-center justify-center cursor-pointer shadow-xl transition-all z-30"
+            title="Tutup"
+          >
+            <X size={20} />
+          </button>
+
+          {/* Prev Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              const nextIdx = safeGalleryIdx > 0 ? safeGalleryIdx - 1 : displayGallery.length - 1;
+              setActiveGalleryIdx(nextIdx);
+              setSelectedPhoto(displayGallery[nextIdx].image_url);
+            }}
+            aria-label="Foto Sebelumnya"
+            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#041610]/85 border border-[#ECC880] text-[#ECC880] hover:bg-[#ECC880] hover:text-[#041610] flex items-center justify-center cursor-pointer shadow-2xl hover:scale-105 active:scale-95 transition-all z-30"
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          {/* Next Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              const nextIdx = safeGalleryIdx < displayGallery.length - 1 ? safeGalleryIdx + 1 : 0;
+              setActiveGalleryIdx(nextIdx);
+              setSelectedPhoto(displayGallery[nextIdx].image_url);
+            }}
+            aria-label="Foto Selanjutnya"
+            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#041610]/85 border border-[#ECC880] text-[#ECC880] hover:bg-[#ECC880] hover:text-[#041610] flex items-center justify-center cursor-pointer shadow-2xl hover:scale-105 active:scale-95 transition-all z-30"
+          >
+            <ChevronRight size={24} />
+          </button>
+
+          {/* Photo & Caption Container */}
+          <div 
+            className="relative max-w-3xl w-full max-h-[90vh] flex flex-col items-center" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_40px_rgba(236,200,128,0.3)] bg-black/50">
+              <img 
+                src={selectedPhoto} 
+                alt={displayGallery[safeGalleryIdx]?.caption || 'Foto Galeri'} 
+                className="max-w-full max-h-[75vh] object-contain"
+              />
+            </div>
+
+            {/* Lightbox Caption Pill */}
+            <div className="mt-3.5 inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#041610]/95 border border-[#ECC880]/70 text-[#FFF8E2] shadow-xl text-center">
+              <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
+              <span className="font-serif text-xs sm:text-sm font-medium">
+                {displayGallery[safeGalleryIdx]?.caption || `${groomName} & ${brideName}`}
+              </span>
+              <span className="text-[10px] text-[#ECC880] font-mono px-2 py-0.5 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/30">
+                {safeGalleryIdx + 1} / {displayGallery.length}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Calendar Modal */}
       {calendarModalEvent && (
