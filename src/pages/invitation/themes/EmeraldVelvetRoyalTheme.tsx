@@ -452,8 +452,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       {/* DESKTOP SPLIT LAYOUT CONTAINER */}
       <div className="flex flex-col lg:flex-row min-h-screen">
 
-        {/* DESKTOP LEFT ASIDE (50% Fixed on Large Screens) */}
-        <aside className="hidden lg:flex lg:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-10 xl:p-14 overflow-hidden bg-[#041610] border-r border-[#ECC880]/30 shadow-2xl">
+        {/* DESKTOP LEFT ASIDE (Fixed on Large Screens) */}
+        <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-8 xl:p-12 overflow-hidden bg-[#041610] border-r border-[#ECC880]/30 shadow-2xl">
           {/* Background image & deep velvet atmosphere */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out hover:scale-105"
@@ -521,12 +521,12 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         </aside>
 
         {/* RIGHT SIDE (Scrollable Folio on Desktop, Full Width on Mobile) */}
-        <main className="w-full lg:w-1/2 lg:ml-auto min-h-screen relative z-10 px-4 sm:px-8 py-8 pb-32 max-w-2xl mx-auto lg:max-w-none">
+        <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen bg-[#041610] relative z-10 px-4 sm:px-8 xl:px-12 py-8 pb-36">
         
         {/* ========================================================================= */}
         {/* 1. HERO COVER SECTION                                                    */}
         {/* ========================================================================= */}
-        <section id="cover" className="relative text-center py-12 px-4 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12">
+        <section id="cover" className="relative text-center py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 max-w-2xl mx-auto">
           <EmeraldGoldCorner size={36} color="#ECC880" />
           
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-6">
@@ -544,6 +544,18 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           <p className="font-serif italic text-sm text-[#A0C4B4] mt-3">
             Senin, 12 Oktober 2026
           </p>
+
+          {/* Couple Arch Portrait in Right Folio Cover */}
+          <div className="relative w-44 h-60 sm:w-52 sm:h-68 mx-auto my-6 rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] p-1 bg-gradient-to-b from-[#ECC880]/40 via-[#ECC880]/10 to-[#041610] shadow-[0_15px_35px_rgba(0,0,0,0.7)] group">
+            <div className="w-full h-full rounded-t-full rounded-b-xl overflow-hidden relative">
+              <img 
+                src={couple?.cover_photo_url || couple?.cover_photo || '/photos/photo-3.jpg'} 
+                alt={`${groomName} & ${brideName}`} 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/80 via-transparent to-transparent pointer-events-none" />
+            </div>
+          </div>
 
           {/* Guest Greeting Card */}
           <div className="mt-8 mx-auto max-w-sm p-4 rounded-2xl bg-[#041610]/90 border border-[#ECC880]/40 shadow-inner text-center">
@@ -587,7 +599,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 2. COUPLE PRESENTATION SECTION                                           */}
         {/* ========================================================================= */}
-        <section id="couple" className="relative py-12 px-4 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center">
+        <section id="couple" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
           <EmeraldGoldCorner size={32} color="#ECC880" />
 
           {/* Ayat / Holy Verse */}
@@ -662,7 +674,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 3. EVENT AGENDA SECTION                                                  */}
         {/* ========================================================================= */}
-        <section id="event" className="relative py-12 px-4 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center">
+        <section id="event" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
           <EmeraldGoldCorner size={32} color="#ECC880" />
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
@@ -737,7 +749,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 4. INTERACTIVE LOVE STORY JOURNEY                                        */}
         {/* ========================================================================= */}
-        <section id="story" className="relative py-12 px-4 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center">
+        <section id="story" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
           <EmeraldGoldCorner size={32} color="#ECC880" />
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
@@ -776,7 +788,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 5. PHOTO MASONRY GALLERY & FULL LIGHTBOX                                */}
         {/* ========================================================================= */}
-        <section id="gallery" className="relative py-12 px-4 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center">
+        <section id="gallery" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
           <EmeraldGoldCorner size={32} color="#ECC880" />
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
@@ -860,7 +872,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 6. WEDDING GIFT & EMV SMART DEBIT CARD                                   */}
         {/* ========================================================================= */}
-        <section id="gift" className="relative py-12 px-4 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center">
+        <section id="gift" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
           <EmeraldGoldCorner size={32} color="#ECC880" />
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
@@ -988,7 +1000,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 7. VIP GUEST CHECK-IN PASS & RSVP LIVE WISHES                           */}
         {/* ========================================================================= */}
-        <section id="pass" className="relative py-12 px-4 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center">
+        <section id="pass" className="relative py-12 px-4 sm:px-6 rounded-[36px] bg-gradient-to-b from-[#0A261D]/90 via-[#071F17]/95 to-[#041610] border border-[#ECC880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden mb-12 text-center max-w-2xl mx-auto">
           <EmeraldGoldCorner size={32} color="#ECC880" />
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/80 border border-[#ECC880]/40 text-[#ECC880] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-md mb-4">
@@ -1203,8 +1215,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       </div>
 
       {/* Floating Bottom Navigation Bar */}
-      <nav className="fixed bottom-4 inset-x-0 z-40 max-w-sm mx-auto px-4 pointer-events-auto">
-        <div className="bg-[#041610]/90 backdrop-blur-md border border-[#ECC880]/50 rounded-full py-2 px-3 shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex items-center justify-between">
+      <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-sm w-auto px-4 pointer-events-auto">
+        <div className="bg-[#041610]/90 backdrop-blur-md border border-[#ECC880]/50 rounded-full py-2 px-3 shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex items-center justify-between gap-1">
           {[
             { id: 'cover', label: 'Cover', icon: Sparkles },
             { id: 'couple', label: 'Mempelai', icon: User },
