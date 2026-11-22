@@ -557,6 +557,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
   // Royal AR Filter & Live Camera States
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
+  const [isStoryGuideOpen, setIsStoryGuideOpen] = useState(false);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const [cameraFacingMode, setCameraFacingMode] = useState<'user' | 'environment'>('user');
   const [cameraError, setCameraError] = useState<string | null>(null);
@@ -789,6 +790,129 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     a.click();
     document.body.removeChild(a);
     toast.success('Stiker Frame Royal Emas (PNG) berhasil diunduh ke galeri!');
+  };
+
+  // Share full photo to Instagram Stories using Web Share API or download + open guide
+  const sharePhotoToInstagramStory = async (imageUrl?: string) => {
+    try {
+      const srcToUse = imageUrl || capturedSnapshot || displayGallery[0]?.url || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=900';
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = 1080;
+      canvas.height = 1920;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Draw dark background
+      ctx.fillStyle = '#041610';
+      ctx.fillRect(0, 0, 1080, 1920);
+
+      // Load target image
+      const img = new window.Image();
+      img.crossOrigin = 'anonymous';
+      img.src = srcToUse;
+      await new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+
+      // Draw image to fill canvas (center crop)
+      const scale = Math.max(1080 / (img.naturalWidth || 1080), 1920 / (img.naturalHeight || 1920));
+      const w = (img.naturalWidth || 1080) * scale;
+      const h = (img.naturalHeight || 1920) * scale;
+      const x = (1080 - w) / 2;
+      const y = (1920 - h) / 2;
+      ctx.drawImage(img, x, y, w, h);
+
+      // Contrast overlay
+      const grad = ctx.createLinearGradient(0, 0, 0, 1920);
+      grad.addColorStop(0, 'rgba(4, 22, 16, 0.7)');
+      grad.addColorStop(0.3, 'rgba(4, 22, 16, 0.15)');
+      grad.addColorStop(0.7, 'rgba(4, 22, 16, 0.35)');
+      grad.addColorStop(1, 'rgba(4, 22, 16, 0.88)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1080, 1920);
+
+      // 24K Outer Gold Border
+      ctx.strokeStyle = '#ECC880';
+      ctx.lineWidth = 18;
+      ctx.strokeRect(36, 36, 1080 - 72, 1920 - 72);
+
+      // Inner Dashed Line
+      ctx.strokeStyle = 'rgba(236, 200, 128, 0.8)';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([18, 14]);
+      ctx.strokeRect(66, 66, 1080 - 132, 1920 - 132);
+      ctx.setLineDash([]);
+
+      // Top Monogram Royal Seal
+      const cx = 540;
+      const topY = 210;
+      ctx.fillStyle = 'rgba(4, 22, 16, 0.95)';
+      ctx.beginPath();
+      ctx.arc(cx, topY, 84, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ECC880';
+      ctx.lineWidth = 5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ECC880';
+      ctx.font = 'bold 42px serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('S & B', cx, topY + 16);
+
+      ctx.font = 'bold 22px serif';
+      ctx.fillText('THE ROYAL WEDDING', cx, topY + 120);
+
+      // Bottom Folio Card
+      const botY = 1920 - 240;
+      ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
+      ctx.fillRect(80, botY, 1080 - 160, 140);
+      ctx.strokeStyle = '#ECC880';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(80, botY, 1080 - 160, 140);
+
+      ctx.fillStyle = '#FFF8E2';
+      ctx.font = 'bold 36px serif';
+      ctx.fillText('STEVEN & BUNGA', cx, botY + 52);
+
+      ctx.fillStyle = '#ECC880';
+      ctx.font = '22px sans-serif';
+      ctx.fillText('Senin, 12 Oktober 2026 • Solo, Jawa Tengah', cx, botY + 86);
+
+      ctx.fillStyle = '#D4AF37';
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText('#StevenBungaRoyalWedding', cx, botY + 118);
+
+      const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, 'image/png'));
+      if (!blob) return;
+      const file = new File([blob], 'Royal_Story_Steven_Bunga.png', { type: 'image/png' });
+
+      // Check if Web Share API with files is supported
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'The Royal Wedding • Steven & Bunga',
+          text: '#StevenBungaRoyalWedding @steven_pratama @bunga_lestari'
+        });
+        toast.success('Pilih Instagram Stories untuk langsung membagikan foto!');
+      } else {
+        // Auto-download to device and open guidance modal
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'Royal_Story_Steven_Bunga.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        toast.success('Foto berbingkai emas telah disimpan ke galeri ponsel!');
+        setIsStoryGuideOpen(true);
+      }
+    } catch (err: any) {
+      if (err.name !== 'AbortError') {
+        console.warn('Share error:', err);
+        setIsStoryGuideOpen(true);
+      }
+    }
   };
 
   // Open Instagram Story Camera directly or open custom filter URL
@@ -2372,25 +2496,35 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     <Sparkles className="w-4 h-4 text-[#041610]" />
                   </button>
 
-                  {/* Secondary Action 1: Unduh Stiker Frame Emas (PNG Transparan untuk Instagram Story) */}
+                  {/* Secondary Action 1: Bagikan Foto Mempelai ke Instagram Story (Direct Share) */}
+                  <button
+                    type="button"
+                    onClick={() => sharePhotoToInstagramStory()}
+                    className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-[#041610] hover:bg-[#08241b] border-2 border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs sm:text-sm tracking-wide shadow-md hover:shadow-[0_0_20px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
+                  >
+                    <InstagramIcon size={16} />
+                    <span>Bagikan Foto Mempelai ke IG Story</span>
+                    <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
+                  </button>
+
+                  {/* Secondary Action 2: Unduh Stiker Frame Emas (PNG Transparan) */}
                   <button
                     type="button"
                     onClick={downloadRoyalFramePNG}
-                    className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-[#041610] hover:bg-[#08241b] border-2 border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs sm:text-sm tracking-wide shadow-md hover:shadow-[0_0_20px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
+                    className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#FAF6ED] to-[#F3ECE0] hover:from-[#F3ECE0] hover:to-[#EAE0D0] border border-[#ECC880] text-[#103023] font-serif font-semibold text-xs sm:text-sm tracking-wide shadow-xs hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
                   >
-                    <Download className="w-4 h-4 text-[#ECC880]" />
+                    <Download className="w-4 h-4 text-[#8C6D2B]" />
                     <span>Unduh Stiker Frame Emas (PNG Transparan)</span>
                   </button>
 
-                  {/* Secondary Action 2: Buka Kamera Instagram Story */}
+                  {/* Direct Guide Trigger Button */}
                   <button
                     type="button"
-                    onClick={handleOpenInstagramStory}
-                    className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#FAF6ED] to-[#F3ECE0] hover:from-[#F3ECE0] hover:to-[#EAE0D0] border border-[#ECC880] text-[#103023] font-serif font-semibold text-xs sm:text-sm tracking-wide shadow-xs hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
+                    onClick={() => setIsStoryGuideOpen(true)}
+                    className="w-full py-2 px-3 text-[11px] sm:text-xs text-[#8C6D2B] hover:text-[#103023] font-serif inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <InstagramIcon size={16} className="text-[#8C6D2B]" />
-                    <span>Buka Kamera Instagram Story</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-[#8C6D2B]" />
+                    <Info className="w-3.5 h-3.5 text-[#C5A059]" />
+                    <span className="underline underline-offset-2">Foto belum muncul di Instagram? Baca panduan cara pasang</span>
                   </button>
 
                   {/* Official Wedding Hashtag & Copy Card */}
@@ -2421,23 +2555,6 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                         </>
                       )}
                     </button>
-                  </div>
-
-                  {/* Panduan Story & Tag Mention */}
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#FAF6ED] to-[#F3ECE0] border border-[#ECC880]/40 text-left text-[11px] sm:text-xs text-[#5B7569] space-y-1.5">
-                    <p className="font-bold text-[#103023] flex items-center gap-1.5">
-                      <Sparkles className="w-3 h-3 text-[#C5A059]" />
-                      <span>Cara Menggunakan Momen Royal di Instagram Story:</span>
-                    </p>
-                    <p>
-                      <strong>Cara 1:</strong> Buka <em>Web Photobooth</em> di atas untuk selfie langsung berbingkai emas &amp; simpan ke galeri ponsel Anda.
-                    </p>
-                    <p>
-                      <strong>Cara 2:</strong> Unduh <em>Stiker Frame PNG</em>, lalu di Instagram Story tempelkan frame via fitur <strong>Stiker Foto (+)</strong> di atas foto Anda.
-                    </p>
-                    <p className="pt-1 border-t border-[#ECC880]/30 text-center font-medium text-[#103023]">
-                      Tag <span className="font-bold">@steven_pratama</span> &amp; <span className="font-bold">@bunga_lestari</span> agar momen istimewa Anda dapat kami sematkan di album sorotan Royal Memories!
-                    </p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -3105,11 +3222,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   </button>
                   <button
                     type="button"
-                    onClick={handleOpenInstagramStory}
+                    onClick={() => sharePhotoToInstagramStory(capturedSnapshot)}
                     className="flex-1 py-3 rounded-xl bg-[#041610] border border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-white/10 transition-all cursor-pointer"
                   >
                     <InstagramIcon size={14} />
-                    <span>Buka IG Story</span>
+                    <span>Bagikan ke IG Story</span>
                     <ExternalLink className="w-3 h-3 ml-0.5" />
                   </button>
                   <button
@@ -3193,6 +3310,108 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Panduan Menampilkan Foto di Instagram Story Modal */}
+      {isStoryGuideOpen && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-sm sm:max-w-md rounded-[32px] bg-gradient-to-b from-[#08241b] via-[#041610] to-[#010906] border-2 border-[#ECC880] shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_40px_rgba(236,200,128,0.4)] p-5 sm:p-6 overflow-hidden text-left">
+            <EmeraldGoldCorner size={36} color="#ECC880" />
+
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#ECC880]/30 relative z-10">
+              <div className="inline-flex items-center gap-2">
+                <Crown className="w-4 h-4 text-[#ECC880]" />
+                <span className="font-serif font-bold text-sm text-[#FFF8E2] tracking-wider">
+                  Panduan Pasang Foto di IG Story
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsStoryGuideOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                title="Tutup Panduan"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Explanation why photo doesn't appear automatically in native camera */}
+            <div className="space-y-4 text-xs text-[#FFF8E2]/90 leading-relaxed relative z-10">
+              <div className="p-3 rounded-xl bg-[#ECC880]/10 border border-[#ECC880]/40 flex items-start gap-2.5">
+                <Info className="w-4 h-4 text-[#ECC880] flex-shrink-0 mt-0.5" />
+                <p className="text-[11px] text-[#ECC880]">
+                  <strong>Kenapa foto tidak langsung muncul di kamera?</strong> Karena sistem keamanan Instagram, browser web tidak diizinkan menyisipkan foto ke kamera Instagram secara otomatis tanpa persetujuan pengguna.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-[#ECC880] text-[#041610] font-bold text-xs flex items-center justify-center flex-shrink-0">
+                    1
+                  </span>
+                  <div>
+                    <p className="font-bold text-[#FFF8E2] font-serif">Foto Tersimpan di Galeri</p>
+                    <p className="text-[11px] text-[#A0C4B4]">
+                      Foto berbingkai emas Steven &amp; Bunga sudah otomatis diunduh ke galeri ponsel Anda.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-[#ECC880] text-[#041610] font-bold text-xs flex items-center justify-center flex-shrink-0">
+                    2
+                  </span>
+                  <div>
+                    <p className="font-bold text-[#FFF8E2] font-serif">Buka Instagram Story</p>
+                    <p className="text-[11px] text-[#A0C4B4]">
+                      Buka aplikasi Instagram, lalu geser ke kanan untuk masuk ke mode Story.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-[#ECC880] text-[#041610] font-bold text-xs flex items-center justify-center flex-shrink-0">
+                    3
+                  </span>
+                  <div>
+                    <p className="font-bold text-[#FFF8E2] font-serif">Pilih Foto dari Galeri (Pojok Kiri Bawah)</p>
+                    <p className="text-[11px] text-[#A0C4B4]">
+                      Usap layar ke atas (<em>swipe up</em>) atau ketuk kotak galeri di pojok kiri bawah layar Story untuk memilih foto berbingkai emas ini.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons in Modal */}
+              <div className="pt-2 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsStoryGuideOpen(false);
+                    handleOpenInstagramStory();
+                  }}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+                >
+                  <InstagramIcon size={16} />
+                  <span>Buka Aplikasi Instagram Story</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleCopyHashtag('#StevenBungaRoyalWedding @steven_pratama @bunga_lestari');
+                  }}
+                  className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>Salin Hashtag &amp; Tag Mempelai</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
