@@ -565,6 +565,17 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const [hasCopiedHashtag, setHasCopiedHashtag] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const navContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll active nav item into center of the dock on mobile screens
+  useEffect(() => {
+    if (navContainerRef.current) {
+      const activeEl = navContainerRef.current.querySelector(`[data-nav-id="${activeSection}"]`) as HTMLElement;
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [activeSection]);
 
   // Stop camera helper
   const stopCamera = () => {
@@ -1486,24 +1497,24 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         </aside>
 
         {/* RIGHT SIDE (Scrollable Folio on Desktop, Full Width on Mobile) */}
-        <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen bg-[#041610] relative z-10 px-4 sm:px-8 xl:px-12 py-8 pb-36">
+        <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen bg-[#041610] relative z-10 px-2.5 xs:px-4 sm:px-8 xl:px-12 py-6 sm:py-8 pb-28 sm:pb-36">
         
         {/* ========================================================================= */}
         {/* 1. HERO COVER SECTION (Warm Imperial Ivory & 24K Gold Folio)            */}
         {/* ========================================================================= */}
-        <section id="cover" className="relative text-center py-10 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 max-w-2xl mx-auto">
+        <section id="cover" className="relative text-center py-8 xs:py-10 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-10 sm:mb-14 max-w-2xl mx-auto">
             {/* Tactile Banknote Guilloché Watermark */}
             <GuillocheParchmentWatermark opacity={0.08} />
 
             {/* Inset Gold Dashed & Hairline Frames */}
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-            <div className="absolute inset-5 sm:inset-6 rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[22px] xs:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-4 xs:inset-5 sm:inset-6 rounded-[18px] xs:rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
 
             {/* Gilded Victorian Acanthus Corners */}
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             {/* Gold Shimmer Sweep Light Animation */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[36px]">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[26px] xs:rounded-[32px] sm:rounded-[36px]">
               <div 
                 className="absolute inset-y-0 w-36 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none -translate-x-full"
                 style={{ animation: 'goldShimmerSweep 6s ease-in-out infinite' }}
@@ -1512,22 +1523,22 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* 3D Sculpted Emerald & Gold Wax Seal Monogram */}
             <ScrollReveal animation="zoom-in" delay={150}>
-              <div className="relative z-10 my-4 sm:my-5">
+              <div className="relative z-10 my-3 xs:my-4 sm:my-5">
                 <EmeraldRoyalWaxSeal initials={coupleInitials} size="md" showWreath={true} />
               </div>
             </ScrollReveal>
 
             <ScrollReveal animation="fade-down" delay={200}>
-              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.3em] uppercase font-serif font-bold shadow-xs mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+              <div className="relative z-10 inline-flex items-center gap-1.5 xs:gap-2 px-3 xs:px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[9px] xs:text-[10px] tracking-[0.2em] xs:tracking-[0.3em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Sparkles className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-[#C5A059] animate-pulse" />
                 <span>THE ROYAL SACRED CELEBRATION</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-pulse" />
+                <Sparkles className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-[#C5A059] animate-pulse" />
               </div>
             </ScrollReveal>
 
             {/* Couple Arch Portrait with Flanking Gilded Botanical Flourishes */}
             <ScrollReveal animation="zoom-in" delay={250} duration={900}>
-              <div className="relative w-48 h-64 sm:w-56 sm:h-74 mx-auto my-5 z-10">
+              <div className="relative w-40 h-54 xs:w-48 xs:h-64 sm:w-56 sm:h-74 mx-auto my-4 xs:my-5 z-10">
                 <GildedEmeraldAcanthusFlourish side="left" />
                 <GildedEmeraldAcanthusFlourish side="right" />
 
@@ -1550,11 +1561,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Grand Couple Headline in Rich Emerald Foil Gradient */}
             <ScrollReveal animation="fade-up" delay={300}>
-              <h1 className="relative z-10 font-serif text-3xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-[#1C4736] via-[#103023] to-[#081F16] drop-shadow-xs mt-3">
+              <h1 className="relative z-10 font-serif text-2xl xs:text-3xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-[#1C4736] via-[#103023] to-[#081F16] drop-shadow-xs mt-3">
                 {groomName} &amp; {brideName}
               </h1>
 
-              <p className="relative z-10 font-serif italic text-sm text-[#5B7569] mt-2 font-medium">
+              <p className="relative z-10 font-serif italic text-xs sm:text-sm text-[#5B7569] mt-2 font-medium">
                 Senin, 12 Oktober 2026 • Grand Ballroom Sahara
               </p>
 
@@ -1563,14 +1574,14 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* VIP Guest Invitation Cartouche on Ivory */}
             <ScrollReveal animation="fade-up" delay={350}>
-              <div className="relative z-10 my-4 mx-auto max-w-sm p-4 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/60 shadow-xs text-center">
-                <span className="text-[10px] tracking-widest uppercase font-serif text-[#8C6D2B] font-semibold block">
+              <div className="relative z-10 my-4 mx-auto max-w-sm p-3.5 xs:p-4 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/60 shadow-xs text-center">
+                <span className="text-[9px] xs:text-[10px] tracking-widest uppercase font-serif text-[#8C6D2B] font-semibold block">
                   KEPADA YTH. BAPAK/IBU/SAUDARA/I :
                 </span>
-                <div className="text-lg font-serif font-bold text-[#103023] mt-1">
+                <div className="text-base xs:text-lg font-serif font-bold text-[#103023] mt-1">
                   {guestName}
                 </div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#103023] text-[#ECC880] text-[10px] font-serif font-bold mt-2 border border-[#ECC880]/50 shadow-xs">
+                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#103023] text-[#ECC880] text-[9.5px] xs:text-[10px] font-serif font-bold mt-2 border border-[#ECC880]/50 shadow-xs">
                   <Crown className="w-3 h-3 text-[#ECC880]" />
                   <span>Tamu Undangan VIP</span>
                 </div>
@@ -1580,21 +1591,21 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             {/* Opulent 24K Royal Chronometer Vault */}
             <ScrollReveal animation="fade-up" delay={400}>
               <div className="relative z-10 mt-6 pt-5 border-t border-[#ECC880]/30 max-w-md mx-auto">
-                <span className="text-[10px] tracking-[0.25em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
+                <span className="text-[9px] xs:text-[10px] tracking-[0.2em] xs:tracking-[0.25em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
                   ✦ HITUNG MUNDUR MENUJU HARI SAKRAL ✦
                 </span>
-                <div className="grid grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-4 gap-1.5 xs:gap-2 sm:gap-2.5">
                   {[
                     { label: 'HARI', val: timeLeft.days },
                     { label: 'JAM', val: timeLeft.hours },
                     { label: 'MENIT', val: timeLeft.minutes },
                     { label: 'DETIK', val: timeLeft.seconds },
                   ].map((tile, idx) => (
-                    <div key={idx} className="bg-gradient-to-br from-[#0C241B] via-[#071912] to-[#04120D] rounded-2xl p-2.5 border border-[#ECC880]/60 text-center shadow-md">
-                      <span className="font-serif text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] to-[#ECC880] block leading-tight">
+                    <div key={idx} className="bg-gradient-to-br from-[#0C241B] via-[#071912] to-[#04120D] rounded-xl xs:rounded-2xl p-1.5 xs:p-2 sm:p-2.5 border border-[#ECC880]/60 text-center shadow-md">
+                      <span className="font-serif text-lg xs:text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] to-[#ECC880] block leading-tight">
                         {String(tile.val).padStart(2, '0')}
                       </span>
-                      <span className="text-[8px] font-sans tracking-widest text-[#ECC880] uppercase">
+                      <span className="text-[7px] xs:text-[7.5px] sm:text-[8px] font-sans tracking-wider xs:tracking-widest text-[#ECC880] uppercase">
                         {tile.label}
                       </span>
                     </div>
@@ -1607,16 +1618,16 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 2. COUPLE PRESENTATION SECTION (Royal Illuminated Diptych)               */}
         {/* ========================================================================= */}
-        <section id="couple" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="couple" className="relative py-8 xs:py-10 sm:py-12 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[22px] xs:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             {/* Gilded Bismillah Cartouche */}
             <ScrollReveal animation="fade-down" delay={100}>
               <div className="relative z-10 inline-block my-2">
-                <div className="px-6 sm:px-8 py-3 rounded-full bg-gradient-to-r from-[#0C241B] via-[#163D2E] to-[#0C241B] border-2 border-[#ECC880] shadow-md flex items-center justify-center">
-                  <span className="text-xl sm:text-2xl font-serif text-[#FFF8E2] tracking-widest">
+                <div className="px-4 xs:px-6 sm:px-8 py-2 xs:py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#0C241B] via-[#163D2E] to-[#0C241B] border-2 border-[#ECC880] shadow-md flex items-center justify-center">
+                  <span className="text-base xs:text-xl sm:text-2xl font-serif text-[#FFF8E2] tracking-wider xs:tracking-widest">
                     بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                   </span>
                 </div>
@@ -1625,34 +1636,34 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Ayat Panel */}
             <ScrollReveal animation="fade-up" delay={150}>
-              <div className="max-w-md mx-auto my-6 p-5 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/50 relative z-10">
+              <div className="max-w-md mx-auto my-4 xs:my-6 p-3.5 xs:p-5 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/50 relative z-10">
                 <p className="font-serif italic text-xs sm:text-sm text-[#15382B] leading-relaxed">
                   &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.&rdquo;
                 </p>
-                <span className="text-[10px] font-serif tracking-widest text-[#8C6D2B] uppercase block mt-2 font-bold">
+                <span className="text-[9px] xs:text-[10px] font-serif tracking-widest text-[#8C6D2B] uppercase block mt-2 font-bold">
                   (QS. AR-RUM : 21)
                 </span>
               </div>
             </ScrollReveal>
 
-            <RoyalCalligraphicDivider className="my-4 relative z-10" />
+            <RoyalCalligraphicDivider className="my-3 xs:my-4 relative z-10" />
 
             {/* Couple Diptych Showcase */}
-            <div className="space-y-6 max-w-md mx-auto relative z-10 mt-6">
+            <div className="space-y-5 xs:space-y-6 max-w-md mx-auto relative z-10 mt-5 xs:mt-6">
               {/* Groom Card */}
               <ScrollReveal animation="slide-left" delay={180} duration={900}>
-                <div className="relative p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-xl overflow-hidden hover:scale-[1.01] transition-transform">
+                <div className="relative p-4 xs:p-5 sm:p-6 rounded-2xl xs:rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-xl overflow-hidden hover:scale-[1.01] transition-transform">
                   <GuillocheVelvetWatermark opacity={0.06} />
                   <div 
-                    className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]"
+                    className="relative w-32 h-44 xs:w-36 xs:h-48 sm:w-40 sm:h-52 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-3 xs:mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]"
                     style={{ animation: 'photoAuraPulse 3.5s ease-in-out infinite alternate' }}
                   >
                     <img src={groomPhoto} alt={groomName} className="w-full h-full object-cover rounded-t-full rounded-b-xl" />
                   </div>
-                  <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
+                  <span className="text-[9.5px] xs:text-[10px] font-serif uppercase tracking-[0.2em] xs:tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
                     MEMPELAI PRIA
                   </span>
-                  <h3 className="font-serif text-2xl font-bold text-[#FFF8E2]">
+                  <h3 className="font-serif text-xl xs:text-2xl sm:text-3xl font-bold text-[#FFF8E2]">
                     {groomFullName}
                   </h3>
                   <p className="text-xs text-[#A0C4B4] mt-1 font-sans">
@@ -1663,7 +1674,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       href={`https://instagram.com/${couple.groom_instagram.replace('@', '')}`}
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[11px] font-sans font-bold mt-3 shadow-md transition-all hover:scale-105 active:scale-95"
+                      className="inline-flex items-center gap-1.5 px-3 xs:px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[10px] xs:text-[11px] font-sans font-bold mt-2.5 xs:mt-3 shadow-md transition-all hover:scale-105 active:scale-95"
                     >
                       <InstagramIcon size={13} />
                       <span>{couple.groom_instagram}</span>
@@ -1674,27 +1685,27 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
               {/* Heart Divider */}
               <ScrollReveal animation="zoom-in" delay={220}>
-                <div className="flex items-center justify-center gap-3 my-2 text-[#ECC880]">
-                  <div className="w-16 h-px bg-gradient-to-r from-transparent to-[#ECC880]" />
-                  <Heart className="w-6 h-6 text-[#ECC880] fill-[#ECC880]/30 animate-pulse" />
-                  <div className="w-16 h-px bg-gradient-to-l from-transparent to-[#ECC880]" />
+                <div className="flex items-center justify-center gap-2 xs:gap-3 my-2 text-[#ECC880]">
+                  <div className="w-12 xs:w-16 h-px bg-gradient-to-r from-transparent to-[#ECC880]" />
+                  <Heart className="w-5 xs:w-6 h-5 xs:h-6 text-[#ECC880] fill-[#ECC880]/30 animate-pulse" />
+                  <div className="w-12 xs:w-16 h-px bg-gradient-to-l from-transparent to-[#ECC880]" />
                 </div>
               </ScrollReveal>
 
               {/* Bride Card */}
               <ScrollReveal animation="slide-right" delay={260} duration={900}>
-                <div className="relative p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-xl overflow-hidden hover:scale-[1.01] transition-transform">
+                <div className="relative p-4 xs:p-5 sm:p-6 rounded-2xl xs:rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center shadow-xl overflow-hidden hover:scale-[1.01] transition-transform">
                   <GuillocheVelvetWatermark opacity={0.06} />
                   <div 
-                    className="relative w-36 h-48 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]"
+                    className="relative w-32 h-44 xs:w-36 xs:h-48 sm:w-40 sm:h-52 mx-auto rounded-t-full rounded-b-2xl overflow-hidden border-2 border-[#ECC880] shadow-md mb-3 xs:mb-4 p-1 bg-gradient-to-b from-[#FFF2D6] via-[#ECC880] to-[#8C6D2B]"
                     style={{ animation: 'photoAuraPulse 3.5s ease-in-out infinite alternate 1.5s' }}
                   >
                     <img src={bridePhoto} alt={brideName} className="w-full h-full object-cover rounded-t-full rounded-b-xl" />
                   </div>
-                  <span className="text-[10px] font-serif uppercase tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
+                  <span className="text-[9.5px] xs:text-[10px] font-serif uppercase tracking-[0.2em] xs:tracking-[0.25em] text-[#ECC880] font-bold block mb-1">
                     MEMPELAI WANITA
                   </span>
-                  <h3 className="font-serif text-2xl font-bold text-[#FFF8E2]">
+                  <h3 className="font-serif text-xl xs:text-2xl sm:text-3xl font-bold text-[#FFF8E2]">
                     {brideFullName}
                   </h3>
                   <p className="text-xs text-[#A0C4B4] mt-1 font-sans">
@@ -1705,7 +1716,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       href={`https://instagram.com/${couple.bride_instagram.replace('@', '')}`}
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[11px] font-sans font-bold mt-3 shadow-md transition-all hover:scale-105 active:scale-95"
+                      className="inline-flex items-center gap-1.5 px-3 xs:px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[10px] xs:text-[11px] font-sans font-bold mt-2.5 xs:mt-3 shadow-md transition-all hover:scale-105 active:scale-95"
                     >
                       <InstagramIcon size={13} />
                       <span>{couple.bride_instagram}</span>
@@ -1719,12 +1730,12 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 3. EVENT AGENDA SECTION (Royal Banquet Decree)                           */}
         {/* ========================================================================= */}
-        <section id="event" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="event" className="relative py-8 xs:py-10 sm:py-12 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[22px] xs:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
-            <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+            <div className="relative z-10 inline-flex items-center gap-1.5 xs:gap-2 px-3 xs:px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[9px] xs:text-[10px] tracking-[0.2em] xs:tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
               <Calendar className="w-3.5 h-3.5 text-[#C5A059]" />
               <span>ROYAL BANQUET DECREE</span>
             </div>
@@ -1732,46 +1743,46 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
               Rangkaian Acara Sakral
             </h2>
-            <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-6">
+            <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-5 sm:mb-6 leading-relaxed">
               Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada prosesi sakral kami.
             </p>
 
-            <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+            <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6 sm:mb-8" />
 
-            <div className="space-y-6 max-w-md mx-auto relative z-10">
+            <div className="space-y-5 xs:space-y-6 max-w-md mx-auto relative z-10">
               {displayEvents.map((ev, idx) => (
                 <ScrollReveal key={idx} animation="fade-up" delay={idx * 150} duration={850}>
-                  <div className="p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center relative overflow-hidden shadow-xl text-white">
+                  <div className="p-4 xs:p-5 sm:p-6 rounded-2xl xs:rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-center relative overflow-hidden shadow-xl text-white">
                     <GuillocheVelvetWatermark opacity={0.06} />
-                    <div className="absolute top-0 right-0 px-4 py-1 rounded-bl-xl bg-[#ECC880] text-[#041610] text-[10px] font-serif font-bold uppercase tracking-wider">
+                    <div className="absolute top-0 right-0 px-3 xs:px-4 py-1 rounded-bl-xl bg-[#ECC880] text-[#041610] text-[9px] xs:text-[10px] font-serif font-bold uppercase tracking-wider">
                       {ev.event_type}
                     </div>
 
-                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#ECC880] mt-2 mb-3">
+                    <h3 className="font-serif text-lg xs:text-xl sm:text-2xl font-bold text-[#ECC880] mt-2 mb-2 xs:mb-3">
                       {ev.event_name}
                     </h3>
 
-                    <div className="flex items-center justify-center gap-2 text-sm text-[#FFF8E2] mb-1 font-serif">
-                      <Calendar className="w-4 h-4 text-[#ECC880]" />
+                    <div className="flex items-center justify-center gap-2 text-xs xs:text-sm text-[#FFF8E2] mb-1 font-serif">
+                      <Calendar className="w-3.5 xs:w-4 h-3.5 xs:h-4 text-[#ECC880]" />
                       <span>{ev.date}</span>
                     </div>
 
-                    <div className="flex items-center justify-center gap-2 text-xs text-[#A0C4B4] mb-4">
-                      <Clock className="w-3.5 h-3.5 text-[#ECC880]" />
+                    <div className="flex items-center justify-center gap-2 text-[11px] xs:text-xs text-[#A0C4B4] mb-3 xs:mb-4">
+                      <Clock className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-[#ECC880]" />
                       <span>{ev.start_time} - {ev.end_time} WIB</span>
                     </div>
 
-                    <div className="pt-3 border-t border-[#ECC880]/20 text-xs text-white/80 mb-5 leading-relaxed">
-                      <strong className="block text-white font-serif text-sm mb-1">{ev.location}</strong>
+                    <div className="pt-3 border-t border-[#ECC880]/20 text-[11px] xs:text-xs text-white/80 mb-4 xs:mb-5 leading-relaxed">
+                      <strong className="block text-white font-serif text-xs xs:text-sm mb-1">{ev.location}</strong>
                       {ev.address}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2.5">
                       <a
                         href={ev.map_url || 'https://maps.google.com'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 xs:px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-[11px] xs:text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md"
                       >
                         <MapPin className="w-3.5 h-3.5" />
                         <span>Petunjuk Lokasi Maps</span>
@@ -1789,7 +1800,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                             endTime: ev.end_time
                           });
                         }}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/60 text-[#ECC880] text-xs font-serif font-semibold tracking-wider uppercase transition-colors cursor-pointer"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 xs:px-5 py-2.5 rounded-full bg-[#041610] hover:bg-[#08261C] border border-[#ECC880]/60 text-[#ECC880] text-[11px] xs:text-xs font-serif font-semibold tracking-wider uppercase transition-colors cursor-pointer"
                       >
                         <Calendar className="w-3.5 h-3.5" />
                         <span>Simpan Kalender</span>
@@ -1804,17 +1815,17 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* ROYAL DRESS CODE & PALETTE CONCIERGE                                      */}
         {/* ========================================================================= */}
-        <section id="dresscode" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="dresscode" className="relative py-8 xs:py-10 sm:py-12 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
             {/* Tactile Banknote Guilloché Rosette */}
             <GuillocheParchmentWatermark opacity={0.08} />
 
             {/* Inset Gold Dashed & Hairline Frames */}
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-            <div className="absolute inset-5 sm:inset-6 rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[22px] xs:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-4 xs:inset-5 sm:inset-6 rounded-[18px] xs:rounded-[22px] border border-[#ECC880]/30 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             <ScrollReveal animation="fade-down" delay={100}>
-              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+              <div className="relative z-10 inline-flex items-center gap-1.5 xs:gap-2 px-3 xs:px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[9px] xs:text-[10px] tracking-[0.2em] xs:tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
                 <Shirt className="w-3.5 h-3.5 text-[#C5A059]" />
                 <span>PANDUAN BUSANA RESMI</span>
               </div>
@@ -1823,7 +1834,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 Royal Attire &amp; Dress Code
               </h2>
 
-              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light leading-relaxed">
                 Untuk menyempurnakan suasana agung pesta malam kerajaan, kami mengundang para tamu kehormatan untuk mengenakan busana bertema <strong>Royal Black Tie &amp; Emerald Velvet</strong>.
               </p>
 
@@ -1832,11 +1843,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Gender Tab Switcher */}
             <ScrollReveal animation="fade-up" delay={150}>
-              <div className="relative z-10 flex items-center justify-center gap-2 mb-6">
+              <div className="relative z-10 flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 mb-6">
                 <button
                   type="button"
                   onClick={() => setAttireGender('gentlemen')}
-                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
+                  className={`inline-flex items-center gap-1.5 xs:gap-2 px-3.5 xs:px-5 py-2 sm:py-2.5 rounded-full text-[11px] xs:text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
                     attireGender === 'gentlemen'
                       ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880]'
                       : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
@@ -1848,7 +1859,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 <button
                   type="button"
                   onClick={() => setAttireGender('ladies')}
-                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
+                  className={`inline-flex items-center gap-1.5 xs:gap-2 px-3.5 xs:px-5 py-2 sm:py-2.5 rounded-full text-[11px] xs:text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
                     attireGender === 'ladies'
                       ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880]'
                       : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
@@ -1862,34 +1873,34 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Attire Guide Card */}
             <ScrollReveal animation="fade-up" delay={200} duration={850}>
-              <div className="relative z-10 p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left max-w-md mx-auto shadow-xl mb-8 text-white overflow-hidden">
+              <div className="relative z-10 p-4 xs:p-5 sm:p-6 rounded-2xl xs:rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left max-w-md mx-auto shadow-xl mb-6 xs:mb-8 text-white overflow-hidden">
                 <GuillocheVelvetWatermark opacity={0.06} />
 
                 {attireGender === 'gentlemen' ? (
                   <div className="space-y-4 relative z-10">
                     <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
-                        <Shirt size={17} />
+                      <div className="w-8 xs:w-9 h-8 xs:h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                        <Shirt size={16} />
                       </div>
                       <div>
-                        <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
+                        <h4 className="font-serif text-xs xs:text-sm font-bold text-[#FFF8E2] mb-0.5">
                           Setelan Jas Formal / Batik Tulis Sutra
                         </h4>
-                        <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                        <p className="text-[11px] xs:text-xs text-[#A0C4B4] leading-relaxed">
                           Black tie tuxedo, formal suit berwarna emerald gelap atau hitam arang, atau kemeja batik tulis sutra motif klasik lengan panjang.
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
-                      <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
-                        <Gem size={17} />
+                      <div className="w-8 xs:w-9 h-8 xs:h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                        <Gem size={16} />
                       </div>
                       <div>
-                        <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
+                        <h4 className="font-serif text-xs xs:text-sm font-bold text-[#FFF8E2] mb-0.5">
                           Aksesoris &amp; Sepatu
                         </h4>
-                        <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                        <p className="text-[11px] xs:text-xs text-[#A0C4B4] leading-relaxed">
                           Dasi kupu-kupu atau dasi sutra warna emas/champagne, serta sepatu pantofel formal berbahan kulit mengkilap.
                         </p>
                       </div>
@@ -1898,28 +1909,28 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 ) : (
                   <div className="space-y-4 relative z-10">
                     <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
-                        <Shirt size={17} />
+                      <div className="w-8 xs:w-9 h-8 xs:h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                        <Shirt size={16} />
                       </div>
                       <div>
-                        <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
+                        <h4 className="font-serif text-xs xs:text-sm font-bold text-[#FFF8E2] mb-0.5">
                           Gaun Malam Velvet / Kebaya Mewah
                         </h4>
-                        <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                        <p className="text-[11px] xs:text-xs text-[#A0C4B4] leading-relaxed">
                           Evening gown berbahan beludru (velvet) emerald, gaun satin sutra elegan, atau kebaya modern bertabur payet benang emas.
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3 pt-3 border-t border-[#ECC880]/20">
-                      <div className="w-9 h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
-                        <Sparkles size={17} />
+                      <div className="w-8 xs:w-9 h-8 xs:h-9 rounded-full bg-[#ECC880]/20 border border-[#ECC880]/50 flex items-center justify-center flex-shrink-0 text-[#ECC880] shadow-xs">
+                        <Sparkles size={16} />
                       </div>
                       <div>
-                        <h4 className="font-serif text-sm font-bold text-[#FFF8E2] mb-0.5">
+                        <h4 className="font-serif text-xs xs:text-sm font-bold text-[#FFF8E2] mb-0.5">
                           Aksesoris &amp; Tata Rias
                         </h4>
-                        <p className="text-xs text-[#A0C4B4] leading-relaxed">
+                        <p className="text-[11px] xs:text-xs text-[#A0C4B4] leading-relaxed">
                           Clutch bag bernuansa emas/emerald, perhiasan emas atau mutiara, serta sepatu heels atau selop pesta yang anggun.
                         </p>
                       </div>
@@ -1928,7 +1939,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 )}
 
                 {/* Etiquette Alert */}
-                <div className="mt-4 pt-3 border-t border-[#ECC880]/20 flex items-center gap-2.5 text-[11px] text-[#ECC880] relative z-10">
+                <div className="mt-4 pt-3 border-t border-[#ECC880]/20 flex items-center gap-2.5 text-[10px] xs:text-[11px] text-[#ECC880] relative z-10">
                   <Info size={14} className="flex-shrink-0 text-[#ECC880]" />
                   <span>Dimohon tidak mengenakan busana dominan putih polos demi menghormati gaun pengantin.</span>
                 </div>
@@ -1938,10 +1949,10 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             {/* Interactive Official Color Palette Swatches */}
             <ScrollReveal animation="zoom-in" delay={250}>
               <div className="max-w-md mx-auto relative z-10">
-                <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
+                <span className="text-[9px] xs:text-[10px] tracking-[0.2em] font-serif uppercase text-[#8C6D2B] block mb-3 font-bold">
                   ✦ PALET WARNA RESMI PERAYAAN ✦
                 </span>
-                <div className="grid grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-4 gap-1.5 xs:gap-2 sm:gap-2.5">
                   {[
                     { hex: '#041610', name: 'Imperial Emerald', desc: 'Warna utama beludru pekat' },
                     { hex: '#0D3B2E', name: 'Royal Pine', desc: 'Aksen hijau hutan bangsawan' },
@@ -1954,16 +1965,16 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                         setSelectedSwatch(swatch.name);
                         toast.info(`${swatch.name} (${swatch.hex}): ${swatch.desc}`);
                       }}
-                      className="cursor-pointer group flex flex-col items-center p-2.5 rounded-2xl bg-white/90 border border-[#ECC880] hover:border-[#8C6D2B] transition-all hover:scale-105 shadow-sm"
+                      className="cursor-pointer group flex flex-col items-center p-1.5 xs:p-2 sm:p-2.5 rounded-xl xs:rounded-2xl bg-white/90 border border-[#ECC880] hover:border-[#8C6D2B] transition-all hover:scale-105 shadow-sm"
                     >
                       <div 
-                        className="w-10 h-10 rounded-full border-2 border-[#ECC880] shadow-md mb-1.5 transition-transform group-hover:scale-110"
+                        className="w-7 h-7 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#ECC880] shadow-md mb-1.5 transition-transform group-hover:scale-110"
                         style={{ backgroundColor: swatch.hex }}
                       />
-                      <span className="font-serif text-[10px] text-[#103023] font-bold block truncate max-w-full">
+                      <span className="font-serif text-[8.5px] xs:text-[10px] text-[#103023] font-bold block truncate max-w-full">
                         {swatch.name}
                       </span>
-                      <span className="font-mono text-[8px] text-[#8C6D2B] font-semibold">
+                      <span className="font-mono text-[7px] xs:text-[8px] text-[#8C6D2B] font-semibold">
                         {swatch.hex}
                       </span>
                     </div>
@@ -1976,13 +1987,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* VVIP CONCIERGE & VALET SERVICE SECTION                                    */}
         {/* ========================================================================= */}
-        <section id="concierge" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="concierge" className="relative py-8 xs:py-10 sm:py-12 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[22px] xs:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             <ScrollReveal animation="fade-down" delay={100}>
-              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+              <div className="relative z-10 inline-flex items-center gap-1.5 xs:gap-2 px-3 xs:px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[9px] xs:text-[10px] tracking-[0.2em] xs:tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
                 <Crown className="w-3.5 h-3.5 text-[#C5A059]" />
                 <span>FASILITAS SULTAN &amp; LAYANAN KHUSUS</span>
               </div>
@@ -1991,11 +2002,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 Layanan &amp; Protokol Tamu VVIP
               </h2>
 
-              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light leading-relaxed">
                 Sebagai tamu kehormatan, Anda berhak menikmati serangkaian fasilitas eksklusif yang telah disiapkan khusus oleh keluarga kedua mempelai.
               </p>
 
-              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6 sm:mb-8" />
             </ScrollReveal>
 
             <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-md sm:max-w-xl mx-auto mb-8 text-left">
@@ -2091,13 +2102,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 4. INTERACTIVE LOVE STORY JOURNEY (Royal Illuminated Chronicle)            */}
         {/* ========================================================================= */}
-        <section id="story" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="story" className="relative py-8 xs:py-10 sm:py-12 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[22px] xs:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             <ScrollReveal animation="fade-down" delay={100}>
-              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+              <div className="relative z-10 inline-flex items-center gap-1.5 xs:gap-2 px-3 xs:px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[9px] xs:text-[10px] tracking-[0.2em] xs:tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
                 <Heart className="w-3.5 h-3.5 text-[#C5A059]" />
                 <span>OUR LOVE CHRONICLE</span>
               </div>
@@ -2106,33 +2117,33 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 Kisah Cinta &amp; Janji Abadi
               </h2>
 
-              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
+              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light leading-relaxed">
                 Perjalanan dua jiwa yang dipertemukan takdir dan dipersatukan dalam ikatan suci pernikahan.
               </p>
 
-              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6 sm:mb-8" />
             </ScrollReveal>
 
-            <div className="space-y-6 max-w-md mx-auto text-left relative z-10">
+            <div className="space-y-4 xs:space-y-6 max-w-md mx-auto text-left relative z-10">
               {displayStories.map((st, idx) => (
                 <ScrollReveal key={idx} animation="fade-up" delay={idx * 140} duration={850}>
-                  <div className="relative p-5 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] flex flex-col sm:flex-row gap-4 items-center sm:items-start shadow-xl text-white overflow-hidden">
+                  <div className="relative p-3.5 xs:p-5 rounded-2xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] flex flex-col sm:flex-row gap-3 xs:gap-4 items-center sm:items-start shadow-xl text-white overflow-hidden">
                     <GuillocheVelvetWatermark opacity={0.06} />
 
                     {st.image_url && (
-                      <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-[#ECC880]/70 flex-shrink-0 shadow-md relative z-10">
+                      <div className="w-20 h-20 xs:w-24 xs:h-24 rounded-xl overflow-hidden border-2 border-[#ECC880]/70 flex-shrink-0 shadow-md relative z-10">
                         <img src={st.image_url} alt={st.title} className="w-full h-full object-cover" />
                       </div>
                     )}
-                    <div className="relative z-10">
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[9.5px] font-serif font-bold tracking-widest text-[#ECC880] uppercase mb-1.5 border border-[#ECC880]/40">
+                    <div className="relative z-10 text-center sm:text-left">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[9px] xs:text-[9.5px] font-serif font-bold tracking-widest text-[#ECC880] uppercase mb-1.5 border border-[#ECC880]/40">
                         <Crown size={11} className="text-[#ECC880]" />
                         <span>{st.date}</span>
                       </div>
-                      <h3 className="font-serif text-base font-bold text-[#FFF8E2] mb-1.5">
+                      <h3 className="font-serif text-sm xs:text-base font-bold text-[#FFF8E2] mb-1">
                         {st.title}
                       </h3>
-                      <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
+                      <p className="text-[11px] xs:text-xs text-[#A0C4B4] leading-relaxed font-sans">
                         {st.story}
                       </p>
                     </div>
@@ -2145,9 +2156,9 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 5. PHOTO MASONRY GALLERY & FULL LIGHTBOX                                */}
         {/* ========================================================================= */}
-        <section id="gallery" className="relative pt-12 pb-16 sm:pb-20 px-4 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-20 text-center max-w-2xl mx-auto">
+        <section id="gallery" className="relative pt-8 xs:pt-10 sm:pt-12 pb-14 sm:pb-20 px-3 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-12 sm:mb-20 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[20px] xs:rounded-[26px] sm:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             <ScrollReveal animation="fade-down" delay={100}>
@@ -2329,7 +2340,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             </div>
 
             {/* Balanced 2-Column Photo Grid (Uniform Aspect Ratio, Zero Gaps) */}
-            <div className="relative z-10 grid grid-cols-2 gap-3 sm:gap-3.5 max-w-lg mx-auto">
+            <div className="relative z-10 grid grid-cols-2 gap-2 xs:gap-3 sm:gap-3.5 max-w-lg mx-auto">
               {displayGallery.map((img: any, idx: number) => {
                 const isSelected = idx === safeGalleryIdx;
                 return (
@@ -2375,9 +2386,9 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* ROYAL AR FILTER & INSTAGRAM STORY MOMENTS                                */}
         {/* ========================================================================= */}
-        <section id="filter" className="relative pt-12 pb-16 px-4 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-20 text-center max-w-2xl mx-auto">
+        <section id="filter" className="relative pt-8 xs:pt-10 sm:pt-12 pb-12 xs:pb-16 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-12 sm:mb-20 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[20px] xs:rounded-[26px] sm:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             <ScrollReveal animation="fade-down" delay={100}>
@@ -2401,7 +2412,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             <div className="relative z-10 max-w-xl mx-auto space-y-8">
               {/* Luxury Smartphone Mockup with Simulated Royal Lens */}
               <ScrollReveal animation="zoom-in" delay={200}>
-                <div className="relative mx-auto max-w-[270px] sm:max-w-[300px]">
+                <div className="relative mx-auto max-w-[240px] xs:max-w-[270px] sm:max-w-[300px]">
                   {/* Smartphone Body / Chassis */}
                   <div className="relative rounded-[40px] p-3 sm:p-3.5 bg-gradient-to-b from-[#152a20] via-[#041610] to-[#010906] border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.75),0_0_35px_rgba(236,200,128,0.35)]">
                     {/* Speaker & Dynamic Notch */}
@@ -2564,9 +2575,9 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 6. WEDDING GIFT & EMV SMART DEBIT CARD                                   */}
         {/* ========================================================================= */}
-        <section id="gift" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="gift" className="relative py-8 xs:py-10 sm:py-12 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[20px] xs:rounded-[26px] sm:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             <ScrollReveal animation="fade-down" delay={100}>
@@ -2588,11 +2599,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Tab Selector */}
             <ScrollReveal animation="fade-up" delay={150}>
-              <div className="relative z-10 flex items-center justify-center gap-2 mb-8">
+              <div className="relative z-10 flex items-center justify-center gap-1.5 xs:gap-2 mb-6 xs:mb-8 flex-wrap sm:flex-nowrap">
                 <button
                   type="button"
                   onClick={() => setGiftTab('transfer')}
-                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 xs:px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
                     giftTab === 'transfer'
                       ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
                       : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
@@ -2605,7 +2616,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 <button
                   type="button"
                   onClick={() => setGiftTab('physical')}
-                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 xs:px-4 py-2 rounded-full text-xs font-serif transition-all cursor-pointer shadow-xs ${
                     giftTab === 'physical'
                       ? 'bg-gradient-to-r from-[#0C241B] to-[#041610] text-[#ECC880] border-2 border-[#ECC880] font-bold'
                       : 'bg-white/80 text-[#5B7569] border border-[#ECC880]/50 hover:text-[#103023]'
@@ -2618,19 +2629,19 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             </ScrollReveal>
 
             {giftTab === 'transfer' ? (
-              <div className="space-y-6 max-w-sm mx-auto relative z-10">
+              <div className="space-y-4 xs:space-y-6 max-w-sm mx-auto relative z-10">
                 {displayGifts.map((gift, idx) => (
                   <ScrollReveal key={idx} animation="zoom-in" delay={idx * 150} duration={850}>
-                    <div className="relative p-6 rounded-3xl bg-gradient-to-br from-[#0c3324] via-[#08261a] to-[#041610] border-2 border-[#ECC880] shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(236,200,128,0.25)] text-left overflow-hidden text-white hover:scale-[1.02] transition-transform">
+                    <div className="relative p-4 xs:p-5 sm:p-6 rounded-2xl xs:rounded-3xl bg-gradient-to-br from-[#0c3324] via-[#08261a] to-[#041610] border-2 border-[#ECC880] shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(236,200,128,0.25)] text-left overflow-hidden text-white hover:scale-[1.02] transition-transform">
                       <GuillocheVelvetWatermark opacity={0.08} />
 
                       {/* Header Card: Bank & Chip */}
-                      <div className="flex items-center justify-between mb-6 relative z-10">
+                      <div className="flex items-center justify-between mb-4 xs:mb-6 relative z-10">
                         <div className="flex items-center gap-2">
-                          <span className="font-serif font-bold text-lg tracking-wider text-[#FFF8E2]">
+                          <span className="font-serif font-bold text-base xs:text-lg tracking-wider text-[#FFF8E2]">
                             {gift.bank_name}
                           </span>
-                          <span className="text-[9px] tracking-widest font-mono uppercase px-2 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] border border-[#ECC880]/40">
+                          <span className="text-[8.5px] xs:text-[9px] tracking-widest font-mono uppercase px-2 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] border border-[#ECC880]/40">
                             PRIORITY
                           </span>
                         </div>
@@ -2641,11 +2652,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       </div>
 
                       {/* Card Number */}
-                      <div className="mb-4 relative z-10">
-                        <span className="text-[10px] font-serif uppercase tracking-widest text-[#ECC880]/80 block">
+                      <div className="mb-3 xs:mb-4 relative z-10">
+                        <span className="text-[9px] xs:text-[10px] font-serif uppercase tracking-widest text-[#ECC880]/80 block">
                           NOMOR REKENING PRIORITAS
                         </span>
-                        <div className="font-mono text-xl sm:text-2xl font-bold tracking-widest text-[#FFF8E2] mt-0.5">
+                        <div className="font-mono text-base xs:text-lg sm:text-2xl font-bold tracking-wider xs:tracking-widest text-[#FFF8E2] mt-0.5 truncate">
                           {gift.account_number}
                         </div>
                       </div>
@@ -2685,7 +2696,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </div>
             ) : (
               <ScrollReveal animation="zoom-in" delay={150}>
-                <div className="relative z-10 p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-sm mx-auto text-center shadow-xl text-white">
+                <div className="relative z-10 p-4 xs:p-6 rounded-2xl xs:rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-sm mx-auto text-center shadow-xl text-white">
                   <Package className="w-8 h-8 text-[#ECC880] mx-auto mb-3" />
                   <h4 className="font-serif text-base font-bold text-[#FFF8E2] mb-1">
                     Alamat Kirim Hadiah Fisik
@@ -2709,9 +2720,9 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* ========================================================================= */}
         {/* 7. VIP GUEST CHECK-IN PASS & RSVP LIVE WISHES                           */}
         {/* ========================================================================= */}
-        <section id="pass" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
+        <section id="pass" className="relative py-8 xs:py-10 sm:py-12 px-3.5 xs:px-5 sm:px-8 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
             <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[20px] xs:rounded-[26px] sm:rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
             <EmeraldGoldCorner size={56} color="#ECC880" />
 
             <ScrollReveal animation="fade-down" delay={100}>
@@ -2748,7 +2759,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             {/* VIP GUEST VERIFIED PASS CARD */}
             {activeBarcodePass && (
               <ScrollReveal animation="zoom-in" delay={180} duration={850}>
-                <div className="relative bg-gradient-to-br from-[#0c3324] via-[#072017] to-[#041610] text-white p-6 sm:p-8 rounded-[32px] border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(236,200,128,0.35)] mb-10 text-center overflow-hidden max-w-sm mx-auto z-10">
+                <div className="relative bg-gradient-to-br from-[#0c3324] via-[#072017] to-[#041610] text-white p-4 xs:p-6 sm:p-8 rounded-2xl xs:rounded-[32px] border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(236,200,128,0.35)] mb-8 xs:mb-10 text-center overflow-hidden max-w-sm mx-auto z-10">
                   <EmeraldGoldCorner size={28} color="#ECC880" />
                   <GuillocheVelvetWatermark opacity={0.09} />
 
@@ -2784,7 +2795,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   </div>
 
                   {/* QR Code Graphic with Laser Scanline Animation */}
-                  <div className="relative w-36 h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-[#ECC880] shadow-md flex items-center justify-center my-3 overflow-hidden">
+                  <div className="relative w-28 h-28 xs:w-36 xs:h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-[#ECC880] shadow-md flex items-center justify-center my-3 overflow-hidden">
                     <img 
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'EMERALD'}|GUEST:${activeBarcodePass.name}|ATT:attending|CODE:${activeBarcodePass.code}`)}`}
                       alt="QR Code Tiket"
@@ -2815,7 +2826,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* RSVP Submission Form */}
             <ScrollReveal animation="fade-up" delay={200} duration={850}>
-              <form onSubmit={handleRsvpSubmit} className="relative z-10 max-w-md mx-auto p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left shadow-xl text-white">
+              <form onSubmit={handleRsvpSubmit} className="relative z-10 max-w-md mx-auto p-4 xs:p-6 sm:p-7 rounded-2xl xs:rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] text-left shadow-xl text-white">
                 <h4 className="font-serif text-lg font-bold text-[#FFF8E2] text-center mb-4">
                   Formulir RSVP Kehadiran
                 </h4>
@@ -2838,7 +2849,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   <label className="text-xs font-serif text-[#ECC880] block mb-1">
                     Konfirmasi Kehadiran
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-1.5 xs:gap-2">
                     {[
                       { id: 'attending', label: 'Hadir' },
                       { id: 'uncertain', label: 'Ragu-ragu' },
@@ -2848,7 +2859,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                         key={opt.id}
                         type="button"
                         onClick={() => setRsvpStatus(opt.id as any)}
-                        className={`py-2 rounded-xl text-xs font-serif transition-all cursor-pointer ${
+                        className={`py-2 px-1 xs:px-2 rounded-xl text-[10px] xs:text-xs font-serif transition-all cursor-pointer ${
                           rsvpStatus === opt.id
                             ? 'bg-[#ECC880] text-[#041610] font-bold shadow-xs'
                             : 'bg-[#041610] text-[#A0C4B4] border border-[#ECC880]/30'
@@ -2908,8 +2919,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Live Guestbook Wishes List */}
             <ScrollReveal animation="fade-up" delay={250}>
-              <div className="mt-10 max-w-md mx-auto text-left relative z-10">
-                <h4 className="font-serif text-base font-bold text-[#103023] mb-4 flex items-center gap-2">
+              <div className="mt-8 xs:mt-10 max-w-md mx-auto text-left relative z-10">
+                <h4 className="font-serif text-sm xs:text-base font-bold text-[#103023] mb-4 flex items-center gap-2">
                   <MessageCircle size={16} className="text-[#8C6D2B]" />
                   <span>Untaian Doa &amp; Ucapan ({wishes.length})</span>
                 </h4>
@@ -2917,16 +2928,16 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
                   {wishes.map((w, idx) => (
                     <ScrollReveal key={w.id} animation="fade-up" delay={(idx % 4) * 60}>
-                      <div className="p-4 rounded-2xl bg-white/90 border border-[#ECC880]/60 text-xs shadow-xs">
+                      <div className="p-3.5 xs:p-4 rounded-2xl bg-white/90 border border-[#ECC880]/60 text-xs shadow-xs">
                         <div className="flex items-center justify-between mb-1.5">
-                          <span className="font-serif font-bold text-[#103023] text-sm">
+                          <span className="font-serif font-bold text-[#103023] text-xs xs:text-sm">
                             {w.name}
                           </span>
                           <span className="text-[10px] text-[#5B7569]">
                             {w.date}
                           </span>
                         </div>
-                        <p className="text-[#364B42] leading-relaxed font-sans">
+                        <p className="text-[#364B42] leading-relaxed font-sans text-[11px] xs:text-xs">
                           {w.message}
                         </p>
                       </div>
@@ -2941,11 +2952,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         {/* 8. ROYAL CLOSING & FOOTER FOLIO                                          */}
         {/* ========================================================================= */}
         <ScrollReveal animation="fade-up" duration={900}>
-          <footer className="relative pt-6 pb-28 sm:pb-36 px-4 text-center max-w-2xl mx-auto">
+          <footer className="relative pt-4 xs:pt-6 pb-28 sm:pb-36 px-2.5 xs:px-4 text-center max-w-2xl mx-auto">
             {/* Royal Closing Folio Card */}
-            <div className="relative p-7 sm:p-11 rounded-[36px] bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_50px_rgba(236,200,128,0.25)] overflow-hidden mb-8 text-white">
+            <div className="relative p-5 xs:p-7 sm:p-11 rounded-[26px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_50px_rgba(236,200,128,0.25)] overflow-hidden mb-8 text-white">
               <GuillocheVelvetWatermark opacity={0.06} />
-              <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/30 pointer-events-none" />
+              <div className="absolute inset-2.5 xs:inset-3 sm:inset-4 rounded-[20px] xs:rounded-[26px] sm:rounded-[28px] border-2 border-dashed border-[#ECC880]/30 pointer-events-none" />
               <EmeraldGoldCorner size={48} color="#ECC880" />
 
               <div className="relative z-10">
@@ -2956,7 +2967,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
 
                 {/* Badge Header */}
-                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/50 text-[#ECC880] text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.25em] font-semibold mb-3.5">
+                <div className="inline-flex items-center gap-2 px-3.5 xs:px-4 py-1 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/50 text-[#ECC880] text-[9.5px] xs:text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.25em] font-semibold mb-3.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
                   <span>SALAM HORMAT &amp; DOA RESTU</span>
                   <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
@@ -2970,13 +2981,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 <RoyalCalligraphicDivider className="my-2.5 max-w-[220px] mx-auto opacity-80" />
 
                 {/* Family & Couple Names */}
-                <p className="text-[10px] sm:text-[11px] font-serif tracking-[0.25em] uppercase text-[#ECC880]/85 font-medium mt-3 mb-1">
+                <p className="text-[9.5px] xs:text-[10px] sm:text-[11px] font-serif tracking-[0.25em] uppercase text-[#ECC880]/85 font-medium mt-3 mb-1">
                   KAMI YANG BERBAHAGIA
                 </p>
-                <div className="font-serif text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFFDF2] via-[#ECC880] to-[#E2C792] drop-shadow-md tracking-wide mb-1">
+                <div className="font-serif text-xl xs:text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFFDF2] via-[#ECC880] to-[#E2C792] drop-shadow-md tracking-wide mb-1">
                   {groomName} &amp; {brideName}
                 </div>
-                <p className="text-[11px] sm:text-xs text-[#A0C4B4]/80 font-serif italic">
+                <p className="text-[10.5px] xs:text-[11px] sm:text-xs text-[#A0C4B4]/80 font-serif italic">
                   Beserta segenap keluarga besar kedua mempelai
                 </p>
               </div>
@@ -3017,8 +3028,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       </div>
 
       {/* Floating Bottom Navigation Bar with Dynamic Royal Gold Pill Dock */}
-      <nav className={`fixed bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-2 pointer-events-auto transition-opacity duration-300 ${selectedPhoto ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
-        <div className="bg-[#041610]/95 backdrop-blur-xl border border-[#ECC880]/60 rounded-full py-1.5 px-2 sm:px-3 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(236,200,128,0.3)] flex items-center justify-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar">
+      <nav className={`fixed bottom-3 xs:bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-1.5 xs:px-2 pointer-events-auto transition-opacity duration-300 ${selectedPhoto ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
+        <div 
+          ref={navContainerRef}
+          className="bg-[#041610]/95 backdrop-blur-xl border border-[#ECC880]/60 rounded-full py-1 xs:py-1.5 px-1.5 xs:px-2 sm:px-3 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(236,200,128,0.3)] flex items-center justify-start sm:justify-center gap-0.5 xs:gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
+        >
           {[
             { id: 'cover', label: 'Cover', icon: Sparkles },
             { id: 'couple', label: 'Mempelai', icon: User },
@@ -3036,18 +3050,19 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             return (
               <a
                 key={item.id}
+                data-nav-id={item.id}
                 href={`#${item.id}`}
                 onClick={(e) => handleNavClick(e, item.id)}
-                className={`transition-all duration-300 flex items-center gap-1.5 rounded-full cursor-pointer select-none ${
+                className={`transition-all duration-300 flex items-center gap-1 sm:gap-1.5 rounded-full cursor-pointer select-none shrink-0 snap-center ${
                   isActive 
-                    ? 'bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] px-3 sm:px-3.5 py-1.5 font-serif font-bold text-xs shadow-[0_0_15px_rgba(236,200,128,0.75)] scale-105' 
-                    : 'text-[#ECC880]/75 hover:text-white hover:bg-white/10 p-2 text-xs'
+                    ? 'bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] px-2.5 xs:px-3 sm:px-3.5 py-1.5 font-serif font-bold text-[10px] xs:text-xs shadow-[0_0_15px_rgba(236,200,128,0.75)] scale-105' 
+                    : 'text-[#ECC880]/75 hover:text-white hover:bg-white/10 p-1.5 xs:p-2 text-xs'
                 }`}
                 title={item.label}
               >
-                <IconComponent size={15} className={isActive ? 'text-[#041610]' : 'text-[#ECC880]'} />
+                <IconComponent size={14} className={`shrink-0 ${isActive ? 'text-[#041610]' : 'text-[#ECC880]'}`} />
                 {isActive && (
-                  <span className="text-[11px] font-bold tracking-wide whitespace-nowrap animate-fade-in">
+                  <span className="text-[10px] xs:text-[11px] font-bold tracking-wide whitespace-nowrap animate-fade-in">
                     {item.label}
                   </span>
                 )}

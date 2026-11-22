@@ -2298,22 +2298,22 @@ export const InvitationRenderer: React.FC = () => {
             <FloatingEmeraldStardust count={18} />
 
             {/* Centered Mobile/Portrait Invitation Cover Card */}
-            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:max-h-[94vh] sm:rounded-3xl overflow-hidden flex flex-col justify-between items-center text-center bg-gradient-to-b from-[#08261B] via-[#051C14] to-[#041610] text-[#FFF8E2] shadow-[0_25px_70px_rgba(0,0,0,0.85),_0_0_40px_rgba(236,200,128,0.3)] sm:border-2 sm:border-[#ECC880]/50 p-6 sm:p-7">
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:max-h-[94vh] sm:rounded-3xl overflow-hidden flex flex-col justify-between items-center text-center bg-gradient-to-b from-[#08261B] via-[#051C14] to-[#041610] text-[#FFF8E2] shadow-[0_25px_70px_rgba(0,0,0,0.85),_0_0_40px_rgba(236,200,128,0.3)] sm:border-2 sm:border-[#ECC880]/50 p-4 xs:p-6 sm:p-7">
               <EmeraldGoldCorner size={32} color="#ECC880" />
               
               {/* Top Crown & Gold Banner */}
-              <div className="w-full bg-[#041610]/80 py-2 px-4 rounded-full border border-[#ECC880]/40 flex items-center justify-center gap-2 shadow-xs">
+              <div className="w-full bg-[#041610]/80 py-1.5 xs:py-2 px-3 xs:px-4 rounded-full border border-[#ECC880]/40 flex items-center justify-center gap-2 shadow-xs">
                 <Crown className="w-3.5 h-3.5 text-[#ECC880]" />
-                <p className="text-[10px] font-serif font-bold tracking-[0.25em] uppercase text-[#ECC880]">
+                <p className="text-[9px] xs:text-[10px] font-serif font-bold tracking-[0.25em] uppercase text-[#ECC880]">
                   EMERALD VELVET ROYAL • SULTAN
                 </p>
                 <Crown className="w-3.5 h-3.5 text-[#ECC880]" />
               </div>
 
               {/* Middle Card Content */}
-              <div className="flex-1 w-full flex flex-col items-center justify-center px-4 py-4 overflow-y-auto">
+              <div className="flex-1 w-full flex flex-col items-center justify-center px-2 xs:px-4 py-2 xs:py-4 overflow-y-auto">
                 {/* Arched Photo Frame with Crown Crest */}
-                <div className="relative mx-auto w-40 h-48 rounded-t-full rounded-b-xl overflow-hidden border-2 border-[#ECC880] shadow-lg mb-3 group">
+                <div className="relative mx-auto w-32 h-40 xs:w-36 xs:h-44 sm:w-40 sm:h-48 rounded-t-full rounded-b-xl overflow-hidden border-2 border-[#ECC880] shadow-lg mb-2 xs:mb-3 group shrink-0">
                   <img 
                     src={coverImage} 
                     alt={`${groomDisplayName} & ${brideDisplayName}`} 
@@ -2322,16 +2322,16 @@ export const InvitationRenderer: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/70 via-transparent to-transparent" />
                 </div>
 
-                <p className="text-[10px] uppercase tracking-[0.3em] text-[#A0C4B4] font-serif font-semibold mb-1">
+                <p className="text-[9px] xs:text-[10px] uppercase tracking-[0.3em] text-[#A0C4B4] font-serif font-semibold mb-1">
                   WALIMATUL &apos;URSY • ROYAL BANQUET
                 </p>
 
-                <h1 className="text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E2] via-[#ECC880] to-[#E2C792] mb-2 tracking-wide drop-shadow-sm">
+                <h1 className="text-2xl xs:text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8E2] via-[#ECC880] to-[#E2C792] mb-1.5 xs:mb-2 tracking-wide drop-shadow-sm">
                   {groomDisplayName} <span className="font-light italic text-[#ECC880]">&amp;</span> {brideDisplayName}
                 </h1>
 
                 {/* Event Date Badge */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#041610]/80 border border-[#ECC880]/30 text-[#ECC880] text-[11px] font-serif font-medium mb-3">
+                <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 xs:py-1 rounded-full bg-[#041610]/80 border border-[#ECC880]/30 text-[#ECC880] text-[10px] xs:text-[11px] font-serif font-medium mb-2 xs:mb-3">
                   <Calendar className="w-3 h-3 text-[#ECC880]" />
                   <span>
                     {events?.[0]?.event_date 
@@ -2341,14 +2341,14 @@ export const InvitationRenderer: React.FC = () => {
                 </div>
 
                 {/* Guest Invitation Box */}
-                <div className="w-full bg-[#041610]/90 p-3 rounded-2xl border border-[#ECC880]/40 mb-3 shadow-inner text-center">
-                  <p className="text-[9.5px] text-[#A0C4B4] uppercase tracking-wider mb-0.5 font-medium">
+                <div className="w-full bg-[#041610]/90 p-2.5 xs:p-3 rounded-2xl border border-[#ECC880]/40 mb-2.5 xs:mb-3 shadow-inner text-center">
+                  <p className="text-[9px] xs:text-[9.5px] text-[#A0C4B4] uppercase tracking-wider mb-0.5 font-medium">
                     Kepada Yth. Bapak/Ibu/Saudara/i:
                   </p>
-                  <p className="font-serif text-base font-bold text-white line-clamp-1">
+                  <p className="font-serif text-sm xs:text-base font-bold text-white line-clamp-1">
                     {guestName}
                   </p>
-                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ECC880]/15 text-[#ECC880] text-[9.5px] font-serif font-semibold mt-1">
+                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ECC880]/15 text-[#ECC880] text-[9px] xs:text-[9.5px] font-serif font-semibold mt-1">
                     <Crown size={11} />
                     <span>Tamu Undangan VIP</span>
                   </div>
@@ -2360,7 +2360,7 @@ export const InvitationRenderer: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleOpen}
-                  className="w-full py-3 rounded-full bg-gradient-to-r from-[#ECC880] via-[#D4AF37] to-[#C5A059] text-[#041610] font-serif font-bold text-xs uppercase tracking-[0.2em] shadow-[0_8px_24px_rgba(236,200,128,0.4)] hover:shadow-[0_10px_28px_rgba(236,200,128,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 xs:py-3 px-4 xs:px-6 rounded-full bg-gradient-to-r from-[#ECC880] via-[#D4AF37] to-[#C5A059] text-[#041610] font-serif font-bold text-[11px] xs:text-xs uppercase tracking-[0.2em] shadow-[0_8px_24px_rgba(236,200,128,0.4)] hover:shadow-[0_10px_28px_rgba(236,200,128,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Crown className="w-4 h-4 text-[#041610]" />
                   <span>BUKA UNDANGAN</span>
