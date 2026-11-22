@@ -564,7 +564,6 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       'concierge',
       'story',
       'gallery',
-      'souvenir',
       'gift',
       'pass'
     ];
@@ -1667,7 +1666,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       Fast-Track Presensi
                     </h4>
                     <p className="text-[11px] text-[#A0C4B4] leading-relaxed">
-                      Pintu masuk prioritas dengan pemindaian barcode instan untuk pengambilan souvenir dan pengantaran ke meja tamu.
+                      Pintu masuk prioritas dengan pemindaian barcode instan untuk registrasi kehadiran dan pengantaran ke meja tamu.
                     </p>
                   </div>
                   <div className="mt-3 pt-2 border-t border-[#ECC880]/20 text-[10px] text-[#ECC880] font-serif font-semibold relative z-10">
@@ -1984,65 +1983,6 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 );
               })}
             </div>
-          </section>
-
-        {/* ========================================================================= */}
-        {/* BESPOKE ROYAL SOUVENIR PREVIEW                                            */}
-        {/* ========================================================================= */}
-        <section id="souvenir" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
-            <GuillocheParchmentWatermark opacity={0.08} />
-            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
-            <EmeraldGoldCorner size={56} color="#ECC880" />
-
-            <ScrollReveal animation="fade-down" delay={100}>
-              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-                <Gift className="w-3.5 h-3.5 text-[#C5A059]" />
-                <span>CINDERAMATA EKSKLUSIF</span>
-              </div>
-
-              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
-                Royal Wedding Favors
-              </h2>
-
-              <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-                Sebagai wujud penghargaan atas kehadiran Anda, sebuah kenang-kenangan eksklusif berukir monogram resmi kedua mempelai telah disiapkan di meja registrasi.
-              </p>
-
-              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
-            </ScrollReveal>
-
-            <ScrollReveal animation="zoom-in" delay={180} duration={850}>
-              <div className="p-6 rounded-3xl bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] max-w-md mx-auto text-left shadow-xl relative overflow-hidden text-white">
-                <GuillocheVelvetWatermark opacity={0.06} />
-
-                <div className="flex flex-col sm:flex-row items-center gap-5 relative z-10">
-                  <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#ECC880]/20 to-[#041610] border-2 border-[#ECC880] flex flex-col items-center justify-center flex-shrink-0 shadow-inner">
-                    <Crown className="w-10 h-10 text-[#ECC880] mb-1" />
-                    <span className="font-serif text-[10px] font-bold text-[#ECC880] tracking-widest uppercase">
-                      SULTAN GIFT
-                    </span>
-                  </div>
-
-                  <div>
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] text-[9.5px] font-serif font-semibold mb-2 border border-[#ECC880]/40">
-                      <Star size={10} className="fill-[#ECC880]" />
-                      <span>Limited Edition Keepsake</span>
-                    </div>
-                    <h4 className="font-serif text-base font-bold text-[#FFF8E2] mb-1.5">
-                      Bespoke Scented Wax Diffuser &amp; Royal Monogram Box
-                    </h4>
-                    <p className="text-xs text-[#A0C4B4] leading-relaxed font-sans">
-                      Aromaterapi beraroma kayu cendana &amp; melati keraton khas Jawa dalam kotak beludru hijau zamrud dengan cap segel emas Steven &amp; Bunga.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-[#ECC880]/20 flex items-center justify-between text-[11px] text-[#ECC880] relative z-10 font-serif">
-                  <span>Pengambilan: VVIP Reception Desk</span>
-                  <span className="font-bold">1 Tamu = 1 Gift Box</span>
-                </div>
-              </div>
-            </ScrollReveal>
           </section>
 
         {/* ========================================================================= */}
@@ -2453,7 +2393,6 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             { id: 'concierge', label: 'VVIP', icon: Crown },
             { id: 'story', label: 'Cerita', icon: Heart },
             { id: 'gallery', label: 'Galeri', icon: Maximize2 },
-            { id: 'souvenir', label: 'Souvenir', icon: Gem },
             { id: 'gift', label: 'Kado', icon: CreditCard },
             { id: 'pass', label: 'RSVP', icon: QrCode },
           ].map(item => {
