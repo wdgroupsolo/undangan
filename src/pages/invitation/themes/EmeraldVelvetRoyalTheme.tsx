@@ -2406,34 +2406,33 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </div>
             </div>
 
-            {/* Interactive wdgroupcompany Brand Dock & Instagram Link */}
+            {/* Elegant Royal Brand Credit & Link */}
             <div className="relative z-10 flex flex-col items-center">
               {/* Hairline Divider with Diamond */}
               <div className="flex items-center justify-center gap-2 mb-3">
-                <div className="h-px w-8 sm:w-16 bg-gradient-to-r from-transparent to-[#ECC880]/40" />
-                <div className="w-1.5 h-1.5 rotate-45 bg-[#ECC880]" />
-                <div className="h-px w-8 sm:w-16 bg-gradient-to-l from-transparent to-[#ECC880]/40" />
+                <div className="h-px w-10 sm:w-16 bg-gradient-to-r from-transparent to-[#ECC880]/40" />
+                <div className="w-1.5 h-1.5 rotate-45 bg-[#ECC880]/80" />
+                <div className="h-px w-10 sm:w-16 bg-gradient-to-l from-transparent to-[#ECC880]/40" />
               </div>
 
-              {/* Clickable Instagram Brand Link */}
+              {/* Prestigious Royal Brand Link (No Instagram icon / handle appearance) */}
               <a
                 href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full bg-[#041610]/95 hover:bg-[#ECC880] border-2 border-[#ECC880]/70 hover:border-[#ECC880] text-[#ECC880] hover:text-[#041610] shadow-[0_8px_25px_rgba(0,0,0,0.6),0_0_15px_rgba(236,200,128,0.25)] hover:shadow-[0_10px_30px_rgba(236,200,128,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer"
-                title="Kunjungi Instagram @wdgroupcompany"
+                className="group inline-flex flex-col items-center gap-1 cursor-pointer transition-all duration-300"
               >
-                <InstagramIcon size={14} className="text-[#ECC880] group-hover:text-[#041610] transition-colors" />
-                <span className="text-[11px] sm:text-xs font-serif font-bold tracking-[0.2em] uppercase">
-                  wdgroupcompany
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ECC880]/10 hover:bg-[#ECC880]/20 border border-[#ECC880]/40 hover:border-[#ECC880]/70 transition-all shadow-xs">
+                  <Crown className="w-3.5 h-3.5 text-[#ECC880]" />
+                  <span className="text-[11px] font-serif font-bold tracking-[0.25em] text-[#ECC880] group-hover:text-[#FFF8E2] uppercase transition-colors">
+                    WDGROUPCOMPANY
+                  </span>
+                  <Crown className="w-3.5 h-3.5 text-[#ECC880]" />
+                </div>
+                <span className="text-[9.5px] font-serif tracking-[0.22em] text-[#A0C4B4]/70 group-hover:text-[#ECC880]/80 uppercase transition-colors">
+                  MASTERPIECE ROYAL EDITION
                 </span>
-                <ExternalLink size={12} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-[#ECC880] group-hover:text-[#041610]" />
               </a>
-
-              {/* Copyright Subtitle */}
-              <span className="text-[9.5px] sm:text-[10px] font-serif tracking-[0.2em] text-[#ECC880]/60 uppercase block mt-2.5">
-                WD DIGITAL INVITATION • MASTERPIECE ROYAL EDITION
-              </span>
             </div>
           </footer>
         </ScrollReveal>
