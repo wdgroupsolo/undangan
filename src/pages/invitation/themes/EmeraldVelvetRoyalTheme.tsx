@@ -562,6 +562,10 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const [cameraFacingMode, setCameraFacingMode] = useState<'user' | 'environment'>('user');
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [capturedSnapshot, setCapturedSnapshot] = useState<string | null>(null);
+  const [snapshotNotification, setSnapshotNotification] = useState<{ visible: boolean; url: string } | null>(null);
+  const [isFlashing, setIsFlashing] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const notificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [hasCopiedHashtag, setHasCopiedHashtag] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -588,11 +592,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     }
   };
 
-  // Start camera handler with facingMode support
+  // Start camera handler with Full HD capability & facingMode support
   const startCamera = async (facing: 'user' | 'environment' = cameraFacingMode) => {
     setCameraError(null);
-    setCapturedSnapshot(null);
     setIsCameraModalOpen(true);
+    setIsPreviewOpen(false);
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         setCameraError('Kamera tidak didukung pada peramban ini.');
@@ -601,10 +605,29 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       if (cameraStream) {
         cameraStream.getTracks().forEach(track => track.stop());
       }
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: facing, width: { ideal: 720 }, height: { ideal: 960 } },
-        audio: false
-      });
+      
+      // Request Full HD camera stream (1080p / 4K sensor capability)
+      let stream: MediaStream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: facing,
+            width: { min: 1080, ideal: 1920, max: 3840 },
+            height: { min: 1080, ideal: 1920, max: 3840 }
+          },
+          audio: false
+        });
+      } catch {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: facing,
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        });
+      }
+      
       setCameraStream(stream);
       setCameraFacingMode(facing);
     } catch (err: any) {
@@ -621,8 +644,12 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const closeCameraModal = () => {
     stopCamera();
     setIsCameraModalOpen(false);
-    setCapturedSnapshot(null);
+    setIsPreviewOpen(false);
+    setSnapshotNotification(null);
     setCameraError(null);
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current);
+    }
   };
 
   useEffect(() => {
@@ -636,10 +663,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   useEffect(() => {
     return () => {
       stopCamera();
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
     };
   }, []);
 
-  // Capture snapshot to canvas with Royal Gold Frame
+  // Capture snapshot to canvas in crystal-clear Full HD (1440x1920, 3:4) with Royal Gold Frame
   const captureSnapshot = () => {
     if (!videoRef.current || !canvasRef.current) return;
     const video = videoRef.current;
@@ -647,63 +677,152 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = video.videoWidth || 720;
-    canvas.height = video.videoHeight || 960;
+    // Trigger visual shutter flash effect
+    setIsFlashing(true);
+    setTimeout(() => setIsFlashing(false), 180);
+
+    // Full HD Canvas Output (1440 x 1920, 3:4 aspect ratio)
+    const TARGET_W = 1440;
+    const TARGET_H = 1920;
+    canvas.width = TARGET_W;
+    canvas.height = TARGET_H;
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    // Calculate center-crop matching the object-cover viewfinder
+    const vW = video.videoWidth || 1080;
+    const vH = video.videoHeight || 1440;
+    const targetAspect = TARGET_W / TARGET_H; // 0.75
+    const videoAspect = vW / vH;
+
+    let sX = 0, sY = 0, sW = vW, sH = vH;
+    if (videoAspect > targetAspect) {
+      // Video is wider than 3:4: crop horizontally
+      sW = vH * targetAspect;
+      sX = (vW - sW) / 2;
+    } else {
+      // Video is taller than 3:4: crop vertically
+      sH = vW / targetAspect;
+      sY = (vH - sH) / 2;
+    }
 
     // Draw video frame (mirrored for front/user selfie, natural for environment/back camera)
     ctx.save();
     if (cameraFacingMode === 'user') {
-      ctx.translate(canvas.width, 0);
+      ctx.translate(TARGET_W, 0);
       ctx.scale(-1, 1);
     }
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, sX, sY, sW, sH, 0, 0, TARGET_W, TARGET_H);
     ctx.restore();
 
-    // 24K Gold Outer Frame
+    // Subtle atmospheric vignette & lighting
+    const vignette = ctx.createRadialGradient(
+      TARGET_W / 2, TARGET_H / 2, TARGET_W * 0.35,
+      TARGET_W / 2, TARGET_H / 2, TARGET_W * 0.85
+    );
+    vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    vignette.addColorStop(1, 'rgba(4, 22, 16, 0.45)');
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, TARGET_W, TARGET_H);
+
+    // 24K Gold Outer Luxury Frame
     ctx.strokeStyle = '#ECC880';
-    ctx.lineWidth = 14;
-    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+    ctx.lineWidth = 22;
+    ctx.strokeRect(20, 20, TARGET_W - 40, TARGET_H - 40);
 
     // Inner dashed gold border
-    ctx.strokeStyle = 'rgba(236, 200, 128, 0.6)';
-    ctx.lineWidth = 3;
-    ctx.setLineDash([8, 8]);
-    ctx.strokeRect(24, 24, canvas.width - 48, canvas.height - 48);
+    ctx.strokeStyle = 'rgba(236, 200, 128, 0.75)';
+    ctx.lineWidth = 4;
+    ctx.setLineDash([20, 16]);
+    ctx.strokeRect(44, 44, TARGET_W - 88, TARGET_H - 88);
     ctx.setLineDash([]);
 
-    // Watermark Monogram on top
-    ctx.fillStyle = '#041610';
+    // Corner Accents (4 decorative gold rosettes)
+    const corners = [
+      [44, 44],
+      [TARGET_W - 44, 44],
+      [44, TARGET_H - 44],
+      [TARGET_W - 44, TARGET_H - 44]
+    ];
+    ctx.fillStyle = '#ECC880';
+    corners.forEach(([cx, cy]) => {
+      ctx.beginPath();
+      ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Top Royal Monogram Medallion
+    const sealX = TARGET_W / 2;
+    const sealY = 135;
+    ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
     ctx.beginPath();
-    ctx.arc(canvas.width / 2, 72, 42, 0, Math.PI * 2);
+    ctx.arc(sealX, sealY, 68, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#ECC880';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // Inner Gold Ring
+    ctx.strokeStyle = 'rgba(236, 200, 128, 0.5)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(sealX, sealY, 60, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#ECC880';
+    ctx.font = 'bold 36px "Cinzel Decorative", "Playfair Display", serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('S & B', sealX, sealY + 2);
+
+    // Bottom Watermark Bar Plaque
+    const barW = TARGET_W - 88;
+    const barH = 130;
+    const barX = 44;
+    const barY = TARGET_H - 174;
+
+    ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
+    ctx.beginPath();
+    ctx.roundRect(barX, barY, barW, barH, 20);
     ctx.fill();
     ctx.strokeStyle = '#ECC880';
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    ctx.fillStyle = '#ECC880';
-    ctx.font = 'bold 22px serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('S & B', canvas.width / 2, 80);
-
-    // Bottom Watermark bar
-    ctx.fillStyle = 'rgba(4, 22, 16, 0.85)';
-    ctx.fillRect(24, canvas.height - 95, canvas.width - 48, 70);
-    ctx.strokeStyle = '#ECC880';
-    ctx.lineWidth = 1.5;
-    ctx.strokeRect(24, canvas.height - 95, canvas.width - 48, 70);
-
+    // Title inside Bar
     ctx.fillStyle = '#FFF8E2';
-    ctx.font = 'bold 18px serif';
+    ctx.font = 'bold 28px "Cinzel", "Playfair Display", serif';
     ctx.textAlign = 'center';
-    ctx.fillText('THE ROYAL WEDDING • STEVEN & BUNGA', canvas.width / 2, canvas.height - 60);
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText('THE ROYAL WEDDING • STEVEN & BUNGA', sealX, barY + 54);
 
+    // Subtitle inside Bar
     ctx.fillStyle = '#ECC880';
-    ctx.font = '13px sans-serif';
-    ctx.fillText('12 Oktober 2026 • #StevenBungaRoyalWedding', canvas.width / 2, canvas.height - 38);
+    ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('Senin, 12 Oktober 2026 • #StevenBungaRoyalWedding', sealX, barY + 94);
 
-    const dataUrl = canvas.toDataURL('image/png');
+    // High-resolution PNG export
+    const dataUrl = canvas.toDataURL('image/png', 0.98);
     setCapturedSnapshot(dataUrl);
-    toast.success('Momen Royal berhasil diabadikan!');
+
+    // Instant direct auto-download to device
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `Royal_Moments_HD_Steven_Bunga_${Date.now()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Show compact notification banner (no huge modal popup)
+    setSnapshotNotification({ visible: true, url: dataUrl });
+
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current);
+    }
+    notificationTimeoutRef.current = setTimeout(() => {
+      setSnapshotNotification(prev => prev ? { ...prev, visible: false } : null);
+    }, 4500);
   };
 
   // Download snapshot
@@ -711,11 +830,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     if (!capturedSnapshot) return;
     const a = document.createElement('a');
     a.href = capturedSnapshot;
-    a.download = `Royal_Moments_Steven_Bunga_${Date.now()}.png`;
+    a.download = `Royal_Moments_HD_Steven_Bunga_${Date.now()}.png`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    toast.success('Foto berhasil diunduh ke galeri Anda');
+    toast.success('Foto HD berhasil diunduh ke galeri Anda');
   };
 
   // Generate & Download 1080x1920 Transparent Royal Frame PNG for Instagram Story Sticker
@@ -3220,37 +3339,36 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   </button>
                 </div>
               </div>
-            ) : capturedSnapshot ? (
-              /* Display Captured Snapshot */
-              <div className="space-y-4">
+            ) : isPreviewOpen && capturedSnapshot ? (
+              /* Optional Full Photo Inspector - ONLY open if user manually tapped thumbnail! */
+              <div className="space-y-4 animate-fade-in">
                 <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-xl">
-                  <img src={capturedSnapshot} alt="Captured Royal Moment" className="w-full h-full object-cover" />
+                  <img src={capturedSnapshot} alt="Hasil Foto Royal HD" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
                   <button
                     type="button"
                     onClick={downloadSnapshot}
-                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+                    className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer"
                   >
-                    <Download className="w-4 h-4" />
-                    <span>Unduh Foto</span>
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Unduh Ulang</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => sharePhotoToInstagramStory(capturedSnapshot)}
-                    className="flex-1 py-3 rounded-xl bg-[#041610] border border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-white/10 transition-all cursor-pointer"
+                    className="flex-1 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-white/10 transition-all cursor-pointer"
                   >
-                    <InstagramIcon size={14} />
+                    <InstagramIcon size={13} />
                     <span>Bagikan ke IG Story</span>
-                    <ExternalLink className="w-3 h-3 ml-0.5" />
                   </button>
                   <button
                     type="button"
-                    onClick={() => setCapturedSnapshot(null)}
-                    className="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    onClick={() => setIsPreviewOpen(false)}
+                    className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <RefreshCw className="w-4 h-4" />
-                    <span>Ulang</span>
+                    <Camera className="w-3.5 h-3.5" />
+                    <span>Kembali Foto</span>
                   </button>
                 </div>
               </div>
@@ -3265,6 +3383,63 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     muted
                     className={`w-full h-full object-cover ${cameraFacingMode === 'user' ? '-scale-x-100' : ''}`}
                   />
+
+                  {/* Shutter Flash Animation */}
+                  {isFlashing && (
+                    <div className="absolute inset-0 bg-white/85 z-40 animate-fade-out pointer-events-none" />
+                  )}
+
+                  {/* Simple Non-Intrusive Notification Banner after Taking Photo */}
+                  {snapshotNotification?.visible && (
+                    <div className="absolute top-3 inset-x-3 z-30 animate-fade-in pointer-events-auto">
+                      <div className="bg-[#041610]/95 backdrop-blur-md border border-[#ECC880] rounded-2xl p-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(236,200,128,0.35)] flex items-center justify-between gap-2.5">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <button
+                            type="button"
+                            onClick={() => setIsPreviewOpen(true)}
+                            className="relative w-9 h-12 rounded-lg overflow-hidden border border-[#ECC880] shrink-0 shadow-sm bg-black group/thumb cursor-pointer hover:scale-105 transition-transform"
+                            title="Ketuk untuk melihat preview"
+                          >
+                            <img src={snapshotNotification.url} alt="HD Thumbnail" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-black/30 group-hover/thumb:bg-transparent transition-colors flex items-center justify-center">
+                              <Sparkles className="w-3 h-3 text-[#ECC880]" />
+                            </div>
+                          </button>
+                          <div className="min-w-0 text-left">
+                            <div className="flex items-center gap-1.5">
+                              <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                              <p className="text-xs font-serif font-bold text-[#FFF8E2] truncate">
+                                Foto HD Berhasil Disimpan!
+                              </p>
+                            </div>
+                            <p className="text-[10px] text-[#A0C4B4] font-sans truncate">
+                              Tersimpan otomatis ke galeri ponsel
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => sharePhotoToInstagramStory(snapshotNotification.url)}
+                            className="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] text-[10px] font-serif font-bold flex items-center gap-1 cursor-pointer shadow-xs hover:brightness-110 active:scale-95 transition-all"
+                            title="Bagikan ke Instagram Story"
+                          >
+                            <InstagramIcon size={12} />
+                            <span className="hidden xs:inline">IG Story</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setSnapshotNotification(null)}
+                            className="p-1 rounded-full hover:bg-white/10 text-[#ECC880]/80 hover:text-white transition-colors cursor-pointer"
+                            title="Tutup Notifikasi"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Overlaid Gold Framing */}
                   <div className="absolute inset-2 border border-[#ECC880]/60 rounded-xl pointer-events-none">
@@ -3293,34 +3468,49 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
 
                 {/* Shutter / Capture Button & Secondary Options */}
-                <div className="flex items-center justify-center gap-6 pt-1">
-                  <button
-                    type="button"
-                    onClick={toggleCameraFacingMode}
-                    className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
-                    title="Ganti Kamera Depan/Belakang"
-                  >
-                    <SwitchCamera className="w-5 h-5" />
-                  </button>
+                <div className="flex items-center justify-between px-2 pt-1">
+                  {/* Left: Last Captured Photo Thumbnail preview button (or Transparent Frame download) */}
+                  {capturedSnapshot ? (
+                    <button
+                      type="button"
+                      onClick={() => setIsPreviewOpen(true)}
+                      className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-[#ECC880] shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer group"
+                      title="Lihat Hasil Foto Terakhir"
+                    >
+                      <img src={capturedSnapshot} alt="Thumbnail Terakhir" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-[#041610]/20 group-hover:bg-transparent transition-colors" />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={downloadRoyalFramePNG}
+                      className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                      title="Unduh Stiker Frame PNG"
+                    >
+                      <Download className="w-4 h-4" />
+                    </button>
+                  )}
 
+                  {/* Center: Main Royal Gold Shutter Button */}
                   <button
                     type="button"
                     onClick={captureSnapshot}
-                    className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] border-4 border-[#041610] shadow-[0_0_25px_rgba(236,200,128,0.8)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
-                    title="Ambil Foto Kenang-kenangan"
+                    className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] border-4 border-[#041610] shadow-[0_0_25px_rgba(236,200,128,0.8)] hover:scale-105 active:scale-90 transition-all flex items-center justify-center cursor-pointer"
+                    title="Ambil Foto HD Kenang-kenangan"
                   >
                     <div className="w-12 h-12 rounded-full border-2 border-[#041610]/80 flex items-center justify-center">
                       <Camera className="w-5 h-5 text-[#041610]" />
                     </div>
                   </button>
 
+                  {/* Right: Switch Front / Back Camera */}
                   <button
                     type="button"
-                    onClick={downloadRoyalFramePNG}
+                    onClick={toggleCameraFacingMode}
                     className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
-                    title="Unduh Stiker Frame PNG"
+                    title="Ganti Kamera Depan / Belakang"
                   >
-                    <Download className="w-4 h-4" />
+                    <SwitchCamera className="w-5 h-5" />
                   </button>
                 </div>
               </div>
