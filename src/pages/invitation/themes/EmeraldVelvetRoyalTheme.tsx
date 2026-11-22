@@ -6,7 +6,8 @@ import {
   Clock, Sparkles, ShieldCheck,
   Crown, Star, Award, CreditCard, Send,
   Maximize2, Package, MessageCircle, QrCode, Download, ExternalLink,
-  Heart, User, Users, Shirt, Car, Wifi, Info, CheckCircle2, Compass, Gem
+  Heart, User, Users, Shirt, Car, Wifi, Info, CheckCircle2, Compass, Gem,
+  Camera, RefreshCw
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -554,6 +555,152 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const [selectedSwatch, setSelectedSwatch] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
+  // Royal AR Filter & Live Camera States
+  const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const [capturedSnapshot, setCapturedSnapshot] = useState<string | null>(null);
+  const [hasCopiedHashtag, setHasCopiedHashtag] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Stop camera helper
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      setCameraStream(null);
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  // Start camera handler
+  const startCamera = async () => {
+    setCameraError(null);
+    setCapturedSnapshot(null);
+    setIsCameraModalOpen(true);
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setCameraError('Kamera tidak didukung pada peramban ini.');
+        return;
+      }
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 960 } },
+        audio: false
+      });
+      setCameraStream(stream);
+    } catch (err: any) {
+      console.warn('Camera access denied or unavailable:', err);
+      setCameraError('Izin akses kamera belum diizinkan atau kamera tidak tersedia.');
+    }
+  };
+
+  const closeCameraModal = () => {
+    stopCamera();
+    setIsCameraModalOpen(false);
+    setCapturedSnapshot(null);
+    setCameraError(null);
+  };
+
+  useEffect(() => {
+    if (isCameraModalOpen && cameraStream && videoRef.current) {
+      videoRef.current.srcObject = cameraStream;
+      videoRef.current.play().catch(e => console.log('Autoplay error:', e));
+    }
+  }, [isCameraModalOpen, cameraStream]);
+
+  // Cleanup camera stream on unmount
+  useEffect(() => {
+    return () => {
+      stopCamera();
+    };
+  }, []);
+
+  // Capture snapshot to canvas with Royal Gold Frame
+  const captureSnapshot = () => {
+    if (!videoRef.current || !canvasRef.current) return;
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = video.videoWidth || 720;
+    canvas.height = video.videoHeight || 960;
+
+    // Draw mirrored video frame
+    ctx.save();
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.restore();
+
+    // 24K Gold Outer Frame
+    ctx.strokeStyle = '#ECC880';
+    ctx.lineWidth = 14;
+    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+    // Inner dashed gold border
+    ctx.strokeStyle = 'rgba(236, 200, 128, 0.6)';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([8, 8]);
+    ctx.strokeRect(24, 24, canvas.width - 48, canvas.height - 48);
+    ctx.setLineDash([]);
+
+    // Watermark Monogram on top
+    ctx.fillStyle = '#041610';
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2, 72, 42, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#ECC880';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.fillStyle = '#ECC880';
+    ctx.font = 'bold 22px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('S & B', canvas.width / 2, 80);
+
+    // Bottom Watermark bar
+    ctx.fillStyle = 'rgba(4, 22, 16, 0.85)';
+    ctx.fillRect(24, canvas.height - 95, canvas.width - 48, 70);
+    ctx.strokeStyle = '#ECC880';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(24, canvas.height - 95, canvas.width - 48, 70);
+
+    ctx.fillStyle = '#FFF8E2';
+    ctx.font = 'bold 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('THE ROYAL WEDDING • STEVEN & BUNGA', canvas.width / 2, canvas.height - 60);
+
+    ctx.fillStyle = '#ECC880';
+    ctx.font = '13px sans-serif';
+    ctx.fillText('12 Oktober 2026 • #StevenBungaRoyalWedding', canvas.width / 2, canvas.height - 38);
+
+    const dataUrl = canvas.toDataURL('image/png');
+    setCapturedSnapshot(dataUrl);
+    toast.success('Momen Royal berhasil diabadikan!');
+  };
+
+  // Download snapshot
+  const downloadSnapshot = () => {
+    if (!capturedSnapshot) return;
+    const a = document.createElement('a');
+    a.href = capturedSnapshot;
+    a.download = `Royal_Moments_Steven_Bunga_${Date.now()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast.success('Foto berhasil diunduh ke galeri Anda');
+  };
+
+  const handleCopyHashtag = (tag = '#StevenBungaRoyalWedding') => {
+    navigator.clipboard.writeText(tag);
+    setHasCopiedHashtag(true);
+    toast.success(`Hashtag ${tag} berhasil disalin!`);
+    setTimeout(() => setHasCopiedHashtag(false), 2500);
+  };
+
   // Scroll spy & real-time progress tracker
   useEffect(() => {
     const sectionIds = [
@@ -564,6 +711,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       'concierge',
       'story',
       'gallery',
+      'filter',
       'gift',
       'pass'
     ];
@@ -1986,6 +2134,185 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           </section>
 
         {/* ========================================================================= */}
+        {/* ROYAL AR FILTER & INSTAGRAM STORY MOMENTS                                */}
+        {/* ========================================================================= */}
+        <section id="filter" className="relative pt-12 pb-16 px-4 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-20 text-center max-w-2xl mx-auto">
+            <GuillocheParchmentWatermark opacity={0.08} />
+            <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/50 pointer-events-none" />
+            <EmeraldGoldCorner size={56} color="#ECC880" />
+
+            <ScrollReveal animation="fade-down" delay={100}>
+              <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>EXCLUSIVE AR EXPERIENCE</span>
+              </div>
+
+              <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
+                Filter Instagram &amp; Momen Royal
+              </h2>
+
+              <p className="relative z-10 text-xs sm:text-sm text-[#5B7569] max-w-lg mx-auto mb-4 font-light leading-relaxed">
+                Abadikan momen kebahagiaan Anda bersama kami menggunakan filter story Instagram eksklusif berbingkai emas 24K Royal Emerald khas Steven &amp; Bunga.
+              </p>
+
+              <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
+            </ScrollReveal>
+
+            {/* Interactive AR Viewport & Experience Showcase */}
+            <div className="relative z-10 max-w-xl mx-auto space-y-8">
+              {/* Luxury Smartphone Mockup with Simulated Royal Lens */}
+              <ScrollReveal animation="zoom-in" delay={200}>
+                <div className="relative mx-auto max-w-[270px] sm:max-w-[300px]">
+                  {/* Smartphone Body / Chassis */}
+                  <div className="relative rounded-[40px] p-3 sm:p-3.5 bg-gradient-to-b from-[#152a20] via-[#041610] to-[#010906] border-2 border-[#ECC880] shadow-[0_20px_50px_rgba(0,0,0,0.75),0_0_35px_rgba(236,200,128,0.35)]">
+                    {/* Speaker & Dynamic Notch */}
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-[#041610] border border-[#ECC880]/40 rounded-full z-20 flex items-center justify-center gap-2 px-2">
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#102419] border border-[#ECC880]/50" />
+                      <div className="w-8 h-1 rounded-full bg-[#ECC880]/30" />
+                    </div>
+
+                    {/* Viewport Screen with Royal Lens Frame */}
+                    <div className="relative aspect-[9/16] rounded-[28px] overflow-hidden bg-[#041610] border border-[#ECC880]/60 shadow-inner group">
+                      {/* Background Couple Photo */}
+                      <img 
+                        src={displayGallery[0]?.url || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=900'} 
+                        alt="Royal Filter Lens Preview" 
+                        className="w-full h-full object-cover object-center filter brightness-[0.88] contrast-[1.05] group-hover:scale-105 transition-transform duration-700" 
+                      />
+
+                      {/* AR Viewport Shading Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#041610]/90 via-transparent to-[#041610]/70 pointer-events-none" />
+
+                      {/* AR HUD: Camera Status Bars */}
+                      <div className="absolute top-7 left-3 right-3 flex items-center justify-between text-[8px] font-mono tracking-wider text-[#ECC880] z-10 pointer-events-none">
+                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#041610]/70 backdrop-blur-xs border border-[#ECC880]/50">
+                          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
+                          <span className="font-bold">REC 4K</span>
+                        </div>
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#041610]/70 backdrop-blur-xs border border-[#ECC880]/50">
+                          <Sparkles className="w-2.5 h-2.5 text-[#ECC880]" />
+                          <span>ROYAL AR LENS</span>
+                        </div>
+                      </div>
+
+                      {/* Bespoke Royal Frame Overlay: Acanthus Corners */}
+                      <div className="absolute inset-2 border border-[#ECC880]/60 rounded-[20px] pointer-events-none">
+                        <EmeraldGoldCorner size={28} color="#ECC880" />
+                      </div>
+
+                      {/* Golden Twinkling Sparkles in Lens */}
+                      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                        <div className="absolute top-1/4 left-5 w-1.5 h-1.5 bg-[#FFF2B2] rounded-full shadow-[0_0_8px_#ECC880] animate-pulse" />
+                        <div className="absolute top-1/3 right-6 w-2 h-2 bg-[#FFF2B2] rounded-full shadow-[0_0_10px_#ECC880] animate-pulse delay-300" />
+                        <div className="absolute bottom-1/3 left-8 w-1 h-1 bg-[#FFF2B2] rounded-full shadow-[0_0_6px_#ECC880] animate-pulse delay-700" />
+                      </div>
+
+                      {/* Viewfinder Center Crosshair Reticle */}
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+                        <div className="w-10 h-10 border border-[#ECC880]/80 rounded-full flex items-center justify-center">
+                          <div className="w-2 h-0.5 bg-[#ECC880]" />
+                        </div>
+                      </div>
+
+                      {/* Royal Top Crown Monogram Medallion */}
+                      <div className="absolute top-12 left-1/2 -translate-x-1/2 z-10 text-center pointer-events-none">
+                        <div className="w-12 h-12 mx-auto rounded-full bg-[#041610]/85 border-2 border-[#ECC880] shadow-[0_0_15px_rgba(236,200,128,0.6)] flex flex-col items-center justify-center p-1 backdrop-blur-xs">
+                          <Crown className="w-3.5 h-3.5 text-[#ECC880] mb-0.5" />
+                          <span className="font-serif font-bold text-[9px] text-[#ECC880] tracking-widest leading-none">S&amp;B</span>
+                        </div>
+                      </div>
+
+                      {/* Bottom Story Filter Caption & Watermark */}
+                      <div className="absolute bottom-3 left-3 right-3 text-center z-10 pointer-events-none">
+                        <div className="bg-[#041610]/85 backdrop-blur-md border border-[#ECC880]/60 rounded-xl p-2.5 shadow-lg">
+                          <p className="font-serif font-bold text-[11px] text-[#FFF8E2] tracking-wider leading-snug">
+                            STEVEN &amp; BUNGA
+                          </p>
+                          <p className="text-[8px] font-serif text-[#ECC880] tracking-widest uppercase mt-0.5">
+                            Senin, 12 Oktober 2026 • Solo
+                          </p>
+                          <div className="mt-1.5 pt-1.5 border-t border-[#ECC880]/30 inline-block px-2">
+                            <span className="text-[8px] font-mono text-[#ECC880] font-semibold">
+                              #StevenBungaRoyalWedding
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              {/* Action Buttons & Hashtag Copier */}
+              <ScrollReveal animation="fade-up" delay={300}>
+                <div className="space-y-4 max-w-md mx-auto">
+                  {/* Primary CTA: Buka Filter Instagram */}
+                  <a
+                    href={invitation?.ig_filter_url || 'https://www.instagram.com/ar/628941046109988/'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#C5A059] via-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-sm tracking-wide shadow-[0_10px_30px_rgba(236,200,128,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
+                  >
+                    <InstagramIcon size={18} className="text-[#041610]" />
+                    <span>Buka Filter di Instagram Story</span>
+                    <ExternalLink className="w-4 h-4 ml-0.5 text-[#041610]" />
+                  </a>
+
+                  {/* Secondary CTA: Coba Lensa Royal Langsung di Browser */}
+                  <button
+                    type="button"
+                    onClick={startCamera}
+                    className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-[#041610] hover:bg-[#08241b] border-2 border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs sm:text-sm tracking-wide shadow-md hover:shadow-[0_0_20px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
+                  >
+                    <Camera className="w-4 h-4 text-[#ECC880]" />
+                    <span>Coba Lensa Royal (Kamera Web / Selfie)</span>
+                    <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
+                  </button>
+
+                  {/* Official Wedding Hashtag & Copy Card */}
+                  <div className="p-4 rounded-2xl bg-[#041610]/5 border border-[#ECC880]/60 backdrop-blur-xs flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+                    <div className="text-center sm:text-left">
+                      <span className="text-[10px] font-serif uppercase tracking-widest text-[#8C6D2B] font-bold block mb-0.5">
+                        Official Wedding Hashtag
+                      </span>
+                      <p className="font-mono font-bold text-xs sm:text-sm text-[#103023]">
+                        #StevenBungaRoyalWedding
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleCopyHashtag('#StevenBungaRoyalWedding')}
+                      className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#041610] text-[#ECC880] border border-[#ECC880]/60 hover:bg-[#ECC880] hover:text-[#041610] text-xs font-serif font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                    >
+                      {hasCopiedHashtag ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Tersalin!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Salin Hashtag</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Royal Tag Mentions & Repost Instruction */}
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#FAF6ED] to-[#F3ECE0] border border-[#ECC880]/40 text-center">
+                    <p className="text-[11px] sm:text-xs text-[#5B7569] leading-relaxed">
+                      Mention akun mempelai di Instagram Story Anda:{' '}
+                      <span className="font-bold text-[#103023]">@steven_pratama</span> &amp;{' '}
+                      <span className="font-bold text-[#103023]">@bunga_lestari</span> agar momen istimewa Anda dapat kami sematkan di album sorotan Royal Memories.
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+          </section>
+
+        {/* ========================================================================= */}
         {/* 6. WEDDING GIFT & EMV SMART DEBIT CARD                                   */}
         {/* ========================================================================= */}
         <section id="gift" className="relative py-12 px-5 sm:px-8 rounded-[36px] bg-gradient-to-b from-[#FFFDF8] via-[#FAF6ED] to-[#F3ECE0] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.7),0_0_50px_rgba(236,200,128,0.35)] overflow-hidden mb-14 text-center max-w-2xl mx-auto">
@@ -2451,6 +2778,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             { id: 'concierge', label: 'VVIP', icon: Crown },
             { id: 'story', label: 'Cerita', icon: Heart },
             { id: 'gallery', label: 'Galeri', icon: Maximize2 },
+            { id: 'filter', label: 'Filter AR', icon: Camera },
             { id: 'gift', label: 'Kado', icon: CreditCard },
             { id: 'pass', label: 'RSVP', icon: QrCode },
           ].map(item => {
@@ -2549,6 +2877,135 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 {safeGalleryIdx + 1} / {displayGallery.length}
               </span>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Live Royal AR Camera Viewfinder Modal */}
+      {isCameraModalOpen && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-sm sm:max-w-md rounded-[32px] bg-gradient-to-b from-[#08241b] via-[#041610] to-[#010906] border-2 border-[#ECC880] shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_40px_rgba(236,200,128,0.4)] p-4 sm:p-6 overflow-hidden">
+            <EmeraldGoldCorner size={40} color="#ECC880" />
+            <canvas ref={canvasRef} className="hidden" />
+
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#ECC880]/30 relative z-10">
+              <div className="inline-flex items-center gap-2">
+                <Crown className="w-4 h-4 text-[#ECC880]" />
+                <span className="font-serif font-bold text-sm text-[#FFF8E2] tracking-wider">
+                  Royal Lens Live Preview
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={closeCameraModal}
+                className="w-8 h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                title="Tutup Kamera"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Error or Live Viewport */}
+            {cameraError ? (
+              <div className="py-10 px-4 text-center rounded-2xl bg-[#041610] border border-[#ECC880]/30 space-y-4">
+                <div className="w-12 h-12 mx-auto rounded-full bg-red-950/60 border border-red-500/50 flex items-center justify-center text-red-400">
+                  <Camera className="w-6 h-6" />
+                </div>
+                <p className="text-xs text-[#FFF8E2]/80 leading-relaxed font-sans max-w-xs mx-auto">
+                  {cameraError}
+                </p>
+                <p className="text-[11px] text-[#ECC880]/70">
+                  Anda tetap dapat menggunakan filter resmi langsung melalui aplikasi Instagram Story.
+                </p>
+                <a
+                  href={invitation?.ig_filter_url || 'https://www.instagram.com/ar/628941046109988/'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs"
+                >
+                  <InstagramIcon size={14} />
+                  <span>Buka di Instagram</span>
+                </a>
+              </div>
+            ) : capturedSnapshot ? (
+              /* Display Captured Snapshot */
+              <div className="space-y-4">
+                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-xl">
+                  <img src={capturedSnapshot} alt="Captured Royal Moment" className="w-full h-full object-cover" />
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={downloadSnapshot}
+                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Unduh Kenang-kenangan</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCapturedSnapshot(null)}
+                    className="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    <span>Ulang</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Live Camera Stream Viewport with Royal Overlay */
+              <div className="space-y-4">
+                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-black border-2 border-[#ECC880] shadow-2xl">
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className="w-full h-full object-cover -scale-x-100"
+                  />
+
+                  {/* Overlaid Gold Framing */}
+                  <div className="absolute inset-2 border border-[#ECC880]/60 rounded-xl pointer-events-none">
+                    <EmeraldGoldCorner size={28} color="#ECC880" />
+                  </div>
+
+                  {/* Top Seal */}
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+                    <div className="w-10 h-10 rounded-full bg-[#041610]/85 border border-[#ECC880] shadow-[0_0_12px_rgba(236,200,128,0.7)] flex flex-col items-center justify-center">
+                      <Crown className="w-3 h-3 text-[#ECC880]" />
+                      <span className="font-serif font-bold text-[8px] text-[#ECC880] leading-none">S&amp;B</span>
+                    </div>
+                  </div>
+
+                  {/* Bottom Watermark Overlay */}
+                  <div className="absolute bottom-2 left-2 right-2 text-center pointer-events-none z-10">
+                    <div className="bg-[#041610]/80 backdrop-blur-xs border border-[#ECC880]/50 rounded-lg py-1.5 px-2">
+                      <p className="font-serif font-bold text-[10px] text-[#FFF8E2]">
+                        THE ROYAL WEDDING • STEVEN &amp; BUNGA
+                      </p>
+                      <p className="text-[7.5px] font-mono text-[#ECC880] mt-0.5">
+                        #StevenBungaRoyalWedding
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Shutter / Capture Button */}
+                <div className="flex items-center justify-center gap-4 pt-1">
+                  <button
+                    type="button"
+                    onClick={captureSnapshot}
+                    className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] border-4 border-[#041610] shadow-[0_0_25px_rgba(236,200,128,0.8)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
+                    title="Ambil Foto Kenang-kenangan"
+                  >
+                    <div className="w-12 h-12 rounded-full border-2 border-[#041610]/80 flex items-center justify-center">
+                      <Camera className="w-5 h-5 text-[#041610]" />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
