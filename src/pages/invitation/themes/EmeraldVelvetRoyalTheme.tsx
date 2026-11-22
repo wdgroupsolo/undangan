@@ -7,7 +7,7 @@ import {
   Crown, Star, Award, CreditCard, Send,
   Maximize2, Package, MessageCircle, QrCode, Download, ExternalLink,
   Heart, User, Users, Shirt, Car, Wifi, Info, CheckCircle2, Compass, Gem,
-  Camera, RefreshCw
+  Camera, RefreshCw, SwitchCamera, Image as ImageIcon
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -558,6 +558,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   // Royal AR Filter & Live Camera States
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+  const [cameraFacingMode, setCameraFacingMode] = useState<'user' | 'environment'>('user');
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [capturedSnapshot, setCapturedSnapshot] = useState<string | null>(null);
   const [hasCopiedHashtag, setHasCopiedHashtag] = useState(false);
@@ -575,8 +576,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     }
   };
 
-  // Start camera handler
-  const startCamera = async () => {
+  // Start camera handler with facingMode support
+  const startCamera = async (facing: 'user' | 'environment' = cameraFacingMode) => {
     setCameraError(null);
     setCapturedSnapshot(null);
     setIsCameraModalOpen(true);
@@ -585,15 +586,24 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         setCameraError('Kamera tidak didukung pada peramban ini.');
         return;
       }
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 960 } },
+        video: { facingMode: facing, width: { ideal: 720 }, height: { ideal: 960 } },
         audio: false
       });
       setCameraStream(stream);
+      setCameraFacingMode(facing);
     } catch (err: any) {
       console.warn('Camera access denied or unavailable:', err);
-      setCameraError('Izin akses kamera belum diizinkan atau kamera tidak tersedia.');
+      setCameraError('Izin akses kamera belum diizinkan atau kamera tidak tersedia pada perangkat.');
     }
+  };
+
+  const toggleCameraFacingMode = () => {
+    const next = cameraFacingMode === 'user' ? 'environment' : 'user';
+    startCamera(next);
   };
 
   const closeCameraModal = () => {
@@ -628,10 +638,12 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     canvas.width = video.videoWidth || 720;
     canvas.height = video.videoHeight || 960;
 
-    // Draw mirrored video frame
+    // Draw video frame (mirrored for front/user selfie, natural for environment/back camera)
     ctx.save();
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
+    if (cameraFacingMode === 'user') {
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+    }
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
@@ -692,6 +704,109 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     a.click();
     document.body.removeChild(a);
     toast.success('Foto berhasil diunduh ke galeri Anda');
+  };
+
+  // Generate & Download 1080x1920 Transparent Royal Frame PNG for Instagram Story Sticker
+  const downloadRoyalFramePNG = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1920;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, 1080, 1920);
+
+    // 1. 24K Outer Gold Border
+    ctx.strokeStyle = '#ECC880';
+    ctx.lineWidth = 18;
+    ctx.strokeRect(36, 36, 1080 - 72, 1920 - 72);
+
+    // 2. Inner Dashed Gold Border
+    ctx.strokeStyle = 'rgba(236, 200, 128, 0.8)';
+    ctx.lineWidth = 4;
+    ctx.setLineDash([18, 14]);
+    ctx.strokeRect(66, 66, 1080 - 132, 1920 - 132);
+    ctx.setLineDash([]);
+
+    // 3. Corner Accent Dots
+    const corners = [
+      [66, 66],
+      [1080 - 66, 66],
+      [66, 1920 - 66],
+      [1080 - 66, 1920 - 66]
+    ];
+    ctx.fillStyle = '#ECC880';
+    corners.forEach(([x, y]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, 14, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // 4. Top Royal Monogram Medallion
+    const cx = 540;
+    const topY = 210;
+    ctx.fillStyle = 'rgba(4, 22, 16, 0.95)';
+    ctx.beginPath();
+    ctx.arc(cx, topY, 84, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#ECC880';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.fillStyle = '#ECC880';
+    ctx.font = 'bold 42px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('S & B', cx, topY + 16);
+
+    ctx.font = 'bold 22px serif';
+    ctx.fillText('THE ROYAL WEDDING', cx, topY + 120);
+
+    // 5. Bottom Folio Card
+    const botY = 1920 - 240;
+    ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
+    ctx.fillRect(80, botY, 1080 - 160, 140);
+    ctx.strokeStyle = '#ECC880';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(80, botY, 1080 - 160, 140);
+
+    ctx.fillStyle = '#FFF8E2';
+    ctx.font = 'bold 36px serif';
+    ctx.fillText('STEVEN & BUNGA', cx, botY + 52);
+
+    ctx.fillStyle = '#ECC880';
+    ctx.font = '22px sans-serif';
+    ctx.fillText('Senin, 12 Oktober 2026 • Solo, Jawa Tengah', cx, botY + 86);
+
+    ctx.fillStyle = '#D4AF37';
+    ctx.font = 'bold 20px monospace';
+    ctx.fillText('#StevenBungaRoyalWedding', cx, botY + 118);
+
+    const dataUrl = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = 'Royal_Frame_Stiker_Story_Steven_Bunga.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast.success('Stiker Frame Royal Emas (PNG) berhasil diunduh ke galeri!');
+  };
+
+  // Open Instagram Story Camera directly or open custom filter URL
+  const handleOpenInstagramStory = () => {
+    if (invitation?.ig_filter_url && invitation.ig_filter_url.startsWith('http') && !invitation.ig_filter_url.includes('628941046109988')) {
+      window.open(invitation.ig_filter_url, '_blank');
+      return;
+    }
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = 'instagram://story-camera';
+      setTimeout(() => {
+        window.open('https://www.instagram.com/create/story/', '_blank');
+      }, 1200);
+    } else {
+      window.open('https://www.instagram.com/create/story/', '_blank');
+    }
   };
 
   const handleCopyHashtag = (tag = '#StevenBungaRoyalWedding') => {
@@ -2243,30 +2358,39 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
               </ScrollReveal>
 
-              {/* Action Buttons & Hashtag Copier */}
+              {/* Action Buttons, Sticker Downloader & Hashtag Copier */}
               <ScrollReveal animation="fade-up" delay={300}>
-                <div className="space-y-4 max-w-md mx-auto">
-                  {/* Primary CTA: Buka Filter Instagram */}
-                  <a
-                    href={invitation?.ig_filter_url || 'https://www.instagram.com/ar/628941046109988/'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#C5A059] via-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-sm tracking-wide shadow-[0_10px_30px_rgba(236,200,128,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
-                  >
-                    <InstagramIcon size={18} className="text-[#041610]" />
-                    <span>Buka Filter di Instagram Story</span>
-                    <ExternalLink className="w-4 h-4 ml-0.5 text-[#041610]" />
-                  </a>
-
-                  {/* Secondary CTA: Coba Lensa Royal Langsung di Browser */}
+                <div className="space-y-3.5 max-w-md mx-auto">
+                  {/* Primary CTA: Buka Lensa Kamera Royal (Web Photobooth) */}
                   <button
                     type="button"
-                    onClick={startCamera}
+                    onClick={() => startCamera('user')}
+                    className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#C5A059] via-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-sm sm:text-base tracking-wide shadow-[0_10px_30px_rgba(236,200,128,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
+                  >
+                    <Camera className="w-5 h-5 text-[#041610]" />
+                    <span>Buka Lensa Kamera Royal (Web Photobooth)</span>
+                    <Sparkles className="w-4 h-4 text-[#041610]" />
+                  </button>
+
+                  {/* Secondary Action 1: Unduh Stiker Frame Emas (PNG Transparan untuk Instagram Story) */}
+                  <button
+                    type="button"
+                    onClick={downloadRoyalFramePNG}
                     className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-[#041610] hover:bg-[#08241b] border-2 border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs sm:text-sm tracking-wide shadow-md hover:shadow-[0_0_20px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
                   >
-                    <Camera className="w-4 h-4 text-[#ECC880]" />
-                    <span>Coba Lensa Royal (Kamera Web / Selfie)</span>
-                    <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
+                    <Download className="w-4 h-4 text-[#ECC880]" />
+                    <span>Unduh Stiker Frame Emas (PNG Transparan)</span>
+                  </button>
+
+                  {/* Secondary Action 2: Buka Kamera Instagram Story */}
+                  <button
+                    type="button"
+                    onClick={handleOpenInstagramStory}
+                    className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#FAF6ED] to-[#F3ECE0] hover:from-[#F3ECE0] hover:to-[#EAE0D0] border border-[#ECC880] text-[#103023] font-serif font-semibold text-xs sm:text-sm tracking-wide shadow-xs hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
+                  >
+                    <InstagramIcon size={16} className="text-[#8C6D2B]" />
+                    <span>Buka Kamera Instagram Story</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#8C6D2B]" />
                   </button>
 
                   {/* Official Wedding Hashtag & Copy Card */}
@@ -2299,12 +2423,20 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     </button>
                   </div>
 
-                  {/* Royal Tag Mentions & Repost Instruction */}
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#FAF6ED] to-[#F3ECE0] border border-[#ECC880]/40 text-center">
-                    <p className="text-[11px] sm:text-xs text-[#5B7569] leading-relaxed">
-                      Mention akun mempelai di Instagram Story Anda:{' '}
-                      <span className="font-bold text-[#103023]">@steven_pratama</span> &amp;{' '}
-                      <span className="font-bold text-[#103023]">@bunga_lestari</span> agar momen istimewa Anda dapat kami sematkan di album sorotan Royal Memories.
+                  {/* Panduan Story & Tag Mention */}
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#FAF6ED] to-[#F3ECE0] border border-[#ECC880]/40 text-left text-[11px] sm:text-xs text-[#5B7569] space-y-1.5">
+                    <p className="font-bold text-[#103023] flex items-center gap-1.5">
+                      <Sparkles className="w-3 h-3 text-[#C5A059]" />
+                      <span>Cara Menggunakan Momen Royal di Instagram Story:</span>
+                    </p>
+                    <p>
+                      <strong>Cara 1:</strong> Buka <em>Web Photobooth</em> di atas untuk selfie langsung berbingkai emas &amp; simpan ke galeri ponsel Anda.
+                    </p>
+                    <p>
+                      <strong>Cara 2:</strong> Unduh <em>Stiker Frame PNG</em>, lalu di Instagram Story tempelkan frame via fitur <strong>Stiker Foto (+)</strong> di atas foto Anda.
+                    </p>
+                    <p className="pt-1 border-t border-[#ECC880]/30 text-center font-medium text-[#103023]">
+                      Tag <span className="font-bold">@steven_pratama</span> &amp; <span className="font-bold">@bunga_lestari</span> agar momen istimewa Anda dapat kami sematkan di album sorotan Royal Memories!
                     </p>
                   </div>
                 </div>
@@ -2896,37 +3028,65 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   Royal Lens Live Preview
                 </span>
               </div>
-              <button
-                type="button"
-                onClick={closeCameraModal}
-                className="w-8 h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
-                title="Tutup Kamera"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                {!cameraError && !capturedSnapshot && (
+                  <button
+                    type="button"
+                    onClick={toggleCameraFacingMode}
+                    className="w-8 h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                    title="Balik Kamera Depan / Belakang"
+                  >
+                    <SwitchCamera className="w-4 h-4" />
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={closeCameraModal}
+                  className="w-8 h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                  title="Tutup Kamera"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Error or Live Viewport */}
             {cameraError ? (
-              <div className="py-10 px-4 text-center rounded-2xl bg-[#041610] border border-[#ECC880]/30 space-y-4">
-                <div className="w-12 h-12 mx-auto rounded-full bg-red-950/60 border border-red-500/50 flex items-center justify-center text-red-400">
+              <div className="py-8 px-4 text-center rounded-2xl bg-[#041610] border border-[#ECC880]/30 space-y-4">
+                <div className="w-12 h-12 mx-auto rounded-full bg-amber-950/60 border border-amber-500/50 flex items-center justify-center text-[#ECC880]">
                   <Camera className="w-6 h-6" />
                 </div>
-                <p className="text-xs text-[#FFF8E2]/80 leading-relaxed font-sans max-w-xs mx-auto">
+                <p className="text-xs text-[#FFF8E2]/90 leading-relaxed font-sans max-w-xs mx-auto">
                   {cameraError}
                 </p>
-                <p className="text-[11px] text-[#ECC880]/70">
-                  Anda tetap dapat menggunakan filter resmi langsung melalui aplikasi Instagram Story.
+                <p className="text-[11px] text-[#ECC880]/80">
+                  Anda tetap dapat mengunduh stiker frame emas untuk digunakan di Instagram Story:
                 </p>
-                <a
-                  href={invitation?.ig_filter_url || 'https://www.instagram.com/ar/628941046109988/'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs"
-                >
-                  <InstagramIcon size={14} />
-                  <span>Buka di Instagram</span>
-                </a>
+                <div className="flex flex-col gap-2 pt-1 max-w-xs mx-auto">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeCameraModal();
+                      downloadRoyalFramePNG();
+                    }}
+                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Unduh Stiker Frame Emas (PNG)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeCameraModal();
+                      handleOpenInstagramStory();
+                    }}
+                    className="w-full py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/60 text-[#ECC880] font-serif text-xs flex items-center justify-center gap-1.5 cursor-pointer hover:bg-white/10 transition-colors"
+                  >
+                    <InstagramIcon size={14} />
+                    <span>Buka Kamera Instagram Story</span>
+                    <ExternalLink className="w-3 h-3 ml-0.5" />
+                  </button>
+                </div>
               </div>
             ) : capturedSnapshot ? (
               /* Display Captured Snapshot */
@@ -2934,14 +3094,23 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-xl">
                   <img src={capturedSnapshot} alt="Captured Royal Moment" className="w-full h-full object-cover" />
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <button
                     type="button"
                     onClick={downloadSnapshot}
                     className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
                   >
                     <Download className="w-4 h-4" />
-                    <span>Unduh Kenang-kenangan</span>
+                    <span>Unduh Foto</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleOpenInstagramStory}
+                    className="flex-1 py-3 rounded-xl bg-[#041610] border border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-white/10 transition-all cursor-pointer"
+                  >
+                    <InstagramIcon size={14} />
+                    <span>Buka IG Story</span>
+                    <ExternalLink className="w-3 h-3 ml-0.5" />
                   </button>
                   <button
                     type="button"
@@ -2962,7 +3131,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     autoPlay
                     playsInline
                     muted
-                    className="w-full h-full object-cover -scale-x-100"
+                    className={`w-full h-full object-cover ${cameraFacingMode === 'user' ? '-scale-x-100' : ''}`}
                   />
 
                   {/* Overlaid Gold Framing */}
@@ -2991,8 +3160,17 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   </div>
                 </div>
 
-                {/* Shutter / Capture Button */}
-                <div className="flex items-center justify-center gap-4 pt-1">
+                {/* Shutter / Capture Button & Secondary Options */}
+                <div className="flex items-center justify-center gap-6 pt-1">
+                  <button
+                    type="button"
+                    onClick={toggleCameraFacingMode}
+                    className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                    title="Ganti Kamera Depan/Belakang"
+                  >
+                    <SwitchCamera className="w-5 h-5" />
+                  </button>
+
                   <button
                     type="button"
                     onClick={captureSnapshot}
@@ -3002,6 +3180,15 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     <div className="w-12 h-12 rounded-full border-2 border-[#041610]/80 flex items-center justify-center">
                       <Camera className="w-5 h-5 text-[#041610]" />
                     </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={downloadRoyalFramePNG}
+                    className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                    title="Unduh Stiker Frame PNG"
+                  >
+                    <Download className="w-4 h-4" />
                   </button>
                 </div>
               </div>
