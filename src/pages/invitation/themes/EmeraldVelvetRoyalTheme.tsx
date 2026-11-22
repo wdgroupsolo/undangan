@@ -2362,20 +2362,79 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
           </section>
 
         {/* ========================================================================= */}
-        {/* 8. CLOSING & FOOTER                                                      */}
+        {/* 8. ROYAL CLOSING & FOOTER FOLIO                                          */}
         {/* ========================================================================= */}
         <ScrollReveal animation="fade-up" duration={900}>
-          <footer className="text-center py-8">
-            <EmeraldRoyalCrest initials={coupleInitials} size="sm" className="mb-3" />
-            <p className="font-serif text-sm text-[#A0C4B4] italic max-w-sm mx-auto mb-2">
-              Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
-            </p>
-            <div className="font-serif text-lg font-bold text-[#FFF8E2] mt-3">
-              {groomName} &amp; {brideName}
+          <footer className="relative pt-6 pb-28 sm:pb-36 px-4 text-center max-w-2xl mx-auto">
+            {/* Royal Closing Folio Card */}
+            <div className="relative p-7 sm:p-11 rounded-[36px] bg-gradient-to-b from-[#0C241B] via-[#071912] to-[#04120D] border-2 border-[#ECC880] shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_50px_rgba(236,200,128,0.25)] overflow-hidden mb-8 text-white">
+              <GuillocheVelvetWatermark opacity={0.06} />
+              <div className="absolute inset-3 sm:inset-4 rounded-[28px] border-2 border-dashed border-[#ECC880]/30 pointer-events-none" />
+              <EmeraldGoldCorner size={48} color="#ECC880" />
+
+              <div className="relative z-10">
+                {/* Monogram Seal */}
+                <div className="relative mb-4 inline-block">
+                  <div className="absolute -inset-4 rounded-full bg-[#ECC880]/15 blur-xl pointer-events-none" />
+                  <EmeraldRoyalCrest initials={coupleInitials} size="md" />
+                </div>
+
+                {/* Badge Header */}
+                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/50 text-[#ECC880] text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.25em] font-semibold mb-3.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
+                  <span>SALAM HORMAT &amp; DOA RESTU</span>
+                  <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
+                </div>
+
+                {/* Closing Words */}
+                <p className="font-serif italic text-xs sm:text-sm text-[#D5E6DE] leading-relaxed max-w-md mx-auto mb-4 font-light">
+                  &ldquo;Merupakan suatu kehormatan dan kebahagiaan yang mendalam bagi kami sekeluarga, apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu bagi ikatan suci pernikahan kami.&rdquo;
+                </p>
+
+                <RoyalCalligraphicDivider className="my-2.5 max-w-[220px] mx-auto opacity-80" />
+
+                {/* Family & Couple Names */}
+                <p className="text-[10px] sm:text-[11px] font-serif tracking-[0.25em] uppercase text-[#ECC880]/85 font-medium mt-3 mb-1">
+                  KAMI YANG BERBAHAGIA
+                </p>
+                <div className="font-serif text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFFDF2] via-[#ECC880] to-[#E2C792] drop-shadow-md tracking-wide mb-1">
+                  {groomName} &amp; {brideName}
+                </div>
+                <p className="text-[11px] sm:text-xs text-[#A0C4B4]/80 font-serif italic">
+                  Beserta segenap keluarga besar kedua mempelai
+                </p>
+              </div>
             </div>
-            <span className="text-[10px] font-serif tracking-[0.2em] text-[#ECC880]/70 uppercase block mt-1">
-              WD DIGITAL INVITATION • MASTERPIECE ROYAL EDITION
-            </span>
+
+            {/* Interactive wdgroupcompany Brand Dock & Instagram Link */}
+            <div className="relative z-10 flex flex-col items-center">
+              {/* Hairline Divider with Diamond */}
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="h-px w-8 sm:w-16 bg-gradient-to-r from-transparent to-[#ECC880]/40" />
+                <div className="w-1.5 h-1.5 rotate-45 bg-[#ECC880]" />
+                <div className="h-px w-8 sm:w-16 bg-gradient-to-l from-transparent to-[#ECC880]/40" />
+              </div>
+
+              {/* Clickable Instagram Brand Link */}
+              <a
+                href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full bg-[#041610]/95 hover:bg-[#ECC880] border-2 border-[#ECC880]/70 hover:border-[#ECC880] text-[#ECC880] hover:text-[#041610] shadow-[0_8px_25px_rgba(0,0,0,0.6),0_0_15px_rgba(236,200,128,0.25)] hover:shadow-[0_10px_30px_rgba(236,200,128,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer"
+                title="Kunjungi Instagram @wdgroupcompany"
+              >
+                <InstagramIcon size={14} className="text-[#ECC880] group-hover:text-[#041610] transition-colors" />
+                <span className="text-[11px] sm:text-xs font-serif font-bold tracking-[0.2em] uppercase">
+                  wdgroupcompany
+                </span>
+                <ExternalLink size={12} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-[#ECC880] group-hover:text-[#041610]" />
+              </a>
+
+              {/* Copyright Subtitle */}
+              <span className="text-[9.5px] sm:text-[10px] font-serif tracking-[0.2em] text-[#ECC880]/60 uppercase block mt-2.5">
+                WD DIGITAL INVITATION • MASTERPIECE ROYAL EDITION
+              </span>
+            </div>
           </footer>
         </ScrollReveal>
 
