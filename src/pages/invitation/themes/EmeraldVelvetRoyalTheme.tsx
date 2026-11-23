@@ -521,6 +521,37 @@ export const GildedEmeraldAcanthusFlourish: React.FC<{ side: 'left' | 'right'; c
   );
 };
 
+// Unified Royal Photobooth Frame Overlay (Viewfinder & Uploaded Photo Preview)
+export const RoyalPhotoboothFrameOverlay: React.FC = () => (
+  <>
+    {/* Overlaid Gold Framing */}
+    <div className="absolute inset-1.5 xs:inset-2 border border-[#ECC880]/60 rounded-lg xs:rounded-xl pointer-events-none">
+      <div className="absolute inset-1 border border-dashed border-[#ECC880]/40 rounded-md xs:rounded-lg pointer-events-none" />
+      <EmeraldGoldCorner size={24} color="#ECC880" />
+    </div>
+
+    {/* Top Seal */}
+    <div className="absolute top-2.5 xs:top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+      <div className="w-8 h-8 xs:w-10 xs:h-10 rounded-full bg-[#041610]/85 border border-[#ECC880] shadow-[0_0_12px_rgba(236,200,128,0.7)] flex flex-col items-center justify-center">
+        <Crown className="w-2.5 h-2.5 xs:w-3 xs:h-3 text-[#ECC880]" />
+        <span className="font-serif font-bold text-[7px] xs:text-[8px] text-[#ECC880] leading-none">S&amp;B</span>
+      </div>
+    </div>
+
+    {/* Bottom Watermark Overlay */}
+    <div className="absolute bottom-1.5 xs:bottom-2 left-1.5 xs:left-2 right-1.5 xs:right-2 text-center pointer-events-none z-10">
+      <div className="bg-[#041610]/80 backdrop-blur-xs border border-[#ECC880]/50 rounded-lg py-1 xs:py-1.5 px-1.5 xs:px-2">
+        <p className="font-serif font-bold text-[8.5px] xs:text-[10px] text-[#FFF8E2] leading-tight">
+          THE ROYAL WEDDING • STEVEN &amp; BUNGA
+        </p>
+        <p className="text-[7px] xs:text-[7.5px] font-mono text-[#ECC880] mt-0.5">
+          #StevenBungaRoyalWedding
+        </p>
+      </div>
+    </div>
+  </>
+);
+
 export interface EmeraldVelvetRoyalThemeProps {
   invitation: any;
   couple: any;
@@ -558,6 +589,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   // Royal AR Filter & Live Camera States
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
   const [photoboothMode, setPhotoboothMode] = useState<'choice' | 'camera' | 'uploaded-preview'>('choice');
+  const [uploadedRawImage, setUploadedRawImage] = useState<string | null>(null);
   const [isProcessingUpload, setIsProcessingUpload] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isStoryGuideOpen, setIsStoryGuideOpen] = useState(false);
@@ -599,6 +631,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const openPhotoboothModal = () => {
     setIsCameraModalOpen(true);
     setPhotoboothMode('choice');
+    setUploadedRawImage(null);
     setIsPreviewOpen(false);
     setSnapshotNotification(null);
     setCameraError(null);
@@ -607,6 +640,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   // Choose Camera Mode
   const chooseCameraMode = () => {
     setPhotoboothMode('camera');
+    setUploadedRawImage(null);
     startCamera('user');
   };
 
@@ -620,6 +654,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     setCameraError(null);
     setIsCameraModalOpen(true);
     setPhotoboothMode('camera');
+    setUploadedRawImage(null);
     setIsPreviewOpen(false);
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -669,6 +704,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     stopCamera();
     setIsCameraModalOpen(false);
     setPhotoboothMode('choice');
+    setUploadedRawImage(null);
     setIsPreviewOpen(false);
     setSnapshotNotification(null);
     setCameraError(null);
@@ -695,92 +731,203 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   }, []);
 
   // Draw high-resolution 24K Royal Gold Frame onto canvas context
-  const drawRoyalGoldFrame = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-    // Subtle atmospheric vignette & lighting
-    const vignette = ctx.createRadialGradient(
-      width / 2, height / 2, width * 0.35,
-      width / 2, height / 2, width * 0.85
-    );
-    vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
-    vignette.addColorStop(1, 'rgba(4, 22, 16, 0.45)');
-    ctx.fillStyle = vignette;
-    ctx.fillRect(0, 0, width, height);
+  const drawRoyalGoldFrame = (
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number,
+    isTransparent = false
+  ) => {
+    // 1. Subtle atmospheric vignette & lighting (skip for transparent PNG sticker)
+    if (!isTransparent) {
+      const vignette = ctx.createRadialGradient(
+        width / 2, height / 2, width * 0.35,
+        width / 2, height / 2, width * 0.85
+      );
+      vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      vignette.addColorStop(1, 'rgba(4, 22, 16, 0.45)');
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, width, height);
+    }
 
-    // 24K Gold Outer Luxury Frame
+    // Helper for rounded rectangles with fallback
+    const strokeRounded = (x: number, y: number, w: number, h: number, r: number) => {
+      ctx.beginPath();
+      if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(x, y, w, h, r);
+      } else {
+        ctx.rect(x, y, w, h);
+      }
+      ctx.stroke();
+    };
+    const fillRounded = (x: number, y: number, w: number, h: number, r: number) => {
+      ctx.beginPath();
+      if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(x, y, w, h, r);
+      } else {
+        ctx.rect(x, y, w, h);
+      }
+      ctx.fill();
+    };
+
+    // Outer & Inner Gold Borders (matching the rounded border in the overlay)
+    const outerMargin = Math.round(width * 0.018);
+    const outerRadius = Math.round(width * 0.024);
+    const innerMargin = Math.round(width * 0.032);
+    const innerRadius = Math.round(width * 0.018);
+
+    // 24K Outer Border
     ctx.strokeStyle = '#ECC880';
-    ctx.lineWidth = 22;
-    ctx.strokeRect(20, 20, width - 40, height - 40);
+    ctx.lineWidth = Math.max(3, Math.round(width * 0.005));
+    strokeRounded(outerMargin, outerMargin, width - outerMargin * 2, height - outerMargin * 2, outerRadius);
 
-    // Inner dashed gold border
-    ctx.strokeStyle = 'rgba(236, 200, 128, 0.75)';
-    ctx.lineWidth = 4;
-    ctx.setLineDash([20, 16]);
-    ctx.strokeRect(44, 44, width - 88, height - 88);
+    // Inner Dashed Gold Border
+    ctx.strokeStyle = 'rgba(236, 200, 128, 0.65)';
+    ctx.lineWidth = Math.max(1.5, Math.round(width * 0.002));
+    ctx.setLineDash([Math.round(width * 0.012), Math.round(width * 0.008)]);
+    strokeRounded(innerMargin, innerMargin, width - innerMargin * 2, height - innerMargin * 2, innerRadius);
     ctx.setLineDash([]);
 
-    // Corner Accents (4 decorative gold rosettes)
-    const corners = [
-      [44, 44],
-      [width - 44, 44],
-      [44, height - 44],
-      [width - 44, height - 44]
-    ];
-    ctx.fillStyle = '#ECC880';
-    corners.forEach(([cx, cy]) => {
+    // 2. Acanthus Corner Flourishes (Exact SVG geometry matching EmeraldGoldCorner)
+    const drawAcanthusCorner = (
+      originX: number,
+      originY: number,
+      scaleX: number,
+      scaleY: number,
+      size: number
+    ) => {
+      ctx.save();
+      ctx.translate(originX, originY);
+      const scale = size / 64;
+      ctx.scale(scaleX * scale, scaleY * scale);
+
+      const grad = ctx.createLinearGradient(0, 0, 64, 64);
+      grad.addColorStop(0, '#FFFDF2');
+      grad.addColorStop(0.35, '#ECC880');
+      grad.addColorStop(0.75, '#C5A059');
+      grad.addColorStop(1, '#8C6D2B');
+
+      ctx.strokeStyle = grad;
+      ctx.fillStyle = grad;
+      ctx.lineCap = 'round';
+
+      // Outer stem
+      ctx.lineWidth = 1.8;
+      const p1 = new Path2D('M4 60 L4 12 C4 7.5, 7.5 4, 12 4 L60 4');
+      ctx.stroke(p1);
+
+      // Inner parallel stem
+      ctx.lineWidth = 1.0;
+      ctx.globalAlpha = 0.8;
+      const p2 = new Path2D('M8 52 L8 16 C8 11.5, 11.5 8, 16 8 L52 8');
+      ctx.stroke(p2);
+
+      // Rosette circle at (12, 12)
+      ctx.globalAlpha = 1.0;
       ctx.beginPath();
-      ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+      ctx.arc(12, 12, 3.2, 0, Math.PI * 2);
       ctx.fill();
-    });
 
-    // Top Royal Monogram Medallion
+      // Acanthus leaves
+      ctx.globalAlpha = 0.92;
+      const p3 = new Path2D('M12 12 C18 18, 28 22, 40 18 C30 25, 20 28, 12 12 Z');
+      ctx.fill(p3);
+      const p4 = new Path2D('M12 12 C18 18, 22 28, 18 40 C25 30, 28 20, 12 12 Z');
+      ctx.fill(p4);
+
+      // Diagonal filigree stem
+      ctx.lineWidth = 1.2;
+      const p5 = new Path2D('M12 12 L34 34');
+      ctx.stroke(p5);
+
+      ctx.restore();
+    };
+
+    const cornerSize = Math.round(width * 0.11);
+    const cornerInset = innerMargin + Math.round(width * 0.008);
+
+    // Top-Left
+    drawAcanthusCorner(cornerInset, cornerInset, 1, 1, cornerSize);
+    // Top-Right
+    drawAcanthusCorner(width - cornerInset, cornerInset, -1, 1, cornerSize);
+    // Bottom-Left
+    drawAcanthusCorner(cornerInset, height - cornerInset, 1, -1, cornerSize);
+    // Bottom-Right
+    drawAcanthusCorner(width - cornerInset, height - cornerInset, -1, -1, cornerSize);
+
+    // 3. Top Royal Monogram Medallion with Crown and S & B
     const sealX = width / 2;
-    const sealY = 135;
-    ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
+    const sealY = Math.round(height * 0.075);
+    const sealR = Math.round(width * 0.055);
+
+    // Medallion background circle
+    ctx.fillStyle = 'rgba(4, 22, 16, 0.88)';
     ctx.beginPath();
-    ctx.arc(sealX, sealY, 68, 0, Math.PI * 2);
+    ctx.arc(sealX, sealY, sealR, 0, Math.PI * 2);
     ctx.fill();
+
+    // Medallion Gold Border
     ctx.strokeStyle = '#ECC880';
-    ctx.lineWidth = 4;
+    ctx.lineWidth = Math.max(2, Math.round(width * 0.0035));
     ctx.stroke();
 
-    // Inner Gold Ring
-    ctx.strokeStyle = 'rgba(236, 200, 128, 0.5)';
-    ctx.lineWidth = 2;
+    // Medallion Inner Gold Ring
+    ctx.strokeStyle = 'rgba(236, 200, 128, 0.55)';
+    ctx.lineWidth = Math.max(1, Math.round(width * 0.0015));
     ctx.beginPath();
-    ctx.arc(sealX, sealY, 60, 0, Math.PI * 2);
+    ctx.arc(sealX, sealY, sealR - Math.round(width * 0.007), 0, Math.PI * 2);
     ctx.stroke();
 
+    // Medallion Crown Icon
+    ctx.save();
+    const crownW = Math.round(sealR * 0.65);
+    ctx.translate(sealX - crownW / 2, sealY - Math.round(sealR * 0.55));
+    const crownScale = crownW / 24;
+    ctx.scale(crownScale, crownScale);
+    ctx.strokeStyle = '#ECC880';
+    ctx.lineWidth = 1.8;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    const crownBody = new Path2D('M2 6 L5 17 L19 17 L22 6 L16 12 L12 5 L8 12 Z');
+    ctx.stroke(crownBody);
+    const crownBase = new Path2D('M5 20 L19 20');
+    ctx.stroke(crownBase);
+    ctx.restore();
+
+    // Medallion S & B Text
     ctx.fillStyle = '#ECC880';
-    ctx.font = 'bold 36px "Cinzel Decorative", "Playfair Display", serif';
+    ctx.font = `bold ${Math.round(sealR * 0.42)}px "Cinzel", "Playfair Display", Georgia, serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('S & B', sealX, sealY + 2);
+    ctx.fillText('S & B', sealX, sealY + Math.round(sealR * 0.32));
 
-    // Bottom Watermark Bar Plaque
-    const barW = width - 88;
-    const barH = 130;
-    const barX = 44;
-    const barY = height - 174;
+    // 4. Bottom Watermark Plaque (Translucent rounded plaque matching overlay)
+    const plaqueMargin = Math.round(width * 0.04);
+    const plaqueW = width - (plaqueMargin * 2);
+    const plaqueH = Math.round(height * 0.062);
+    const plaqueX = plaqueMargin;
+    const plaqueY = height - plaqueH - Math.round(height * 0.032);
+    const plaqueRadius = Math.round(plaqueH * 0.22);
 
-    ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
-    ctx.beginPath();
-    ctx.roundRect(barX, barY, barW, barH, 20);
-    ctx.fill();
-    ctx.strokeStyle = '#ECC880';
-    ctx.lineWidth = 3;
-    ctx.stroke();
+    // Semi-translucent dark background
+    ctx.fillStyle = 'rgba(4, 22, 16, 0.82)';
+    fillRounded(plaqueX, plaqueY, plaqueW, plaqueH, plaqueRadius);
 
-    // Title inside Bar
+    // Gold border
+    ctx.strokeStyle = 'rgba(236, 200, 128, 0.55)';
+    ctx.lineWidth = Math.max(1.5, Math.round(width * 0.002));
+    strokeRounded(plaqueX, plaqueY, plaqueW, plaqueH, plaqueRadius);
+
+    // Title: THE ROYAL WEDDING • STEVEN & BUNGA
     ctx.fillStyle = '#FFF8E2';
-    ctx.font = 'bold 28px "Cinzel", "Playfair Display", serif';
+    ctx.font = `bold ${Math.round(plaqueH * 0.30)}px "Cinzel", "Playfair Display", Georgia, serif`;
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'alphabetic';
-    ctx.fillText('THE ROYAL WEDDING • STEVEN & BUNGA', sealX, barY + 54);
+    ctx.textBaseline = 'middle';
+    ctx.fillText('THE ROYAL WEDDING • STEVEN & BUNGA', width / 2, plaqueY + Math.round(plaqueH * 0.38));
 
-    // Subtitle inside Bar
+    // Subtitle: #StevenBungaRoyalWedding
     ctx.fillStyle = '#ECC880';
-    ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText('Senin, 12 Oktober 2026 • #StevenBungaRoyalWedding', sealX, barY + 94);
+    ctx.font = `${Math.round(plaqueH * 0.22)}px monospace, "Courier New", sans-serif`;
+    ctx.fillText('#StevenBungaRoyalWedding', width / 2, plaqueY + Math.round(plaqueH * 0.72));
   };
 
   // Generic composite function for both live video stream and uploaded image
@@ -871,6 +1018,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     setIsProcessingUpload(true);
     const reader = new FileReader();
     reader.onload = (event) => {
+      const rawUrl = event.target?.result as string;
+      setUploadedRawImage(rawUrl);
       const img = new Image();
       img.onload = () => {
         const dataUrl = compositePhoto(img, img.naturalWidth, img.naturalHeight, false);
@@ -892,7 +1041,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
         setIsProcessingUpload(false);
         toast.error('Gagal memproses file foto yang diunggah. Silakan gunakan format JPG atau PNG.');
       };
-      img.src = event.target?.result as string;
+      img.src = rawUrl;
     };
     reader.onerror = () => {
       setIsProcessingUpload(false);
@@ -925,71 +1074,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     if (!ctx) return;
 
     ctx.clearRect(0, 0, 1080, 1920);
-
-    // 1. 24K Outer Gold Border
-    ctx.strokeStyle = '#ECC880';
-    ctx.lineWidth = 18;
-    ctx.strokeRect(36, 36, 1080 - 72, 1920 - 72);
-
-    // 2. Inner Dashed Gold Border
-    ctx.strokeStyle = 'rgba(236, 200, 128, 0.8)';
-    ctx.lineWidth = 4;
-    ctx.setLineDash([18, 14]);
-    ctx.strokeRect(66, 66, 1080 - 132, 1920 - 132);
-    ctx.setLineDash([]);
-
-    // 3. Corner Accent Dots
-    const corners = [
-      [66, 66],
-      [1080 - 66, 66],
-      [66, 1920 - 66],
-      [1080 - 66, 1920 - 66]
-    ];
-    ctx.fillStyle = '#ECC880';
-    corners.forEach(([x, y]) => {
-      ctx.beginPath();
-      ctx.arc(x, y, 14, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    // 4. Top Royal Monogram Medallion
-    const cx = 540;
-    const topY = 210;
-    ctx.fillStyle = 'rgba(4, 22, 16, 0.95)';
-    ctx.beginPath();
-    ctx.arc(cx, topY, 84, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = '#ECC880';
-    ctx.lineWidth = 5;
-    ctx.stroke();
-
-    ctx.fillStyle = '#ECC880';
-    ctx.font = 'bold 42px serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('S & B', cx, topY + 16);
-
-    ctx.font = 'bold 22px serif';
-    ctx.fillText('THE ROYAL WEDDING', cx, topY + 120);
-
-    // 5. Bottom Folio Card
-    const botY = 1920 - 240;
-    ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
-    ctx.fillRect(80, botY, 1080 - 160, 140);
-    ctx.strokeStyle = '#ECC880';
-    ctx.lineWidth = 3;
-    ctx.strokeRect(80, botY, 1080 - 160, 140);
-
-    ctx.fillStyle = '#FFF8E2';
-    ctx.font = 'bold 36px serif';
-    ctx.fillText('STEVEN & BUNGA', cx, botY + 52);
-
-    ctx.fillStyle = '#ECC880';
-    ctx.font = '22px sans-serif';
-    ctx.fillText('Senin, 12 Oktober 2026 • Solo, Jawa Tengah', cx, botY + 86);
-
-    ctx.fillStyle = '#D4AF37';
-    ctx.font = 'bold 20px monospace';
-    ctx.fillText('#StevenBungaRoyalWedding', cx, botY + 118);
+    drawRoyalGoldFrame(ctx, 1080, 1920, true);
 
     const dataUrl = canvas.toDataURL('image/png');
     const a = document.createElement('a');
@@ -1033,65 +1118,10 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
       const y = (1920 - h) / 2;
       ctx.drawImage(img, x, y, w, h);
 
-      // Contrast overlay
-      const grad = ctx.createLinearGradient(0, 0, 0, 1920);
-      grad.addColorStop(0, 'rgba(4, 22, 16, 0.7)');
-      grad.addColorStop(0.3, 'rgba(4, 22, 16, 0.15)');
-      grad.addColorStop(0.7, 'rgba(4, 22, 16, 0.35)');
-      grad.addColorStop(1, 'rgba(4, 22, 16, 0.88)');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 1080, 1920);
-
-      // 24K Outer Gold Border
-      ctx.strokeStyle = '#ECC880';
-      ctx.lineWidth = 18;
-      ctx.strokeRect(36, 36, 1080 - 72, 1920 - 72);
-
-      // Inner Dashed Line
-      ctx.strokeStyle = 'rgba(236, 200, 128, 0.8)';
-      ctx.lineWidth = 4;
-      ctx.setLineDash([18, 14]);
-      ctx.strokeRect(66, 66, 1080 - 132, 1920 - 132);
-      ctx.setLineDash([]);
-
-      // Top Monogram Royal Seal
-      const cx = 540;
-      const topY = 210;
-      ctx.fillStyle = 'rgba(4, 22, 16, 0.95)';
-      ctx.beginPath();
-      ctx.arc(cx, topY, 84, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = '#ECC880';
-      ctx.lineWidth = 5;
-      ctx.stroke();
-
-      ctx.fillStyle = '#ECC880';
-      ctx.font = 'bold 42px serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('S & B', cx, topY + 16);
-
-      ctx.font = 'bold 22px serif';
-      ctx.fillText('THE ROYAL WEDDING', cx, topY + 120);
-
-      // Bottom Folio Card
-      const botY = 1920 - 240;
-      ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
-      ctx.fillRect(80, botY, 1080 - 160, 140);
-      ctx.strokeStyle = '#ECC880';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(80, botY, 1080 - 160, 140);
-
-      ctx.fillStyle = '#FFF8E2';
-      ctx.font = 'bold 36px serif';
-      ctx.fillText('STEVEN & BUNGA', cx, botY + 52);
-
-      ctx.fillStyle = '#ECC880';
-      ctx.font = '22px sans-serif';
-      ctx.fillText('Senin, 12 Oktober 2026 • Solo, Jawa Tengah', cx, botY + 86);
-
-      ctx.fillStyle = '#D4AF37';
-      ctx.font = 'bold 20px monospace';
-      ctx.fillText('#StevenBungaRoyalWedding', cx, botY + 118);
+      // If the source image is not already framed (e.g. not capturedSnapshot), draw the frame
+      if (srcToUse !== capturedSnapshot) {
+        drawRoyalGoldFrame(ctx, 1080, 1920);
+      }
 
       const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, 'image/png'));
       if (!blob) return;
@@ -3348,6 +3378,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     onClick={() => {
                       stopCamera();
                       setPhotoboothMode('choice');
+                      setUploadedRawImage(null);
                     }}
                     className="p-1 -ml-1 rounded-full text-[#ECC880] hover:bg-white/10 transition-colors cursor-pointer shrink-0"
                     title="Kembali ke Pilihan"
@@ -3487,10 +3518,12 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             {/* Mode 2: Uploaded Result Preview */}
             {photoboothMode === 'uploaded-preview' && (
               <div className="space-y-3 xs:space-y-4 animate-fade-in my-auto">
-                <div className="relative aspect-[3/4] max-h-[46vh] xs:max-h-[48vh] sm:max-h-[52vh] md:max-h-[56vh] w-auto mx-auto rounded-xl xs:rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-[0_15px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(236,200,128,0.4)] bg-black shrink-0">
-                  {capturedSnapshot && (
-                    <img src={capturedSnapshot} alt="Hasil Foto Royal HD" className="w-full h-full object-cover" />
-                  )}
+                <div className="relative aspect-[3/4] max-h-[46vh] xs:max-h-[48vh] sm:max-h-[52vh] md:max-h-[56vh] w-auto mx-auto rounded-xl xs:rounded-2xl overflow-hidden bg-black border-2 border-[#ECC880] shadow-[0_15px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(236,200,128,0.4)] shrink-0">
+                  <img
+                    src={uploadedRawImage || capturedSnapshot || ''}
+                    alt="Hasil Foto Royal HD"
+                    className="w-full h-full object-cover"
+                  />
 
                   {/* Compact Notification Toast Overlay */}
                   {snapshotNotification?.visible && (
@@ -3517,6 +3550,9 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       </div>
                     </div>
                   )}
+
+                  {/* Unified Royal Photobooth Frame Overlay (Exact match to Camera) */}
+                  <RoyalPhotoboothFrameOverlay />
                 </div>
 
                 {/* Primary Action: Bagikan Foto ke Instagram Story */}
@@ -3697,30 +3733,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       </div>
                     )}
 
-                    {/* Overlaid Gold Framing */}
-                    <div className="absolute inset-1.5 xs:inset-2 border border-[#ECC880]/60 rounded-lg xs:rounded-xl pointer-events-none">
-                      <EmeraldGoldCorner size={24} color="#ECC880" />
-                    </div>
-
-                    {/* Top Seal */}
-                    <div className="absolute top-2.5 xs:top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-                      <div className="w-8 h-8 xs:w-10 xs:h-10 rounded-full bg-[#041610]/85 border border-[#ECC880] shadow-[0_0_12px_rgba(236,200,128,0.7)] flex flex-col items-center justify-center">
-                        <Crown className="w-2.5 h-2.5 xs:w-3 xs:h-3 text-[#ECC880]" />
-                        <span className="font-serif font-bold text-[7px] xs:text-[8px] text-[#ECC880] leading-none">S&amp;B</span>
-                      </div>
-                    </div>
-
-                    {/* Bottom Watermark Overlay */}
-                    <div className="absolute bottom-1.5 xs:bottom-2 left-1.5 xs:left-2 right-1.5 xs:right-2 text-center pointer-events-none z-10">
-                      <div className="bg-[#041610]/80 backdrop-blur-xs border border-[#ECC880]/50 rounded-lg py-1 xs:py-1.5 px-1.5 xs:px-2">
-                        <p className="font-serif font-bold text-[8.5px] xs:text-[10px] text-[#FFF8E2] leading-tight">
-                          THE ROYAL WEDDING • STEVEN &amp; BUNGA
-                        </p>
-                        <p className="text-[7px] xs:text-[7.5px] font-mono text-[#ECC880] mt-0.5">
-                          #StevenBungaRoyalWedding
-                        </p>
-                      </div>
-                    </div>
+                    {/* Unified Royal Photobooth Frame Overlay */}
+                    <RoyalPhotoboothFrameOverlay />
                   </div>
 
                   {/* Shutter / Capture Button & Secondary Options */}
