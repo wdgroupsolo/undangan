@@ -7,7 +7,7 @@ import {
   Crown, Star, Award, CreditCard, Send,
   Maximize2, Package, MessageCircle, QrCode, Download, ExternalLink,
   Heart, User, Users, Shirt, Car, Wifi, Info, CheckCircle2, Compass, Gem,
-  Camera, RefreshCw, SwitchCamera, Image as ImageIcon
+  Camera, RefreshCw, SwitchCamera, Image as ImageIcon, Upload
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
@@ -557,6 +557,9 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
   // Royal AR Filter & Live Camera States
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
+  const [photoboothMode, setPhotoboothMode] = useState<'choice' | 'camera' | 'uploaded-preview'>('choice');
+  const [isProcessingUpload, setIsProcessingUpload] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isStoryGuideOpen, setIsStoryGuideOpen] = useState(false);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const [cameraFacingMode, setCameraFacingMode] = useState<'user' | 'environment'>('user');
@@ -592,10 +595,31 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     }
   };
 
+  // Open Photobooth Choice Modal (Kamera / Unggah Foto)
+  const openPhotoboothModal = () => {
+    setIsCameraModalOpen(true);
+    setPhotoboothMode('choice');
+    setIsPreviewOpen(false);
+    setSnapshotNotification(null);
+    setCameraError(null);
+  };
+
+  // Choose Camera Mode
+  const chooseCameraMode = () => {
+    setPhotoboothMode('camera');
+    startCamera('user');
+  };
+
+  // Choose Upload Photo
+  const triggerUploadPhoto = () => {
+    fileInputRef.current?.click();
+  };
+
   // Start camera handler with Full HD capability & facingMode support
   const startCamera = async (facing: 'user' | 'environment' = cameraFacingMode) => {
     setCameraError(null);
     setIsCameraModalOpen(true);
+    setPhotoboothMode('camera');
     setIsPreviewOpen(false);
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -644,6 +668,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const closeCameraModal = () => {
     stopCamera();
     setIsCameraModalOpen(false);
+    setPhotoboothMode('choice');
     setIsPreviewOpen(false);
     setSnapshotNotification(null);
     setCameraError(null);
@@ -669,81 +694,36 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     };
   }, []);
 
-  // Capture snapshot to canvas in crystal-clear Full HD (1440x1920, 3:4) with Royal Gold Frame
-  const captureSnapshot = () => {
-    if (!videoRef.current || !canvasRef.current) return;
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Trigger visual shutter flash effect
-    setIsFlashing(true);
-    setTimeout(() => setIsFlashing(false), 180);
-
-    // Full HD Canvas Output (1440 x 1920, 3:4 aspect ratio)
-    const TARGET_W = 1440;
-    const TARGET_H = 1920;
-    canvas.width = TARGET_W;
-    canvas.height = TARGET_H;
-
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-
-    // Calculate center-crop matching the object-cover viewfinder
-    const vW = video.videoWidth || 1080;
-    const vH = video.videoHeight || 1440;
-    const targetAspect = TARGET_W / TARGET_H; // 0.75
-    const videoAspect = vW / vH;
-
-    let sX = 0, sY = 0, sW = vW, sH = vH;
-    if (videoAspect > targetAspect) {
-      // Video is wider than 3:4: crop horizontally
-      sW = vH * targetAspect;
-      sX = (vW - sW) / 2;
-    } else {
-      // Video is taller than 3:4: crop vertically
-      sH = vW / targetAspect;
-      sY = (vH - sH) / 2;
-    }
-
-    // Draw video frame (mirrored for front/user selfie, natural for environment/back camera)
-    ctx.save();
-    if (cameraFacingMode === 'user') {
-      ctx.translate(TARGET_W, 0);
-      ctx.scale(-1, 1);
-    }
-    ctx.drawImage(video, sX, sY, sW, sH, 0, 0, TARGET_W, TARGET_H);
-    ctx.restore();
-
+  // Draw high-resolution 24K Royal Gold Frame onto canvas context
+  const drawRoyalGoldFrame = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
     // Subtle atmospheric vignette & lighting
     const vignette = ctx.createRadialGradient(
-      TARGET_W / 2, TARGET_H / 2, TARGET_W * 0.35,
-      TARGET_W / 2, TARGET_H / 2, TARGET_W * 0.85
+      width / 2, height / 2, width * 0.35,
+      width / 2, height / 2, width * 0.85
     );
     vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
     vignette.addColorStop(1, 'rgba(4, 22, 16, 0.45)');
     ctx.fillStyle = vignette;
-    ctx.fillRect(0, 0, TARGET_W, TARGET_H);
+    ctx.fillRect(0, 0, width, height);
 
     // 24K Gold Outer Luxury Frame
     ctx.strokeStyle = '#ECC880';
     ctx.lineWidth = 22;
-    ctx.strokeRect(20, 20, TARGET_W - 40, TARGET_H - 40);
+    ctx.strokeRect(20, 20, width - 40, height - 40);
 
     // Inner dashed gold border
     ctx.strokeStyle = 'rgba(236, 200, 128, 0.75)';
     ctx.lineWidth = 4;
     ctx.setLineDash([20, 16]);
-    ctx.strokeRect(44, 44, TARGET_W - 88, TARGET_H - 88);
+    ctx.strokeRect(44, 44, width - 88, height - 88);
     ctx.setLineDash([]);
 
     // Corner Accents (4 decorative gold rosettes)
     const corners = [
       [44, 44],
-      [TARGET_W - 44, 44],
-      [44, TARGET_H - 44],
-      [TARGET_W - 44, TARGET_H - 44]
+      [width - 44, 44],
+      [44, height - 44],
+      [width - 44, height - 44]
     ];
     ctx.fillStyle = '#ECC880';
     corners.forEach(([cx, cy]) => {
@@ -753,7 +733,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     });
 
     // Top Royal Monogram Medallion
-    const sealX = TARGET_W / 2;
+    const sealX = width / 2;
     const sealY = 135;
     ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
     ctx.beginPath();
@@ -777,10 +757,10 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     ctx.fillText('S & B', sealX, sealY + 2);
 
     // Bottom Watermark Bar Plaque
-    const barW = TARGET_W - 88;
+    const barW = width - 88;
     const barH = 130;
     const barX = 44;
-    const barY = TARGET_H - 174;
+    const barY = height - 174;
 
     ctx.fillStyle = 'rgba(4, 22, 16, 0.92)';
     ctx.beginPath();
@@ -801,10 +781,50 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     ctx.fillStyle = '#ECC880';
     ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
     ctx.fillText('Senin, 12 Oktober 2026 • #StevenBungaRoyalWedding', sealX, barY + 94);
+  };
 
-    // High-resolution PNG export
+  // Generic composite function for both live video stream and uploaded image
+  const compositePhoto = (
+    source: CanvasImageSource,
+    sourceW: number,
+    sourceH: number,
+    isMirrored: boolean
+  ): string | null => {
+    const canvas = canvasRef.current || document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+
+    const TARGET_W = 1440;
+    const TARGET_H = 1920;
+    canvas.width = TARGET_W;
+    canvas.height = TARGET_H;
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    const targetAspect = TARGET_W / TARGET_H;
+    const sourceAspect = sourceW / sourceH;
+
+    let sX = 0, sY = 0, sW = sourceW, sH = sourceH;
+    if (sourceAspect > targetAspect) {
+      sW = sourceH * targetAspect;
+      sX = (sourceW - sW) / 2;
+    } else {
+      sH = sourceW / targetAspect;
+      sY = (sourceH - sH) / 2;
+    }
+
+    ctx.save();
+    if (isMirrored) {
+      ctx.translate(TARGET_W, 0);
+      ctx.scale(-1, 1);
+    }
+    ctx.drawImage(source, sX, sY, sW, sH, 0, 0, TARGET_W, TARGET_H);
+    ctx.restore();
+
+    drawRoyalGoldFrame(ctx, TARGET_W, TARGET_H);
+
     const dataUrl = canvas.toDataURL('image/png', 0.98);
-    setCapturedSnapshot(dataUrl);
 
     // Instant direct auto-download to device
     const a = document.createElement('a');
@@ -814,7 +834,25 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     a.click();
     document.body.removeChild(a);
 
-    // Show compact notification banner (no huge modal popup)
+    return dataUrl;
+  };
+
+  // Capture snapshot to canvas in crystal-clear Full HD (1440x1920, 3:4) with Royal Gold Frame
+  const captureSnapshot = () => {
+    if (!videoRef.current) return;
+    const video = videoRef.current;
+
+    // Trigger visual shutter flash effect
+    setIsFlashing(true);
+    setTimeout(() => setIsFlashing(false), 180);
+
+    const vW = video.videoWidth || 1080;
+    const vH = video.videoHeight || 1440;
+    const isMirrored = cameraFacingMode === 'user';
+    const dataUrl = compositePhoto(video, vW, vH, isMirrored);
+    if (!dataUrl) return;
+
+    setCapturedSnapshot(dataUrl);
     setSnapshotNotification({ visible: true, url: dataUrl });
 
     if (notificationTimeoutRef.current) {
@@ -823,6 +861,47 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     notificationTimeoutRef.current = setTimeout(() => {
       setSnapshotNotification(prev => prev ? { ...prev, visible: false } : null);
     }, 4500);
+  };
+
+  // Process uploaded photo from phone/device gallery with automatic gold frame & download
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsProcessingUpload(true);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const dataUrl = compositePhoto(img, img.naturalWidth, img.naturalHeight, false);
+        setIsProcessingUpload(false);
+        if (!dataUrl) return;
+
+        setCapturedSnapshot(dataUrl);
+        setPhotoboothMode('uploaded-preview');
+        setSnapshotNotification({ visible: true, url: dataUrl });
+
+        if (notificationTimeoutRef.current) {
+          clearTimeout(notificationTimeoutRef.current);
+        }
+        notificationTimeoutRef.current = setTimeout(() => {
+          setSnapshotNotification(prev => prev ? { ...prev, visible: false } : null);
+        }, 4500);
+      };
+      img.onerror = () => {
+        setIsProcessingUpload(false);
+        toast.error('Gagal memproses file foto yang diunggah. Silakan gunakan format JPG atau PNG.');
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.onerror = () => {
+      setIsProcessingUpload(false);
+      toast.error('Gagal membaca file foto.');
+    };
+    reader.readAsDataURL(file);
+
+    // Reset input value to allow selecting the same file again
+    e.target.value = '';
   };
 
   // Download snapshot
@@ -2615,14 +2694,14 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               {/* Action Buttons, Sticker Downloader & Hashtag Copier */}
               <ScrollReveal animation="fade-up" delay={300}>
                 <div className="space-y-3.5 max-w-md mx-auto">
-                  {/* Primary CTA: Buka Lensa Kamera Royal (Web Photobooth) */}
+                  {/* Primary CTA: Buka Royal Photobooth (Kamera & Galeri) */}
                   <button
                     type="button"
-                    onClick={() => startCamera('user')}
+                    onClick={openPhotoboothModal}
                     className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#C5A059] via-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-sm sm:text-base tracking-wide shadow-[0_10px_30px_rgba(236,200,128,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
                   >
                     <Camera className="w-5 h-5 text-[#041610]" />
-                    <span>Buka Lensa Kamera Royal (Web Photobooth)</span>
+                    <span>Buka Royal Photobooth (Kamera &amp; Galeri)</span>
                     <Sparkles className="w-4 h-4 text-[#041610]" />
                   </button>
 
@@ -3263,13 +3342,28 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#ECC880]/30 relative z-10">
               <div className="inline-flex items-center gap-2">
+                {photoboothMode !== 'choice' && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      stopCamera();
+                      setPhotoboothMode('choice');
+                    }}
+                    className="p-1 -ml-1 rounded-full text-[#ECC880] hover:bg-white/10 transition-colors cursor-pointer"
+                    title="Kembali ke Pilihan"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                )}
                 <Crown className="w-4 h-4 text-[#ECC880]" />
-                <span className="font-serif font-bold text-sm text-[#FFF8E2] tracking-wider">
-                  Royal Lens Live Preview
+                <span className="font-serif font-bold text-xs sm:text-sm text-[#FFF8E2] tracking-wider">
+                  {photoboothMode === 'choice' && 'Royal Photobooth Studio'}
+                  {photoboothMode === 'camera' && 'Lensa Kamera Royal'}
+                  {photoboothMode === 'uploaded-preview' && 'Hasil Foto Royal HD'}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                {!cameraError && !capturedSnapshot && (
+                {photoboothMode === 'camera' && !cameraError && (
                   <button
                     type="button"
                     onClick={toggleCameraFacingMode}
@@ -3283,241 +3377,416 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   type="button"
                   onClick={closeCameraModal}
                   className="w-8 h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
-                  title="Tutup Kamera"
+                  title="Tutup Modal"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            {/* Error or Live Viewport */}
-            {cameraError ? (
-              <div className="py-8 px-4 text-center rounded-2xl bg-[#041610] border border-[#ECC880]/30 space-y-4">
-                <div className="w-12 h-12 mx-auto rounded-full bg-amber-950/60 border border-amber-500/50 flex items-center justify-center text-[#ECC880]">
-                  <Camera className="w-6 h-6" />
+            {/* Hidden Elements: Canvas and Gallery File Input */}
+            <canvas ref={canvasRef} className="hidden" />
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+
+            {/* Mode 1: Choice Screen (Pilih Kamera Langsung atau Unggah Foto Galeri) */}
+            {photoboothMode === 'choice' && (
+              <div className="py-2 space-y-4 text-center animate-fade-in">
+                {/* Badge & Subtitle */}
+                <div className="space-y-1.5">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 text-[#ECC880] text-[10px] font-serif uppercase tracking-[0.2em] font-semibold">
+                    <Sparkles className="w-3 h-3 text-[#ECC880]" />
+                    <span>PILIH METODE FOTO</span>
+                    <Sparkles className="w-3 h-3 text-[#ECC880]" />
+                  </div>
+                  <p className="font-serif text-xs text-[#A0C4B4] max-w-xs mx-auto leading-relaxed">
+                    Pilih cara untuk mengabadikan momen berharga bersama bingkai royal Steven &amp; Bunga:
+                  </p>
                 </div>
-                <p className="text-xs text-[#FFF8E2]/90 leading-relaxed font-sans max-w-xs mx-auto">
-                  {cameraError}
-                </p>
-                <p className="text-[11px] text-[#ECC880]/80">
-                  Anda tetap dapat mengunduh stiker frame emas untuk digunakan di Instagram Story:
-                </p>
-                <div className="flex flex-col gap-2 pt-1 max-w-xs mx-auto">
+
+                {/* Main Choice Cards */}
+                <div className="space-y-3 pt-1">
+                  {/* Option 1: Gunakan Kamera Langsung */}
                   <button
                     type="button"
-                    onClick={() => {
-                      closeCameraModal();
-                      downloadRoyalFramePNG();
-                    }}
-                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    onClick={chooseCameraMode}
+                    className="w-full p-4 rounded-2xl bg-gradient-to-r from-[#0C241B] to-[#061C14] hover:from-[#113125] hover:to-[#0A271C] border-2 border-[#ECC880]/60 hover:border-[#ECC880] text-left transition-all duration-300 shadow-md hover:shadow-[0_0_25px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] flex items-center justify-between gap-3 group cursor-pointer"
                   >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>Unduh Stiker Frame Emas (PNG)</span>
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#C5A059] to-[#ECC880] flex items-center justify-center text-[#041610] shadow-[0_0_15px_rgba(236,200,128,0.5)] group-hover:scale-105 transition-transform shrink-0">
+                        <Camera className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-serif font-bold text-sm text-[#FFF8E2] group-hover:text-[#ECC880] transition-colors">
+                            Gunakan Kamera Langsung
+                          </h4>
+                          <span className="px-2 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] text-[9px] font-serif tracking-wider uppercase font-semibold">
+                            Live
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#A0C4B4]/90 font-sans mt-0.5 leading-snug">
+                          Ambil foto selfie secara langsung dengan frame emas seketika
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-[#ECC880]/70 group-hover:text-[#ECC880] group-hover:translate-x-1 transition-all shrink-0" />
                   </button>
+
+                  {/* Option 2: Unggah Foto dari Galeri */}
                   <button
                     type="button"
-                    onClick={() => {
-                      closeCameraModal();
-                      handleOpenInstagramStory();
-                    }}
-                    className="w-full py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/60 text-[#ECC880] font-serif text-xs flex items-center justify-center gap-1.5 cursor-pointer hover:bg-white/10 transition-colors"
+                    onClick={triggerUploadPhoto}
+                    disabled={isProcessingUpload}
+                    className="w-full p-4 rounded-2xl bg-gradient-to-r from-[#0C241B] to-[#061C14] hover:from-[#113125] hover:to-[#0A271C] border-2 border-[#ECC880]/60 hover:border-[#ECC880] text-left transition-all duration-300 shadow-md hover:shadow-[0_0_25px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] flex items-center justify-between gap-3 group cursor-pointer"
                   >
-                    <InstagramIcon size={14} />
-                    <span>Buka Kamera Instagram Story</span>
-                    <ExternalLink className="w-3 h-3 ml-0.5" />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-2xl bg-[#041610] border border-[#ECC880] flex items-center justify-center text-[#ECC880] shadow-[0_0_15px_rgba(236,200,128,0.3)] group-hover:scale-105 transition-transform shrink-0">
+                        {isProcessingUpload ? (
+                          <RefreshCw className="w-6 h-6 animate-spin text-[#ECC880]" />
+                        ) : (
+                          <ImageIcon className="w-6 h-6" />
+                        )}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-serif font-bold text-sm text-[#FFF8E2] group-hover:text-[#ECC880] transition-colors">
+                            Unggah Foto dari Galeri
+                          </h4>
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-serif tracking-wider uppercase font-semibold">
+                            Otomatis
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#A0C4B4]/90 font-sans mt-0.5 leading-snug">
+                          Pilih foto terbaik dari ponsel, otomatis dipasang ke frame royal emas
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-[#ECC880]/70 group-hover:text-[#ECC880] group-hover:translate-x-1 transition-all shrink-0" />
+                  </button>
+                </div>
+
+                {/* Secondary Option */}
+                <div className="pt-2 border-t border-[#ECC880]/20">
+                  <button
+                    type="button"
+                    onClick={downloadRoyalFramePNG}
+                    className="w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-[#ECC880]/30 text-[#ECC880] text-xs font-serif flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5 text-[#ECC880]" />
+                    <span>Unduh Stiker Frame Emas Saja (PNG Transparan)</span>
                   </button>
                 </div>
               </div>
-            ) : isPreviewOpen && capturedSnapshot ? (
-              /* Optional Full Photo Inspector - ONLY open if user manually tapped thumbnail! */
+            )}
+
+            {/* Mode 2: Uploaded Result Preview */}
+            {photoboothMode === 'uploaded-preview' && (
               <div className="space-y-4 animate-fade-in">
-                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-xl">
-                  <img src={capturedSnapshot} alt="Hasil Foto Royal HD" className="w-full h-full object-cover" />
+                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-[0_15px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(236,200,128,0.4)] bg-black">
+                  {capturedSnapshot && (
+                    <img src={capturedSnapshot} alt="Hasil Foto Royal HD" className="w-full h-full object-cover" />
+                  )}
+
+                  {/* Compact Notification Toast Overlay */}
+                  {snapshotNotification?.visible && (
+                    <div className="absolute top-3 inset-x-3 z-30 animate-fade-in pointer-events-auto">
+                      <div className="bg-[#041610]/95 backdrop-blur-md border border-[#ECC880] rounded-2xl p-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(236,200,128,0.35)] flex items-center justify-between gap-2.5">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <div className="min-w-0 text-left">
+                            <p className="text-xs font-serif font-bold text-[#FFF8E2] truncate">
+                              Foto HD Berhasil Disimpan!
+                            </p>
+                            <p className="text-[10px] text-[#A0C4B4] font-sans truncate">
+                              Tersimpan otomatis ke galeri ponsel
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setSnapshotNotification(null)}
+                          className="p-1 rounded-full hover:bg-white/10 text-[#ECC880]/80 hover:text-white transition-colors cursor-pointer"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="flex flex-col sm:flex-row gap-2">
+
+                {/* Primary Action: Bagikan Foto ke Instagram Story */}
+                <button
+                  type="button"
+                  onClick={() => sharePhotoToInstagramStory(capturedSnapshot || undefined)}
+                  className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_18px_rgba(236,200,128,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <InstagramIcon size={16} />
+                  <span>Bagikan Foto ke Instagram Story</span>
+                  <Sparkles className="w-3.5 h-3.5 text-[#041610]" />
+                </button>
+
+                {/* Secondary Action Row */}
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={downloadSnapshot}
-                    className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Unduh Ulang</span>
                   </button>
                   <button
                     type="button"
-                    onClick={() => sharePhotoToInstagramStory(capturedSnapshot)}
-                    className="flex-1 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-white/10 transition-all cursor-pointer"
+                    onClick={triggerUploadPhoto}
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-[#0C241B] hover:bg-[#113125] text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <InstagramIcon size={13} />
-                    <span>Bagikan ke IG Story</span>
+                    <ImageIcon className="w-3.5 h-3.5" />
+                    <span>Ganti Foto</span>
                   </button>
                   <button
                     type="button"
-                    onClick={() => setIsPreviewOpen(false)}
-                    className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    onClick={chooseCameraMode}
+                    className="px-3 py-2.5 rounded-xl bg-[#0C241B] hover:bg-[#113125] text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    title="Beralih ke Kamera Langsung"
                   >
                     <Camera className="w-3.5 h-3.5" />
-                    <span>Kembali Foto</span>
                   </button>
                 </div>
               </div>
-            ) : (
-              /* Live Camera Stream Viewport with Royal Overlay */
-              <div className="space-y-4">
-                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-black border-2 border-[#ECC880] shadow-2xl">
-                  <video
-                    ref={videoRef}
-                    autoPlay
-                    playsInline
-                    muted
-                    className={`w-full h-full object-cover ${cameraFacingMode === 'user' ? '-scale-x-100' : ''}`}
-                  />
+            )}
 
-                  {/* Shutter Flash Animation */}
-                  {isFlashing && (
-                    <div className="absolute inset-0 bg-white/85 z-40 animate-fade-out pointer-events-none" />
-                  )}
-
-                  {/* Simple Non-Intrusive Notification Banner after Taking Photo */}
-                  {snapshotNotification?.visible && (
-                    <div className="absolute top-3 inset-x-3 z-30 animate-fade-in pointer-events-auto">
-                      <div className="bg-[#041610]/95 backdrop-blur-md border border-[#ECC880] rounded-2xl p-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(236,200,128,0.35)] flex items-center justify-between gap-2.5">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <button
-                            type="button"
-                            onClick={() => setIsPreviewOpen(true)}
-                            className="relative w-9 h-12 rounded-lg overflow-hidden border border-[#ECC880] shrink-0 shadow-sm bg-black group/thumb cursor-pointer hover:scale-105 transition-transform"
-                            title="Ketuk untuk melihat preview"
-                          >
-                            <img src={snapshotNotification.url} alt="HD Thumbnail" className="w-full h-full object-cover" />
-                            <div className="absolute inset-0 bg-black/30 group-hover/thumb:bg-transparent transition-colors flex items-center justify-center">
-                              <Sparkles className="w-3 h-3 text-[#ECC880]" />
-                            </div>
-                          </button>
-                          <div className="min-w-0 text-left">
-                            <div className="flex items-center gap-1.5">
-                              <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                              <p className="text-xs font-serif font-bold text-[#FFF8E2] truncate">
-                                Foto HD Berhasil Disimpan!
-                              </p>
-                            </div>
-                            <p className="text-[10px] text-[#A0C4B4] font-sans truncate">
-                              Tersimpan otomatis ke galeri ponsel
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => sharePhotoToInstagramStory(snapshotNotification.url)}
-                            className="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] text-[10px] font-serif font-bold flex items-center gap-1 cursor-pointer shadow-xs hover:brightness-110 active:scale-95 transition-all"
-                            title="Bagikan ke Instagram Story"
-                          >
-                            <InstagramIcon size={12} />
-                            <span className="hidden xs:inline">IG Story</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setSnapshotNotification(null)}
-                            className="p-1 rounded-full hover:bg-white/10 text-[#ECC880]/80 hover:text-white transition-colors cursor-pointer"
-                            title="Tutup Notifikasi"
-                          >
-                            <X className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Overlaid Gold Framing */}
-                  <div className="absolute inset-2 border border-[#ECC880]/60 rounded-xl pointer-events-none">
-                    <EmeraldGoldCorner size={28} color="#ECC880" />
+            {/* Mode 3: Live Camera Viewport */}
+            {photoboothMode === 'camera' && (
+              cameraError ? (
+                <div className="py-8 px-4 text-center rounded-2xl bg-[#041610] border border-[#ECC880]/30 space-y-4 animate-fade-in">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-amber-950/60 border border-amber-500/50 flex items-center justify-center text-[#ECC880]">
+                    <Camera className="w-6 h-6" />
                   </div>
-
-                  {/* Top Seal */}
-                  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-                    <div className="w-10 h-10 rounded-full bg-[#041610]/85 border border-[#ECC880] shadow-[0_0_12px_rgba(236,200,128,0.7)] flex flex-col items-center justify-center">
-                      <Crown className="w-3 h-3 text-[#ECC880]" />
-                      <span className="font-serif font-bold text-[8px] text-[#ECC880] leading-none">S&amp;B</span>
-                    </div>
-                  </div>
-
-                  {/* Bottom Watermark Overlay */}
-                  <div className="absolute bottom-2 left-2 right-2 text-center pointer-events-none z-10">
-                    <div className="bg-[#041610]/80 backdrop-blur-xs border border-[#ECC880]/50 rounded-lg py-1.5 px-2">
-                      <p className="font-serif font-bold text-[10px] text-[#FFF8E2]">
-                        THE ROYAL WEDDING • STEVEN &amp; BUNGA
-                      </p>
-                      <p className="text-[7.5px] font-mono text-[#ECC880] mt-0.5">
-                        #StevenBungaRoyalWedding
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Shutter / Capture Button & Secondary Options */}
-                <div className="flex items-center justify-between px-2 pt-1">
-                  {/* Left: Last Captured Photo Thumbnail preview button (or Transparent Frame download) */}
-                  {capturedSnapshot ? (
+                  <p className="text-xs text-[#FFF8E2]/90 leading-relaxed font-sans max-w-xs mx-auto">
+                    {cameraError}
+                  </p>
+                  <p className="text-[11px] text-[#ECC880]/80">
+                    Anda tetap dapat mengunggah foto dari galeri atau mengunduh stiker frame emas:
+                  </p>
+                  <div className="flex flex-col gap-2 pt-1 max-w-xs mx-auto">
                     <button
                       type="button"
-                      onClick={() => setIsPreviewOpen(true)}
-                      className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-[#ECC880] shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer group"
-                      title="Lihat Hasil Foto Terakhir"
+                      onClick={triggerUploadPhoto}
+                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
                     >
-                      <img src={capturedSnapshot} alt="Thumbnail Terakhir" className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-[#041610]/20 group-hover:bg-transparent transition-colors" />
+                      <ImageIcon className="w-3.5 h-3.5 text-[#041610]" />
+                      <span>Unggah Foto dari Galeri</span>
                     </button>
-                  ) : (
                     <button
                       type="button"
-                      onClick={downloadRoyalFramePNG}
-                      className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
-                      title="Unduh Stiker Frame PNG"
+                      onClick={() => {
+                        closeCameraModal();
+                        downloadRoyalFramePNG();
+                      }}
+                      className="w-full py-2.5 rounded-xl bg-[#041610] border border-[#ECC880]/60 text-[#ECC880] font-serif text-xs flex items-center justify-center gap-2 cursor-pointer hover:bg-white/10 transition-colors"
                     >
-                      <Download className="w-4 h-4" />
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Unduh Stiker Frame Emas (PNG)</span>
                     </button>
-                  )}
-
-                  {/* Center: Main Royal Gold Shutter Button */}
-                  <button
-                    type="button"
-                    onClick={captureSnapshot}
-                    className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] border-4 border-[#041610] shadow-[0_0_25px_rgba(236,200,128,0.8)] hover:scale-105 active:scale-90 transition-all flex items-center justify-center cursor-pointer"
-                    title="Ambil Foto HD Kenang-kenangan"
-                  >
-                    <div className="w-12 h-12 rounded-full border-2 border-[#041610]/80 flex items-center justify-center">
-                      <Camera className="w-5 h-5 text-[#041610]" />
-                    </div>
-                  </button>
-
-                  {/* Right: Switch Front / Back Camera */}
-                  <button
-                    type="button"
-                    onClick={toggleCameraFacingMode}
-                    className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
-                    title="Ganti Kamera Depan / Belakang"
-                  >
-                    <SwitchCamera className="w-5 h-5" />
-                  </button>
+                  </div>
                 </div>
-
-                {/* Secondary Option: Appears ONLY AFTER Taking Photo */}
-                {capturedSnapshot && (
-                  <div className="pt-2 animate-fade-in">
+              ) : isPreviewOpen && capturedSnapshot ? (
+                /* Full Photo Inspector */
+                <div className="space-y-4 animate-fade-in">
+                  <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-xl">
+                    <img src={capturedSnapshot} alt="Hasil Foto Royal HD" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <button
+                      type="button"
+                      onClick={downloadSnapshot}
+                      className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs flex items-center justify-center gap-2 shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Unduh Ulang</span>
+                    </button>
                     <button
                       type="button"
                       onClick={() => sharePhotoToInstagramStory(capturedSnapshot)}
-                      className="w-full py-2.5 xs:py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_18px_rgba(236,200,128,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="flex-1 py-2.5 rounded-xl bg-[#041610] border border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-white/10 transition-all cursor-pointer"
                     >
-                      <InstagramIcon size={16} />
-                      <span>Bagikan Foto ke Instagram Story</span>
-                      <Sparkles className="w-3.5 h-3.5 text-[#041610]" />
+                      <InstagramIcon size={13} />
+                      <span>Bagikan ke IG Story</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsPreviewOpen(false)}
+                      className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Camera className="w-3.5 h-3.5" />
+                      <span>Kembali Kamera</span>
                     </button>
                   </div>
-                )}
-              </div>
+                </div>
+              ) : (
+                /* Live Camera Stream Viewport with Royal Overlay */
+                <div className="space-y-4">
+                  <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-black border-2 border-[#ECC880] shadow-2xl">
+                    <video
+                      ref={videoRef}
+                      autoPlay
+                      playsInline
+                      muted
+                      className={`w-full h-full object-cover ${cameraFacingMode === 'user' ? '-scale-x-100' : ''}`}
+                    />
+
+                    {/* Shutter Flash Animation */}
+                    {isFlashing && (
+                      <div className="absolute inset-0 bg-white/85 z-40 animate-fade-out pointer-events-none" />
+                    )}
+
+                    {/* Simple Non-Intrusive Notification Banner after Taking Photo */}
+                    {snapshotNotification?.visible && (
+                      <div className="absolute top-3 inset-x-3 z-30 animate-fade-in pointer-events-auto">
+                        <div className="bg-[#041610]/95 backdrop-blur-md border border-[#ECC880] rounded-2xl p-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(236,200,128,0.35)] flex items-center justify-between gap-2.5">
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <button
+                              type="button"
+                              onClick={() => setIsPreviewOpen(true)}
+                              className="relative w-9 h-12 rounded-lg overflow-hidden border border-[#ECC880] shrink-0 shadow-sm bg-black group/thumb cursor-pointer hover:scale-105 transition-transform"
+                              title="Ketuk untuk melihat preview"
+                            >
+                              <img src={snapshotNotification.url} alt="HD Thumbnail" className="w-full h-full object-cover" />
+                              <div className="absolute inset-0 bg-black/30 group-hover/thumb:bg-transparent transition-colors flex items-center justify-center">
+                                <Sparkles className="w-3 h-3 text-[#ECC880]" />
+                              </div>
+                            </button>
+                            <div className="min-w-0 text-left">
+                              <div className="flex items-center gap-1.5">
+                                <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                                <p className="text-xs font-serif font-bold text-[#FFF8E2] truncate">
+                                  Foto HD Berhasil Disimpan!
+                                </p>
+                              </div>
+                              <p className="text-[10px] text-[#A0C4B4] font-sans truncate">
+                                Tersimpan otomatis ke galeri ponsel
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => sharePhotoToInstagramStory(snapshotNotification.url)}
+                              className="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] text-[10px] font-serif font-bold flex items-center gap-1 cursor-pointer shadow-xs hover:brightness-110 active:scale-95 transition-all"
+                              title="Bagikan ke Instagram Story"
+                            >
+                              <InstagramIcon size={12} />
+                              <span className="hidden xs:inline">IG Story</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setSnapshotNotification(null)}
+                              className="p-1 rounded-full hover:bg-white/10 text-[#ECC880]/80 hover:text-white transition-colors cursor-pointer"
+                              title="Tutup Notifikasi"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Overlaid Gold Framing */}
+                    <div className="absolute inset-2 border border-[#ECC880]/60 rounded-xl pointer-events-none">
+                      <EmeraldGoldCorner size={28} color="#ECC880" />
+                    </div>
+
+                    {/* Top Seal */}
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+                      <div className="w-10 h-10 rounded-full bg-[#041610]/85 border border-[#ECC880] shadow-[0_0_12px_rgba(236,200,128,0.7)] flex flex-col items-center justify-center">
+                        <Crown className="w-3 h-3 text-[#ECC880]" />
+                        <span className="font-serif font-bold text-[8px] text-[#ECC880] leading-none">S&amp;B</span>
+                      </div>
+                    </div>
+
+                    {/* Bottom Watermark Overlay */}
+                    <div className="absolute bottom-2 left-2 right-2 text-center pointer-events-none z-10">
+                      <div className="bg-[#041610]/80 backdrop-blur-xs border border-[#ECC880]/50 rounded-lg py-1.5 px-2">
+                        <p className="font-serif font-bold text-[10px] text-[#FFF8E2]">
+                          THE ROYAL WEDDING • STEVEN &amp; BUNGA
+                        </p>
+                        <p className="text-[7.5px] font-mono text-[#ECC880] mt-0.5">
+                          #StevenBungaRoyalWedding
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Shutter / Capture Button & Secondary Options */}
+                  <div className="flex items-center justify-between px-2 pt-1">
+                    {/* Left: Thumbnail preview OR trigger upload photo */}
+                    {capturedSnapshot ? (
+                      <button
+                        type="button"
+                        onClick={() => setIsPreviewOpen(true)}
+                        className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-[#ECC880] shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer group"
+                        title="Lihat Hasil Foto Terakhir"
+                      >
+                        <img src={capturedSnapshot} alt="Thumbnail Terakhir" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-[#041610]/20 group-hover:bg-transparent transition-colors" />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={triggerUploadPhoto}
+                        className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                        title="Unggah Foto dari Galeri"
+                      >
+                        <ImageIcon className="w-4 h-4" />
+                      </button>
+                    )}
+
+                    {/* Center: Main Royal Gold Shutter Button */}
+                    <button
+                      type="button"
+                      onClick={captureSnapshot}
+                      className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] border-4 border-[#041610] shadow-[0_0_25px_rgba(236,200,128,0.8)] hover:scale-105 active:scale-90 transition-all flex items-center justify-center cursor-pointer"
+                      title="Ambil Foto HD Kenang-kenangan"
+                    >
+                      <div className="w-12 h-12 rounded-full border-2 border-[#041610]/80 flex items-center justify-center">
+                        <Camera className="w-5 h-5 text-[#041610]" />
+                      </div>
+                    </button>
+
+                    {/* Right: Switch Front / Back Camera */}
+                    <button
+                      type="button"
+                      onClick={toggleCameraFacingMode}
+                      className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                      title="Ganti Kamera Depan / Belakang"
+                    >
+                      <SwitchCamera className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Secondary Option: Appears ONLY AFTER Taking Photo */}
+                  {capturedSnapshot && (
+                    <div className="pt-2 animate-fade-in">
+                      <button
+                        type="button"
+                        onClick={() => sharePhotoToInstagramStory(capturedSnapshot)}
+                        className="w-full py-2.5 xs:py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_18px_rgba(236,200,128,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <InstagramIcon size={16} />
+                        <span>Bagikan Foto ke Instagram Story</span>
+                        <Sparkles className="w-3.5 h-3.5 text-[#041610]" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )
             )}
           </div>
         </div>
