@@ -2626,18 +2626,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     <Sparkles className="w-4 h-4 text-[#041610]" />
                   </button>
 
-                  {/* Secondary Action 1: Bagikan Foto Mempelai ke Instagram Story (Direct Share) */}
-                  <button
-                    type="button"
-                    onClick={() => sharePhotoToInstagramStory()}
-                    className="w-full py-3 sm:py-3.5 px-6 rounded-2xl bg-[#041610] hover:bg-[#08241b] border-2 border-[#ECC880] text-[#ECC880] font-serif font-semibold text-xs sm:text-sm tracking-wide shadow-md hover:shadow-[0_0_20px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
-                  >
-                    <InstagramIcon size={16} />
-                    <span>Bagikan Foto Mempelai ke IG Story</span>
-                    <Sparkles className="w-3.5 h-3.5 text-[#ECC880]" />
-                  </button>
-
-                  {/* Secondary Action 2: Unduh Stiker Frame Emas (PNG Transparan) */}
+                  {/* Secondary Action: Unduh Stiker Frame Emas (PNG Transparan) */}
                   <button
                     type="button"
                     onClick={downloadRoyalFramePNG}
@@ -3513,6 +3502,21 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     <SwitchCamera className="w-5 h-5" />
                   </button>
                 </div>
+
+                {/* Secondary Option: Appears ONLY AFTER Taking Photo */}
+                {capturedSnapshot && (
+                  <div className="pt-2 animate-fade-in">
+                    <button
+                      type="button"
+                      onClick={() => sharePhotoToInstagramStory(capturedSnapshot)}
+                      className="w-full py-2.5 xs:py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_18px_rgba(236,200,128,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <InstagramIcon size={16} />
+                      <span>Bagikan Foto ke Instagram Story</span>
+                      <Sparkles className="w-3.5 h-3.5 text-[#041610]" />
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
