@@ -3334,14 +3334,14 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
       {/* Live Royal AR Camera Viewfinder Modal */}
       {isCameraModalOpen && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-          <div className="relative w-full max-w-sm sm:max-w-md rounded-[32px] bg-gradient-to-b from-[#08241b] via-[#041610] to-[#010906] border-2 border-[#ECC880] shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_40px_rgba(236,200,128,0.4)] p-4 sm:p-6 overflow-hidden">
-            <EmeraldGoldCorner size={40} color="#ECC880" />
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-2.5 xs:p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg max-h-[92vh] sm:max-h-[90vh] rounded-[24px] xs:rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#08241b] via-[#041610] to-[#010906] border-2 border-[#ECC880] shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_40px_rgba(236,200,128,0.4)] p-3.5 xs:p-4 sm:p-6 flex flex-col overflow-y-auto no-scrollbar">
+            <EmeraldGoldCorner size={36} color="#ECC880" />
             <canvas ref={canvasRef} className="hidden" />
 
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#ECC880]/30 relative z-10">
-              <div className="inline-flex items-center gap-2">
+            <div className="flex items-center justify-between pb-2.5 xs:pb-3 mb-2.5 xs:mb-3 border-b border-[#ECC880]/30 relative z-10 shrink-0">
+              <div className="inline-flex items-center gap-1.5 xs:gap-2 min-w-0">
                 {photoboothMode !== 'choice' && (
                   <button
                     type="button"
@@ -3349,43 +3349,42 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       stopCamera();
                       setPhotoboothMode('choice');
                     }}
-                    className="p-1 -ml-1 rounded-full text-[#ECC880] hover:bg-white/10 transition-colors cursor-pointer"
+                    className="p-1 -ml-1 rounded-full text-[#ECC880] hover:bg-white/10 transition-colors cursor-pointer shrink-0"
                     title="Kembali ke Pilihan"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4 xs:w-5 xs:h-5" />
                   </button>
                 )}
-                <Crown className="w-4 h-4 text-[#ECC880]" />
-                <span className="font-serif font-bold text-xs sm:text-sm text-[#FFF8E2] tracking-wider">
+                <Crown className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-[#ECC880] shrink-0" />
+                <span className="font-serif font-bold text-xs xs:text-sm sm:text-base text-[#FFF8E2] tracking-wider truncate">
                   {photoboothMode === 'choice' && 'Royal Photobooth Studio'}
                   {photoboothMode === 'camera' && 'Lensa Kamera Royal'}
                   {photoboothMode === 'uploaded-preview' && 'Hasil Foto Royal HD'}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 xs:gap-2 shrink-0">
                 {photoboothMode === 'camera' && !cameraError && (
                   <button
                     type="button"
                     onClick={toggleCameraFacingMode}
-                    className="w-8 h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                    className="w-7 h-7 xs:w-8 xs:h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
                     title="Balik Kamera Depan / Belakang"
                   >
-                    <SwitchCamera className="w-4 h-4" />
+                    <SwitchCamera className="w-3.5 h-3.5 xs:w-4 xs:h-4" />
                   </button>
                 )}
                 <button
                   type="button"
                   onClick={closeCameraModal}
-                  className="w-8 h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                  className="w-7 h-7 xs:w-8 xs:h-8 rounded-full bg-[#ECC880]/20 hover:bg-[#ECC880]/30 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
                   title="Tutup Modal"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5 xs:w-4 xs:h-4" />
                 </button>
               </div>
             </div>
 
             {/* Hidden Elements: Canvas and Gallery File Input */}
-            <canvas ref={canvasRef} className="hidden" />
             <input
               type="file"
               ref={fileInputRef}
@@ -3396,46 +3395,46 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Mode 1: Choice Screen (Pilih Kamera Langsung atau Unggah Foto Galeri) */}
             {photoboothMode === 'choice' && (
-              <div className="py-2 space-y-4 text-center animate-fade-in">
+              <div className="py-1 xs:py-2 space-y-3 xs:space-y-4 text-center animate-fade-in my-auto">
                 {/* Badge & Subtitle */}
-                <div className="space-y-1.5">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 text-[#ECC880] text-[10px] font-serif uppercase tracking-[0.2em] font-semibold">
+                <div className="space-y-1 xs:space-y-1.5">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 xs:py-1 rounded-full bg-[#ECC880]/15 border border-[#ECC880]/40 text-[#ECC880] text-[9px] xs:text-[10px] font-serif uppercase tracking-[0.2em] font-semibold">
                     <Sparkles className="w-3 h-3 text-[#ECC880]" />
                     <span>PILIH METODE FOTO</span>
                     <Sparkles className="w-3 h-3 text-[#ECC880]" />
                   </div>
-                  <p className="font-serif text-xs text-[#A0C4B4] max-w-xs mx-auto leading-relaxed">
+                  <p className="font-serif text-[11px] xs:text-xs text-[#A0C4B4] max-w-xs mx-auto leading-relaxed">
                     Pilih cara untuk mengabadikan momen berharga bersama bingkai royal Steven &amp; Bunga:
                   </p>
                 </div>
 
                 {/* Main Choice Cards */}
-                <div className="space-y-3 pt-1">
+                <div className="space-y-2.5 xs:space-y-3 pt-0.5 xs:pt-1">
                   {/* Option 1: Gunakan Kamera Langsung */}
                   <button
                     type="button"
                     onClick={chooseCameraMode}
-                    className="w-full p-4 rounded-2xl bg-gradient-to-r from-[#0C241B] to-[#061C14] hover:from-[#113125] hover:to-[#0A271C] border-2 border-[#ECC880]/60 hover:border-[#ECC880] text-left transition-all duration-300 shadow-md hover:shadow-[0_0_25px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] flex items-center justify-between gap-3 group cursor-pointer"
+                    className="w-full p-3 xs:p-3.5 sm:p-4 rounded-xl xs:rounded-2xl bg-gradient-to-r from-[#0C241B] to-[#061C14] hover:from-[#113125] hover:to-[#0A271C] border-2 border-[#ECC880]/60 hover:border-[#ECC880] text-left transition-all duration-300 shadow-md hover:shadow-[0_0_25px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] flex items-center justify-between gap-2.5 xs:gap-3 group cursor-pointer"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#C5A059] to-[#ECC880] flex items-center justify-center text-[#041610] shadow-[0_0_15px_rgba(236,200,128,0.5)] group-hover:scale-105 transition-transform shrink-0">
-                        <Camera className="w-6 h-6" />
+                    <div className="flex items-center gap-2.5 xs:gap-3.5 min-w-0">
+                      <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-xl xs:rounded-2xl bg-gradient-to-tr from-[#C5A059] to-[#ECC880] flex items-center justify-center text-[#041610] shadow-[0_0_15px_rgba(236,200,128,0.5)] group-hover:scale-105 transition-transform shrink-0">
+                        <Camera className="w-5 h-5 xs:w-6 xs:h-6" />
                       </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-serif font-bold text-sm text-[#FFF8E2] group-hover:text-[#ECC880] transition-colors">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5 xs:gap-2 flex-wrap">
+                          <h4 className="font-serif font-bold text-xs xs:text-sm sm:text-base text-[#FFF8E2] group-hover:text-[#ECC880] transition-colors truncate">
                             Gunakan Kamera Langsung
                           </h4>
-                          <span className="px-2 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] text-[9px] font-serif tracking-wider uppercase font-semibold">
+                          <span className="px-1.5 xs:px-2 py-0.5 rounded-full bg-[#ECC880]/20 text-[#ECC880] text-[8px] xs:text-[9px] font-serif tracking-wider uppercase font-semibold">
                             Live
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#A0C4B4]/90 font-sans mt-0.5 leading-snug">
+                        <p className="text-[10px] xs:text-[11px] text-[#A0C4B4]/90 font-sans mt-0.5 leading-snug">
                           Ambil foto selfie secara langsung dengan frame emas seketika
                         </p>
                       </div>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-[#ECC880]/70 group-hover:text-[#ECC880] group-hover:translate-x-1 transition-all shrink-0" />
+                    <ChevronRight className="w-4 h-4 xs:w-5 xs:h-5 text-[#ECC880]/70 group-hover:text-[#ECC880] group-hover:translate-x-1 transition-all shrink-0" />
                   </button>
 
                   {/* Option 2: Unggah Foto dari Galeri */}
@@ -3443,40 +3442,40 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     type="button"
                     onClick={triggerUploadPhoto}
                     disabled={isProcessingUpload}
-                    className="w-full p-4 rounded-2xl bg-gradient-to-r from-[#0C241B] to-[#061C14] hover:from-[#113125] hover:to-[#0A271C] border-2 border-[#ECC880]/60 hover:border-[#ECC880] text-left transition-all duration-300 shadow-md hover:shadow-[0_0_25px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] flex items-center justify-between gap-3 group cursor-pointer"
+                    className="w-full p-3 xs:p-3.5 sm:p-4 rounded-xl xs:rounded-2xl bg-gradient-to-r from-[#0C241B] to-[#061C14] hover:from-[#113125] hover:to-[#0A271C] border-2 border-[#ECC880]/60 hover:border-[#ECC880] text-left transition-all duration-300 shadow-md hover:shadow-[0_0_25px_rgba(236,200,128,0.3)] hover:scale-[1.01] active:scale-[0.99] flex items-center justify-between gap-2.5 xs:gap-3 group cursor-pointer"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-2xl bg-[#041610] border border-[#ECC880] flex items-center justify-center text-[#ECC880] shadow-[0_0_15px_rgba(236,200,128,0.3)] group-hover:scale-105 transition-transform shrink-0">
+                    <div className="flex items-center gap-2.5 xs:gap-3.5 min-w-0">
+                      <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-xl xs:rounded-2xl bg-[#041610] border border-[#ECC880] flex items-center justify-center text-[#ECC880] shadow-[0_0_15px_rgba(236,200,128,0.3)] group-hover:scale-105 transition-transform shrink-0">
                         {isProcessingUpload ? (
-                          <RefreshCw className="w-6 h-6 animate-spin text-[#ECC880]" />
+                          <RefreshCw className="w-5 h-5 xs:w-6 xs:h-6 animate-spin text-[#ECC880]" />
                         ) : (
-                          <ImageIcon className="w-6 h-6" />
+                          <ImageIcon className="w-5 h-5 xs:w-6 xs:h-6" />
                         )}
                       </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-serif font-bold text-sm text-[#FFF8E2] group-hover:text-[#ECC880] transition-colors">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5 xs:gap-2 flex-wrap">
+                          <h4 className="font-serif font-bold text-xs xs:text-sm sm:text-base text-[#FFF8E2] group-hover:text-[#ECC880] transition-colors truncate">
                             Unggah Foto dari Galeri
                           </h4>
-                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-serif tracking-wider uppercase font-semibold">
+                          <span className="px-1.5 xs:px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[8px] xs:text-[9px] font-serif tracking-wider uppercase font-semibold">
                             Otomatis
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#A0C4B4]/90 font-sans mt-0.5 leading-snug">
+                        <p className="text-[10px] xs:text-[11px] text-[#A0C4B4]/90 font-sans mt-0.5 leading-snug">
                           Pilih foto terbaik dari ponsel, otomatis dipasang ke frame royal emas
                         </p>
                       </div>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-[#ECC880]/70 group-hover:text-[#ECC880] group-hover:translate-x-1 transition-all shrink-0" />
+                    <ChevronRight className="w-4 h-4 xs:w-5 xs:h-5 text-[#ECC880]/70 group-hover:text-[#ECC880] group-hover:translate-x-1 transition-all shrink-0" />
                   </button>
                 </div>
 
                 {/* Secondary Option */}
-                <div className="pt-2 border-t border-[#ECC880]/20">
+                <div className="pt-1.5 xs:pt-2 border-t border-[#ECC880]/20">
                   <button
                     type="button"
                     onClick={downloadRoyalFramePNG}
-                    className="w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-[#ECC880]/30 text-[#ECC880] text-xs font-serif flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full py-2 xs:py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-[#ECC880]/30 text-[#ECC880] text-[11px] xs:text-xs font-serif flex items-center justify-center gap-1.5 xs:gap-2 transition-colors cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5 text-[#ECC880]" />
                     <span>Unduh Stiker Frame Emas Saja (PNG Transparan)</span>
@@ -3487,23 +3486,23 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             {/* Mode 2: Uploaded Result Preview */}
             {photoboothMode === 'uploaded-preview' && (
-              <div className="space-y-4 animate-fade-in">
-                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-[0_15px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(236,200,128,0.4)] bg-black">
+              <div className="space-y-3 xs:space-y-4 animate-fade-in my-auto">
+                <div className="relative aspect-[3/4] max-h-[46vh] xs:max-h-[48vh] sm:max-h-[52vh] md:max-h-[56vh] w-auto mx-auto rounded-xl xs:rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-[0_15px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(236,200,128,0.4)] bg-black shrink-0">
                   {capturedSnapshot && (
                     <img src={capturedSnapshot} alt="Hasil Foto Royal HD" className="w-full h-full object-cover" />
                   )}
 
                   {/* Compact Notification Toast Overlay */}
                   {snapshotNotification?.visible && (
-                    <div className="absolute top-3 inset-x-3 z-30 animate-fade-in pointer-events-auto">
-                      <div className="bg-[#041610]/95 backdrop-blur-md border border-[#ECC880] rounded-2xl p-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(236,200,128,0.35)] flex items-center justify-between gap-2.5">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div className="absolute top-2.5 xs:top-3 inset-x-2.5 xs:inset-x-3 z-30 animate-fade-in pointer-events-auto">
+                      <div className="bg-[#041610]/95 backdrop-blur-md border border-[#ECC880] rounded-xl xs:rounded-2xl p-2 xs:p-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(236,200,128,0.35)] flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5 xs:gap-2 min-w-0">
+                          <Check className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-emerald-400 shrink-0" />
                           <div className="min-w-0 text-left">
-                            <p className="text-xs font-serif font-bold text-[#FFF8E2] truncate">
+                            <p className="text-[11px] xs:text-xs font-serif font-bold text-[#FFF8E2] truncate">
                               Foto HD Berhasil Disimpan!
                             </p>
-                            <p className="text-[10px] text-[#A0C4B4] font-sans truncate">
+                            <p className="text-[9px] xs:text-[10px] text-[#A0C4B4] font-sans truncate">
                               Tersimpan otomatis ke galeri ponsel
                             </p>
                           </div>
@@ -3513,7 +3512,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                           onClick={() => setSnapshotNotification(null)}
                           className="p-1 rounded-full hover:bg-white/10 text-[#ECC880]/80 hover:text-white transition-colors cursor-pointer"
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <X className="w-3 h-3 xs:w-3.5 xs:h-3.5" />
                         </button>
                       </div>
                     </div>
@@ -3524,38 +3523,38 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 <button
                   type="button"
                   onClick={() => sharePhotoToInstagramStory(capturedSnapshot || undefined)}
-                  className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_18px_rgba(236,200,128,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 xs:py-3 px-3 xs:px-4 rounded-xl xs:rounded-2xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs xs:text-sm tracking-wide shadow-[0_4px_18px_rgba(236,200,128,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 xs:gap-2 cursor-pointer"
                 >
-                  <InstagramIcon size={16} />
+                  <InstagramIcon size={15} />
                   <span>Bagikan Foto ke Instagram Story</span>
                   <Sparkles className="w-3.5 h-3.5 text-[#041610]" />
                 </button>
 
                 {/* Secondary Action Row */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 xs:gap-2">
                   <button
                     type="button"
                     onClick={downloadSnapshot}
-                    className="flex-1 py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    className="flex-1 py-2 xs:py-2.5 px-2 xs:px-3 rounded-lg xs:rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-[11px] xs:text-xs font-semibold flex items-center justify-center gap-1 xs:gap-1.5 transition-colors cursor-pointer"
                   >
-                    <Download className="w-3.5 h-3.5" />
+                    <Download className="w-3 h-3 xs:w-3.5 xs:h-3.5" />
                     <span>Unduh Ulang</span>
                   </button>
                   <button
                     type="button"
                     onClick={triggerUploadPhoto}
-                    className="flex-1 py-2.5 px-3 rounded-xl bg-[#0C241B] hover:bg-[#113125] text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    className="flex-1 py-2 xs:py-2.5 px-2 xs:px-3 rounded-lg xs:rounded-xl bg-[#0C241B] hover:bg-[#113125] text-[#ECC880] border border-[#ECC880]/50 font-serif text-[11px] xs:text-xs font-semibold flex items-center justify-center gap-1 xs:gap-1.5 transition-colors cursor-pointer"
                   >
-                    <ImageIcon className="w-3.5 h-3.5" />
+                    <ImageIcon className="w-3.5 h-3.5 xs:w-4 xs:h-4" />
                     <span>Ganti Foto</span>
                   </button>
                   <button
                     type="button"
                     onClick={chooseCameraMode}
-                    className="px-3 py-2.5 rounded-xl bg-[#0C241B] hover:bg-[#113125] text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    className="px-2.5 xs:px-3 py-2 xs:py-2.5 rounded-lg xs:rounded-xl bg-[#0C241B] hover:bg-[#113125] text-[#ECC880] border border-[#ECC880]/50 font-serif text-[11px] xs:text-xs font-semibold flex items-center justify-center gap-1 transition-colors cursor-pointer"
                     title="Beralih ke Kamera Langsung"
                   >
-                    <Camera className="w-3.5 h-3.5" />
+                    <Camera className="w-3.5 h-3.5 xs:w-4 xs:h-4" />
                   </button>
                 </div>
               </div>
@@ -3564,14 +3563,14 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             {/* Mode 3: Live Camera Viewport */}
             {photoboothMode === 'camera' && (
               cameraError ? (
-                <div className="py-8 px-4 text-center rounded-2xl bg-[#041610] border border-[#ECC880]/30 space-y-4 animate-fade-in">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-amber-950/60 border border-amber-500/50 flex items-center justify-center text-[#ECC880]">
-                    <Camera className="w-6 h-6" />
+                <div className="py-6 xs:py-8 px-3 xs:px-4 text-center rounded-xl xs:rounded-2xl bg-[#041610] border border-[#ECC880]/30 space-y-3 xs:space-y-4 animate-fade-in my-auto">
+                  <div className="w-10 h-10 xs:w-12 xs:h-12 mx-auto rounded-full bg-amber-950/60 border border-amber-500/50 flex items-center justify-center text-[#ECC880]">
+                    <Camera className="w-5 h-5 xs:w-6 xs:h-6" />
                   </div>
-                  <p className="text-xs text-[#FFF8E2]/90 leading-relaxed font-sans max-w-xs mx-auto">
+                  <p className="text-[11px] xs:text-xs text-[#FFF8E2]/90 leading-relaxed font-sans max-w-xs mx-auto">
                     {cameraError}
                   </p>
-                  <p className="text-[11px] text-[#ECC880]/80">
+                  <p className="text-[10px] xs:text-[11px] text-[#ECC880]/80">
                     Anda tetap dapat mengunggah foto dari galeri atau mengunduh stiker frame emas:
                   </p>
                   <div className="flex flex-col gap-2 pt-1 max-w-xs mx-auto">
@@ -3598,8 +3597,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
               ) : isPreviewOpen && capturedSnapshot ? (
                 /* Full Photo Inspector */
-                <div className="space-y-4 animate-fade-in">
-                  <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-xl">
+                <div className="space-y-3 xs:space-y-4 animate-fade-in my-auto">
+                  <div className="relative aspect-[3/4] max-h-[46vh] xs:max-h-[48vh] sm:max-h-[52vh] md:max-h-[56vh] w-auto mx-auto rounded-xl xs:rounded-2xl overflow-hidden border-2 border-[#ECC880] shadow-xl shrink-0">
                     <img src={capturedSnapshot} alt="Hasil Foto Royal HD" className="w-full h-full object-cover" />
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2">
@@ -3631,8 +3630,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 </div>
               ) : (
                 /* Live Camera Stream Viewport with Royal Overlay */
-                <div className="space-y-4">
-                  <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-black border-2 border-[#ECC880] shadow-2xl">
+                <div className="space-y-3 xs:space-y-4 my-auto">
+                  <div className="relative aspect-[3/4] max-h-[46vh] xs:max-h-[48vh] sm:max-h-[52vh] md:max-h-[56vh] w-auto mx-auto rounded-xl xs:rounded-2xl overflow-hidden bg-black border-2 border-[#ECC880] shadow-2xl shrink-0">
                     <video
                       ref={videoRef}
                       autoPlay
@@ -3648,13 +3647,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
                     {/* Simple Non-Intrusive Notification Banner after Taking Photo */}
                     {snapshotNotification?.visible && (
-                      <div className="absolute top-3 inset-x-3 z-30 animate-fade-in pointer-events-auto">
-                        <div className="bg-[#041610]/95 backdrop-blur-md border border-[#ECC880] rounded-2xl p-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(236,200,128,0.35)] flex items-center justify-between gap-2.5">
-                          <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="absolute top-2.5 xs:top-3 inset-x-2.5 xs:inset-x-3 z-30 animate-fade-in pointer-events-auto">
+                        <div className="bg-[#041610]/95 backdrop-blur-md border border-[#ECC880] rounded-xl xs:rounded-2xl p-2 xs:p-2.5 shadow-[0_12px_35px_rgba(0,0,0,0.85),0_0_20px_rgba(236,200,128,0.35)] flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 min-w-0">
                             <button
                               type="button"
                               onClick={() => setIsPreviewOpen(true)}
-                              className="relative w-9 h-12 rounded-lg overflow-hidden border border-[#ECC880] shrink-0 shadow-sm bg-black group/thumb cursor-pointer hover:scale-105 transition-transform"
+                              className="relative w-8 h-10 xs:w-9 xs:h-12 rounded-lg overflow-hidden border border-[#ECC880] shrink-0 shadow-sm bg-black group/thumb cursor-pointer hover:scale-105 transition-transform"
                               title="Ketuk untuk melihat preview"
                             >
                               <img src={snapshotNotification.url} alt="HD Thumbnail" className="w-full h-full object-cover" />
@@ -3663,13 +3662,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                               </div>
                             </button>
                             <div className="min-w-0 text-left">
-                              <div className="flex items-center gap-1.5">
-                                <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                                <p className="text-xs font-serif font-bold text-[#FFF8E2] truncate">
+                              <div className="flex items-center gap-1">
+                                <Check className="w-3 h-3 xs:w-3.5 xs:h-3.5 text-emerald-400 shrink-0" />
+                                <p className="text-[11px] xs:text-xs font-serif font-bold text-[#FFF8E2] truncate">
                                   Foto HD Berhasil Disimpan!
                                 </p>
                               </div>
-                              <p className="text-[10px] text-[#A0C4B4] font-sans truncate">
+                              <p className="text-[9px] xs:text-[10px] text-[#A0C4B4] font-sans truncate">
                                 Tersimpan otomatis ke galeri ponsel
                               </p>
                             </div>
@@ -3679,7 +3678,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                             <button
                               type="button"
                               onClick={() => sharePhotoToInstagramStory(snapshotNotification.url)}
-                              className="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] text-[10px] font-serif font-bold flex items-center gap-1 cursor-pointer shadow-xs hover:brightness-110 active:scale-95 transition-all"
+                              className="px-2 xs:px-2.5 py-1 xs:py-1.5 rounded-lg xs:rounded-xl bg-gradient-to-r from-[#ECC880] to-[#D4AF37] text-[#041610] text-[9px] xs:text-[10px] font-serif font-bold flex items-center gap-1 cursor-pointer shadow-xs hover:brightness-110 active:scale-95 transition-all"
                               title="Bagikan ke Instagram Story"
                             >
                               <InstagramIcon size={12} />
@@ -3691,7 +3690,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                               className="p-1 rounded-full hover:bg-white/10 text-[#ECC880]/80 hover:text-white transition-colors cursor-pointer"
                               title="Tutup Notifikasi"
                             >
-                              <X className="w-3.5 h-3.5" />
+                              <X className="w-3 h-3 xs:w-3.5 xs:h-3.5" />
                             </button>
                           </div>
                         </div>
@@ -3699,25 +3698,25 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     )}
 
                     {/* Overlaid Gold Framing */}
-                    <div className="absolute inset-2 border border-[#ECC880]/60 rounded-xl pointer-events-none">
-                      <EmeraldGoldCorner size={28} color="#ECC880" />
+                    <div className="absolute inset-1.5 xs:inset-2 border border-[#ECC880]/60 rounded-lg xs:rounded-xl pointer-events-none">
+                      <EmeraldGoldCorner size={24} color="#ECC880" />
                     </div>
 
                     {/* Top Seal */}
-                    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-                      <div className="w-10 h-10 rounded-full bg-[#041610]/85 border border-[#ECC880] shadow-[0_0_12px_rgba(236,200,128,0.7)] flex flex-col items-center justify-center">
-                        <Crown className="w-3 h-3 text-[#ECC880]" />
-                        <span className="font-serif font-bold text-[8px] text-[#ECC880] leading-none">S&amp;B</span>
+                    <div className="absolute top-2.5 xs:top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+                      <div className="w-8 h-8 xs:w-10 xs:h-10 rounded-full bg-[#041610]/85 border border-[#ECC880] shadow-[0_0_12px_rgba(236,200,128,0.7)] flex flex-col items-center justify-center">
+                        <Crown className="w-2.5 h-2.5 xs:w-3 xs:h-3 text-[#ECC880]" />
+                        <span className="font-serif font-bold text-[7px] xs:text-[8px] text-[#ECC880] leading-none">S&amp;B</span>
                       </div>
                     </div>
 
                     {/* Bottom Watermark Overlay */}
-                    <div className="absolute bottom-2 left-2 right-2 text-center pointer-events-none z-10">
-                      <div className="bg-[#041610]/80 backdrop-blur-xs border border-[#ECC880]/50 rounded-lg py-1.5 px-2">
-                        <p className="font-serif font-bold text-[10px] text-[#FFF8E2]">
+                    <div className="absolute bottom-1.5 xs:bottom-2 left-1.5 xs:left-2 right-1.5 xs:right-2 text-center pointer-events-none z-10">
+                      <div className="bg-[#041610]/80 backdrop-blur-xs border border-[#ECC880]/50 rounded-lg py-1 xs:py-1.5 px-1.5 xs:px-2">
+                        <p className="font-serif font-bold text-[8.5px] xs:text-[10px] text-[#FFF8E2] leading-tight">
                           THE ROYAL WEDDING • STEVEN &amp; BUNGA
                         </p>
-                        <p className="text-[7.5px] font-mono text-[#ECC880] mt-0.5">
+                        <p className="text-[7px] xs:text-[7.5px] font-mono text-[#ECC880] mt-0.5">
                           #StevenBungaRoyalWedding
                         </p>
                       </div>
@@ -3725,13 +3724,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   </div>
 
                   {/* Shutter / Capture Button & Secondary Options */}
-                  <div className="flex items-center justify-between px-2 pt-1">
+                  <div className="flex items-center justify-between px-1 xs:px-2 pt-0.5 xs:pt-1">
                     {/* Left: Thumbnail preview OR trigger upload photo */}
                     {capturedSnapshot ? (
                       <button
                         type="button"
                         onClick={() => setIsPreviewOpen(true)}
-                        className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-[#ECC880] shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer group"
+                        className="relative w-10 h-10 xs:w-12 xs:h-12 rounded-xl overflow-hidden border-2 border-[#ECC880] shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer group"
                         title="Lihat Hasil Foto Terakhir"
                       >
                         <img src={capturedSnapshot} alt="Thumbnail Terakhir" className="w-full h-full object-cover" />
@@ -3741,7 +3740,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       <button
                         type="button"
                         onClick={triggerUploadPhoto}
-                        className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                        className="w-10 h-10 xs:w-11 xs:h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
                         title="Unggah Foto dari Galeri"
                       >
                         <ImageIcon className="w-4 h-4" />
@@ -3752,11 +3751,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     <button
                       type="button"
                       onClick={captureSnapshot}
-                      className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] border-4 border-[#041610] shadow-[0_0_25px_rgba(236,200,128,0.8)] hover:scale-105 active:scale-90 transition-all flex items-center justify-center cursor-pointer"
+                      className="w-14 h-14 xs:w-16 xs:h-16 rounded-full bg-gradient-to-tr from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] border-4 border-[#041610] shadow-[0_0_25px_rgba(236,200,128,0.8)] hover:scale-105 active:scale-90 transition-all flex items-center justify-center cursor-pointer"
                       title="Ambil Foto HD Kenang-kenangan"
                     >
-                      <div className="w-12 h-12 rounded-full border-2 border-[#041610]/80 flex items-center justify-center">
-                        <Camera className="w-5 h-5 text-[#041610]" />
+                      <div className="w-10 h-10 xs:w-12 xs:h-12 rounded-full border-2 border-[#041610]/80 flex items-center justify-center">
+                        <Camera className="w-4 h-4 xs:w-5 xs:h-5 text-[#041610]" />
                       </div>
                     </button>
 
@@ -3764,22 +3763,22 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     <button
                       type="button"
                       onClick={toggleCameraFacingMode}
-                      className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
+                      className="w-10 h-10 xs:w-11 xs:h-11 rounded-full bg-white/10 hover:bg-white/20 border border-[#ECC880]/50 text-[#ECC880] flex items-center justify-center transition-colors cursor-pointer"
                       title="Ganti Kamera Depan / Belakang"
                     >
-                      <SwitchCamera className="w-5 h-5" />
+                      <SwitchCamera className="w-4 h-4 xs:w-5 xs:h-5" />
                     </button>
                   </div>
 
                   {/* Secondary Option: Appears ONLY AFTER Taking Photo */}
                   {capturedSnapshot && (
-                    <div className="pt-2 animate-fade-in">
+                    <div className="pt-1.5 xs:pt-2 animate-fade-in">
                       <button
                         type="button"
                         onClick={() => sharePhotoToInstagramStory(capturedSnapshot)}
-                        className="w-full py-2.5 xs:py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_18px_rgba(236,200,128,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full py-2 xs:py-2.5 sm:py-3 px-3 xs:px-4 rounded-xl xs:rounded-2xl bg-gradient-to-r from-[#ECC880] via-[#FAF6ED] to-[#D4AF37] text-[#041610] font-serif font-bold text-xs xs:text-sm tracking-wide shadow-[0_4px_18px_rgba(236,200,128,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 xs:gap-2 cursor-pointer"
                       >
-                        <InstagramIcon size={16} />
+                        <InstagramIcon size={15} />
                         <span>Bagikan Foto ke Instagram Story</span>
                         <Sparkles className="w-3.5 h-3.5 text-[#041610]" />
                       </button>
