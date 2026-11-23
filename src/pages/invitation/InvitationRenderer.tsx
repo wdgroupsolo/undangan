@@ -43,6 +43,13 @@ import {
   EmeraldGoldCorner, 
   FloatingEmeraldStardust 
 } from './themes/EmeraldVelvetRoyalTheme';
+import { 
+  MidnightCelestialTheme, 
+  CelestialCrescentFrame, 
+  CelestialCornerFlourish, 
+  CelestialStarlightDivider, 
+  CelestialBackgroundCanvas 
+} from './themes/MidnightCelestialTheme';
 import { CuratedThemeEngine, CURATED_THEMES } from './themes/CuratedThemeEngine';
 import { FallingSakuraPetals, SakuraCoverFrame, SakuraInvitationSurround } from './components/SakuraBlossoms';
 import { BatakHeritageEntrancePortal } from './components/BatakHeritageEntrancePortal';
@@ -441,7 +448,8 @@ export const InvitationRenderer: React.FC = () => {
   const isBaliKamasan = activeThemeSlug === 'bali-kamasan' || activeThemeSlug === 'bali' || activeThemeSlug === 'kamasan';
   const isMoroccanNights = activeThemeSlug === 'moroccan-nights' || activeThemeSlug === 'moroccan' || activeThemeSlug === 'arabian-nights';
   const isEmeraldVelvet = activeThemeSlug === 'emerald-velvet' || activeThemeSlug === 'emerald' || activeThemeSlug === 'emerald-velvet-royal';
-  const isCuratedTheme = Boolean(CURATED_THEMES[activeThemeSlug]) && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet;
+  const isMidnightCelestial = activeThemeSlug === 'navy-silver' || activeThemeSlug === 'midnight-celestial' || activeThemeSlug === 'celestial-star' || activeThemeSlug === 'starlight';
+  const isCuratedTheme = Boolean(CURATED_THEMES[activeThemeSlug]) && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isMidnightCelestial;
   const curatedPreset = CURATED_THEMES[activeThemeSlug];
 
   const currentThemePrice = resolveThemePrice({
@@ -474,17 +482,17 @@ export const InvitationRenderer: React.FC = () => {
     activeThemeSlug === 'moroccan-nights' || 
     isMoroccanNights ||
     isHafizSlug;
-  const isKualaLumpur = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && (activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug);
-  const isNoirGold = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isKualaLumpur && (activeThemeSlug === 'noir-gold' || activeThemeSlug === 'noir' || activeThemeSlug === 'noir-gold-elegance');
-  const isIvoryPearl = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isKualaLumpur && !isNoirGold && (activeThemeSlug === 'ivory-pearl' || activeThemeSlug === 'ivory' || activeThemeSlug === 'ivory-pearl-minimalist');
-  const isNirwanaSarangan = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isKualaLumpur && !isNoirGold && !isIvoryPearl && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
-  const isJogloMaroon = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
-  const isRoyalWayang = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
+  const isKualaLumpur = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isMidnightCelestial && (activeThemeSlug === 'kuala-lumpur-heritage' || activeThemeSlug === 'kuala-lumpur' || isHafizSlug);
+  const isNoirGold = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isMidnightCelestial && !isKualaLumpur && (activeThemeSlug === 'noir-gold' || activeThemeSlug === 'noir' || activeThemeSlug === 'noir-gold-elegance');
+  const isIvoryPearl = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isMidnightCelestial && !isKualaLumpur && !isNoirGold && (activeThemeSlug === 'ivory-pearl' || activeThemeSlug === 'ivory' || activeThemeSlug === 'ivory-pearl-minimalist');
+  const isNirwanaSarangan = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isMidnightCelestial && !isKualaLumpur && !isNoirGold && !isIvoryPearl && (activeThemeSlug === 'nirwana-sarangan' || activeThemeSlug === 'hotel-nirwana' || activeThemeSlug === 'telaga-sarangan');
+  const isJogloMaroon = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isMidnightCelestial && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && (activeThemeSlug === 'joglo-maroon-heritage' || activeThemeSlug === 'joglo-maroon' || activeThemeSlug === 'joglo-bloom' || activeThemeSlug === 'pendopo-maroon');
+  const isRoyalWayang = !isCuratedTheme && !isRoseGold && !isTerracottaBoho && !isSundaSiger && !isMinangGadang && !isBaliKamasan && !isMoroccanNights && !isEmeraldVelvet && !isMidnightCelestial && !isKualaLumpur && !isNoirGold && !isIvoryPearl && !isNirwanaSarangan && !isJogloMaroon && (activeThemeSlug === 'royal-wayang-gold' || activeThemeSlug === 'royal-wayang' || activeThemeSlug === 'joglo-wayang' || isAudiOvyolaSlug || slug === 'benny-indah' || (!requestedTheme && slug === 'steven-bunga') || isAgniSlug);
   const isSecretGarden = !isCuratedTheme && activeThemeSlug === 'secret-garden';
   const isRoyalElegance = !isCuratedTheme && activeThemeSlug === 'royal-elegance';
   const isMaroonGold = !isCuratedTheme && activeThemeSlug === 'maroon-gold';
   const isJavaneseHeritage = !isCuratedTheme && (activeThemeSlug === 'javanese-heritage' || activeThemeSlug === 'jawa-klasik' || activeThemeSlug === 'borobudur');
-  const isSplitTheme = !isCuratedTheme && (activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan || isEmeraldVelvet);
+  const isSplitTheme = !isCuratedTheme && (activeThemeSlug === 'split-floral' || isSecretGarden || isMaroonGold || isJavaneseHeritage || isRoyalWayang || isJogloMaroon || isNirwanaSarangan || isEmeraldVelvet || isMidnightCelestial);
 
   const guestName = (rawTo && rawTo.trim() !== '') 
     ? rawTo.trim() 
@@ -686,6 +694,8 @@ export const InvitationRenderer: React.FC = () => {
               ? 'top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 bg-white/20 hover:bg-white/35 backdrop-blur-md border border-white/50 text-white hover:scale-110 active:scale-95'
               : (isNirwanaSarangan || isEmeraldVelvet)
                 ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#041610]/90 hover:bg-[#08261B] backdrop-blur-md border border-[#ECC880] text-[#ECC880] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(236,200,128,0.4)]'
+              : isMidnightCelestial
+                ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#050B18]/90 hover:bg-[#0A132B] backdrop-blur-md border border-[#38BDF8] text-[#38BDF8] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(56,189,248,0.4)]'
                 : isSundaSiger
                   ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-white/95 backdrop-blur-md border border-[#D4AF37] text-[#2D4638] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(45,70,56,0.25)]'
                 : isMinangGadang
@@ -709,6 +719,11 @@ export const InvitationRenderer: React.FC = () => {
             ) : (
               <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5" />
             )
+          ) : isMidnightCelestial ? (
+            <Disc 
+              className={`w-5 h-5 sm:w-6 sm:h-6 text-[#38BDF8] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
+              style={{ animationDuration: '4s' }}
+            />
           ) : (isNirwanaSarangan || isEmeraldVelvet) ? (
             <Disc 
               className={`w-5 h-5 sm:w-6 sm:h-6 text-[#ECC880] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
@@ -902,6 +917,18 @@ export const InvitationRenderer: React.FC = () => {
             />
           ) : isEmeraldVelvet ? (
             <EmeraldVelvetRoyalTheme 
+              invitation={invitation}
+              couple={displayCouple}
+              events={events || []}
+              stories={stories || []}
+              gallery={(gallery && gallery.length > 0 && !gallery[0]?.image_url?.includes('agni-putri')) ? gallery : (isStevenBungaSlug ? GALLERY_STEVEN_BUNGA : (gallery || []))}
+              gifts={gifts || []}
+              music={music}
+              guestName={guestName}
+              isOpening={isVideoExiting || openingStage === 'opened'}
+            />
+          ) : isMidnightCelestial ? (
+            <MidnightCelestialTheme 
               invitation={invitation}
               couple={displayCouple}
               events={events || []}
@@ -2280,6 +2307,95 @@ export const InvitationRenderer: React.FC = () => {
             </div>
           </div>
         </div>
+        ) : isMidnightCelestial ? (
+          /* Midnight Celestial Star Masterpiece Cover - Split Desktop (Right 58%/50% on Desktop, 100% on Mobile) */
+          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#38BDF8]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#030712] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            {/* Background Nebula & Twinkling Stars */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              <img 
+                src={coverImage || '/photos/photo-3.jpg'} 
+                alt="Midnight Celestial Sky" 
+                className="w-full h-full object-cover object-center scale-105 filter brightness-75"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#030712] via-[#050B18]/90 to-[#030712]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.2)_0%,rgba(3,7,18,0.95)_75%)]" />
+            </div>
+
+            {/* Corner Constellations */}
+            <div className="absolute top-3 left-3"><CelestialCornerFlourish position="top-left" size={60} /></div>
+            <div className="absolute top-3 right-3"><CelestialCornerFlourish position="top-right" size={60} /></div>
+            <div className="absolute bottom-3 left-3"><CelestialCornerFlourish position="bottom-left" size={60} /></div>
+            <div className="absolute bottom-3 right-3"><CelestialCornerFlourish position="bottom-right" size={60} /></div>
+
+            {/* Centered Invitation Card */}
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:max-h-[94vh] sm:rounded-3xl overflow-hidden flex flex-col justify-between items-center text-center bg-gradient-to-b from-[#0A132B]/95 via-[#060D1E]/98 to-[#030712] text-white shadow-[0_25px_70px_rgba(0,0,0,0.85),_0_0_40px_rgba(56,189,248,0.3)] sm:border-2 sm:border-[#38BDF8]/40 p-4 xs:p-6 sm:p-7">
+              {/* Top Banner */}
+              <div className="w-full bg-[#050B18]/90 py-1.5 xs:py-2 px-3 xs:px-4 rounded-full border border-[#38BDF8]/40 flex items-center justify-center gap-2 shadow-xs">
+                <Star className="w-3.5 h-3.5 text-[#38BDF8] animate-pulse" />
+                <p className="text-[9px] xs:text-[10px] font-serif font-bold tracking-[0.25em] uppercase text-[#BAE6FD]">
+                  MIDNIGHT CELESTIAL • MASTERPIECE
+                </p>
+                <Star className="w-3.5 h-3.5 text-[#38BDF8] animate-pulse" />
+              </div>
+
+              {/* Middle Card Content */}
+              <div className="flex-1 w-full flex flex-col items-center justify-center px-2 xs:px-4 py-2 xs:py-4 overflow-y-auto">
+                <div className="mb-2 xs:mb-3">
+                  <CelestialCrescentFrame
+                    imageSrc={coverImage}
+                    altText={`${groomDisplayName} & ${brideDisplayName}`}
+                    frameWidthClass="w-36 xs:w-40 sm:w-44"
+                    frameHeightClass="h-48 xs:h-52 sm:h-58"
+                  />
+                </div>
+
+                <p className="text-[9px] xs:text-[10px] uppercase tracking-[0.3em] text-[#38BDF8] font-serif font-semibold mb-1">
+                  THE WEDDING INVITATION
+                </p>
+
+                <h1 className="text-2xl xs:text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F8FAFC] to-[#BAE6FD] mb-1.5 xs:mb-2 tracking-wide drop-shadow-sm">
+                  {groomDisplayName} <span className="font-light italic text-[#38BDF8]">&amp;</span> {brideDisplayName}
+                </h1>
+
+                {/* Event Date Badge */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 xs:py-1 rounded-full bg-[#050B18]/90 border border-[#38BDF8]/40 text-[#BAE6FD] text-[10px] xs:text-[11px] font-serif font-medium mb-2 xs:mb-3">
+                  <Calendar className="w-3 h-3 text-[#38BDF8]" />
+                  <span>
+                    {events?.[0]?.event_date 
+                      ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                      : 'Senin, 12 Oktober 2026'}
+                  </span>
+                </div>
+
+                {/* Guest Box */}
+                <div className="w-full bg-[#050B18]/90 p-2.5 xs:p-3 rounded-2xl border border-[#94A3B8]/30 mb-2.5 xs:mb-3 shadow-inner text-center">
+                  <p className="text-[9px] xs:text-[9.5px] text-[#94A3B8] uppercase tracking-wider mb-0.5 font-medium">
+                    Kepada Yth. Bapak/Ibu/Saudara/i:
+                  </p>
+                  <p className="font-serif text-sm xs:text-base font-bold text-white line-clamp-1">
+                    {guestName}
+                  </p>
+                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#38BDF8]/15 text-[#38BDF8] text-[9px] xs:text-[9.5px] font-serif font-semibold mt-1">
+                    <Crown size={11} />
+                    <span>Tamu Undangan VIP 150k</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Action: Open Invitation Button */}
+              <div className="w-full pt-1">
+                <button
+                  type="button"
+                  onClick={handleOpen}
+                  className="w-full py-2.5 xs:py-3 px-4 xs:px-6 rounded-full bg-gradient-to-r from-[#38BDF8] via-white to-[#38BDF8] text-[#030712] font-serif font-bold text-[11px] xs:text-xs uppercase tracking-[0.2em] shadow-[0_8px_24px_rgba(56,189,248,0.5)] hover:shadow-[0_10px_28px_rgba(56,189,248,0.7)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Moon className="w-4 h-4 text-[#030712]" />
+                  <span>BUKA UNDANGAN</span>
+                  <Sparkles className="w-4 h-4 text-[#030712] animate-pulse" />
+                </button>
+              </div>
+            </div>
+          </div>
         ) : isEmeraldVelvet ? (
           /* Royal Emerald Velvet Masterpiece Cover - Split Desktop Card (Right 58%/50% on Desktop, 100% on Mobile) */
           <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#ECC880]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#041610] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
