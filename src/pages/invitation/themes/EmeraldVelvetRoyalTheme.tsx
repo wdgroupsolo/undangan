@@ -7,13 +7,13 @@ import {
   Crown, Star, Award, CreditCard, Send,
   Maximize2, Package, MessageCircle, QrCode, Download, ExternalLink,
   Heart, User, Users, Shirt, Car, Wifi, Info, CheckCircle2, Compass, Gem,
-  Camera, RefreshCw, SwitchCamera, Image as ImageIcon, Upload
+  Camera, RefreshCw, SwitchCamera, Image as ImageIcon, Upload, Barcode
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
 import { rsvpService, RSVPItem } from '../../../services/rsvpService';
-import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode } from '../../../utils/barcodePass';
+import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode, clearBarcodePass } from '../../../utils/barcodePass';
 
 const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
   <svg 
@@ -598,6 +598,15 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   const cleanBride = brideName.replace(/[^a-zA-Z0-9]/g, '');
   const weddingHashtag = invitation?.hashtag || `#${cleanGroom}${cleanBride}RoyalWedding`;
   const safeFilenameBase = `Royal_Moments_${cleanGroom}_${cleanBride}`;
+
+  // Only true when explicitly opened via "Demo Tema" button from landing page/catalog (?demo=true)
+  const isDemo = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('demo') === 'true' ||
+    (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
+  );
+
+  // VIP Barcode check-in feature: Active for 150k++ Royal Tier unless explicitly disabled
+  const useBarcode = invitation?.settings?.use_barcode !== false || isDemo;
 
   const [activeSection, setActiveSection] = useState('cover');
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
@@ -1431,11 +1440,20 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     return () => clearInterval(interval);
   }, [weddingDateStr]);
 
-  // Barcode / Check-in Pass
+  // Barcode / Check-in Pass (Persisted per guest & invitation)
   const [savedPass, setSavedPass] = useState<any>(() => {
     return loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'emerald') || null;
   });
   const [showBarcodePreview, setShowBarcodePreview] = useState(false);
+
+  // Sync saved barcode pass whenever invitation or guestName changes
+  useEffect(() => {
+    if (!useBarcode) return;
+    const existing = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'emerald');
+    if (existing) {
+      setSavedPass(existing as any);
+    }
+  }, [invitation?.id, invitation?.slug, guestName, useBarcode]);
 
   // RSVP Form State
   const [rsvpName, setRsvpName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
@@ -1467,11 +1485,29 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     }
   ]);
 
+  // Load real-time wishes & RSVP entries from database
+  useEffect(() => {
+    if (!invitation?.id) return;
+    rsvpService.getRsvpsByInvitation(invitation.id).then(data => {
+      if (data && data.length > 0) {
+        setWishes(data.map((item: RSVPItem) => ({
+          id: item.id,
+          name: item.name,
+          message: item.message || 'Semoga berbahagia selalu dalam ikatan suci pernikahan.',
+          date: item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : 'Terkonfirmasi',
+          status: item.attendance || 'attending'
+        })));
+      }
+    }).catch(err => {
+      console.warn('Realtime RSVP fetch info:', err);
+    });
+  }, [invitation?.id]);
+
   const activeBarcodePass = savedPass || (showBarcodePreview ? {
     name: (rsvpName.trim() || (guestName !== 'Tamu Undangan' ? guestName : '') || 'Bpk. Muhammad Ilham'),
     attendance: rsvpStatus,
     guests: rsvpCount,
-    code: generateStableBarcodeCode(invitation?.id || 'EMERALD-ROYAL', guestName),
+    code: generateStableBarcodeCode('ROYAL', invitation?.id || invitation?.slug || 'EMERALD', rsvpName.trim() || guestName, savedPass?.code),
     table: 'VVIP Royal Table 01'
   } : null);
 
@@ -1486,6 +1522,163 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     if (!activeBarcodePass) return;
     saveBarcodePass(activeBarcodePass, invitation?.id, invitation?.slug, 'emerald');
     setSavedPass(activeBarcodePass);
+
+    // Render high-resolution authentic VIP Pass card image for phone gallery download
+    try {
+      const passCanvas = document.createElement('canvas');
+      passCanvas.width = 720;
+      passCanvas.height = 1140;
+      const ctx = passCanvas.getContext('2d');
+      if (ctx) {
+        // 1. Rich Emerald Velvet Gradient Background
+        const bgGrad = ctx.createLinearGradient(0, 0, 720, 1140);
+        bgGrad.addColorStop(0, '#0c3324');
+        bgGrad.addColorStop(0.5, '#072017');
+        bgGrad.addColorStop(1, '#041610');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 720, 1140);
+
+        // 2. 24K Gold Outer & Inner Frame
+        ctx.strokeStyle = '#ECC880';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(28, 28, 720 - 56, 1140 - 56);
+
+        ctx.strokeStyle = 'rgba(236, 200, 128, 0.45)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([8, 6]);
+        ctx.strokeRect(40, 40, 720 - 80, 1140 - 80);
+        ctx.setLineDash([]);
+
+        // 3. Header Monogram / Title
+        ctx.fillStyle = '#ECC880';
+        ctx.font = 'bold 22px "Cinzel", Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('ROYAL VIP ACCESS PASS', 360, 95);
+
+        ctx.fillStyle = '#FFF8E2';
+        ctx.font = 'bold 17px "Cinzel", Georgia, serif';
+        ctx.fillText(photoboothTitle, 360, 130);
+
+        // Gold divider
+        ctx.strokeStyle = 'rgba(236, 200, 128, 0.6)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(160, 150);
+        ctx.lineTo(560, 150);
+        ctx.stroke();
+
+        // 4. Guest Name
+        ctx.fillStyle = '#ECC880';
+        ctx.font = '15px "Cinzel", Georgia, serif';
+        ctx.fillText('TAMU KEHORMATAN', 360, 190);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 30px "Cinzel", Georgia, serif';
+        ctx.fillText(activeBarcodePass.name || 'Tamu Undangan', 360, 235);
+
+        // Status Badge
+        ctx.fillStyle = 'rgba(236, 200, 128, 0.2)';
+        ctx.fillRect(200, 265, 320, 36);
+        ctx.strokeStyle = '#ECC880';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(200, 265, 320, 36);
+
+        ctx.fillStyle = '#ECC880';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText(`✓ Terkonfirmasi Hadir (${activeBarcodePass.guests || 1} Tamu)`, 360, 289);
+
+        // Venue & Seating
+        ctx.fillStyle = '#A0C4B4';
+        ctx.font = '14px sans-serif';
+        const venueText = events[0]?.location || 'Grand Ballroom Sahara Hotel • Solo';
+        ctx.fillText(venueText, 360, 335);
+
+        // Seating Box
+        ctx.fillStyle = 'rgba(4, 22, 16, 0.85)';
+        ctx.fillRect(110, 360, 500, 68);
+        ctx.strokeStyle = 'rgba(236, 200, 128, 0.5)';
+        ctx.strokeRect(110, 360, 500, 68);
+
+        ctx.fillStyle = '#A0C4B4';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('MEJA JAMUAN', 235, 385);
+        ctx.fillText('PINTU AKSES', 485, 385);
+
+        ctx.fillStyle = '#ECC880';
+        ctx.font = 'bold 15px "Cinzel", Georgia, serif';
+        ctx.fillText(activeBarcodePass.table || 'Table 01 - Emerald', 235, 412);
+        ctx.fillText('Lobby Barat Valet', 485, 412);
+
+        // QR Code Container
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(235, 455, 250, 250);
+        ctx.strokeStyle = '#ECC880';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(235, 455, 250, 250);
+
+        // Draw QR code image from DOM if available
+        const qrImgEl = document.querySelector('img[alt="QR Code Tiket"]') as HTMLImageElement;
+        if (qrImgEl && qrImgEl.complete && qrImgEl.naturalWidth > 0) {
+          try {
+            ctx.drawImage(qrImgEl, 245, 465, 230, 230);
+          } catch {}
+        } else {
+          ctx.fillStyle = '#103023';
+          ctx.font = 'bold 15px sans-serif';
+          ctx.fillText('QR CODE CHECK-IN', 360, 585);
+        }
+
+        // Linear Code-128 Barcode Graphic Box
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(170, 735, 380, 115);
+        ctx.strokeStyle = '#ECC880';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(170, 735, 380, 115);
+
+        // Draw authentic vertical Code-128 lines
+        ctx.fillStyle = '#041610';
+        const barPattern = [2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1];
+        let currentX = 195;
+        barPattern.forEach((w, idx) => {
+          if (idx % 2 === 0) {
+            ctx.fillRect(currentX, 755, w * 3.0, 55);
+          }
+          currentX += w * 3.0 + 2.5;
+        });
+
+        ctx.fillStyle = isDemo ? '#B91C1C' : '#041610';
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText(activeBarcodePass.code, 360, 835);
+
+        // Instructions
+        ctx.fillStyle = '#A0C4B4';
+        ctx.font = 'italic 13.5px "Cinzel", Georgia, serif';
+        if (isDemo) {
+          ctx.fillStyle = '#F59E0B';
+          ctx.fillText('🔒 BARCODE DEMO PORTOFOLIO (TERKUNCI)', 360, 890);
+        } else {
+          ctx.fillText('Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi.', 360, 890);
+        }
+
+        // Footer brand
+        ctx.fillStyle = '#ECC880';
+        ctx.font = 'bold 13.5px "Cinzel", Georgia, serif';
+        ctx.fillText('WDGROUPCOMPANY • MASTERPIECE ROYAL EDITION', 360, 960);
+
+        // Convert to downloadable image file
+        const dataUrl = passCanvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        const cleanName = (activeBarcodePass.name || 'Tamu').replace(/[^a-zA-Z0-9]/g, '_');
+        downloadLink.download = `Royal_VIP_Pass_${cleanName}.png`;
+        downloadLink.href = dataUrl;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      }
+    } catch (e) {
+      console.warn('Canvas pass download fallback:', e);
+    }
+
     toast.success('Tiket VIP Pass berhasil disimpan ke perangkat');
   };
 
@@ -1498,29 +1691,54 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
     setIsSubmittingRsvp(true);
     try {
+      // 1. Submit to Supabase / database via rsvpService
+      if (invitation?.id) {
+        try {
+          await rsvpService.submitRsvp({
+            invitation_id: invitation.id,
+            name: rsvpName.trim(),
+            attendance: rsvpStatus === 'uncertain' ? 'maybe' : rsvpStatus,
+            number_of_guests: rsvpCount,
+            message: rsvpMessage.trim() || null,
+            invitation_title: invitation?.title || `The Royal Wedding of ${groomName} & ${brideName}`,
+            client_name: `${groomName} & ${brideName}`
+          });
+        } catch (dbErr) {
+          console.warn('Database RSVP save info (fallback local):', dbErr);
+        }
+      }
+
       const newWish = {
         id: `w-${Date.now()}`,
         name: rsvpName.trim(),
-        message: rsvpMessage.trim() || 'Semoga berbahagia selalu.',
+        message: rsvpMessage.trim() || 'Semoga berbahagia selalu dalam lindungan Tuhan.',
         date: 'Baru saja',
         status: rsvpStatus
       };
 
       setWishes(prev => [newWish, ...prev]);
 
+      const stableCode = generateStableBarcodeCode(
+        'ROYAL',
+        invitation?.id || invitation?.slug || 'EMERALD',
+        rsvpName.trim(),
+        savedPass?.code
+      );
+
       const passData = {
         name: rsvpName.trim(),
         attendance: rsvpStatus,
         guests: rsvpCount,
-        code: generateStableBarcodeCode(invitation?.id || 'EMERALD-ROYAL', rsvpName.trim()),
-        table: 'VVIP Royal Table 01'
+        code: stableCode,
+        table: 'VVIP Royal Table 01',
+        timestamp: new Date().toISOString()
       };
 
       saveBarcodePass(passData, invitation?.id, invitation?.slug, 'emerald');
       setSavedPass(passData);
       setShowBarcodePreview(true);
 
-      toast.success('Konfirmasi RSVP & doa restu berhasil dikirim!');
+      toast.success('Konfirmasi RSVP & Tiket VIP berhasil diterbitkan!');
       setRsvpMessage('');
     } catch {
       toast.error('Gagal mengirim RSVP, silakan coba lagi');
@@ -2961,8 +3179,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
             <ScrollReveal animation="fade-down" delay={100}>
               <div className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#041610]/10 border border-[#ECC880]/70 text-[#8C6D2B] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
-                <QrCode className="w-3.5 h-3.5 text-[#C5A059]" />
-                <span>VIP PASS &amp; CHECK-IN PRESENSI</span>
+                <Barcode className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>VIP PASS &amp; PRESENSI BARCODE / QR</span>
               </div>
 
               <h2 className="relative z-10 font-serif text-2xl sm:text-4xl font-bold text-[#103023] mb-2">
@@ -2970,7 +3188,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </h2>
 
               <p className="relative z-10 text-xs text-[#5B7569] max-w-md mx-auto mb-4 font-light">
-                Sistem otomatis menerbitkan <strong>Tiket QR Resmi</strong> untuk discan petugas saat tiba di lokasi resepsi.
+                Sistem otomatis menerbitkan <strong>Tiket Barcode &amp; QR Resmi</strong> untuk discan petugas saat tiba di lokasi resepsi.
               </p>
 
               <RoyalCalligraphicDivider className="my-2 relative z-10 mb-6" />
@@ -2984,8 +3202,8 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   onClick={() => setShowBarcodePreview(prev => !prev)}
                   className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-serif font-bold tracking-wider uppercase bg-[#041610] hover:bg-[#08261C] text-[#ECC880] border border-[#ECC880]/60 transition-colors cursor-pointer shadow-md"
                 >
-                  <QrCode size={14} />
-                  <span>{activeBarcodePass ? (showBarcodePreview && !savedPass ? 'Tutup Tiket' : 'Tampilkan Tiket VIP Pass') : 'Lihat Contoh Tiket VIP'}</span>
+                  <Barcode size={14} />
+                  <span>{activeBarcodePass ? (showBarcodePreview && !savedPass ? 'Tutup Tiket' : 'Tampilkan Tiket Barcode VIP') : 'Lihat Contoh Barcode VIP'}</span>
                 </button>
               </div>
             </ScrollReveal>
@@ -3013,14 +3231,14 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   </div>
 
                   <p className="text-[11px] text-[#ECC880] mb-3 font-serif">
-                    Grand Ballroom Sahara Hotel • Solo
+                    {events[0]?.location || 'Grand Ballroom Sahara Hotel • Solo'}
                   </p>
 
                   {/* Sultan VVIP Seating & Gate Info */}
                   <div className="grid grid-cols-2 gap-2 my-3 max-w-xs mx-auto text-left">
                     <div className="p-2 rounded-xl bg-[#041610]/80 border border-[#ECC880]/30 shadow-inner">
                       <span className="text-[8px] text-[#A0C4B4] block uppercase font-sans">Meja Jamuan</span>
-                      <span className="text-[11px] font-serif font-bold text-[#ECC880] truncate block">Table 01 - Emerald</span>
+                      <span className="text-[11px] font-serif font-bold text-[#ECC880] truncate block">{activeBarcodePass.table || 'Table 01 - Emerald'}</span>
                     </div>
                     <div className="p-2 rounded-xl bg-[#041610]/80 border border-[#ECC880]/30 shadow-inner">
                       <span className="text-[8px] text-[#A0C4B4] block uppercase font-sans">Pintu Akses</span>
@@ -3042,18 +3260,62 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     />
                   </div>
 
-                  <span className="font-mono text-xs text-[#ECC880] tracking-widest block mb-4">
-                    {activeBarcodePass.code}
-                  </span>
+                  {/* Authentic Linear Barcode Graphic (Code-128 Vertical SVG Bars) */}
+                  <div className="relative my-2.5 px-3 py-2 bg-white rounded-xl border-2 border-[#ECC880]/70 flex flex-col items-center shadow-md overflow-hidden">
+                    <svg viewBox="0 0 160 32" className="w-full max-w-[210px] h-9 text-[#041610]" preserveAspectRatio="none">
+                      {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
+                        idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
+                      ))}
+                    </svg>
+                    <span className={`font-mono font-bold text-xs tracking-[0.25em] ${isDemo ? 'text-red-700 line-through' : 'text-[#041610]'} mt-1`}>
+                      {activeBarcodePass.code}
+                    </span>
+                    {isDemo && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/45 pointer-events-none">
+                        <span className="bg-amber-600/95 text-white font-bold text-[9px] px-2.5 py-0.5 rounded tracking-widest uppercase shadow">
+                          BARCODE DEMO (TERKUNCI)
+                        </span>
+                      </div>
+                    )}
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={handleSavePass}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
-                  >
-                    <Download size={14} />
-                    <span>Simpan Tiket ke Galeri</span>
-                  </button>
+                  {isDemo ? (
+                    <div className="bg-[#041610]/90 border border-amber-400/50 rounded-xl p-2.5 my-2.5 text-center text-white">
+                      <p className="text-[11px] font-serif font-bold text-amber-300">
+                        🔒 Barcode Demo Portofolio (Terkunci)
+                      </p>
+                      <p className="text-[10px] text-[#A0C4B4] mt-0.5 leading-normal">
+                        Barcode &amp; QR ini terkunci khusus demo portofolio dan tidak dapat di-scan untuk presensi tamu sungguhan.
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-[10.5px] text-[#A0C4B4] italic leading-snug my-2.5 max-w-[270px] mx-auto font-serif">
+                      Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi resepsi agung.
+                    </p>
+                  )}
+
+                  <div className="flex flex-col items-center gap-2.5 mt-3">
+                    <button
+                      type="button"
+                      onClick={handleSavePass}
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ECC880] to-[#D4AF37] hover:brightness-110 text-[#041610] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer"
+                    >
+                      <Download size={14} />
+                      <span>Simpan Tiket ke Galeri</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSavedPass(null);
+                        clearBarcodePass(invitation?.id, invitation?.slug, activeBarcodePass?.name || guestName, 'emerald');
+                        setShowBarcodePreview(false);
+                      }}
+                      className="inline-block text-[11px] text-[#ECC880] hover:underline font-serif font-semibold cursor-pointer"
+                    >
+                      ← Ubah Konfirmasi Kehadiran
+                    </button>
+                  </div>
                 </div>
               </ScrollReveal>
             )}
@@ -3277,7 +3539,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
             { id: 'gallery', label: 'Galeri', icon: Maximize2 },
             { id: 'filter', label: 'Filter AR', icon: Camera },
             { id: 'gift', label: 'Kado', icon: CreditCard },
-            { id: 'pass', label: 'RSVP', icon: QrCode },
+            { id: 'pass', label: 'RSVP', icon: Barcode },
           ].map(item => {
             const IconComponent = item.icon;
             const isActive = activeSection === item.id;
