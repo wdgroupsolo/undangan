@@ -522,7 +522,15 @@ export const GildedEmeraldAcanthusFlourish: React.FC<{ side: 'left' | 'right'; c
 };
 
 // Unified Royal Photobooth Frame Overlay (Viewfinder & Uploaded Photo Preview)
-export const RoyalPhotoboothFrameOverlay: React.FC = () => (
+export const RoyalPhotoboothFrameOverlay: React.FC<{
+  initials?: string;
+  title?: string;
+  hashtag?: string;
+}> = ({
+  initials = 'S & B',
+  title = 'THE ROYAL WEDDING • STEVEN & BUNGA',
+  hashtag = '#StevenBungaRoyalWedding',
+}) => (
   <>
     {/* Overlaid Gold Framing */}
     <div className="absolute inset-1.5 xs:inset-2 border border-[#ECC880]/60 rounded-lg xs:rounded-xl pointer-events-none">
@@ -534,7 +542,7 @@ export const RoyalPhotoboothFrameOverlay: React.FC = () => (
     <div className="absolute top-2.5 xs:top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
       <div className="w-8 h-8 xs:w-10 xs:h-10 rounded-full bg-[#041610]/85 border border-[#ECC880] shadow-[0_0_12px_rgba(236,200,128,0.7)] flex flex-col items-center justify-center">
         <Crown className="w-2.5 h-2.5 xs:w-3 xs:h-3 text-[#ECC880]" />
-        <span className="font-serif font-bold text-[7px] xs:text-[8px] text-[#ECC880] leading-none">S&amp;B</span>
+        <span className="font-serif font-bold text-[7px] xs:text-[8px] text-[#ECC880] leading-none">{initials}</span>
       </div>
     </div>
 
@@ -542,10 +550,10 @@ export const RoyalPhotoboothFrameOverlay: React.FC = () => (
     <div className="absolute bottom-1.5 xs:bottom-2 left-1.5 xs:left-2 right-1.5 xs:right-2 text-center pointer-events-none z-10">
       <div className="bg-[#041610]/80 backdrop-blur-xs border border-[#ECC880]/50 rounded-lg py-1 xs:py-1.5 px-1.5 xs:px-2">
         <p className="font-serif font-bold text-[8.5px] xs:text-[10px] text-[#FFF8E2] leading-tight">
-          THE ROYAL WEDDING • STEVEN &amp; BUNGA
+          {title}
         </p>
         <p className="text-[7px] xs:text-[7.5px] font-mono text-[#ECC880] mt-0.5">
-          #StevenBungaRoyalWedding
+          {hashtag}
         </p>
       </div>
     </div>
@@ -574,6 +582,22 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
   guestName: propGuestName
 }) => {
   const toast = useToast();
+
+  // Couple Info & Dynamic Identifiers (Fully customizable per wedding)
+  const groomName = couple?.groom_nickname || couple?.groom_name || 'Steven';
+  const brideName = couple?.bride_nickname || couple?.bride_name || 'Bunga';
+  const groomFullName = couple?.groom_full_name || couple?.groom_name || 'Steven Pratama, S.Kom.';
+  const brideFullName = couple?.bride_full_name || couple?.bride_name || 'Bunga Citra Lestari, S.E.';
+  const groomParents = couple?.groom_parents || 'Putra pertama dari Bpk. Bambang Pratama & Ibu Siti Rahayu';
+  const brideParents = couple?.bride_parents || 'Putri kedua dari Bpk. Hendra Gunawan & Ibu Ratna Dewi';
+  const groomPhoto = couple?.groom_photo_url || couple?.groom_photo || '/photos/photo-7.jpg';
+  const bridePhoto = couple?.bride_photo_url || couple?.bride_photo || '/photos/photo-4.jpg';
+  const coupleInitials = `${groomName.trim().charAt(0).toUpperCase()} & ${brideName.trim().charAt(0).toUpperCase()}`;
+  const photoboothTitle = `THE ROYAL WEDDING • ${groomName.trim().toUpperCase()} & ${brideName.trim().toUpperCase()}`;
+  const cleanGroom = groomName.replace(/[^a-zA-Z0-9]/g, '');
+  const cleanBride = brideName.replace(/[^a-zA-Z0-9]/g, '');
+  const weddingHashtag = invitation?.hashtag || `#${cleanGroom}${cleanBride}RoyalWedding`;
+  const safeFilenameBase = `Royal_Moments_${cleanGroom}_${cleanBride}`;
 
   const [activeSection, setActiveSection] = useState('cover');
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
@@ -893,12 +917,12 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     ctx.stroke(crownBase);
     ctx.restore();
 
-    // Medallion S & B Text
+    // Medallion Dynamic Initials Text
     ctx.fillStyle = '#ECC880';
     ctx.font = `bold ${Math.round(sealR * 0.42)}px "Cinzel", "Playfair Display", Georgia, serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('S & B', sealX, sealY + Math.round(sealR * 0.32));
+    ctx.fillText(coupleInitials, sealX, sealY + Math.round(sealR * 0.32));
 
     // 4. Bottom Watermark Plaque (Translucent rounded plaque matching overlay)
     const plaqueMargin = Math.round(width * 0.04);
@@ -917,17 +941,17 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     ctx.lineWidth = Math.max(1.5, Math.round(width * 0.002));
     strokeRounded(plaqueX, plaqueY, plaqueW, plaqueH, plaqueRadius);
 
-    // Title: THE ROYAL WEDDING • STEVEN & BUNGA
+    // Title: Dynamic Couple Title
     ctx.fillStyle = '#FFF8E2';
     ctx.font = `bold ${Math.round(plaqueH * 0.30)}px "Cinzel", "Playfair Display", Georgia, serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('THE ROYAL WEDDING • STEVEN & BUNGA', width / 2, plaqueY + Math.round(plaqueH * 0.38));
+    ctx.fillText(photoboothTitle, width / 2, plaqueY + Math.round(plaqueH * 0.38));
 
-    // Subtitle: #StevenBungaRoyalWedding
+    // Subtitle: Dynamic Wedding Hashtag
     ctx.fillStyle = '#ECC880';
     ctx.font = `${Math.round(plaqueH * 0.22)}px monospace, "Courier New", sans-serif`;
-    ctx.fillText('#StevenBungaRoyalWedding', width / 2, plaqueY + Math.round(plaqueH * 0.72));
+    ctx.fillText(weddingHashtag, width / 2, plaqueY + Math.round(plaqueH * 0.72));
   };
 
   // Generic composite function for both live video stream and uploaded image
@@ -976,7 +1000,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     // Instant direct auto-download to device
     const a = document.createElement('a');
     a.href = dataUrl;
-    a.download = `Royal_Moments_HD_Steven_Bunga_${Date.now()}.png`;
+    a.download = `${safeFilenameBase}_HD_${Date.now()}.png`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1058,7 +1082,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     if (!capturedSnapshot) return;
     const a = document.createElement('a');
     a.href = capturedSnapshot;
-    a.download = `Royal_Moments_HD_Steven_Bunga_${Date.now()}.png`;
+    a.download = `${safeFilenameBase}_HD_${Date.now()}.png`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1079,7 +1103,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     const dataUrl = canvas.toDataURL('image/png');
     const a = document.createElement('a');
     a.href = dataUrl;
-    a.download = 'Royal_Frame_Stiker_Story_Steven_Bunga.png';
+    a.download = `Royal_Frame_Stiker_${cleanGroom}_${cleanBride}.png`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1125,21 +1149,25 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
 
       const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, 'image/png'));
       if (!blob) return;
-      const file = new File([blob], 'Royal_Story_Steven_Bunga.png', { type: 'image/png' });
+      const file = new File([blob], `${safeFilenameBase}_Story.png`, { type: 'image/png' });
+
+      const igGroom = invitation?.instagram_groom ? `@${invitation.instagram_groom.replace('@', '')}` : '';
+      const igBride = invitation?.instagram_bride ? `@${invitation.instagram_bride.replace('@', '')}` : '';
+      const shareCaption = `${weddingHashtag} ${igGroom} ${igBride}`.trim();
 
       // Check if Web Share API with files is supported
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
-          title: 'The Royal Wedding • Steven & Bunga',
-          text: '#StevenBungaRoyalWedding @steven_pratama @bunga_lestari'
+          title: `The Royal Wedding • ${groomName} & ${brideName}`,
+          text: shareCaption
         });
         toast.success('Pilih Instagram Stories untuk langsung membagikan foto!');
       } else {
         // Auto-download to device and open guidance modal
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'Royal_Story_Steven_Bunga.png';
+        a.download = `${safeFilenameBase}_Story.png`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -1172,7 +1200,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     }
   };
 
-  const handleCopyHashtag = (tag = '#StevenBungaRoyalWedding') => {
+  const handleCopyHashtag = (tag = weddingHashtag) => {
     navigator.clipboard.writeText(tag);
     setHasCopiedHashtag(true);
     toast.success(`Hashtag ${tag} berhasil disalin!`);
@@ -1245,17 +1273,6 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
     }
     return invitation?.settings?.default_guest_name || 'Tamu Undangan';
   })();
-
-  // Couple Info
-  const groomName = couple?.groom_nickname || couple?.groom_name || 'Steven';
-  const brideName = couple?.bride_nickname || couple?.bride_name || 'Bunga';
-  const groomFullName = couple?.groom_full_name || couple?.groom_name || 'Steven Pratama, S.Kom.';
-  const brideFullName = couple?.bride_full_name || couple?.bride_name || 'Bunga Citra Lestari, S.E.';
-  const groomParents = couple?.groom_parents || 'Putra pertama dari Bpk. Bambang Pratama & Ibu Siti Rahayu';
-  const brideParents = couple?.bride_parents || 'Putri kedua dari Bpk. Hendra Gunawan & Ibu Ratna Dewi';
-  const groomPhoto = couple?.groom_photo_url || couple?.groom_photo || '/photos/photo-7.jpg';
-  const bridePhoto = couple?.bride_photo_url || couple?.bride_photo || '/photos/photo-4.jpg';
-  const coupleInitials = `${groomName.charAt(0)} & ${brideName.charAt(0)}`;
 
   // Default Photos fallback with bespoke royal categories
   const rawGallery = (gallery && gallery.length > 0) ? gallery : [
@@ -2630,7 +2647,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
               </h2>
 
               <p className="relative z-10 text-xs sm:text-sm text-[#5B7569] max-w-lg mx-auto mb-4 font-light leading-relaxed">
-                Abadikan momen kebahagiaan Anda bersama kami menggunakan filter story Instagram eksklusif berbingkai emas 24K Royal Emerald khas Steven &amp; Bunga.
+                Abadikan momen kebahagiaan Anda bersama kami menggunakan filter story Instagram eksklusif berbingkai emas 24K Royal Emerald khas {groomName} &amp; {brideName}.
               </p>
 
               <RoyalCalligraphicDivider className="my-2 relative z-10 mb-8" />
@@ -2696,7 +2713,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       <div className="absolute top-12 left-1/2 -translate-x-1/2 z-10 text-center pointer-events-none">
                         <div className="w-12 h-12 mx-auto rounded-full bg-[#041610]/85 border-2 border-[#ECC880] shadow-[0_0_15px_rgba(236,200,128,0.6)] flex flex-col items-center justify-center p-1 backdrop-blur-xs">
                           <Crown className="w-3.5 h-3.5 text-[#ECC880] mb-0.5" />
-                          <span className="font-serif font-bold text-[9px] text-[#ECC880] tracking-widest leading-none">S&amp;B</span>
+                          <span className="font-serif font-bold text-[9px] text-[#ECC880] tracking-widest leading-none">{coupleInitials}</span>
                         </div>
                       </div>
 
@@ -2704,14 +2721,14 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                       <div className="absolute bottom-3 left-3 right-3 text-center z-10 pointer-events-none">
                         <div className="bg-[#041610]/85 backdrop-blur-md border border-[#ECC880]/60 rounded-xl p-2.5 shadow-lg">
                           <p className="font-serif font-bold text-[11px] text-[#FFF8E2] tracking-wider leading-snug">
-                            STEVEN &amp; BUNGA
+                            {groomName.toUpperCase()} &amp; {brideName.toUpperCase()}
                           </p>
                           <p className="text-[8px] font-serif text-[#ECC880] tracking-widest uppercase mt-0.5">
-                            Senin, 12 Oktober 2026 • Solo
+                            {events[0]?.date || 'Senin, 12 Oktober 2026'}
                           </p>
                           <div className="mt-1.5 pt-1.5 border-t border-[#ECC880]/30 inline-block px-2">
                             <span className="text-[8px] font-mono text-[#ECC880] font-semibold">
-                              #StevenBungaRoyalWedding
+                              {weddingHashtag}
                             </span>
                           </div>
                         </div>
@@ -2762,13 +2779,13 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                         Official Wedding Hashtag
                       </span>
                       <p className="font-mono font-bold text-xs sm:text-sm text-[#103023]">
-                        #StevenBungaRoyalWedding
+                        {weddingHashtag}
                       </p>
                     </div>
 
                     <button
                       type="button"
-                      onClick={() => handleCopyHashtag('#StevenBungaRoyalWedding')}
+                      onClick={() => handleCopyHashtag(weddingHashtag)}
                       className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#041610] text-[#ECC880] border border-[#ECC880]/60 hover:bg-[#ECC880] hover:text-[#041610] text-xs font-serif font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       {hasCopiedHashtag ? (
@@ -3435,7 +3452,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     <Sparkles className="w-3 h-3 text-[#ECC880]" />
                   </div>
                   <p className="font-serif text-[11px] xs:text-xs text-[#A0C4B4] max-w-xs mx-auto leading-relaxed">
-                    Pilih cara untuk mengabadikan momen berharga bersama bingkai royal Steven &amp; Bunga:
+                    Pilih cara untuk mengabadikan momen berharga bersama bingkai royal {groomName} &amp; {brideName}:
                   </p>
                 </div>
 
@@ -3552,7 +3569,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   )}
 
                   {/* Unified Royal Photobooth Frame Overlay (Exact match to Camera) */}
-                  <RoyalPhotoboothFrameOverlay />
+                  <RoyalPhotoboothFrameOverlay
+                    initials={coupleInitials}
+                    title={photoboothTitle}
+                    hashtag={weddingHashtag}
+                  />
                 </div>
 
                 {/* Primary Action: Bagikan Foto ke Instagram Story */}
@@ -3734,7 +3755,11 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                     )}
 
                     {/* Unified Royal Photobooth Frame Overlay */}
-                    <RoyalPhotoboothFrameOverlay />
+                    <RoyalPhotoboothFrameOverlay
+                      initials={coupleInitials}
+                      title={photoboothTitle}
+                      hashtag={weddingHashtag}
+                    />
                   </div>
 
                   {/* Shutter / Capture Button & Secondary Options */}
@@ -3846,7 +3871,7 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                   <div>
                     <p className="font-bold text-[#FFF8E2] font-serif">Foto Tersimpan di Galeri</p>
                     <p className="text-[11px] text-[#A0C4B4]">
-                      Foto berbingkai emas Steven &amp; Bunga sudah otomatis diunduh ke galeri ponsel Anda.
+                      Foto berbingkai emas {groomName} &amp; {brideName} sudah otomatis diunduh ke galeri ponsel Anda.
                     </p>
                   </div>
                 </div>
@@ -3894,7 +3919,9 @@ export const EmeraldVelvetRoyalTheme: React.FC<EmeraldVelvetRoyalThemeProps> = (
                 <button
                   type="button"
                   onClick={() => {
-                    handleCopyHashtag('#StevenBungaRoyalWedding @steven_pratama @bunga_lestari');
+                    const igGroom = invitation?.instagram_groom ? `@${invitation.instagram_groom.replace('@', '')}` : '';
+                    const igBride = invitation?.instagram_bride ? `@${invitation.instagram_bride.replace('@', '')}` : '';
+                    handleCopyHashtag(`${weddingHashtag} ${igGroom} ${igBride}`.trim());
                   }}
                   className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC880] border border-[#ECC880]/50 font-serif text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
