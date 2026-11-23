@@ -502,6 +502,7 @@ export const InvitationRenderer: React.FC = () => {
     (isAudiOvyolaSlug ? '/photos/audi-ovyola/entrance-audi-ovyola.jpg' : null) ||
     (isKualaLumpur ? '/themes/kuala-lumpur-heritage/cover-skyline.jpg' : null) ||
     (isAgniSlug ? '/themes/agni-putri/couple-arch.jpg' : null) ||
+    (isMidnightCelestial ? '/photos/photo-7.jpg' : null) ||
     invitation?.settings?.cover_photo ||
     couple?.cover_photo_url || 
     couple?.cover_photo ||
@@ -532,7 +533,7 @@ export const InvitationRenderer: React.FC = () => {
       animTimeoutRef.current = null;
     }
     setIsVideoExiting(true);
-    const exitDelay = (isNirwanaSarangan || isEmeraldVelvet) ? 180 : 1000;
+    const exitDelay = (isNirwanaSarangan || isEmeraldVelvet || isMidnightCelestial) ? 180 : 1000;
     setTimeout(() => {
       setOpeningStage('opened');
       setIsVideoExiting(false);
@@ -570,8 +571,8 @@ export const InvitationRenderer: React.FC = () => {
       }
     }
 
-    // Untuk tema 50k (Starter) dan 70k (Adat & Heritage / International), TIDAK ADA animasi opening/video entrance portal setelah klik buka undangan
-    if (is50kTheme || is70kTheme || isCuratedTheme || isNoirGold || isKualaLumpur || isIvoryPearl || isRoseGold || isTerracottaBoho || isSundaSiger || isMinangGadang || isBaliKamasan || isMoroccanNights) {
+    // Untuk tema 50k, 70k, dan Midnight Celestial (smooth starlight fade-out)
+    if (is50kTheme || is70kTheme || isCuratedTheme || isNoirGold || isKualaLumpur || isIvoryPearl || isRoseGold || isTerracottaBoho || isSundaSiger || isMinangGadang || isBaliKamasan || isMoroccanNights || isMidnightCelestial) {
       setIsCoverExiting(true);
       setTimeout(() => {
         setOpeningStage('opened');
@@ -2313,7 +2314,7 @@ export const InvitationRenderer: React.FC = () => {
             {/* Background Nebula & Twinkling Stars */}
             <div className="absolute inset-0 z-0 pointer-events-none">
               <img 
-                src={coverImage || '/photos/photo-3.jpg'} 
+                src={coverImage || '/photos/photo-7.jpg'} 
                 alt="Midnight Celestial Sky" 
                 className="w-full h-full object-cover object-center scale-105 filter brightness-75"
               />
