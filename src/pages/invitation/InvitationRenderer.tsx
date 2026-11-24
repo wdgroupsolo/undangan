@@ -511,7 +511,7 @@ export const InvitationRenderer: React.FC = () => {
     (isKualaLumpur ? '/themes/kuala-lumpur-heritage/cover-skyline.jpg' : null) ||
     (isAgniSlug ? '/themes/agni-putri/couple-arch.jpg' : null) ||
     (isMidnightCelestial ? '/photos/photo-7.jpg' : null) ||
-    (isBurgundyWine ? '/themes/burgundy-wine/theme-preview.jpg' : null) ||
+    (isBurgundyWine ? '/photos/photo-7.jpg' : null) ||
     invitation?.settings?.cover_photo ||
     couple?.cover_photo_url || 
     couple?.cover_photo ||
@@ -707,7 +707,7 @@ export const InvitationRenderer: React.FC = () => {
               : isMidnightCelestial
                 ? 'top-4 right-4 sm:top-5 sm:right-5 h-10 sm:h-11 px-3 sm:px-3.5 bg-[#050B18]/90 hover:bg-[#0A132B] backdrop-blur-md border border-[#38BDF8] text-[#38BDF8] hover:scale-105 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(56,189,248,0.4)] flex items-center gap-1.5'
               : isBurgundyWine
-                ? 'top-4 right-4 sm:top-5 sm:right-5 h-10 sm:h-11 px-3 sm:px-3.5 bg-[#1F050A]/90 hover:bg-[#2A060C] backdrop-blur-md border border-[#D4AF37] text-[#D4AF37] hover:scale-105 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(212,175,55,0.4)] flex items-center gap-1.5'
+                ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#140205]/90 hover:bg-[#2A060E] backdrop-blur-md border border-[#D4AF37] text-[#D4AF37] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(212,175,55,0.4)]'
                 : isSundaSiger
                   ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-white/95 backdrop-blur-md border border-[#D4AF37] text-[#2D4638] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(45,70,56,0.25)]'
                 : isMinangGadang
@@ -744,17 +744,10 @@ export const InvitationRenderer: React.FC = () => {
               </div>
             </div>
           ) : isBurgundyWine ? (
-            <div className="flex items-center gap-1.5">
-              <Disc 
-                className={`w-4 h-4 sm:w-5 sm:h-5 text-[#D4AF37] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
-                style={{ animationDuration: '3.5s' }}
-              />
-              <div className="flex items-end gap-[2px] h-3">
-                <span className={`w-[2.5px] rounded-full bg-[#D4AF37] transition-all duration-300 ${isPlaying ? 'h-3 animate-pulse' : 'h-1 opacity-40'}`} />
-                <span className={`w-[2.5px] rounded-full bg-[#FFF7F8] transition-all duration-300 ${isPlaying ? 'h-2 animate-bounce' : 'h-1 opacity-40'}`} style={{ animationDelay: '150ms' }} />
-                <span className={`w-[2.5px] rounded-full bg-[#80182A] transition-all duration-300 ${isPlaying ? 'h-2.5 animate-pulse' : 'h-1 opacity-40'}`} style={{ animationDelay: '300ms' }} />
-              </div>
-            </div>
+            <Disc 
+              className={`w-5 h-5 sm:w-6 sm:h-6 text-[#D4AF37] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
+              style={{ animationDuration: '4s' }}
+            />
           ) : (isNirwanaSarangan || isEmeraldVelvet) ? (
             <Disc 
               className={`w-5 h-5 sm:w-6 sm:h-6 text-[#ECC880] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
@@ -2448,23 +2441,23 @@ export const InvitationRenderer: React.FC = () => {
           </div>
         ) : isBurgundyWine ? (
           /* Burgundy Wine Classic Masterpiece Cover - Split Desktop (Right 58%/50% on Desktop, 100% on Mobile) */
-          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#B88B4A]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#1F050A] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#D4AF37]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#140205] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             {/* Burgundy Starlight Portal Gate Flash when Opening */}
             {isCoverExiting && (
               <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center overflow-hidden">
-                <div className="w-[180vw] h-[180vh] bg-[radial-gradient(circle_at_center,rgba(255,247,248,0.95)_0%,rgba(212,175,55,0.7)_35%,rgba(128,24,42,0.4)_60%,transparent_80%)] animate-pulse" />
+                <div className="w-[180vw] h-[180vh] bg-[radial-gradient(circle_at_center,rgba(255,247,248,0.95)_0%,rgba(212,175,55,0.7)_35%,rgba(155,27,48,0.4)_60%,transparent_80%)] animate-pulse" />
               </div>
             )}
 
             {/* Background Chateau Ballroom & Velvet Vignette */}
             <div className="absolute inset-0 z-0 pointer-events-none">
               <img 
-                src={coverImage || '/themes/burgundy-wine/theme-preview.jpg'} 
+                src={coverImage || '/photos/photo-7.jpg'} 
                 alt="Burgundy Wine Chateau" 
-                className="w-full h-full object-cover object-center scale-105 filter brightness-70"
+                className="w-full h-full object-cover object-center scale-105 filter brightness-75"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#1A0307] via-[#26050C]/90 to-[#1A0307]" />
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.18)_0%,rgba(26,3,7,0.95)_75%)]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#140205] via-[#24040B]/85 to-[#140205]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.2)_0%,rgba(20,2,5,0.95)_75%)]" />
             </div>
 
             {/* Floating Golden Stardust Embers */}
@@ -2477,9 +2470,9 @@ export const InvitationRenderer: React.FC = () => {
             <div className="absolute bottom-3 right-3"><BurgundyBaroqueCornerFlourish position="bottom-right" size={60} /></div>
 
             {/* Centered Invitation Card */}
-            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:max-h-[94vh] sm:rounded-3xl overflow-hidden flex flex-col justify-between items-center text-center bg-gradient-to-b from-[#2E0911]/95 via-[#26050C]/98 to-[#1A0307] text-white shadow-[0_25px_70px_rgba(0,0,0,0.85),_0_0_40px_rgba(212,175,55,0.3)] sm:border-2 sm:border-[#D4AF37]/50 p-4 xs:p-6 sm:p-7">
+            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:max-h-[94vh] sm:rounded-3xl overflow-hidden flex flex-col justify-between items-center text-center bg-gradient-to-b from-[#24040B]/95 via-[#1A0307]/98 to-[#140205] text-white shadow-[0_25px_70px_rgba(0,0,0,0.95),_0_0_40px_rgba(212,175,55,0.35)] sm:border-2 sm:border-[#D4AF37]/50 p-4 xs:p-6 sm:p-7">
               {/* Top Banner */}
-              <div className="w-full bg-[#1A0307]/90 py-1.5 xs:py-2 px-3 xs:px-4 rounded-full border border-[#D4AF37]/40 flex items-center justify-center gap-2 shadow-xs">
+              <div className="w-full bg-[#140205]/90 py-1.5 xs:py-2 px-3 xs:px-4 rounded-full border border-[#D4AF37]/40 flex items-center justify-center gap-2 shadow-xs">
                 <Wine className="w-3.5 h-3.5 text-[#D4AF37]" />
                 <p className="text-[9px] xs:text-[10px] font-serif font-bold tracking-[0.25em] uppercase text-[#F5E5C9]">
                   BURGUNDY WINE • MASTERPIECE
@@ -2491,7 +2484,7 @@ export const InvitationRenderer: React.FC = () => {
               <div className="flex-1 w-full flex flex-col items-center justify-center px-2 xs:px-4 py-2 xs:py-3 overflow-y-auto">
                 <div className="mb-2 xs:mb-2.5">
                   <BurgundyCameoFrame
-                    imageSrc={coverImage}
+                    imageSrc={coverImage || '/photos/photo-7.jpg'}
                     altText={`${groomDisplayName} & ${brideDisplayName}`}
                     frameWidthClass="w-32 xs:w-36 sm:w-44"
                     frameHeightClass="h-42 xs:h-48 sm:h-56"
@@ -2507,7 +2500,7 @@ export const InvitationRenderer: React.FC = () => {
                 </h1>
 
                 {/* Event Date Badge */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 xs:py-1 rounded-full bg-[#1A0307]/90 border border-[#D4AF37]/40 text-[#F5E5C9] text-[9.5px] xs:text-[10px] sm:text-[11px] font-serif font-medium mb-1.5 xs:mb-2">
+                <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 xs:py-1 rounded-full bg-[#140205]/90 border border-[#D4AF37]/40 text-[#F5E5C9] text-[9.5px] xs:text-[10px] sm:text-[11px] font-serif font-medium mb-1.5 xs:mb-2">
                   <Calendar className="w-3 h-3 text-[#D4AF37]" />
                   <span>
                     {events?.[0]?.event_date 
@@ -2517,7 +2510,7 @@ export const InvitationRenderer: React.FC = () => {
                 </div>
 
                 {/* Guest Box */}
-                <div className="w-full max-w-[270px] xs:max-w-xs p-2 xs:p-2.5 rounded-xl bg-[#1A0307]/85 border border-[#B88B4A]/40 text-center shadow-xs">
+                <div className="w-full max-w-[270px] xs:max-w-xs p-2 xs:p-2.5 rounded-xl bg-[#140205]/85 border border-[#D4AF37]/40 text-center shadow-xs">
                   <span className="text-[8.5px] xs:text-[9px] uppercase tracking-wider text-[#D4AF37] block font-serif">
                     Kepada Yth. Bapak/Ibu/Saudara/i:
                   </span>
@@ -2536,11 +2529,11 @@ export const InvitationRenderer: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleOpen}
-                  className="w-full py-2.5 xs:py-3 px-4 xs:px-6 rounded-full bg-gradient-to-r from-[#D4AF37] via-[#FFF7F8] to-[#D4AF37] text-[#1A0307] font-serif font-bold text-[11px] xs:text-xs uppercase tracking-[0.2em] shadow-[0_8px_24px_rgba(212,175,55,0.5)] hover:shadow-[0_10px_28px_rgba(212,175,55,0.7)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 xs:py-3 px-4 xs:px-6 rounded-full bg-gradient-to-r from-[#D4AF37] via-[#FFF7F8] to-[#D4AF37] text-[#140205] font-serif font-bold text-[11px] xs:text-xs uppercase tracking-[0.2em] shadow-[0_8px_24px_rgba(212,175,55,0.5)] hover:shadow-[0_10px_28px_rgba(212,175,55,0.7)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Wine className="w-4 h-4 text-[#1A0307]" />
+                  <Wine className="w-4 h-4 text-[#140205]" />
                   <span>BUKA UNDANGAN</span>
-                  <Sparkles className="w-4 h-4 text-[#1A0307] animate-pulse" />
+                  <Sparkles className="w-4 h-4 text-[#140205] animate-pulse" />
                 </button>
               </div>
             </div>
