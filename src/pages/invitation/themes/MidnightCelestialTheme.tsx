@@ -1417,10 +1417,14 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
 
           <div className="flex items-center gap-2 text-xs xl:text-sm text-[#94A3B8] mt-3 font-serif">
             <Calendar className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" />
-            <span>Senin, 12 Oktober 2026</span>
+            <span>
+              {displayEvents[0]?.event_date 
+                ? new Date(displayEvents[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                : 'Senin, 12 Oktober 2026'}
+            </span>
             <span className="text-[#38BDF8]/50">•</span>
             <MapPin className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" />
-            <span>The Celestial Ballroom, Jakarta</span>
+            <span className="truncate max-w-[180px]">{displayEvents[0]?.location || 'The Celestial Ballroom, Jakarta'}</span>
           </div>
 
           {/* Clean Floating Starlight Countdown */}
@@ -1500,10 +1504,10 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
                 frameHeightClass="h-54 xs:h-62 sm:h-74"
               />
             </div>
-            <div className="inline-flex items-center gap-1.5 xs:gap-2 px-3.5 xs:px-4 py-1 xs:py-1.5 rounded-full bg-[#0E1A38]/90 border border-[#94A3B8]/50 shadow-sm text-white">
-              <Crown className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-[#38BDF8]" />
+            <div className="inline-flex items-center gap-1.5 xs:gap-2 px-3.5 xs:px-4 py-1 xs:py-1.5 rounded-full bg-[#0E1A38]/90 border border-[#38BDF8]/50 shadow-sm text-white">
+              <Sparkles className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-[#38BDF8]" />
               <span className="text-[9px] xs:text-[10px] font-serif uppercase tracking-[0.2em] font-bold text-[#BAE6FD]">
-                Midnight Celestial Star
+                THE CELESTIAL WEDDING
               </span>
             </div>
           </ScrollReveal>
