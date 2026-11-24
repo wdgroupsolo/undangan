@@ -548,7 +548,7 @@ export const Home: React.FC = () => {
       name: 'Midnight Celestial Star',
       category: 'modern',
       categoryLabel: 'Modern Celestial',
-      tag: 'Masterpiece Modern',
+      tag: lang === 'id' ? 'Masterpiece • Promo Rp 150rb (Normal Rp 250rb)' : 'Masterpiece • Promo 150k (Reg. 250k)',
       preview: '/themes/navy-silver/theme-preview.jpg',
       demoUrl: '/invitation/steven-bunga?theme=navy-silver&demo=true',
       desc: lang === 'id'

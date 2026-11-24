@@ -522,7 +522,7 @@ export const REAL_EMERALD_VELVET_THEME: Theme = {
   created_at: '2026-11-15T15:06:00.000000+00:00'
 };
 
-// 8. Midnight Celestial Star (Rp 150.000 / Masterpiece)
+// 8. Midnight Celestial Star (Promo Rp 150.000 / Normal Rp 250.000 - Masterpiece)
 export const REAL_NAVY_SILVER_THEME: Theme = {
   id: 'a1111111-2222-3333-4444-555555555508',
   name: 'Midnight Celestial Star',
@@ -533,7 +533,7 @@ export const REAL_NAVY_SILVER_THEME: Theme = {
   preview_image: '/themes/navy-silver/theme-preview.jpg',
   thumbnail: '/themes/navy-silver/theme-preview.jpg',
   status: 'active',
-  badge: 'Tema Celestial Mewah',
+  badge: 'Masterpiece Promo (Hemat 40%)',
   rating: '5.0',
   features: ['Nuansa Langit Midnight Navy & Taburan Bintang', 'Aksen Perak Starlight & Bulan Sabit Romantis', 'Kisah Cinta, Countdown & Lokasi Acara', 'RSVP Digital & Hadiah Pernikahan Bank'],
   theme_config: { primaryColor: '#0C172E', secondaryColor: '#142242', accentColor: '#CBD5E1', style: 'navy-silver' },
