@@ -2378,7 +2378,7 @@ export const InvitationRenderer: React.FC = () => {
                   </p>
                   <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#38BDF8]/15 text-[#38BDF8] text-[8.5px] xs:text-[9px] font-serif font-semibold mt-1">
                     <Crown size={10} />
-                    <span>Tamu Undangan VIP 150k</span>
+                    <span>Tamu Undangan VIP</span>
                   </div>
                 </div>
               </div>
