@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { 
   Heart, Calendar, Clock, MapPin, Copy, Check, Send, 
-  Sparkles, Gift, MessageCircle, ChevronDown, ChevronRight,
+  Sparkles, Gift, MessageCircle, ChevronDown, ChevronRight, ChevronLeft,
   ExternalLink, Bookmark, Crown, Video, Shirt, Info,
   Camera, SwitchCamera, Image as ImageIcon, Loader2, Download,
   QrCode, Barcode, CheckCircle2, Star, Moon, Compass, Gem, X, Music, CreditCard,
@@ -287,6 +287,47 @@ export const CelestialBackgroundCanvas: React.FC<{ className?: string }> = ({ cl
 };
 
 // =========================================================================
+// FLOATING CELESTIAL STARDUST OVERLAY (Twinkling ambient particles & star sparkles)
+// =========================================================================
+export const FloatingCelestialStardust: React.FC<{ count?: number; className?: string }> = ({ count = 28, className = '' }) => {
+  return (
+    <div className={`fixed inset-0 pointer-events-none z-20 overflow-hidden ${className}`}>
+      {[...Array(count)].map((_, i) => {
+        const size = (i % 4) * 1.5 + 2;
+        const isStarShape = i % 5 === 0;
+        const isCyan = i % 3 === 0;
+        const isIndigo = i % 4 === 0;
+        const color = isCyan ? '#38BDF8' : (isIndigo ? '#818CF8' : '#F8FAFC');
+        const duration = (i % 4) * 2 + 3.5;
+        const delay = (i % 5) * 0.7;
+        return (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              backgroundColor: isStarShape ? 'transparent' : color,
+              top: `${(i * 17 + 5) % 96}%`,
+              left: `${(i * 23 + 3) % 96}%`,
+              opacity: ((i % 5) + 3) / 10,
+              boxShadow: isStarShape ? 'none' : `0 0 8px ${color}, 0 0 16px ${color}`,
+              animation: `celestialFloat ${duration}s ease-in-out infinite alternate ${delay}s`,
+            }}
+          >
+            {isStarShape && (
+              <span style={{ color, fontSize: `${size + 4}px`, lineHeight: 1 }} className="drop-shadow-[0_0_8px_#38BDF8] select-none">
+                ✦
+              </span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// =========================================================================
 // CELESTIAL STARLIGHT DIVIDER (Silver Constellation & Crescent)
 // =========================================================================
 export const CelestialStarlightDivider: React.FC<{ className?: string }> = ({ className = '' }) => (
@@ -532,8 +573,9 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [selectedCalendarEvent, setSelectedCalendarEvent] = useState<CalendarEventData | null>(null);
 
-  // Gallery fullscreen lightbox modal
+  // Gallery fullscreen lightbox modal & category filter tabs
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
+  const [activeGalleryTab, setActiveGalleryTab] = useState<'all' | 'prewedding' | 'ceremony' | 'reception'>('all');
 
   // AR Photobooth Camera Modal State (150k VIP Feature)
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
@@ -696,15 +738,16 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
     setTimeout(() => setIsCopied(null), 2500);
   };
 
-  // Gallery items with rock-solid fallback to valid Steven & Bunga photos
+  // Gallery items with rock-solid fallback & category mapping
   const rawGallery = gallery && gallery.length > 0 ? gallery : [
-    { url: '/photos/photo-7.jpg', caption: 'Starlight Romance' },
-    { url: '/photos/photo-1.jpg', caption: 'Kebersamaan & Tawa Bahagia' },
-    { url: '/photos/photo-4.jpg', caption: 'Pesona Anggun Mempelai Putri' },
-    { url: '/photos/photo-5.jpg', caption: 'Genggaman Menuju Masa Depan' },
-    { url: '/photos/photo-6.jpg', caption: 'Senyum Bahagia Hari Sakral' },
-    { url: '/photos/photo-8.jpg', caption: 'Langkah Menuju Janji Suci' },
+    { url: '/photos/photo-7.jpg', caption: 'Starlight Romance', category: 'prewedding' },
+    { url: '/photos/photo-1.jpg', caption: 'Kebersamaan & Tawa Bahagia', category: 'prewedding' },
+    { url: '/photos/photo-4.jpg', caption: 'Pesona Anggun Mempelai Putri', category: 'ceremony' },
+    { url: '/photos/photo-5.jpg', caption: 'Genggaman Menuju Masa Depan', category: 'ceremony' },
+    { url: '/photos/photo-6.jpg', caption: 'Senyum Bahagia Hari Sakral', category: 'reception' },
+    { url: '/photos/photo-8.jpg', caption: 'Langkah Menuju Janji Suci', category: 'reception' },
   ];
+  const defaultCats = ['prewedding', 'prewedding', 'ceremony', 'ceremony', 'reception', 'reception'];
   const displayGallery = rawGallery.map((item: any, i: number) => ({
     url: item?.url || item?.image_url || [
       '/photos/photo-7.jpg',
@@ -714,8 +757,13 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
       '/photos/photo-6.jpg',
       '/photos/photo-8.jpg'
     ][i % 6],
-    caption: item?.caption || `Momen Bahagia ${i + 1}`
+    caption: item?.caption || `Momen Bahagia ${i + 1}`,
+    category: item?.category || defaultCats[i % 6],
   }));
+
+  const filteredGallery = activeGalleryTab === 'all'
+    ? displayGallery
+    : displayGallery.filter((item: any) => item.category === activeGalleryTab);
 
   // Events
   const displayEvents = events.length > 0 ? events : [
@@ -1298,10 +1346,18 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
           50% { top: 96%; opacity: 1; }
           100% { top: 0%; opacity: 0.8; }
         }
+        @keyframes celestialFloat {
+          0% { transform: translateY(0px) scale(0.85); opacity: 0.25; }
+          50% { transform: translateY(-16px) scale(1.15); opacity: 0.9; }
+          100% { transform: translateY(-32px) scale(0.85); opacity: 0.25; }
+        }
       `}</style>
 
       {/* Interactive Twinkling Stars & Meteor Canvas */}
       <CelestialBackgroundCanvas />
+
+      {/* Floating Starlight Particles & Shimmering Constellations Overlay */}
+      <FloatingCelestialStardust count={32} />
 
       {/* Atmospheric Nebula Glows */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -1412,7 +1468,7 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
       {/* =========================================================================
           RIGHT MAIN SCROLLABLE CONTENT (Mobile Fullscreen / Desktop Right Panel)
           ========================================================================= */}
-      <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen relative z-10 pb-28 shadow-2xl lg:border-l lg:border-[#94A3B8]/30 bg-[#030712]">
+      <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen relative z-10 pb-28 shadow-2xl lg:border-l lg:border-[#94A3B8]/30 bg-[#030712]/92 backdrop-blur-xs">
         
         {/* =========================================================================
             SECTION 1: HERO / SAMPUL
@@ -1570,18 +1626,18 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
                 )}
               </ScrollReveal>
 
-              {/* Cosmic Ring Connection Bridge (Spaced with elegant breathing room) */}
-              <div className="py-6 sm:py-8 flex items-center justify-center">
-                <div className="w-12 sm:w-20 h-[1px] bg-gradient-to-r from-transparent via-[#94A3B8]/40 to-[#38BDF8]" />
-                <div className="mx-3 sm:mx-4 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-[#0B152B] border border-[#38BDF8] flex items-center justify-center shadow-[0_0_18px_rgba(56,189,248,0.35)]">
+              {/* Cosmic Ring Connection Bridge (Spaced with generous breathing room) */}
+              <div className="my-10 sm:my-14 py-2 flex items-center justify-center">
+                <div className="w-14 sm:w-24 h-[1px] bg-gradient-to-r from-transparent via-[#94A3B8]/40 to-[#38BDF8]" />
+                <div className="mx-4 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-[#0B152B] border border-[#38BDF8] flex items-center justify-center shadow-[0_0_18px_rgba(56,189,248,0.35)]">
                   <Heart className="w-4 sm:w-5 h-4 sm:h-5 text-[#38BDF8] fill-[#38BDF8]/30 animate-pulse" />
                 </div>
-                <div className="w-12 sm:w-20 h-[1px] bg-gradient-to-l from-transparent via-[#94A3B8]/40 to-[#38BDF8]" />
+                <div className="w-14 sm:w-24 h-[1px] bg-gradient-to-l from-transparent via-[#94A3B8]/40 to-[#38BDF8]" />
               </div>
 
               {/* Bride Profile */}
-              <ScrollReveal animation="fade-up" delay={250} className="flex flex-col items-center text-center pt-2 sm:pt-4">
-                <div className="mb-3 pt-7 sm:pt-9">
+              <ScrollReveal animation="fade-up" delay={250} className="flex flex-col items-center text-center pt-8 sm:pt-12">
+                <div className="mb-3 pt-6 sm:pt-8">
                   <CelestialCrescentFrame
                     imageSrc={bridePhoto}
                     altText={brideName}
@@ -1973,53 +2029,66 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
         </section>
 
         {/* =========================================================================
-            SECTION 6: KISAH CINTA (LOVE STORY MILESTONE)
+            SECTION 6: KISAH CINTA (CONSTELLATION LOVE JOURNEY)
             ========================================================================= */}
-        <section id="kisah" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#030712] to-[#060D1E]">
+        <section id="kisah" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#030712] via-[#060D1E] to-[#030712]">
           <div className="max-w-xl mx-auto relative z-10">
             <ScrollReveal animation="fade-up" className="text-center">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#38BDF8] font-serif font-bold">
                 PERJALANAN CINTA
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
-                Kisah Bintang Kami
+                Rasi Bintang Cinta Kami
               </h2>
               <CelestialStarlightDivider />
+              <p className="text-xs text-[#94A3B8] max-w-sm mx-auto mb-2 font-serif italic">
+                Setiap pertemuan dan janji suci kami tertulis indah dalam peta rasi semesta.
+              </p>
             </ScrollReveal>
 
-            <div className="mt-8 space-y-6 relative before:absolute before:inset-y-0 before:left-4 sm:before:left-1/2 before:-translate-x-1/2 before:w-[1.5px] before:bg-gradient-to-b before:from-transparent before:via-[#38BDF8] before:to-transparent">
-              {displayStories.map((item: any, idx: number) => (
-                <ScrollReveal key={idx} animation="fade-up" delay={idx * 150}>
-                  <div className={`relative flex flex-col sm:flex-row items-start sm:items-center ${idx % 2 === 0 ? 'sm:flex-row-reverse' : ''} gap-4`}>
-                    <div className="w-full sm:w-1/2 pl-10 sm:pl-0 sm:px-6">
-                      <div className="p-4 sm:p-5 rounded-2xl bg-[#0B152B]/85 border border-[#94A3B8]/30 shadow-md">
-                        <span className="text-[10px] font-mono font-bold text-[#38BDF8] tracking-widest px-2.5 py-0.5 rounded-full bg-[#38BDF8]/15 border border-[#38BDF8]/30">
-                          {item.year}
-                        </span>
-                        <h4 className="font-serif font-bold text-base text-white mt-2">
-                          {item.title}
-                        </h4>
-                        <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
-                          {item.story}
-                        </p>
+            {/* Radiant Constellation Timeline */}
+            <div className="mt-8 space-y-7 relative before:absolute before:inset-y-0 before:left-5 sm:before:left-1/2 before:-translate-x-1/2 before:w-[2px] before:bg-gradient-to-b before:from-transparent before:via-[#38BDF8] before:to-transparent">
+              {displayStories.map((item: any, idx: number) => {
+                const orbitLabels = ['ORBIT I • PERTEMUAN KOSMIS', 'ORBIT II • JANJI BINTANG', 'ORBIT III • MENUJU KEABADIAN'];
+                return (
+                  <ScrollReveal key={idx} animation="fade-up" delay={idx * 150}>
+                    <div className={`relative flex flex-col sm:flex-row items-start sm:items-center ${idx % 2 === 0 ? 'sm:flex-row-reverse' : ''} gap-4`}>
+                      <div className="w-full sm:w-1/2 pl-12 sm:pl-0 sm:px-6">
+                        <div className="relative p-5 rounded-2xl bg-gradient-to-br from-[#0E1A38]/95 via-[#0A132B] to-[#040817] border border-[#38BDF8]/40 shadow-[0_12px_30px_rgba(0,0,0,0.6)] hover:border-[#38BDF8]/70 transition-all group overflow-hidden">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-[9px] font-mono tracking-widest text-[#38BDF8] uppercase font-bold px-2 py-0.5 rounded-full bg-[#38BDF8]/15 border border-[#38BDF8]/30">
+                              {orbitLabels[idx % 3]}
+                            </span>
+                            <span className="text-[11px] font-mono font-bold text-white">
+                              {item.year}
+                            </span>
+                          </div>
+                          <h4 className="font-serif font-bold text-base text-white group-hover:text-[#BAE6FD] transition-colors">
+                            {item.title}
+                          </h4>
+                          <p className="text-xs text-[#CBD5E1] mt-1.5 leading-relaxed font-light">
+                            {item.story}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Central Glowing Constellation Node */}
+                      <div className="absolute left-5 sm:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[#040814] border-2 border-[#38BDF8] flex items-center justify-center z-10 shadow-[0_0_18px_rgba(56,189,248,0.7)]">
+                        <div className="w-3 h-3 rounded-full bg-white shadow-[0_0_8px_#38BDF8]" />
+                        <div className="absolute -inset-1 rounded-full border border-[#38BDF8]/40 animate-ping pointer-events-none" />
                       </div>
                     </div>
-
-                    {/* Central Starlight Node */}
-                    <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#050B18] border-2 border-[#38BDF8] flex items-center justify-center z-10 shadow-[0_0_12px_#38BDF8]">
-                      <Star className="w-3.5 h-3.5 text-[#38BDF8] fill-[#38BDF8]" />
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
+                  </ScrollReveal>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* =========================================================================
-            SECTION 7: GALERI FOTO (STARLIGHT MOMENTS)
+            SECTION 7: GALERI FOTO (STARLIGHT EDITORIAL MAGAZINE & TABS)
             ========================================================================= */}
-        <section id="galeri" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden">
+        <section id="galeri" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#030712] via-[#050B18] to-[#030712]">
           <div className="max-w-xl mx-auto relative z-10">
             <ScrollReveal animation="fade-up" className="text-center">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#38BDF8] font-serif font-bold">
@@ -2029,22 +2098,85 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
                 Galeri Foto Bahagia
               </h2>
               <CelestialStarlightDivider />
+              <p className="text-xs text-[#94A3B8] max-w-sm mx-auto mb-4 font-serif">
+                Dokumentasi penuh cinta dan kehangatan dalam bingkai malam kosmis.
+              </p>
             </ScrollReveal>
 
-            {/* Photo Grid */}
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {displayGallery.map((item: any, idx: number) => (
-                <ScrollReveal key={idx} animation="zoom-in" delay={idx * 80}>
+            {/* Category Filter Tabs */}
+            <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap mt-4 mb-6">
+              {[
+                { id: 'all', label: 'Semua Momen', count: displayGallery.length },
+                { id: 'prewedding', label: 'Prewedding', count: displayGallery.filter((i: any) => i.category === 'prewedding').length },
+                { id: 'ceremony', label: 'Akad / Janji Suci', count: displayGallery.filter((i: any) => i.category === 'ceremony').length },
+                { id: 'reception', label: 'Resepsi Starlight', count: displayGallery.filter((i: any) => i.category === 'reception').length },
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveGalleryTab(tab.id as any);
+                    setActivePhotoIndex(null);
+                  }}
+                  className={`px-3 sm:px-3.5 py-1.5 rounded-full text-[11px] font-serif transition-all cursor-pointer shadow-xs inline-flex items-center gap-1.5 ${
+                    activeGalleryTab === tab.id
+                      ? 'bg-gradient-to-r from-[#38BDF8] via-white to-[#38BDF8] text-[#030712] font-bold shadow-[0_0_15px_rgba(56,189,248,0.4)] scale-105'
+                      : 'bg-[#0B152B]/85 text-[#94A3B8] border border-[#38BDF8]/30 hover:text-white hover:border-[#38BDF8]'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono ${
+                    activeGalleryTab === tab.id ? 'bg-[#030712]/20 text-[#030712] font-bold' : 'bg-white/10 text-[#38BDF8]'
+                  }`}>
+                    {tab.count}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* Featured Masterpiece Hero Showcase (Cinema Mode) */}
+            {filteredGallery.length > 0 && (
+              <ScrollReveal animation="zoom-in" duration={850} className="mb-4">
+                <div 
+                  onClick={() => setActivePhotoIndex(0)}
+                  className="relative aspect-[16/10] sm:aspect-[16/9] rounded-3xl overflow-hidden border-2 border-[#38BDF8]/60 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_25px_rgba(56,189,248,0.3)] bg-[#0A132B] group cursor-pointer"
+                >
+                  <img
+                    src={filteredGallery[0].url}
+                    alt={filteredGallery[0].caption}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#030712]/90 via-[#030712]/20 to-transparent flex items-end justify-between p-4 sm:p-6">
+                    <div>
+                      <span className="text-[9px] font-mono tracking-widest text-[#38BDF8] uppercase font-bold block mb-1">
+                        ★ FEATURED • STARLIGHT PORTRAIT
+                      </span>
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-white drop-shadow-sm">
+                        {filteredGallery[0].caption}
+                      </h3>
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-[#0E1A38]/90 border border-[#38BDF8] text-[#38BDF8] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                      <Maximize2 size={16} />
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            )}
+
+            {/* Paired Editorial Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+              {filteredGallery.slice(1).map((item: any, idx: number) => (
+                <ScrollReveal key={idx + 1} animation="zoom-in" delay={idx * 80}>
                   <div
-                    onClick={() => setActivePhotoIndex(idx)}
+                    onClick={() => setActivePhotoIndex(idx + 1)}
                     className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-[#94A3B8]/40 shadow-lg cursor-pointer group bg-[#0E1A38]"
                   >
                     <img
                       src={item.url}
-                      alt={item.caption || `Foto ${idx + 1}`}
+                      alt={item.caption || `Foto ${idx + 2}`}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-95"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#030712]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#030712]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
                       <span className="text-[10px] font-serif text-white tracking-wide">
                         {item.caption || 'Momen Bahagia'}
                       </span>
@@ -2625,29 +2757,61 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
       </nav>
 
       {/* =========================================================================
-          PORTALED FULLSCREEN LIGHTBOX FOR GALLERY
+          PORTALED FULLSCREEN LIGHTBOX FOR GALLERY (Interactive Carousel & Counter)
           ========================================================================= */}
       {activePhotoIndex !== null && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fade-in select-none">
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/92 backdrop-blur-md p-3 xs:p-4 animate-fade-in select-none">
+          {/* Close button */}
           <button
             type="button"
             onClick={() => setActivePhotoIndex(null)}
-            className="absolute top-5 right-5 w-10 h-10 rounded-full bg-[#0E1A38]/90 border border-[#94A3B8] text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-transform cursor-pointer z-20 shadow-lg"
+            className="absolute top-5 right-5 w-11 h-11 rounded-full bg-[#0E1A38]/90 border border-[#38BDF8]/60 text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-transform cursor-pointer z-30 shadow-[0_0_15px_rgba(56,189,248,0.4)]"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 text-[#38BDF8]" />
           </button>
 
-          <div className="relative max-w-lg w-full max-h-[85vh] rounded-3xl overflow-hidden border border-[#38BDF8]/60 shadow-2xl bg-[#050B18]">
+          {/* Photo Counter Pill */}
+          <div className="absolute top-5 left-5 z-30 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B152B]/90 border border-[#38BDF8]/50 text-white text-[10px] sm:text-xs font-mono font-bold shadow-md">
+            <Sparkles size={12} className="text-[#38BDF8]" />
+            <span>Foto {activePhotoIndex + 1} dari {filteredGallery.length}</span>
+          </div>
+
+          {/* Previous Arrow */}
+          {filteredGallery.length > 1 && (
+            <button
+              type="button"
+              onClick={() => setActivePhotoIndex(prev => prev !== null ? (prev - 1 + filteredGallery.length) % filteredGallery.length : 0)}
+              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-[#0B152B]/85 hover:bg-[#162955] border border-[#38BDF8]/60 text-[#38BDF8] flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer z-20 shadow-lg"
+            >
+              <ChevronLeft size={22} />
+            </button>
+          )}
+
+          {/* Next Arrow */}
+          {filteredGallery.length > 1 && (
+            <button
+              type="button"
+              onClick={() => setActivePhotoIndex(prev => prev !== null ? (prev + 1) % filteredGallery.length : 0)}
+              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-[#0B152B]/85 hover:bg-[#162955] border border-[#38BDF8]/60 text-[#38BDF8] flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer z-20 shadow-lg"
+            >
+              <ChevronRight size={22} />
+            </button>
+          )}
+
+          <div className="relative max-w-lg w-full max-h-[85vh] rounded-3xl overflow-hidden border-2 border-[#38BDF8]/60 shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(56,189,248,0.3)] bg-[#050B18]">
             <img
-              src={displayGallery[activePhotoIndex]?.url}
-              alt={displayGallery[activePhotoIndex]?.caption || 'Preview'}
-              className="w-full h-auto max-h-[75vh] object-contain mx-auto"
+              src={filteredGallery[activePhotoIndex]?.url}
+              alt={filteredGallery[activePhotoIndex]?.caption || 'Preview'}
+              className="w-full h-auto max-h-[72vh] object-contain mx-auto"
             />
-            {displayGallery[activePhotoIndex]?.caption && (
-              <div className="p-4 text-center bg-[#0B152B]/95 border-t border-[#94A3B8]/30">
-                <p className="font-serif text-sm font-bold text-white">
-                  {displayGallery[activePhotoIndex]?.caption}
+            {filteredGallery[activePhotoIndex]?.caption && (
+              <div className="p-3.5 sm:p-4 text-center bg-[#0B152B]/95 border-t border-[#38BDF8]/30">
+                <p className="font-serif text-xs sm:text-sm font-bold text-white tracking-wide">
+                  {filteredGallery[activePhotoIndex]?.caption}
                 </p>
+                <span className="text-[9.5px] font-mono text-[#38BDF8] uppercase tracking-widest block mt-0.5">
+                  THE CELESTIAL MEMORIES
+                </span>
               </div>
             )}
           </div>

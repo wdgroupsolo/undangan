@@ -696,7 +696,7 @@ export const InvitationRenderer: React.FC = () => {
               : (isNirwanaSarangan || isEmeraldVelvet)
                 ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#041610]/90 hover:bg-[#08261B] backdrop-blur-md border border-[#ECC880] text-[#ECC880] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(236,200,128,0.4)]'
               : isMidnightCelestial
-                ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#050B18]/90 hover:bg-[#0A132B] backdrop-blur-md border border-[#38BDF8] text-[#38BDF8] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(56,189,248,0.4)]'
+                ? 'top-4 right-4 sm:top-5 sm:right-5 h-10 sm:h-11 px-3 sm:px-3.5 bg-[#050B18]/90 hover:bg-[#0A132B] backdrop-blur-md border border-[#38BDF8] text-[#38BDF8] hover:scale-105 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(56,189,248,0.4)] flex items-center gap-1.5'
                 : isSundaSiger
                   ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-white/95 backdrop-blur-md border border-[#D4AF37] text-[#2D4638] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(45,70,56,0.25)]'
                 : isMinangGadang
@@ -721,10 +721,17 @@ export const InvitationRenderer: React.FC = () => {
               <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5" />
             )
           ) : isMidnightCelestial ? (
-            <Disc 
-              className={`w-5 h-5 sm:w-6 sm:h-6 text-[#38BDF8] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
-              style={{ animationDuration: '4s' }}
-            />
+            <div className="flex items-center gap-1.5">
+              <Disc 
+                className={`w-4 h-4 sm:w-5 sm:h-5 text-[#38BDF8] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
+                style={{ animationDuration: '3.5s' }}
+              />
+              <div className="flex items-end gap-[2px] h-3">
+                <span className={`w-[2.5px] rounded-full bg-[#38BDF8] transition-all duration-300 ${isPlaying ? 'h-3 animate-pulse' : 'h-1 opacity-40'}`} />
+                <span className={`w-[2.5px] rounded-full bg-white transition-all duration-300 ${isPlaying ? 'h-2 animate-bounce' : 'h-1 opacity-40'}`} style={{ animationDelay: '150ms' }} />
+                <span className={`w-[2.5px] rounded-full bg-[#818CF8] transition-all duration-300 ${isPlaying ? 'h-2.5 animate-pulse' : 'h-1 opacity-40'}`} style={{ animationDelay: '300ms' }} />
+              </div>
+            </div>
           ) : (isNirwanaSarangan || isEmeraldVelvet) ? (
             <Disc 
               className={`w-5 h-5 sm:w-6 sm:h-6 text-[#ECC880] transition-colors ${isPlaying ? 'animate-spin' : 'opacity-60'}`} 
@@ -2311,6 +2318,13 @@ export const InvitationRenderer: React.FC = () => {
         ) : isMidnightCelestial ? (
           /* Midnight Celestial Star Masterpiece Cover - Split Desktop (Right 58%/50% on Desktop, 100% on Mobile) */
           <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#38BDF8]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#030712] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            {/* Celestial Starlight Portal Gate Flash when Opening */}
+            {isCoverExiting && (
+              <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center overflow-hidden">
+                <div className="w-[180vw] h-[180vh] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.95)_0%,rgba(56,189,248,0.7)_35%,rgba(129,140,248,0.3)_60%,transparent_80%)] animate-pulse" />
+              </div>
+            )}
+
             {/* Background Nebula & Twinkling Stars */}
             <div className="absolute inset-0 z-0 pointer-events-none">
               <img 
