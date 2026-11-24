@@ -707,7 +707,7 @@ export const InvitationRenderer: React.FC = () => {
               : isMidnightCelestial
                 ? 'top-4 right-4 sm:top-5 sm:right-5 h-10 sm:h-11 px-3 sm:px-3.5 bg-[#050B18]/90 hover:bg-[#0A132B] backdrop-blur-md border border-[#38BDF8] text-[#38BDF8] hover:scale-105 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(56,189,248,0.4)] flex items-center gap-1.5'
               : isBurgundyWine
-                ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#140205]/90 hover:bg-[#2A060E] backdrop-blur-md border border-[#D4AF37] text-[#D4AF37] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(212,175,55,0.4)]'
+                ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-[#19030A]/90 hover:bg-[#2B0713] backdrop-blur-md border border-[#E5C57B] text-[#E5C57B] hover:scale-110 active:scale-95 shadow-[0_4px_18px_rgba(0,0,0,0.65)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5E5C9]'
                 : isSundaSiger
                   ? 'top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-11 sm:h-11 bg-white/95 backdrop-blur-md border border-[#D4AF37] text-[#2D4638] hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(45,70,56,0.25)]'
                 : isMinangGadang
@@ -2440,100 +2440,84 @@ export const InvitationRenderer: React.FC = () => {
             </div>
           </div>
         ) : isBurgundyWine ? (
-          /* Burgundy Wine Classic Masterpiece Cover - Split Desktop (Right 58%/50% on Desktop, 100% on Mobile) */
-          <div className={`fixed top-0 right-0 h-full w-full lg:w-7/12 xl:w-1/2 z-50 flex items-center justify-center overflow-hidden select-none border-l border-[#D4AF37]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#140205] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-            {/* Burgundy Starlight Portal Gate Flash when Opening */}
+          /* Burgundy Wine Classic Masterpiece Cover - Full Editorial Right Folio (Right 58%/50% Desktop, Fullscreen Mobile) */
+          <div className={`fixed top-0 right-0 h-[100dvh] w-full lg:w-7/12 xl:w-1/2 z-50 flex flex-col justify-between items-center text-center p-6 sm:p-8 overflow-hidden select-none lg:border-l lg:border-[#D4AF37]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#19030A] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            {/* Burgundy Portal Flash when Opening */}
             {isCoverExiting && (
               <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center overflow-hidden">
-                <div className="w-[180vw] h-[180vh] bg-[radial-gradient(circle_at_center,rgba(255,247,248,0.95)_0%,rgba(212,175,55,0.7)_35%,rgba(155,27,48,0.4)_60%,transparent_80%)] animate-pulse" />
+                <div className="w-[180vw] h-[180vh] bg-[radial-gradient(circle_at_center,rgba(255,247,248,0.95)_0%,rgba(229,197,123,0.65)_35%,rgba(128,22,54,0.45)_60%,transparent_80%)]" />
               </div>
             )}
 
-            {/* Background Chateau Ballroom & Velvet Vignette */}
+            {/* Background Velvet Radiance */}
             <div className="absolute inset-0 z-0 pointer-events-none">
               <img 
                 src={coverImage || '/photos/photo-7.jpg'} 
-                alt="Burgundy Wine Chateau" 
-                className="w-full h-full object-cover object-center scale-105 filter brightness-75"
+                alt="Burgundy Wine Velvet Backdrop" 
+                className="w-full h-full object-cover object-center scale-105 opacity-25 filter blur-[2px]"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#140205] via-[#24040B]/85 to-[#140205]" />
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.2)_0%,rgba(20,2,5,0.95)_75%)]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#19030A]/92 via-[#2B0713]/85 to-[#19030A]/96" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_42%,rgba(128,22,54,0.42)_0%,rgba(43,7,19,0.28)_55%,rgba(25,3,10,0.95)_100%)]" />
             </div>
 
-            {/* Floating Golden Stardust Embers */}
-            <FloatingBurgundyStardust count={18} />
+            {/* Ambient Stardust */}
+            <FloatingBurgundyStardust count={14} />
 
-            {/* Corner Baroque Flourishes */}
-            <div className="absolute top-3 left-3"><BurgundyBaroqueCornerFlourish position="top-left" size={60} /></div>
-            <div className="absolute top-3 right-3"><BurgundyBaroqueCornerFlourish position="top-right" size={60} /></div>
-            <div className="absolute bottom-3 left-3"><BurgundyBaroqueCornerFlourish position="bottom-left" size={60} /></div>
-            <div className="absolute bottom-3 right-3"><BurgundyBaroqueCornerFlourish position="bottom-right" size={60} /></div>
+            {/* Architectural Gold Border & Corner Flourishes Framing the Cover Folio */}
+            <div className="absolute inset-3 sm:inset-5 rounded-3xl border border-[#D4AF37]/25 pointer-events-none z-10" />
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4"><BurgundyBaroqueCornerFlourish position="top-left" size={50} /></div>
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4"><BurgundyBaroqueCornerFlourish position="top-right" size={50} /></div>
+            <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4"><BurgundyBaroqueCornerFlourish position="bottom-left" size={50} /></div>
+            <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4"><BurgundyBaroqueCornerFlourish position="bottom-right" size={50} /></div>
 
-            {/* Centered Invitation Card */}
-            <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-[420px] sm:max-h-[94vh] sm:rounded-3xl overflow-hidden flex flex-col justify-between items-center text-center bg-gradient-to-b from-[#24040B]/95 via-[#1A0307]/98 to-[#140205] text-white shadow-[0_25px_70px_rgba(0,0,0,0.95),_0_0_40px_rgba(212,175,55,0.35)] sm:border-2 sm:border-[#D4AF37]/50 p-4 xs:p-6 sm:p-7">
-              {/* Top Banner */}
-              <div className="w-full bg-[#140205]/90 py-1.5 xs:py-2 px-3 xs:px-4 rounded-full border border-[#D4AF37]/40 flex items-center justify-center gap-2 shadow-xs">
-                <Wine className="w-3.5 h-3.5 text-[#D4AF37]" />
-                <p className="text-[9px] xs:text-[10px] font-serif font-bold tracking-[0.25em] uppercase text-[#F5E5C9]">
-                  BURGUNDY WINE • MASTERPIECE
+            {/* Inner Editorial Content Column */}
+            <div className="relative z-20 w-full max-w-sm sm:max-w-md h-full mx-auto flex flex-col justify-between items-center text-center py-2 sm:py-4 overflow-y-auto no-scrollbar">
+              {/* Top Editorial Title */}
+              <div className="w-full pt-2 sm:pt-3 shrink-0">
+                <p className="text-[10px] sm:text-xs font-serif font-bold tracking-[0.34em] uppercase text-[#E5C57B] mb-1.5">
+                  BURGUNDY WINE CLASSIC
                 </p>
-                <Wine className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <h1 className="text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7F8] via-[#F9EEDB] to-[#E5C57B] tracking-tight leading-tight drop-shadow-sm">
+                  {groomDisplayName} <span className="font-light italic text-[#E5C57B]">&amp;</span> {brideDisplayName}
+                </h1>
+                <p className="text-[11px] sm:text-xs text-[#E0C2CA] font-serif tracking-[0.18em] uppercase mt-1.5">
+                  {events?.[0]?.event_date 
+                    ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                    : 'Senin, 12 Oktober 2026'}
+                </p>
               </div>
 
-              {/* Middle Card Content */}
-              <div className="flex-1 w-full flex flex-col items-center justify-center px-2 xs:px-4 py-2 xs:py-3 overflow-y-auto">
-                <div className="mb-2 xs:mb-2.5">
-                  <BurgundyCameoFrame
-                    imageSrc={coverImage || '/photos/photo-7.jpg'}
-                    altText={`${groomDisplayName} & ${brideDisplayName}`}
-                    frameWidthClass="w-32 xs:w-36 sm:w-44"
-                    frameHeightClass="h-42 xs:h-48 sm:h-56"
-                  />
-                </div>
+              {/* Center Royal Cameo Frame with Generous Clearance for Crest & Single-line Seal */}
+              <div className="my-auto pt-7 pb-6 shrink-0 flex flex-col items-center justify-center">
+                <BurgundyCameoFrame
+                  imageSrc={coverImage || '/photos/photo-7.jpg'}
+                  altText={`${groomDisplayName} & ${brideDisplayName}`}
+                  frameWidthClass="w-36 xs:w-42 sm:w-52"
+                  frameHeightClass="h-46 xs:h-54 sm:h-68"
+                />
+              </div>
 
-                <p className="text-[9px] xs:text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] font-serif font-semibold mb-1">
-                  THE SACRED MATRIMONY
-                </p>
-
-                <h1 className="text-xl xs:text-2xl sm:text-3xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF7F8] to-[#F5E5C9] mb-1 xs:mb-1.5 tracking-wide drop-shadow-sm">
-                  {groomDisplayName} <span className="font-light italic text-[#D4AF37]">&amp;</span> {brideDisplayName}
-                </h1>
-
-                {/* Event Date Badge */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 xs:py-1 rounded-full bg-[#140205]/90 border border-[#D4AF37]/40 text-[#F5E5C9] text-[9.5px] xs:text-[10px] sm:text-[11px] font-serif font-medium mb-1.5 xs:mb-2">
-                  <Calendar className="w-3 h-3 text-[#D4AF37]" />
-                  <span>
-                    {events?.[0]?.event_date 
-                      ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
-                      : 'Senin, 12 Oktober 2026'}
-                  </span>
-                </div>
-
-                {/* Guest Box */}
-                <div className="w-full max-w-[270px] xs:max-w-xs p-2 xs:p-2.5 rounded-xl bg-[#140205]/85 border border-[#D4AF37]/40 text-center shadow-xs">
-                  <span className="text-[8.5px] xs:text-[9px] uppercase tracking-wider text-[#D4AF37] block font-serif">
+              {/* Bottom Recipient Card & Primary Open Action */}
+              <div className="w-full max-w-xs flex flex-col items-center gap-3 pb-2 shrink-0">
+                <div className="w-full px-4 py-3 rounded-2xl bg-[#260611]/90 border border-[#E5C57B]/35 text-center shadow-md">
+                  <span className="text-[9.5px] uppercase tracking-[0.2em] text-[#E0C2CA] block font-serif">
                     Kepada Yth. Bapak/Ibu/Saudara/i:
                   </span>
-                  <p className="font-serif text-sm xs:text-base font-bold text-white line-clamp-1">
+                  <p className="font-serif text-sm sm:text-base font-bold text-[#FFF7F8] line-clamp-1 mt-0.5">
                     {guestName}
                   </p>
-                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#D4AF37]/15 text-[#D4AF37] text-[8.5px] xs:text-[9px] font-serif font-semibold mt-1">
-                    <Crown size={10} />
-                    <span>Tamu Undangan VIP</span>
-                  </div>
+                  <p className="text-[10px] text-[#E5C57B] font-serif mt-0.5 tracking-wider">
+                    Tamu Undangan VIP
+                  </p>
                 </div>
-              </div>
 
-              {/* Bottom Action: Open Invitation Button */}
-              <div className="w-full pt-1">
                 <button
                   type="button"
                   onClick={handleOpen}
-                  className="w-full py-2.5 xs:py-3 px-4 xs:px-6 rounded-full bg-gradient-to-r from-[#D4AF37] via-[#FFF7F8] to-[#D4AF37] text-[#140205] font-serif font-bold text-[11px] xs:text-xs uppercase tracking-[0.2em] shadow-[0_8px_24px_rgba(212,175,55,0.5)] hover:shadow-[0_10px_28px_rgba(212,175,55,0.7)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full min-h-[48px] py-3 px-6 rounded-full bg-gradient-to-r from-[#F2E0B6] via-[#E5C57B] to-[#C8A252] border border-[#FFF5DF]/75 text-[#19030A] font-serif font-bold text-xs uppercase tracking-[0.22em] shadow-[0_8px_24px_rgba(25,3,10,0.75)] hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFF5DF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#19030A]"
                 >
-                  <Wine className="w-4 h-4 text-[#140205]" />
+                  <MailOpen className="w-4 h-4 text-[#19030A] shrink-0" />
                   <span>BUKA UNDANGAN</span>
-                  <Sparkles className="w-4 h-4 text-[#140205] animate-pulse" />
                 </button>
               </div>
             </div>

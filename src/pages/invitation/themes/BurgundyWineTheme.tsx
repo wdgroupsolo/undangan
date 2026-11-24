@@ -276,15 +276,15 @@ export const BurgundyCameoFrame: React.FC<{
 
   return (
     <div className={`relative mx-auto ${frameWidthClass} ${frameHeightClass} flex items-center justify-center group ${className}`}>
-      {/* Outer Velvet Halo Glow */}
-      <div className="absolute -inset-4 rounded-[42px] bg-gradient-to-tr from-[#9B1B30]/35 via-transparent to-[#D4AF37]/35 blur-xl pointer-events-none" />
+      {/* Outer Bordeaux Velvet Halo Glow */}
+      <div className="absolute -inset-4 rounded-[42px] bg-gradient-to-tr from-[#801636]/40 via-transparent to-[#D4AF37]/30 blur-xl pointer-events-none" />
 
       {/* Antique Gold Outer Orbit Dashed Line */}
-      <div className="absolute -inset-2.5 rounded-[36px] border border-[#ECC880]/40 border-dashed pointer-events-none" />
+      <div className="absolute -inset-2.5 rounded-[36px] border border-[#E5C57B]/35 border-dashed pointer-events-none" />
 
       {/* Main Image Container with Arched Royal Cameo Dome */}
-      <div className="relative w-full h-full rounded-t-[100px] rounded-b-[28px] p-[2.5px] bg-gradient-to-b from-[#FFF7F8] via-[#D4AF37] to-[#3B0814] shadow-[0_20px_50px_rgba(20,2,5,0.9),0_0_30px_rgba(212,175,55,0.35)] overflow-hidden">
-        <div className="w-full h-full rounded-t-[98px] rounded-b-[26px] overflow-hidden relative bg-[#140205]">
+      <div className="relative w-full h-full rounded-t-[100px] rounded-b-[28px] p-[2.5px] bg-gradient-to-b from-[#F5E5C9] via-[#D4AF37] to-[#4A0B1F] shadow-[0_18px_45px_rgba(25,3,10,0.85)] overflow-hidden">
+        <div className="w-full h-full rounded-t-[98px] rounded-b-[26px] overflow-hidden relative bg-[#1A040B]">
           <img
             src={imgSrc}
             alt={altText}
@@ -293,12 +293,12 @@ export const BurgundyCameoFrame: React.FC<{
             }}
             className="w-full h-full object-cover object-top sm:object-center transition-transform duration-700 group-hover:scale-105 filter brightness-95 contrast-[1.02]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140205]/75 via-transparent to-[#140205]/25 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1A040B]/70 via-transparent to-[#1A040B]/20 pointer-events-none" />
 
           {/* Subtle Metallic Golden Sheen */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div
-              className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent pointer-events-none"
+              className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-[#E5C57B]/25 to-transparent pointer-events-none"
               style={{ animation: 'burgundySheen 6s ease-in-out infinite' }}
             />
           </div>
@@ -306,18 +306,17 @@ export const BurgundyCameoFrame: React.FC<{
       </div>
 
       {/* Apex Antique Gold Medallion Crown Crest */}
-      <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none select-none flex flex-col items-center">
-        <div className="relative w-11 h-11 rounded-full bg-[#140205]/90 backdrop-blur-md border border-[#ECC880] shadow-[0_0_20px_rgba(212,175,55,0.7),0_0_10px_rgba(255,247,248,0.5)] flex items-center justify-center">
-          <Crown className="w-5 h-5 text-[#ECC880] drop-shadow-[0_2px_8px_rgba(212,175,55,0.8)]" />
-          <Sparkles className="w-3 h-3 text-[#FFF7F8] absolute top-1.5 right-1.5 animate-pulse" />
+      <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-20 pointer-events-none select-none flex flex-col items-center w-max">
+        <div className="relative w-10 h-10 rounded-full bg-[#1F050E]/95 border border-[#E5C57B] shadow-[0_6px_18px_rgba(25,3,10,0.9)] flex items-center justify-center">
+          <Crown className="w-4.5 h-4.5 text-[#E5C57B]" />
         </div>
       </div>
 
-      {/* Bottom Wax Seal Badge */}
-      <div className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 z-20 pointer-events-none select-none">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#140205]/95 backdrop-blur-md border border-[#D4AF37]/70 text-[10px] font-serif tracking-wider text-[#F5E5C9] shadow-lg">
-          <Wine className="w-3 h-3 text-[#D4AF37]" />
-          <span>ROYAL BORDEAUX ∞</span>
+      {/* Bottom Wax Seal Badge (strict single-line pill so it never wraps or overlaps text below) */}
+      <div className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 z-20 pointer-events-none select-none w-max max-w-[95vw]">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2B0713]/95 border border-[#E5C57B]/75 text-[9.5px] font-serif tracking-wider text-[#F5E5C9] shadow-lg whitespace-nowrap">
+          <Wine className="w-3 h-3 text-[#E5C57B] shrink-0" />
+          <span className="whitespace-nowrap">ROYAL BORDEAUX ∞</span>
         </div>
       </div>
     </div>
@@ -957,24 +956,24 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#140205] text-[#FFF7F8] font-sans selection:bg-[#D4AF37] selection:text-[#140205] overflow-x-hidden">
+    <div className="relative w-full min-h-screen bg-[#19030A] text-[#FFF7F8] font-sans selection:bg-[#E5C57B] selection:text-[#19030A] overflow-x-hidden">
       {/* Ambient Floating Golden Embers & Stardust */}
-      <FloatingBurgundyStardust count={28} />
+      <FloatingBurgundyStardust count={22} />
 
       {/* =========================================================================
           DESKTOP 50/50 SPLIT SCREEN: LEFT FIXED SCENIC SHOWCASE ASIDE
           ========================================================================= */}
-      <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-8 xl:p-12 overflow-hidden bg-[#140205] border-r border-[#D4AF37]/30 shadow-2xl select-none">
-        {/* Background image with cinematic Bordeaux wine velvet vignette */}
+      <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-8 xl:p-12 overflow-hidden bg-[#19030A] border-r border-[#D4AF37]/30 shadow-2xl select-none">
+        {/* Background image with cinematic Royal Bordeaux wine vignette */}
         <div 
           className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out hover:scale-105"
           style={{ backgroundImage: `url(${couplePhoto})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#140205] via-[#140205]/65 via-60% to-[#140205]/30" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(20,2,5,0.5)_60%,rgba(20,2,5,0.92)_100%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#19030A] via-[#260611]/70 via-60% to-[#19030A]/40" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(128,22,54,0.22)_0%,rgba(25,3,10,0.6)_60%,rgba(25,3,10,0.94)_100%)] pointer-events-none" />
 
         {/* Guilloche Watermark & Baroque Corner Flourishes */}
-        <GuillocheBurgundyWatermark opacity={0.06} />
+        <GuillocheBurgundyWatermark opacity={0.05} />
         <div className="absolute inset-6 rounded-3xl border border-[#D4AF37]/25 pointer-events-none z-10" />
         <div className="absolute top-5 left-5"><BurgundyBaroqueCornerFlourish position="top-left" size={54} /></div>
         <div className="absolute top-5 right-5"><BurgundyBaroqueCornerFlourish position="top-right" size={54} /></div>
@@ -982,13 +981,13 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
         <div className="absolute bottom-5 right-5"><BurgundyBaroqueCornerFlourish position="bottom-right" size={54} /></div>
 
         {/* Top Header Bar */}
-        <div className="relative z-10 flex items-center justify-between">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#140205]/80 backdrop-blur-md border border-[#D4AF37]/45 text-[#F5E5C9] text-[10px] font-serif uppercase tracking-[0.25em] shadow-md font-bold">
-            <Wine className="w-3.5 h-3.5 text-[#D4AF37]" />
+        <div className="relative z-10 flex items-center justify-between gap-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#24050F]/85 backdrop-blur-md border border-[#E5C57B]/40 text-[#F5E5C9] text-[10px] font-serif uppercase tracking-[0.25em] shadow-md font-bold">
+            <Wine className="w-3.5 h-3.5 text-[#E5C57B]" />
             <span>BURGUNDY WINE CLASSIC</span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#140205]/75 backdrop-blur-md border border-[#D4AF37]/25 text-xs font-serif text-[#D4B4B9]">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#24050F]/80 backdrop-blur-md border border-[#E5C57B]/25 text-xs font-serif text-[#E0C2CA]">
             <span>Khusus Untuk:</span>
             <span className="text-white font-bold tracking-wide max-w-[150px] truncate">{guestName}</span>
           </div>
@@ -996,30 +995,30 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
 
         {/* Center Typography & Countdown */}
         <div className="relative z-10 my-auto text-left max-w-md">
-          <span className="text-[10px] font-serif uppercase tracking-[0.35em] text-[#D4AF37] font-semibold block mb-2">
+          <span className="text-[10px] font-serif uppercase tracking-[0.35em] text-[#E5C57B] font-semibold block mb-2">
             THE SACRED MATRIMONY OF
           </span>
-          <h1 className="font-serif text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF7F8] to-[#F5E5C9] drop-shadow-[0_4px_25px_rgba(212,175,55,0.35)] leading-tight">
-            {groomName} <span className="font-light italic text-[#D4AF37]">&amp;</span> {brideName}
+          <h1 className="font-serif text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF7F8] to-[#F5E5C9] drop-shadow-[0_4px_25px_rgba(25,3,10,0.8)] leading-tight">
+            {groomName} <span className="font-light italic text-[#E5C57B]">&amp;</span> {brideName}
           </h1>
 
-          <div className="flex items-center gap-2 text-xs xl:text-sm text-[#D4B4B9] mt-3 font-serif">
-            <Calendar className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs xl:text-sm text-[#E0C2CA] mt-3 font-serif">
+            <Calendar className="w-3.5 h-3.5 text-[#E5C57B] shrink-0" />
             <span>
               {displayEvents[0]?.event_date 
                 ? new Date(displayEvents[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
                 : 'Senin, 12 Oktober 2026'}
             </span>
-            <span className="text-[#D4AF37]/50">•</span>
-            <MapPin className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
-            <span className="truncate">{displayEvents[0]?.location || 'Chateau Sainte-Anne Ballroom'}</span>
+            <span className="text-[#E5C57B]/50">•</span>
+            <MapPin className="w-3.5 h-3.5 text-[#E5C57B] shrink-0" />
+            <span>{displayEvents[0]?.location || 'Chateau Sainte-Anne Ballroom'}</span>
           </div>
 
           {/* Countdown Grid */}
-          <div className="mt-8 pt-5 border-t border-[#D4AF37]/25">
+          <div className="mt-8 pt-5 border-t border-[#E5C57B]/25">
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-3 h-3 text-[#D4AF37]" />
-              <span className="text-[9px] font-mono tracking-[0.25em] text-[#D4AF37] uppercase font-bold">
+              <Sparkles className="w-3 h-3 text-[#E5C57B]" />
+              <span className="text-[9px] font-mono tracking-[0.25em] text-[#E5C57B] uppercase font-bold">
                 HITUNG MUNDUR HARI BAHAGIA
               </span>
             </div>
@@ -1031,11 +1030,11 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
                 { label: 'MENIT', val: timeLeft.minutes },
                 { label: 'DETIK', val: timeLeft.seconds },
               ].map((tile, idx) => (
-                <div key={idx} className="bg-[#140205]/80 backdrop-blur-md rounded-2xl p-2.5 border border-[#D4AF37]/30 text-center hover:border-[#D4AF37]/65 transition-colors shadow-md">
+                <div key={idx} className="bg-[#24050F]/85 backdrop-blur-md rounded-2xl p-2.5 border border-[#E5C57B]/30 text-center hover:border-[#E5C57B]/65 transition-colors shadow-md">
                   <span className="font-serif text-2xl xl:text-3xl font-bold text-white block leading-tight">
                     {String(tile.val).padStart(2, '0')}
                   </span>
-                  <span className="text-[7.5px] font-mono tracking-widest text-[#ECC880] uppercase block mt-1 font-semibold">
+                  <span className="text-[7.5px] font-mono tracking-widest text-[#E5C57B] uppercase block mt-1 font-semibold">
                     {tile.label}
                   </span>
                 </div>
@@ -1045,16 +1044,16 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
         </div>
 
         {/* Bottom Venue Footer */}
-        <div className="relative z-10 flex items-center justify-between text-xs text-[#D4B4B9] pt-3 border-t border-[#D4AF37]/25">
+        <div className="relative z-10 flex items-center justify-between text-xs text-[#E0C2CA] pt-3 border-t border-[#E5C57B]/25">
           <div className="flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span className="font-serif text-white/90 text-[11px] sm:text-xs truncate">
+            <MapPin className="w-3.5 h-3.5 text-[#E5C57B]" />
+            <span className="font-serif text-white/90 text-[11px] sm:text-xs">
               {displayEvents[0]?.location || 'Chateau Sainte-Anne Ballroom, Jakarta'}
             </span>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
-            <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span className="text-[#D4AF37] font-serif font-bold tracking-wider text-[10px] sm:text-xs">Masterpiece 250k</span>
+            <Crown className="w-3.5 h-3.5 text-[#E5C57B]" />
+            <span className="text-[#E5C57B] font-serif font-bold tracking-wider text-[10px] sm:text-xs">Masterpiece 250k</span>
           </div>
         </div>
       </aside>
@@ -1062,42 +1061,42 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
       {/* =========================================================================
           RIGHT MAIN SCROLLABLE CONTENT (Mobile Fullscreen / Desktop Right Panel)
           ========================================================================= */}
-      <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen relative z-10 pb-28 shadow-2xl lg:border-l lg:border-[#D4AF37]/30 bg-[#140205]/95 backdrop-blur-xs">
+      <main className="w-full lg:w-7/12 xl:w-1/2 lg:ml-auto min-h-screen relative z-10 pb-28 shadow-2xl lg:border-l lg:border-[#D4AF37]/30 bg-[#19030A]">
         
         {/* =========================================================================
             SECTION 1: HERO / SAMPUL
             ========================================================================= */}
-        <section id="sampul" className="relative w-full min-h-[100dvh] flex flex-col justify-between items-center text-center p-6 sm:p-8 border-b border-[#D4AF37]/30 overflow-hidden">
-          <GuillocheBurgundyWatermark opacity={0.06} />
+        <section id="sampul" className="relative w-full min-h-[100dvh] flex flex-col justify-between items-center text-center p-6 sm:p-8 border-b border-[#D4AF37]/30 overflow-hidden bg-[radial-gradient(ellipse_at_50%_40%,rgba(128,22,54,0.38)_0%,rgba(25,3,10,0.98)_80%)]">
+          <GuillocheBurgundyWatermark opacity={0.05} />
           
           <div className="absolute top-3 left-3"><BurgundyBaroqueCornerFlourish position="top-left" size={44} /></div>
           <div className="absolute top-3 right-3"><BurgundyBaroqueCornerFlourish position="top-right" size={44} /></div>
 
           {/* Top Title Banner */}
-          <ScrollReveal animation="fade-down" initialVisible={true} className="relative z-10 pt-4 xs:pt-6">
-            <span className="text-[10px] sm:text-xs font-serif uppercase tracking-[0.35em] text-[#D4AF37] font-bold block mb-1">
+          <ScrollReveal animation="fade-down" initialVisible={true} className="relative z-10 pt-10 sm:pt-6 px-4 max-w-md mx-auto w-full">
+            <span className="text-[10px] sm:text-xs font-serif uppercase tracking-[0.35em] text-[#E5C57B] font-bold block mb-1">
               THE SACRED WEDDING INVITATION
             </span>
-            <h1 className="font-serif text-3xl sm:text-4xl xs:text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF7F8] to-[#F5E5C9]">
-              {groomName} <span className="font-light italic text-[#D4AF37]">&amp;</span> {brideName}
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF7F8] to-[#F5E5C9]">
+              {groomName} <span className="font-light italic text-[#E5C57B]">&amp;</span> {brideName}
             </h1>
-            <p className="text-xs text-[#D4B4B9] font-serif mt-1 font-light italic">
+            <p className="text-xs text-[#E0C2CA] font-serif mt-1.5 font-light italic">
               "Dua jiwa menyatu dalam hangatnya cinta abadi dan janji suci selamanya."
             </p>
           </ScrollReveal>
 
-          {/* Central Cameo Portrait */}
-          <ScrollReveal animation="zoom-in" delay={150} initialVisible={true} className="relative z-10 my-auto py-2 xs:py-3 pt-4 xs:pt-6 flex flex-col items-center max-w-md mx-auto w-full">
-            <div className="mb-2.5 xs:mb-3">
+          {/* Central Cameo Portrait (Extra vertical padding prevents top crown & bottom badge collisions) */}
+          <ScrollReveal animation="zoom-in" delay={150} initialVisible={true} className="relative z-10 my-auto pt-7 pb-5 flex flex-col items-center max-w-md mx-auto w-full">
+            <div className="mb-6">
               <BurgundyCameoFrame
                 imageSrc={couplePhoto}
                 altText={`${groomName} & ${brideName}`}
                 frameWidthClass="w-40 xs:w-48 sm:w-56"
-                frameHeightClass="h-54 xs:h-62 sm:h-74"
+                frameHeightClass="h-52 xs:h-60 sm:h-72"
               />
             </div>
-            <div className="inline-flex items-center gap-1.5 xs:gap-2 px-3.5 xs:px-4 py-1 xs:py-1.5 rounded-full bg-[#140205]/90 border border-[#D4AF37]/60 shadow-sm text-white">
-              <Sparkles className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-[#D4AF37]" />
+            <div className="inline-flex items-center gap-1.5 xs:gap-2 px-3.5 xs:px-4 py-1 xs:py-1.5 rounded-full bg-[#260611]/90 border border-[#E5C57B]/50 shadow-sm text-white">
+              <Wine className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-[#E5C57B]" />
               <span className="text-[9px] xs:text-[10px] font-serif uppercase tracking-[0.2em] font-bold text-[#F5E5C9]">
                 THE ROYAL BORDEAUX MATRIMONY
               </span>
@@ -1106,8 +1105,8 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
 
           {/* Countdown & Recipient Info (Mobile Only) */}
           <ScrollReveal animation="fade-up" delay={200} initialVisible={true} className="relative z-10 w-full flex flex-col items-center pb-3 xs:pb-4 max-w-md mx-auto lg:hidden">
-            <div className="w-full max-w-[280px] xs:max-w-xs p-3 xs:p-3.5 rounded-2xl bg-[#140205]/90 border border-[#D4AF37]/50 shadow-xs mb-2.5 xs:mb-3 text-center">
-              <span className="text-[9.5px] xs:text-[10px] uppercase tracking-widest text-[#D4AF37] block mb-0.5">
+            <div className="w-full max-w-[280px] xs:max-w-xs p-3 xs:p-3.5 rounded-2xl bg-[#260611]/90 border border-[#E5C57B]/45 shadow-xs mb-2.5 xs:mb-3 text-center">
+              <span className="text-[9.5px] xs:text-[10px] uppercase tracking-widest text-[#E5C57B] block mb-0.5">
                 Kepada Yth. Bapak/Ibu/Saudara/i:
               </span>
               <span className="font-serif text-sm font-bold text-white block truncate">
@@ -1123,18 +1122,18 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
                 { label: 'Menit', val: timeLeft.minutes },
                 { label: 'Detik', val: timeLeft.seconds },
               ].map((item, idx) => (
-                <div key={idx} className="p-1.5 xs:p-2 rounded-xl bg-[#24040B]/85 border border-[#D4AF37]/40 shadow-xs text-center">
+                <div key={idx} className="p-1.5 xs:p-2 rounded-xl bg-[#2F0815]/90 border border-[#E5C57B]/35 shadow-xs text-center">
                   <span className="block text-sm xs:text-base sm:text-lg font-serif font-bold text-[#FFF7F8]">
                     {String(item.val).padStart(2, '0')}
                   </span>
-                  <span className="text-[7.5px] xs:text-[8.5px] uppercase tracking-wider text-[#ECC880] font-sans">
+                  <span className="text-[7.5px] xs:text-[8.5px] uppercase tracking-wider text-[#E5C57B] font-sans">
                     {item.label}
                   </span>
                 </div>
               ))}
             </div>
 
-            <p className="text-[11px] text-[#D4B4B9] font-serif italic">
+            <p className="text-[11px] text-[#E0C2CA] font-serif italic">
               {displayEvents[0]?.event_date 
                 ? new Date(displayEvents[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
                 : 'Senin, 12 Oktober 2026'} • {displayEvents[0]?.location || 'Chateau Sainte-Anne'}
@@ -1185,7 +1184,7 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
             <div className="mt-8 space-y-6 sm:space-y-8">
               {/* Groom Profile */}
               <ScrollReveal animation="fade-up" delay={150} className="flex flex-col items-center text-center">
-                <div className="mb-3 pt-6 sm:pt-8">
+                <div className="mb-6 pt-6 sm:pt-8">
                   <BurgundyCameoFrame
                     imageSrc={groomPhoto}
                     altText={groomName}
@@ -1225,7 +1224,7 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
 
               {/* Bride Profile */}
               <ScrollReveal animation="fade-up" delay={250} className="flex flex-col items-center text-center pt-8 sm:pt-12">
-                <div className="mb-3 pt-6 sm:pt-8">
+                <div className="mb-6 pt-6 sm:pt-8">
                   <BurgundyCameoFrame
                     imageSrc={bridePhoto}
                     altText={brideName}
@@ -1587,7 +1586,7 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
                 className="relative rounded-3xl overflow-hidden aspect-[16/10] border-2 border-[#D4AF37]/70 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(212,175,55,0.3)] cursor-pointer group"
               >
                 <img
-                  src={filteredGallery[0]?.image_url || '/photos/photo-3.jpg'}
+                  src={filteredGallery[0]?.image_url || '/photos/photo-7.jpg'}
                   alt="Featured Hero"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -1965,7 +1964,7 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
                     value={rsvpName}
                     onChange={e => setRsvpName(e.target.value)}
                     placeholder="Masukkan nama lengkap..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#1A0307] border border-[#B88B4A]/40 text-white text-xs focus:outline-hidden focus:border-[#D4AF37]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#19030A] border border-[#E5C57B]/35 text-white text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E5C57B] focus-visible:border-[#E5C57B]"
                     required
                   />
                 </div>
@@ -1984,10 +1983,10 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
                         key={opt.id}
                         type="button"
                         onClick={() => setRsvpStatus(opt.id as any)}
-                        className={`py-2 px-1 xs:px-2 rounded-xl text-[10px] xs:text-xs font-serif transition-all cursor-pointer ${
+                        className={`py-2 px-1 xs:px-2 min-h-[44px] rounded-xl text-[10px] xs:text-xs font-serif transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5E5C9] ${
                           rsvpStatus === opt.id
-                            ? 'bg-gradient-to-r from-[#D4AF37] to-[#B88B4A] text-[#1A0307] font-bold shadow-xs'
-                            : 'bg-[#1A0307] text-[#D4B4B9] border border-[#B88B4A]/30'
+                            ? 'bg-gradient-to-r from-[#E5C57B] to-[#C8A252] text-[#19030A] font-bold shadow-xs'
+                            : 'bg-[#19030A] text-[#E0C2CA] border border-[#E5C57B]/30 hover:text-white'
                         }`}
                       >
                         {opt.label}
@@ -2003,7 +2002,7 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
                   <select
                     value={rsvpCount}
                     onChange={e => setRsvpCount(Number(e.target.value))}
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#1A0307] border border-[#B88B4A]/40 text-white text-xs focus:outline-hidden focus:border-[#D4AF37]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#19030A] border border-[#E5C57B]/35 text-white text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E5C57B] focus-visible:border-[#E5C57B]"
                   >
                     <option value={1}>1 Orang</option>
                     <option value={2}>2 Orang</option>
@@ -2021,7 +2020,7 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
                     value={rsvpMessage}
                     onChange={e => setRsvpMessage(e.target.value)}
                     placeholder="Tuliskan ucapan dan doa restu untuk kedua mempelai..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#1A0307] border border-[#B88B4A]/40 text-white text-xs focus:outline-hidden focus:border-[#D4AF37] resize-none"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#19030A] border border-[#E5C57B]/35 text-white text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E5C57B] focus-visible:border-[#E5C57B] resize-none"
                   />
                 </div>
 
@@ -2129,10 +2128,10 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
       </main>
 
       {/* Floating Bottom Navigation Bar with Dynamic Velvet Gold Pill Dock */}
-      <nav className={`fixed bottom-3 xs:bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[calc(100vw-20px)] sm:max-w-max px-1.5 xs:px-2 pointer-events-auto transition-opacity duration-300 ${activePhotoIndex !== null ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
+      <nav aria-label="Navigasi Undangan" className={`fixed bottom-3 xs:bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[calc(100vw-20px)] sm:max-w-max px-1.5 xs:px-2 pointer-events-auto transition-opacity duration-300 ${activePhotoIndex !== null ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
         <div 
           ref={navContainerRef}
-          className="bg-[#140205]/95 backdrop-blur-xl border border-[#D4AF37]/60 rounded-full py-1 xs:py-1.5 px-1.5 xs:px-2 sm:px-3 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(212,175,55,0.3)] flex items-center justify-start sm:justify-center gap-0.5 xs:gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
+          className="bg-[#19030A]/95 backdrop-blur-xl border border-[#E5C57B]/55 rounded-full py-1 xs:py-1.5 px-1.5 xs:px-2 sm:px-3 shadow-[0_12px_36px_rgba(0,0,0,0.85)] flex items-center justify-start sm:justify-center gap-0.5 xs:gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
         >
           {[
             { id: 'sampul', label: 'Cover', icon: Wine },
@@ -2161,14 +2160,15 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }
                 }}
-                className={`transition-all duration-300 flex items-center gap-1 sm:gap-1.5 rounded-full cursor-pointer select-none shrink-0 snap-center ${
+                className={`transition-all duration-300 flex items-center gap-1 sm:gap-1.5 rounded-full cursor-pointer select-none shrink-0 snap-center min-h-[36px] min-w-[36px] justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5E5C9] ${
                   isActive 
-                    ? 'bg-gradient-to-r from-[#D4AF37] via-[#ECC880] to-[#FFF7F8] text-[#140205] px-2.5 xs:px-3 sm:px-3.5 py-1.5 font-serif font-bold text-[10px] xs:text-xs shadow-[0_0_15px_rgba(212,175,55,0.7)] scale-105' 
-                    : 'text-[#D4B4B9]/70 hover:text-white hover:bg-white/10 p-1.5 xs:p-2 text-xs'
+                    ? 'bg-gradient-to-r from-[#F2E0B6] via-[#E5C57B] to-[#D4AF37] text-[#19030A] px-2.5 xs:px-3 sm:px-3.5 py-1.5 font-serif font-bold text-[10px] xs:text-xs shadow-md scale-105' 
+                    : 'text-[#E0C2CA]/75 hover:text-white hover:bg-white/10 p-2 text-xs'
                 }`}
                 title={item.label}
+                aria-label={item.label}
               >
-                <IconComponent size={14} className={`shrink-0 ${isActive ? 'text-[#140205]' : 'text-[#D4AF37]'}`} />
+                <IconComponent size={14} className={`shrink-0 ${isActive ? 'text-[#19030A]' : 'text-[#E5C57B]'}`} />
                 {isActive && (
                   <span className="text-[10px] xs:text-[11px] font-bold tracking-wide whitespace-nowrap animate-fade-in">
                     {item.label}
