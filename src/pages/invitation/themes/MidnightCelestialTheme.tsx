@@ -23,7 +23,7 @@ export const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({
 );
 
 // =========================================================================
-// SCROLL REVEAL UTILITY
+// SCROLL REVEAL UTILITY (High-Performance IntersectionObserver with Mobile Pre-trigger)
 // =========================================================================
 export const ScrollReveal: React.FC<{
   children: React.ReactNode;
@@ -36,7 +36,7 @@ export const ScrollReveal: React.FC<{
   children,
   animation = 'fade-up',
   delay = 0,
-  duration = 750,
+  duration = 500,
   className = '',
   initialVisible = false,
 }) => {
@@ -44,34 +44,65 @@ export const ScrollReveal: React.FC<{
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (isVisible) return;
     const el = ref.current;
     if (!el) return;
 
+    // Fast immediate viewport check on mount
     const checkVisibility = () => {
       const rect = el.getBoundingClientRect();
       const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      if (rect.top < windowHeight * 0.95 && rect.bottom > 0) {
+      // Pre-trigger buffer (250px ahead of viewport) so content is ready before reaching screen
+      if (rect.top < windowHeight + 250 && rect.bottom > -100) {
         setIsVisible(true);
+        return true;
       }
+      return false;
     };
 
-    checkVisibility();
-    window.addEventListener('scroll', checkVisibility, { passive: true });
-    window.addEventListener('resize', checkVisibility, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', checkVisibility);
-      window.removeEventListener('resize', checkVisibility);
+    if (checkVisibility()) return;
+
+    // Native IntersectionObserver with generous rootMargin for smooth mobile momentum scrolling
+    if (typeof IntersectionObserver !== 'undefined') {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        },
+        {
+          threshold: 0,
+          rootMargin: '300px 0px 300px 0px',
+        }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    }
+
+    // Scroll listener fallback for older mobile webviews
+    const handleScroll = () => {
+      if (checkVisibility()) {
+        window.removeEventListener('scroll', handleScroll);
+      }
     };
-  }, []);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isVisible]);
+
+  // Mobile optimization: eliminate artificial delays and use snappy durations so content never feels lagging
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const effectiveDuration = isMobile ? Math.min(duration, 400) : duration;
+  const effectiveDelay = isMobile ? Math.min(delay, 50) : delay;
 
   const getAnimClass = () => {
     if (!isVisible) {
       switch (animation) {
-        case 'fade-up': return 'opacity-0 translate-y-8';
-        case 'fade-down': return 'opacity-0 -translate-y-8';
-        case 'zoom-in': return 'opacity-0 scale-90';
-        case 'slide-left': return 'opacity-0 translate-x-8';
-        case 'slide-right': return 'opacity-0 -translate-x-8';
+        case 'fade-up': return isMobile ? 'opacity-0 translate-y-4' : 'opacity-0 translate-y-8';
+        case 'fade-down': return isMobile ? 'opacity-0 -translate-y-4' : 'opacity-0 -translate-y-8';
+        case 'zoom-in': return 'opacity-0 scale-95';
+        case 'slide-left': return isMobile ? 'opacity-0 translate-x-4' : 'opacity-0 translate-x-8';
+        case 'slide-right': return isMobile ? 'opacity-0 -translate-x-4' : 'opacity-0 -translate-x-8';
         case 'fade-in': default: return 'opacity-0';
       }
     }
@@ -82,10 +113,10 @@ export const ScrollReveal: React.FC<{
     <div
       ref={ref}
       style={{
-        transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDuration: `${effectiveDuration}ms`,
+        transitionDelay: `${effectiveDelay}ms`,
       }}
-      className={`transition-all ease-out ${getAnimClass()} ${className}`}
+      className={`transition-all ease-out transform-gpu ${getAnimClass()} ${className}`}
     >
       {children}
     </div>
@@ -1391,7 +1422,7 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
           <div className="absolute top-0 right-0"><CelestialCornerFlourish position="top-right" size={80} /></div>
 
           {/* Top Title */}
-          <ScrollReveal animation="fade-down" delay={100} className="relative z-10 pt-4 max-w-md mx-auto w-full">
+          <ScrollReveal animation="fade-down" delay={100} initialVisible={true} className="relative z-10 pt-4 max-w-md mx-auto w-full">
             <span className="text-[10px] sm:text-xs tracking-[0.34em] uppercase text-[#38BDF8] font-serif font-bold">
               THE CELESTIAL WEDDING INVITATION
             </span>
@@ -1404,7 +1435,7 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
           </ScrollReveal>
 
           {/* Central Portrait */}
-          <ScrollReveal animation="zoom-in" delay={200} className="relative z-10 my-auto py-2 xs:py-3 pt-4 xs:pt-6 flex flex-col items-center max-w-md mx-auto w-full">
+          <ScrollReveal animation="zoom-in" delay={150} initialVisible={true} className="relative z-10 my-auto py-2 xs:py-3 pt-4 xs:pt-6 flex flex-col items-center max-w-md mx-auto w-full">
             <div className="mb-2.5 xs:mb-3">
               <CelestialCrescentFrame
                 imageSrc={couplePhoto}
@@ -1422,7 +1453,7 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
           </ScrollReveal>
 
           {/* Countdown & Recipient Info (Visible on mobile, hidden on desktop since aside handles it) */}
-          <ScrollReveal animation="fade-up" delay={300} className="relative z-10 w-full flex flex-col items-center pb-3 xs:pb-4 max-w-md mx-auto lg:hidden">
+          <ScrollReveal animation="fade-up" delay={200} initialVisible={true} className="relative z-10 w-full flex flex-col items-center pb-3 xs:pb-4 max-w-md mx-auto lg:hidden">
             <div className="w-full max-w-[280px] xs:max-w-xs p-3 xs:p-3.5 rounded-2xl bg-[#0E1A38]/90 border border-[#94A3B8]/40 shadow-xs mb-2.5 xs:mb-3 text-center">
               <span className="text-[9.5px] xs:text-[10px] uppercase tracking-widest text-[#38BDF8] block mb-0.5">
                 Kepada Yth. Bapak/Ibu/Saudara/i:
