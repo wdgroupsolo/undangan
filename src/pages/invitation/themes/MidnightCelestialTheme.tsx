@@ -1506,10 +1506,10 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
               <CelestialStarlightDivider />
             </ScrollReveal>
 
-            <div className="mt-8 space-y-8">
+            <div className="mt-8 space-y-6 sm:space-y-8">
               {/* Groom Profile */}
               <ScrollReveal animation="fade-up" delay={150} className="flex flex-col items-center text-center">
-                <div className="mb-3 pt-3">
+                <div className="mb-3 pt-6 sm:pt-8">
                   <CelestialCrescentFrame
                     imageSrc={groomPhoto}
                     altText={groomName}
@@ -1539,18 +1539,18 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
                 )}
               </ScrollReveal>
 
-              {/* Cosmic Ring Connection Bridge */}
-              <div className="flex items-center justify-center my-2">
-                <div className="w-12 h-[1px] bg-[#94A3B8]/40" />
-                <div className="mx-3 w-10 h-10 rounded-full bg-[#0B152B] border border-[#38BDF8] flex items-center justify-center shadow-[0_0_15px_rgba(56,189,248,0.35)]">
-                  <Heart className="w-4 h-4 text-[#38BDF8] fill-[#38BDF8]/30" />
+              {/* Cosmic Ring Connection Bridge (Spaced with elegant breathing room) */}
+              <div className="py-6 sm:py-8 flex items-center justify-center">
+                <div className="w-12 sm:w-20 h-[1px] bg-gradient-to-r from-transparent via-[#94A3B8]/40 to-[#38BDF8]" />
+                <div className="mx-3 sm:mx-4 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-[#0B152B] border border-[#38BDF8] flex items-center justify-center shadow-[0_0_18px_rgba(56,189,248,0.35)]">
+                  <Heart className="w-4 sm:w-5 h-4 sm:h-5 text-[#38BDF8] fill-[#38BDF8]/30 animate-pulse" />
                 </div>
-                <div className="w-12 h-[1px] bg-[#94A3B8]/40" />
+                <div className="w-12 sm:w-20 h-[1px] bg-gradient-to-l from-transparent via-[#94A3B8]/40 to-[#38BDF8]" />
               </div>
 
               {/* Bride Profile */}
-              <ScrollReveal animation="fade-up" delay={250} className="flex flex-col items-center text-center">
-                <div className="mb-3 pt-3">
+              <ScrollReveal animation="fade-up" delay={250} className="flex flex-col items-center text-center pt-2 sm:pt-4">
+                <div className="mb-3 pt-7 sm:pt-9">
                   <CelestialCrescentFrame
                     imageSrc={bridePhoto}
                     altText={brideName}
