@@ -2440,8 +2440,8 @@ export const InvitationRenderer: React.FC = () => {
             </div>
           </div>
         ) : isBurgundyWine ? (
-          /* Burgundy Wine Classic Masterpiece Cover - Full Editorial Right Folio (Right 58%/50% Desktop, Fullscreen Mobile) */
-          <div className={`fixed top-0 right-0 h-[100dvh] w-full lg:w-7/12 xl:w-1/2 z-50 flex flex-col justify-between items-center text-center p-6 sm:p-8 overflow-hidden select-none lg:border-l lg:border-[#D4AF37]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#19030A] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          /* Burgundy Wine Classic Masterpiece Cover - Fixed Non-Scrollable Right Folio (Right 58%/50% Desktop, Fullscreen Mobile) */
+          <div className={`fixed top-0 right-0 h-[100dvh] w-full lg:w-7/12 xl:w-1/2 z-50 flex flex-col justify-between items-center text-center p-4 sm:p-6 overflow-hidden select-none lg:border-l lg:border-[#D4AF37]/30 shadow-[-20px_0_60px_rgba(0,0,0,0.9)] bg-[#19030A] transition-opacity duration-700 ${isCoverExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             {/* Burgundy Portal Flash when Opening */}
             {isCoverExiting && (
               <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center overflow-hidden">
@@ -2465,48 +2465,48 @@ export const InvitationRenderer: React.FC = () => {
 
             {/* Architectural Gold Border & Corner Flourishes Framing the Cover Folio */}
             <div className="absolute inset-3 sm:inset-5 rounded-3xl border border-[#D4AF37]/25 pointer-events-none z-10" />
-            <div className="absolute top-3 left-3 sm:top-4 sm:left-4"><BurgundyBaroqueCornerFlourish position="top-left" size={50} /></div>
-            <div className="absolute top-3 right-3 sm:top-4 sm:right-4"><BurgundyBaroqueCornerFlourish position="top-right" size={50} /></div>
-            <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4"><BurgundyBaroqueCornerFlourish position="bottom-left" size={50} /></div>
-            <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4"><BurgundyBaroqueCornerFlourish position="bottom-right" size={50} /></div>
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4"><BurgundyBaroqueCornerFlourish position="top-left" size={48} /></div>
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4"><BurgundyBaroqueCornerFlourish position="top-right" size={48} /></div>
+            <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4"><BurgundyBaroqueCornerFlourish position="bottom-left" size={48} /></div>
+            <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4"><BurgundyBaroqueCornerFlourish position="bottom-right" size={48} /></div>
 
-            {/* Inner Editorial Content Column */}
-            <div className="relative z-20 w-full max-w-sm sm:max-w-md h-full mx-auto flex flex-col justify-between items-center text-center py-2 sm:py-4 overflow-y-auto no-scrollbar">
+            {/* Inner Editorial Content Column (Strictly overflow-hidden so right cover never scrolls) */}
+            <div className="relative z-20 w-full max-w-sm sm:max-w-md h-full mx-auto flex flex-col justify-between items-center text-center py-2 sm:py-3 overflow-hidden">
               {/* Top Editorial Title */}
-              <div className="w-full pt-2 sm:pt-3 shrink-0">
-                <p className="text-[10px] sm:text-xs font-serif font-bold tracking-[0.34em] uppercase text-[#E5C57B] mb-1.5">
+              <div className="w-full pt-1 sm:pt-2 shrink-0">
+                <p className="text-[10px] sm:text-xs font-serif font-bold tracking-[0.3em] uppercase text-[#E5C57B] mb-1">
                   BURGUNDY WINE CLASSIC
                 </p>
-                <h1 className="text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7F8] via-[#F9EEDB] to-[#E5C57B] tracking-tight leading-tight drop-shadow-sm">
+                <h1 className="text-[26px] sm:text-3xl xl:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFF7F8] via-[#F9EEDB] to-[#E5C57B] tracking-tight leading-tight drop-shadow-sm">
                   {groomDisplayName} <span className="font-light italic text-[#E5C57B]">&amp;</span> {brideDisplayName}
                 </h1>
-                <p className="text-[11px] sm:text-xs text-[#E0C2CA] font-serif tracking-[0.18em] uppercase mt-1.5">
+                <p className="text-[10.5px] sm:text-xs text-[#E0C2CA] font-serif tracking-[0.18em] uppercase mt-1">
                   {events?.[0]?.event_date 
                     ? new Date(events[0].event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
                     : 'Senin, 12 Oktober 2026'}
                 </p>
               </div>
 
-              {/* Center Royal Cameo Frame with Generous Clearance for Crest & Single-line Seal */}
-              <div className="my-auto pt-7 pb-6 shrink-0 flex flex-col items-center justify-center">
+              {/* Center Royal Cameo Frame scaled fluidly with viewport height so everything fits cleanly above the fold */}
+              <div className="flex-1 min-h-0 w-full pt-6 pb-4 flex flex-col items-center justify-center">
                 <BurgundyCameoFrame
                   imageSrc={coverImage || '/photos/photo-7.jpg'}
                   altText={`${groomDisplayName} & ${brideDisplayName}`}
-                  frameWidthClass="w-36 xs:w-42 sm:w-52"
-                  frameHeightClass="h-46 xs:h-54 sm:h-68"
+                  frameWidthClass="w-[clamp(118px,23dvh,208px)]"
+                  frameHeightClass="h-[clamp(156px,30dvh,272px)]"
                 />
               </div>
 
               {/* Bottom Recipient Card & Primary Open Action */}
-              <div className="w-full max-w-xs flex flex-col items-center gap-3 pb-2 shrink-0">
-                <div className="w-full px-4 py-3 rounded-2xl bg-[#260611]/90 border border-[#E5C57B]/35 text-center shadow-md">
-                  <span className="text-[9.5px] uppercase tracking-[0.2em] text-[#E0C2CA] block font-serif">
+              <div className="w-full max-w-xs flex flex-col items-center gap-2.5 pb-1 shrink-0">
+                <div className="w-full px-4 py-2 sm:py-2.5 rounded-2xl bg-[#260611]/90 border border-[#E5C57B]/35 text-center shadow-md">
+                  <span className="text-[9px] sm:text-[9.5px] uppercase tracking-[0.2em] text-[#E0C2CA] block font-serif">
                     Kepada Yth. Bapak/Ibu/Saudara/i:
                   </span>
                   <p className="font-serif text-sm sm:text-base font-bold text-[#FFF7F8] line-clamp-1 mt-0.5">
                     {guestName}
                   </p>
-                  <p className="text-[10px] text-[#E5C57B] font-serif mt-0.5 tracking-wider">
+                  <p className="text-[9.5px] sm:text-[10px] text-[#E5C57B] font-serif mt-0.5 tracking-wider">
                     Tamu Undangan VIP
                   </p>
                 </div>
@@ -2514,7 +2514,7 @@ export const InvitationRenderer: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleOpen}
-                  className="w-full min-h-[48px] py-3 px-6 rounded-full bg-gradient-to-r from-[#F2E0B6] via-[#E5C57B] to-[#C8A252] border border-[#FFF5DF]/75 text-[#19030A] font-serif font-bold text-xs uppercase tracking-[0.22em] shadow-[0_8px_24px_rgba(25,3,10,0.75)] hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFF5DF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#19030A]"
+                  className="w-full min-h-[44px] sm:min-h-[48px] py-2.5 sm:py-3 px-6 rounded-full bg-gradient-to-r from-[#F2E0B6] via-[#E5C57B] to-[#C8A252] border border-[#FFF5DF]/75 text-[#19030A] font-serif font-bold text-xs uppercase tracking-[0.22em] shadow-[0_8px_24px_rgba(25,3,10,0.75)] hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFF5DF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#19030A]"
                 >
                   <MailOpen className="w-4 h-4 text-[#19030A] shrink-0" />
                   <span>BUKA UNDANGAN</span>

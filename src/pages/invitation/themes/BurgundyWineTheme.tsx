@@ -1091,8 +1091,8 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
               <BurgundyCameoFrame
                 imageSrc={couplePhoto}
                 altText={`${groomName} & ${brideName}`}
-                frameWidthClass="w-40 xs:w-48 sm:w-56"
-                frameHeightClass="h-52 xs:h-60 sm:h-72"
+                frameWidthClass="w-[clamp(124px,23dvh,220px)]"
+                frameHeightClass="h-[clamp(164px,30dvh,288px)]"
               />
             </div>
             <div className="inline-flex items-center gap-1.5 xs:gap-2 px-3.5 xs:px-4 py-1 xs:py-1.5 rounded-full bg-[#260611]/90 border border-[#E5C57B]/50 shadow-sm text-white">
