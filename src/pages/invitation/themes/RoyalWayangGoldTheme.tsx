@@ -1731,16 +1731,17 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     </div>
 
                     {/* Arched Portrait Photo Frame */}
-                    <div className="relative w-full h-full rounded-t-[135px] sm:rounded-t-[150px] rounded-b-2xl overflow-hidden border-2 border-[#d4af37]/65 shadow-[0_12px_36px_rgba(0,0,0,0.9)] bg-[#120e0c]">
+                    <div className="relative w-full h-full rounded-t-[135px] sm:rounded-t-[150px] rounded-b-2xl overflow-hidden border-2 border-[#d4af37]/65 shadow-[0_12px_36px_rgba(0,0,0,0.9)] bg-[#120e0c]" style={{ WebkitBackfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
                       <img 
                         src={groomFullPhoto} 
                         alt={groomFullName} 
-                        className="w-full h-full object-cover object-[center_top] filter brightness-[1.02] contrast-[1.03]"
+                        className="w-full h-full object-cover object-[center_top]"
+                        style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden' }}
                       />
                       {/* Inner Arch Hairline Border for Depth */}
                       <div className="absolute inset-1.5 rounded-t-[129px] sm:rounded-t-[144px] rounded-b-xl border border-[#ffd778]/35 pointer-events-none" />
                       {/* Subtle vignette overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/35 pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
                     </div>
                   </div>
                 </div>
@@ -1864,16 +1865,17 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
                     </div>
 
                     {/* Arched Portrait Photo Frame */}
-                    <div className="relative w-full h-full rounded-t-[135px] sm:rounded-t-[150px] rounded-b-2xl overflow-hidden border-2 border-[#d4af37]/65 shadow-[0_12px_36px_rgba(0,0,0,0.9)] bg-[#120e0c]">
+                    <div className="relative w-full h-full rounded-t-[135px] sm:rounded-t-[150px] rounded-b-2xl overflow-hidden border-2 border-[#d4af37]/65 shadow-[0_12px_36px_rgba(0,0,0,0.9)] bg-[#120e0c]" style={{ WebkitBackfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
                       <img 
                         src={brideFullPhoto} 
                         alt={brideFullName} 
-                        className="w-full h-full object-cover object-[center_top] filter brightness-[1.02] contrast-[1.03]"
+                        className="w-full h-full object-cover object-[center_top]"
+                        style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden' }}
                       />
                       {/* Inner Arch Hairline Border for Depth */}
                       <div className="absolute inset-1.5 rounded-t-[129px] sm:rounded-t-[144px] rounded-b-xl border border-[#ffd778]/35 pointer-events-none" />
                       {/* Subtle vignette overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/35 pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
                     </div>
                   </div>
                 </div>
