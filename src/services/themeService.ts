@@ -32,9 +32,11 @@ export const THEME_PRICE_MAP: Record<string, number> = {
   'minang-gadang': 70000,
   'bali-kamasan': 70000,
   'moroccan-nights': 70000,
+  'burgundy-wine': 250000,
+  'burgundy': 250000,
+  'wine-classic': 250000,
   'emerald-velvet': 150000,
   'navy-silver': 150000,
-  'burgundy-wine': 150000,
   'sakura-hanami': 150000,
   'nirwana-sarangan': 150000,
   'hotel-nirwana': 150000,
@@ -62,6 +64,7 @@ export const resolveThemePrice = (theme: { slug?: string; price?: number | null 
   const slug = (theme.slug || '').toLowerCase();
   if (slug === 'ivory-pearl' || slug === 'ivory-pearl-minimalist' || slug === 'noir-gold' || slug === 'noir-gold-elegance' || slug === 'rose-gold' || slug === 'rose-gold-romance' || slug === 'terracotta-boho') return 50000;
   if (slug === 'kuala-lumpur-heritage' || slug === 'kuala-lumpur' || slug === 'hafiz-syafika' || slug === 'sunda-siger' || slug === 'minang-gadang' || slug === 'bali-kamasan' || slug === 'moroccan-nights') return 70000;
+  if (slug === 'burgundy-wine' || slug === 'burgundy' || slug === 'wine-classic') return 250000;
   return THEME_PRICE_MAP[slug] || 150000;
 };
 
@@ -540,18 +543,18 @@ export const REAL_NAVY_SILVER_THEME: Theme = {
   created_at: '2026-11-15T15:07:00.000000+00:00'
 };
 
-// 9. Burgundy Wine Classic (Promo Rp 150.000 / Normal Rp 250.000 - Masterpiece)
+// 9. Burgundy Wine Classic (Rp 250.000 - Masterpiece Tier)
 export const REAL_BURGUNDY_WINE_THEME: Theme = {
   id: 'a1111111-2222-3333-4444-555555555509',
   name: 'Burgundy Wine Classic',
   slug: 'burgundy-wine',
   description: 'Tema pernikahan mewah Eropa klasik bordeaux wine velvet, ornamen filigree emas perunggu antik, frame cameo oval aristokrat, dan perjamuan agung chateau.',
   category: 'Royal & Classic',
-  price: 150000,
+  price: 250000,
   preview_image: '/themes/burgundy-wine/theme-preview.jpg',
   thumbnail: '/themes/burgundy-wine/theme-preview.jpg',
   status: 'active',
-  badge: 'Masterpiece Promo (Hemat 40%)',
+  badge: 'Masterpiece 250k',
   rating: '5.0',
   features: ['Nuansa Bordeaux Wine Velvet & Antique Bronze Gold', 'Frame Cameo Oval Aristokrat & Segel Lilin Romantis', 'AR Photobooth Kamera & Tiket Barcode VIP', 'Kisah Cinta, Countdown & Amplop Digital Bank EMV'],
   theme_config: { primaryColor: '#26050C', secondaryColor: '#1A0307', accentColor: '#B88B4A', style: 'burgundy-wine' },

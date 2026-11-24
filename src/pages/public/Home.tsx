@@ -560,7 +560,7 @@ export const Home: React.FC = () => {
       name: 'Burgundy Wine Classic',
       category: 'modern',
       categoryLabel: 'Royal Classic',
-      tag: lang === 'id' ? 'Masterpiece • Promo Rp 150rb (Normal Rp 250rb)' : 'Masterpiece • Promo 150k (Reg. 250k)',
+      tag: lang === 'id' ? 'Masterpiece • Rp 250rb' : 'Masterpiece • 250k',
       preview: '/themes/burgundy-wine/theme-preview.jpg',
       demoUrl: '/invitation/steven-bunga?theme=burgundy-wine&demo=true',
       desc: lang === 'id'

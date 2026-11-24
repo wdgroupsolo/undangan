@@ -767,3 +767,4 @@ if res.returncode == 0 and os.path.exists(pdf_path):
     print(f"SUCCESS! PDF created at: {pdf_path} ({size_mb:.2f} MB)")
 else:
     print(f"Error generating PDF: {res.stderr}")
+

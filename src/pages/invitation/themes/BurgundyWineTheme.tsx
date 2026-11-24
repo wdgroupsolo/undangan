@@ -1045,7 +1045,7 @@ export const BurgundyWineTheme: React.FC<BurgundyWineThemeProps> = ({
           </div>
           <div className="flex items-center gap-1.5">
             <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span className="text-[#D4AF37] font-serif font-bold tracking-wider text-[10px] sm:text-xs">Masterpiece Edition</span>
+            <span className="text-[#D4AF37] font-serif font-bold tracking-wider text-[10px] sm:text-xs">Masterpiece 250k</span>
           </div>
         </div>
       </aside>
