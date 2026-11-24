@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Matriks Fitur & Paket Undangan Digital - WD Group</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      font-size: 9pt;
+      line-height: 1.45;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* HEADER */
+    .header {
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20pt;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 8.5pt;
+      color: #64748b;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .header-meta {
+      text-align: right;
+      font-size: 8pt;
+      color: #475569;
+    }
+
+    .badge-doc {
+      display: inline-block;
+      background: #0f172a;
+      color: #f8fafc;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 3px;
+    }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 13pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 14px;
+      background: #c9982e;
+      border-radius: 2px;
+    }
+
+    /* TIER CARDS GRID */
+    .tier-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tier-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px;
+      position: relative;
+      background: #f8fafc;
+    }
+
+    .tier-card.featured {
+      background: #fdfbf7;
+      border: 1.5px solid #c9982e;
+      box-shadow: 0 4px 12px rgba(201, 152, 46, 0.12);
+    }
+
+    .tier-badge {
+      font-size: 7pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .tier-card:nth-child(1) .tier-badge {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .tier-card:nth-child(2) .tier-badge {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .tier-card:nth-child(3) .tier-badge {
+      background: #0f172a;
+      color: #fef08a;
+    }
+
+    .tier-name {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .tier-price-row {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+    }
+
+    .tier-price {
+      font-size: 15pt;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .tier-card:nth-child(3) .tier-price {
+      color: #854d0e;
+    }
+
+    .tier-strike {
+      font-size: 8.5pt;
+      color: #94a3b8;
+      text-decoration: line-through;
+    }
+
+    .tier-desc {
+      font-size: 7.8pt;
+      color: #64748b;
+      margin-bottom: 10px;
+      line-height: 1.35;
+      min-height: 32px;
+    }
+
+    .tier-highlights {
+      list-style: none;
+      font-size: 7.8pt;
+      color: #334155;
+    }
+
+    .tier-highlights li {
+      margin-bottom: 4px;
+      position: relative;
+      padding-left: 14px;
+      line-height: 1.3;
+    }
+
+    .tier-highlights li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #16a34a;
+      font-weight: bold;
+    }
+
+    .tier-card.featured .tier-highlights li::before {
+      color: #c9982e;
+    }
+
+    /* COMPARISON TABLE */
+    table.matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 7.8pt;
+    }
+
+    table.matrix-table th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 7px 8px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid #1e293b;
+    }
+
+    table.matrix-table th.center {
+      text-align: center;
+    }
+
+    table.matrix-table th.highlight-col {
+      background: #241604;
+      color: #fef08a;
+      border-color: #713f12;
+    }
+
+    table.matrix-table td {
+      padding: 5.5px 8px;
+      border: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+
+    table.matrix-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    table.matrix-table tr:hover td {
+      background: #f1f5f9;
+    }
+
+    .feature-name {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .feature-desc {
+      display: block;
+      font-size: 7pt;
+      color: #64748b;
+      font-weight: 400;
+    }
+
+    .status-yes {
+      color: #16a34a;
+      font-weight: 700;
+      font-size: 9pt;
+      text-align: center;
+      display: block;
+    }
+
+    .status-no {
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 9pt;
+      text-align: center;
+      display: block;
+    }
+
+    .status-special {
+      color: #854d0e;
+      font-weight: 800;
+      background: #fef9c3;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      font-size: 7pt;
+      border: 1px solid #fef08a;
+    }
+
+    .category-row td {
+      background: #f1f5f9 !important;
+      font-weight: 800;
+      color: #334155;
+      text-transform: uppercase;
+      font-size: 7pt;
+      letter-spacing: 0.8px;
+      padding: 5px 8px;
+      border-top: 1.5px solid #cbd5e1;
+    }
+
+    /* THEMES LIST GRID */
+    .themes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .theme-box {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #ffffff;
+    }
+
+    .theme-box-title {
+      font-weight: 700;
+      font-size: 8.5pt;
+      color: #0f172a;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .theme-item {
+      font-size: 7.5pt;
+      color: #475569;
+      margin-bottom: 2px;
+      padding-left: 10px;
+      position: relative;
+    }
+
+    .theme-item::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #c9982e;
+    }
+
+    /* CALLOUT BOX */
+    .callout {
+      background: #fdfbf7;
+      border: 1px solid #e2d3b5;
+      border-left: 4px solid #c9982e;
+      padding: 9px 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: #854d0e;
+      font-size: 8pt;
+      margin-bottom: 3px;
+    }
+
+    .callout-text {
+      font-size: 7.5pt;
+      color: #713f12;
+      line-height: 1.35;
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 8px;
+      font-size: 7pt;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HALAMAN 1 ==================== -->
+  <div class="page">
+    <div class="header">
+      <div>
+        <div class="brand-title">WD DIGITAL INVITATION</div>
+        <div class="brand-subtitle">Matriks Spesifikasi &amp; Panduan Perbandingan Fitur Paket Undangan Digital</div>
+      </div>
+      <div class="header-meta">
+        <span class="badge-doc">Official Feature Matrix</span><br>
+        Versi Katalog 2026 • Validated
+      </div>
+    </div>
+
+    <!-- TIER CARDS OVERVIEW -->
+    <div class="tier-cards">
+      <!-- 50K -->
+      <div class="tier-card">
+        <span class="tier-badge">Paket Starter</span>
+        <div class="tier-name">Starter Basic</div>
+        <div class="tier-price-row">
+          <span class="tier-price">Rp 50.000</span>
+        </div>
+        <div class="tier-desc">Solusi praktis dan hemat untuk kebutuhan sebar undangan ringkas, cepat, dan rapi di WhatsApp.</div>
+        <ul class="tier-highlights">
+          <li>Desain Minimalis Elegan &amp; Mobile Responsive</li>
+          <li>Hitung Mundur Acara (Live Countdown)</li>
+          <li>Peta Lokasi Google Maps 1-Klik</li>
+          <li>Amplop Digital Rekening Bank Standar</li>
+          <li>Galeri Foto Pilihan (Maks. 5 Foto)</li>
+          <li>Pengerjaan Standar 2-3 Hari Kerja</li>
+        </ul>
+      </div>
+
+      <!-- 70K -->
+      <div class="tier-card">
+        <span class="tier-badge">Paket Standard</span>
+        <div class="tier-name">Cultural Heritage</div>
+        <div class="tier-price-row">
+          <span class="tier-price">Rp 70.000</span>
+        </div>
+        <div class="tier-desc">Desain istimewa adat &amp; nusantara lengkap dengan ornamen khas etnik serta buku tamu interaktif.</div>
+        <ul class="tier-highlights">
+          <li><strong>Seluruh fitur Paket 50k</strong></li>
+          <li>Ornamen Tradisional Adat (Sunda, Minang, Bali, Melayu)</li>
+          <li>Kisah Cinta (Love Story Timeline)</li>
+          <li>Panduan Busana Tamu (Dresscode)</li>
+          <li>Buku Tamu Doa (Live Wishes Feed)</li>
+          <li>Simpan ke Google Calendar Otomatis</li>
+        </ul>
+      </div>
+
+      <!-- 150K++ -->
+      <div class="tier-card featured">
+        <span class="tier-badge">Paket Sultan VVIP</span>
+        <div class="tier-name">Masterpiece 150k++</div>
+        <div class="tier-price-row">
+          <span class="tier-price">Rp 150.000</span>
+          <span class="tier-strike">Rp 250.000</span>
+        </div>
+        <div class="tier-desc">Kasta tertinggi dengan teknologi AR Photobooth, Tiket Barcode VIP, dan animasi interaktif sinematik.</div>
+        <ul class="tier-highlights">
+          <li><strong>Seluruh fitur Paket 50k &amp; 70k</strong></li>
+          <li><strong>AR Photobooth Kamera</strong> (Filter Frame Langsung)</li>
+          <li><strong>VIP Pass Presensi Barcode &amp; QR Code</strong></li>
+          <li><strong>Desktop 50/50 Split Screen Mode</strong></li>
+          <li><strong>Floating Vinyl &amp; Audio Soundwave Equalizer</strong></li>
+          <li><strong>Floating Ambient Particles</strong> (Stardust/Embers)</li>
+          <li><strong>Editorial Magazine Gallery</strong> (Filter 4 Tab)</li>
+          <li><strong>Prioritas Pengerjaan 24 Jam / Same-Day</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div class="section-title">Matriks Komparasi Fitur Lengkap</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th style="width: 44%;">Kategori &amp; Nama Fitur</th>
+          <th class="center" style="width: 18%;">Paket 50k<br><span style="font-weight: 400; font-size: 6.8pt;">(Starter)</span></th>
+          <th class="center" style="width: 18%;">Paket 70k<br><span style="font-weight: 400; font-size: 6.8pt;">(Standard Adat)</span></th>
+          <th class="center highlight-col" style="width: 20%;">Paket 150k - 250k<br><span style="font-weight: 400; font-size: 6.8pt;">(Masterpiece VVIP)</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- CORE & ESSENTIALS -->
+        <tr class="category-row">
+          <td colspan="4">1. Fitur Utama &amp; Kebutuhan Esensial</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Undangan Website Mobile-First</span>
+            <span class="feature-desc">Responsif di semua perangkat (Android, iPhone, iPad)</span>
+          </td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Personalisasi Nama Tamu (Kepada Yth.)</span>
+            <span class="feature-desc">Nama tamu otomatis muncul di sampul &amp; kartu undangan</span>
+          </td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Hitung Mundur Waktu Nyata (Live Countdown)</span>
+            <span class="feature-desc">Hari, jam, menit, detik menuju hari H pernikahan</span>
+          </td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Penunjuk Lokasi Google Maps</span>
+            <span class="feature-desc">Tombol 1-klik membuka aplikasi navigasi peta</span>
+          </td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Kutipan Ayat Suci / Doa Pernikahan</span>
+            <span class="feature-desc">Dapat disesuaikan untuk Muslim, Kristen, Katolik, Hindu, dll.</span>
+          </td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Amplop Digital &amp; Rekening Bank</span>
+            <span class="feature-desc">Nomor rekening transfer dengan tombol salin 1-klik</span>
+          </td>
+          <td><span class="feature-desc">Standar (1-2 Rekening)</span></td>
+          <td><span class="feature-desc">Standar (Bisa + Kado Fisik)</span></td>
+          <td><span class="status-special">EMV Prioritas Card + Salin</span></td>
+        </tr>
+
+        <!-- INTERAKTIVITAS & DOKUMENTASI -->
+        <tr class="category-row">
+          <td colspan="4">2. Interaktivitas, Konten &amp; Galeri</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Galeri Foto Prewedding &amp; Momen</span>
+            <span class="feature-desc">Kapasitas foto dan fleksibilitas tampilan</span>
+          </td>
+          <td><span class="feature-desc">Maks. 5 Foto</span></td>
+          <td><span class="feature-desc">Hingga 8 Foto (Lightbox)</span></td>
+          <td><span class="status-special">Editorial Tabs (Prewed, Akad, Resepsi)</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Kisah Cinta (Love Story Journey)</span>
+            <span class="feature-desc">Perjalanan kisah cinta kedua mempelai</span>
+          </td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-special">Garis Rasi Bintang / Segel Emas</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Buku Tamu Ucapan &amp; Doa (Live Wishes)</span>
+            <span class="feature-desc">Tamu dapat meninggalkan doa restu secara langsung</span>
+          </td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-yes">✓ (Feed Doa)</span></td>
+          <td><span class="status-yes">✓ (Realtime Supabase + Filter)</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Panduan Busana (Dresscode &amp; Palet Warna)</span>
+            <span class="feature-desc">Rekomendasi warna baju tamu + tombol salin kode HEX</span>
+          </td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="feature-desc">Teks Standar</span></td>
+          <td><span class="status-special">Interactive Swatches + Salin Hex</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Integrasi Google Calendar</span>
+            <span class="feature-desc">Pengingat jadwal otomatis ke kalender ponsel tamu</span>
+          </td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-yes">✓</span></td>
+          <td><span class="status-yes">✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <span>WD Digital Invitation • Dokumen Spesifikasi Paket &amp; Panduan Klien</span>
+      <span>Halaman 1 dari 2</span>
+    </div>
+  </div>
+
+  <!-- ==================== HALAMAN 2 ==================== -->
+  <div class="page">
+    <div class="header">
+      <div>
+        <div class="brand-title">WD DIGITAL INVITATION</div>
+        <div class="brand-subtitle">Fitur Eksklusif Masterpiece &amp; Daftar Pilihan Tema Lengkap</div>
+      </div>
+      <div class="header-meta">
+        <span class="badge-doc">VVIP &amp; Sultan Features</span><br>
+        Standar Rp 150k - Rp 250k
+      </div>
+    </div>
+
+    <!-- COMPARISON TABLE PART 2 -->
+    <div class="section-title">Fitur Eksklusif Masterpiece VVIP (150k - 250k)</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th style="width: 44%;">Teknologi &amp; Fitur Premium Eksklusif</th>
+          <th class="center" style="width: 18%;">Paket 50k</th>
+          <th class="center" style="width: 18%;">Paket 70k</th>
+          <th class="center highlight-col" style="width: 20%;">Paket 150k - 250k</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="category-row">
+          <td colspan="4">3. Teknologi Canggih &amp; Keamanan Check-In (Hanya di 150k++)</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">AR Photobooth Kamera Ponsel</span>
+            <span class="feature-desc">Tamu dapat berswafoto langsung dengan frame tema &amp; unduh ke Story</span>
+          </td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-special">✓ Kamera HP + Download HD</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Tiket Presensi Tamu VIP (Barcode Code-128 &amp; QR)</span>
+            <span class="feature-desc">Tiket resmi dengan laser scanline, nomor meja &amp; pintu akses</span>
+          </td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-special">✓ Scanline Laser + Simpan Galeri</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Desktop 50/50 Split Screen Mode</span>
+            <span class="feature-desc">Tampilan majalah interaktif terbelah rapi saat dibuka di laptop</span>
+          </td>
+          <td><span class="status-no">✕ (Tampilan 1 Kolom)</span></td>
+          <td><span class="status-no">✕ (Tampilan 1 Kolom)</span></td>
+          <td><span class="status-special">✓ Split-Screen Eksklusif</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Floating Vinyl &amp; 3-Bar Soundwave Equalizer</span>
+            <span class="feature-desc">Piringan musik berputar dengan gelombang audio animasi dinamis</span>
+          </td>
+          <td><span class="feature-desc">Tombol Bulat Biasa</span></td>
+          <td><span class="feature-desc">Piringan Disc Standar</span></td>
+          <td><span class="status-special">✓ Vinyl + Soundwave Equalizer</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Floating Ambient Particles Melayang</span>
+            <span class="feature-desc">Stardust kosmik, embun danau, kelopak bunga, atau percikan emas</span>
+          </td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-special">✓ 28-32 Partikel Melayang (z-20)</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">VVIP Concierge &amp; Protokol Kedatangan</span>
+            <span class="feature-desc">Panduan valet parking, private reception lounge, dan meja jamuan VIP</span>
+          </td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-no">✕</span></td>
+          <td><span class="status-special">✓ Protokol Khusus Tamu VIP</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Transisi Gerbang Pembuka Sinematik</span>
+            <span class="feature-desc">Efek cahaya portal starlight / kilau tirai saat Buka Undangan</span>
+          </td>
+          <td><span class="feature-desc">Fade Sederhana</span></td>
+          <td><span class="feature-desc">Fade Sederhana</span></td>
+          <td><span class="status-special">✓ Starlight Flare / Portal Burst</span></td>
+        </tr>
+
+        <!-- SERVICE & GUARANTEE -->
+        <tr class="category-row">
+          <td colspan="4">4. Layanan, Pengerjaan &amp; Garansi</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Kecepatan Pengerjaan (Turnaround Time)</span>
+            <span class="feature-desc">Estimasi draf undangan siap ditinjau klien</span>
+          </td>
+          <td><span class="feature-desc">2 - 3 Hari Kerja</span></td>
+          <td><span class="feature-desc">1 - 2 Hari Kerja</span></td>
+          <td><span class="status-special">Prioritas 24 Jam / Same-Day</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Masa Aktif Tautan Undangan</span>
+            <span class="feature-desc">Website aktif diakses oleh seluruh keluarga dan kerabat</span>
+          </td>
+          <td><span class="feature-desc">1 Bulan Penuh</span></td>
+          <td><span class="feature-desc">1 Bulan Penuh</span></td>
+          <td><span class="feature-desc"><strong>1 - 6 Bulan (Bisa Fleksibel)</strong></span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="feature-name">Garansi Bebas Revisi Data</span>
+            <span class="feature-desc">Perubahan jadwal, gelar, jam, atau lokasi acara mendadak</span>
+          </td>
+          <td><span class="feature-desc">Maks. 2x Revisi</span></td>
+          <td><span class="feature-desc">Maks. 3x Revisi</span></td>
+          <td><span class="status-special">✓ Revisi Bebas Sampai Hari H</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- THEMES CATALOG MATRIX -->
+    <div class="section-title">Katalog Tema Berdasarkan Paket Harga</div>
+    <div class="themes-grid">
+      <!-- 50K THEMES -->
+      <div class="theme-box">
+        <div class="theme-box-title">
+          <span>Paket 50.000</span>
+          <span style="font-size: 7pt; color: #64748b;">Starter</span>
+        </div>
+        <div class="theme-item"><strong>Ivory Pearl Minimalist</strong> (Putih Mutiara)</div>
+        <div class="theme-item"><strong>Noir Gold Elegance</strong> (Hitam Elegan Emas)</div>
+        <div class="theme-item"><strong>Rose Gold Romance</strong> (Merah Muda Lembut)</div>
+        <div class="theme-item"><strong>Terracotta Boho Rustic</strong> (Krem Hangat)</div>
+      </div>
+
+      <!-- 70K THEMES -->
+      <div class="theme-box">
+        <div class="theme-box-title">
+          <span>Paket 70.000</span>
+          <span style="font-size: 7pt; color: #dc2626;">Standard Adat</span>
+        </div>
+        <div class="theme-item"><strong>Sunda Siger Heritage</strong> (Mahkota Siger)</div>
+        <div class="theme-item"><strong>Minang Gadang Songket</strong> (Suntiang Emas)</div>
+        <div class="theme-item"><strong>Bali Kamasan Royal</strong> (Prada &amp; Pura)</div>
+        <div class="theme-item"><strong>Moroccan Nights</strong> (Arabian Zellij)</div>
+        <div class="theme-item"><strong>Kuala Lumpur Heritage</strong> (Songket Melayu)</div>
+      </div>
+
+      <!-- 150K++ THEMES -->
+      <div class="theme-box" style="border-color: #c9982e; background: #fdfbf7;">
+        <div class="theme-box-title">
+          <span style="color: #854d0e;">Paket 150k - 250k</span>
+          <span style="font-size: 7pt; color: #854d0e; font-weight: 800;">Masterpiece</span>
+        </div>
+        <div class="theme-item"><strong>Midnight Celestial Star</strong> (Navy Perak Kosmik)</div>
+        <div class="theme-item"><strong>Burgundy Wine Classic</strong> (Bordeaux Velvet)</div>
+        <div class="theme-item"><strong>Emerald Velvet Royal</strong> (Hijau Zamrud Sultan)</div>
+        <div class="theme-item"><strong>Nirwana Sarangan Resort</strong> (Telaga Resort VIP)</div>
+        <div class="theme-item"><strong>Royal Wayang Gold</strong> (Pendopo Keraton)</div>
+        <div class="theme-item"><strong>Joglo Maroon Heritage</strong> (Adat Batak/Jawa)</div>
+        <div class="theme-item"><strong>Split Floral Luxury</strong> (Modern Editorial)</div>
+      </div>
+    </div>
+
+    <!-- STRATEGIC VALUE PROPOSITION NOTE -->
+    <div class="callout">
+      <div class="callout-title">💡 Nilai Jual Strategis Paket Masterpiece (Harga Coret Normal Rp 250k ➔ Promo Rp 150k):</div>
+      <div class="callout-text">
+        Paket Masterpiece (150k - 250k) menawarkan <strong>AR Photobooth Kamera</strong> dan <strong>Sistem Tiket Presensi Barcode/QR Resmi</strong> yang di vendor lain dijual sebagai add-on terpisah seharga Rp 100.000 - Rp 150.000. Dengan strategi harga coret (Hemat 40%), calon pengantin mendapatkan nilai kemewahan kasta sultan setara jasa ratusan ribu rupiah dengan harga yang sangat bersaing.
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>WD Digital Invitation • WhatsApp: 0857-0790-9415 • Instagram: @wdgroupcompany</span>
+      <span>Halaman 2 dari 2</span>
+    </div>
+  </div>
+
+</body>
+</html>
