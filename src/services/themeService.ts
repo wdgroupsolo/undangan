@@ -540,21 +540,21 @@ export const REAL_NAVY_SILVER_THEME: Theme = {
   created_at: '2026-11-15T15:07:00.000000+00:00'
 };
 
-// 9. Burgundy Wine Classic (Rp 150.000 / Masterpiece)
+// 9. Burgundy Wine Classic (Promo Rp 150.000 / Normal Rp 250.000 - Masterpiece)
 export const REAL_BURGUNDY_WINE_THEME: Theme = {
   id: 'a1111111-2222-3333-4444-555555555509',
   name: 'Burgundy Wine Classic',
   slug: 'burgundy-wine',
-  description: 'Tema pernikahan klasik ala perjamuan anggur bangsawan Eropa bernuansa merah bordeaux tua pekat, ukiran perunggu antik vintage, bingkai cameo oval, dan pita beludru anggun.',
+  description: 'Tema pernikahan mewah Eropa klasik bordeaux wine velvet, ornamen filigree emas perunggu antik, frame cameo oval aristokrat, dan perjamuan agung chateau.',
   category: 'Royal & Classic',
   price: 150000,
   preview_image: '/themes/burgundy-wine/theme-preview.jpg',
   thumbnail: '/themes/burgundy-wine/theme-preview.jpg',
   status: 'active',
-  badge: 'Masterpiece Eropa',
+  badge: 'Masterpiece Promo (Hemat 40%)',
   rating: '5.0',
-  features: ['Nuansa Bordeaux Burgundy & Antique Bronze', 'Bingkai Cameo Oval Klasik Bangsawan', 'Buku Tamu Doa & Konfirmasi Kehadiran', 'Bottom Nav Bar Praktis & Fast Load'],
-  theme_config: { primaryColor: '#44101A', secondaryColor: '#FDF7F8', accentColor: '#C99E58', style: 'burgundy-wine' },
+  features: ['Nuansa Bordeaux Wine Velvet & Antique Bronze Gold', 'Frame Cameo Oval Aristokrat & Segel Lilin Romantis', 'AR Photobooth Kamera & Tiket Barcode VIP', 'Kisah Cinta, Countdown & Amplop Digital Bank EMV'],
+  theme_config: { primaryColor: '#26050C', secondaryColor: '#1A0307', accentColor: '#B88B4A', style: 'burgundy-wine' },
   created_at: '2026-11-15T15:08:00.000000+00:00'
 };
 
