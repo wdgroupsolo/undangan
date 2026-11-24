@@ -2340,13 +2340,13 @@ export const InvitationRenderer: React.FC = () => {
               </div>
 
               {/* Middle Card Content */}
-              <div className="flex-1 w-full flex flex-col items-center justify-center px-2 xs:px-4 py-2 xs:py-4 overflow-y-auto">
-                <div className="mb-2 xs:mb-3">
+              <div className="flex-1 w-full flex flex-col items-center justify-center px-2 xs:px-4 py-2 xs:py-3 overflow-y-auto">
+                <div className="mb-2 xs:mb-2.5">
                   <CelestialCrescentFrame
                     imageSrc={coverImage}
                     altText={`${groomDisplayName} & ${brideDisplayName}`}
-                    frameWidthClass="w-36 xs:w-40 sm:w-44"
-                    frameHeightClass="h-48 xs:h-52 sm:h-58"
+                    frameWidthClass="w-32 xs:w-36 sm:w-44"
+                    frameHeightClass="h-42 xs:h-48 sm:h-56"
                   />
                 </div>
 
@@ -2354,12 +2354,12 @@ export const InvitationRenderer: React.FC = () => {
                   THE WEDDING INVITATION
                 </p>
 
-                <h1 className="text-2xl xs:text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F8FAFC] to-[#BAE6FD] mb-1.5 xs:mb-2 tracking-wide drop-shadow-sm">
+                <h1 className="text-xl xs:text-2xl sm:text-3xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F8FAFC] to-[#BAE6FD] mb-1 xs:mb-1.5 tracking-wide drop-shadow-sm">
                   {groomDisplayName} <span className="font-light italic text-[#38BDF8]">&amp;</span> {brideDisplayName}
                 </h1>
 
                 {/* Event Date Badge */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 xs:py-1 rounded-full bg-[#050B18]/90 border border-[#38BDF8]/40 text-[#BAE6FD] text-[10px] xs:text-[11px] font-serif font-medium mb-2 xs:mb-3">
+                <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 xs:py-1 rounded-full bg-[#050B18]/90 border border-[#38BDF8]/40 text-[#BAE6FD] text-[9.5px] xs:text-[10px] sm:text-[11px] font-serif font-medium mb-1.5 xs:mb-2">
                   <Calendar className="w-3 h-3 text-[#38BDF8]" />
                   <span>
                     {events?.[0]?.event_date 
@@ -2369,15 +2369,15 @@ export const InvitationRenderer: React.FC = () => {
                 </div>
 
                 {/* Guest Box */}
-                <div className="w-full bg-[#050B18]/90 p-2.5 xs:p-3 rounded-2xl border border-[#94A3B8]/30 mb-2.5 xs:mb-3 shadow-inner text-center">
-                  <p className="text-[9px] xs:text-[9.5px] text-[#94A3B8] uppercase tracking-wider mb-0.5 font-medium">
+                <div className="w-full bg-[#050B18]/90 p-2 xs:p-2.5 rounded-2xl border border-[#94A3B8]/30 mb-2 xs:mb-2.5 shadow-inner text-center">
+                  <p className="text-[8.5px] xs:text-[9px] text-[#94A3B8] uppercase tracking-wider mb-0.5 font-medium">
                     Kepada Yth. Bapak/Ibu/Saudara/i:
                   </p>
                   <p className="font-serif text-sm xs:text-base font-bold text-white line-clamp-1">
                     {guestName}
                   </p>
-                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#38BDF8]/15 text-[#38BDF8] text-[9px] xs:text-[9.5px] font-serif font-semibold mt-1">
-                    <Crown size={11} />
+                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#38BDF8]/15 text-[#38BDF8] text-[8.5px] xs:text-[9px] font-serif font-semibold mt-1">
+                    <Crown size={10} />
                     <span>Tamu Undangan VIP 150k</span>
                   </div>
                 </div>

@@ -598,6 +598,18 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Auto-scroll active nav item into center view on mobile/narrow screens
+  useEffect(() => {
+    if (navContainerRef.current) {
+      const activeEl = navContainerRef.current.querySelector(`[data-nav-id="${activeSection}"]`) as HTMLElement;
+      if (activeEl) {
+        const container = navContainerRef.current;
+        const scrollLeft = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
+        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+      }
+    }
+  }, [activeSection]);
+
   // Bank Copy State
   const [copiedBankIdx, setCopiedBankIdx] = useState<number | null>(null);
 
@@ -1445,27 +1457,27 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
           </ScrollReveal>
 
           {/* Central Portrait */}
-          <ScrollReveal animation="zoom-in" delay={200} className="relative z-10 my-auto py-3 pt-6 flex flex-col items-center max-w-md mx-auto w-full">
-            <div className="mb-3">
+          <ScrollReveal animation="zoom-in" delay={200} className="relative z-10 my-auto py-2 xs:py-3 pt-4 xs:pt-6 flex flex-col items-center max-w-md mx-auto w-full">
+            <div className="mb-2.5 xs:mb-3">
               <CelestialCrescentFrame
                 imageSrc={couplePhoto}
                 altText={`${groomName} & ${brideName}`}
-                frameWidthClass="w-48 sm:w-56"
-                frameHeightClass="h-62 sm:h-74"
+                frameWidthClass="w-40 xs:w-48 sm:w-56"
+                frameHeightClass="h-54 xs:h-62 sm:h-74"
               />
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0E1A38]/90 border border-[#94A3B8]/50 shadow-sm text-white">
-              <Crown className="w-3.5 h-3.5 text-[#38BDF8]" />
-              <span className="text-[10px] font-serif uppercase tracking-[0.2em] font-bold text-[#BAE6FD]">
+            <div className="inline-flex items-center gap-1.5 xs:gap-2 px-3.5 xs:px-4 py-1 xs:py-1.5 rounded-full bg-[#0E1A38]/90 border border-[#94A3B8]/50 shadow-sm text-white">
+              <Crown className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-[#38BDF8]" />
+              <span className="text-[9px] xs:text-[10px] font-serif uppercase tracking-[0.2em] font-bold text-[#BAE6FD]">
                 Midnight Celestial Star
               </span>
             </div>
           </ScrollReveal>
 
           {/* Countdown & Recipient Info (Visible on mobile, hidden on desktop since aside handles it) */}
-          <ScrollReveal animation="fade-up" delay={300} className="relative z-10 w-full flex flex-col items-center pb-4 max-w-md mx-auto lg:hidden">
-            <div className="w-full max-w-xs p-3.5 rounded-2xl bg-[#0E1A38]/90 border border-[#94A3B8]/40 shadow-xs mb-3 text-center">
-              <span className="text-[10px] uppercase tracking-widest text-[#38BDF8] block mb-0.5">
+          <ScrollReveal animation="fade-up" delay={300} className="relative z-10 w-full flex flex-col items-center pb-3 xs:pb-4 max-w-md mx-auto lg:hidden">
+            <div className="w-full max-w-[280px] xs:max-w-xs p-3 xs:p-3.5 rounded-2xl bg-[#0E1A38]/90 border border-[#94A3B8]/40 shadow-xs mb-2.5 xs:mb-3 text-center">
+              <span className="text-[9.5px] xs:text-[10px] uppercase tracking-widest text-[#38BDF8] block mb-0.5">
                 Kepada Yth. Bapak/Ibu/Saudara/i:
               </span>
               <span className="font-serif text-sm font-bold text-white block truncate">
@@ -1474,18 +1486,18 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
             </div>
 
             {/* Countdown */}
-            <div className="grid grid-cols-4 gap-2 w-full max-w-xs mb-3">
+            <div className="grid grid-cols-4 gap-1.5 xs:gap-2 w-full max-w-[280px] xs:max-w-xs mb-2.5 xs:mb-3">
               {[
                 { label: 'Hari', val: timeLeft.days },
                 { label: 'Jam', val: timeLeft.hours },
                 { label: 'Menit', val: timeLeft.minutes },
                 { label: 'Detik', val: timeLeft.seconds },
               ].map((item, idx) => (
-                <div key={idx} className="p-2 rounded-xl bg-[#0B152B]/85 border border-[#94A3B8]/30 shadow-xs text-center">
-                  <span className="block text-base sm:text-lg font-serif font-bold text-[#F8FAFC]">
+                <div key={idx} className="p-1.5 xs:p-2 rounded-xl bg-[#0B152B]/85 border border-[#94A3B8]/30 shadow-xs text-center">
+                  <span className="block text-sm xs:text-base sm:text-lg font-serif font-bold text-[#F8FAFC]">
                     {String(item.val).padStart(2, '0')}
                   </span>
-                  <span className="text-[8.5px] uppercase tracking-wider text-[#94A3B8] font-sans">
+                  <span className="text-[7.5px] xs:text-[8.5px] uppercase tracking-wider text-[#94A3B8] font-sans">
                     {item.label}
                   </span>
                 </div>
@@ -1493,7 +1505,7 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
             </div>
 
             {/* Scroll Indicator */}
-            <div className="flex flex-col items-center text-[#94A3B8] text-[10px] tracking-widest uppercase">
+            <div className="flex flex-col items-center text-[#94A3B8] text-[9.5px] xs:text-[10px] tracking-widest uppercase">
               <span>Gulir Ke Bawah</span>
               <ChevronDown className="w-4 h-4 text-[#38BDF8] animate-bounce mt-1" />
             </div>
@@ -2166,42 +2178,42 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
               <div className="space-y-4 max-w-sm mx-auto">
                 {displayGifts.map((bank: any, idx: number) => (
                   <ScrollReveal key={idx} animation="zoom-in" delay={idx * 150}>
-                    <div className="relative p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#0E1A38] via-[#0A132B] to-[#040817] border border-[#38BDF8]/60 shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(56,189,248,0.25)] text-left overflow-hidden text-white hover:scale-[1.02] transition-transform">
+                    <div className="relative p-4 xs:p-5 sm:p-6 rounded-2xl xs:rounded-3xl bg-gradient-to-br from-[#0E1A38] via-[#0A132B] to-[#040817] border border-[#38BDF8]/60 shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(56,189,248,0.25)] text-left overflow-hidden text-white hover:scale-[1.02] transition-transform">
                       <GuillocheCelestialWatermark opacity={0.08} />
 
                       {/* Header Card: Bank & EMV Chip */}
-                      <div className="flex items-center justify-between mb-4 relative z-10">
-                        <div className="flex items-center gap-2">
-                          <span className="font-serif font-bold text-base sm:text-lg tracking-wider text-white">
+                      <div className="flex items-center justify-between mb-3 xs:mb-4 relative z-10">
+                        <div className="flex items-center gap-1.5 xs:gap-2">
+                          <span className="font-serif font-bold text-sm xs:text-base sm:text-lg tracking-wider text-white">
                             {bank.bank_name}
                           </span>
-                          <span className="text-[8.5px] tracking-widest font-mono uppercase px-2 py-0.5 rounded-full bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40">
+                          <span className="text-[8px] xs:text-[8.5px] tracking-widest font-mono uppercase px-2 py-0.5 rounded-full bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40">
                             PRIORITY
                           </span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Wifi size={16} className="text-[#38BDF8] rotate-90 opacity-80" />
+                        <div className="flex items-center gap-1.5 xs:gap-2">
+                          <Wifi size={15} className="text-[#38BDF8] rotate-90 opacity-80" />
                           <EMVSilverSmartChip />
                         </div>
                       </div>
 
                       {/* Card Number */}
-                      <div className="mb-3 relative z-10">
-                        <span className="text-[9px] font-serif uppercase tracking-widest text-[#94A3B8] block">
+                      <div className="mb-2.5 xs:mb-3 relative z-10">
+                        <span className="text-[8.5px] xs:text-[9px] font-serif uppercase tracking-widest text-[#94A3B8] block">
                           NOMOR REKENING PRIORITAS
                         </span>
-                        <div className="font-mono text-base sm:text-2xl font-bold tracking-wider text-white mt-0.5 truncate">
+                        <div className="font-mono text-sm xs:text-lg sm:text-2xl font-bold tracking-wider text-white mt-0.5 truncate">
                           {bank.account_number}
                         </div>
                       </div>
 
                       {/* Card Holder & Copy Button */}
-                      <div className="flex items-center justify-between pt-3 border-t border-[#94A3B8]/20 relative z-10">
+                      <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 pt-2.5 xs:pt-3 border-t border-[#94A3B8]/20 relative z-10">
                         <div>
-                          <span className="text-[9px] font-sans uppercase tracking-wider text-[#94A3B8] block">
+                          <span className="text-[8.5px] xs:text-[9px] font-sans uppercase tracking-wider text-[#94A3B8] block">
                             ATAS NAMA
                           </span>
-                          <span className="font-serif text-xs font-semibold text-[#BAE6FD]">
+                          <span className="font-serif text-[11px] xs:text-xs font-semibold text-[#BAE6FD]">
                             {bank.account_name}
                           </span>
                         </div>
@@ -2209,7 +2221,7 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
                         <button
                           type="button"
                           onClick={() => handleCopy(bank.account_number.replace(/\s+/g, ''), bank.id)}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#38BDF8] to-white text-[#030712] text-[11px] font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer hover:brightness-110 active:scale-95"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 xs:px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#38BDF8] to-white text-[#030712] text-[10px] xs:text-[11px] font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer hover:brightness-110 active:scale-95"
                         >
                           {isCopied === bank.id ? (
                             <>
@@ -2289,42 +2301,42 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
             {/* VIP GUEST VERIFIED PASS CARD */}
             {activeBarcodePass && (
               <ScrollReveal animation="zoom-in" delay={180} duration={850}>
-                <div className="relative bg-gradient-to-br from-[#0E1A38] via-[#081226] to-[#030712] text-white p-5 sm:p-8 rounded-3xl border border-[#38BDF8]/60 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(56,189,248,0.35)] mb-8 text-center overflow-hidden max-w-sm mx-auto z-10">
+                <div className="relative bg-gradient-to-br from-[#0E1A38] via-[#081226] to-[#030712] text-white p-4 xs:p-6 sm:p-8 rounded-2xl xs:rounded-3xl border border-[#38BDF8]/60 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(56,189,248,0.35)] mb-8 text-center overflow-hidden max-w-[340px] xs:max-w-sm mx-auto z-10">
                   <GuillocheCelestialWatermark opacity={0.09} />
 
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#38BDF8]/20 text-[10px] text-[#38BDF8] mb-3 border border-[#38BDF8]/50">
+                  <div className="inline-flex items-center gap-1.5 xs:gap-2 px-2.5 xs:px-3 py-1 rounded-full bg-[#38BDF8]/20 text-[9.5px] xs:text-[10px] text-[#38BDF8] mb-2.5 xs:mb-3 border border-[#38BDF8]/50">
                     <Crown size={12} className="text-[#38BDF8]" />
                     <span className="font-serif tracking-widest font-bold uppercase">
                       CELESTIAL VIP ACCESS PASS
                     </span>
                   </div>
 
-                  <h3 className="font-serif text-xl font-bold text-white mb-1">
+                  <h3 className="font-serif text-lg xs:text-xl font-bold text-white mb-1">
                     {activeBarcodePass.name}
                   </h3>
 
-                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-sans font-semibold my-2 bg-emerald-950/90 text-emerald-200 border border-emerald-400/50">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-0.5 rounded-full text-[9.5px] xs:text-[10px] font-sans font-semibold my-1.5 xs:my-2 bg-emerald-950/90 text-emerald-200 border border-emerald-400/50">
                     <span>✓ Terkonfirmasi Hadir ({activeBarcodePass.guests || 1} Tamu)</span>
                   </div>
 
-                  <p className="text-[11px] text-[#38BDF8] mb-3 font-serif">
+                  <p className="text-[10px] xs:text-[11px] text-[#38BDF8] mb-2.5 xs:mb-3 font-serif">
                     {displayEvents[0]?.location || 'The Celestial Ballroom • Jakarta'}
                   </p>
 
                   {/* VVIP Seating & Gate Info */}
-                  <div className="grid grid-cols-2 gap-2 my-3 max-w-xs mx-auto text-left">
-                    <div className="p-2 rounded-xl bg-[#050B18]/90 border border-[#38BDF8]/30 shadow-inner">
-                      <span className="text-[8px] text-[#94A3B8] block uppercase font-sans">Meja Jamuan</span>
-                      <span className="text-[11px] font-serif font-bold text-[#38BDF8] truncate block">{activeBarcodePass.table || 'Table 01 - Celestial'}</span>
+                  <div className="grid grid-cols-2 gap-1.5 xs:gap-2 my-2.5 xs:my-3 max-w-xs mx-auto text-left">
+                    <div className="p-1.5 xs:p-2 rounded-xl bg-[#050B18]/90 border border-[#38BDF8]/30 shadow-inner">
+                      <span className="text-[7.5px] xs:text-[8px] text-[#94A3B8] block uppercase font-sans">Meja Jamuan</span>
+                      <span className="text-[10px] xs:text-[11px] font-serif font-bold text-[#38BDF8] truncate block">{activeBarcodePass.table || 'Table 01 - Celestial'}</span>
                     </div>
-                    <div className="p-2 rounded-xl bg-[#050B18]/90 border border-[#38BDF8]/30 shadow-inner">
-                      <span className="text-[8px] text-[#94A3B8] block uppercase font-sans">Pintu Akses</span>
-                      <span className="text-[11px] font-serif font-bold text-[#38BDF8] truncate block">Lobby Utama Starlight</span>
+                    <div className="p-1.5 xs:p-2 rounded-xl bg-[#050B18]/90 border border-[#38BDF8]/30 shadow-inner">
+                      <span className="text-[7.5px] xs:text-[8px] text-[#94A3B8] block uppercase font-sans">Pintu Akses</span>
+                      <span className="text-[10px] xs:text-[11px] font-serif font-bold text-[#38BDF8] truncate block">Lobby Utama Starlight</span>
                     </div>
                   </div>
 
                   {/* QR Code Graphic with Laser Scanline Animation */}
-                  <div className="relative w-32 h-32 sm:w-36 sm:h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-[#38BDF8] shadow-md flex items-center justify-center my-3 overflow-hidden">
+                  <div className="relative w-28 h-28 xs:w-32 xs:h-32 sm:w-36 sm:h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-[#38BDF8] shadow-md flex items-center justify-center my-2.5 xs:my-3 overflow-hidden">
                     <img 
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'CELESTIAL'}|GUEST:${activeBarcodePass.name}|ATT:attending|CODE:${activeBarcodePass.code}`)}`}
                       alt="QR Code Tiket"
@@ -2338,18 +2350,18 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
                   </div>
 
                   {/* Authentic Linear Barcode Graphic (Code-128 Vertical SVG Bars) */}
-                  <div className="relative my-2.5 px-3 py-2 bg-white rounded-xl border border-[#38BDF8]/70 flex flex-col items-center shadow-md overflow-hidden">
-                    <svg viewBox="0 0 160 32" className="w-full max-w-[210px] h-9 text-[#030712]" preserveAspectRatio="none">
+                  <div className="relative my-2 xs:my-2.5 px-2.5 xs:px-3 py-1.5 xs:py-2 bg-white rounded-xl border border-[#38BDF8]/70 flex flex-col items-center shadow-md overflow-hidden">
+                    <svg viewBox="0 0 160 32" className="w-full max-w-[170px] xs:max-w-[210px] h-8 xs:h-9 text-[#030712]" preserveAspectRatio="none">
                       {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
                         idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
                       ))}
                     </svg>
-                    <span className={`font-mono font-bold text-xs tracking-[0.25em] ${isDemo ? 'text-red-700 line-through' : 'text-[#030712]'} mt-1`}>
+                    <span className={`font-mono font-bold text-[11px] xs:text-xs tracking-[0.25em] ${isDemo ? 'text-red-700 line-through' : 'text-[#030712]'} mt-1`}>
                       {activeBarcodePass.code}
                     </span>
                     {isDemo && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/45 pointer-events-none">
-                        <span className="bg-sky-600/95 text-white font-bold text-[9px] px-2.5 py-0.5 rounded tracking-widest uppercase shadow">
+                        <span className="bg-sky-600/95 text-white font-bold text-[8.5px] xs:text-[9px] px-2 py-0.5 rounded tracking-widest uppercase shadow">
                           BARCODE DEMO (TERKUNCI)
                         </span>
                       </div>
@@ -2549,7 +2561,7 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
       </main>
 
       {/* Floating Bottom Navigation Bar with Dynamic Starlight Silver Pill Dock */}
-      <nav className={`fixed bottom-3 xs:bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-1.5 xs:px-2 pointer-events-auto transition-opacity duration-300 ${activePhotoIndex !== null ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
+      <nav className={`fixed bottom-3 xs:bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[calc(100vw-20px)] sm:max-w-max px-1.5 xs:px-2 pointer-events-auto transition-opacity duration-300 ${activePhotoIndex !== null ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
         <div 
           ref={navContainerRef}
           className="bg-[#040814]/95 backdrop-blur-xl border border-[#38BDF8]/60 rounded-full py-1 xs:py-1.5 px-1.5 xs:px-2 sm:px-3 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(56,189,248,0.3)] flex items-center justify-start sm:justify-center gap-0.5 xs:gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
@@ -2581,14 +2593,19 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }
                 }}
-                className={`snap-center flex flex-col sm:flex-row items-center gap-0.5 xs:gap-1 py-1 xs:py-1.5 px-2 xs:px-2.5 sm:px-3 rounded-full text-[9px] xs:text-[10px] font-serif transition-all shrink-0 cursor-pointer ${
+                className={`transition-all duration-300 flex items-center gap-1 sm:gap-1.5 rounded-full cursor-pointer select-none shrink-0 snap-center ${
                   isActive 
-                    ? 'bg-gradient-to-r from-[#38BDF8] to-white text-[#030712] font-bold shadow-md scale-105' 
-                    : 'text-[#94A3B8] hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-[#38BDF8] via-[#7DD3FC] to-white text-[#030712] px-2.5 xs:px-3 sm:px-3.5 py-1.5 font-serif font-bold text-[10px] xs:text-xs shadow-[0_0_15px_rgba(56,189,248,0.7)] scale-105' 
+                    : 'text-[#BAE6FD]/70 hover:text-white hover:bg-white/10 p-1.5 xs:p-2 text-xs'
                 }`}
+                title={item.label}
               >
-                <IconComponent className="w-3.5 h-3.5 xs:w-4 xs:h-4 shrink-0" />
-                <span className="whitespace-nowrap">{item.label}</span>
+                <IconComponent size={14} className={`shrink-0 ${isActive ? 'text-[#030712]' : 'text-[#38BDF8]'}`} />
+                {isActive && (
+                  <span className="text-[10px] xs:text-[11px] font-bold tracking-wide whitespace-nowrap animate-fade-in">
+                    {item.label}
+                  </span>
+                )}
               </a>
             );
           })}
