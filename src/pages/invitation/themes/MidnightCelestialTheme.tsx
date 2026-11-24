@@ -1290,143 +1290,90 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
       {/* =========================================================================
           DESKTOP LEFT FIXED ASIDE (Cinematic Full Showcase on Large Screens)
           ========================================================================= */}
-      <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-6 xl:p-8 2xl:p-10 overflow-hidden bg-[#030712] border-r border-[#38BDF8]/30 shadow-2xl select-none">
+      <aside className="hidden lg:flex lg:w-5/12 xl:w-1/2 fixed inset-y-0 left-0 z-20 flex-col justify-between p-8 xl:p-12 overflow-hidden bg-[#030712] border-r border-[#38BDF8]/20 shadow-2xl select-none">
         {/* Background image with cinematic midnight starlight vignette */}
         <div 
           className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out hover:scale-105"
           style={{ backgroundImage: `url(${couplePhoto})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#050B18]/80 via-55% to-[#030712]/45" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(3,7,18,0.6)_70%,rgba(3,7,18,0.95)_100%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/60 via-60% to-[#030712]/30" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(3,7,18,0.5)_60%,rgba(3,7,18,0.92)_100%)] pointer-events-none" />
 
-        {/* Architectural Silver Hairline Frames & Corner Constellations */}
-        <div className="absolute inset-4 rounded-3xl border border-[#94A3B8]/30 pointer-events-none z-10" />
-        <div className="absolute inset-5 rounded-2xl border border-[#38BDF8]/20 pointer-events-none z-10" />
-        <div className="absolute top-4 left-4"><CelestialCornerFlourish position="top-left" size={60} /></div>
-        <div className="absolute top-4 right-4"><CelestialCornerFlourish position="top-right" size={60} /></div>
-        <div className="absolute bottom-4 left-4"><CelestialCornerFlourish position="bottom-left" size={60} /></div>
-        <div className="absolute bottom-4 right-4"><CelestialCornerFlourish position="bottom-right" size={60} /></div>
+        {/* Single Subtle Hairline Starlight Frame */}
+        <div className="absolute inset-6 rounded-3xl border border-white/10 pointer-events-none z-10" />
+        <div className="absolute top-5 left-5"><CelestialCornerFlourish position="top-left" size={50} /></div>
+        <div className="absolute top-5 right-5"><CelestialCornerFlourish position="top-right" size={50} /></div>
+        <div className="absolute bottom-5 left-5"><CelestialCornerFlourish position="bottom-left" size={50} /></div>
+        <div className="absolute bottom-5 right-5"><CelestialCornerFlourish position="bottom-right" size={50} /></div>
 
         {/* Top Header Bar */}
         <div className="relative z-10 flex items-center justify-between">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B152B]/90 backdrop-blur-md border border-[#38BDF8]/60 text-[#BAE6FD] text-[10.5px] font-serif uppercase tracking-[0.2em] shadow-md font-bold">
-            <Crown className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span>THE ROYAL MASTERPIECE</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#030712]/75 backdrop-blur-md border border-[#38BDF8]/40 text-[#BAE6FD] text-[10px] font-serif uppercase tracking-[0.25em] shadow-md font-bold">
+            <Sparkles className="w-3.5 h-3.5 text-[#38BDF8]" />
+            <span>MIDNIGHT CELESTIAL</span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B152B]/85 backdrop-blur-md border border-[#94A3B8]/40 text-[#BAE6FD] text-[9.5px] font-serif tracking-widest uppercase shadow-xs">
-            <Sparkles className="w-3 h-3 text-[#38BDF8]" />
-            <span>MIDNIGHT CELESTIAL</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#030712]/70 backdrop-blur-md border border-white/10 text-xs font-serif text-[#94A3B8]">
+            <span>Khusus Untuk:</span>
+            <span className="text-white font-bold tracking-wide max-w-[150px] truncate">{guestName}</span>
           </div>
         </div>
 
-        {/* Center Content: VIP Cartouche, Monogram, Typography & Countdown */}
-        <div className="relative z-10 my-auto text-left py-2 sm:py-3 max-w-md">
-          {/* VIP Recognition Cartouche */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-[#0E1A38]/90 via-[#0A132B]/95 to-[#040817]/98 border border-[#38BDF8]/60 shadow-lg text-white mb-2.5">
-            <Crown className="w-3 h-3 text-[#38BDF8]" />
-            <span className="text-[10px] uppercase tracking-wider text-[#BAE6FD]/85 font-serif font-medium">Spesial Untuk:</span>
-            <span className="text-xs font-serif font-bold text-white tracking-wide truncate max-w-[160px]">{guestName}</span>
-            <span className="text-[8px] bg-gradient-to-r from-[#38BDF8] to-[#818CF8] text-[#030712] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-xs">VIP</span>
-          </div>
-
-          <CelestialRoyalCrest initials={coupleInitials} size="md" className="!items-start mb-2.5" />
-          
-          <span className="text-[10.5px] font-serif uppercase tracking-[0.3em] text-[#38BDF8] font-semibold block mb-1">
-            THE CELESTIAL WEDDING OF
+        {/* Center Typography & Floating Minimalist Countdown */}
+        <div className="relative z-10 my-auto text-left max-w-md">
+          <span className="text-[10px] font-serif uppercase tracking-[0.35em] text-[#38BDF8] font-semibold block mb-2">
+            THE WEDDING CELEBRATION OF
           </span>
-          <h1 className="font-serif text-3xl xl:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F8FAFC] to-[#BAE6FD] drop-shadow-[0_4px_25px_rgba(56,189,248,0.4)]">
+          <h1 className="font-serif text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F8FAFC] to-[#BAE6FD] drop-shadow-[0_4px_25px_rgba(56,189,248,0.35)] leading-tight">
             {groomName} <span className="font-light italic text-[#38BDF8]">&amp;</span> {brideName}
           </h1>
 
-          <div className="flex items-center gap-2 text-xs xl:text-sm text-[#94A3B8] mt-1.5 font-serif">
+          <div className="flex items-center gap-2 text-xs xl:text-sm text-[#94A3B8] mt-3 font-serif">
             <Calendar className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" />
             <span>Senin, 12 Oktober 2026</span>
-            <span className="text-[#38BDF8]/60">•</span>
+            <span className="text-[#38BDF8]/50">•</span>
             <MapPin className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" />
             <span>The Celestial Ballroom, Jakarta</span>
           </div>
 
-          <div className="w-20 h-0.5 bg-gradient-to-r from-[#38BDF8] via-[#38BDF8]/60 to-transparent my-2.5 sm:my-3" />
-          <p className="text-xs text-white/85 max-w-sm leading-relaxed font-light">
-            Menyatukan dua insan dalam ikatan suci pernikahan di bawah naungan keagungan bintang dan semesta cinta abadi bernuansa Midnight &amp; Silver.
-          </p>
-
-          {/* Aside Live Countdown Card */}
-          <div className="relative p-3.5 sm:p-4 rounded-2xl bg-gradient-to-b from-[#0B152B]/90 via-[#070E20]/95 to-[#030712]/98 backdrop-blur-md border border-[#38BDF8]/50 shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(56,189,248,0.2)] text-center max-w-sm mt-3 sm:mt-4">
-            <div className="absolute inset-1 rounded-xl border border-[#94A3B8]/20 pointer-events-none" />
-            <div className="flex items-center justify-between mb-2 px-1">
-              <span className="text-[9.5px] tracking-[0.25em] font-serif uppercase text-[#38BDF8] font-bold flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 text-[#38BDF8]" />
-                <span>HITUNG MUNDUR HARI SAKRAL</span>
+          {/* Clean Floating Starlight Countdown */}
+          <div className="mt-8 pt-5 border-t border-white/10">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="w-3 h-3 text-[#38BDF8]" />
+              <span className="text-[9px] font-mono tracking-[0.25em] text-[#38BDF8] uppercase font-bold">
+                HITUNG MUNDUR ACARA
               </span>
-              <span className="text-[9px] text-[#94A3B8] font-serif italic">Jakarta Selatan</span>
             </div>
 
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-4 gap-2.5 max-w-sm">
               {[
                 { label: 'HARI', val: timeLeft.days },
                 { label: 'JAM', val: timeLeft.hours },
                 { label: 'MENIT', val: timeLeft.minutes },
                 { label: 'DETIK', val: timeLeft.seconds },
               ].map((tile, idx) => (
-                <div key={idx} className="bg-gradient-to-b from-[#040817]/95 via-black/80 to-[#040817]/95 rounded-xl p-2 border border-[#94A3B8]/35 text-center shadow-inner relative group hover:border-[#38BDF8] transition-colors">
-                  <span className="font-serif text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white via-[#F8FAFC] to-[#BAE6FD] block leading-tight">
+                <div key={idx} className="bg-[#030712]/75 backdrop-blur-md rounded-2xl p-2.5 border border-white/10 text-center hover:border-[#38BDF8]/40 transition-colors">
+                  <span className="font-serif text-2xl xl:text-3xl font-bold text-white block leading-tight">
                     {String(tile.val).padStart(2, '0')}
                   </span>
-                  <span className="text-[7.5px] font-sans tracking-widest text-[#BAE6FD]/90 uppercase font-semibold">
+                  <span className="text-[7.5px] font-mono tracking-widest text-[#94A3B8] uppercase block mt-1 font-semibold">
                     {tile.label}
                   </span>
                 </div>
               ))}
             </div>
-
-            {/* Quick Actions for Desktop Viewers */}
-            <div className="grid grid-cols-2 gap-2 mt-3 pt-2.5 border-t border-[#94A3B8]/20">
-              <button
-                type="button"
-                onClick={() => {
-                  const ev = displayEvents[0];
-                  setSelectedCalendarEvent({
-                    title: `The Wedding of ${groomName} & ${brideName}`,
-                    description: `Menghadiri pernikahan suci ${groomFullName} & ${brideFullName}. ${ev?.location || 'The Celestial Ballroom'}.`,
-                    location: ev?.location || 'The Celestial Ballroom, Jakarta Selatan',
-                    eventDate: ev?.date || '2026-10-12',
-                    startTime: ev?.start_time || '08:00',
-                    endTime: ev?.end_time || '14:00',
-                  });
-                  setIsCalendarModalOpen(true);
-                }}
-                className="inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-[#38BDF8]/15 hover:bg-[#38BDF8]/25 border border-[#38BDF8]/50 text-[#BAE6FD] text-[10px] font-serif font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs active:scale-95"
-              >
-                <Calendar className="w-3 h-3 text-[#38BDF8]" />
-                <span>Ingatkan Acara</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById('acara');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-[#38BDF8]/15 hover:bg-[#38BDF8]/25 border border-[#38BDF8]/50 text-[#BAE6FD] text-[10px] font-serif font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs active:scale-95"
-              >
-                <Navigation className="w-3 h-3 text-[#38BDF8]" />
-                <span>Petunjuk Arah</span>
-              </button>
-            </div>
           </div>
         </div>
 
         {/* Bottom Venue Footer */}
-        <div className="relative z-10 flex items-center justify-between text-xs text-[#94A3B8] pt-3 border-t border-[#94A3B8]/25">
+        <div className="relative z-10 flex items-center justify-between text-xs text-[#94A3B8] pt-3 border-t border-white/10">
           <div className="flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span className="font-serif text-white/90 text-[11px] sm:text-xs">The Celestial Ballroom, Jakarta</span>
+            <span className="font-serif text-white/80 text-[11px] sm:text-xs">The Celestial Ballroom, Jakarta</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Crown className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span className="text-[#38BDF8] font-serif font-bold tracking-wider text-[10px] sm:text-xs">WD Masterpiece 150k</span>
+            <span className="text-[#38BDF8] font-serif font-bold tracking-wider text-[10px] sm:text-xs">Masterpiece 150k</span>
           </div>
         </div>
       </aside>
