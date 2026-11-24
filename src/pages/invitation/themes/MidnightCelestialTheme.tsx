@@ -6,13 +6,13 @@ import {
   ExternalLink, Bookmark, Crown, Video, Shirt, Info,
   Camera, SwitchCamera, Image as ImageIcon, Loader2, Download,
   QrCode, Barcode, CheckCircle2, Star, Moon, Compass, Gem, X, Music, CreditCard,
-  RefreshCw, Upload, Navigation
+  RefreshCw, Upload, Navigation, User, Users, Car, Wifi, Package, Maximize2
 } from 'lucide-react';
 import { useToast } from '../../../context/ToastContext';
 import { CalendarReminderModal } from '../../../components/CalendarReminderModal';
 import { CalendarEventData } from '../../../utils/calendar';
 import { rsvpService, RSVPItem } from '../../../services/rsvpService';
-import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode } from '../../../utils/barcodePass';
+import { loadSavedBarcodePass, saveBarcodePass, generateStableBarcodeCode, clearBarcodePass } from '../../../utils/barcodePass';
 
 export const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -318,6 +318,39 @@ export const CelestialCornerFlourish: React.FC<{
 };
 
 // =========================================================================
+// EMV SILVER SMART CHIP & GUILLOCHE WATERMARK
+// =========================================================================
+export const EMVSilverSmartChip: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`w-11 h-8 rounded-md bg-gradient-to-br from-[#FFFFFF] via-[#94A3B8] to-[#475569] p-[1.5px] shadow-sm relative overflow-hidden flex-shrink-0 ${className}`}>
+    <div className="w-full h-full rounded-[4px] bg-gradient-to-br from-[#F8FAFC] via-[#CBD5E1] to-[#64748B] relative flex items-center justify-center">
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#1E293B]/60" />
+      <div className="absolute inset-y-0 left-1/3 w-[1px] bg-[#1E293B]/60" />
+      <div className="absolute inset-y-0 right-1/3 w-[1px] bg-[#1E293B]/60" />
+      <div className="w-4 h-3.5 rounded-sm border border-[#1E293B]/70 relative z-1 bg-[#94A3B8]/40" />
+    </div>
+  </div>
+);
+
+export const GuillocheCelestialWatermark: React.FC<{ opacity?: number; className?: string }> = ({
+  opacity = 0.05,
+  className = ''
+}) => (
+  <div className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`} style={{ opacity }}>
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="guillochePatternCelestial" width="120" height="120" patternUnits="userSpaceOnUse">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#38BDF8" strokeWidth="0.5" strokeDasharray="3 3" />
+          <circle cx="60" cy="60" r="35" fill="none" stroke="#E2E8F0" strokeWidth="0.5" />
+          <path d="M10 60 Q 60 10, 110 60 Q 60 110, 10 60 Z" fill="none" stroke="#38BDF8" strokeWidth="0.4" />
+          <path d="M60 10 Q 110 60, 60 110 Q 10 60, 60 10 Z" fill="none" stroke="#E2E8F0" strokeWidth="0.4" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#guillochePatternCelestial)" />
+    </svg>
+  </div>
+);
+
+// =========================================================================
 // CELESTIAL ROYAL CREST MONOGRAM
 // =========================================================================
 export const CelestialRoyalCrest: React.FC<{ initials: string; size?: 'sm' | 'md' | 'lg'; className?: string }> = ({
@@ -446,8 +479,23 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
 }) => {
   const toast = useToast();
 
+  // Demo status check (?demo=true)
+  const isDemo = typeof window !== 'undefined' && (
+    new URLSearchParams(window.location.search).get('demo') === 'true' ||
+    (invitation?.id === 'demo-theme-invitation' && !invitation?.client_id)
+  );
+
   // Active section for floating navbar
   const [activeSection, setActiveSection] = useState('sampul');
+  const navContainerRef = useRef<HTMLDivElement>(null);
+
+  // Dresscode and Concierge interactive states
+  const [attireGender, setAttireGender] = useState<'gentlemen' | 'ladies'>('gentlemen');
+  const [selectedSwatch, setSelectedSwatch] = useState<string | null>(null);
+
+  // Gift tab state
+  const [giftTab, setGiftTab] = useState<'transfer' | 'physical'>('transfer');
+  const [isCopied, setIsCopied] = useState<string | null>(null);
 
   // Calendar reminder modal
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
@@ -483,6 +531,72 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
   const [rsvpList, setRsvpList] = useState<RSVPItem[]>([]);
   const [isSubmittingRsvp, setIsSubmittingRsvp] = useState(false);
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
+
+  // VIP Barcode Pass (150k Masterpiece Tier)
+  const [savedPass, setSavedPass] = useState<any>(() => 
+    loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'celestial')
+  );
+  const [showBarcodePreview, setShowBarcodePreview] = useState(false);
+
+  useEffect(() => {
+    const existing = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'celestial');
+    if (existing) {
+      setSavedPass(existing);
+    }
+  }, [invitation?.id, invitation?.slug, guestName]);
+
+  const activeBarcodePass = savedPass || (isDemo ? {
+    name: guestName,
+    code: generateStableBarcodeCode(invitation?.id, invitation?.slug, guestName, 'celestial'),
+    guests: 2,
+    status: 'attending',
+    table: 'Table 01 - Celestial Starlight',
+    gate: 'Lobby Utama Starlight'
+  } : (showBarcodePreview ? {
+    name: guestName,
+    code: generateStableBarcodeCode(invitation?.id, invitation?.slug, guestName, 'celestial'),
+    guests: 1,
+    status: 'attending',
+    table: 'Table 01 - Celestial Starlight',
+    gate: 'Lobby Utama Starlight'
+  } : null));
+
+  // Auto-scroll active nav item into center of the dock on mobile screens
+  useEffect(() => {
+    if (navContainerRef.current) {
+      const activeEl = navContainerRef.current.querySelector(`[data-nav-id="${activeSection}"]`) as HTMLElement;
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [activeSection]);
+
+  // Active Section Spy on Scroll
+  useEffect(() => {
+    const sectionIds = [
+      'sampul', 'mempelai', 'acara', 'dresscode', 'concierge',
+      'kisah', 'galeri', 'photobooth', 'kado', 'vip-pass'
+    ];
+
+    const handleScroll = () => {
+      const triggerY = window.innerHeight * 0.42;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const id = sectionIds[i];
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= triggerY && rect.bottom >= 80) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Bank Copy State
   const [copiedBankIdx, setCopiedBankIdx] = useState<number | null>(null);
@@ -531,18 +645,13 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
     return () => clearInterval(interval);
   }, [targetDateStr]);
 
-  // VIP Barcode Pass (150k Masterpiece Tier)
-  const [barcodeCode, setBarcodeCode] = useState('');
-  useEffect(() => {
-    const saved = loadSavedBarcodePass(invitation?.id, invitation?.slug, guestName, 'celestial');
-    if (saved && saved.code) {
-      setBarcodeCode(saved.code);
-    } else {
-      const newCode = generateStableBarcodeCode('VIP', invitation?.slug || 'CELESTIAL', guestName);
-      setBarcodeCode(newCode);
-      saveBarcodePass({ code: newCode, name: guestName, attendance: 'attending', guests: 2 }, invitation?.id, invitation?.slug, 'celestial');
-    }
-  }, [guestName, groomName, invitation?.id, invitation?.slug]);
+  // Generic Copy Handler
+  const handleCopy = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setIsCopied(id);
+    toast.success('Berhasil disalin ke clipboard!');
+    setTimeout(() => setIsCopied(null), 2500);
+  };
 
   // Gallery items with rock-solid fallback to valid Steven & Bunga photos
   const rawGallery = gallery && gallery.length > 0 ? gallery : [
@@ -594,17 +703,9 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
 
   // Bank accounts
   const displayGifts = gifts.length > 0 ? gifts : [
-    { bank_name: 'BCA Digital', account_number: '8830 1928 4710', account_holder: `${groomName.toUpperCase()} ADIWIJAYA` },
-    { bank_name: 'Bank Mandiri', account_number: '1370 0293 8472', account_holder: `${brideName.toUpperCase()} CITRA LESTARI` },
+    { id: '1', bank_name: 'BCA Digital', account_number: '8830 1928 4710', account_name: `${groomName.toUpperCase()} ADIWIJAYA` },
+    { id: '2', bank_name: 'Bank Mandiri', account_number: '1370 0293 8472', account_name: `${brideName.toUpperCase()} CITRA LESTARI` },
   ];
-
-  // Copy bank account
-  const handleCopyBank = (accNum: string, idx: number) => {
-    navigator.clipboard.writeText(accNum.replace(/\s+/g, ''));
-    setCopiedBankIdx(idx);
-    toast.success('Nomor rekening berhasil disalin!');
-    setTimeout(() => setCopiedBankIdx(null), 2500);
-  };
 
   // RSVP Fetch & Submit
   useEffect(() => {
@@ -627,6 +728,16 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
       return;
     }
     setIsSubmittingRsvp(true);
+    const code = generateStableBarcodeCode(invitation?.id, invitation?.slug, rsvpName.trim(), 'celestial');
+    const newPass = {
+      code,
+      name: rsvpName.trim(),
+      attendance: rsvpStatus === 'ragu' ? 'maybe' : (rsvpStatus === 'hadir' ? 'attending' : 'not_attending'),
+      guests: rsvpCount,
+      table: 'Table 01 - Celestial Starlight',
+      gate: 'Lobby Utama Starlight'
+    };
+
     try {
       if (invitation?.id) {
         await rsvpService.submitRsvp({
@@ -639,13 +750,176 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
         const updated = await rsvpService.getRsvpsByInvitation(invitation.id);
         setRsvpList(updated || []);
       }
-      setRsvpSubmitted(true);
-      toast.success('Doa & konfirmasi kehadiran berhasil dikirim!');
-    } catch {
-      setRsvpSubmitted(true);
-      toast.success('Terima kasih atas doa restunya!');
+    } catch (e) {
+      console.warn('RSVP submit error:', e);
     } finally {
+      saveBarcodePass(newPass, invitation?.id, invitation?.slug, 'celestial');
+      setSavedPass(newPass);
+      setShowBarcodePreview(true);
       setIsSubmittingRsvp(false);
+      setRsvpSubmitted(true);
+      toast.success('Konfirmasi berhasil! Tiket VIP Pass diterbitkan.');
+    }
+  };
+
+  // High-Resolution VIP Access Pass Card Download (Canvas JPEG Generator)
+  const handleSavePass = () => {
+    if (!activeBarcodePass) return;
+    saveBarcodePass(activeBarcodePass, invitation?.id, invitation?.slug, 'celestial');
+    setSavedPass(activeBarcodePass);
+
+    try {
+      const passCanvas = document.createElement('canvas');
+      passCanvas.width = 720;
+      passCanvas.height = 1140;
+      const ctx = passCanvas.getContext('2d');
+      if (ctx) {
+        // 1. Midnight Starlight Gradient Background
+        const bgGrad = ctx.createLinearGradient(0, 0, 720, 1140);
+        bgGrad.addColorStop(0, '#0B152B');
+        bgGrad.addColorStop(0.5, '#060D1E');
+        bgGrad.addColorStop(1, '#030712');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 720, 1140);
+
+        // 2. Silver Starlight Outer & Inner Frame
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(28, 28, 720 - 56, 1140 - 56);
+
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.65)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([8, 6]);
+        ctx.strokeRect(40, 40, 720 - 80, 1140 - 80);
+        ctx.setLineDash([]);
+
+        // 3. Header Monogram / Title
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = 'bold 22px "Cinzel", Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('CELESTIAL VIP ACCESS PASS', 360, 95);
+
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = 'bold 16px "Cinzel", Georgia, serif';
+        ctx.fillText(`THE CELESTIAL WEDDING • ${groomName.toUpperCase()} & ${brideName.toUpperCase()}`, 360, 130);
+
+        // Cyan Divider
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(160, 150);
+        ctx.lineTo(560, 150);
+        ctx.stroke();
+
+        // 4. Guest Name
+        ctx.fillStyle = '#BAE6FD';
+        ctx.font = '14px "Cinzel", Georgia, serif';
+        ctx.fillText('TAMU KEHORMATAN VIP', 360, 190);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 28px "Cinzel", Georgia, serif';
+        ctx.fillText(activeBarcodePass.name || 'Tamu Undangan', 360, 235);
+
+        // Status Badge
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+        ctx.fillRect(200, 265, 320, 36);
+        ctx.strokeStyle = '#38BDF8';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(200, 265, 320, 36);
+
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText(`✓ Terkonfirmasi Hadir (${activeBarcodePass.guests || 1} Tamu)`, 360, 289);
+
+        // Venue & Seating
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '14px sans-serif';
+        const venueText = displayEvents[0]?.location || 'The Celestial Ballroom, Jakarta Selatan';
+        ctx.fillText(venueText, 360, 335);
+
+        // Seating Box
+        ctx.fillStyle = 'rgba(11, 21, 43, 0.9)';
+        ctx.fillRect(110, 360, 500, 68);
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.5)';
+        ctx.strokeRect(110, 360, 500, 68);
+
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('MEJA JAMUAN', 235, 385);
+        ctx.fillText('PINTU AKSES', 485, 385);
+
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = 'bold 15px "Cinzel", Georgia, serif';
+        ctx.fillText(activeBarcodePass.table || 'Table 01 - Celestial Starlight', 235, 412);
+        ctx.fillText('Lobby Utama Starlight', 485, 412);
+
+        // QR Code Container
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(235, 455, 250, 250);
+        ctx.strokeStyle = '#38BDF8';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(235, 455, 250, 250);
+
+        // Draw QR code image from DOM if available
+        const qrImgEl = document.querySelector('img[alt="QR Code Tiket"]') as HTMLImageElement;
+        if (qrImgEl && qrImgEl.complete && qrImgEl.naturalWidth > 0) {
+          try {
+            ctx.drawImage(qrImgEl, 245, 465, 230, 230);
+          } catch {}
+        } else {
+          ctx.fillStyle = '#030712';
+          ctx.font = 'bold 15px sans-serif';
+          ctx.fillText('QR CODE CHECK-IN', 360, 585);
+        }
+
+        // Linear Code-128 Barcode Graphic Box
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(170, 735, 380, 115);
+        ctx.strokeStyle = '#38BDF8';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(170, 735, 380, 115);
+
+        // Draw authentic vertical Code-128 lines
+        ctx.fillStyle = '#030712';
+        const barPattern = [2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1];
+        let currentX = 195;
+        barPattern.forEach((w, idx) => {
+          if (idx % 2 === 0) {
+            ctx.fillRect(currentX, 755, w * 3.0, 55);
+          }
+          currentX += w * 3.0 + 2.5;
+        });
+
+        ctx.fillStyle = isDemo ? '#B91C1C' : '#030712';
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText(activeBarcodePass.code, 360, 835);
+
+        // Instructions
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = 'italic 13.5px "Cinzel", Georgia, serif';
+        if (isDemo) {
+          ctx.fillStyle = '#F59E0B';
+          ctx.fillText('🔒 BARCODE DEMO PORTOFOLIO (TERKUNCI)', 360, 890);
+        } else {
+          ctx.fillText('Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi.', 360, 890);
+        }
+
+        // Footer brand
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = 'bold 13.5px "Cinzel", Georgia, serif';
+        ctx.fillText('WDGROUPCOMPANY • MIDNIGHT CELESTIAL EDITION', 360, 1070);
+
+        const dataUrl = passCanvas.toDataURL('image/jpeg', 0.95);
+        const link = document.createElement('a');
+        link.download = `Celestial_VIP_Pass_${(activeBarcodePass.name || 'Guest').replace(/\s+/g, '_')}.jpg`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast.success('Tiket VIP Pass berhasil disimpan ke galeri!');
+      }
+    } catch {
+      toast.error('Gagal mengunduh gambar tiket.');
     }
   };
 
@@ -975,6 +1249,11 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
         @keyframes celestialSheen {
           0% { transform: translateX(-150%) skewX(-20deg); }
           40%, 100% { transform: translateX(350%) skewX(-20deg); }
+        }
+        @keyframes cardScanline {
+          0% { top: 0%; opacity: 0.8; }
+          50% { top: 96%; opacity: 1; }
+          100% { top: 0%; opacity: 0.8; }
         }
       `}</style>
 
@@ -1436,117 +1715,275 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
         </section>
 
         {/* =========================================================================
-            SECTION 5: VIP BARCODE DIGITAL PASS (150k VIP FEATURE)
+            SECTION 4: DRESS CODE & COLOR PALETTE
             ========================================================================= */}
-        <section id="vip-pass" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#030712] via-[#081126] to-[#030712]">
+        <section id="dresscode" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#030712] via-[#060D1E] to-[#030712] text-center">
+          <GuillocheCelestialWatermark opacity={0.06} />
           <div className="max-w-xl mx-auto relative z-10">
-            <ScrollReveal animation="fade-up" className="text-center">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-[#38BDF8] font-serif font-bold">
-                EKSKLUSIF VIP ACCESS
-              </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
-                VIP Digital Guest Pass
-              </h2>
-              <CelestialStarlightDivider />
-              <p className="text-xs text-[#94A3B8] max-w-sm mx-auto">
-                Tunjukkan barcode ini kepada petugas penerima tamu di lokasi acara untuk registrasi kehadiran otomatis.
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal animation="zoom-in" delay={150} className="mt-6">
-              <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#0E1A38]/95 via-[#0A132B]/98 to-[#040817] border border-[#38BDF8]/50 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_25px_rgba(56,189,248,0.2)] text-center overflow-hidden">
-                <div className="flex items-center justify-between border-b border-[#94A3B8]/25 pb-3 mb-4">
-                  <div className="flex items-center gap-2">
-                    <Crown className="w-4 h-4 text-[#38BDF8]" />
-                    <span className="text-xs font-serif font-bold uppercase tracking-wider text-white">
-                      VIP PASS • 150K CELESTIAL
-                    </span>
-                  </div>
-                  <span className="text-[10px] font-mono text-[#38BDF8] bg-[#38BDF8]/15 px-2 py-0.5 rounded-full border border-[#38BDF8]/30">
-                    VERIFIED
-                  </span>
-                </div>
-
-                <h3 className="font-serif text-lg sm:text-xl font-bold text-white">
-                  {guestName}
-                </h3>
-                <p className="text-[10px] text-[#94A3B8] tracking-widest uppercase font-mono mt-0.5">
-                  THE CELESTIAL WEDDING OF {groomName.toUpperCase()} & {brideName.toUpperCase()}
-                </p>
-
-                {/* Barcode Graphic Simulation */}
-                <div className="my-5 p-4 rounded-2xl bg-white text-black flex flex-col items-center justify-center shadow-lg">
-                  <div className="w-full flex items-center justify-center gap-[2.5px] h-14 overflow-hidden">
-                    {[3, 1, 2, 4, 1, 3, 2, 1, 4, 2, 1, 3, 2, 4, 1, 2, 3, 1, 4, 2, 1, 3, 1, 2, 4, 3, 1, 2, 4, 1, 3, 2].map((w, idx) => (
-                      <div
-                        key={idx}
-                        className="bg-black h-full"
-                        style={{ width: `${w * 1.5}px` }}
-                      />
-                    ))}
-                  </div>
-                  <span className="font-mono text-xs font-bold tracking-[0.25em] text-black mt-2">
-                    {barcodeCode || 'CEL-2026-VIP-88'}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-center gap-1.5 text-[10.5px] text-[#BAE6FD]">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Akses VIP Terverifikasi Langsung di Tempat</span>
-                </div>
+            <ScrollReveal animation="fade-down">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0E1A38]/90 border border-[#38BDF8]/60 text-[#38BDF8] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Shirt className="w-3.5 h-3.5 text-[#38BDF8]" />
+                <span>PANDUAN BUSANA RESMI</span>
               </div>
-            </ScrollReveal>
-          </div>
-        </section>
-
-        {/* =========================================================================
-            SECTION 6: AR PHOTOBOOTH KAMERA (150k VIP FEATURE)
-            ========================================================================= */}
-        <section id="photobooth" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden text-center">
-          <div className="max-w-xl mx-auto relative z-10">
-            <ScrollReveal animation="fade-up">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-[#38BDF8] font-serif font-bold">
-                KENANG-KENANGAN SPESIAL
-              </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
-                AR Celestial Photobooth
+                Starlight Attire &amp; Dress Code
               </h2>
               <CelestialStarlightDivider />
               <p className="text-xs text-[#94A3B8] max-w-sm mx-auto mb-6">
-                Abadikan momen bahagia Anda menggunakan kamera ponsel dengan bingkai konstelasi perak eksklusif, lalu unduh dan bagikan ke Instagram Story!
+                Untuk menyelaraskan nuansa gemerlap semesta dan keanggunan malam, kami mengundang para tamu kehormatan untuk mengenakan busana bertema <strong>Midnight Navy &amp; Silver Starlight</strong>.
               </p>
             </ScrollReveal>
 
-            <ScrollReveal animation="zoom-in" delay={150}>
-              <div className="p-6 sm:p-8 rounded-3xl bg-[#0B152B]/85 border border-[#38BDF8]/40 shadow-xl flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#38BDF8] to-[#818CF8] flex items-center justify-center shadow-[0_0_25px_rgba(56,189,248,0.5)] mb-4">
-                  <Camera className="w-8 h-8 text-[#030712]" />
-                </div>
-                <h3 className="font-serif text-lg font-bold text-white mb-1">
-                  Ambil Foto dengan Frame Celestial
-                </h3>
-                <p className="text-xs text-[#94A3B8] max-w-xs mb-5">
-                  Kamera akan otomatis membingkai foto Anda dengan ornamen bintang perak & nama kedua mempelai.
-                </p>
-
+            {/* Gender Toggle */}
+            <ScrollReveal animation="fade-up" delay={150}>
+              <div className="flex items-center justify-center gap-2 mb-6">
                 <button
                   type="button"
-                  onClick={() => {
-                    setPhotoboothMode('choice');
-                    setIsCameraModalOpen(true);
-                  }}
-                  className="py-3 px-6 rounded-full bg-gradient-to-r from-[#38BDF8] via-white to-[#38BDF8] text-[#030712] font-serif font-bold text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(56,189,248,0.5)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
+                  onClick={() => setAttireGender('gentlemen')}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
+                    attireGender === 'gentlemen'
+                      ? 'bg-gradient-to-r from-[#38BDF8] to-[#818CF8] text-[#030712] border-2 border-white'
+                      : 'bg-[#0B152B]/80 text-[#94A3B8] border border-[#94A3B8]/40 hover:text-white'
+                  }`}
                 >
-                  <Camera className="w-4 h-4" />
-                  <span>Buka AR Photobooth</span>
+                  <User size={14} />
+                  <span>Tamu Pria (Gentlemen)</span>
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setAttireGender('ladies')}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-sm ${
+                    attireGender === 'ladies'
+                      ? 'bg-gradient-to-r from-[#38BDF8] to-[#818CF8] text-[#030712] border-2 border-white'
+                      : 'bg-[#0B152B]/80 text-[#94A3B8] border border-[#94A3B8]/40 hover:text-white'
+                  }`}
+                >
+                  <Users size={14} />
+                  <span>Tamu Wanita (Ladies)</span>
+                </button>
+              </div>
+            </ScrollReveal>
+
+            {/* Attire Guide Box */}
+            <ScrollReveal animation="fade-up" delay={200}>
+              <div className="p-5 sm:p-6 rounded-3xl bg-[#0B152B]/90 border border-[#38BDF8]/50 text-left max-w-md mx-auto shadow-xl mb-8 text-white relative overflow-hidden">
+                <GuillocheCelestialWatermark opacity={0.06} />
+                {attireGender === 'gentlemen' ? (
+                  <div className="space-y-4 relative z-10">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-full bg-[#38BDF8]/20 border border-[#38BDF8]/50 flex items-center justify-center shrink-0 text-[#38BDF8] shadow-xs">
+                        <Shirt size={16} />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                          Setelan Jas Formal / Batik Tulis Sutra
+                        </h4>
+                        <p className="text-xs text-[#94A3B8] leading-relaxed">
+                          Black tie tuxedo, formal suit berwarna midnight blue pekat, abu-abu perak, atau kemeja batik sutra motif klasik berlengan panjang.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 pt-3 border-t border-[#94A3B8]/20">
+                      <div className="w-9 h-9 rounded-full bg-[#38BDF8]/20 border border-[#38BDF8]/50 flex items-center justify-center shrink-0 text-[#38BDF8] shadow-xs">
+                        <Gem size={16} />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                          Aksesoris &amp; Sepatu
+                        </h4>
+                        <p className="text-xs text-[#94A3B8] leading-relaxed">
+                          Dasi sutra warna perak atau midnight navy, jam tangan formal, serta sepatu pantofel kulit mengkilap.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4 relative z-10">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-full bg-[#38BDF8]/20 border border-[#38BDF8]/50 flex items-center justify-center shrink-0 text-[#38BDF8] shadow-xs">
+                        <Shirt size={16} />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                          Gaun Malam Anggun / Kebaya Modern
+                        </h4>
+                        <p className="text-xs text-[#94A3B8] leading-relaxed">
+                          Evening gown bernuansa midnight navy atau silver starlight, gaun satin sutra elegan, atau kebaya modern bertabur payet kristal perak.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 pt-3 border-t border-[#94A3B8]/20">
+                      <div className="w-9 h-9 rounded-full bg-[#38BDF8]/20 border border-[#38BDF8]/50 flex items-center justify-center shrink-0 text-[#38BDF8] shadow-xs">
+                        <Sparkles size={16} />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-sm font-bold text-white mb-0.5">
+                          Aksesoris &amp; Tata Rias
+                        </h4>
+                        <p className="text-xs text-[#94A3B8] leading-relaxed">
+                          Clutch bag bernuansa perak/glitter, perhiasan mutiara atau platinum, serta sepatu heels pesta yang senada.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-4 pt-3 border-t border-[#94A3B8]/20 flex items-center gap-2 text-[11px] text-[#BAE6FD] relative z-10">
+                  <Info size={14} className="shrink-0 text-[#38BDF8]" />
+                  <span>Dimohon tidak mengenakan busana dominan putih polos demi menghormati gaun pengantin.</span>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Interactive Color Swatches */}
+            <ScrollReveal animation="zoom-in" delay={250}>
+              <div className="max-w-md mx-auto relative z-10">
+                <span className="text-[10px] tracking-[0.2em] font-serif uppercase text-[#38BDF8] block mb-3 font-bold">
+                  ✦ PALET WARNA RESMI PERAYAAN ✦
+                </span>
+                <div className="grid grid-cols-4 gap-2 sm:gap-2.5">
+                  {[
+                    { hex: '#030712', name: 'Imperial Midnight', desc: 'Warna dasar pekat ruang angkasa' },
+                    { hex: '#0B152B', name: 'Nebula Navy', desc: 'Aksen biru kosmik bangsawan' },
+                    { hex: '#38BDF8', name: 'Celestial Cyan', desc: 'Kilauan cahaya starlight' },
+                    { hex: '#E2E8F0', name: 'Silver Starlight', desc: 'Sentuhan perak kristal elegan' },
+                  ].map((swatch, idx) => (
+                    <div 
+                      key={idx}
+                      onClick={() => {
+                        setSelectedSwatch(swatch.name);
+                        toast.info(`${swatch.name} (${swatch.hex}): ${swatch.desc}`);
+                      }}
+                      className="cursor-pointer group flex flex-col items-center p-2 sm:p-2.5 rounded-2xl bg-[#0B152B]/80 border border-[#94A3B8]/30 hover:border-[#38BDF8] transition-all hover:scale-105 shadow-sm"
+                    >
+                      <div 
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white/60 shadow-md mb-1.5 transition-transform group-hover:scale-110"
+                        style={{ backgroundColor: swatch.hex }}
+                      />
+                      <span className="font-serif text-[9px] sm:text-[10px] text-white font-bold block truncate max-w-full">
+                        {swatch.name}
+                      </span>
+                      <span className="font-mono text-[7.5px] sm:text-[8px] text-[#38BDF8] font-semibold">
+                        {swatch.hex}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </ScrollReveal>
           </div>
         </section>
 
         {/* =========================================================================
-            SECTION 7: KISAH CINTA (LOVE STORY MILESTONE)
+            SECTION 5: VVIP CONCIERGE & VALET SERVICE
+            ========================================================================= */}
+        <section id="concierge" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden text-center bg-gradient-to-b from-[#030712] via-[#081226] to-[#030712]">
+          <GuillocheCelestialWatermark opacity={0.06} />
+          <div className="max-w-xl mx-auto relative z-10">
+            <ScrollReveal animation="fade-down">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0E1A38]/90 border border-[#38BDF8]/60 text-[#38BDF8] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Crown className="w-3.5 h-3.5 text-[#38BDF8]" />
+                <span>FASILITAS VVIP &amp; LAYANAN KHUSUS</span>
+              </div>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
+                Layanan &amp; Protokol Tamu VVIP
+              </h2>
+              <CelestialStarlightDivider />
+              <p className="text-xs text-[#94A3B8] max-w-sm mx-auto mb-6">
+                Sebagai tamu kehormatan, Anda berhak menikmati serangkaian fasilitas eksklusif yang disiapkan khusus oleh kedua mempelai.
+              </p>
+            </ScrollReveal>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 max-w-md sm:max-w-xl mx-auto mb-8 text-left">
+              {/* Perk 1: Valet */}
+              <ScrollReveal animation="fade-up" delay={150}>
+                <div className="p-4 rounded-2xl bg-[#0B152B]/90 border border-[#38BDF8]/50 shadow-md relative overflow-hidden flex flex-col justify-between text-white h-full">
+                  <div className="relative z-10">
+                    <div className="w-9 h-9 rounded-xl bg-[#38BDF8]/20 border border-[#38BDF8]/50 flex items-center justify-center text-[#38BDF8] mb-3">
+                      <Car size={18} />
+                    </div>
+                    <h4 className="font-serif text-sm font-bold text-white mb-1">
+                      Valet Parking Gratis
+                    </h4>
+                    <p className="text-xs text-[#94A3B8] leading-relaxed">
+                      Layanan parkir valet khusus tanpa biaya di Lobby Starlight. Tunjukkan tiket VIP QR Pass Anda kepada petugas.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-[#94A3B8]/20 text-[10px] text-[#38BDF8] font-serif font-semibold relative z-10">
+                    ✓ Bebas Antrean Parkir
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              {/* Perk 2: Private Table */}
+              <ScrollReveal animation="fade-up" delay={250}>
+                <div className="p-4 rounded-2xl bg-[#0B152B]/90 border border-[#38BDF8]/50 shadow-md relative overflow-hidden flex flex-col justify-between text-white h-full">
+                  <div className="relative z-10">
+                    <div className="w-9 h-9 rounded-xl bg-[#38BDF8]/20 border border-[#38BDF8]/50 flex items-center justify-center text-[#38BDF8] mb-3">
+                      <Crown size={18} />
+                    </div>
+                    <h4 className="font-serif text-sm font-bold text-white mb-1">
+                      Celestial Table 01
+                    </h4>
+                    <p className="text-xs text-[#94A3B8] leading-relaxed">
+                      Tempat duduk sofa VVIP di baris utama dengan layanan hidangan pribadi oleh butler perjamuan.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-[#94A3B8]/20 text-[10px] text-[#38BDF8] font-serif font-semibold relative z-10">
+                    ✓ Starlight Suite Table
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              {/* Perk 3: Fast-Track QR */}
+              <ScrollReveal animation="fade-up" delay={350}>
+                <div className="p-4 rounded-2xl bg-[#0B152B]/90 border border-[#38BDF8]/50 shadow-md relative overflow-hidden flex flex-col justify-between text-white h-full">
+                  <div className="relative z-10">
+                    <div className="w-9 h-9 rounded-xl bg-[#38BDF8]/20 border border-[#38BDF8]/50 flex items-center justify-center text-[#38BDF8] mb-3">
+                      <QrCode size={18} />
+                    </div>
+                    <h4 className="font-serif text-sm font-bold text-white mb-1">
+                      Fast-Track Presensi
+                    </h4>
+                    <p className="text-xs text-[#94A3B8] leading-relaxed">
+                      Pintu masuk prioritas dengan pemindaian barcode instan untuk registrasi dan pengantaran ke meja tamu.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-[#94A3B8]/20 text-[10px] text-[#38BDF8] font-serif font-semibold relative z-10">
+                    ✓ Pintu Akses Starlight VVIP
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+
+            {/* Action Buttons */}
+            <ScrollReveal animation="fade-up" delay={400}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto">
+                <a
+                  href="https://maps.google.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#38BDF8] to-[#818CF8] text-[#030712] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer hover:brightness-110"
+                >
+                  <Navigation size={14} />
+                  <span>Rute Jalur Drop-Off VVIP</span>
+                </a>
+                <a
+                  href={`https://wa.me/6285707909415?text=${encodeURIComponent(`Halo Concierge Wedding ${groomName} & ${brideName}, saya ${guestName} ingin menanyakan info perihal kedatangan tamu VVIP.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#0B152B] hover:bg-[#112042] border border-[#38BDF8]/60 text-[#38BDF8] text-xs font-serif font-semibold tracking-wider uppercase transition-colors cursor-pointer"
+                >
+                  <MessageCircle size={14} />
+                  <span>Hubungi Concierge Tamu</span>
+                </a>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            SECTION 6: KISAH CINTA (LOVE STORY MILESTONE)
             ========================================================================= */}
         <section id="kisah" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#030712] to-[#060D1E]">
           <div className="max-w-xl mx-auto relative z-10">
@@ -1590,7 +2027,7 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
         </section>
 
         {/* =========================================================================
-            SECTION 8: GALERI FOTO (STARLIGHT MOMENTS)
+            SECTION 7: GALERI FOTO (STARLIGHT MOMENTS)
             ========================================================================= */}
         <section id="galeri" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden">
           <div className="max-w-xl mx-auto relative z-10">
@@ -1630,191 +2067,460 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
         </section>
 
         {/* =========================================================================
-            SECTION 9: TANDA KASIH & AMPLOP DIGITAL (GIFT & ENVELOPE)
+            SECTION 8: AR PHOTOBOOTH KAMERA (150k VIP FEATURE)
             ========================================================================= */}
-        <section id="kado" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#060D1E] to-[#030712]">
+        <section id="photobooth" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden text-center bg-gradient-to-b from-[#030712] via-[#081226] to-[#030712]">
           <div className="max-w-xl mx-auto relative z-10">
-            <ScrollReveal animation="fade-up" className="text-center">
+            <ScrollReveal animation="fade-up">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#38BDF8] font-serif font-bold">
-                TANDA KASIH & HADIAH
+                KENANG-KENANGAN SPESIAL
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
-                Amplop Digital & Kado
+                AR Celestial Photobooth
               </h2>
               <CelestialStarlightDivider />
               <p className="text-xs text-[#94A3B8] max-w-sm mx-auto mb-6">
-                Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin memberikan tanda kasih, dapat disalurkan melalui:
+                Abadikan momen bahagia Anda menggunakan kamera ponsel dengan bingkai konstelasi perak eksklusif, lalu unduh dan bagikan ke Instagram Story!
               </p>
             </ScrollReveal>
 
-            <div className="space-y-4">
-              {displayGifts.map((bank: any, idx: number) => (
-                <ScrollReveal key={idx} animation="fade-up" delay={idx * 150}>
-                  <div className="relative p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-[#0E1A38] via-[#0A132B] to-[#040817] border border-[#94A3B8]/40 shadow-xl overflow-hidden">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-serif font-bold uppercase tracking-wider text-[#38BDF8]">
-                        {bank.bank_name}
-                      </span>
-                      <CreditCard className="w-5 h-5 text-[#94A3B8]" />
-                    </div>
+            <ScrollReveal animation="zoom-in" delay={150}>
+              <div className="p-6 sm:p-8 rounded-3xl bg-[#0B152B]/85 border border-[#38BDF8]/40 shadow-xl flex flex-col items-center">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#38BDF8] to-[#818CF8] flex items-center justify-center shadow-[0_0_25px_rgba(56,189,248,0.5)] mb-4">
+                  <Camera className="w-8 h-8 text-[#030712]" />
+                </div>
+                <h3 className="font-serif text-lg font-bold text-white mb-1">
+                  Ambil Foto dengan Frame Celestial
+                </h3>
+                <p className="text-xs text-[#94A3B8] max-w-xs mb-5">
+                  Kamera akan otomatis membingkai foto Anda dengan ornamen bintang perak &amp; nama kedua mempelai.
+                </p>
 
-                    <div className="my-2">
-                      <span className="font-mono text-lg sm:text-xl font-bold text-white tracking-widest block">
-                        {bank.account_number}
-                      </span>
-                      <span className="text-xs text-[#BAE6FD] block mt-0.5">
-                        a.n. {bank.account_holder}
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleCopyBank(bank.account_number, idx)}
-                      className="mt-3 w-full py-2.5 px-4 rounded-xl bg-[#38BDF8]/15 hover:bg-[#38BDF8]/25 border border-[#38BDF8]/50 text-[#BAE6FD] text-xs font-serif font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs"
-                    >
-                      {copiedBankIdx === idx ? (
-                        <>
-                          <Check className="w-4 h-4 text-emerald-400" />
-                          <span>Berhasil Disalin!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-4 h-4 text-[#38BDF8]" />
-                          <span>Salin Nomor Rekening</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPhotoboothMode('choice');
+                    setIsCameraModalOpen(true);
+                  }}
+                  className="py-3 px-6 rounded-full bg-gradient-to-r from-[#38BDF8] via-white to-[#38BDF8] text-[#030712] font-serif font-bold text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(56,189,248,0.5)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <Camera className="w-4 h-4" />
+                  <span>Buka AR Photobooth</span>
+                </button>
+              </div>
+            </ScrollReveal>
           </div>
         </section>
 
         {/* =========================================================================
-            SECTION 10: RSVP & UCAPAN DOA (GUESTBOOK)
+            SECTION 9: TANDA KASIH & AMPLOP DIGITAL (GIFT & REGISTRY)
             ========================================================================= */}
-        <section id="rsvp" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden">
+        <section id="kado" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#060D1E] to-[#030712] text-center">
+          <GuillocheCelestialWatermark opacity={0.06} />
           <div className="max-w-xl mx-auto relative z-10">
-            <ScrollReveal animation="fade-up" className="text-center">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-[#38BDF8] font-serif font-bold">
-                BUKU TAMU & DOA RESTU
-              </span>
+            <ScrollReveal animation="fade-down">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0E1A38]/90 border border-[#38BDF8]/60 text-[#38BDF8] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Gift className="w-3.5 h-3.5 text-[#38BDF8]" />
+                <span>TANDA KASIH &amp; KADO DIGITAL</span>
+              </div>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
-                Konfirmasi Kehadiran
+                Amplop Digital &amp; Hadiah
               </h2>
               <CelestialStarlightDivider />
+              <p className="text-xs text-[#94A3B8] max-w-sm mx-auto mb-6">
+                Doa restu Anda merupakan karunia terindah bagi kami. Namun jika hendak memberikan tanda kasih, dapat disalurkan melalui rekening eksklusif di bawah ini.
+              </p>
             </ScrollReveal>
 
-            {/* RSVP Form */}
+            {/* Tab Selector: Transfer vs Physical */}
             <ScrollReveal animation="fade-up" delay={150}>
-              <form onSubmit={handleSubmitRSVP} className="p-6 sm:p-8 rounded-3xl bg-[#0B152B]/85 border border-[#94A3B8]/40 shadow-xl space-y-4">
-                <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-[#BAE6FD] mb-1 font-serif">
-                    Nama Anda
+              <div className="flex items-center justify-center gap-2 mb-6 sm:mb-8">
+                <button
+                  type="button"
+                  onClick={() => setGiftTab('transfer')}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-xs ${
+                    giftTab === 'transfer'
+                      ? 'bg-gradient-to-r from-[#38BDF8] to-[#818CF8] text-[#030712] border-2 border-white'
+                      : 'bg-[#0B152B]/80 text-[#94A3B8] border border-[#94A3B8]/40 hover:text-white'
+                  }`}
+                >
+                  <CreditCard size={14} />
+                  <span>Transfer Bank &amp; Rekening</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGiftTab('physical')}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-serif font-bold transition-all cursor-pointer shadow-xs ${
+                    giftTab === 'physical'
+                      ? 'bg-gradient-to-r from-[#38BDF8] to-[#818CF8] text-[#030712] border-2 border-white'
+                      : 'bg-[#0B152B]/80 text-[#94A3B8] border border-[#94A3B8]/40 hover:text-white'
+                  }`}
+                >
+                  <Package size={14} />
+                  <span>Kirim Kado Fisik</span>
+                </button>
+              </div>
+            </ScrollReveal>
+
+            {giftTab === 'transfer' ? (
+              <div className="space-y-4 max-w-sm mx-auto">
+                {displayGifts.map((bank: any, idx: number) => (
+                  <ScrollReveal key={idx} animation="zoom-in" delay={idx * 150}>
+                    <div className="relative p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#0E1A38] via-[#0A132B] to-[#040817] border border-[#38BDF8]/60 shadow-[0_16px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(56,189,248,0.25)] text-left overflow-hidden text-white hover:scale-[1.02] transition-transform">
+                      <GuillocheCelestialWatermark opacity={0.08} />
+
+                      {/* Header Card: Bank & EMV Chip */}
+                      <div className="flex items-center justify-between mb-4 relative z-10">
+                        <div className="flex items-center gap-2">
+                          <span className="font-serif font-bold text-base sm:text-lg tracking-wider text-white">
+                            {bank.bank_name}
+                          </span>
+                          <span className="text-[8.5px] tracking-widest font-mono uppercase px-2 py-0.5 rounded-full bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40">
+                            PRIORITY
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Wifi size={16} className="text-[#38BDF8] rotate-90 opacity-80" />
+                          <EMVSilverSmartChip />
+                        </div>
+                      </div>
+
+                      {/* Card Number */}
+                      <div className="mb-3 relative z-10">
+                        <span className="text-[9px] font-serif uppercase tracking-widest text-[#94A3B8] block">
+                          NOMOR REKENING PRIORITAS
+                        </span>
+                        <div className="font-mono text-base sm:text-2xl font-bold tracking-wider text-white mt-0.5 truncate">
+                          {bank.account_number}
+                        </div>
+                      </div>
+
+                      {/* Card Holder & Copy Button */}
+                      <div className="flex items-center justify-between pt-3 border-t border-[#94A3B8]/20 relative z-10">
+                        <div>
+                          <span className="text-[9px] font-sans uppercase tracking-wider text-[#94A3B8] block">
+                            ATAS NAMA
+                          </span>
+                          <span className="font-serif text-xs font-semibold text-[#BAE6FD]">
+                            {bank.account_name}
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(bank.account_number.replace(/\s+/g, ''), bank.id)}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#38BDF8] to-white text-[#030712] text-[11px] font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer hover:brightness-110 active:scale-95"
+                        >
+                          {isCopied === bank.id ? (
+                            <>
+                              <Check size={12} className="text-[#030712]" />
+                              <span>Tersalin</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy size={12} className="text-[#030712]" />
+                              <span>Salin No. Rek</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            ) : (
+              <ScrollReveal animation="zoom-in" delay={150}>
+                <div className="p-6 rounded-3xl bg-[#0B152B]/90 border border-[#38BDF8]/60 max-w-sm mx-auto text-center shadow-xl text-white">
+                  <Package className="w-8 h-8 text-[#38BDF8] mx-auto mb-3" />
+                  <h4 className="font-serif text-base font-bold text-white mb-1">
+                    Alamat Kirim Hadiah Fisik
+                  </h4>
+                  <p className="text-xs text-[#94A3B8] leading-relaxed mb-4 font-sans">
+                    {couple?.gift_address || 'Jl. Surya Kencana No. 88, Jakarta Selatan (Kediaman Mempelai)'}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(couple?.gift_address || 'Jl. Surya Kencana No. 88, Jakarta Selatan', 'addr')}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#38BDF8] to-[#818CF8] text-[#030712] text-xs font-serif font-bold tracking-wider uppercase transition-all cursor-pointer shadow-md hover:brightness-110"
+                  >
+                    {isCopied === 'addr' ? <Check size={14} /> : <Copy size={14} />}
+                    <span>{isCopied === 'addr' ? 'Alamat Tersalin' : 'Salin Alamat Lengkap'}</span>
+                  </button>
+                </div>
+              </ScrollReveal>
+            )}
+          </div>
+        </section>
+
+        {/* =========================================================================
+            SECTION 10: VIP GUEST CHECK-IN PASS & RSVP FORM
+            ========================================================================= */}
+        <section id="vip-pass" className="relative p-6 sm:p-10 border-b border-[#94A3B8]/30 overflow-hidden bg-gradient-to-b from-[#030712] via-[#081126] to-[#030712] text-center">
+          <GuillocheCelestialWatermark opacity={0.06} />
+          <div className="max-w-xl mx-auto relative z-10">
+            <ScrollReveal animation="fade-down">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0E1A38]/90 border border-[#38BDF8]/60 text-[#38BDF8] text-[10px] tracking-[0.25em] uppercase font-serif font-bold shadow-xs mb-3">
+                <Barcode className="w-3.5 h-3.5 text-[#38BDF8]" />
+                <span>VIP PASS &amp; PRESENSI BARCODE / QR</span>
+              </div>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
+                Konfirmasi Kehadiran &amp; Tiket VIP
+              </h2>
+              <CelestialStarlightDivider />
+              <p className="text-xs text-[#94A3B8] max-w-sm mx-auto mb-6">
+                Sistem otomatis menerbitkan <strong>Tiket Barcode &amp; QR Resmi</strong> untuk discan petugas saat tiba di lokasi resepsi.
+              </p>
+            </ScrollReveal>
+
+            {/* Toggle View Pass Ticket */}
+            <ScrollReveal animation="fade-up" delay={150}>
+              <div className="mb-6">
+                <button
+                  type="button"
+                  onClick={() => setShowBarcodePreview(prev => !prev)}
+                  className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-serif font-bold tracking-wider uppercase bg-[#0B152B] hover:bg-[#112042] text-[#38BDF8] border border-[#38BDF8]/60 transition-colors cursor-pointer shadow-md"
+                >
+                  <Barcode size={14} />
+                  <span>{activeBarcodePass ? (showBarcodePreview && !savedPass ? 'Tutup Tiket' : 'Tampilkan Tiket Barcode VIP') : 'Lihat Contoh Barcode VIP'}</span>
+                </button>
+              </div>
+            </ScrollReveal>
+
+            {/* VIP GUEST VERIFIED PASS CARD */}
+            {activeBarcodePass && (
+              <ScrollReveal animation="zoom-in" delay={180} duration={850}>
+                <div className="relative bg-gradient-to-br from-[#0E1A38] via-[#081226] to-[#030712] text-white p-5 sm:p-8 rounded-3xl border border-[#38BDF8]/60 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(56,189,248,0.35)] mb-8 text-center overflow-hidden max-w-sm mx-auto z-10">
+                  <GuillocheCelestialWatermark opacity={0.09} />
+
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#38BDF8]/20 text-[10px] text-[#38BDF8] mb-3 border border-[#38BDF8]/50">
+                    <Crown size={12} className="text-[#38BDF8]" />
+                    <span className="font-serif tracking-widest font-bold uppercase">
+                      CELESTIAL VIP ACCESS PASS
+                    </span>
+                  </div>
+
+                  <h3 className="font-serif text-xl font-bold text-white mb-1">
+                    {activeBarcodePass.name}
+                  </h3>
+
+                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-sans font-semibold my-2 bg-emerald-950/90 text-emerald-200 border border-emerald-400/50">
+                    <span>✓ Terkonfirmasi Hadir ({activeBarcodePass.guests || 1} Tamu)</span>
+                  </div>
+
+                  <p className="text-[11px] text-[#38BDF8] mb-3 font-serif">
+                    {displayEvents[0]?.location || 'The Celestial Ballroom • Jakarta'}
+                  </p>
+
+                  {/* VVIP Seating & Gate Info */}
+                  <div className="grid grid-cols-2 gap-2 my-3 max-w-xs mx-auto text-left">
+                    <div className="p-2 rounded-xl bg-[#050B18]/90 border border-[#38BDF8]/30 shadow-inner">
+                      <span className="text-[8px] text-[#94A3B8] block uppercase font-sans">Meja Jamuan</span>
+                      <span className="text-[11px] font-serif font-bold text-[#38BDF8] truncate block">{activeBarcodePass.table || 'Table 01 - Celestial'}</span>
+                    </div>
+                    <div className="p-2 rounded-xl bg-[#050B18]/90 border border-[#38BDF8]/30 shadow-inner">
+                      <span className="text-[8px] text-[#94A3B8] block uppercase font-sans">Pintu Akses</span>
+                      <span className="text-[11px] font-serif font-bold text-[#38BDF8] truncate block">Lobby Utama Starlight</span>
+                    </div>
+                  </div>
+
+                  {/* QR Code Graphic with Laser Scanline Animation */}
+                  <div className="relative w-32 h-32 sm:w-36 sm:h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-[#38BDF8] shadow-md flex items-center justify-center my-3 overflow-hidden">
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`INV:${invitation?.id || 'CELESTIAL'}|GUEST:${activeBarcodePass.name}|ATT:attending|CODE:${activeBarcodePass.code}`)}`}
+                      alt="QR Code Tiket"
+                      className="w-full h-full object-contain"
+                    />
+                    {/* Laser Scanline */}
+                    <div 
+                      className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent pointer-events-none"
+                      style={{ animation: 'cardScanline 2.5s ease-in-out infinite' }}
+                    />
+                  </div>
+
+                  {/* Authentic Linear Barcode Graphic (Code-128 Vertical SVG Bars) */}
+                  <div className="relative my-2.5 px-3 py-2 bg-white rounded-xl border border-[#38BDF8]/70 flex flex-col items-center shadow-md overflow-hidden">
+                    <svg viewBox="0 0 160 32" className="w-full max-w-[210px] h-9 text-[#030712]" preserveAspectRatio="none">
+                      {[2,1,3,1,1,2,1,3,2,1,2,3,1,1,2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,3,1,1,2,1,2,3,1,1,2,1,3,2,1].map((w, idx) => (
+                        idx % 2 === 0 ? <rect key={idx} x={idx * 3.6} y="0" width={w} height="32" fill="currentColor" /> : null
+                      ))}
+                    </svg>
+                    <span className={`font-mono font-bold text-xs tracking-[0.25em] ${isDemo ? 'text-red-700 line-through' : 'text-[#030712]'} mt-1`}>
+                      {activeBarcodePass.code}
+                    </span>
+                    {isDemo && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/45 pointer-events-none">
+                        <span className="bg-sky-600/95 text-white font-bold text-[9px] px-2.5 py-0.5 rounded tracking-widest uppercase shadow">
+                          BARCODE DEMO (TERKUNCI)
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {isDemo ? (
+                    <div className="bg-[#050B18]/90 border border-sky-400/50 rounded-xl p-2.5 my-2.5 text-center text-white">
+                      <p className="text-[11px] font-serif font-bold text-sky-300">
+                        🔒 Barcode Demo Portofolio (Terkunci)
+                      </p>
+                      <p className="text-[10px] text-[#94A3B8] mt-0.5 leading-normal">
+                        Barcode &amp; QR ini terkunci khusus demo portofolio dan tidak dapat di-scan untuk presensi tamu sungguhan.
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-[10.5px] text-[#94A3B8] italic leading-snug my-2.5 max-w-[270px] mx-auto font-serif">
+                      Tunjukkan Barcode atau QR Code ini kepada panitia saat tiba di lokasi resepsi.
+                    </p>
+                  )}
+
+                  <div className="flex flex-col items-center gap-2.5 mt-3">
+                    <button
+                      type="button"
+                      onClick={handleSavePass}
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#38BDF8] via-white to-[#38BDF8] text-[#030712] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md cursor-pointer hover:brightness-110 active:scale-95"
+                    >
+                      <Download size={14} />
+                      <span>Simpan Tiket ke Galeri</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSavedPass(null);
+                        clearBarcodePass(invitation?.id, invitation?.slug, activeBarcodePass?.name || guestName, 'celestial');
+                        setShowBarcodePreview(false);
+                      }}
+                      className="inline-block text-[11px] text-[#38BDF8] hover:underline font-serif font-semibold cursor-pointer"
+                    >
+                      ← Ubah Konfirmasi Kehadiran
+                    </button>
+                  </div>
+                </div>
+              </ScrollReveal>
+            )}
+
+            {/* RSVP Submission Form */}
+            <ScrollReveal animation="fade-up" delay={200} duration={850}>
+              <form onSubmit={handleSubmitRSVP} className="relative z-10 max-w-md mx-auto p-5 sm:p-7 rounded-3xl bg-[#0B152B]/90 border border-[#38BDF8]/50 text-left shadow-xl text-white">
+                <h4 className="font-serif text-lg font-bold text-white text-center mb-4">
+                  Formulir RSVP Kehadiran
+                </h4>
+
+                <div className="mb-4">
+                  <label className="text-xs font-serif text-[#38BDF8] block mb-1">
+                    Nama Lengkap Anda
                   </label>
-                  <input
-                    type="text"
-                    required
+                  <input 
+                    type="text" 
                     value={rsvpName}
-                    onChange={(e) => setRsvpName(e.target.value)}
-                    placeholder="Masukkan nama lengkap"
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#050B18] border border-[#94A3B8]/40 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-[#38BDF8]"
+                    onChange={e => setRsvpName(e.target.value)}
+                    placeholder="Masukkan nama lengkap..."
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#050B18] border border-[#94A3B8]/40 text-white text-xs focus:outline-hidden focus:border-[#38BDF8]"
+                    required
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[11px] uppercase tracking-wider text-[#BAE6FD] mb-1 font-serif">
-                      Konfirmasi
-                    </label>
-                    <select
-                      value={rsvpStatus}
-                      onChange={(e) => setRsvpStatus(e.target.value as any)}
-                      className="w-full px-3 py-2.5 rounded-xl bg-[#050B18] border border-[#94A3B8]/40 text-white text-xs focus:outline-none focus:border-[#38BDF8]"
-                    >
-                      <option value="hadir">Pasti Hadir</option>
-                      <option value="tidak_hadir">Tidak Bisa Hadir</option>
-                      <option value="ragu">Masih Ragu</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] uppercase tracking-wider text-[#BAE6FD] mb-1 font-serif">
-                      Jumlah Tamu
-                    </label>
-                    <select
-                      value={rsvpCount}
-                      onChange={(e) => setRsvpCount(Number(e.target.value))}
-                      className="w-full px-3 py-2.5 rounded-xl bg-[#050B18] border border-[#94A3B8]/40 text-white text-xs focus:outline-none focus:border-[#38BDF8]"
-                    >
-                      {[1, 2, 3, 4, 5].map((num) => (
-                        <option key={num} value={num}>{num} Orang</option>
-                      ))}
-                    </select>
+                <div className="mb-4">
+                  <label className="text-xs font-serif text-[#38BDF8] block mb-1">
+                    Konfirmasi Kehadiran
+                  </label>
+                  <div className="grid grid-cols-3 gap-1.5 xs:gap-2">
+                    {[
+                      { id: 'hadir', label: 'Hadir' },
+                      { id: 'ragu', label: 'Ragu-ragu' },
+                      { id: 'tidak_hadir', label: 'Berhalangan' },
+                    ].map(opt => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setRsvpStatus(opt.id as any)}
+                        className={`py-2 px-1 xs:px-2 rounded-xl text-[10px] xs:text-xs font-serif transition-all cursor-pointer ${
+                          rsvpStatus === opt.id
+                            ? 'bg-gradient-to-r from-[#38BDF8] to-white text-[#030712] font-bold shadow-xs'
+                            : 'bg-[#050B18] text-[#94A3B8] border border-[#94A3B8]/30'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-[#BAE6FD] mb-1 font-serif">
-                    Untaian Doa & Ucapan
+                <div className="mb-4">
+                  <label className="text-xs font-serif text-[#38BDF8] block mb-1">
+                    Jumlah Tamu Hadir
+                  </label>
+                  <select
+                    value={rsvpCount}
+                    onChange={e => setRsvpCount(Number(e.target.value))}
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#050B18] border border-[#94A3B8]/40 text-white text-xs focus:outline-hidden focus:border-[#38BDF8]"
+                  >
+                    <option value={1}>1 Orang</option>
+                    <option value={2}>2 Orang</option>
+                    <option value={3}>3 Orang</option>
+                    <option value={4}>4 Orang</option>
+                  </select>
+                </div>
+
+                <div className="mb-5">
+                  <label className="text-xs font-serif text-[#38BDF8] block mb-1">
+                    Ucapan Doa &amp; Harapan
                   </label>
                   <textarea
                     rows={3}
                     value={rsvpMessage}
-                    onChange={(e) => setRsvpMessage(e.target.value)}
-                    placeholder="Tulis ucapan selamat & doa restu..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#050B18] border border-[#94A3B8]/40 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-[#38BDF8]"
+                    onChange={e => setRsvpMessage(e.target.value)}
+                    placeholder="Tuliskan ucapan dan doa restu untuk kedua mempelai..."
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#050B18] border border-[#94A3B8]/40 text-white text-xs focus:outline-hidden focus:border-[#38BDF8] resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmittingRsvp}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#38BDF8] via-white to-[#38BDF8] text-[#030712] font-serif font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:brightness-110 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-3 rounded-full bg-gradient-to-r from-[#38BDF8] via-white to-[#38BDF8] text-[#030712] text-xs font-serif font-bold tracking-wider uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer hover:brightness-110 active:scale-95"
                 >
                   {isSubmittingRsvp ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin text-[#030712]" />
-                      <span>Mengirim Doa...</span>
-                    </>
+                    <span>Mengirim Konfirmasi...</span>
                   ) : (
                     <>
-                      <Send className="w-4 h-4" />
-                      <span>Kirim Doa Restu</span>
+                      <Send size={14} />
+                      <span>Kirim Konfirmasi &amp; Terbitkan Tiket</span>
                     </>
                   )}
                 </button>
               </form>
             </ScrollReveal>
 
-            {/* List of Wishes */}
-            {rsvpList.length > 0 && (
-              <div className="mt-8 space-y-3">
-                <h4 className="text-xs font-serif font-bold uppercase tracking-widest text-[#BAE6FD] text-center mb-4">
-                  Doa & Ucapan Terkini ({rsvpList.length})
+            {/* Live Wishes Feed */}
+            <ScrollReveal animation="fade-up" delay={250}>
+              <div className="mt-8 sm:mt-10 max-w-md mx-auto text-left relative z-10">
+                <h4 className="font-serif text-sm sm:text-base font-bold text-white mb-4 flex items-center gap-2">
+                  <MessageCircle size={16} className="text-[#38BDF8]" />
+                  <span>Untaian Doa &amp; Ucapan ({rsvpList.length})</span>
                 </h4>
-                <div className="max-h-72 overflow-y-auto space-y-2.5 pr-1">
-                  {rsvpList.map((item, idx) => (
-                    <div key={idx} className="p-3.5 rounded-2xl bg-[#0B152B]/75 border border-[#94A3B8]/25 text-left">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-serif font-bold text-xs text-white">
-                          {item.name}
-                        </span>
-                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono ${
-                          item.attendance === 'attending' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-500/20 text-slate-300'
-                        }`}>
-                          {item.attendance === 'attending' ? 'Hadir' : 'Berhalangan'}
-                        </span>
+
+                <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
+                  {rsvpList.map((w, idx) => (
+                    <ScrollReveal key={idx} animation="fade-up" delay={(idx % 4) * 60}>
+                      <div className="p-3.5 sm:p-4 rounded-2xl bg-[#0B152B]/80 border border-[#94A3B8]/30 text-xs shadow-xs">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="font-serif font-bold text-white text-xs sm:text-sm">
+                            {w.name}
+                          </span>
+                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono ${
+                            w.attendance === 'attending' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-500/20 text-slate-300'
+                          }`}>
+                            {w.attendance === 'attending' ? 'Hadir' : 'Berhalangan'}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#CBD5E1] leading-relaxed">
+                          {w.message}
+                        </p>
                       </div>
-                      <p className="text-[11px] text-[#CBD5E1] leading-relaxed">
-                        {item.message}
-                      </p>
-                    </div>
+                    </ScrollReveal>
                   ))}
                 </div>
               </div>
-            )}
+            </ScrollReveal>
           </div>
         </section>
 
@@ -1828,51 +2534,62 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
               {groomName} &amp; {brideName}
             </h3>
             <p className="text-xs text-[#94A3B8]">
-              Matur suksma & terima kasih atas doa restu seluruh keluarga, sahabat, dan kerabat tercinta.
+              Matur suksma &amp; terima kasih atas doa restu seluruh keluarga, sahabat, dan kerabat tercinta.
             </p>
-            <div className="pt-4 border-t border-[#94A3B8]/20">
+            <div className="pt-4 border-t border-[#94A3B8]/20 flex flex-col items-center gap-1">
               <span className="text-[10px] text-[#64748B] font-mono tracking-widest uppercase">
                 THE CELESTIAL WEDDING • 2026
+              </span>
+              <span className="text-[9.5px] font-serif tracking-[0.22em] text-[#38BDF8]/80 uppercase">
+                MASTERPIECE CELESTIAL EDITION 150K
               </span>
             </div>
           </div>
         </footer>
       </main>
 
-      {/* =========================================================================
-          FLOATING CELESTIAL GLASS BOTTOM NAVBAR DOCK
-          ========================================================================= */}
-      <nav className={`fixed bottom-3 xs:bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-1.5 xs:px-2 pointer-events-auto transition-opacity duration-300 ${(!isOpening || activePhotoIndex !== null) ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
-        <div className="pointer-events-auto flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-full bg-[#0B152B]/90 backdrop-blur-xl border border-[#94A3B8]/50 shadow-[0_10px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(56,189,248,0.25)]">
+      {/* Floating Bottom Navigation Bar with Dynamic Starlight Silver Pill Dock */}
+      <nav className={`fixed bottom-3 xs:bottom-4 left-1/2 -translate-x-1/2 lg:left-[70.83%] xl:left-[75%] z-40 max-w-[96vw] sm:max-w-max px-1.5 xs:px-2 pointer-events-auto transition-opacity duration-300 ${activePhotoIndex !== null ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'}`}>
+        <div 
+          ref={navContainerRef}
+          className="bg-[#040814]/95 backdrop-blur-xl border border-[#38BDF8]/60 rounded-full py-1 xs:py-1.5 px-1.5 xs:px-2 sm:px-3 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(56,189,248,0.3)] flex items-center justify-start sm:justify-center gap-0.5 xs:gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
+        >
           {[
-            { id: 'sampul', label: 'Sampul', icon: Crown },
-            { id: 'mempelai', label: 'Mempelai', icon: Heart },
+            { id: 'sampul', label: 'Cover', icon: Sparkles },
+            { id: 'mempelai', label: 'Mempelai', icon: User },
             { id: 'acara', label: 'Acara', icon: Calendar },
-            { id: 'vip-pass', label: 'VIP Pass', icon: Barcode },
-            { id: 'galeri', label: 'Galeri', icon: Sparkles },
-            { id: 'kado', label: 'Kado', icon: Gift },
-            { id: 'rsvp', label: 'RSVP', icon: MessageCircle },
-          ].map((item) => {
-            const Icon = item.icon;
+            { id: 'dresscode', label: 'Busana', icon: Shirt },
+            { id: 'concierge', label: 'VVIP', icon: Crown },
+            { id: 'kisah', label: 'Cerita', icon: Heart },
+            { id: 'galeri', label: 'Galeri', icon: Maximize2 },
+            { id: 'photobooth', label: 'Filter AR', icon: Camera },
+            { id: 'kado', label: 'Kado', icon: CreditCard },
+            { id: 'vip-pass', label: 'RSVP', icon: Barcode },
+          ].map(item => {
+            const IconComponent = item.icon;
             const isActive = activeSection === item.id;
             return (
-              <button
+              <a
                 key={item.id}
-                type="button"
-                onClick={() => {
+                data-nav-id={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
                   setActiveSection(item.id);
-                  const el = document.getElementById(item.id);
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  const target = document.getElementById(item.id);
+                  if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
                 }}
-                className={`flex flex-col items-center px-2.5 sm:px-3 py-1 rounded-full transition-all cursor-pointer ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#38BDF8] to-[#818CF8] text-[#030712] font-bold shadow-md scale-105'
-                    : 'text-[#94A3B8] hover:text-white'
+                className={`snap-center flex flex-col sm:flex-row items-center gap-0.5 xs:gap-1 py-1 xs:py-1.5 px-2 xs:px-2.5 sm:px-3 rounded-full text-[9px] xs:text-[10px] font-serif transition-all shrink-0 cursor-pointer ${
+                  isActive 
+                    ? 'bg-gradient-to-r from-[#38BDF8] to-white text-[#030712] font-bold shadow-md scale-105' 
+                    : 'text-[#94A3B8] hover:text-white hover:bg-white/5'
                 }`}
               >
-                <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="text-[8.5px] tracking-tight">{item.label}</span>
-              </button>
+                <IconComponent className="w-3.5 h-3.5 xs:w-4 xs:h-4 shrink-0" />
+                <span className="whitespace-nowrap">{item.label}</span>
+              </a>
             );
           })}
         </div>
