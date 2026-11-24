@@ -2515,81 +2515,60 @@ export const MidnightCelestialTheme: React.FC<MidnightCelestialThemeProps> = ({
         </section>
 
         {/* =========================================================================
-            SECTION 11: PENUTUP / FOOTER (Prestige Celestial Closing Folio)
+            SECTION 11: PENUTUP / FOOTER (Open Celestial Starlight Sign-off)
             ========================================================================= */}
-        <footer className="relative pt-6 xs:pt-8 pb-32 sm:pb-36 px-3 xs:px-4 sm:px-6 text-center max-w-2xl mx-auto">
-          {/* Celestial Starlight Closing Folio Card */}
-          <div className="relative p-6 xs:p-8 sm:p-12 rounded-[28px] xs:rounded-[32px] sm:rounded-[36px] bg-gradient-to-b from-[#0B152B] via-[#060D1E] to-[#030712] border-2 border-[#38BDF8]/60 shadow-[0_30px_90px_rgba(0,0,0,0.9),0_0_50px_rgba(56,189,248,0.25)] overflow-hidden mb-8 text-white">
-            <GuillocheCelestialWatermark opacity={0.08} />
-            <div className="absolute inset-3 rounded-[24px] border border-dashed border-[#94A3B8]/30 pointer-events-none" />
-            <CelestialCornerFlourish position="top-left" size={40} />
-            <CelestialCornerFlourish position="top-right" size={40} />
-            <CelestialCornerFlourish position="bottom-left" size={40} />
-            <CelestialCornerFlourish position="bottom-right" size={40} />
-
-            <div className="relative z-10">
-              {/* Apex Crescent Moon & Star Seal */}
-              <div className="relative mb-4 inline-block">
-                <div className="absolute -inset-4 rounded-full bg-[#38BDF8]/20 blur-xl pointer-events-none" />
-                <div className="w-14 h-14 rounded-full bg-[#0E1A38] border-2 border-[#38BDF8] flex items-center justify-center shadow-[0_0_25px_rgba(56,189,248,0.5)]">
-                  <Moon className="w-7 h-7 text-[#BAE6FD] fill-[#38BDF8]/20 -rotate-12" />
-                  <Star className="w-3.5 h-3.5 text-[#38BDF8] fill-[#38BDF8] absolute top-2 right-2 animate-pulse" />
-                </div>
+        <footer className="relative pt-8 sm:pt-12 pb-32 sm:pb-36 px-4 sm:px-6 text-center max-w-xl mx-auto overflow-hidden">
+          <ScrollReveal animation="fade-up" className="relative z-10 flex flex-col items-center">
+            {/* Glowing Moon & Star Icon */}
+            <div className="relative mb-4 flex items-center justify-center">
+              <div className="absolute -inset-3 rounded-full bg-[#38BDF8]/20 blur-xl pointer-events-none" />
+              <div className="w-12 h-12 rounded-full bg-[#0B152B] border border-[#38BDF8]/60 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.35)]">
+                <Moon className="w-6 h-6 text-[#BAE6FD] fill-[#38BDF8]/25 -rotate-12" />
+                <Star className="w-3 h-3 text-[#38BDF8] fill-[#38BDF8] absolute top-1.5 right-1.5 animate-pulse" />
               </div>
+            </div>
 
-              {/* Badge Header */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#38BDF8]/15 border border-[#38BDF8]/50 text-[#38BDF8] text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.25em] font-bold mb-4 shadow-xs">
-                <Sparkles className="w-3.5 h-3.5 text-[#38BDF8]" />
-                <span>UNGKAPAN TERIMA KASIH</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#38BDF8]" />
-              </div>
+            {/* Title */}
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-wide mb-3">
+              Terima Kasih
+            </h2>
 
-              {/* Formal Wedding Closing Words */}
-              <p className="font-serif italic text-xs sm:text-sm text-[#E2E8F0] leading-relaxed max-w-md mx-auto mb-5 font-light">
-                &ldquo;Merupakan suatu kehormatan dan kebahagiaan yang mendalam bagi kami sekeluarga, apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu bagi ikatan suci pernikahan kami.&rdquo;
-              </p>
+            {/* Heartfelt Closing Words */}
+            <p className="font-serif text-xs sm:text-sm text-[#CBD5E1] leading-relaxed max-w-md mx-auto mb-6 px-2 font-light">
+              Merupakan suatu kehormatan dan kebahagiaan yang mendalam bagi kami sekeluarga, apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu bagi ikatan suci pernikahan kami.
+            </p>
 
-              <CelestialStarlightDivider />
+            {/* Starlight Divider */}
+            <CelestialStarlightDivider />
 
-              {/* Couple & Family Signature */}
-              <p className="text-[10px] sm:text-[11px] font-serif tracking-[0.25em] uppercase text-[#38BDF8] font-bold mt-4 mb-1">
+            {/* Couple Signature */}
+            <div className="mt-5 mb-8 space-y-1">
+              <p className="text-[10px] sm:text-[10.5px] font-serif tracking-[0.25em] uppercase text-[#38BDF8] font-semibold">
                 KAMI YANG BERBAHAGIA
               </p>
-              <div className="font-serif text-2xl xs:text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F8FAFC] to-[#BAE6FD] drop-shadow-md tracking-wide mb-1.5">
+              <div className="font-serif text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F8FAFC] to-[#BAE6FD] drop-shadow-sm tracking-wide">
                 {groomName} &amp; {brideName}
               </div>
               <p className="text-[11px] sm:text-xs text-[#94A3B8] font-serif italic">
                 Beserta segenap keluarga besar kedua mempelai
               </p>
             </div>
-          </div>
 
-          {/* Elegant Celestial Brand Credit & Link */}
-          <div className="relative z-10 flex flex-col items-center">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <div className="h-px w-10 sm:w-16 bg-gradient-to-r from-transparent to-[#38BDF8]/50" />
-              <Star className="w-2.5 h-2.5 text-[#38BDF8] fill-[#38BDF8]" />
-              <div className="h-px w-10 sm:w-16 bg-gradient-to-l from-transparent to-[#38BDF8]/50" />
-            </div>
-
-            <a
-              href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex flex-col items-center gap-1 cursor-pointer transition-all duration-300"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0E1A38]/90 hover:bg-[#162955] border border-[#38BDF8]/50 hover:border-[#38BDF8] transition-all shadow-xs">
-                <Crown className="w-3.5 h-3.5 text-[#38BDF8]" />
-                <span className="text-[11px] font-serif font-bold tracking-[0.25em] text-[#38BDF8] group-hover:text-white uppercase transition-colors">
-                  WDGROUPCOMPANY
-                </span>
-                <Crown className="w-3.5 h-3.5 text-[#38BDF8]" />
-              </div>
-              <span className="text-[9.5px] font-serif tracking-[0.22em] text-[#94A3B8]/80 group-hover:text-[#38BDF8] uppercase transition-colors">
-                THE CELESTIAL WEDDING EDITION
+            {/* Clean, Subtle Brand Credit */}
+            <div className="w-full pt-6 border-t border-[#94A3B8]/20 flex flex-col items-center gap-1.5">
+              <span className="text-[9.5px] text-[#64748B] font-mono tracking-widest uppercase">
+                THE CELESTIAL WEDDING • {new Date().getFullYear()}
               </span>
-            </a>
-          </div>
+              <a
+                href="https://www.instagram.com/wdgroupcompany?exln=aXl1bHBqbHd2NGV6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[9.5px] font-serif tracking-[0.2em] text-[#38BDF8]/70 hover:text-[#38BDF8] uppercase transition-colors"
+              >
+                WD DIGITAL INVITATION
+              </a>
+            </div>
+          </ScrollReveal>
         </footer>
       </main>
 
