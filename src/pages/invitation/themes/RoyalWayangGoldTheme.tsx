@@ -1148,7 +1148,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
       chapter: 'BABAK III',
       date: '2026',
       title: 'Menuju Pelaminan',
-      photo: '/photos/audi-ovyola/gallery-09.jpg',
+      photo: '/photos/audi-ovyola/gallery-01.jpg',
       description: 'Dengan penuh rasa syukur dan doa yang tulus, kami siap mengikat janji suci pernikahan untuk melangkah bersama mengarungi samudra kehidupan.'
     }
   ];
@@ -2910,7 +2910,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               {gallery
                 .filter((g: any) => {
                   const photoSrc = typeof g === 'string' ? g : (g.image_url || '');
-                  return !photoSrc.includes('groom-agni') && !photoSrc.includes('bride-putri');
+                  return !photoSrc.includes('groom-agni') && !photoSrc.includes('bride-putri') && !photoSrc.includes('audi-ovyola/gallery-09.jpg');
                 })
                 .map((g: any, idx: number) => {
                 const photoSrc = typeof g === 'string' ? g : (g.image_url || '');
@@ -3028,7 +3028,7 @@ export const RoyalWayangGoldTheme: React.FC<RoyalWayangGoldThemeProps> = ({
               <div className="relative z-20 grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
                 {(isAgni 
                   ? ['/themes/agni-putri/couple-fern.jpg', '/themes/agni-putri/couple-main.jpg'] 
-                  : ['/photos/audi-ovyola/gallery-08.jpg', '/photos/audi-ovyola/gallery-09.jpg']
+                  : ['/photos/audi-ovyola/gallery-08.jpg', '/photos/audi-ovyola/gallery-11.jpg']
                 ).map((photoSrc, idx) => (
                   <div 
                     key={idx}

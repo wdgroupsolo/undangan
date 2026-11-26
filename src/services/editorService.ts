@@ -584,10 +584,9 @@ export const GALLERY_AUDI_OVYOLA = [
   { id: 'ao-gal-6', image_url: '/photos/audi-ovyola/gallery-06.jpg', caption: 'Genggaman Erat Menuju Mahligai Rumah Tangga', sort_order: 6 },
   { id: 'ao-gal-7', image_url: '/photos/audi-ovyola/gallery-07.jpg', caption: 'Kisah Romansa Kasual & Senyum Penuh Bahagia', sort_order: 7 },
   { id: 'ao-gal-8', image_url: '/photos/audi-ovyola/gallery-08.jpg', caption: 'Kemesraan Hangat di Tengah Senja', sort_order: 8 },
-  { id: 'ao-gal-9', image_url: '/photos/audi-ovyola/gallery-09.jpg', caption: 'Langkah Sepadan Mengarungi Masa Depan Bersama', sort_order: 9 },
-  { id: 'ao-gal-10', image_url: '/photos/audi-ovyola/gallery-10.jpg', caption: 'Tawa Lepas Dua Hati yang Saling Melengkapi', sort_order: 10 },
-  { id: 'ao-gal-11', image_url: '/photos/audi-ovyola/gallery-11.jpg', caption: 'Sentuhan Teduh Penuh Kasih Sayang', sort_order: 11 },
-  { id: 'ao-gal-12', image_url: '/photos/audi-ovyola/gallery-12.jpg', caption: 'Doa & Restu Menuju Hari Kemenangan Cinta', sort_order: 12 },
+  { id: 'ao-gal-10', image_url: '/photos/audi-ovyola/gallery-10.jpg', caption: 'Tawa Lepas Dua Hati yang Saling Melengkapi', sort_order: 9 },
+  { id: 'ao-gal-11', image_url: '/photos/audi-ovyola/gallery-11.jpg', caption: 'Sentuhan Teduh Penuh Kasih Sayang', sort_order: 10 },
+  { id: 'ao-gal-12', image_url: '/photos/audi-ovyola/gallery-12.jpg', caption: 'Doa & Restu Menuju Hari Kemenangan Cinta', sort_order: 11 },
 ];
 
 export const GIFTS_AUDI_OVYOLA = [
@@ -729,7 +728,13 @@ export const editorService = {
   async getStories(invitationId: string) {
     try {
       const { data, error } = await supabase.from('stories').select('*').eq('invitation_id', invitationId).order('sort_order');
-      if (!error && data && data.length > 0) return data;
+      if (!error && data && data.length > 0) {
+        return data.map((s: any) => ({
+          ...s,
+          photo: (s?.photo || '').includes('audi-ovyola/gallery-09.jpg') ? '/photos/audi-ovyola/gallery-01.jpg' : s?.photo,
+          photo_url: (s?.photo_url || '').includes('audi-ovyola/gallery-09.jpg') ? '/photos/audi-ovyola/gallery-01.jpg' : s?.photo_url,
+        }));
+      }
     } catch {}
     const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
@@ -778,7 +783,9 @@ export const editorService = {
   async getGallery(invitationId: string) {
     try {
       const { data, error } = await supabase.from('gallery').select('*').eq('invitation_id', invitationId).order('sort_order');
-      if (!error && data && data.length > 0) return data;
+      if (!error && data && data.length > 0) {
+        return data.filter((item: any) => !(item?.image_url || '').includes('audi-ovyola/gallery-09.jpg'));
+      }
     } catch {}
     const isAudiId = invitationId === 'e7000000-0000-0000-0000-000000000007' || 
       (typeof invitationId === 'string' && (invitationId.toLowerCase().includes('audi') || invitationId.toLowerCase().includes('ovyola')));
